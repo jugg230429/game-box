@@ -1,0 +1,176 @@
+html {
+	/* font-size: 11.5741px; */
+ }
+ body {
+	 margin: 0;
+	 padding: 0;
+ }
+ .fl {
+	 float: left;
+ }
+ .fg {
+	 float: right;
+ }
+ ul {
+	padding: 0;
+	margin: 0;
+ }
+ li {
+	list-style:none;
+	padding: 0;
+	margin: 0;
+ }
+ a {
+	 text-decoration: none;
+ }
+ p {
+     margin: 0;
+ }
+
+ .dialog-prop{
+    display: block;
+    -webkit-overflow-scrolling: touch;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999;
+    background: rgba(0,0,0,.5);
+}
+.dialog-table {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: table;
+}
+.dialog-cell {
+    display: table-cell;
+    position: relative;
+    vertical-align: middle;
+}
+.dialog-box{
+    width: 10.23rem;
+    height: 10.56rem;
+    background: #fff;
+    border-radius: 0.33rem;
+    margin: auto;
+}
+.btnClose{
+    display:inline-block;
+    width: 0.42rem;
+    height: 0.42rem;
+    background-image: url('../images/btn_close.png');
+    background-size: 100% 100%;
+    position: absolute;
+    right: 0.56rem;
+    top: 0.4rem;
+}
+.topHeader{
+    text-align: center;
+    position: relative;
+}
+.goBackIcon{
+    display:inline-block;
+    width: 0.26rem;
+    height: 0.5rem;
+    background-image: url('../images/common_btn_back.png');
+    background-size: 100% 100%;
+    margin: 0.4rem 0 0 0.56rem;
+}
+.title-name{
+    display: inline-block;
+    color: #222222;
+    font-size: 0.53rem;
+    margin: 0;
+    font-weight: bold;
+    margin-top: 0.68rem;
+    margin-right: 0.83rem;
+}
+.qurcodeBox {
+    width: 5.31rem;
+    height: 5.31rem;
+    background-image: url('../images/border.png');
+    background-size: 100% 100%;
+    margin: auto;
+    margin-top: 0.47rem;
+}
+.qurcodeImg{
+    width: 4.84rem;
+    height: 4.84rem;
+    padding: 0.23rem;
+}
+.timeChangeQucode{
+    text-align: center;
+    font-size: 0.4rem;
+    margin-top: 0.43rem;
+}
+.aliPayIcon {
+    width: 1.11rem;
+    height: 1.11rem;
+    margin-right: 1.33rem;
+}
+.wechatIcon{
+    width: 1.11rem;
+    height: 1.11rem;
+}
+.payWayList{
+    text-align: center;
+    margin-top: 0.44rem;
+}
+.chooseActive {
+    color: #018fff;
+}
+
+.scan_code {
+    text-align: center;
+    font-size: 0.365rem
+}
+
+.currentCharge {
+    margin: 0.8rem auto 0.4rem auto
+}
+.coupon-pop{position: fixed; top:0;left: 0; width:100vw;height: 100vh;    background: #fff; overflow: auto;z-index:999;display: none}
+
+@media screen and (orientation: landscape) {
+    .dialog-box{
+        width: 5.23rem;
+        height: 5.56rem;
+        background: #fff;
+        border-radius: 0.33rem;
+        margin: auto;
+    }
+    .goBackIcon {
+        width: 0.16rem;
+        height: 0.25rem;
+        margin: 0.2rem 0 0 0.26rem;
+    }
+    .title-name {
+        font-size: 0.33rem;
+        margin-right: 0.53rem;
+        margin-top: 0rem;
+    }
+    .btnClose {
+        width: 0.22rem;
+        height: 0.22rem;
+        top: 0.2rem;
+        right: 0.36rem;
+    }
+    .qurcodeBox {
+        width: 3.31rem;
+        height: 3.31rem;
+        margin-top: 0;
+    }
+    .qurcodeImg {
+        width: 2.84rem;
+        height: 2.84rem;
+        padding: 0.23rem;
+    }
+    .timeChangeQucode{
+        font-size: 0.2rem;
+        margin-top: 0.23rem;
+    }
+}

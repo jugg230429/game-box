@@ -1,0 +1,232 @@
+<include file="public@header" />
+<link href="__TMPL__/public/assets/simpleboot3/css/pro_promote.css" rel="stylesheet">
+</head>
+<body>
+<div class="wrap js-check-wrap" >
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="{:url('issue/user/recharge')}">订单明细</a></li>
+<!--        <li ><a href="{:url('issue/user/paySummary')}" >支付汇总</a></li>-->
+        <span class="title_remark">说明：显示玩家在游戏内的支付订单数据</span>
+    </ul>
+    <div style="display: flex;">
+        <div class="table-actions position" style="margin-bottom: 0;margin-left: -10px;">
+            <if condition="is_buy_h5_issue()">
+                <a href="{:url('issue/user/recharge',['type'=>1])}" style="margin-bottom: 0;" class="btn mtb17 <if condition='empty($type) or $type eq 1'>btn-info active<else/>btn-default</if>">H5</a>
+            </if>
+            <if condition="is_buy_sy_issue()">
+                <a href="{:url('issue/user/recharge',['type'=>2])}" style="margin-bottom: 0;" class="btn mtb17 <if condition='$type eq 2'>btn-info active<else/>btn-default</if>">手游</a>
+            </if>
+            <if condition="is_buy_yy_issue()">
+                <a href="{:url('issue/user/recharge',['type'=>3])}" style="margin-bottom: 0;" class="btn mtb17 <if condition='$type eq 3'>btn-info active<else/>btn-default</if>">页游</a>
+            </if>
+        </div>
+        <form id="search_form" class="well form-inline fr" style="padding-bottom:0;height:55px;" method="get" action="{:url('issue/user/recharge',['type'=>$type])}">
+            <input type="text" class="form-control notempty" name="user_id" style="width: 120px;" value="{:input('request.user_id/d','')}" placeholder="玩家ID">
+            <select name="user_account" id="user_account"  class="selectpicker" data-live-search="true"  data-size="8" style="width: 120px;">
+                <option value="">玩家账号</option>
+                <volist name=":get_issue_user('id,account')" id="vo">
+                    <option value="{$vo.account}" <if condition="input('request.user_account') eq $vo['account']">selected</if>>{$vo.account}</option>
+                </volist>
+            </select>
+    
+            <input type="text" class="form-control notempty" name="pay_order_number" style="width: 120px;" value="{:input('request.pay_order_number','')}" placeholder="平台订单号">
+    
+            <input type="text" class="form-control notempty" name="order_number" style="width: 120px;" value="{:input('request.order_number','')}" placeholder="分发订单号">
+    
+            <select name="open_user_id" id="open_user_id"  class="selectpicker" data-live-search="true"  data-size="8" style="width: 120px;">
+                <option value="">所属用户</option>
+                <volist name=":get_issue_open_user('id,account')" id="vo">
+                    <option value="{$vo.id}" <if condition="input('request.open_user_id') eq $vo['id']">selected</if>>{$vo.account}</option>
+                </volist>
+            </select>
+    
+            <select name="platform_id" id="platform_id"  class="selectpicker" data-live-search="true"  data-size="8" style="width: 120px;">
+                <option value="">所属平台</option>
+                <volist name=":get_pt_list('id,account')" id="vo">
+                    <option value="{$vo.id}" <if condition="input('request.platform_id') eq $vo['id']">selected</if>>{$vo.account}</option>
+                </volist>
+            </select>
+    
+            <php>
+                $sdk_version_arr = [1=>'(安卓版)',2=>'(苹果版)','3'=>''];
+            </php>
+            <select name="game_id" id="game_id"  class="selectpicker" data-live-search="true"  data-size="8" style="width: 120px;">
+                <option value="">游戏</option>
+                <volist name=":get_issue_game_entity([],'id,game_name,sdk_version',0)" id="vo">
+                    <option value="{$vo.id}" <if condition="input('request.game_id') eq $vo['id']">selected</if>>{$vo.game_name}{$sdk_version_arr[$vo['sdk_version']]}</option>
+                </volist>
+            </select>
+    
+            <select name="pay_status" id="pay_status"  class="selectpicker" style="width: 120px;">
+                <option value="">订单状态</option>
+                <option value="1" <if condition="input('request.pay_status') eq 1">selected</if>>支付成功</option>
+                <option value="0" <if condition="input('request.pay_status') heq '0'">selected</if>>下单未付款</option>
+            </select>
+    
+            <select name="pay_game_status" id="pay_game_status"  class="selectpicker" style="width: 120px;">
+                <option value="">游戏通知状态</option>
+                <option value="1" <if condition="input('request.pay_game_status') eq 1">selected</if>>通知成功</option>
+                <option value="0" <if condition="input('request.pay_game_status') heq '0'">selected</if>>通知失败</option>
+            </select>
+    
+            <input type="text" class="form-control notempty" name="spend_ip" style="width: 120px;" value="{:input('request.spend_ip','')}" placeholder="支付IP">
+    
+            <input type="text" class="form-control js-bootstrap-date" name="start_time" id="start_time" placeholder="支付开始时间"
+                   value="{:input('request.start_time/s','')}" style="width: 120px;" autocomplete="off">-
+            <input type="text" class="form-control js-bootstrap-date" name="end_time" id="end_time" placeholder="支付结束时间"
+                   value="{:input('request.end_time/s','')}" style="width: 120px;" autocomplete="off">
+            <input type="submit" class="btn btn-search" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('issue/user/recharge')}">清空</a>
+        </form>
+    </div>
+    <form class="js-ajax-form" action="" method="post" style="width:100%;">
+        <button class="btn btn-success   js-ajax-submit mtb17" type="submit" style="margin-left: -10px;"
+                data-action="{:url('changeCheck',['status'=>1])}" data-subcheck="true" data-msg="您确定要设置参数结算吗？">
+            参与结算
+        </button>
+        <button class="btn btn-success   js-ajax-submit mtb17" type="submit"
+                data-action="{:url('changeCheck',['status'=>2])}" data-subcheck="true" data-msg="您确定要设置不参数结算吗？">
+            不参与结算
+        </button>
+        <table class="table table-hover table-bordered scroll-table">
+            <thead>
+            <tr>
+                <th>
+                    <input type="checkbox" id="all-checkbox" class="table-item-checkbox js-check-all" data-direction="x" data-checklist="js-check-x">
+                    <label for="all-checkbox" class=""></label>
+                </th>
+                <th>平台订单号</th>
+                <th>分发订单号</th>
+                <th>cp订单号</th>
+                <th>支付时间</th>
+                <th>所属分发平台</th>
+                <th>玩家ID</th>
+                <th>玩家账号</th>
+                <th>游戏名称</th>
+                <th>区服</th>
+                <th>角色名</th>
+                <th>商品名称</th>
+                <th>支付ip</th>
+                <th>支付金额</th>
+                <th>扣除联运币</th>
+                <th>结算比例</th>
+                <th>结算金额</th>
+                <th>订单状态</th>
+                <th>游戏通知状态</th>
+                <th>分发通知状态</th>
+                <th>结算状态</th>
+                <th width="130">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <empty name="data_lists">
+                <tr><td colspan="100" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                <foreach name="data_lists" item="vo">
+                    <tr>
+                        <php>
+                            if($vo['pay_status'] == 1) $page_total +=$vo['pay_amount'];
+                            $sdk_version_arr = [1=>'(安卓版)',2=>'(苹果版)',3=>''];
+                        </php>
+                        <td>
+                            <input type="checkbox" id="ids-checkbox{$vo.id}" class="table-item-checkbox js-check" <if condition="$vo['is_check'] eq 1 or $vo['pay_status'] eq 0"> disabled</if> data-yid="js-check-y" data-xid="js-check-x" name="ids[]" value="{$vo.id}" >
+                            <label for="ids-checkbox{$vo.id}" class=""></label>
+                        </td>
+                        <td>{$vo['pay_order_number']}</td>
+                        <td>{$vo['order_number']}</td>
+                        <td>{$vo['extend']}</td>
+                        <td>{:date("Y-m-d H:i:s",$vo['pay_time'])}</td>
+                        <td>{$vo['platform_account']}</td>
+                        <td>{$vo['user_id']}</td>
+                        <td>{$vo['user_account']}</td>
+                        <td>{$vo['game_name']}{$sdk_version_arr[$vo['sdk_version']]}</td>
+                        <td>{$vo['server_name']}</td>
+                        <td>{$vo['game_player_name']}</td>
+                        <td>{$vo['props_name']}</td>
+                        <td>{$vo['spend_ip']}</td>
+                        <td>{$vo['pay_amount']}</td>
+                        <td>{$vo['dec_balance']}</td>
+                        <td>
+                            <eq name="vo.is_check" value="1">
+                                {$vo.ratio}
+                            <else/>
+                                <a href="javascript:;" style="color: grey;" class="editTab" data-title="分成比例" data-id="{$vo.id}" >{$vo.ratio}</a>
+                            </eq>
+                       </td>
+                        <td>{$vo.ratio_money}</td>
+                        <td>{$vo['pay_status']=='1'?'支付成功':'下单未付款'}</td>
+                        <td>{$vo['pay_game_status']=='1'?'通知成功':'通知失败'}</td>
+                        <td>
+                            <if condition="$vo['settle_type'] eq '1'">
+                                {$vo['pay_ff_status']=='1'?'通知成功':'通知失败'}
+                            <else/>
+                                --
+                            </if>
+                        </td>
+                        <td>{:get_info_status($vo['is_check'],17)}</td>
+                        <td>
+                            <if condition="$vo['pay_status'] eq '1' and $vo['pay_game_status'] eq '0' and $vo['settle_type'] eq '1'">
+                                <a class="js-ajax-dialog-btn" href="{:url('repair_cp',['id'=>$vo['id']])}">补单CP</a>
+                            </if>
+                            <if condition="$vo['pay_status'] eq '1' and $vo['settle_type'] eq '1'">
+                                    <a class="js-ajax-dialog-btn" href="{:url('repair_ff',['id'=>$vo['id']])}">补单分发</a>
+                            </if>
+
+                        </td>
+                    </tr>
+                </foreach>
+                <tr class="data_summary">
+                    <td colspan="2"><span style="margin-right: 10px;">汇总（只汇总支付成功） </span></td>
+                    <td colspan="13"><span>当页支付：{:null_to_0($page_total)}元 ；  今日支付：{:null_to_0($today['total'])}元 ； 昨日支付：{:null_to_0($yestoday['total'])}元 ；  累计支付：{:null_to_0($total['total'])}元； </span></td>
+                    <td>{:null_to_0($total['total_ratio_money'])}</td>
+                    <td colspan="5"></td>
+                </tr>
+            </empty>
+            </tbody>
+        </table>
+    </form>
+    <div class="pagination" style="padding-bottom: 50px">{$page}</div>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script>
+    $(function () {
+        //设置分成比例
+        $(".editTab").click(function () {
+            var that = $(this);
+            var title = that.attr("data-title");
+            var id = that.attr("data-id");
+            var num = that.text();
+            layer.prompt({
+                formType: 0,
+                title: title,
+                value: num,
+                success: function (layero, index) {
+                    layero.find('input').attr('placeholder', '');
+                }
+            }, function (value, index) {
+                if (!/^(((\d|[1-9]\d)(\.\d{1,2})?)|100|100.0|100.00)$/.test(value)) {
+                    layer.msg('输入错误，0-100之间的两位小数', {time: 2000});
+                    return false;
+                }
+                $.ajax({
+                    async: false,
+                    url: "{:url('setRatio')}",
+                    type: "POST",
+                    dataType: 'JSON',
+                    data: {id: id, value: value},
+                    success: function (result) {
+                        layer.msg(result.msg, {time: 1000}, function () {
+                            !result.code || location.reload();
+                        });
+                    },
+                    error: function () {
+                        layer.msg('服务器异常', {time: 2000});
+                    }
+                })
+            });
+        })
+    })
+</script>
+</body>
+</html>

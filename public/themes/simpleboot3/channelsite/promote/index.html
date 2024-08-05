@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <include file="public@head"/>
+    <link href="__TMPL__/public/assets/css/promote/index.css" rel="stylesheet"/>
+    <!--<link href="__TMPL__/public/assets/css/page.css" rel="stylesheet"/>-->
+    <style>
+   .cooperationBox2 {
+    /* display: none; */
+    overflow: hidden;
+    position: fixed;
+    top: 0px;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,.5);
+    z-index: 99;
+}
+.cooperationBox2 .detailContainer {
+    width: 786px;
+    height: 534px;
+    background: #FFFFFF;
+    border-radius: 6px;
+    margin: auto;
+    margin-top: 10%;
+}
+.cooperationBox2 .content-title {
+    height: 54px;
+    background: #29364C;
+    top: -1px;
+    border-radius: 6px 6px 0px 0px;
+    color: #fff;
+    font-size: 18px;
+    position: relative;
+}
+.cooperationBox2 .content-title p {
+    padding: 13px 0 18px 25px;
+}
+.cooperationBox2 .close1 {
+    content: '';
+    display: block;
+    width: 13px;
+    height: 13px;
+    background-image: url('/themes/simpleboot3/public/assets/images/promote/close.png');
+    background-size: 100% 100%;
+    position: absolute;
+    right: 25px;
+    top: 21px;
+}
+.cooperationBox2 .title-bt{
+    width: 725px;
+    margin: 20px 31px 10px 30px;
+    font-size: 20px;
+    color: #354359;
+    font-weight: Bold;
+    letter-spacing:1px;
+    font-family: 'MicrosoftYaHei';
+    min-height: 0px;
+    max-height: 86px;
+    overflow: hidden;
+     display: -webkit-box;
+     -webkit-box-orient: vertical;
+     -webkit-line-clamp: 3;
+}
+
+.cooperationBox2 .content-textBox {
+    width: 725px;
+    /* height: 263px; */
+    max-height: 305px;
+    font-size: 13px;
+    padding: 26px 32px 0 29px;
+    line-height: 26px;
+    overflow-y: scroll;
+    word-break: break-word;
+}
+.cooperationBox2 .content1{
+    width: 734px;
+    float: left;
+}
+.cooperationBox2 .xinxi{
+    width: 725px;
+    float: left;
+    margin-top: 20px;
+}
+.cooperationBox2 .bottom{
+    width:100%;
+    height: 60px;
+    line-height: 60px;
+    color: #354359;
+    font-size: 13px;
+    margin-top: 3px;
+    box-shadow:0px 5px 30px -16px #29364c;
+}
+.cooperationBox2 .bottom p{
+    color: #26C7DB;
+   width:300px;
+    overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+}
+.cooperationBox2 .shang{
+    margin: 0px 20px 10px 30px;
+
+    float:left;
+}
+
+.cooperationBox2 .bottom a{color: #26C7DB;}
+.cooperationBox2 .xia{
+    float:left;
+padding-left:20px;
+}
+.content1 img{
+    width: 100%;
+    height: auto;
+
+}
+.gao-content{
+    /* background-color: aquamarine; */
+    height: 396px;
+}
+ </style>
+</head>
+<body>
+<include file="public@nav"/>
+<include file="public@header"/>
+
+<div class="trunk">
+    <div class="trunk-con">
+        <div class="right-container">
+            <div class="normal-list">
+
+                <div class="info">
+                    <div class="fl"><img src="__TMPL__/public/assets/images/promote/index/home_ico_head.png"
+                                         class="info-via"></div>
+                    <div class="fl info-user">
+                        <div class="info-username">{:PNAME}</div>
+                        <div class="info-usertel">手机：{:$baseinfo['mobile_phone']?:'--';}</div>
+                        <div class="info-useremail">邮箱：{:$baseinfo['email']?:'--';}</div>
+                        <div class="info-grade">等级：{$myLevel['level_name']}<a href="javascript:;" class="gradePop">等级说明></a></div>
+
+                    </div>
+                    <a class="fr btn-withdraw" href="{:url('settlement/profit')}">提现</a>
+                    <div class="fr divide">
+                        <div class="divide-num">{$baseinfo.balance_profit}</div>
+                        <div class="divide-text">可提现佣金（元）</div>
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="generalization">
+                        <li class="generalization-con fl">
+                            <a href="{:url('promote/balance')}">
+                                <img src="__TMPL__/public/assets/images/promote/index/generalization_ico_recharge.png"
+                                     class="generalization-img">
+                                <div class="generalization-text">充值平台币</div>
+                            </a>
+                        </li>
+                        <li class="generalization-con fl bg-ffb">
+                            <a href="{:url('game/apply_game')}">
+                                <img src="__TMPL__/public/assets/images/promote/index/generalization_ico_game.png"
+                                     class="generalization-img">
+                                <div class="generalization-text">申请游戏</div>
+                            </a>
+                        </li>
+                        <li class="generalization-con fl  bg-b59">
+                            <a href="{:url('query/register')}">
+                                <img src="__TMPL__/public/assets/images/promote/index/generalization_ico_register.png"
+                                     class="generalization-img">
+                                <div class="generalization-text">注册明细</div>
+                            </a>
+                        </li>
+                        <li class="generalization-con fl bg-26c">
+                            <a href="{:url('query/recharge')}">
+                                <img src="__TMPL__/public/assets/images/promote/index/generalization_ico_Details.png"
+                                     class="generalization-img">
+                                <div class="generalization-text">充值明细</div>
+                            </a>
+                        </li>
+                        <if condition="$baseinfo['parent_id'] eq 0">
+                            <li class="generalization-con fl bg-f47">
+                                <a href="{:url('settlement/settlement')}">
+                                    <img src="__TMPL__/public/assets/images/promote/index/generalization_ico_settleaccounts.png"
+                                         class="generalization-img">
+                                    <div class="generalization-text">子渠道结算</div>
+                                </a>
+                            </li>
+                        </if>
+                    </ul>
+                </div>
+                <div class="notice">
+                    <div class="notice-title">
+                        <img src="__TMPL__/public/assets/images/promote/index/home_ico_announcement.png" class="">
+                        <span class="notice-text">平台公告</span>
+                        <a class="fr btn-notice" target="_blank" href="{:url('index/notice')}">更多></a>
+                    </div>
+                    <div class="">
+                        <volist name="articles" id="vo">
+                            <a class="notice-list" href="{:url('index/notice_details',['id'=>$vo['id']])}" target="_blank">
+                                <if condition="$vo['game_id']">
+                                    <span class="notice-list-title">【{:get_relation_game_name($vo['game_id'])}】{$vo.post_title}</span>
+                                <else/>
+                                    <span class="notice-list-title">{$vo.post_title}</span>
+                                </if>
+                                <span class="fr notice-list-time">{:date('Y-m-d H:i',$vo['update_time'])}</span>
+                            </a>
+                        </volist>
+                    </div>
+                </div>
+                <div class="clear"></div>
+
+                <!-- 数据 -->
+                <div class="data">
+                    <div class="data-con fl data-con-frist">
+                        <div class="data-title">今日数据</div>
+                       <div class="data-itemBox">
+                            <div class="item-data">
+                                <div class="data-name">新增用户</div>
+                                <div class="data-name">活跃用户</div>
+                                <div class="data-name">付费用户</div>
+                                <div class="data-name">充值金额</div>
+
+                            </div>
+                            <!-- <div class="fr data-line"></div> -->
+                            <div class="item-data defferentDataItem">
+                                <div class="data-num">{$operat_data[0]['count_new_register_user']|default=0}</div>
+                                <div class="data-num">{$operat_data[0]['count_active_user']|default=0}</div>
+                                <div class="data-num">{$operat_data[0]['count_pay_user']|default=0}</div>
+                                <div class="data-num">￥{$operat_data[0]['total_pay']|default='0.00'}</div>
+                            </div>
+                       </div>
+
+                    </div>
+
+                    <div class="data-con fl ">
+                        <div class="data-title">昨日数据</div>
+                        <div class="data-itemBox">
+                            <div class="item-data">
+                                <div class="data-name">新增用户</div>
+                                <div class="data-name">活跃用户</div>
+                                <div class="data-name">付费用户</div>
+                                <div class="data-name">充值金额</div>
+
+                            </div>
+                            <!-- <div class="fr data-line"></div> -->
+                            <div class="item-data defferentDataItem">
+                                <div class="data-num">{$operat_data[1]['count_new_register_user']|default=0}</div>
+                                <div class="data-num">{$operat_data[1]['count_active_user']|default=0}</div>
+                                <div class="data-num">{$operat_data[1]['count_pay_user']|default=0}</div>
+                                <div class="data-num">￥{$operat_data[1]['total_pay']|default='0.00'}</div>
+                            </div>
+                        </div>
+
+                    </div>
+<!--                    (缓存处理)-->
+                    <div class="data-con fl ">
+                        <div class="data-title">近7日数据</div>
+                        <div class="data-itemBox">
+                            <div class="item-data">
+                                <div class="data-name">新增用户</div>
+                                <div class="data-name">活跃用户</div>
+                                <div class="data-name">付费用户</div>
+                                <div class="data-name">充值金额</div>
+
+                            </div>
+                            <!-- <div class="fr data-line"></div> -->
+                            <div class="item-data defferentDataItem">
+                                <div class="data-num">{$operat_data[7]['count_new_register_user']|default=0}</div>
+                                <div class="data-num">{$operat_data[7]['count_active_user']|default=0}</div>
+                                <div class="data-num">{$operat_data[7]['count_pay_user']|default=0}</div>
+                                <div class="data-num">￥{$operat_data[7]['total_pay']|default='0.00'}</div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="data-con fl ">
+                        <div class="data-title w75">近30天数据</div>
+                        <div class="data-itemBox">
+                            <div class="item-data">
+                                <div class="data-name">新增用户</div>
+                                <div class="data-name">活跃用户</div>
+                                <div class="data-name">付费用户</div>
+                                <div class="data-name">充值金额</div>
+                            </div>
+                            <!-- <div class="fr data-line"></div> -->
+                            <div class="item-data defferentDataItem">
+                                <div class="data-num">{$operat_data[30]['count_new_register_user']|default=0}</div>
+                                <div class="data-num">{$operat_data[30]['count_active_user']|default=0}</div>
+                                <div class="data-num">{$operat_data[30]['count_pay_user']|default=0}</div>
+                                <div class="data-num">￥{$operat_data[30]['total_pay']|default='0.00'}</div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="data-con fl ">
+                        <div class="data-title">全部数据</div>
+                       <div class="data-itemBox">
+                            <div class="item-data">
+                                <div class="data-name">新增用户</div>
+                                <div class="data-name">活跃用户</div>
+                                <div class="data-name">付费用户</div>
+                                <div class="data-name">充值金额</div>
+
+                            </div>
+                            <!-- <div class="fr data-placeholder"></div> -->
+                            <div class="item-data defferentDataItem">
+                                <div class="data-num">{$operat_data['all']['count_new_register_user']|default=0}</div>
+                                <div class="data-num">{$operat_data['all']['count_active_user']|default=0}</div>
+                                <div class="data-num">{$operat_data['all']['count_pay_user']|default=0}</div>
+                                <div class="data-num">￥{$operat_data['all']['total_pay']|default='0.00'}</div>
+                            </div>
+                       </div>
+
+                    </div>
+                    <div class="question">
+                        <i class="question_mark"></i>
+                        <ul class="question_content">
+                            <li class="question_title">数据说明<span style="color: #6a7082;">（含当前及子渠道数据）</span></li>
+                            <li class="question_list">
+                                <strong>新增用户</strong>
+                                <span> 新注册用户数</span>
+                            </li>
+                            <li class="question_list">
+                                <strong>活跃用户</strong>
+                                <span>登录游戏用户数（含新老用户，累计时去重）</span>
+                            </li>
+                            <li class="question_list">
+                                <strong>付费用户</strong>
+                                <span>游戏内充值用户数（统计充值成功，累计时去重）</span>
+                            </li>
+                            <li class="question_list">
+                                <strong>充值总金额</strong>
+                                <span>游戏内充值订单总额（所有支付方式）</span>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <div class="chart-wrapper">
+                    <div class="chart-title">
+                        <img class="chart-title-image" src="__TMPL__/public/assets/images/promote/index/home_ico_data.png">
+                        <span class="chart-title-text">今日数据<i>(只统计游戏内用户数据)</i></span>
+                    </div>
+                <div class="yesterdaydata" id="yesterdaydata"></div>
+                </div>
+                <!-- 弹窗 -->
+                <div class="cooperationBox">
+                    <div class="detailContainer">
+                        <div class="detailContainer-content">
+                            <div class="content-title">
+                               <p>{$cooperation['post_title']}</p>
+                               <a href="javaScript:;" class="dialogOperationClose"></a>
+                            </div>
+                            <div>
+                                <div class="content-textBox">
+                                    {$cooperation['post_content']}
+                                </div>
+                            </div>
+                            <div style="margin-left:296px;line-height:80px;">
+                                <button class="bottom-btns" onclick="logout();return false;">取消</button>
+                                <button class="bottom-btns agree">同意</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             <!-- 平台公告弹框 -->
+             <notempty name="gonggao_info">
+                 <div class="cooperationBox2 need_show_zixun_gonggao" style="display:none">
+                     <div class="detailContainer">
+                         <div class="detailContainer-content">
+                             <div class="content-title">
+                                 <p>平台公告</p>
+                                 <a href="javaScript:;" class="close1"></a>
+                             </div>
+                             <div class="gao-content">
+                                <div class="title-bt">{$gonggao_info[0]['post_title']}</div>
+
+                                <div class="content-textBox">
+                                 <div class="content1">
+
+                                     {$gonggao_info[0]['post_content']}
+
+                                     <!-- <div class="xinxi">
+                                         <p>超神之刃（无限爆真充）游戏关服通知</p>
+                                         <p>产品名称：<span>《超神之刃（无限爆真充）》</span></p>
+                                         <p>下架原因：由于项目运营计划调整。</p>
+                                         <p>正式关闭注册和充值时间：2021年07月03日</p>
+                                         <p>正式关服时间：2021年08月03日</p>
+                                         <p>游戏内公告：已发布</p>
+                                     </div>
+                                     <div class="xinxi">
+                                         <p>超神之刃（无限爆真充）游戏关服通知</p>
+                                         <p>产品名称：<span>《超神之刃（无限爆真充）》</span></p>
+                                         <p>下架原因：由于项目运营计划调整。</p>
+                                         <p>正式关闭注册和充值时间：2021年07月03日</p>
+                                         <p>正式关服时间：2021年08月03日</p>
+                                         <p>游戏内公告：已发布</p>
+                                         <p>超神之刃（无限爆真充）游戏关服通知</p>
+                                         <p>产品名称：<span>《超神之刃（无限爆真充）》</span></p>
+                                         <p>下架原因：由于项目运营计划调整。</p>
+                                         <p>正式关闭注册和充值时间：2021年07月03日</p>
+                                         <p>正式关服时间：2021年08月03日</p>
+                                         <p>游戏内公告：已发布</p>
+                                         <p>超神之刃（无限爆真充）游戏关服通知</p>
+                                         <p>产品名称：<span>《超神之刃（无限爆真充）》</span></p>
+                                         <p>下架原因：由于项目运营计划调整。</p>
+                                         <p>正式关闭注册和充值时间：2021年07月03日</p>
+                                         <p>正式关服时间：2021年08月03日</p>
+                                         <p>游戏内公告：已发布</p>
+                                     </div> -->
+                                 </div>
+                                 <input type="hidden" name="d_post_id" value="{$gonggao_info[0]['post_id']}">
+                             </div>
+                            </div>
+                             <div class="bottom">
+                                 <p class="shang previous-post">
+                                     <span style="color:#354359">上一篇：</span>
+                                     <a href="javascript:;" id="previous_title">
+                                         <if condition="!empty($gonggao_info[1]['post_title'])">
+                                             {$gonggao_info[1]['post_title']}
+                                             <else />
+                                             暂无
+                                         </if>
+                                     </a>
+                                     <input type="hidden" name="post_id_previous" value="{$gonggao_info[1]['post_id']}">
+                                 </p>
+                                 <p class="xia next-post">
+                                     <span style="color:#354359">下一篇：</span>
+                                     <a href="javascript:;" id="next_title">暂无</a>
+                                     <input type="hidden" name="post_id_next" value="">
+                                 </p>
+
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+             </notempty>
+            <!-- 等级说明弹窗 -->
+            <div class="grade_bj" hidden>
+                <div class="grade_box">
+
+                    <div class="grade-top">
+                        <p>等级说明</p>
+                        <a href="javaScript:;" class="grade_close"></a>
+                    </div>
+                    <div class="grade-content">
+                         <div class="grade-title">
+                            您当前等级为<span class="grade">【{$myLevel['level_name']}】</span>，距离下一级还差：<span class="score">{$myLevel['next_money']??$levels[0]['sum_money']}</span>元流水，<span class="score">{$myLevel['next_cash']??$levels[0]['cash_money']}</span>元押金
+                         </div>
+                         <div class="grade_table">
+                            <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table">
+                                <thead>
+                                <tr class="t_header">
+                                    <th>等级</th>
+                                    <th>推广流水（元）</th>
+                                    <th>推广押金（元）</th>
+                                    <th>可申请游戏</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <volist name="$levels" id="vo">
+                                    <tr>
+                                        <td>{$vo.level_name}</td>
+                                        <td>{$vo.sum_moneys}</td>
+                                        <td>{$vo.cash_money}</td>
+                                        <td>{$vo.game_count}</td>
+                                    </tr>
+                                </volist>
+                            </tbody>
+                            </table>
+                         </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+    <include file="public@scripts"/>
+    <script src="/static/js/echarts-all.js"></script>
+    <script type="text/javascript">
+
+        var promote_id = "{$promote_id}";
+
+        // 上一篇公告 by wjd
+        $('.previous-post').click(function(){
+            var post_id = $("input[ name='post_id_previous'] ").val(); // 当前展示的公告id
+            var tmp_url = '{:url("promote/getPreviousNextArticle")}';
+            $.ajax({
+                url: tmp_url,
+                type: 'post',
+                dataType: 'json',
+                data: {post_id:post_id},
+                success: function (data) {
+                    if (data.code > 0) {
+                        // console.log(data.data);
+                        $('.title-bt').html(data.data.d_gonggaoInfo['post_title']);
+                        $('.content1').html(data.data.d_gonggaoInfo['post_content']);
+                        if(data.data.previous_gonggaoInfo == null || data.data.previous_gonggaoInfo == undefined || data.data.previous_gonggaoInfo==""){
+                            // 上一篇为空
+                            $('#previous_title').html("暂无");
+                        }else{
+                            $('#previous_title').html(data.data.previous_gonggaoInfo['post_title']);
+                        }
+                        if(data.data.next_gonggaoInfo == null || data.data.next_gonggaoInfo == undefined || data.data.next_gonggaoInfo==""){
+                            // 下一篇为空
+                            $('#next_title').html("暂无");
+                        }else{
+                            $('#next_title').html(data.data.next_gonggaoInfo['post_title']);
+                        }
+                        $("input[ name='post_id_previous'] ").val(data.data.previous_gonggaoInfo['id']);
+                        $("input[ name='post_id_next'] ").val(data.data.next_gonggaoInfo['id']);
+                    } else {
+                        // layer.msg(data.msg)
+                    }
+                },
+                error: function () {
+                    // layer.msg("系统繁忙,请销后再试！");
+                }
+            });
+        });
+        // 下一篇公告 by wjd
+        $('.next-post').click(function(){
+            // var limit_1 = $("input[ name='limit_1'] ").val();
+            var tmp_url = '{:url("promote/getPreviousNextArticle")}';
+            var post_id = $("input[ name='post_id_next'] ").val(); // 当前展示的公告id
+            $.ajax({
+                url: tmp_url,
+                type: 'post',
+                dataType: 'json',
+                data: {post_id:post_id},
+                success: function (data) {
+                    if (data.code > 0) {
+                        console.log(data.data);
+                        $('.title-bt').html(data.data.d_gonggaoInfo['post_title']);
+                        $('.content1').html(data.data.d_gonggaoInfo['post_content']);
+
+                        if(data.data.previous_gonggaoInfo == null || data.data.previous_gonggaoInfo == undefined || data.data.previous_gonggaoInfo==""){
+                            // 上一篇为空
+                            $('#previous_title').html("暂无");
+
+                        }else{
+                            $('#previous_title').html(data.data.previous_gonggaoInfo['post_title']);
+                        }
+                        if(data.data.next_gonggaoInfo == null || data.data.next_gonggaoInfo == undefined || data.data.next_gonggaoInfo==""){
+                            // 下一篇为空
+                            $('#next_title').html("暂无");
+                        }else{
+                            $('#next_title').html(data.data.next_gonggaoInfo['post_title']);
+                        }
+
+                        $("input[ name='post_id_previous'] ").val(data.data.previous_gonggaoInfo['id']);
+                        $("input[ name='post_id_next'] ").val(data.data.next_gonggaoInfo['id']);
+                    } else {
+                        // layer.msg(data.msg)
+                    }
+                },
+                error: function () {
+                    // layer.msg("系统繁忙,请销后再试！");
+                }
+            });
+        });
+        // 今天的时间
+        var myDate = new Date;
+        var year = myDate.getFullYear(); //获取当前年
+        var mon = myDate.getMonth() + 1; //获取当前月
+        var date = myDate.getDate();
+        var d_date = year + '.' + mon + '.' + date;
+        if(localStorage.getItem('need_show_zixun_gonggao' + promote_id + 'date_' + d_date) != '1'){
+            $('.need_show_zixun_gonggao').css('display','block')
+            localStorage.setItem('need_show_zixun_gonggao' + promote_id + 'date_' + d_date, '1');
+        }
+
+        // 1级5个 2级4个 样式
+        $(function(){
+            var length=$(".generalization-con").length;
+            if(length==4){
+                $(".generalization-con").addClass("generalization-con-less");
+            }
+            else{
+                $(".generalization-con").removeClass("generalization-con-less");
+            }
+            console.log( $(".generalization-con").length)
+        })
+
+        if(localStorage.getItem('agree_rules_' + promote_id)!='1'){
+            $('.cooperationBox2').css('display','none')
+            $('.cooperationBox').css('display','block')
+            $('.bottom-btns').click(function() {
+            $('.cooperationBox2').css('display','block')
+        })
+        }
+
+        $('.bottom-btns').click(function() {
+            $('.cooperationBox').css('display','none')
+        })
+        $('.dialogOperationClose').click(function() {
+            $('.cooperationBox').css('display','none')
+            logout();
+        });
+        $('.close1').click(function() {
+            $('.cooperationBox2').css('display','none')
+        });
+        $(".agree").click(function () {
+            localStorage.setItem('agree_rules_' + promote_id,'1');
+            return false;
+        });
+
+        var keys = '{$keys}';//图表x轴
+        var usercount = '{$usercount}'; // 新增用户
+        var activecount = '{$activecount}'; //活跃用户
+        var paycount = '{$paycount}'; //付费用户
+        var paytotal = '{$paytotal}'; //paytotal
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('yesterdaydata'));
+        option = {
+            backgroundColor: '#fff',
+            title: {
+
+                textStyle: {
+                    fontSize: 14,
+                    fontWeight: 'normal',
+                    color: '#393B6B' // 主标题文字颜色
+                },
+            },
+            tooltip: {
+                trigger: 'axis',
+                formatter: function (params) {
+                    var htmlString = '<div style="padding:1px 7px;">';
+                    htmlString += '<span style="display:block;padding-bottom:4px;">'+params[0].name+'</span>';
+                    for(var i=0; i<params.length; i++) {
+                        var param = params[i];
+                        var color = param.series.itemStyle.normal.color;
+                        htmlString += '<span style="display:block;font-size:12px;">' + param.seriesName + '：<i style="font-style:normal;font-weight:bold;font-size:12px;color:'+color+'">' + param.value + '</i></span>'
+                    }
+                    htmlString += '</div>';
+                    return htmlString;
+                }
+            },
+            legend: {
+                data: ['新增用户', '活跃用户', '付费用户', '充值金额']
+
+            },
+            calculable: true,
+            xAxis: [{
+                type: 'category',
+                boundaryGap: false,
+                data: JSON.parse( keys ),
+            }],
+            yAxis: [{
+                type: 'value',
+                axisLabel: {
+                    formatter: '{value}'
+                }
+            }],
+            series: [{
+                name: '新增用户',
+                type: 'line',
+                itemStyle: {
+                    normal: {
+                        color: '#41a6ed',
+
+                        lineStyle: {
+                            color: '#41a6ed'
+                        }
+                    }
+                },
+                data: JSON.parse( usercount )
+            },
+                {
+                    name: '活跃用户',
+                    type: 'line',
+                    itemStyle: {
+                        normal: {
+                            color: '#ffb170',
+
+                            lineStyle: {
+                                color: '#ffb170'
+                            }
+                        }
+                    },
+                    data: JSON.parse( activecount )
+                },
+                {
+                    name: '付费用户',
+                    type: 'line',
+                    itemStyle: {
+                        normal: {
+                            color: '#b59fdc',
+
+                            lineStyle: {
+                                color: '#b59fdc'
+                            }
+                        }
+                    },
+                    data: JSON.parse( paycount )
+                },
+
+                {
+                    name: '充值金额',
+                    type: 'line',
+                    itemStyle: {
+                        normal: {
+                            color: '#38cacc',
+
+                            lineStyle: {
+                                color: '#38cacc'
+                            }
+                        }
+                    },
+                    data: JSON.parse( paytotal )
+
+                }
+            ]
+        };
+        myChart.setOption(option);
+        $(".gradePop").click(function(){
+            $(".grade_bj").css("display","block");
+        })
+        $(".grade_close").click(function(){
+            $(".grade_bj").css("display","none");
+        })
+
+        //获取公告内容高度
+        $(function () {
+            var bt=$('.title-bt').height();
+            if(bt=60){
+                $(".cooperationBox2 .content-textBox").css("max-height","292px")
+            }
+            else{
+                return;
+            }
+        })
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/trade_record.css">
+</block>
+
+<block name="body">
+    <div class="trade_record_page">
+        <div class="trade_record_header pa">
+            <a href="javascript:;" onclick="history.go(-1)"><img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon"></a>
+            <p class="trade-record-title">交易须知</p>
+        </div>
+        <div class="trade-instructions-contain">
+            <div class="instructions-part1">
+                <p>
+                    账号交易采用转移小号的方式；买入或者卖出游
+                    戏角色，不影响您平台账号的使用。
+                </p>
+                <a href="javascript:;" class="js-tips-pop">什么是小号？</a>
+            </div>
+            <div class="instructions-part2">
+                <div class="saleRuleBody">
+                    <section class="saleRuleProcess">
+                        <div class="saleRuleTitle">购买流程</div>
+                        <div class="saleRuleShow">
+                            <div class="saleRuleShowItem">
+                                <i class="saleRuleShowIcon submitSaleRuleShowIcon"></i>
+                                <p class="saleRuleShowTitle">选择商品</p>
+                            </div>
+                            <div class="saleRuleShowItem">
+                                <i class="saleRuleShowIcon toSaleRuleShowIcon"></i>
+                                <p class="saleRuleShowTitle">&nbsp;</p>
+                            </div>
+                            <div class="saleRuleShowItem">
+                                <i class="saleRuleShowIcon checkSaleRuleShowIcon"></i>
+                                <p class="saleRuleShowTitle">购买商品</p>
+                            </div>
+                            <div class="saleRuleShowItem">
+                                <i class="saleRuleShowIcon toSaleRuleShowIcon"></i>
+                                <p class="saleRuleShowTitle">&nbsp;</p>
+                            </div>
+                            <div class="saleRuleShowItem">
+                                <i class="saleRuleShowIcon saleSaleRuleShowIcon"></i>
+                                <p class="saleRuleShowTitle">登录游戏</p>
+                            </div>
+                            <div class="saleRuleShowItem">
+                                <i class="saleRuleShowIcon toSaleRuleShowIcon"></i>
+                                <p class="saleRuleShowTitle">&nbsp;</p>
+                            </div>
+                            <div class="saleRuleShowItem">
+                                <i class="saleRuleShowIcon moneySaleRuleShowIcon"></i>
+                                <p class="saleRuleShowTitle">接收角色</p>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="saleRuleRecord">
+                        <div class="saleRuleTitle" style="margin: 0.5rem 0">买家须知</div>
+                        <ul class="saleRuleList">
+                            <li>
+                                商品信息已通过本平台审核，因时间造成的排行榜、
+                                称号、装备到期等变化，不视为信息失实；
+                            </li>
+                            <li>
+                                购买后，角色小号自动转入您的平台账号下，选择对
+                                应的小号登录游戏即可查看；
+                            </li>
+                            <li>
+                                交易过程仅变更小号的所有权，卖方将无法通过其他
+                                途径找回，请放心购买；
+                            </li>
+                            <li>购买后不支持退货。</li>
+                        </ul>
+                    </section>
+                </div>
+            </div>
+            <div class="instructions-part3">
+                <div class="saleRuleBody">
+                    <section class="saleRuleProcess">
+                        <div class="saleRuleTitle">出售流程</div>
+                        <div class="saleRuleShow">
+                            <div class="saleRuleShowItem">
+                                <i class="saleRuleShowIcon submitSaleRuleShowIcon_"></i>
+                                <p class="saleRuleShowTitle">提交商品</p>
+                            </div>
+                            <div class="saleRuleShowItem">
+                                <i class="saleRuleShowIcon toSaleRuleShowIcon"></i>
+                                <p class="saleRuleShowTitle">&nbsp;</p>
+                            </div>
+                            <div class="saleRuleShowItem">
+                                <i class="saleRuleShowIcon checkSaleRuleShowIcon_"></i>
+                                <p class="saleRuleShowTitle">审核冻结</p>
+                            </div>
+                            <div class="saleRuleShowItem">
+                                <i class="saleRuleShowIcon toSaleRuleShowIcon"></i>
+                                <p class="saleRuleShowTitle">&nbsp;</p>
+                            </div>
+                            <div class="saleRuleShowItem">
+                                <i class="saleRuleShowIcon saleSaleRuleShowIcon_"></i>
+                                <p class="saleRuleShowTitle">卖家购买</p>
+                            </div>
+                            <div class="saleRuleShowItem">
+                                <i class="saleRuleShowIcon toSaleRuleShowIcon"></i>
+                                <p class="saleRuleShowTitle">&nbsp;</p>
+                            </div>
+                            <div class="saleRuleShowItem">
+                                <i class="saleRuleShowIcon moneySaleRuleShowIcon_"></i>
+                                <p class="saleRuleShowTitle">获得收益</p>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="saleRuleRecord">
+                        <div class="saleRuleTitle" style="margin: 0.5rem 0">卖家须知</div>
+                        <ul class="saleRuleList">
+                            <li>商品提交审核之后，小号将会被冻结，无法登录；</li>
+                            <li>审核不成功或新选择下架商品，可重新登录游戏获得小号；</li>
+                            <li>出售时显示累计金额为该小号在该游戏同一小号下多个区服角色的所有累计充值；</li>
+                            <li>小号出售成功后，该小号在本游戏中所有区服的角色会一同售出，但不影响该小号在其他游戏中的角色；</li>
+                            <li>出售成功后将收取<span class="">{:cmf_get_option('transaction_set')['fee']?:0}</span>%的手续费(最低<span>{:cmf_get_option('transaction_set')['min_dfee']?:0}</span>元)，剩余收益以平台币的形式转至您的帐号下，平台币可提现，可用于游戏充值。</li>
+                            <li>交易完成后，不支持找回；</li>
+                            <li>在审核和商品出售过程中，您可以对商品的售价进行修改；</li>
+                            <li>如玩家保管账号不当或账号共享，使账号出现密码泄露、丢失、被盗等账号问题，导致小号被恶意出售，本平台不具有赔偿责任，也有权不处理不负责该类问题。</li>
+                        </ul>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pop"></div>
+</block>
+<block name="script">
+    <script src="__STATIC__/js/layui/layui.js"></script>
+    <script src="__TMPL__/mobilepublic/assets/js/pop.lwx.min.js"></script>
+    <script>
+        $(function () {
+            $('.js-tips-pop').click(function () {
+                var popwin =$(".pop").pop();
+                popwin.addClass('pop-tips').open(300,'<div class="tips-box"><a href="javascript:;" class="js-cancel "><img src="__TMPL__/mobilepublic/assets/images/trade/common_btn_close_n.png" class="cancel-img"></a><p class="title">小号说明</p><p>1.平台账号在每个游戏中可创建10个小号 (第一个在首次登录时自动创建)；</p><p>2.不同游戏间的小号，和同一游戏下各个小号相互独立；</p><p style="padding-bottom: 3rem">3.出售某一小号时，该小号在该游戏多个区服的角色将一并被出售。</p></div>');
+                popwin.find('.js-cancel').click(function() {
+                    popwin.close();
+                    return false;
+                });
+
+            })
+        });
+
+    </script>
+</block>

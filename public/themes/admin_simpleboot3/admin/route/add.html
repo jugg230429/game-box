@@ -1,0 +1,75 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('route/index')}">URL美化</a></li>
+        <li class="active"><a href="{:url('route/add')}">添加URL规则</a></li>
+    </ul>
+    <form method="post" class="form-horizontal js-ajax-form margin-top-20" action="{:url('route/addPost')}">
+        <div class="form-group">
+            <label for="input-full_url" class="col-sm-2 control-label"><span class="form-required">*</span>原始网址</label>
+            <div class="col-md-6 col-sm-10">
+                <input type="text" class="form-control user-input fl" id="input-full_url" name="full_url"> <span class="fl user-remarks">完整url， 如：portal/list/index?id=1</span>
+				<div class="clear"></div>
+				<a href="javascript:doSelectUrl();" class="choose-rule">选择规则</a>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input-url" class="col-sm-2 control-label"><span class="form-required">*</span>显示网址</label>
+            <div class="col-md-6 col-sm-10">
+                <input type="text" class="form-control user-input fl" id="input-url" name="url"><span class="fl user-remarks">url格式一般为list/:param1/:param2或 list-&lt;param1&gt;-&lt;param2&gt;</span>
+               
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input-status" class="col-sm-2 control-label"><span class="form-required">&nbsp;</span>启用状态</label>
+            <div class="col-md-6 col-sm-10">
+                <!-- <select class="form-control" name="status" id="input-status"> -->
+                    <!-- <option value="1">启用</option> -->
+                    <!-- <option value="0">禁用</option> -->
+                <!-- </select> -->
+				<label class="radio-inline fl">
+                    
+                    <input type="radio" name="status" value="1" checked>启用
+                </label>
+                <label class="radio-inline fl">
+                    
+                    <input type="radio" name="status" value="0">禁用
+                </label>
+				<span class="fl user-remarks ml38">路由接口状态，默认启用状态</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-1 col-sm-10">
+                <button type="submit" class="btn btn-primary js-ajax-submit save-btn">{:lang('SAVE')}</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+
+<script>
+    function doSelectUrl() {
+        var selectedCategoriesId = $('#js-categories-id-input').val();
+        openIframeLayer("{:url('Route/select')}?ids=" + selectedCategoriesId, '请选择URL', {
+            area: ['95%', '90%'],
+            btn: ['确定', '取消'],
+            yes: function (index, layero) {
+
+                var iframeWin   = window[layero.find('iframe')[0]['name']];
+                var selectedUrl = iframeWin.confirm();
+
+                if (selectedUrl) {
+                    $('#input-full_url').val(selectedUrl.action);
+                    $('#input-url').val(selectedUrl.url);
+                    var helpBlock = selectedUrl.vars ? "URL参数有" + selectedUrl.vars + ',' : '';
+                    $('#url-vars').text(helpBlock);
+                }
+                layer.close(index); //如果设定了yes回调，需进行手工关闭
+            }
+        });
+    }
+</script>
+</body>
+</html>

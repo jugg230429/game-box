@@ -1,0 +1,194 @@
+<extend name="../recharge/common" />
+
+<block name="body">
+
+    <div class="container">
+        <div class="packet">
+            <div class="money">
+                <span class="table">
+                    <span class="tableCell">
+                        <div class="itemTitle packetIcon center">可提现金额</div>
+                        <div class="number moneyIcon center">{$user.tplay_cash}</div>
+                    </span>
+                </span>
+            </div>
+            <div class="info">
+                <span class="table">
+                  <span class="tableCell">
+                      <div class="itemTitle center">累计奖励</div>
+                      <div class="number center moneyIcon">{$detail.total}</div>
+                  </span>
+                  <span class="tableCell">
+                      <div class="itemTitle center">剩余时间</div>
+                       <if condition="$record['remain_time']">
+                            <div class="number center">{$record['remain_time']}</div>
+                        <else/>
+                            <div class="number center">{$detail['time_out']}</div>
+                        </if>
+                  </span>
+                </span>
+            </div>
+            <a href="javascript:;" class="withdrawBtn" id="withdrawBtn" data-url="{:url('withdraw')}">
+                <span class="table"><span class="tableCell center"><span class="withdrawBtnText">提现</span></span></span></span>
+            </a>
+        </div>
+        <div class="task">
+            <div class="tab table js-tab">
+                <a href="javascript:;" data-id="#cash" class="js-tabItem tabBtn tableCell center active"><span class="text">现金奖励</span></a>
+                <a href="javascript:;" data-id="#coin" class="js-tabItem tabBtn tableCell center"><span class="text">平台币奖励</span></a>
+            </div>
+            <div class="pan">
+                <php>
+                    $cash = 0;
+                    $ptb = 0;
+                </php>
+                <ul class="panList cashRewards" id="cash">
+                    <volist name="detail.level" id="vo" key="key">
+                        <if condition="$detail['cash'][$key-1] gt 0">
+                            <php>$cash ++;</php>
+                            <li>
+                               <span class="table <if condition='$record[level] egt $vo'>success</if>">
+                                   <span class="tableCell first"><i class="rewardsIcon"></i></span>
+                                   <span class="tableCell">
+                                       <div class="taskTitle">等级达到{$vo}级</div>
+                                       <div class="taskStatus">
+                                           <if condition="!$record">
+                                                待报名
+                                           <elseif condition="$record['level'] egt $vo" />
+                                               <span style="color: #32B67D;">任务完成</span>
+                                           <else/>
+                                               待完成
+                                           </if>
+                                       </div>
+                                   </span>
+                                   <span class="tableCell last">
+                                       <span class="number moneyIcon plus">{$detail['cash'][$key-1]}</span>
+                                   </span>
+                               </span>
+                            </li>
+                        </if>
+                    </volist>
+                    <empty name="cash">
+                        <li class="empty">
+                            <span class="table">
+                                <span class="tableCell">暂无数据</span>
+                            </span>
+                        </li>
+                    </empty>
+                </ul>
+                <ul class="panList coinRewards" id="coin">
+                    <volist name="detail.level" id="vo" key="key">
+                        <if condition="$detail['award'][$key-1] gt 0">
+                            <php>$ptb ++;</php>
+                            <li>
+                               <span class="table <if condition='$record[level] egt $vo'>success</if>">
+                                   <span class="tableCell first"><i class="rewardsIcon"></i></span>
+                                   <span class="tableCell">
+                                       <div class="taskTitle">等级达到{$vo}级</div>
+                                       <div class="taskStatus">
+                                           <if condition="!$record">
+                                            待报名
+                                           <elseif condition="$record['level'] egt $vo" />
+                                                <span style="color: #32B67D;">任务完成</span>
+                                           <else/>
+                                               待完成
+                                           </if>
+                                       </div>
+                                   </span>
+                                   <span class="tableCell last">
+                                       <span class="number coinIcon plus">{$detail['award'][$key-1]}</span>
+                                   </span>
+                               </span>
+                            </li>
+                        </if>
+                    </volist>
+                    <empty name="ptb">
+                        <li class="empty">
+                            <span class="table">
+                                <span class="tableCell">暂无数据</span>
+                            </span>
+                        </li>
+                    </empty>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <p class="notice center">（{$detail.game_name}{$detail.server_name}，任务限时{$detail['time_out']}小时）</p>
+        <empty name="record">
+            <if condition="$detail['end_time'] lt time() and $detail['end_time'] gt 0"/>
+                <a href="javascript:;" class="btn center">
+                    <span class="table"><span class="tableCell">已结束</span></span>
+                </a>
+            <elseif condition="empty($record) and $detail['is_quota'] eq 1" />
+                <a href="javascript:;" class="btn center">
+                    <span class="table"><span class="tableCell">名额已满</span></span>
+                </a>
+            <else/>
+                <a href="javascript:;" class="btn apply center">
+                    <span class="table"><span class="tableCell js-signUp" data-id="{$detail.id}">立即报名</span></span>
+                </a>
+            </if>
+        <else/>
+            <if condition="$record['status'] eq 0">
+                <a href="javascript:;" class="btn submit center">
+                    <span class="table"><span class="tableCell js-submit" data-id="{$detail.id}">提交任务</span></span>
+                </a>
+            <else/>
+                <a href="javascript:;" class="btn center">
+                    <span class="table"><span class="tableCell">任务已提交</span></span>
+                </a>
+            </if>
+        </empty>
+    </div>
+    <script>
+        $(function () {
+            $('.js-signUp').click(function () {
+                var id = $(this).data('id');
+                $.ajax({
+                    type: 'post',
+                    dataType: 'json',
+                    url: "{:url('sign')}",
+                    data:{id:id},
+                    async:false,
+                    success: function (data) {
+                        parent.parent.layer.msg(data.msg);
+                        if (data.code == 1) {
+                            setTimeout(function () {
+                                window.location.reload();
+                            },1000)
+                        }
+                    },
+                    error: function () {
+                        layer.msg('服务器故障，请稍候再试');
+                    }
+                });
+            });
+
+            $(".js-submit").click(function () {
+		
+                var id = $(this).data('id');
+                $.ajax({
+                    type: 'post',
+                    dataType: 'json',
+                    url: "{:url('complete')}",
+                    data:{id:id},
+                    async:false,
+                    success: function (data) {
+                        parent.parent.layer.msg(data.msg);
+                        if (data.code == 1) {
+                            setTimeout(function () {
+                                window.location.reload();
+                            },1000)
+                        }
+                    },
+                    error: function () {
+                        layer.msg('服务器故障，请稍候再试');
+                    }
+                });
+            })
+        })
+    </script>
+</block>
+
+<block name="script"></block>

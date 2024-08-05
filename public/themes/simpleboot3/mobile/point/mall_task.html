@@ -1,0 +1,414 @@
+<extend name="../mobilepublic/base"/>
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/mall_task.css">
+
+</block>
+
+<block name="body">
+    <div class="banner">
+	    <a href="javascript:;" class="fl js-close"><img src="__TMPL__/mobilepublic/assets/images/back_2.png" alt="" class="fl back_icon"></a>
+    </div>
+	   <div class="clear"></div>
+       <!-- 关注微信公众号弹窗 -->
+    <div class="followWechat" hidden>
+        <div class="wechatFollowContainer">
+            <div class="headerTitle-text">
+                <img src="__TMPL__/mobilepublic/assets/images/mall/img-title.png" alt="">
+                <i class="closeRightBtn"></i>
+            </div>
+            <div class="centerCondition">
+                <p><span class="orangeText">01</span><span>打开微信点击右上角【+】选择添加好友</span></p>
+                <p><span class="orangeText">02</span><span>选择公众号搜索【{:cmf_get_option('media_set')['pc_set_qrcode_name']}】</span></p>
+                <p><span class="orangeText">03</span><span>关注公众号，点击【领取福利】获取并复制兑换码</span></p>
+                <p><span class="orangeText">04</span><span>返回盒子输入兑换码，完成任务，积分到账</span></p>
+                <div>
+                    <input type="text" class="innitCode" id="cdkey" placeholder="输入兑换码">
+                    <a href="javaScript:;" class="confirmButton">确认</a>
+                </div>
+            </div>
+            <div class="fengexian">
+                <img src="__TMPL__/mobilepublic/assets/images/mall/line.png" alt="">
+            </div>
+            <a href="javascript:;" class="bottomToWechat">
+                <img src="__TMPL__/mobilepublic/assets/images/mall/ico-wechat.png" alt="">
+                <span class="orangeText">前往微信</span>
+            </a>
+        </div>
+    </div>
+    <div class="box">
+        <ul class="box_menu_ul">
+            <li class="box_menu fl box_menu_active">推荐任务</li>
+            <li class="box_menu fl">新手任务</li>
+            <li class="box_menu fl">日常任务</li>
+            <li class="box_menu fl">游戏任务</li>
+        </ul>
+        <div class="clear"></div>
+        <div>
+            <div class="task-list show">
+                <empty name="data[4]">
+                    <div class="no-data">
+                        <p>暂无任务，去看看其他任务吧</p>
+                    </div>
+                    <else/>
+                    <ul>
+                        <volist name="data[4]" id="recom">
+                            <li class="task-list-item ">
+                                <div class="icon_box fl">
+                                    <span class="icon_box_level">{$recom['level']}</span>
+								    <img src="{:task_icon($recom['key'])}" class="icon_box_img">
+                                </div>
+                                <div class="text_box fl">
+                                    <div class="text_box_box">
+                                        <div class="fl text_box_name">{$recom.name}</div>
+                                        <eq name="recom['key']" value="vip_upgrade">
+                                            <div class="fl text_box_reward">+{:$recom['point']+(($recom['level']-1)*$recom['time_of_day'])}积分</div>
+                                            <else/>
+                                            <div class="fl text_box_reward">+<if condition="$recom['key'] eq 'pay_award'">充值*</if>{$recom['point']}积分</div>
+                                        </eq>
+                                    </div>
+                                    <div class="text_box_info">{$recom.description}</div>
+                                </div>
+                                <eq name="recom['send_type']" value="0">
+                                    <if condition="$recom['task_status'] eq 2">
+                                        <div class="butn_box fg "><a href="javascript:;" class="get_task_award receive" data-key="{$recom.key}" data-extend="{$recom.level|default='0'}">领取</a></div>
+                                        <elseif condition="$recom['task_status'] eq 3" />
+                                        <div class="butn_box fg"><a class="disabled">已完成</a></div>
+                                        <else/>
+                                        <div class="butn_box fg "><a href="javascript:;" class="do_task" data-key="{$recom.key}" data-description="{$recom.description}">去完成</a></div>
+                                    </if>
+
+                                <else/>
+                                    <div class="butn_box fg"><a href="javascript:;" class="do_task" data-key="{$recom.key}" data-description="{$recom.description}">去完成</a></div>
+                                </eq>
+                            </li>
+                        </volist>
+                    </ul>
+                </empty>
+            </div>
+
+
+            <div class="task-list">
+                <empty name="data[1]">
+                    <div class="no-data">
+                        <p>暂无任务，去看看其他任务吧</p>
+                    </div>
+                    <else/>
+                    <ul>
+                        <volist name="data[1]" id="recom">
+                            <li class="task-list-item ">
+                                <div class="icon_box fl">
+                                    <span class="icon_box_level">{$recom['level']}</span>
+                                    <img src="{:task_icon($recom['key'])}" class="icon_box_img">
+                                </div>
+                                <div class="text_box fl">
+                                    <div class="text_box_box">
+                                        <div class="fl text_box_name">{$recom.name}</div>
+                                        <eq name="recom['key']" value="vip_upgrade">
+                                            <div class="fl text_box_reward">+{:$recom['point']+(($recom['level']-1)*$recom['time_of_day'])}积分</div>
+                                            <else/>
+                                            <div class="fl text_box_reward">+<if condition="$recom['key'] eq 'pay_award'">充值*</if>{$recom['point']}积分</div>
+                                        </eq>
+                                    </div>
+                                    <div class="text_box_info">{$recom.description}</div>
+                                </div>
+                                <eq name="recom['send_type']" value="0">
+                                    <if condition="$recom['task_status'] eq 2">
+                                        <div class="butn_box fg "><a href="javascript:;" class="get_task_award receive" data-key="{$recom.key}" data-extend="{$recom.level|default='0'}">领取</a></div>
+                                    <elseif condition="$recom['task_status'] eq 3" />
+                                        <div class="butn_box fg"><a class="disabled">已完成</a></div>
+                                    <else/>
+                                        <div class="butn_box fg "><a href="javascript:;" class="do_task" data-key="{$recom.key}" data-description="{$recom.description}">去完成</a></div>
+                                    </if>
+
+                                <else/>
+
+                                    <if condition="$recom['task_status'] eq 2">
+                                        <!-- <div class="butn_box fg "><a href="javascript:;" class="get_task_award receive" data-key="{$recom.key}" data-extend="{$recom.level|default='0'}">领取</a></div> -->
+                                    <elseif condition="$recom['task_status'] eq 3" />
+                                        <div class="butn_box fg"><a class="disabled">已完成</a></div>
+                                    <else/>
+                                        <div class="butn_box fg "><a href="javascript:;" class="do_task" data-key="{$recom.key}" data-description="{$recom.description}">去完成</a></div>
+                                    </if>
+
+                                    <!-- <div class="butn_box fg"><a href="javascript:;" class="do_task" data-key="{$recom.key}" data-description="{$recom.description}">去完成</a></div> -->
+                                </eq>
+                            </li>
+                        </volist>
+                    </ul>
+                </empty>
+            </div>
+
+            <div class="task-list">
+                <empty name="data[2]">
+                    <div class="no-data">
+                        <p>暂无任务，去看看其他任务吧</p>
+                    </div>
+                    <else/>
+                    <ul>
+                        <volist name="data[2]" id="recom">
+                            <li class="task-list-item ">
+                                <div class="icon_box fl">
+                                    <span class="icon_box_level">{$recom['level']}</span>
+                                    <img src="{:task_icon($recom['key'])}" class="icon_box_img">
+                                </div>
+                                <div class="text_box fl">
+                                    <div class="text_box_box">
+                                        <div class="fl text_box_name">{$recom.name}</div>
+                                        <eq name="recom['key']" value="vip_upgrade">
+                                            <div class="fl text_box_reward">+{:$recom['point']+(($recom['level']-1)*$recom['time_of_day'])}积分</div>
+                                            <else/>
+                                            <div class="fl text_box_reward">+<if condition="$recom['key'] eq 'pay_award'">充值*</if>{$recom['point']}积分</div>
+                                        </eq>
+                                    </div>
+                                    <div class="text_box_info">{$recom.description}</div>
+                                </div>
+
+                                <eq name="recom['send_type']" value="0">
+                                    <if condition="$recom['task_status'] eq 2">
+                                        <div class="butn_box fg "><a href="javascript:;" class="get_task_award receive" data-key="{$recom.key}" data-extend="{$recom.level|default='0'}">领取</a></div>
+                                    <elseif condition="$recom['task_status'] eq 3" />
+                                        <div class="butn_box fg"><a class="disabled">已完成</a></div>
+                                    <else/>
+                                        <div class="butn_box fg "><a href="javascript:;" class="do_task" data-key="{$recom.key}" data-description="{$recom.description}">去完成</a></div>
+                                    </if>
+
+                                <else/>
+
+                                    <div class="butn_box fg"><a href="javascript:;" class="do_task" data-key="{$recom.key}" data-description="{$recom.description}">去完成</a></div>
+                                </eq>
+
+                            </li>
+                        </volist>
+                    </ul>
+                </empty>
+            </div>
+            <div class="task-list ">
+                <empty name="data[3]">
+                    <div class="no-data">
+                        <p>暂无任务，去看看其他任务吧</p>
+                    </div>
+                    <else/>
+                    <ul>
+                        <volist name="data[3]" id="recom">
+                            <li class="task-list-item ">
+                                <div class="icon_box fl">
+                                    <span class="icon_box_level">{$recom['level']}</span>
+                                    <img src="{:task_icon($recom['key'])}" class="icon_box_img">
+                                </div>
+                                <div class="text_box fl">
+                                    <div class="text_box_box">
+                                        <div class="fl text_box_name">{$recom.name}</div>
+                                        <eq name="recom['key']" value="vip_upgrade">
+                                            <div class="fl text_box_reward">+{:$recom['point']+(($recom['level']-1)*$recom['time_of_day'])}积分</div>
+                                            <else/>
+                                            <div class="fl text_box_reward">+<if condition="$recom['key'] eq 'pay_award'">充值*</if>{$recom['point']}积分</div>
+                                        </eq>
+                                    </div>
+                                    <div class="text_box_info">{$recom.description}</div>
+                                </div>
+                                <eq name="recom['send_type']" value="0">
+                                    <if condition="$recom['task_status'] eq 2">
+                                        <div class="butn_box fg "><a href="javascript:;" class="get_task_award receive" data-key="{$recom.key}" data-extend="{$recom.level|default='0'}">领取</a></div>
+                                        <elseif condition="$recom['task_status'] eq 3" />
+                                        <div class="butn_box fg"><a class="disabled">已完成</a></div>
+                                        <else/>
+                                        <div class="butn_box fg "><a href="javascript:;" class="do_task" data-key="{$recom.key}" data-description="{$recom.description}">去完成</a></div>
+                                    </if>
+
+                                    <else/>
+                                    <div class="butn_box fg"><a href="javascript:;" class="do_task" data-key="{$recom.key}" data-description="{$recom.description}">去完成</a></div>
+                                </eq>
+                            </li>
+                        </volist>
+                    </ul>
+                </empty>
+            </div>
+        </div>
+</block>
+<block name="script">
+    <script src="__STATIC__/js/layui/layui.js"></script>
+    <script src="__TMPL__/mobilepublic/assets/js/pop.lwx.min.js"></script>
+    <script>
+        $('.js-close').click(function(){
+            try{
+                $mt = "{:get_devices_type()}";
+                if($mt==2){
+                    window.webkit.messageHandlers.xgsdk_finishPage.postMessage(1);
+                }else{
+                    // window.xgsdk.finishPage()
+                    window.xgsdk.goBack()
+                }
+            }catch (e) {
+               window.location.href = "{:url('Point/index')}";
+               return false;
+            }
+        })
+        $(".box_menu").click(function () {
+            var index = $(this).index();
+            $(this).addClass("box_menu_active").siblings().removeClass("box_menu_active");
+            $(".task-list").eq(index).addClass("show").siblings().removeClass("show");
+        })
+        $('.get_task_award').click(function(){
+            var that = $(this);
+            if(that.hasClass('disabled')){
+                return false;
+            }
+            $.ajax({
+                url:"{:url('receive_award')}",
+                type:'post',
+                data:{key:that.data('key'),extend:that.data('extend')},
+                success:function (res) {
+                    if(res.code==1){
+                        that.removeClass('receive').addClass('disabled');
+                        that.text('已完成');
+                        layer.msg(res.msg,{time:1000},function(){
+
+                        });
+                    }else{
+                        layer.msg(res.msg);
+                    }
+                }
+            })
+        })
+        $('.do_task').click(function(){
+            var that = $(this);
+            //layer.msg(that.data('description'),{time:1000});
+            //return false;
+            $mt = "{:get_devices_type()}";
+            var key = that.data('key');
+            if(key == 'change_headimg'){
+                try{
+                    if($mt==2){
+                        window.webkit.messageHandlers.xgsdk_toChangeHeadImg.postMessage(1);
+                    }else{
+                        window.xgsdk.toChangeHeadImg();
+                    }
+                }catch (e) {
+                    location.href = "{:url('user/set')}";
+                    return false;
+                }
+            }else if(key == 'bind_qq'){
+                try{
+                    if($mt==2){
+                        window.webkit.messageHandlers.xgsdk_toBindQQ.postMessage(1);
+                    }else{
+                        window.xgsdk.toBindQQ();
+                    }
+                }catch (e) {
+                    location.href = "{:url('user/set')}";
+                    return false;
+                }
+            }else if(key == 'change_nickname'){
+                try{
+                    if($mt==2){
+                        window.webkit.messageHandlers.xgsdk_toChangeNickname.postMessage(1);
+                    }else{
+                        window.xgsdk.toChangeNickname();
+                    }
+                }catch (e) {
+                    location.href = "{:url('user/nickname')}";
+                    return false;
+                }
+            }else if(key=='auth_idcard'){
+                try{
+                    if($mt==2){
+                        window.webkit.messageHandlers.xgsdk_toCertificate.postMessage(1);
+                    }else{
+                        window.xgsdk.toCertificate();
+                    }
+                }catch (e) {
+                    location.href = "{:url('user/realname')}";
+                    return false;
+                }
+            }else if(key=='bind_phone'){
+                try{
+                    if($mt==2){
+                        window.webkit.messageHandlers.xgsdk_toBindPhone.postMessage(1);
+                    }else{
+                        window.xgsdk.toBindPhone()
+                    }
+                }catch (e) {
+                    location.href = "{:url('user/phone')}";
+                    return false;
+                }
+            }else if(key=='improve_address'){
+                try{
+                    if($mt==2){
+                        window.webkit.messageHandlers.xgsdk_toAddress.postMessage(1);
+                    }else{
+                        window.xgsdk.toAddress()
+                    }
+                }catch (e) {
+                    location.href = "{:url('user/user_address')}";
+                    return false;
+                }
+            }else if(key=='bind_email'){
+                try{
+                    if($mt==2){
+                        window.webkit.messageHandlers.xgsdk_toBindMail.postMessage(1);
+                    }else{
+                        window.xgsdk.toBindMail()
+                    }
+                }catch (e) {
+                    location.href = "{:url('user/email')}";
+                    return false;
+                }
+            }else if(key=='sign_in'){
+                location.href = "{:url('point/signin')}";
+            }else if(key=='subscribe_wechat'){
+                $(".followWechat").show();
+            }else if(key=='wx_friends_share'){
+                location.href = "{:url('user/invite_friends')}"; // 微信分享到朋友圈 user/invite_friends
+            }else if(key=='qq_zone_share'){
+                location.href = "{:url('user/invite_friends')}";  // 分享到QQ空间即可获得积分奖励
+            } else{
+                layer.msg(that.data('description'),{time:1000});
+            }
+        })
+
+        $('.closeRightBtn').click(function() {
+            $('.followWechat').hide()
+        })
+
+        $(".confirmButton").click(function () {
+
+            var cdkey =  $("#cdkey").val();
+            if(cdkey==''){
+                layer.msg('请输入兑换码');
+                return false;
+            }
+
+            var url = "{:url('mobile/Point/putWechatCdk')}";
+            $.post(url,{cdkey:cdkey},function (res) {
+                if(res.code==0){
+                    layer.msg(res.msg);
+                    return false;
+                }else{
+                    layer.msg(res.msg);
+                    setTimeout(function () {
+                        location.reload();
+                    },500);
+                }
+            });
+
+
+        })
+
+
+        $(".bottomToWechat").click(function () {
+            try {
+                $mt = "{:get_devices_type()}";
+                if ($mt == 2) {
+                    window.webkit.messageHandlers.launcherWX.postMessage(1);
+                } else {
+                    window.xgsdk.launcherWX()
+                }
+            } catch (e) {
+                window.location.href = "weixin://";
+                return false;
+            }
+        })
+
+    </script>
+
+</block>

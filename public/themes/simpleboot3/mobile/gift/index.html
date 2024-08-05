@@ -1,0 +1,223 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/bag_page.css">
+</block>
+
+<block name="body">
+
+    <include file="mobilepublic@header_menu" />
+
+    <div class="title_down_hx"></div>
+
+    <notempty name="$data">
+    <volist name="$data" id="gift">
+        <div class="game_items">
+            <a href="javascript:;" class="game_infos">
+                <div class="fl game_infos_img">
+                    <notempty name="gift.icon">
+                    <img src="{:cmf_get_image_url($gift.icon)}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                    </notempty>
+                </div>
+                <div class="fl game_infos_cons">
+                    <p class="game_infos_cons_name">{$gift.relation_game_name}</p>
+                </div>
+            </a>
+            <div class="game_bag_down_hx clear"></div>
+            <div class="game_bag_infos">
+                <volist name="$gift['gblist']" id="data">
+                <div class="game_bag_con_item">
+                    <a href="{:url('gift/detail',['gift_id'=>$data.gift_id])}">
+                        <div class="fl game_bag_detail">
+                            <p class="clear game_bag_detail_title">{$data.giftbag_name}</p>
+                            <p class="game_bag_detail_con">{$data.digest}</p>
+                        </div>
+                    </a>
+                    <button class="fg game_bag_lingqu_btn <if condition='$data[geted] eq 1'>copy</if>"  data-clipboard-text="{$data.novice}" data-id="{$data['gift_id']}">
+                        <if condition="$data.geted eq 1">
+                            <input type="text" readonly class="fuzhu_con" value="{$data['novice']}">
+                            复制
+                        <else/>
+                            <if condition="$session['login_auth'] eq 1">
+                                <lt name="$session['vip_level']" value="$data['vip']">
+                                    <span class="disabled">领取</span>
+                                    <else/>
+                                    领取
+                                </lt>
+                            <else/>
+                                领取
+                            </if>
+                        </if>
+
+                    </button>
+                </div>
+                <div class="game_bag_down_hx clear"></div>
+                </volist>
+
+            </div>
+            <!-- <div class="game_bag_down_hx clear"></div> -->
+        </div>
+    </volist>
+    <div class="game_bag_con_item"></div>
+        <else/>
+         <p class="no_game_bag_text">~空空如也~</p>
+    </notempty>
+
+
+    <!-- 礼包领取弹窗 -->
+    <div class="bag_open_modals" style="padding-bottom:1.1rem">
+        <img src="__TMPL__/mobilepublic/assets/images/delete_icon.png" alt="" class="bag_open_modals_closeimg">
+        <p class="bag_open_modals_firstline">礼包领取成功</p>
+        <div style="position: relative;margin: .7rem 1.2rem 0;">
+        <span class="bag_open_modals_prefix">激活码：</span><input type="text" readonly value="" id="novice" class="bag_open_modals_input">
+        </div>
+        <p class="bag_open_modals_notice tap clear">可在[我的礼包]查看</p>
+        <div class="bag_open_modals_btn copy" data-clipboard-text="">
+            <p>复制</p>
+        </div>
+    </div>
+</block>
+<block name="script">
+<script src="__JS__/clipboard.min.js"></script>
+<script>
+    $(function () {
+    $('.bag_open_modals_closeimg').click(function () {
+        layer.closeAll();
+    })
+    $(".bag_open_modals_btn").click(function () {
+        Copy($(this).attr('data-clipboard-text'),$(this));
+    })
+    $('.game_bag_lingqu_btn').click(function () {
+        var is_login="{:session('member_auth.user_id')}";
+        var auth_user="{:AUTH_USER}";
+        if(auth_user!=1){
+            layer.msg('请购买用户权限');
+            return false;
+        }
+        if(is_login==''){
+            login();
+            return false;
+        }
+
+        if ($(this).text().indexOf('复制') !== -1) {
+            Copy($(this).attr('data-clipboard-text'),$(this));
+        }
+        if ($(this).html().indexOf('领取') !== -1&&$(this).html().indexOf("领取</span>") === -1) {
+            var gift_id = $(this).attr('data-id');
+
+            $.ajax({
+                type: 'post',
+                url: '{:url("Gift/getgift")}',
+                async: false,
+                data: {gift_id: gift_id},
+                dataType: 'json',
+                success: function(data) {
+                    if(data.code == 1) {
+                        $("#novice").val(data.novice);
+                        $(".bag_open_modals_btn").attr('data-clipboard-text',data.novice)
+                        var consa = $('.bag_open_modals')
+                        layer.open({
+                            type: 1,
+                            title: false,
+                            closeBtn: false,
+                            area: ['85%', '12rem'],
+                            offset: 'auto',
+                            content: consa,
+                            btnAlign: 'c',
+                            shadeClose: true,
+                            end: function () {
+                                $('.bag_open_modals').hide()
+                                location.reload();
+                            }
+                        })
+                    }else {
+                        layer.msg(data.msg);
+                    }
+                },
+                error: function(xhr, type) {
+                    alert('服务器错误');
+                }
+            });
+
+
+        }
+    })
+    })
+    function Copy(str,that){
+        text = str;
+        console.log(text);
+        var clipboard = new Clipboard('.copy',{
+            text: function() {
+                return text;
+            }
+        });
+        clipboard.on('success', function(e) {
+            layer.msg('<p>已复制</p>');
+            e.clearSelection();
+            clipboard.destroy();
+        });
+        clipboard.on('error', function(e) {
+            layer.msg('此浏览器不支持此操作，请长按礼包码复制');
+        });
+    }
+    function login() {
+        var consa = $('.login_modal')
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: false,
+            area: ['80%', '23rem'],
+            offset: 'auto',
+            content: consa,
+            btnAlign: 'c',
+            shadeClose: true,
+            success: function (layero, index) {
+
+                layero.find('.modal_login_btn').click(function () {
+                    var that=$(this);
+                    if (that.hasClass('no_send')) {return false;}
+                    that.addClass('no_send');
+                    var account = consa.find('input[name=account]').val();
+                    var password = consa.find('input[name=password]').val();
+                    $.ajax({
+                        type: 'post',
+                        dataType: 'json',
+                        url: '{:url("User/login")}',
+                        data: {account:account,password:password},
+                        success: function (data) {
+                            that.removeClass('no_send');
+                            layer.msg(data.msg);
+                            if (data.code == 1) {
+                                setTimeout(function () {
+                                    if (data.url) {
+                                        window.location.href = data.url;
+                                    } else {
+                                        window.location.reload();
+                                    }
+                                },data.wait*1000);
+                            }
+                        },
+                        error: function () {
+                            layer.msg('服务器故障，请稍候再试');
+                            that.removeClass('no_send');
+                        }
+                    });
+
+                    return false;
+                });
+
+                layero.find('.close_login_modal').click(function () {
+
+                    $('.login_modal input').val('');
+
+                    layer.close(index);
+
+                    return false;
+                });
+            },
+            end: function () {
+                $('.login_modal').hide();
+            }
+        })
+    }
+</script>
+</block>

@@ -1,0 +1,141 @@
+<extend name="../mediapublic/base" />
+<!-- 主体内容 -->
+<block name="body">
+    <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/my_bag.css">
+    <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/my_tips.css">
+    <!-- 用户信息 -->
+    <div class="userinfo_con">
+        <div class="layui-container">
+            <div class="fl left_user_info">
+                <div class="left_user_info_img">
+                    <img src="{:cmf_get_image_url($user['head_img'])}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                    <span class="levelIcon">V{$user['vip_level']}</span>
+                </div>
+                <!-- <div class="left_user_info_grade">
+                    <if condition="$user['vip_level'] gt 0">
+                        <img src="__STATIC__/images/my_ico_grade{$user['vip_level']}.png" alt="">
+                    </if>
+
+                </div> -->
+                <p class="left_user_info_name">{$user.nickname}</p>
+                <div class="checked_item_con">
+                    <include file="mediapublic@left_menu" />
+                </div>
+            </div>
+            <div class="fl right_user_info">
+                    <div class="right_user_info_title">
+                        <a href="{:url('User/my_tips')}">
+                        <div class="fl right_user_info_title_left  noticeBox">
+                            代金券到期
+                            <div class="sort_fgx_fe"></div>
+                        </div>
+                        </a>
+                        <a href="{:url('User/reward')}">
+                            <if condition="$unread_num_single.unread_num2 gt 0">
+                                <div class="fl right_user_info_title_left noticeBox">
+                                    邀请奖励
+                                    <i class="numberNotice"></i>
+                                    <div class="sort_fgx_fe"></div>
+                                </div>
+                            <else/>
+                                <div class="fl right_user_info_title_left">
+                                    邀请奖励
+                                    <div class="sort_fgx_fe"></div>
+                                </div>
+                            </if>
+                        </a>
+                        <a href="{:url('User/demo_task')}">
+
+                            <if condition="$unread_num_single.unread_num3 gt 0">
+                                <div class="fl right_user_info_title_left noticeBox">
+                                    试玩任务
+                                    <i class="numberNotice"></i>
+                                    <div class="sort_fgx_fe"></div>
+                                </div>
+                            <else/>
+                                <div class="fl right_user_info_title_left">
+                                    试玩任务
+                                    <div class="sort_fgx_fe"></div>
+                                </div>
+                            </if>
+                        </a>
+                        <a href="{:url('User/open_service_remind')}">
+
+                            <if condition="$unread_num_single.unread_num4 gt 0">
+                                <div class="fl right_user_info_title_left noticeBox">
+                                    开服提醒
+                                    <i class="numberNotice"></i>
+                                    <div class="sort_fgx_fe"></div>
+                                </div>
+                            <else/>
+                                <div class="fl right_user_info_title_left">
+                                    开服提醒
+                                    <div class="sort_fgx_fe"></div>
+                                </div>
+                            </if>
+                        </a>
+                        <a href="{:url('User/comment_back')}">
+
+                            <if condition="$unread_num_single.unread_num5 gt 0">
+                                <div class="fl right_user_info_title_left noticeBox">
+                                    评论回复
+                                    <i class="numberNotice"></i>
+                                    <div class="sort_fgx_fe"></div>
+                                </div>
+                            <else/>
+                                <div class="fl right_user_info_title_left">
+                                    评论回复
+                                    <div class="sort_fgx_fe"></div>
+                                </div>
+                            </if>
+                        </a>
+
+                        <a href="{:url('User/rebate_remind')}">
+                            <if condition="$unread_num_single.unread_num6 gt 0">
+                                <div class="fl right_user_info_title_left active noticeBox">
+                                    返利到账
+                                    <i class="numberNotice"></i>
+                                    <div class="sort_fgx_fe"></div>
+                                </div>
+                            <else/>
+                                <div class="fl right_user_info_title_left active">
+                                    返利到账
+                                    <div class="sort_fgx_fe"></div>
+                                </div>
+                            </if>
+                        </a>
+
+                        <p class="fg right_user_info_title_right">您当前的位置：<a href="{:url('Index/index')}">平台首页</a>><a href="{:url('User/userinfo')}"> 用户中心</a>><span>我的消息</span></p>
+                    </div>
+                    <div class="my_tips_list">
+                            
+
+                        <volist name="tips_list" id="vo">
+                            <div class="my_bag_item clear">
+                                <div class="myTipsBox">
+                                    <if condition="$vo.read_or_not eq 0">
+                                        <div class="">{$vo.title}</div>
+                                    </if>
+                                    <if condition="$vo.read_or_not eq 1">
+                                        <div class="noticeOver">{$vo.title}</div>
+                                    </if>
+                                    
+                                    <div class="my_tips_detail">
+                                        <span class="overNotice">{$vo.content}</span>
+                                        <div class="detailTiming"><span>{$vo.create_time|date='Y-m-d H:i:s',###}</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </volist>
+                    </div>
+                    <div id="page1" class="gamelistpage">
+                        <notempty name="tips_list">
+                            {$page}
+                        </notempty>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    </script>
+</block>

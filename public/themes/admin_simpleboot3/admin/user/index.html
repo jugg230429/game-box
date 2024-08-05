@@ -1,0 +1,90 @@
+<include file="public@header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="{:url('user/index')}">{:lang('ADMIN_USER_INDEX')}</a></li>
+			<!-- <li><a href="{:url('user/add')}">{:lang('ADD_ADMIN_USER')}</a></li> -->
+			<span class="title_remark">说明：可设置不同角色以及对应权限</span>
+		</ul>
+		<div class="table-actions position" style="margin-left: -10px;">
+            <a href="{:url('user/add')}" class="btn btn-success  mtb17">添加管理员</a>
+		</div>
+        <form id="search_form" class="well form-inline fr" method="get" action="{:url('User/index')}">
+            <input type="text" class="form-control" name="user_login" style="width: 120px;" value="{:input('request.user_login/s','')}" placeholder="管理员账号">
+
+            <select name="user_status" id="user_status" class="selectpicker" user_status="{:input('request.user_status')}">
+                <option value="">账号状态</option>
+                <option value="1">正常</option>
+                <option value="0">已锁定</option>
+
+            </select>
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('User/index')}">清空</a>
+        </form>
+		<table class="table table-hover table-bordered">
+			<thead>
+				<tr>
+					<th width="50">ID</th>
+					<th>{:lang('USERNAME')}</th>
+					<th>角色类型</th>
+					<th>登录次数</th>
+					<th>{:lang('LAST_LOGIN_TIME')}</th>
+					<th>{:lang('LAST_LOGIN_IP')}</th>
+					<th>{:lang('STATUS')}</th>
+					<th width="130">{:lang('ACTIONS')}</th>
+				</tr>
+			</thead>
+			<tbody>
+				<php>$user_statuses=array("0"=>lang('USER_STATUS_BLOCKED'),"1"=>lang('USER_STATUS_ACTIVATED'),"2"=>lang('USER_STATUS_UNVERIFIED'));</php>
+				<empty name="users">
+					<tr><td colspan="8" style="text-align: center;">暂无数据</td></tr>
+				<else/>
+					<foreach name="users" item="vo">
+					<tr>
+						<td>{$vo.id}</td>
+						<td><if condition="$vo['user_url']"><a href="{$vo.user_url}" target="_blank" title="{$vo.signature}">{$vo.user_login}</a><else />{$vo.user_login}</if></td>
+						<td>{:get_role_name($vo['id'])}</td>
+	                    <td>{$vo.login_times}</td>
+						<td>
+							<if condition="$vo['last_login_time'] eq ''">
+								--
+							<else />
+								{:date('Y-m-d H:i:s',$vo['last_login_time'])}
+							</if>
+						</td>
+						<td>{$vo.last_login_ip|default='--'}</td>
+						<td><span <if condition="$vo['user_status'] eq 1"> class="label label-success"<else/>class="label label-danger"</if>>{$user_statuses[$vo['user_status']]}</span></td>
+						<td>
+							<!-- <if condition="$vo['id'] eq 1 || $vo['id'] eq cmf_get_current_admin_id()"> -->
+							<if condition="$vo['id'] eq 1">
+								<a href='{:url("user/edit",array("id"=>$vo["id"]))}'>{:lang('EDIT')}</a>
+								<if condition="$vo['user_status'] eq 1">
+									<font color="#cccccc">{:lang('BLOCK_USER')}</font>
+								<else />
+									<font color="#cccccc">{:lang('ACTIVATE_USER')}</font>
+								</if>
+							  	<font color="#cccccc">{:lang('DELETE')}</font>
+							<else />
+								<a href='{:url("user/edit",array("id"=>$vo["id"]))}'>{:lang('EDIT')}</a>
+								<if condition="$vo['user_status'] eq 1">
+									<a href="{:url('user/ban',array('id'=>$vo['id']))}" class="js-ajax-dialog-btn" data-msg="{:lang('BLOCK_USER_CONFIRM_MESSAGE')}">{:lang('BLOCK_USER')}</a>
+								<else />
+									<a href="{:url('user/cancelban',array('id'=>$vo['id']))}" class="js-ajax-dialog-btn" data-msg="{:lang('ACTIVATE_USER_CONFIRM_MESSAGE')}">{:lang('ACTIVATE_USER')}</a>
+								</if>
+								<a class="js-ajax-delete" href="{:url('user/delete',array('id'=>$vo['id']))}">{:lang('DELETE')}</a>
+							</if>
+						</td>
+					</tr>
+					</foreach>
+				</empty>
+			</tbody>
+		</table>
+		<div class="pagination">{$page}</div>
+	</div>
+	<script src="__STATIC__/js/admin.js"></script>
+<script>
+	$('#user_status').selectpicker('val', $('#user_status').attr('user_status'));
+</script>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/LCalendar.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/select2.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/new_select2.css" type="text/css" />
+    <link href="__TMPL__/channelwappublic/assets/css/profit.css" type="text/css" rel="stylesheet" />
+</block>
+<block name="body">
+    <div class="page-container profit-exchange-container">
+        <header>
+            <a href="{:url('promote/index')}" class="back-btn"></a>
+            <div style="width: 100%;height: 100%" class="v-middle h-middle">
+                <p class="header-title active" data-url="{:url('settlement/profit')}">我的收益</p>
+                <p class="header-title" data-url="{:url('settlement/profit_record')}" style="margin-left: 1.5rem">我的支出</p>
+            </div>
+
+        </header>
+        <div class="page-content">
+            <div class="my-profit-content">
+                <div class="exchange-tab">
+                    <div class="search-box">
+                        <div class="search-item col-4">
+                            <input type="text" class="input-date" id="user_account" placeholder="玩家账号" value="{:input('user_account')}">
+                        </div>
+                        <div class="search-item  col-4">
+                            <input type="text" class="input-date btn-date" readonly name="start_time" id="start_time" placeholder="开始时间" value="" autocomplete="off">
+                        </div>
+                        <div class="search-item  col-4">
+                            <input type="text" class="input-date btn-date" readonly name="end_time" id="end_time" placeholder="结束时间" value="" autocomplete="off">
+                        </div>
+                        <div class="search-item  col-4">
+                            <select id="promote_id" class="select_gallery" data-placeholder="渠道账号">
+                                <option value="0" data="0">渠道账号</option>
+                                <option value="{:PID}" <if condition="PID eq input('promote_id')"> selected</if> data="0">自己</option>
+                                <volist name=":get_song_promote_lists(PID)" id="p">
+                                    <option data="" <if condition="$p['id'] eq input('promote_id')"> selected</if> value="{$p.id}">{$p.account}</option>
+                                </volist>
+                            </select>
+                        </div>
+                        <div class="search-item  col-4">
+                            <select id="game_id" class="select_gallery" data-placeholder="来源游戏">
+                                <option value="0" >选择游戏</option>
+                                <volist name=":get_game_list('id,game_name')" id="vo">
+                                    <option value="{$vo.id}" <if condition="input(game_id) eq $vo['id']">selected</if>>{$vo.game_name}</option>
+                                </volist>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="table-box">
+                        <table>
+                            <tbody>
+                                <tr class="table-title">
+                                    <th style="width: 2.8rem;">订单号</th>
+                                    <th >来源游戏</th>
+                                    <th>玩家账号</th>
+                                    <th >渠道账号</th>
+                                    <th>结算</th>
+                                </tr>
+                                <tr class="total">
+                                    <td>汇总：</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td><span class="total_settlement" style="color: #FFB22B;font-weight: bold">100.00</span></td>
+                                </tr>
+                            </tbody>
+                            <tbody id="profitload">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/select2.min.js"></script>
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/LCalendar.min.js"></script>
+    <script>
+        $(function () {
+
+            //点击tap
+            $('.header-title').click(function () {
+                location.href=$(this).data("url");
+            });
+            $(".select_gallery").select2({
+                minimumResultsForSearch: -1
+				
+				
+            });
+           
+			 $(".select2-container").click(function(){
+			   $(".select2-container").addClass("game-select");
+			   $(".game-select .select2-dropdown--below").css("width","100%");
+			   $(".select2-container").css("left","0");
+			 })
+			    
+			
+		   
+			
+			
+			<!-- select.data('select2').$dropdown.addClass('lwx-select'); -->
+
+            //时间插件
+            var start_calendar = new LCalendar();
+            start_calendar.init({
+                'trigger': '#start_time', //标签id
+                'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+                'minDate': (new Date().getFullYear() - 3) + '-' + 1 + '-' + 1, //最小日期
+                'maxDate': (new Date().getFullYear() + 3) + '-' + 12 + '-' + 31 //最大日期
+            });
+            var end_calendar = new LCalendar();
+            end_calendar.init({
+                'trigger': '#end_time', //标签id
+                'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+                'minDate': (new Date().getFullYear() - 3) + '-' + 1 + '-' + 1, //最小日期
+                'maxDate': (new Date().getFullYear() + 3) + '-' + 12 + '-' + 31 //最大日期
+            })
+
+        })
+    </script>
+    <script>
+        var itemIndex = 0;
+        var game_id = 0;
+        var user_account = '';
+        var start_time = '';
+        var end_time = '';
+        var promote_id = 0;
+        var lwx = window.lwx || {};
+        var pid_level = {:PID_LEVEL};
+        lwx.ready = true;
+        lwx.width = $(window).width();
+        lwx.height = $(window).height();
+        lwx.number = {profit:1};
+        lwx.row = {profit:15};
+        lwx.http = {
+            getJSON:function(url,callback){
+                $.getJSON(url + '&v=' + Date.now(),function(data){
+                    callback(data);
+                });
+            },
+            postJSON:function(url,args,callback) {
+                $.post(url + '&v=' + Date.now(), args, function(data) {
+                    callback(data);
+                },"json")
+            },
+        };
+        lwx.url ={
+            profit:'{:url("Settlement/get_profit")}',
+        };
+        lwx.page = {
+            profit:function(){
+                if(lwx.number.profit) {
+                    lwx.http.getJSON(lwx.url.profit+'?row='+lwx.row.profit+'&page='+lwx.number.profit+'&game_id='+game_id+'&promote_id='+promote_id+'&user_account='+user_account+'&start_time='+start_time+'&end_time='+end_time,function(data) {
+                        var hotload = $('#profitload');
+                        $(".total").show();
+                        var total = data.total;
+                        if(total.totalmoney == null){
+                            total.totalmoney = '';
+                        }
+                        $(".total_settlement").text(total.totalmoney);
+                        var data = data.data;
+                        if(data && data.length) {
+                            var html = '';
+                            for (var i in data) {
+                                html += '<tr>';
+                                html += '<td>'+data[i].pay_order_number+'</td>'
+                                html += '<td>'+data[i].game_name+'</td>'
+                                html += '<td>'+data[i].user_account+'</td>';
+                                html += '<td>'+data[i].promote_account+'</td>';
+                                if(pid_level == 1){
+                                    html += '<td>'+data[i].sum_money+'</td>';
+                                }else if(pid_level == 2){
+                                    html += '<td>'+data[i].sum_money2+'</td>';
+                                }else{
+                                    html += '<td>'+data[i].sum_money3+'</td>';
+                                }
+                                html += '</tr>';
+                            }
+                            hotload.append(html);
+                            hotload.find('.jsdropload').remove();
+                            if(data.length >= lwx.row.profit) {
+                                lwx.number.profit++;
+                                lwx.ready = true;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.profit = false;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                        } else {
+                            if(lwx.number.profit==1){
+                                $(".total").hide();
+                                hotload.html('').append('<p class="no_invest_info jsdropload">~空空如也~</p>');
+                            } else{
+                                hotload.find('.jsdropload').remove();
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                            lwx.number.profit = false;
+                        }
+                    });
+                }
+            }
+        };
+        pageChange();
+        function pageChange() {
+            lwx.page.profit();
+        }
+        function pageScroll(scrollTop, boxHeight, maxScrollHeight) {
+            if (scrollTop + boxHeight >= maxScrollHeight - 50) {
+                if (lwx.ready) {
+                    lwx.ready = false;
+                    lwx.page.profit();
+                }
+            }
+        }
+        window.onscroll = function() {
+            var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+            pageScroll(scrollTop, lwx.height, $(document).height())
+        }
+        $(function () {
+            $('.game-menu-box a').click(function () {
+                $(this).addClass("active").siblings().removeClass("active");
+                var index = $(this).index();
+                $('.menu-tab').eq(index).show().siblings(".menu-tab").hide();
+                itemIndex = index;
+                location.hash = index;
+            });
+            $("#game_id").change(function () {
+                game_id = $("#game_id").val();
+                $("#profitload").empty();
+                lwx.number.profit = 1;
+                pageChange();
+            })
+            $("#promote_id").change(function () {
+                promote_id = $("#promote_id").val();
+                $("#profitload").empty();
+                lwx.number.profit = 1;
+                pageChange();
+            })
+            $("#user_account").bind('input porpertychange',function(){
+                user_account = $("#user_account").val();
+                $("#profitload").empty();
+                lwx.number.profit = 1;
+                pageChange();
+            });
+            $("#start_time").bind('input porpertychange',function(){
+                start_time = $("#start_time").val();
+                $("#profitload").empty();
+                lwx.number.profit = 1;
+                pageChange();
+            });
+            $("#end_time").bind('input porpertychange',function(){
+                end_time = $("#end_time").val();
+                $("#profitload").empty();
+                lwx.number.profit = 1;
+                pageChange();
+            });
+        })
+        $(window).on("hashchange", function() {
+            pageChange();
+        });
+    </script>
+</block>

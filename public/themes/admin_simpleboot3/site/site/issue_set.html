@@ -1,0 +1,286 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#A" data-toggle="tab">站点配置</a></li>
+        <li><a href="#B" data-toggle="tab">客服配置</a></li>
+        <span class="title_remark">说明：针对联运分发站点的显示进行基本配置。</span>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('sitePost')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+
+                        <div class="form-group">
+                            <label for="input-domain" class="col-sm-2 control-label">官网网址：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" id="input-domain" class="form-control" name="domain"
+                                       value="{$data.domain|default=''}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-title" class="col-sm-2 control-label">网站标题：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" id="input-title" class="form-control" name="title"
+                                       value="{$data.title|default=''}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-icp" class="col-sm-2 control-label">网站备案号：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" id="input-icp" class="form-control" name="icp"
+                                       value="{$data.icp|default=''}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-license" class="col-sm-2 control-label">网络文化经营许可证：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" id="input-license" class="form-control" name="license"
+                                       value="{$data.license|default=''}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-czxkz" class="col-sm-2 control-label">增值电信业务经营许可证：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" id="input-czxkz" class="form-control" name="czxkz"
+                                       value="{$data.czxkz|default=''}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-copyright" class="col-sm-2 control-label">官网版权信息：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" id="input-copyright" class="form-control" name="copyright"
+                                       value="{$data.copyright|default=''}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-keywords" class="col-sm-2 control-label">网站关键词：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" id="input-keywords" class="form-control" name="keywords"
+                                       value="{$data.keywords|default=''}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-description" class="col-sm-2 control-label">网站描述：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" id="input-description" class="form-control" name="description"
+                                       value="{$data.description|default=''}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-address" class="col-sm-2 control-label">公司地址：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" id="input-address" class="form-control" name="address"
+                                       value="{$data.address|default=''}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-weblogo" class="col-sm-2 control-label">网站LOGO：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="weblogo" type="hidden" name="weblogo" value="{$data.weblogo}" >
+                                <img id="weblogo-preview" class="upload-img" <if condition="$data['weblogo']">src="{:cmf_get_image_preview_url($data['weblogo'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#weblogo');">上传</a>
+                                <a href="javascript:(function(){$('#weblogo-preview').attr('src','');$('#weblogo').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">用于后台管理中心左上角展示，尺寸208*60px</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-logo2" class="col-sm-2 control-label">网站底部LOGO：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="logo2" type="hidden" name="logo2" value="{$data.logo2}" >
+                                <img id="logo2-preview" class="upload-img" <if condition="$data['logo2']">src="{:cmf_get_image_preview_url($data['logo2'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#logo2');">上传</a>
+                                <a href="javascript:(function(){$('#logo2-preview').attr('src','');$('#logo2').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">用于后台管理中心左上角展示，尺寸208*60px</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-ico" class="col-sm-2 control-label">网站ICO：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="ico" type="hidden" name="ico" value="{$data.ico}" >
+                                <img id="ico-preview" class="upload-img" <if condition="$data['ico']">src="{:cmf_get_image_preview_url($data['ico'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#ico');">上传</a>
+                                <a href="javascript:(function(){$('#ico-preview').attr('src','');$('#ico').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">尺寸16*16px</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-logo" class="col-sm-2 control-label">管理中心LOGO：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="logo" type="hidden" name="logo" value="{$data.logo}" >
+                                <img id="logo-preview" class="upload-img" <if condition="$data['logo']">src="{:cmf_get_image_preview_url($data['logo'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#logo');">上传</a>
+                                <a href="javascript:(function(){$('#logo-preview').attr('src','');$('#logo').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">用于后台管理中心左上角展示，尺寸216*52px</p>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="input-addressee" class="col-sm-2 control-label">收件地址：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" id="input-addressee" class="form-control" name="addressee"
+                                       value="{$data.addressee|default=''}">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <input type="hidden" name="set_type" value="{$name}">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="tab-pane" id="B">
+
+                        <div class="form-group">
+                            <label for="input-service_name" class="col-sm-2 control-label">商务姓名：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" id="input-service_name" class="form-control" name="service_name"
+                                       value="{$data.service_name|default=''}">
+                            </div>
+							  <p class="help-block">用于后台管理中心左上角展示，尺寸177*60px</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-service_qq" class="col-sm-2 control-label">商务QQ号：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" id="input-service_qq" class="form-control" name="service_qq"
+                                       value="{$data.service_qq|default=''}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-service_phone" class="col-sm-2 control-label">商务手机号：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" id="input-service_phone" class="form-control" name="service_phone"
+                                       value="{$data.service_phone|default=''}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-service_mail" class="col-sm-2 control-label">商务邮箱：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" id="input-service_mail" class="form-control" name="service_mail"
+                                       value="{$data.service_mail|default=''}">
+                            </div>
+                        </div>
+<!--						<div class="form-group">-->
+<!--                            <label for="input-service_wx" class="col-sm-2 control-label">商务微信号：</label>-->
+<!--                            <div class="col-md-3 col-sm-5">-->
+<!--                                <input type="text" id="input-service_wx" class="form-control" name="service_wx"-->
+<!--                                       value="{$data.service_wx|default=''}">-->
+<!--                            </div>-->
+<!--                        </div>-->
+                        <div class="form-group">
+                            <label for="service_qrcode" class="col-sm-2 control-label">商务微信二维码：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="service_qrcode" type="hidden" name="service_qrcode" value="{$data.service_qrcode}" >
+                                <img id="service_qrcode-preview" class="upload-img" <if condition="$data['service_qrcode']">src="{:cmf_get_image_preview_url($data['service_qrcode'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#service_qrcode');">上传</a>
+                                <a href="javascript:(function(){$('#service_qrcode-preview').attr('src','');$('#service_qrcode').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">尺寸240*240px</p>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label for="input-service2_name" class="col-sm-2 control-label">推广姓名：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" id="input-service2_name" class="form-control" name="service2_name"
+                                       value="{$data.service2_name|default=''}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-service2_qq" class="col-sm-2 control-label">推广QQ号：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" id="input-service2_qq" class="form-control" name="service2_qq"
+                                       value="{$data.service2_qq|default=''}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-service2_phone" class="col-sm-2 control-label">推广手机号：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" id="input-service2_phone" class="form-control" name="service2_phone"
+                                       value="{$data.service2_phone|default=''}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-service2_mail" class="col-sm-2 control-label">推广邮箱：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" id="input-service2_mail" class="form-control" name="service2_mail"
+                                       value="{$data.service2_mail|default=''}">
+                            </div>
+                        </div>
+<!--						<div class="form-group">-->
+<!--                            <label for="input-service2_wx" class="col-sm-2 control-label">推广微信号：</label>-->
+<!--                            <div class="col-md-3 col-sm-5">-->
+<!--                                <input type="text" id="input-service2_wx" class="form-control" name="service2_wx"-->
+<!--                                       value="{$data.service2_wx|default=''}">-->
+<!--                            </div>-->
+<!--                        </div>-->
+                        <div class="form-group">
+                            <label for="service2_qrcode" class="col-sm-2 control-label">推广微信二维码：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="service2_qrcode" type="hidden" name="service2_qrcode" value="{$data.service2_qrcode}" >
+                                <img id="service2_qrcode-preview" class="upload-img" <if condition="$data['service2_qrcode']">src="{:cmf_get_image_preview_url($data['service2_qrcode'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#service2_qrcode');">上传</a>
+                                <a href="javascript:(function(){$('#service2_qrcode-preview').attr('src','');$('#service2_qrcode').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">尺寸240*240px</p>
+                        </div>
+                       <div class="form-group">
+                            <label for="input-work_time" class="col-sm-2 control-label">工作时间：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" id="input-work_time" class="form-control" name="work_time"
+                                       value="{$data.work_time|default=''}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <input type="hidden" name="set_type" value="{$name}">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script>
+    $("#create_group").click(function() {
+        layer.open({
+            type: 2,
+            title: '生成交流群地址',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['840px', '613px'],
+            content: ["{:url('creat_group')}"], //iframe的url，no代表不显示滚动条
+        });
+    });
+</script>
+</body>
+</html>

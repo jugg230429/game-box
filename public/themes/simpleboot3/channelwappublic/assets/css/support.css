@@ -1,0 +1,682 @@
+@charset "utf-8";
+html,body{
+  
+    color: #333333;
+    width: 100%;
+    height: 100%;
+}
+p{
+    margin: 0;
+}
+a {
+    text-decoration: none!important;
+}
+.select2-container--default .select2-results__option--highlighted[aria-selected]:after{
+    right: 0.4rem;
+}
+.page-container{
+    padding-bottom:3rem;
+	
+}
+.user-info-box{
+    width: 100%;
+    height: 4.346666rem;
+    background: url(../images/profit/shouyi_bg_zhanghao.png)no-repeat;
+    background-size: 100% 100%;
+}
+.user-info-box .user-function-box{
+    width:100%;
+    height: 0.9333rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+.user-info-box .user-function-box .user-news{
+    position: relative;
+    width: 0.64rem;
+    height: 0.56rem;
+    margin-right:0.4rem;
+    background: url(../images/profit/shouyi_ico_xiaoxi.png)no-repeat;
+    background-size: 100% 100%;
+    display: block;
+}
+.user-info-box .user-function-box .user-out-login{
+    position: relative;
+    width: 0.64rem;
+    height: 0.56rem;
+    margin-right:0.16rem;
+    background: url(../images/profit/tuichu.png)no-repeat;
+    background-size: 100% 100%;
+    display: block;
+}
+.user-info-box .user-function-box .red-port{
+    width: 0.18rem;
+    height: 0.18rem;
+    border-radius: 50%;
+    position: absolute;
+    top:0;
+    right: 0;
+    background: red;
+}
+.user-info-box  .user-info{
+    width: 100%;
+    padding: 0 0.2667rem;
+    box-sizing: border-box;
+    color: #ffffff;
+}
+.user-info-box .user-head-img{
+    width: 1.253rem;
+    height: 1.253rem;
+    border-radius: 50%;
+    margin-right: 0.24rem;
+}
+.user-info-box .user-name{
+    font-size: 0.4rem;
+    font-weight: bold;
+}
+.user-info-box .user-account{
+    font-size: 0.32rem;
+    margin-top: 0.18rem;
+}
+.user-info-box .user-back-icon{
+    width: 0.2666rem;
+    height: 0.48rem;
+    background: url(../images/profit/shouyi_ico_tiaozhuan.png)no-repeat;
+    background-size: 100% 100%;
+    margin-left: auto;
+}
+.user-profit-box{
+    width: 9.44rem;
+    height: 3.12rem;
+    background: #FFFFFF;
+    border-radius: 0.1333rem;
+    margin: -1.573333rem auto 0;
+    color: #ffffff;
+}
+.user-profit-box .user-profit{
+    width: 100%;
+    height: 2.05333rem;
+    border-bottom: 0.026rem solid rgba(240,240,240,1);
+    padding:0 0.693rem;
+    box-sizing: border-box;
+}
+.user-profit-box .user-tixian-box{
+    width: 3.6rem;
+}
+.user-profit-box .title{
+    font-size: 0.293333rem;
+    color: #666666;
+    font-weight: 500;
+}
+.user-profit-box  .user-tixian-box .money{
+    font-size: 0.72rem;
+    color: #FFB22B;
+    font-weight: bold;
+
+}
+.profit-exchange-btn,
+.profit-tixian-btn,
+.ptb-btn{
+    width: 1.2rem;
+    height: 0.56rem;
+    border-radius: 0.08rem;
+    display: block;
+    line-height: 0.56rem;
+    font-size: 0.32rem;
+    text-align: center;
+    background: #FFB22B;
+    margin-right: 0.45333rem;
+    color: #ffffff;
+}
+.profit-tixian-btn{
+    background: #26C7DB;
+
+}
+.ptb-btn{
+    background: #41A6ED;
+    margin-right: 0.58333rem;
+}
+.ptb-btn:last-child{
+    margin-right: 0;
+}
+.user-profit-box .user-profit-btn{
+    width: 100%;
+    height: 1.0133rem;
+}
+.user-profit-box .user-profit-btn a{
+    width: 50%;
+    height: 100%;
+    font-size: 0.37333rem;
+    color: #333333;
+    position: relative;
+}
+.user-profit-box .user-profit-btn a:nth-child(2):before{
+    position: absolute;
+    top:0.186667rem;
+    left: 0;
+    width: 0.03rem;
+    height: 0.66667rem;
+    background: #F0F0F0;
+    content: '';
+}
+.user-profit-box  .profit-back-icon{
+    margin-left: 0.2rem;
+    width: 0.13333rem;
+    height: 0.24rem;
+    background: url(../images/profit/shouyi_ico_tiaozhuan@2x.png)no-repeat;
+    background-size: 100% 100%;
+    margin-top: 0.026rem;
+}
+.user-ptb-box{
+    width: 9.44rem;
+    height: 2.026667rem;
+    background: #FFFFFF;
+    border-radius: 0.1333rem;
+    margin: 0.266667rem auto 0;
+    padding: 0.693rem 0 0.693rem 0.693rem;
+    box-sizing: border-box;
+}
+.user-ptb-box .user-ptb{
+    width: 3.6rem;
+}
+.user-ptb-box .title{
+    font-size: 0.293333rem;
+    color: #666666;
+    font-weight: 500;
+}
+.user-ptb-box  .user-ptb .money{
+    font-size: 0.5rem;
+    color: #41A6ED;
+    font-weight: bold;
+    margin-top: 0.18rem;
+
+}
+.user-channel-box{
+    width: 9.44rem;
+    height:2.506667rem;
+    background: #FFFFFF;
+    border-radius: 0.1333rem;
+    margin: 0.26667rem auto 0;
+    padding:0  0 0 0.693rem;
+    box-sizing: border-box;
+}
+.user-channel-box .user-channel{
+    width: 3.2rem;
+}
+.user-channel-box .title{
+    font-size: 0.293333rem;
+    color: #666666;
+    font-weight: 500;
+}
+.user-channel-box  .money{
+    font-size: 0.5rem;
+    color: #444444;
+    font-weight: bold;
+    margin-top: 0.18rem;
+}
+.channel-btn{
+    width: 1.6rem;
+    margin-right: 1.5rem;
+}
+.channel-btn i{
+    width: 1.3rem;
+    height: 1.3rem;
+    display: block;
+    margin: 0 auto 0.2rem;
+}
+.channel-btn i.erji-icon{
+    background: url(../images/profit/shouyi_icon_erjiqudao.png)no-repeat;
+    background-size: 100% 100%;
+}
+.channel-btn i.child-icon{
+    background: url(../images/profit/shouyi_icon_ziqudao.png)no-repeat;
+    background-size: 100% 100%;
+}
+.channel-btn i.total-icon{
+    background: url(../images/profit/shouyI_icon_jieshuan.png)no-repeat;
+    background-size: 100% 100%;
+}
+.channel-btn i.gift-icon{
+    background: url(../images/profit/btn_wdfl.png)no-repeat;
+    background-size: 100% 100%;
+}
+.channel-btn i.coupon-icon{
+    background: url(../images/profit/btn_djqff.png)no-repeat;
+    background-size: 100% 100%;
+}
+.channel-btn i.support-icon{
+    background: url(../images/profit/btn_fcsq.png)no-repeat;
+    background-size: 100% 100%;
+}
+.channel-btn p{
+    width: 100%;
+    text-align: center;
+    font-size: 0.32rem;
+    color: #333333;
+    box-sizing: border-box;
+    white-space: nowrap;
+
+}
+.channel-btn:last-child{
+    margin-right: 0;
+}
+
+
+/*
+收益兑换、收益提现*/
+.profit-exchange-container ,
+.my-profit-container{
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    color: #333333;
+}
+.profit-exchange-container .header-title ,.my-profit-container .header-title{
+    position: relative;
+}
+/*.profit-exchange-container .header-title.active:after,.my-profit-container .header-title.active:after{
+    position: absolute;
+    left: 0;
+    bottom: -0.25rem;
+    width: 100%;
+    height: 0.08rem;
+    background: #374760;
+    content: '';
+}*/
+.profit-exchange-content{
+    width: 100%;
+    padding:0rem 0.32rem 1rem;
+    box-sizing: border-box;
+}
+.exchange-tab .form{
+    width: 100%;
+    padding: 0 0.15rem;
+    box-sizing: border-box;
+}
+.form .form-item{
+    width: 100%;
+    height: 0.9rem;
+    margin-top: 0.37rem;
+    /*border-bottom: 0.0267rem solid #EDEEEF;*/
+    display: flex;
+    align-items: center;
+    position: relative;
+
+}
+.form-item .form-item-title{
+    width: 2.3333rem;
+    height: 100%;
+    font-size: 0.373rem;
+    color: #666;
+    line-height: 1rem;
+
+}
+.form-item .form-item-text{
+    width:calc(100% - 2.1333rem) ;
+    height: 100%;
+    box-sizing: border-box;
+    font-size: 0.34666rem;
+    line-height: 1rem;
+    position: relative;
+}
+.form-item .form-item-input {
+    width: 100%;
+    border: 0.0267rem solid #E0E0E0;
+    outline: none;
+    height: 100%;
+    padding-left: 0.2rem;
+    box-sizing: border-box;
+    border-radius: 3px;
+    font-size: 0.373rem;
+    box-shadow: none;
+    -webkit-appearance: none;
+}
+.form-item  .form-item-input:read-only{
+    border: none;
+    padding-left: 0;
+	color:#666;
+}
+.form-item .form-item-input::-webkit-input-placeholder{
+	color:#C0C0C4;
+}
+.form-item .form-item-input::-webkit-input-placeholder{
+	color:#C0C0C4;
+}
+.form-item .form-item-input::-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:#C0C0C4;
+}
+.form-item .form-item-input::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:#C0C0C4;
+}
+.form-item .form-item-input::-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:#C0C0C4;
+}
+.form-item-tips{
+    color: #999999;
+    font-size: 0.32rem;
+    position: absolute;
+    bottom: -0.6rem;
+    left: 0;
+    line-height: 1.2;
+}
+.form-item .submit-btn{
+    font-size: 0.4rem;
+    color: #fff;
+    background: #26c7db;
+    border-radius: 0.08rem;
+    width: 2.2rem;
+    height: 0.9rem;
+    /*margin: -0.5rem 0 0 0;*/
+    line-height: 0.9rem;
+    text-align: center;
+    border: none;
+}
+.form-item .withdraw-submit-btn{
+	margin-top: 1rem;
+}
+
+.profit-menu-box{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    height: 1.2rem;
+    border-bottom: 0.0267rem solid #E0E0E0;
+    box-sizing: border-box;
+    padding: 0 5%;
+}
+.profit-menu-box a {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.37333rem;
+    color: #888888;
+}
+.profit-menu-box a.active {
+    color: #333333;
+    position: relative;
+}
+.profit-menu-box a.active:after {
+    position: absolute;
+    bottom: 0;
+    margin: 0 auto;
+    width: 1.5rem;
+    height: 0.053rem;
+    background: #26C7DB;
+    content: '';
+	left:35%;
+	margin-left:-10%;
+}
+
+.newPromoteMenu.profit-menu-box a.active:after {
+    left:43%;
+}
+
+footer{
+    display: none!important;
+}
+
+.add-child-icon{
+    position: absolute;
+    right: 0.35rem;
+    top:0.35rem;
+    color: #26C7DB;  
+}
+.add-child-icon img {
+    width: 0.5rem;
+    height: 0.5rem;
+}
+.titleText {
+    font-size: 0.44rem;
+}
+.table-box tr td a {
+    text-decoration: none;
+}
+.operationButton {
+    display: flex;
+}
+.js-support-edit {
+    margin-right: 0.3rem;
+}
+.table-box tr td {
+    border-bottom:none!important;
+}
+.table-box tr {
+    border-bottom: 0.025rem solid #F4F4F4;
+}
+.showCreateLimit {
+    height: 0.9rem;
+    width: 92%;
+    background: #FDF5E6;
+    border-radius: 0px 0px 0.2rem 0.2rem;
+    margin-left: 0.2rem;
+    font-family: 'PingFang SC';
+    font-weight: 500;
+    color: #FD9526;
+    font-size: 0.36rem;
+    padding-left: 0.3rem;
+    line-height: 0.9rem;
+    display: none;
+}
+.sighIcon {
+    width: 0.4rem;
+    height: 0.4rem;
+    margin-right: 0.21rem;
+    margin-bottom: 0.05rem;
+}
+#limit_num {
+    margin-left: 0.2rem;
+}
+.bottomTable {
+    margin-left: 0.3rem;
+}
+.bottom-item {
+    display: flex;
+    align-items: center;
+}
+.inputContent {
+    outline: none;
+    border: none;
+    border: 1px solid #E6E4E4;
+    border-radius: 0.1rem!important;
+    height: 0.9rem;
+    width: 45%;
+    margin-right: 0.3rem;
+    margin-bottom: 0.24rem;
+    font-family: 'PingFang SC';
+    font-weight: 500;
+    color: #000000;
+    font-size: 0.4rem;
+    padding-left: 0.23rem;
+}
+.confirmSubmit {
+    width: 1.86rem;
+    height: 0.86rem;
+    border: none;
+    background: #26C7DB;
+    border-radius: 0.1rem;
+    color: #fff;
+    font-size: 0.4rem;
+}
+.addSupplyBtn {
+    width: 1.86rem;
+    height: 0.86rem;
+    border: none;
+    /* display: inline-block; */
+    background: #FFB22B;
+    /* line-height: 0.86rem; */
+    /* text-align: center; */
+    color: #fff;
+    font-size: 0.4rem;
+    border-radius: 0.1rem;
+    margin-left: 0.2rem;
+}
+.search-item.col-2 {
+    width: 49%;
+}
+.search-item.col-2:first-child {
+    border-right: 1px solid #E0E0E0;
+}
+.changeSearchWidth.search-item {
+    width: 50%!important;
+}
+.select2-container .select2-selection--single .select2-selection__rendered {
+    padding-left: 0.4rem!important;
+    width: 3.8rem;
+}
+.search-box .search-item .input-date {
+    padding-left: 0.4rem!important;
+}
+.search-box .changeSearchWidth.search-item .input-date {
+    padding-left: 1.5rem!important;
+}
+.search-box .changeSearchWidth.search-item .btn-date {
+    background-position: 4.15rem 0.45rem!important;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    right: 0.45rem;
+}
+.fengexian {
+    height: 0.2rem;
+    background: #F6F6F6;
+    margin-bottom: 0.28rem;
+}
+.newAddBox {
+    margin-left: 0.3rem;
+}
+.layui-layer.layui-layer-page {
+    left: 30px!important;
+    border-radius: 0.2rem!important;
+}
+.lwx-layer-table {
+    margin-top: 0.3rem!important;
+}
+.lwx-layer-table tr td {
+    font-size: 0.38rem!important;
+}
+.layui-layer .lwx-layer-table .inputContentApply {
+    outline: none;
+    border: none;
+    border: 1px solid #ccc;
+    padding-left: 0.3rem;
+    height: 0.7rem;
+    border-radius: 0.1rem!important;
+    width: 70%;
+    margin-bottom: 0.2rem;
+}
+.layui-layer .lwx-layer-table .remarkContentApply {
+    border-radius: 0.1rem;
+    width: 75%;
+    border: 1px solid #ccc;
+}
+
+.layui-layer-title {
+    border-radius: 0.2rem!important;
+}
+.req {
+    color: red;
+}
+.remarkContent {
+    display: block;
+    margin-left: 0.2rem;
+}
+.saveButton {
+    width: 1.5rem;
+    height: 0.7rem;
+    border: none;
+    border-radius: 0.1rem!important;
+    background: #26C7DB;
+    color: #fff;
+    margin-right: 0.3rem;
+}
+.cacelButton {
+    background: #ccc;
+}
+.readOnlyInput {
+    outline: none;
+    border: none;
+    line-height: 0.7rem;
+}
+.lwx-layer-td,.llt1 {
+    width: 3.2rem;
+}
+.addNewContentBox {
+    display: flex;
+    align-items: center;
+}
+.attentionPoint {
+    color: #26C7DB;
+}
+.descriptionBox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999;
+    background: rgba(0,0,0,.5);
+    display: none;
+}
+.shadowBox {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: table;
+}
+.shadow-cell {
+    display: table-cell;
+    position: relative;
+    vertical-align: middle
+}
+.descriptionContent {
+    width: 9rem;
+    background: #FFFFFF;
+    border-radius: 0.1rem;
+    margin: -1rem auto 0;
+    box-sizing: border-box;
+    padding-bottom: 0.3rem;
+}
+.content-title {
+    font-size: 0.44rem;
+    color: #222222;
+    height: 1.1rem;
+    font-weight: bold;
+    background: #eee;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0.3rem;
+    border-radius: 0.1rem;
+}
+.content-item {
+    margin-top: 0.32rem;
+    font-size: 0.42rem;
+    line-height: 0.6rem;
+    color: #222222;
+}
+.descriptionContent .content-item p {
+    font-weight: bold;
+    padding-left: 0.3rem;
+}
+.contentItem-detail {
+    padding-left: 0.3rem;
+    margin-bottom: 0.2rem;
+    display: inline-block;
+}
+/* .descriptionContent .content-item span:first-child {
+    display: inline-block;
+    width: 90%;
+} */
+.closeImg {
+    width: 0.4rem;
+}
+.zhuyi {
+    width: 93%;
+    margin: 0 auto;
+    position: relative;
+    top: 0.7rem;
+    color:red;
+}

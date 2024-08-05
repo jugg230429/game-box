@@ -1,0 +1,564 @@
+<extend name="../mediapublic/base" />
+<!-- 主体内容 -->
+<block name="body">
+    <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/newsinfo.css">
+    <div class="news_con layui-container">
+        <div class="newsleft fl">
+            <div class="clear newsleft_nav">
+                <a href="{:url('Article/index',['category_id'=>3])}">
+                    <div class="news_nav_item <eq name='category_id' value='3'>newsleft_nav_active</eq>">
+                        <p>活动</p>
+                        <div class="nav_triangle"></div>
+                    </div>
+                </a>
+                <a href="{:url('Article/index',['category_id'=>4])}">
+                    <div class="news_nav_item <eq name='category_id' value='4'>newsleft_nav_active</eq>"
+                        >
+                        <p>公告</p>
+                        <div class="nav_triangle"></div>
+                    </div>
+                </a>
+                <a href="{:url('Article/index',['category_id'=>2])}">
+                    <div class="news_nav_item <eq name='category_id' value='2'>newsleft_nav_active</eq>">
+                        <p>资讯</p>
+                        <div class="nav_triangle"></div>
+                    </div>
+                </a>
+                <a href="{:url('Article/index',['category_id'=>5])}">
+                    <div class="news_nav_item <eq name='category_id' value='5'>newsleft_nav_active</eq>">
+                        <p>攻略</p>
+                        <div class="nav_triangle"></div>
+                    </div>
+                </a>
+            </div>
+            <div class="newsleft_con">
+                 <div class="newsleft_has_con">
+                     <div class="zhanweidiv">
+                         <empty name="data">
+                             <div class="no_new_text" >
+                                 <p>~暂无内容~</p>
+                             </div>
+                         </empty>
+                         <!-- 有公告时显示 -->
+                         <div class="news-date-box today">
+                             <ul class="newsleft_con_list">
+                                 <php>static $first = 1;$ispage = input('page');</php>
+                                 <volist name="data" id="vo">
+                                     <volist name="vo" id="vv" key="kk" >
+                                         <li class="newsleft_con_item <if condition='($first eq 1) and $ispage <=1'>today</if>">
+                                             <a href="{:url('Article/detail',['id'=>$vv['id'],'category_id'=>$category_id])}" class="v-middle">
+                                                 <div class="news-img">
+                                                     <img src="{:cmf_get_image_url($vv.thumbnail)}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                                                 </div>
+                                                 <div class="news-content">
+                                                     <div class="news-title">{$vv.post_title}</div>
+                                                     <div class="news-text">{$vv.post_excerpt}</div>
+                                                 </div>
+                                             </a>
+                                             <!--时间线-->
+                                             <if condition="$kk eq 1">
+                                                <div class="news-date"><p class="news-day">{:date('d',$vv['update_time'])}</p> <p class="news-month">{:date('m',$vv['update_time'])}月</p> </div>
+                                             </if>
+                                         </li>
+                                         <php>$first = 0;</php>
+                                     </volist>
+                                 </volist>
+
+                             </ul>
+                         </div>
+                     </div>
+                     <notempty name="data">
+                         <div class="gamelistpage">{$page}</div>
+                     </notempty>
+                </div>
+            </div>
+        </div>
+		<div class="newsright fl">
+		<div>
+            <if condition="PERMI neq 2 and PERMI gt 0">
+            <div class="rank-title rank-title-active">手游</div>
+            </if>
+            <if condition="PERMI neq 1 and PERMI gt 0">
+			<div class="rank-title">H5游戏</div>
+            </if>
+            <if condition="YPERMI eq 1">
+                <div class="rank-title">页游</div>
+            </if>
+		</div>
+		<div>
+		<!-- 手游排行榜 -->
+            <if condition="PERMI neq 2 and PERMI gt 0">
+            <div class="rank-contain show">
+                <div class="rank-menu v-middle h-middle">
+                    <a href="javascript:;" class="rank-menu-item active">热游榜</a>
+                    <a href="javascript:;" class="rank-menu-item">新游榜</a>
+                    <a href="javascript:;" class="rank-menu-item">下载榜</a>
+                </div>
+                <div class="rank-tap">
+                    <notempty name="hotgame">
+                        <div class="rank-content">
+                            <div class="rank-top-box">
+                                <volist name="hotgame" id="hot">
+                                    <if condition="$key elt 2">
+                                        <div class="rank-no{$key+1}">
+                                            <i class="top-icon no{$key+1}"></i>
+                                            <a href="{$hot.url}" class="game-info">
+                                                <div class="game-icon">
+                                                    <notempty name="hot.icon"><img src="{:cmf_get_image_url($hot['icon'])}" alt="" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null">
+                                                    </notempty>
+                                                </div>
+                                                <p class="game-title">{$hot['relation_game_name']}</p>
+                                                <div class="down-btn">{:get_simple_number($hot['dow_num'])}下载</div>
+                                            </a>
+                                        </div>
+                                    </if>
+                                </volist>
+                            </div>
+                            <if condition="count($hotgame) gt 3">
+                                <div class="rank-other">
+                                    <div class="rank-other-title-box">
+                                        <span class="other-ranking-title">排名</span>
+                                        <span class="other-game-title">游戏</span>
+                                        <span class="other-hot-title">热度</span>
+                                        <span class="other-down-title">下载</span>
+                                    </div>
+                                    <ul class="rank-other-list">
+                                        <volist name="hotgame" id="hot" offset="3">
+                                            <li class="rank-other-item v-middle">
+                                                <a href="{$hot.url}">
+                                                    <span class="other-ranking-title"><span>{$key+1}</span></span>
+                                                    <span class="other-game-title">{$hot['relation_game_name']}</span>
+                                                    <span class="other-hot-title">{:get_simple_number($hot['dow_num'])}</span>
+                                                    <span class="other-down-title down-btn">下载</span>
+                                                </a>
+                                            </li>
+                                        </volist>
+                                    </ul>
+                                </div>
+                            </if>
+                        </div>
+                        <else/>
+                        <div class="no-rank" style="">~暂无排行~</div>
+                    </notempty>
+                </div>
+                <div class="rank-tap hide">
+                    <notempty name="newgame">
+                        <div class="rank-content">
+                            <div class="rank-top-box">
+                                <volist name="newgame" id="new">
+                                    <if condition="$key elt 2">
+                                        <div class="rank-no{$key+1}">
+                                            <i class="top-icon no{$key+1}"></i>
+                                            <a href="{$new.url}" class="game-info">
+                                                <div class="game-icon">
+                                                    <notempty name="new.icon"><img src="{:cmf_get_image_url($new['icon'])}" alt="" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null">
+                                                    </notempty>
+                                                </div>
+                                                <p class="game-title">{$new['relation_game_name']}</p>
+                                                <div class="down-btn">下载</div>
+                                            </a>
+                                        </div>
+                                    </if>
+                                </volist>
+                            </div>
+                            <if condition="count($newgame) gt 3">
+                                <div class="rank-other">
+                                    <div class="rank-other-title-box">
+                                        <span class="other-ranking-title">排名</span>
+                                        <span class="other-game-title">游戏</span>
+                                        <span class="other-hot-title">热度</span>
+                                        <span class="other-down-title">下载</span>
+                                    </div>
+                                    <ul class="rank-other-list">
+                                        <volist name="newgame" id="new" offset="3">
+                                            <li class="rank-other-item v-middle">
+                                                <a href="{$new.url}">
+                                                    <span class="other-ranking-title"><span>{$key+1}</span></span>
+                                                    <span class="other-game-title">{$new['relation_game_name']}</span>
+                                                    <span class="other-hot-title">{:get_simple_number($new['dow_num'])}</span>
+                                                    <span class="other-down-title down-btn">下载</span>
+                                                </a>
+                                            </li>
+                                        </volist>
+                                    </ul>
+                                </div>
+                            </if>
+                        </div>
+                        <else/>
+                        <div class="no-rank" style="">~暂无排行~</div>
+                    </notempty>
+                </div>
+                <div class="rank-tap hide">
+                    <notempty name="downgame">
+                        <div class="rank-content">
+                            <div class="rank-top-box">
+                                <volist name="downgame" id="dow">
+                                    <if condition="$key elt 2">
+                                        <div class="rank-no{$key+1}">
+                                            <i class="top-icon no{$key+1}"></i>
+                                            <a href="{$dow.url}" class="game-info">
+                                                <div class="game-icon">
+                                                    <notempty name="dow.icon"><img src="{:cmf_get_image_url($dow['icon'])}" alt="" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null">
+                                                    </notempty>
+                                                </div>
+                                                <p class="game-title">{$dow['relation_game_name']}</p>
+                                                <div class="down-btn">下载</div>
+                                            </a>
+                                        </div>
+                                    </if>
+                                </volist>
+                            </div>
+                            <if condition="count($downgame) gt 3">
+                                <div class="rank-other">
+                                    <div class="rank-other-title-box">
+                                        <span class="other-ranking-title">排名</span>
+                                        <span class="other-game-title">游戏</span>
+                                        <span class="other-hot-title">热度</span>
+                                        <span class="other-down-title">下载</span>
+                                    </div>
+                                    <ul class="rank-other-list">
+                                        <volist name="downgame" id="dow" offset="3">
+                                            <li class="rank-other-item v-middle">
+                                                <a href="{$dow.url}">
+                                                    <span class="other-ranking-title"><span>{$key+1}</span></span>
+                                                    <span class="other-game-title">{$dow['relation_game_name']}</span>
+                                                    <span class="other-hot-title">{:get_simple_number($dow['dow_num'])}</span>
+                                                    <span class="other-down-title down-btn">下载</span>
+                                                </a>
+                                            </li>
+                                        </volist>
+                                    </ul>
+                                </div>
+                            </if>
+                        </div>
+                        <else/>
+                        <div class="no-rank" style="">~暂无排行~</div>
+                    </notempty>
+                </div>
+            </div>
+            </if>
+      <!-- H5排行榜 -->
+            <if condition="PERMI neq 1 and PERMI gt 0">
+          <div class="rank-contain">
+                <div class="rank-menu v-middle h-middle">
+                    <a href="javascript:;" class="rank-menu-item active">热游榜</a>
+                    <a href="javascript:;" class="rank-menu-item">新游榜</a>
+                    <a href="javascript:;" class="rank-menu-item">在玩榜</a>
+                </div>
+                <div class="rank-tap">
+                    <notempty name="h5hotgame">
+                        <div class="rank-content">
+                            <div class="rank-top-box">
+                                <volist name="h5hotgame" id="hot">
+                                    <if condition="$key elt 2">
+                                        <div class="rank-no{$key+1}">
+                                            <i class="top-icon no{$key+1}"></i>
+                                            <a href="{$hot.url}" class="game-info">
+                                                <div class="game-icon">
+                                                    <notempty name="hot.icon"><img src="{:cmf_get_image_url($hot['icon'])}" alt="" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null">
+                                                    </notempty>
+                                                </div>
+                                                <p class="game-title">{$hot['relation_game_name']}</p>
+                                                <div class="down-btn">去玩</div>
+                                            </a>
+                                        </div>
+                                    </if>
+                                </volist>
+                            </div>
+                            <if condition="count($h5hotgame) gt 3">
+                                <div class="rank-other">
+                                    <div class="rank-other-title-box">
+                                        <span class="other-ranking-title">排名</span>
+                                        <span class="other-game-title">游戏</span>
+                                        <span class="other-hot-title">热度</span>
+                                        <span class="other-down-title">去玩</span>
+                                    </div>
+                                    <ul class="rank-other-list">
+                                        <volist name="h5hotgame" id="hot" offset="3">
+                                            <li class="rank-other-item v-middle">
+                                                <a href="{$hot.url}">
+                                                    <span class="other-ranking-title"><span>{$key+1}</span></span>
+                                                    <span class="other-game-title">{$hot['relation_game_name']}</span>
+                                                    <span class="other-hot-title">{:get_simple_number($hot['dow_num'])}</span>
+                                                    <span class="other-down-title down-btn">去玩</span>
+                                                </a>
+                                            </li>
+                                        </volist>
+                                    </ul>
+                                </div>
+                            </if>
+                        </div>
+                        <else/>
+                        <div class="no-rank" style="">~暂无排行~</div>
+                    </notempty>
+                </div>
+                <div class="rank-tap hide">
+                    <notempty name="h5newgame">
+                        <div class="rank-content">
+                            <div class="rank-top-box">
+                                <volist name="h5newgame" id="new">
+                                    <if condition="$key elt 2">
+                                        <div class="rank-no{$key+1}">
+                                            <i class="top-icon no{$key+1}"></i>
+                                            <a href="{$new.url}" class="game-info">
+                                                <div class="game-icon">
+                                                    <notempty name="new.icon"><img src="{:cmf_get_image_url($new['icon'])}" alt="" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null">
+                                                    </notempty>
+                                                </div>
+                                                <p class="game-title">{$new['relation_game_name']}</p>
+                                                <div class="down-btn">去玩</div>
+                                            </a>
+                                        </div>
+                                    </if>
+                                </volist>
+                            </div>
+                            <if condition="count($h5newgame) gt 3">
+                                <div class="rank-other">
+                                    <div class="rank-other-title-box">
+                                        <span class="other-ranking-title">排名</span>
+                                        <span class="other-game-title">游戏</span>
+                                        <span class="other-hot-title">热度</span>
+                                        <span class="other-down-title">去玩</span>
+                                    </div>
+                                    <ul class="rank-other-list">
+                                        <volist name="h5newgame" id="new" offset="3">
+                                            <li class="rank-other-item v-middle">
+                                                <a href="{$new.url}">
+                                                    <span class="other-ranking-title"><span>{$key+1}</span></span>
+                                                    <span class="other-game-title">{$new['relation_game_name']}</span>
+                                                    <span class="other-hot-title">{:get_simple_number($new['dow_num'])}</span>
+                                                    <span class="other-down-title down-btn">去玩</span>
+                                                </a>
+                                            </li>
+                                        </volist>
+                                    </ul>
+                                </div>
+                            </if>
+                        </div>
+                        <else/>
+                        <div class="no-rank" style="">~暂无排行~</div>
+                    </notempty>
+                </div>
+                <div class="rank-tap hide">
+                    <notempty name="h5downgame">
+                        <div class="rank-content">
+                            <div class="rank-top-box">
+                                <volist name="h5downgame" id="dow">
+                                    <if condition="$key elt 2">
+                                        <div class="rank-no{$key+1}">
+                                            <i class="top-icon no{$key+1}"></i>
+                                            <a href="{$dow.url}" class="game-info">
+                                                <div class="game-icon">
+                                                    <notempty name="dow.icon"><img src="{:cmf_get_image_url($dow['icon'])}" alt="" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null">
+                                                    </notempty>
+                                                </div>
+                                                <p class="game-title">{$dow['relation_game_name']}</p>
+                                                <div class="down-btn">去玩</div>
+                                            </a>
+                                        </div>
+                                    </if>
+                                </volist>
+                            </div>
+                            <if condition="count($h5downgame) gt 3">
+                                <div class="rank-other">
+                                    <div class="rank-other-title-box">
+                                        <span class="other-ranking-title">排名</span>
+                                        <span class="other-game-title">游戏</span>
+                                        <span class="other-hot-title">热度</span>
+                                        <span class="other-down-title">去玩</span>
+                                    </div>
+                                    <ul class="rank-other-list">
+                                        <volist name="h5downgame" id="dow" offset="3">
+                                            <li class="rank-other-item v-middle">
+                                                <a href="{$dow.url}">
+                                                    <span class="other-ranking-title"><span>{$key+1}</span></span>
+                                                    <span class="other-game-title">{$dow['relation_game_name']}</span>
+                                                    <span class="other-hot-title">{:get_simple_number($dow['dow_num'])}</span>
+                                                    <span class="other-down-title down-btn">去玩</span>
+                                                </a>
+                                            </li>
+                                        </volist>
+                                    </ul>
+                                </div>
+                            </if>
+                        </div>
+                        <else/>
+                        <div class="no-rank" style="">~暂无排行~</div>
+                    </notempty>
+                </div>
+            </div>
+            </if>
+            <!-- 页游排行榜 -->
+            <if condition="YPERMI eq 1">
+                <div class="rank-contain">
+                    <div class="rank-menu v-middle h-middle">
+                        <a href="javascript:;" class="rank-menu-item active">热游榜</a>
+                        <a href="javascript:;" class="rank-menu-item">新游榜</a>
+                        <a href="javascript:;" class="rank-menu-item">在玩榜</a>
+                    </div>
+                    <div class="rank-tap">
+                        <notempty name="yyhotgame">
+                            <div class="rank-content">
+                                <div class="rank-top-box">
+                                    <volist name="yyhotgame" id="hot">
+                                        <if condition="$key elt 2">
+                                            <div class="rank-no{$key+1}">
+                                                <i class="top-icon no{$key+1}"></i>
+                                                <a href="{$hot.url}" class="game-info">
+                                                    <div class="game-icon">
+                                                        <notempty name="hot.icon"><img src="{:cmf_get_image_url($hot['icon'])}" alt="" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null">
+                                                        </notempty>
+                                                    </div>
+                                                    <p class="game-title">{$hot['relation_game_name']}</p>
+                                                    <div class="down-btn">去玩</div>
+                                                </a>
+                                            </div>
+                                        </if>
+                                    </volist>
+                                </div>
+                                <if condition="count($yyhotgame) gt 3">
+                                    <div class="rank-other">
+                                        <div class="rank-other-title-box">
+                                            <span class="other-ranking-title">排名</span>
+                                            <span class="other-game-title">游戏</span>
+                                            <span class="other-hot-title">热度</span>
+                                            <span class="other-down-title">去玩</span>
+                                        </div>
+                                        <ul class="rank-other-list">
+                                            <volist name="yyhotgame" id="hot" offset="3">
+                                                <li class="rank-other-item v-middle">
+                                                    <a href="{$hot.url}">
+                                                        <span class="other-ranking-title"><span>{$key+1}</span></span>
+                                                        <span class="other-game-title">{$hot['relation_game_name']}</span>
+                                                        <span class="other-hot-title">{:get_simple_number($hot['dow_num'])}</span>
+                                                        <span class="other-down-title down-btn">去玩</span>
+                                                    </a>
+                                                </li>
+                                            </volist>
+                                        </ul>
+                                    </div>
+                                </if>
+                            </div>
+                            <else/>
+                            <div class="no-rank" style="">~暂无排行~</div>
+                        </notempty>
+                    </div>
+                    <div class="rank-tap hide">
+                        <notempty name="yynewgame">
+                            <div class="rank-content">
+                                <div class="rank-top-box">
+                                    <volist name="yynewgame" id="new">
+                                        <if condition="$key elt 2">
+                                            <div class="rank-no{$key+1}">
+                                                <i class="top-icon no{$key+1}"></i>
+                                                <a href="{$new.url}" class="game-info">
+                                                    <div class="game-icon">
+                                                        <notempty name="new.icon"><img src="{:cmf_get_image_url($new['icon'])}" alt="" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null">
+                                                        </notempty>
+                                                    </div>
+                                                    <p class="game-title">{$new['relation_game_name']}</p>
+                                                    <div class="down-btn">去玩</div>
+                                                </a>
+                                            </div>
+                                        </if>
+                                    </volist>
+                                </div>
+                                <if condition="count($yynewgame) gt 3">
+                                    <div class="rank-other">
+                                        <div class="rank-other-title-box">
+                                            <span class="other-ranking-title">排名</span>
+                                            <span class="other-game-title">游戏</span>
+                                            <span class="other-hot-title">热度</span>
+                                            <span class="other-down-title">去玩</span>
+                                        </div>
+                                        <ul class="rank-other-list">
+                                            <volist name="yynewgame" id="new" offset="3">
+                                                <li class="rank-other-item v-middle">
+                                                    <a href="{$new.url}">
+                                                        <span class="other-ranking-title"><span>{$key+1}</span></span>
+                                                        <span class="other-game-title">{$new['relation_game_name']}</span>
+                                                        <span class="other-hot-title">{:get_simple_number($new['dow_num'])}</span>
+                                                        <span class="other-down-title down-btn">去玩</span>
+                                                    </a>
+                                                </li>
+                                            </volist>
+                                        </ul>
+                                    </div>
+                                </if>
+                            </div>
+                            <else/>
+                            <div class="no-rank" style="">~暂无排行~</div>
+                        </notempty>
+                    </div>
+                    <div class="rank-tap hide">
+                        <notempty name="yydowngame">
+                            <div class="rank-content">
+                                <div class="rank-top-box">
+                                    <volist name="yydowngame" id="dow">
+                                        <if condition="$key elt 2">
+                                            <div class="rank-no{$key+1}">
+                                                <i class="top-icon no{$key+1}"></i>
+                                                <a href="{$dow.url}" class="game-info">
+                                                    <div class="game-icon">
+                                                        <notempty name="dow.icon"><img src="{:cmf_get_image_url($dow['icon'])}" alt="" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null">
+                                                        </notempty>
+                                                    </div>
+                                                    <p class="game-title">{$dow['relation_game_name']}</p>
+                                                    <div class="down-btn">去玩</div>
+                                                </a>
+                                            </div>
+                                        </if>
+                                    </volist>
+                                </div>
+                                <if condition="count($yydowngame) gt 3">
+                                    <div class="rank-other">
+                                        <div class="rank-other-title-box">
+                                            <span class="other-ranking-title">排名</span>
+                                            <span class="other-game-title">游戏</span>
+                                            <span class="other-hot-title">热度</span>
+                                            <span class="other-down-title">去玩</span>
+                                        </div>
+                                        <ul class="rank-other-list">
+                                            <volist name="yydowngame" id="dow" offset="3">
+                                                <li class="rank-other-item v-middle">
+                                                    <a href="{$dow.url}">
+                                                        <span class="other-ranking-title"><span>{$key+1}</span></span>
+                                                        <span class="other-game-title">{$dow['relation_game_name']}</span>
+                                                        <span class="other-hot-title">{:get_simple_number($dow['dow_num'])}</span>
+                                                        <span class="other-down-title down-btn">去玩</span>
+                                                    </a>
+                                                </li>
+                                            </volist>
+                                        </ul>
+                                    </div>
+                                </if>
+                            </div>
+                            <else/>
+                            <div class="no-rank" style="">~暂无排行~</div>
+                        </notempty>
+                    </div>
+                </div>
+            </if>
+
+	  </div>
+	   </div>
+    </div>
+    <script>
+        $(function () {
+            $('.rank-menu a').click(function () {
+                $(this).addClass("active").siblings("a").removeClass("active");
+                var index = $(this).index();
+                $('.show .rank-tap').eq(index).show().siblings(".rank-tap").hide()
+            })
+			$(".rank-title").click(function(){
+			      var index=$(this).index();
+			      $(this).addClass("rank-title-active").siblings().removeClass("rank-title-active");
+				  $(".rank-contain").eq(index).addClass("show").siblings().removeClass("show");
+			})
+            $('.rank-title:first').addClass("rank-title-active")
+            $('.rank-contain:first').addClass("show")
+
+        })
+    </script>
+
+</block>

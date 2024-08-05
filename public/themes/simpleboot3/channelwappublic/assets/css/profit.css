@@ -1,0 +1,657 @@
+@charset "utf-8";
+html,body{
+  
+    color: #333333;
+    width: 100%;
+    height: 100%;
+}
+p{
+    margin: 0;
+}
+.select2-results__option{
+    padding-left: 0.41rem;
+}
+.select2-container--default .select2-results__option--highlighted[aria-selected]:after{
+    right: 0.4rem;
+}
+.page-container{
+    padding-bottom:3rem;
+	
+}
+.user-info-box{
+    width: 100%;
+    height: 4.346666rem;
+    background: url(../images/profit/shouyi_bg_zhanghao.png)no-repeat;
+    background-size: 100% 100%;
+}
+.user-info-box .user-function-box{
+    width:100%;
+    height: 0.9333rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+.user-info-box .user-function-box .user-news{
+    position: relative;
+    width: 0.64rem;
+    height: 0.56rem;
+    margin-right:0.4rem;
+    background: url(../images/profit/shouyi_ico_xiaoxi.png)no-repeat;
+    background-size: 100% 100%;
+    display: block;
+}
+.user-info-box .user-function-box .user-out-login{
+    position: relative;
+    width: 0.64rem;
+    height: 0.56rem;
+    margin-right:0.16rem;
+    background: url(../images/profit/tuichu.png)no-repeat;
+    background-size: 100% 100%;
+    display: block;
+}
+.user-info-box .user-function-box .red-port{
+    width: 0.18rem;
+    height: 0.18rem;
+    border-radius: 50%;
+    position: absolute;
+    top:0;
+    right: 0;
+    background: red;
+}
+.user-info-box  .user-info{
+    width: 100%;
+    padding: 0 0.2667rem;
+    box-sizing: border-box;
+    color: #ffffff;
+}
+.user-info-box .user-head-img{
+    width: 1.253rem;
+    height: 1.253rem;
+    border-radius: 50%;
+    margin-right: 0.24rem;
+}
+.user-info-box .user-name{
+    font-size: 0.4rem;
+    font-weight: bold;
+    float: left;
+}
+.user-info-box .user-account{
+    font-size: 0.32rem;
+    margin-top: 0.18rem;
+    float: left;
+    width: 100%;
+}
+.user-info-box .user-back-icon{
+    width: 0.2666rem;
+    height: 0.48rem;
+    background: url(../images/profit/shouyi_ico_tiaozhuan.png)no-repeat;
+    background-size: 100% 100%;
+    margin-left: auto;
+}
+.user-profit-box{
+    width: 9.44rem;
+    height: 3.12rem;
+    background: #FFFFFF;
+    border-radius: 0.1333rem;
+    margin: -1.573333rem auto 0;
+    color: #ffffff;
+}
+.user-profit-box .user-profit{
+    width: 100%;
+    height: 2.05333rem;
+    border-bottom: 0.026rem solid rgba(240,240,240,1);
+    padding:0 0.693rem;
+    box-sizing: border-box;
+}
+.user-profit-box .user-tixian-box{
+    width: 3.6rem;
+}
+.user-profit-box .title{
+    font-size: 0.293333rem;
+    color: #666666;
+    font-weight: 500;
+}
+.user-profit-box  .user-tixian-box .money{
+    font-size: 0.72rem;
+    color: #FFB22B;
+    font-weight: bold;
+
+}
+.profit-exchange-btn,
+.profit-tixian-btn,
+.ptb-btn{
+    width: 1.2rem;
+    height: 0.56rem;
+    border-radius: 0.08rem;
+    display: block;
+    line-height: 0.56rem;
+    font-size: 0.32rem;
+    text-align: center;
+    background: #FFB22B;
+    margin-right: 0.45333rem;
+    color: #ffffff;
+}
+.profit-tixian-btn{
+    background: #26C7DB;
+
+}
+.ptb-btn{
+    background: #41A6ED;
+    margin-right: 0.58333rem;
+}
+.ptb-btn:last-child{
+    margin-right: 0;
+}
+.user-profit-box .user-profit-btn{
+    width: 100%;
+    height: 1.0133rem;
+}
+.user-profit-box .user-profit-btn a{
+    width: 50%;
+    height: 100%;
+    font-size: 0.37333rem;
+    color: #333333;
+    position: relative;
+}
+.user-profit-box .user-profit-btn a:nth-child(2):before{
+    position: absolute;
+    top:0.186667rem;
+    left: 0;
+    width: 0.03rem;
+    height: 0.66667rem;
+    background: #F0F0F0;
+    content: '';
+}
+.user-profit-box  .profit-back-icon{
+    margin-left: 0.2rem;
+    width: 0.13333rem;
+    height: 0.24rem;
+    background: url(../images/profit/shouyi_ico_tiaozhuan@2x.png)no-repeat;
+    background-size: 100% 100%;
+    margin-top: 0.026rem;
+}
+.user-ptb-box{
+    width: 9.44rem;
+    height: 2.026667rem;
+    background: #FFFFFF;
+    border-radius: 0.1333rem;
+    margin: 0.266667rem auto 0;
+    padding: 0.693rem 0 0.693rem 0.693rem;
+    box-sizing: border-box;
+}
+.user-ptb-box .user-ptb{
+    width: 3.6rem;
+}
+.user-ptb-box .title{
+    font-size: 0.293333rem;
+    color: #666666;
+    font-weight: 500;
+}
+.user-ptb-box  .user-ptb .money{
+    font-size: 0.5rem;
+    color: #41A6ED;
+    font-weight: bold;
+    margin-top: 0.18rem;
+
+}
+.user-channel-box{
+    width: 9.44rem;
+    /* height:2.506667rem; */
+    background: #FFFFFF;
+    border-radius: 0.1333rem;
+    margin: 0.26667rem auto 0;
+    padding:0  0 0 0.693rem;
+    display: flex;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+}
+.user-channel-box .user-channel{
+    width: 3.2rem;
+}
+.user-channel-box .title{
+    font-size: 0.293333rem;
+    color: #666666;
+    font-weight: 500;
+}
+.user-channel-box  .money{
+    font-size: 0.5rem;
+    color: #444444;
+    font-weight: bold;
+    margin-top: 0.18rem;
+}
+.channelItemGather {
+    /* justify-content: space-around; */
+    justify-content: flex-start;
+    padding: 0 0 0.3rem 0!important;
+}
+/* .channel-btn{
+    width: 1.6rem;
+    margin-right: 1.5rem;
+} */
+.channel-btn i{
+    width: 1.3rem;
+    height: 1.3rem;
+    display: block;
+    margin: 0 auto 0.2rem;
+}
+.channel-btn i.erji-icon{
+    background: url(../images/profit/shouyi_icon_erjiqudao.png)no-repeat;
+    background-size: 100% 100%;
+}
+.channel-btn i.child-icon{
+    background: url(../images/profit/shouyi_icon_ziqudao.png)no-repeat;
+    background-size: 100% 100%;
+}
+.channel-btn i.total-icon{
+    background: url(../images/profit/shouyI_icon_jieshuan.png)no-repeat;
+    background-size: 100% 100%;
+}
+.channel-btn i.gift-icon{
+    background: url(../images/profit/btn_wdfl.png)no-repeat;
+    background-size: 100% 100%;
+}
+.channel-btn i.jiesuan-icon{
+    background: url("../images/profit/btn_hzdc(1).png")no-repeat;
+    background-size: 100% 100%;
+}
+.channel-btn i.coupon-icon{
+    background: url(../images/profit/btn_djqff.png)no-repeat;
+    background-size: 100% 100%;
+}
+.channel-btn i.support-icon{
+    background: url(../images/profit/btn_fcsq.png)no-repeat;
+    background-size: 100% 100%;
+}
+.channel-btn i.btn_bbcz-icon{
+    background: url(../images/profit/btn_bbcz.png)no-repeat;
+    background-size: 100% 100%;
+}
+.channel-btn i.btn_scxc-icon{
+    background: url(../images/profit/btn_scxc.png)no-repeat;
+    background-size: 100% 100%;
+}
+.channel-btn i.btn_kfyg-icon{
+    background: url(../images/profit/btn_kfyg.png)no-repeat;
+    background-size: 100% 100%;
+}
+.user-channel-box div{
+    width: 2.27rem;
+    margin-top: 0.31rem;
+    margin-left: 0.08rem;
+}
+
+.channel-btn p{
+    width: 100%;
+    text-align: center;
+    font-size: 0.32rem;
+    color: #333333;
+    box-sizing: border-box;
+    white-space: nowrap;
+
+}
+.channel-btn:last-child{
+    margin-right: 0;
+}
+
+
+/*
+收益兑换、收益提现*/
+.profit-exchange-container ,
+.my-profit-container{
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    color: #333333;
+}
+.profit-exchange-container .header-title ,.my-profit-container .header-title{
+    position: relative;
+}
+/*.profit-exchange-container .header-title.active:after,.my-profit-container .header-title.active:after{
+    position: absolute;
+    left: 0;
+    bottom: -0.25rem;
+    width: 100%;
+    height: 0.08rem;
+    background: #374760;
+    content: '';
+}*/
+.profit-exchange-content{
+    width: 100%;
+    padding:0rem 0.32rem 1rem;
+    box-sizing: border-box;
+}
+.exchange-tab .form{
+    width: 100%;
+    padding: 0 0.15rem;
+    box-sizing: border-box;
+}
+.form .form-item{
+    width: 100%;
+    height: 0.9rem;
+    margin-top: 0.37rem;
+    /*border-bottom: 0.0267rem solid #EDEEEF;*/
+    display: flex;
+    align-items: center;
+    position: relative;
+
+}
+.form-item .form-item-title{
+    width: 2.3333rem;
+    height: 100%;
+    font-size: 0.373rem;
+    color: #666;
+    line-height: 1rem;
+
+}
+.form-item .form-item-text{
+    width:calc(100% - 2.1333rem) ;
+    height: 100%;
+    box-sizing: border-box;
+    font-size: 0.34666rem;
+    line-height: 1rem;
+    position: relative;
+}
+.form-item .form-item-input {
+    width: 100%;
+    border: 0.0267rem solid #E0E0E0;
+    outline: none;
+    height: 100%;
+    padding-left: 0.2rem;
+    box-sizing: border-box;
+    border-radius: 3px;
+    font-size: 0.373rem;
+    box-shadow: none;
+    -webkit-appearance: none;
+}
+.form-item  .form-item-input:read-only{
+    border: none;
+    padding-left: 0;
+	color:#666;
+}
+.form-item .form-item-input::-webkit-input-placeholder{
+	color:#C0C0C4;
+}
+.form-item .form-item-input::-webkit-input-placeholder{
+	color:#C0C0C4;
+}
+.form-item .form-item-input::-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:#C0C0C4;
+}
+.form-item .form-item-input::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:#C0C0C4;
+}
+.form-item .form-item-input::-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:#C0C0C4;
+}
+.form-item-tips{
+    color: #999999;
+    font-size: 0.32rem;
+    position: absolute;
+    bottom: -0.6rem;
+    left: 0;
+    line-height: 1.2;
+}
+.form-item .submit-btn{
+    font-size: 0.4rem;
+    color: #fff;
+    background: #26c7db;
+    border-radius: 0.08rem;
+    width: 2.2rem;
+    height: 0.9rem;
+    /*margin: -0.5rem 0 0 0;*/
+    line-height: 0.9rem;
+    text-align: center;
+    border: none;
+}
+.form-item .withdraw-submit-btn{
+	margin-top: 1rem;
+}
+
+.profit-menu-box{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    height: 1.2rem;
+    border-bottom: 0.0267rem solid #E0E0E0;
+    box-sizing: border-box;
+    padding: 0 5%;
+}
+.profit-menu-box a {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.37333rem;
+    color: #888888;
+}
+.profit-menu-box a.active {
+    color: #333333;
+    position: relative;
+}
+.profit-menu-box a.active:after {
+    position: absolute;
+    bottom: 0;
+    margin: 0 auto;
+    width: 0.96rem;
+    height: 0.053rem;
+    background: #26C7DB;
+    content: '';
+	left:50%;
+	margin-left:-10%;
+}
+footer{
+    display: none!important;
+}
+
+.add-child-icon{
+    position: absolute;
+    right: 2rem;
+    top:0.35rem;
+    color: #26C7DB;  
+}
+.add-child-icon img {
+    width: 0.5rem;
+    height: 0.5rem;
+}
+.titleText {
+    font-size: 0.44rem;
+}
+.noAccountBox {
+    display: none;
+	overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+	background: rgba(0,0,0,.5);
+	z-index: 99;
+}
+.noticeContainer{
+    width: 9.14rem;
+    height: 13.8rem;
+    background-color: #fff;
+    border-radius: 0.2rem;
+    margin: 2rem 0.44rem;
+}
+.containerTitle {
+    color: #333333;
+    font-size: 0.5rem;
+    font-weight: bold;
+    /* padding: 0.44rem 3.07rem 0 3.06rem; */
+    text-align: center;
+    padding-top: 0.44rem;
+}
+.contentCenter {
+    width: 7.86rem;
+    height: 10.61rem;
+    color: #666666;
+    font-size: 0.34rem;
+    padding: 0.44rem 0.69rem 0 0.59rem;
+    line-height: 0.6rem;
+    overflow-y: scroll;
+}
+.contentCenter p {
+    width: 100%;
+    word-break: break-all;
+}
+.bottom-btns {
+    width: 2rem;
+    height: 0.86rem;
+    background: #ABABAB;
+    border-radius: 0.1rem;
+    color: #fff;
+    border: none;
+    outline: none;
+    font-size: 0.4rem;
+    margin-right: 0.6rem;
+}
+.agree {
+    background: #26C7DB;
+}
+.grade_img{
+    width:0.91rem;
+    height: 0.43rem;
+    margin-left: 0.2rem;
+}
+/* 等级弹窗 */
+.grade-pop{
+    /* display: none; */
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 19891015;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  top:0px;
+    left: 0px;
+}
+.grade-box{
+    width: 8.7rem;
+    height: 10rem;
+    /* height: 7.52rem; */
+    background: #FFFFFF;
+	border-radius:0.2rem;
+	/* overflow: hidden; */
+	position: static;
+	left: 50%;
+	top: 50%;
+    padding-bottom: 0.6rem;
+	/* margin-left:-4.35rem; */
+	background-color: #fff;
+}
+.grade_table tbody{
+    display: block;
+    height: 5.5rem;
+    overflow: hidden;
+    overflow-y: scroll;
+
+}
+.grade_table tbody td{
+   width: 3rem;
+}
+.grade_table thead {
+   display: block;
+}
+.grade-top p{
+    float: left;
+    font-size: 0.4rem;
+font-family: 'PingFang SC';
+font-weight: bold;
+color: #FFFFFF;
+padding:0.29rem 0 0.29rem 0.57rem;
+ }
+ .grade-top a{
+     float: right;
+  }
+.grade-top{
+    float: left;
+    width:100%;
+    background-color: #29364C;
+    border-radius: 0.2rem  0.2rem 0 0;
+}
+.grade-close{
+    /* margin: 0.4rem 0.57rem 0.4rem 0; */
+    margin: -0.55rem 0.57rem 0.4rem 0;
+    float: right;
+    width: 0.34rem;
+    height: 0.34rem;
+}
+.grade-content{
+    float: left;
+    margin:0 0.57rem 0 0.57rem; 
+    /* background-color: pink; */
+}
+.grade-title{
+	font-size: 0.34rem;
+font-family: 'PingFang SC';
+font-weight: bold;
+color: #222222;
+line-height: 0.69rem;
+margin: 0.2rem 0 0.44rem;
+}
+.grade{
+	color: #41A6ED;
+}
+.score{
+	color: #FF6148;
+}
+.grade_table .t_header th{
+    width: 7.56rem;
+    height: 0.86rem;
+	line-height: 0.86rem;
+	background: #EBEFF5;
+    font-size: 0.34rem;
+    font-family: 'Microsoft YaHei';
+    font-weight: 400;
+    color: #999999;
+}
+.grade_table .t_header{
+    position: sticky;
+    z-index: 2;
+    top: 0;
+}
+.grade_table .t_header th:first-child{
+    border-top-left-radius: 0.2rem;
+    border-bottom-left-radius: 0.2rem;
+}
+.grade_table .t_header th:last-child{
+    border-top-right-radius: 0.2rem;
+    border-bottom-right-radius: 0.2rem;
+}
+.grade_table tr{
+
+height: 0.33rem;
+font-size: 0.34rem;
+font-family: 'Microsoft YaHei';
+font-weight: 400;
+color: #333333;
+line-height: 0.69rem;
+
+}
+.grade_table tr,th{
+	text-align: center;;
+}
+.grade_table tr td{
+	border-bottom: 1px solid #EBEFF5;
+}
+.grade_table tr:last-child td:first-child {
+    border-bottom-left-radius: 12px;
+}
+
+.grade_table tr:last-child td:last-child {
+    border-bottom-right-radius: 12px;
+}
+
+.grade_table tr:first-child td:first-child {
+    border-top-left-radius: 12px;
+}
+
+.grade_table  tr:first-child td:last-child {
+    border-top-right-radius: 12px;
+}

@@ -1,0 +1,199 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="javascript:;">异常预警</a></li>
+            <span class="title_remark">说明：记录所有异常行为。</span>
+            <span class="answerPop">
+                <a href="javascript:;" class="answerMark js-answerMark">?</a>
+                <span class="answerList js-answerList">
+                    <span class="answerTitle">数据说明<a href="javascript:;" class="answerClose js-answerClose">X</a></span>
+                    <ul>
+                        <li class="answerItem">
+                            <span class="answerNoun">余额到账异常</span>
+                            <span class="answerExplain">充值的实际到账金额与账户余额变动不符（包含平台币/绑币充值、渠道代充）</span>
+                        </li><li class="answerItem">
+                            <span class="answerNoun">大笔订单预警</span>
+                            <span class="answerExplain">出现大额单笔充值订单，订单金额≥2000（包含游戏充值、平台币充值、绑币充值、会长代充、渠道平台币转移）</span>
+                        </li><li class="answerItem">
+                            <span class="answerNoun">代充折扣异常</span>
+                            <span class="answerExplain">游戏设置会长代充折扣≤3折</span>
+                        </li><li class="answerItem">
+                            <span class="answerNoun">账户修改异常</span>
+                            <span class="answerExplain">玩家账户平台币余额修改变动差额≥500</span>
+                        </li><li class="answerItem">
+                            <span class="answerNoun">后台发放异常</span>
+                            <span class="answerExplain">后台单笔发放平台币/绑币≥500</span>
+                        </li>
+                    </ul>
+                </span>
+            </span>
+        </ul>
+
+        <form id="search_form" class="well form-inline fr" method="get" action="{:url('Warning/lists')}" onsubmit="return check();">
+            <input type="text" class="form-control" name="user_account" style="width: 120px;" value="{:input('request.user_account/s','')}" placeholder="玩家账号">
+            <input type="text" class="form-control js-bootstrap-date" name="start_time" id="start_time" placeholder="记录开始时间"
+                   value="{:input('request.start_time/s','')}" style="width: 140px;" autocomplete="off">-
+            <input type="text" class="form-control js-bootstrap-date" name="end_time" id="end_time" placeholder="记录结束时间"
+                   value="{:input('request.end_time/s','')}" style="width: 140px;" autocomplete="off">
+            <select name="type" id="type" class="selectpicker" type="{:input('request.type','')}" style="width: 120px;">
+                <option value="">异常类型</option>
+                <volist name=":get_info_status(null,29,1)" id="vo" key="k">
+                    <option value="{$key}" <if condition="input('request.type') eq $key">selected</if>>{$vo}</option>
+                </volist>
+            </select>
+            <select name="target" id="target" class="selectpicker " data-live-search="true" data-size="8" admin_id="{:input('request.admin_id/s','')}"  style="width: 100px;">
+                <option value="">充值对象</option>
+                <volist name=":get_info_status(null,30,1)" id="vo">
+                    <option value="{$key}" <if condition="input('request.target') eq $key">selected</if>>{$vo}</option>
+                </volist>
+            </select>
+            <select name="status" id="status" class="selectpicker " data-live-search="true" data-size="8" admin_id="{:input('request.admin_id/s','')}"  style="width: 100px;">
+                <option value="">预警状态</option>
+                <option value="0" <if condition="input('request.status') heq '0'">selected</if>>待处理</option>
+                <option value="1" <if condition="input('request.status') eq '1'">selected</if>>已处理</option>
+            </select>
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('Warning/lists')}">清空</a>
+        </form>
+        <form class="js-ajax-form" action="" method="post">
+        <div class="table-actions position fl" >
+            <!--            <button id="" class="btn btn-primary  mtb17" type="button">-->
+            <!--                处理-->
+            <!--            </button>-->
+            <button class="btn btn-danger js-ajax-submit mtb17 ml20" type="submit"
+                    data-action="{:url('member/warning/ignore')}" data-subcheck="true" data-msg="您确定忽略吗？" style="margin-left:-10px;">
+                忽略
+            </button>
+        </div>
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="all-checkbox" class="table-item-checkbox js-check-all" data-direction="x" data-checklist="js-check-x"><label for="all-checkbox" class=""></label></th>
+                    <th>异常类型</th>
+                    <th>玩家账号</th>
+                    <th>渠道账号</th>
+                    <th>充值对象</th>
+                    <th>订单号</th>
+                    <th>订单金额</th>
+                    <!--<th>变动次数</th>-->
+                    <th>异常金额</th>
+                    <th>代充折扣</th>
+                    <th>记录时间</th>
+                    <th>状态</th>
+                    <th>处理时间</th>
+                    <th>处理人</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <empty name="data_lists">
+                    <tr><td colspan="13" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <volist name="data_lists" id="vo">
+                    <tr>
+                        <td>
+                            <input type="checkbox" id="ids-checkbox{$vo.id}" class="table-item-checkbox js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
+                                   value="{$vo.id}" >
+                            <label for="ids-checkbox{$vo.id}" class=""></label>
+                        </td>
+                        <td> {:get_info_status($vo['type'],29)}</td>
+                        <td>{$vo.user_account|default='--'}</td>
+                        <td>{:$vo['promote_account']?:'--'}</td>
+                        <td>{:get_info_status($vo['target'],30)}</td>
+                        <td>{$vo.pay_order_number|default='--'}</td>
+                        <td>{$vo.pay_amount|default='--'}</td>
+                        <!--<td>{$vo.change_count|default='&#45;&#45;'}</td>-->
+                        <td>{$vo.unusual_money|default='--'}</td>
+                        <td>{$vo.discount|default='--'}</td>
+                        <td>{:date('Y-m-d H:i:s',$vo['create_time'])}</td>
+                        <th>{:get_info_status($vo['status'],31)}</th>
+                        <td>{:$vo['op_time']?date('Y-m-d H:i:s',$vo['op_time']):'--'}</td>
+                        <td>{$vo.op_account|default='--'}</td>
+                        <td>
+                            <if condition="$vo['status'] eq 0 ">
+                                <switch name="vo.type">
+                                    <case value="1">
+                                        <eq name="vo.target" value="1"><a href="{:url('@recharge/bindspend/lists',['pay_order_number'=>$vo['pay_order_number']])}">处理</a></eq>
+                                        <eq name="vo.target" value="2"><a href="{:url('@recharge/ptbspend/lists',['pay_order_number'=>$vo['pay_order_number']])}">处理</a></eq>
+                                        <eq name="vo.target" value="3"><a href="{:url('@recharge/spend/lists',['pay_order_number'=>$vo['pay_order_number']])}">处理</a></eq>
+                                        <eq name="vo.target" value="4"><a href="{:url('@recharge/bindagent/lists',['pay_order_number'=>$vo['pay_order_number']])}">处理</a></eq>
+                                    </case>
+                                    <case value="3">
+                                        <eq name="vo.target" value="1"><a href="{:url('@recharge/bindspend/lists',['pay_order_number'=>$vo['pay_order_number']])}">处理</a></eq>
+                                        <eq name="vo.target" value="2"><a href="{:url('@recharge/ptbspend/lists',['pay_order_number'=>$vo['pay_order_number']])}">处理</a></eq>
+                                        <eq name="vo.target" value="3"><a href="{:url('@recharge/spend/lists',['pay_order_number'=>$vo['pay_order_number']])}">处理</a></eq>
+                                        <eq name="vo.target" value="4"><a href="{:url('@recharge/bindagent/lists',['user_account'=>$vo['user_account']])}">处理</a></eq>
+                                    </case>
+                                    <case value="4">
+                                        <if condition="$vo['game_id'] gt 0">
+                                            <php>$sdk_version = get_game_entity($vo['game_id'],'sdk_version')['sdk_version'];</php>
+                                            <switch name="sdk_version">
+                                                <case value="1"> <a href="{:url('@game/game/lists',['game_id'=>$vo['game_id']])}">处理</a></case>
+                                                <case value="2"> <a href="{:url('@game/game/lists',['game_id'=>$vo['game_id']])}">处理</a></case>
+                                                <case value="3"> <a href="{:url('@game/game/hlists',['game_id'=>$vo['game_id']])}">处理</a></case>
+                                                <case value="4"> <a href="{:url('@game/game/ylists',['game_id'=>$vo['game_id']])}">处理</a></case>
+                                            </switch>
+
+                                        <else/>
+                                            <a href="{:url('@recharge/rebate/agent',['promote_id'=>$vo['promote_id']])}">处理</a>
+                                        </if>
+
+                                    </case>
+                                    <case value="5"><a href="{:url('user/balance_update_lists',['user_account'=>$vo['user_account']])}">处理</a></case>
+                                    <case value="6">
+                                        <eq name="vo.target" value="1"><a href="{:url('@recharge/bindspend/senduserlists',['user_account'=>$vo['user_account']])}">处理</a></eq>
+                                        <eq name="vo.target" value="2">
+                                            <gt name="vo.user_id">
+                                                <a href="{:url('@recharge/ptbspend/senduserlists',['user_account'=>$vo['user_account']])}">处理</a>
+                                            <else/>
+                                                <a href="{:url('@recharge/ptbpromote/sendpromotelists',['account'=>$vo['promote_account']])}">处理</a>
+                                            </gt>
+                                        </eq>
+                                    </case>
+                                </switch>
+                                <a href="{:url('ignore',['id'=>$vo['id']])}" class="js-ajax-dialog-btn" data-msg="确定忽略吗？">忽略</a>
+                            </if>
+                            <if condition="$vo['status'] eq 1 ">
+                               --
+                            </if>
+                        </td>
+                    </tr>
+                    </volist>
+                </empty>
+            </tbody>
+        </table>
+        <div class="pagination">
+            {$page}
+        </div>
+        </form>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script>
+        admin_id = $("#admin_id").attr('admin_id');
+        $("#admin_id").selectpicker('val', admin_id);
+        $("#type").selectpicker('val', $('#type').attr('type'));
+        function check(){
+            var start_time = $("#start_time").val();
+            var end_time = $("#end_time").val();
+            if(start_time != '' && end_time != '' && start_time > end_time){
+                layer.msg('开始时间不能大于结束时间');
+                return false;
+            }
+            return true;
+        }
+        $('.js-answerMark').on('click', function () {
+            $(this).siblings('.js-answerList').toggle(0, function () {
+                if($(this).filter(':visible').length) {
+                    $(this).filter(':visible').find('.js-answerClose').one('click', function () {
+                        $(this).closest('.js-answerList').hide();
+                        return false;
+                    });
+                }
+            });
+            return false;
+        });
+    </script>
+</body>
+</html>

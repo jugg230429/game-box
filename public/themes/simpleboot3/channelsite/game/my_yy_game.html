@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+		<include file="public@head"/>
+	</head>
+
+	<body>
+		<include file="public@nav"/>
+		<include file="public@header"/>
+		<div class="trunk">
+			<div class="trunk-con">
+				<div class="right-container">
+					<div class="normal-list">
+						<div class="trunk">
+							<div class="trunk-title">
+								<div class="location ">
+									<div class="location-container fr">当前位置：<span class="location-container-text">游戏管理&gt;</span><span class="location-container-text">我的游戏</span></div>
+								</div>
+								<img src="__TMPL__/public/assets/images/icon_normal_game.png" class="fl trunk-icon">
+								<span class="title-main fl ">游戏列表  </span>
+
+							</div>
+
+							<div class="tabpan">
+
+								<div class="tabpan-con tabpan-show">
+									<div class="clearfix">
+										<a class="btn-examine <if condition='input("type") != 1'>btn-examine-active </if>  fl" href="{:url('game/my_yy_game',['model'=>input('model')])}">审核通过</a>
+										<a class="btn-examine <if condition='input("type") == 1'>btn-examine-active </if> fl" href="{:url('game/my_yy_game',['type'=>1,'model'=>input('model')])}">审核中</a>
+									</div>
+									<div class="tabpan-con-type-btn">
+									<if condition="PERMI eq 3">
+
+										<a class="btn-examine fl" href="{:url('game/my_game',['type'=>input('type')])}">手游</a>
+										<a class="btn-examine fl" href="{:url('game/my_h5_game',['type'=>input('type'),'model'=>1])}">H5</a>
+
+									</if>
+									<if condition="YPERMI eq 1">
+										<a class="btn-examine btn-examine-active fl" href="{:url('game/my_yy_game',['type'=>input('type')])}">页游</a>
+									</if>
+									</div>
+									<form action="{:url('my_yy_game')}">
+										<div class="trunk-search clearfix fr">
+											<select id="game_name" name="game_name" class="tab-input js-select-gallery normal-space  fl select2-hidden-accessible">
+												<option value="" data="0">选择游戏</option>
+												<php>
+													$gmap['game_status'] = 1;
+													$gmap['sdk_version'] = 4;
+													$gmap['id'] = ['in',$apply_game_id];
+													$gmap['test_game_status'] = 0;  // 测试游戏不显示,但可以正常进入
+												</php>
+												<volist name=":get_game_list('id,game_name,relation_game_id,relation_game_name',$gmap,false,'sort desc ,id desc')" id="vv">
+													<option <if condition="$vv['relation_game_name'] eq input('game_name')"> selected</if> data="{$vv['relation_game_name']}" value="{$vv['relation_game_name']}">{$vv['relation_game_name']}</option>
+												</volist>
+
+											</select>
+											<input type="hidden" name="type" value="{:input('type')}">
+											<input type="submit" class="submit fr normal-space" id="submit" value="查询">
+										</div>
+									</form>
+									<div class="clear"></div>
+									<div class="minh-table">
+									<if condition='input("type") == 1'>
+										<table class="table normal-table" id="promotecoin_table">
+											<tbody>
+												<tr>
+
+													<th>ICON</th>
+													<th>游戏名称</th>
+													<th>平台</th>
+													<notempty name="baseinfo.pattern">
+													<th>注册单价</th>
+														<else/>
+													<th>分成比例 </th>
+													</notempty>
+												</tr>
+												<notempty name="data_lists">
+													<volist name="data_lists" id="vo">
+													<php>
+														$vo['promote_money'] = sprintf("%.2f",$vo['promote_money']);
+														$vo['promote_ratio'] = sprintf("%.2f",$vo['promote_ratio']);
+													</php>
+													<tr>
+														<td><img src="{:cmf_get_image_preview_url($vo['icon'])}" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null" class="graphic-icon"></td>
+														<td>{$vo['relation_game_name']}</td>
+														<td>
+															<p class="p_icon">PC</p>
+														</td>
+														<notempty name="baseinfo.pattern">
+														<td>
+															<p>{$vo['promote_money']}</p>
+														</td>
+														<else/>
+														<td>
+															<p>{$vo['promote_ratio']}%</p>
+														</td>
+														</notempty>
+													</tr>
+													</volist>
+												<else/>
+													<!--暂无数据-->
+													<tr>
+														<td colspan="8">
+															<div class="no-data">
+																<img src="__TMPL__/public/assets/images/icon_wushujv2.png" alt="" class="no-data-img">
+																<p class="no-data-text">暂无数据</p>
+															</div>
+														</td>
+													</tr>
+												</notempty>
+											</tbody>
+										</table>
+										<notempty name="data_lists">
+										<div class="pagenation clearfix">
+											{$page}
+										</div>
+										</notempty>
+									<else/>
+										<table class="table normal-table" id="promotecoin_table">
+											<tbody>
+												<tr>
+
+													<th>ICON</th>
+													<th>游戏名称</th>
+													<th>平台</th>
+													<notempty name="baseinfo.pattern">
+														<th>注册单价</th>
+													<else/>
+														<th>分成比例 </th>
+													</notempty>
+													<th>素材包</th>
+													<th>游戏链接</th>
+												</tr>
+												<notempty name="data_lists">
+													<volist name="data_lists" id="vo">
+													<php>
+														$vo['promote_money'] = sprintf("%.2f",$vo['promote_money']);
+														$vo['promote_ratio'] = sprintf("%.2f",$vo['promote_ratio']);
+													</php>
+													<tr>
+														<td><img src="{:cmf_get_image_preview_url($vo['icon'])}" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null" class="graphic-icon"></td>
+														<td>{$vo['relation_game_name']}</td>
+														<td><p class="p_icon">PC</p></td>
+														<notempty name="baseinfo.pattern">
+															<td>
+																<p>{$vo['promote_money']|default='0.00'}</p>
+															</td>
+															<else/>
+															<td>
+																<p>{$vo['promote_ratio']|default='0.00'}%</p>
+															</td>
+														</notempty>
+														<td>
+															<p><if condition="$vo['material_url'] eq ''"><a class="cannot" onclick=" return false; "><img src="__TMPL__/public/assets/images/icon_download2.png" alt="" width="20" height="20"></a><else/><a href="{:cmf_get_file_download_url($vo['material_url'])}" target="_blank"><img src="__TMPL__/public/assets/images/icon_download.png" alt="" width="20" height="20"></a></if></p>
+														</td>
+														<td>
+															<p>
+																<a data-clipboard-text="{:url('@media/game/ydetail',['game_id'=>$vo['relation_game_id'],'pid'=>PID],true,true)}" class="copy-data"><span style="color:#018FFF;text-decoration:underline;">复制</span></a>
+															</p>
+														</td>
+													</tr>
+													</volist>
+												<else/>
+													<!--暂无数据-->
+													<tr>
+														<td colspan="14">
+															<div class="no-data">
+																<img src="__TMPL__/public/assets/images/icon_wushujv2.png" alt="" class="no-data-img">
+																<p class="no-data-text">暂无数据</p>
+															</div>
+														</td>
+													</tr>
+												</notempty>
+											</tbody>
+										</table>
+										<notempty name="data_lists">
+										<div class="pagenation clearfix">
+											{$page}
+										</div>
+										</notempty>
+									</if>
+									</div>
+									<div class="desccontent">
+										<div class="desccontent-title fl">温馨提示：</div>
+										<div class="fl">
+											1.游戏审核需要1个工作日，如需加速审核请联系商务
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<div id="code"></div>
+		<include file="public@scripts"/>
+		<script src="__TMPL__/public/assets/js/qrcode.min.js"></script>
+		<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+		<script src="__STATIC__/js/layer/layer.js"></script>
+		<script src="__TMPL__/public/assets/js/clipboard.min.js"></script>
+		<script>
+			$(function() {
+				$(".js-select-gallery").select2();
+                $(".imgbig-erwei .erwei-btn").click(function () {
+                    var url = $(this).attr('data-url');
+                    var qrcode = new QRCode(document.getElementById("code"), {
+                        width : 200,
+                        height : 200,
+                        colorDark : "#000000",
+                        colorLight : "#ffffff",
+                        correctLevel:0//容错级别
+                    });
+                    qrcode.makeCode(url);
+                    var canvas=$("#code").find('canvas').get(0);
+                    //如果有循环,此句必不可少 qrcode.find('canvas').remove();
+                    var data = canvas.toDataURL('image/jpg');
+                    saveFile(data,"二维码");
+                });
+			})
+			//复制下载链接
+
+		 	//设置剪切板数据
+		    var clipboard = new Clipboard('.copy-data', {
+		        text: $(".copy-data").on("click",function (e) {
+		        //点击之后，再拿到当前点击的那一个存储的值
+		            let $target = $(e.target);
+		            return $target.data(`clipboard-text`);
+		        })
+		    });
+
+	    	clipboard.on("success",function (e) {
+				//layer.msg($(this).attr('data-platform')+"下载复制成功",{icon:1,time:1000});
+	      		layer.msg("复制成功",{icon:1,time:1000});
+	    	})
+
+			function package(game_id,sdk_version){
+				if(!game_id){
+					layer.msg('数据错误，申请失败');
+				}else{
+					$.ajax({
+						type:'post',
+						url:'{:url("package")}',
+						data:{game_id:game_id,sdk_version:sdk_version},
+						success:function(res){
+							layer.msg(res.msg,{time:1000},function(){
+								location.href = location.href;
+							});
+							// console.log(res);
+						},error:function(){
+							layer.msg('服务器错误，请稍后再试');
+						}
+					});
+				}
+			}
+            function saveFile(data,filename){
+                var save_link=document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
+                save_link.href=data;
+                save_link.download=filename;
+                var event=document.createEvent('MouseEvents');
+                event.initMouseEvent('click',true,false,window,0,0,0,0,0,false,false,false,false,0,null);
+                save_link.dispatchEvent(event);
+            };
+		</script>
+
+	</body>
+
+</html>

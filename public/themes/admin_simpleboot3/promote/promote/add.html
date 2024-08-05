@@ -1,0 +1,123 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap jskeyup">
+    <ul class="nav nav-tabs">
+        <li ><a href="{:url('promote/lists')}">渠道列表</a></li>
+        <li class="active"><a href="{:url('add')}">添加渠道</a></li>
+        <span class="title_remark">说明：创建渠道时所需填写信息。</span>
+        
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" action="{:url('add')}" method="post">
+        
+        <div class="form-group">
+            <label for="input-name" class="col-sm-2 control-label"><span class="form-required">*</span>渠道账号：</label>
+            <div class="col-md-3 col-sm-5">
+                <input type="text" class="form-control jsmust" id="" name="account" placeholder="6-30位字母或数字组合">
+            </div>
+            <p class="help-block">用于推广平台登录</p>
+        </div>
+        <div class="form-group">
+            <label for="input-remark" class="col-sm-2 control-label"><span class="form-required">*</span>登录密码：</label>
+            <div class="col-md-3 col-sm-5">
+                <input type="text" class="form-control jsmust" id="" name="password" placeholder=" 6-30位字母或数字组合">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">账号状态：</label>
+            <div class="col-md-3 col-sm-5">
+                <label class="radio-inline label-width" tab_id="1">
+                    <input type="radio" name="status" value="1" checked=""> 开启
+                </label>
+                <label class="radio-inline label-width" tab_id="2">
+                    <input type="radio" name="status" value="-1"> 锁定
+                </label>
+            </div>
+            <p class="help-block">锁定状态下，渠道账号无法登录</p>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">结算类型：</label>
+            <div class="col-md-3 col-sm-5">
+                <label class="radio-inline label-width" tab_id="1">
+                    <input type="radio" name="pattern" value="0" checked> CPS
+                </label>
+                <label class="radio-inline label-width" tab_id="2">
+                    <input type="radio" name="pattern" value="1"> CPA
+                </label>
+            </div>
+            <p class="help-block">渠道结算类型，子渠道默认跟随所属一级，设置后不建议随意修改</p>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">推广类型：</label>
+            <div class="col-md-4 col-sm-6">
+                <label class="radio-inline label-width" >
+                    <input type="radio" name="register_type" value="0" checked> 个人
+                </label>
+                <label class="radio-inline label-width">
+                    <input type="radio" name="register_type" value="1"> 公会
+                </label>
+                <label class="radio-inline label-width">
+                    <input type="radio" name="register_type" value="2"> 公众号
+                </label>
+                <label class="radio-inline label-width">
+                    <input type="radio" name="register_type" value="3"> 其它
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="input-admin_url_password" class="col-sm-2 control-label"><span class="form-required"></span>所属商务:</label>
+            <div class="col-md-3 col-sm-5">
+                <select id="busier_id" name="busier_id" class="selectpicker form-control" data-live-search="true">
+                    <option value="0">选择所属商务</option>
+                    <volist name=":get_business_lists()" id="vo">
+                        <option value="{$vo.id}">{$vo.account}</option>
+                    </volist>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="input-remark" class="col-sm-2 control-label">真实姓名：</label>
+            <div class="col-md-3 col-sm-5">
+                <input type="text" class="form-control" id="" name="real_name" maxlength="25" placeholder="2-25个字符">
+            </div>
+            <p class="help-block">渠道负责人姓名</p>
+        </div>
+
+        <div class="form-group">
+            <label for="input-remark" class="col-sm-2 control-label">手机号：</label>
+            <div class="col-md-3 col-sm-5">
+                <input type="text" class="form-control" id="" name="mobile_phone" maxlength="11" placeholder="">
+            </div>
+            <p class="help-block">渠道负责人手机号码</p>
+        </div>
+
+        <div class="form-group">
+            <label for="input-remark" class="col-sm-2 control-label">邮箱：</label>
+            <div class="col-md-3 col-sm-5">
+                <input type="text" class="form-control" id="" name="email" placeholder="">
+            </div>
+            <p class="help-block">渠道邮箱地址</p>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-1 col-sm-5">
+                <button type="submit" disabled class="btn btn-primary js-ajax-submit save-btn ml9">添加</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript">
+    $('.jskeyup input,select').keyup(function () {
+        change_submit_btn($('.jskeyup'), $('.jskeyup .js-ajax-submit'));
+    });
+    $('.jskeyup input,select').click(function () {
+        change_submit_btn($('.jskeyup'), $('.jskeyup .js-ajax-submit'));
+    });
+</script>
+</body>
+</html>

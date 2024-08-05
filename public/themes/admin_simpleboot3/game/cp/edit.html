@@ -1,0 +1,376 @@
+<include file="public@header"/>
+</head>
+<style>
+    .bottom_tip {
+        margin-left: 13.2%;
+        margin-bottom: 20px;
+        color: #ffb170;
+        font-size: 12px;
+    }
+    .sameStyleModal{
+        width: 124px;
+        height: 30px;
+        border-color: #ddd;
+        color: #333!important;
+        border-radius: 4px;
+    }
+</style>
+<body>
+<div class="wrap js-check-wrap">
+
+	  <div class="nav-tabs mb20">
+        <span class=" pb10">编辑CP信息</span>
+        <span class="title_remark pb10"></span>
+    </div>
+
+    <ul class="nav nav-menu">
+        <li class="<?php if(input('is_jiesuan')!='1') echo 'active'; ?> fl nav-menu-con"><a href="#A" data-toggle="tab">基础信息</a></li>
+        <li class="<?php if(input('is_jiesuan')=='1') echo 'active'; ?> fl nav-menu-con"><a href="#F" class="js-jiesuan" data-toggle="tab">结算信息</a></li>
+    </ul>
+
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('edit')}" method="post" >
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+
+                    <input type="hidden" name="option_type" value="">
+
+                    <div class="tab-pane <?php if(input('is_jiesuan')!='1') echo 'active'; ?>" id="A">
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>  CP名称:
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control  " name="cp_name" id="cp_name" value="{$cp_info.cp_name}" placeholder="请输入CP名称">
+                                <input type="hidden" id="cp_id" name="id" value="{$cp_info.id}">
+                            </div>
+                            <p class="help-block game_error"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label"> <span class="form-required">*</span>CP属性：</label>
+                            <!-- <label for="input-site-name" class="col-sm-2 control-label"> <span class="form-required">*</span>CP属性：{$cp_info.cp_attribute}</label> -->
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="cp_attribute" <if condition="$cp_info.cp_attribute eq 1"> checked</if> > 公司
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="2" name="cp_attribute" <if condition="$cp_info.cp_attribute eq 2"> checked</if> > 个人
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                手机号：
+                            </label>
+                            <div class="col-md-3 col-sm-6">
+                                <input  name="cp_mobile" type="number" class="form-control" value="{$cp_info.cp_mobile}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                联系人：
+                            </label>
+                            <div class="col-md-3 col-sm-6">
+                                <input  name="cp_contact_name" class="form-control" value="{$cp_info.cp_contact_name}" >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                邮箱：
+                            </label>
+                            <div class="col-md-3 col-sm-6">
+                                <input  name="cp_email" class="form-control" value="{$cp_info.cp_email}" >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                QQ号：
+                            </label>
+                            <div class="col-md-3 col-sm-6">
+                                <input  name="cp_qq" class="form-control" value="{$cp_info.cp_qq}" >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                备注：
+                            </label>
+                            <div class="col-md-3 col-sm-6">
+                                <textarea maxlength="300" name="remark" class="form-control">{$cp_info.remark}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9 save_btn1" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                                <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane <?php if(input('is_jiesuan')=='1') echo 'active'; ?>" id="F">
+                        <!-- <div class="form-group">
+                            <label for="input-banned_usernames" class="col-sm-2 control-label" style="width:12%"><span class="form-required">*</span>结算账户：</label>
+                            <div class="col-md-3 col-sm-5" style="padding-left: 0;width: 24%;">
+                                <input type="text" class="form-control" value="{$data.ratio}" placeholder="输入结算账户">
+                            </div>
+                            <p class="help-block">此处比例为推广结算时CPS模式的分成比例</p>
+                        </div> -->
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label"> <span class="form-required">*</span>结算账户：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio js_choose" value="1" name="settlement_type" <eq name="cp_info.settlement_type" value="1">checked</eq> <if condition="cp_info.settlement_type neq 1 && cp_info.settlement_type neq 2"> checked</if> > 银行卡
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio js_choose" value="2" name="settlement_type" <eq name="cp_info.settlement_type" value="2">checked</eq>> 支付宝
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group type1">
+                            <label for="input-site-name" class="col-sm-2 control-label"><span class="form-required">*</span>
+                                手机号：
+                            </label>
+                            <div class="col-md-3 col-sm-6">
+                                <input  name="cp_bank_mobile" type="text" id="cp_bank_mobile" class="form-control" placeholder="银行预留手机号"
+                                        value="{$cp_info.bank_info.cp_bank_mobile}" >
+                            </div>
+                        </div>
+
+                        <div class="form-group type1">
+                            <label for="input-site-name" class="col-sm-2 control-label"><span class="form-required">*</span>
+                                银行卡号：
+                            </label>
+                            <div class="col-md-3 col-sm-6">
+                                <input  name="cp_bank_num" type="" id="cp_bank_num" placeholder="输入卡号"
+                                        oninput="if(value.length>19)value=value.slice(0,19)"
+                                        class="form-control"
+                                        value="{$cp_info.bank_info.cp_bank_num}" >
+                            </div>
+                        </div>
+
+                        <div class="form-group type1">
+                            <label for="input-admin_url_password" class="col-sm-2 control-label"><span class="form-required">*</span>收款银行:</label>
+                            <div class="col-md-3 col-sm-5">
+                                <select id="bank_name" name="bank_name" class=" selectpicker form-control " data-live-search="true" title="收款银行">
+
+                                </select>
+                            </div>
+                            <p class="help-block">选择收款银行</p>
+                        </div>
+
+                        <div class="form-group type1">
+                            <label for="input-site-name" class="col-sm-2 control-label"><span class="form-required">*</span>
+                                持卡人：
+                            </label>
+                            <div class="col-md-3 col-sm-6">
+                                <input  name="cp_bank_username" id="cp_bank_username" class="form-control" value="{$cp_info.bank_info.cp_bank_username}" placeholder="持卡人姓名，2-25个字符">
+                            </div>
+                        </div>
+
+                        <div class="form-group type1">
+                            <label for="input-site-name" class="col-sm-2 control-label"><span class="form-required">*</span>
+                                开户网点：
+                            </label>
+                            <div class="col-md-3 col-sm-6">
+                                <input  name="cp_bank_open_area" id="cp_bank_open_area" class="form-control" value="{$cp_info.bank_info.cp_bank_open_area}" >
+                            </div>
+                        </div>
+
+                        <div class="form-group type1">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                开户城市：
+                            </label>
+                            <select id="province" name="province" class="areaselect1 select_gallery js-select-gallery sameStyleModal"  style="margin-left: 15px;"></select>
+                            <select id="city" name="city" class="areaselect2 select_gallery js-select-gallery sameStyleModal" ></select>
+                            <select id="county" name="county" class="areaselect3 select_gallery js-select-gallery sameStyleModal"></select>
+                        </div>
+                        <div class="form-group type2">
+                            <label for="input-site-name" class="col-sm-2 control-label"><span class="form-required">*</span>
+                                支付宝账号：
+                            </label>
+                            <div class="col-md-3 col-sm-6">
+                                <input  name="alipay_account" id="alipay_account" class="form-control" value="{$cp_info.alipay_info.alipay_account}" >
+                            </div>
+                        </div>
+
+                        <div class="form-group type2">
+                            <label for="input-site-name" class="col-sm-2 control-label"><span class="form-required">*</span>
+                                支付宝真实姓名：
+                            </label>
+                            <div class="col-md-3 col-sm-6">
+                                <input  name="alipay_name" id="alipay_name" class="form-control" value="{$cp_info.alipay_info.alipay_name}" >
+                            </div>
+                        </div>
+                        <p class="bottom_tip">用于结算打款，请确认填写无误</p>
+
+
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn save_btn2">
+                                    {:lang('SAVE')}
+                                </button>
+                                <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+
+
+<script src="__WEB_ROOT__/themes/simpleboot3/public/assets/js/promote/area.js"></script>
+<script src="__WEB_ROOT__/themes/simpleboot3/public/assets/js/promote/bank.js"></script>
+<script src="__WEB_ROOT__/themes/simpleboot3/public/assets/js/promote/mail_suffix.js"></script>
+<!-- <script type="text/javascript" src="__WEB_ROOT__/themes/simpleboot3/public/assets/js/promote/select2.min.js"></script> -->
+
+<script>
+    $(function () {
+        $("#cp_name").blur(function(){
+            var cp_name = $("#cp_name").val();
+            var id = $("#cp_id").val();
+            // console.log(id);
+            $.ajax({
+                async: false,
+                url:"{:url('checkCpName')}",
+                type:"POST",
+                dataType:"json",
+                data:{cp_name:cp_name,id:id},
+                success:function(result){
+                    if(result.status == 1){
+                        $('.game_error').text('');
+                        $('.game_error').text(result.msg);
+                        $('#short').val('');
+                    }else{
+                        $('.game_error').text('');
+                        $('#short').val(result.short);
+                    }
+                },
+                error:function(){
+                    layer.msg('服务器异常');
+                }
+            })
+        });
+
+        // 页面刚一加载判断支付方式的选择:
+        var settlement_type = $("input[name=settlement_type]:checked").val();
+        if(settlement_type == 1){
+            $(".type1").show();
+            $(".type2").hide();
+        }else if(settlement_type == 2){
+            $(".type2").show();
+            $(".type1").hide();
+        }else{
+            $(".type1").show();
+            $(".type2").hide();
+        }
+
+    })
+
+
+    //$(".js-select-gallery").select2();
+    _init_area("province", "city", "county");
+
+    var pro="{$cp_info['bank_info']['province']}";
+    var city="{$cp_info['bank_info']['city']}";
+    var are="{$cp_info['bank_info']['county']}";
+    // var pro="江苏省";
+    // var city="徐州市";
+    // var are="云龙区";
+
+    // 默认选中
+    $("#select2-province-container").text(pro);
+    $("#select2-city-container").text(city);
+    $("#select2-county-container").text(are);
+    $('#province').val(pro);
+
+    $('#province').change(function(){
+        $("#select2-city-container").text('市');
+        $("#select2-county-container").text('区/县');
+    });
+    $('#city').val(pro);
+    $('#county').val(pro);
+
+    // 银行选择
+    var data_bank_name = '{$cp_info["bank_info"]["bank_name"]}';
+    // var data_bank_name = '宁波银行';
+    var bank_name = '<option value="">选择银行</option>';
+    // console.log(bank);
+    for(var bn in bank) {
+        if(data_bank_name == bank[bn]) {
+            bank_name += '<option value="' + bank[bn] + '" selected>' + bank[bn] + '</option>';
+        } else {
+            bank_name += '<option value="' + bank[bn] + '">' + bank[bn] + '</option>';
+        }
+    }
+    $('#bank_name').html(bank_name)
+
+    $('.js_choose').click(function(){
+			// that = $(this);
+            // that.
+            var settlement_type = $("input[name=settlement_type]:checked").val();
+            // alert(settlement_type);
+            if(settlement_type == 1){
+                $(".type1").show();
+                $(".type2").hide();
+            }
+            if(settlement_type == 2){
+                $(".type2").show();
+                $(".type1").hide();
+            }
+		});
+
+    $('.save_btn1').click(function(){
+        // option_type
+        $("input[name=option_type]").val(1);
+    });
+    $('.save_btn2').click(function(){
+        $("input[name=option_type]").val(2);
+        // layer.msg('提交2');
+        var settlement_type = $("input[name=settlement_type]:checked").val(); // 1:银行卡, 2 : 支付宝
+        if(settlement_type == 1){
+            var cp_bank_mobile = $("input[name=cp_bank_mobile]").val(); //
+            var cp_bank_num = $("input[name=cp_bank_num]").val(); //
+            var bank_name = $("#bank_name").val();; //
+            var cp_bank_username = $("input[name=cp_bank_username]").val(); //
+            var cp_bank_open_area = $("input[name=cp_bank_open_area]").val(); //
+
+            if(cp_bank_mobile.length == 0){ layer.msg('请输入正确手机号',{icon: 2}); return false;}
+            if(cp_bank_num.length == 0){ layer.msg('请输入正确的银行卡号',{icon: 2}); return false;}
+            if(bank_name.length == 0){ layer.msg('请选择收款银行',{icon: 2}); return false;}
+            if(cp_bank_username.length == 0){ layer.msg('持卡人不能为空',{icon: 2}); return false;}
+            if(cp_bank_open_area.length == 0){ layer.msg('开户网点不能为空',{icon: 2}); return false;}
+        }
+
+        if(settlement_type == 2){
+            var alipay_account = $("input[name=alipay_account]").val(); //
+            var alipay_name = $("input[name=alipay_name]").val(); //
+            if(alipay_account.length == 0){ layer.msg('支付宝账号不能为空',{icon: 2}); return false;}
+            if(alipay_name.length == 0){ layer.msg('支付宝姓名不能为空',{icon: 2}); return false;}
+        }
+
+
+
+        // return false;
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/new_page.css">
+</block>
+
+<block name="body">
+
+
+    <div class="new_page">
+        <div class="new_page_header">
+            <a href="{:url('index/index')}"><span class="back_icon fl"><img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt=""></span></a>
+            <p class='fl new_page_header_item   <if condition="input('category_id') eq 3 or input('category_id') eq ''">active_rec_hot_new_type</if>  '>活动</p>
+            <p class='fl new_page_header_item   <if condition="input('category_id') eq 4 ">active_rec_hot_new_type</if>  '>公告</p>
+            <p class='fl new_page_header_item   <if condition="input('category_id') eq 2 ">active_rec_hot_new_type</if>  '>资讯</p>
+            <p class='fl new_page_header_item   <if condition="input('category_id') eq 5 ">active_rec_hot_new_type</if>  '>攻略</p>
+            <a href="{:url('game/search')}"><img src="__TMPL__/mobilepublic/assets/images/common_btn_search.png" alt="" class="searchs_btn"></a>
+        </div>
+        <div class="type_down__long_hx clear"></div>
+
+        <div class="new_page_content_act">
+            <notempty name="$data">
+            <volist name="$data" id="data">
+            <a href="{:url('article/detail',['id'=>$data.id])}">
+                <div class="new_page_content_item">
+                    <div class="fl new_page_content_img">
+                        <notempty name="$data.thumbnail">
+                        <img src="{:cmf_get_image_url($data.thumbnail)}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                            <else/>
+                        </notempty>
+                    </div>
+                    <div class="fl new_page_content_info">
+                        <p class="new_page_content_firstline">{$data.relation_game_name|default=''}{$data.post_title}</p>
+                        </p>
+                        <!-- <p class="new_page_content_secondline">{$data.post_excerpt}</p> -->
+                        <p class="new_page_content_thirdline">{:date('Y/m/d',$data.update_time)}</p>
+                    </div>
+                </div>
+            </a>
+            </volist>
+			    
+                <else/>
+				<div class="no-data"><p>~空空如也~</p></div>
+            </notempty>
+        </div>
+
+
+
+    </div>
+</block>
+<block name="script">
+<script>
+    $('.new_page_header_item').click(function () {
+
+        if ($(this).text().indexOf('活动') !== -1) {
+            window.location.href = "{:url('article/index',['category_id'=>3])}";
+        }
+        if ($(this).text().indexOf('公告') !== -1) {
+            window.location.href = "{:url('article/index',['category_id'=>4])}";
+        }
+        if ($(this).text().indexOf('资讯') !== -1) {
+            window.location.href = "{:url('article/index',['category_id'=>2])}";
+        }
+        if ($(this).text().indexOf('攻略') !== -1) {
+            window.location.href = "{:url('article/index',['category_id'=>5])}";
+        }
+    })
+</script>
+
+</block>

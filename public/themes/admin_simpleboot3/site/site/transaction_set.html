@@ -1,0 +1,60 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#A" data-toggle="tab">卖号设置</a></li>
+        <li><a href="{:url('member/Transaction/public_account')}">公用账号</a></li>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('sitePost')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">卖号手续费：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control"  name="fee"
+                                       value="{$data.fee|default=''}"><span class="input-suffix" style="right: 25px">%</span>
+                            </div>
+                            <p class="help-block">用户发布商品交易成功后需要扣除的手续费，如5%，商品售价100.00元，平台将收取5.00元的手续费</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">最低手续费：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" value="{$data.min_dfee}" name="min_dfee">
+                                <span class="input-suffix" style="right: 25px">￥</span>
+                            </div>
+                            <p class="help-block">如1，当手续费不足1元时，按照1元收取</p>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">商品控价：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" value="{$data.min_price}" name="min_price">
+                                <span class="input-suffix" style="right: 25px">￥</span>
+                            </div>
+                            <p class="help-block">用户发布商品时的最低价格，如10（若设置最低手续费1，则商品标价不低于11）</p>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <input type="hidden" name="set_type" value="{$name}">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

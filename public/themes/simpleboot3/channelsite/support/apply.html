@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+    <link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+    <link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" media="all" href="__STATIC__/js/datejs/daterangepicker.css"/>
+    <link href="__TMPL__/public/assets/css/promote/mychlid.css" rel="stylesheet" />
+    <link href="__TMPL__/public/assets/css/promote/support.css" rel="stylesheet" />
+    <include file="public@head"/>
+</head>
+<style>
+     .daterangepicker .ranges li.active {
+        color: #fff!important;
+    }
+</style>
+
+<body>
+<include file="public@nav"/>
+<include file="public@header"/>
+<div class="trunk">
+    <div class="trunk-con">
+        <div class="right-container">
+            <div class="normal-list">
+                <div class="trunk">
+                    <div class="trunk-title">
+                        <div class="location ">
+                            <div class="location-container fr">当前位置：<span class="location-container-text">扶持管理&gt;</span><span class="location-container-text">扶持申请</span></div>
+                        </div>
+                        <img src="__TMPL__/public/assets/images/icon_zhuce.png" class="fl trunk-icon">
+                        <span class="title-main fl ">扶持申请  </span>
+                        <span class="tagging"></span>
+                    </div>
+                    <div class="orangeTipBox">
+                        <p>注意：测试资源未到账前，请不要在游戏内修改角色名称，避免无法到账。</p>
+                        <p>提示：本系统申请的测试资源仅供游戏测试、参加游戏活动，部分功能开放等游戏体验使用，禁止用于与第三方交易、欺诈等获取不当利益的相关行为。</p>
+                    </div>
+                    <div class="tabpan">
+
+                        <div class="tabpan-con tabpan-show mychlid-tabcon">
+                            <a href="{:url('Support/add')}" class="add-btn  fl"><i class="add-qudao"></i><span>新增扶持</span></a>
+                            <form action="{:url('Support/apply')}">
+                                <div class="trunk-search clearfix fr">
+                                    <input type="text" class="tabpan-input normal-space" name="user_account" placeholder="玩家账号" value="{:input('user_account')}">
+                                    <select id="game_id" name="game_id" style="width: 240px" class="tab-input js-select-gallery normal-space trunk-search-smallselect fl" >
+                                        <option value="">游戏名称</option>
+                                        <volist name="game_lists" id="vo">
+                                            <option value="{$vo.id}" <?php if(input('game_id')==$vo['id']) echo 'selected';?> >{$vo.game_name}</option>
+                                        </volist>
+                                    </select>
+                                    <select id="server_id" name="server_id" class="tab-input js-select-gallery normal-space trunk-search-smallselect fl" >
+                                        <option value="">区服名称</option>
+                                    </select>
+                                    <input type="text" class="tabpan-input normal-space" name="role_name" placeholder="角色名" value="{:input('role_name')}">
+                                    <input type="text" readonly style="width: 160px;" class="tabpan-input normal-space"
+                                           autocomplete="off" name="rangepickdate" id="rangepickdate" placeholder="申请时间" value="{:input('rangepickdate')}">
+
+                                    <input type="submit" class="submit fr normal-space" id="submit" value="查询">
+                                    <input type="hidden" id="page" name="row" value="{:input('row',10)}">
+                                </div>
+                            </form>
+                            <div class="clear"></div>
+                            <table class="table normal-table" id="promotecoin_table">
+                                <tbody>
+                                <tr>
+                                    <th>游戏名称</th>
+                                    <th>区服</th>
+                                    <th>角色名</th>
+                                    <th>玩家账号</th>
+                                    <th>累计扶持数量</th>
+                                    <th>累计扶持次数</th>
+                                    <th>最新申请时间</th>
+                                    <th>操作</th>
+                                </tr>
+                                <notempty name="data_lists">
+                                    <volist name="data_lists" id='vo'>
+                                        <tr>
+                                            <td>{$vo.game_name}</td>
+                                            <td>{$vo.server_name}</td>
+                                            <td>{$vo.role_name}</td>
+                                            <td>{$vo.user_account}</td>
+                                            <td>{$vo.totalNum}</td>
+                                            <td>{$vo.totalCount}</td>
+                                            <td>{$vo['create_time']|date="Y-m-d H:i:s",###}</td>
+                                            <td>
+                                                <a href="javascript:;" class="apply-btn js-support-edit"
+                                                   data-id="{$vo.id}"
+                                                   data-game="{$vo.game_name}"
+                                                   data-server="{$vo.server_name}"
+                                                   data-account="{$vo.user_account}"
+                                                   data-role="{$vo.role_name}">编辑</a>
+                                                <a href="javascript:;" class="apply-btn js-support-follow"
+                                                    data-id="{$vo.id}">申请后续</a>
+<!--                                                <a href="{:url('Support/following',['id'=>$vo['id']])}" class="apply-btn" >申请后续</a>-->
+                                            </td>
+                                        </tr>
+                                    </volist>
+                                    <else/>
+                                    <!--暂无数据-->
+                                    <tr>
+                                        <td colspan="10" >
+                                            <div class="no-data">
+                                                <img src="__TMPL__/public/assets/images/icon_wushujv2.png"  alt="" class="no-data-img"/>
+                                                <p class="no-data-text">暂无数据</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </notempty>
+                                </tbody>
+                            </table>
+                            <notempty name="data_lists">
+                                <div class="pagenation clearfix">
+                                    {$data_lists->render()}
+                                </div>
+                            </notempty>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<include file="public@scripts"/>
+<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script type="text/javascript" src="__STATIC__/js/datejs/moment.min.js"></script>
+<script type="text/javascript" src="__STATIC__/js/datejs/momentfunction.js"></script>
+<script type="text/javascript" src="__STATIC__/js/datejs/daterangepicker.js"></script>
+<include file="public@date_config_scripts"/>
+<script>
+
+    var maxDate = moment().startOf('day');
+    var date_autoUpdateInput = false;
+    var start = '{$start}',end  = '{$end}';
+    $(function() {
+        $(".js-select-gallery").select2();
+    })
+    //			日历
+    var date = "{$setdate}";
+    $('#sdate').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language: "zh-CN",
+        minView: 2,
+        autoclose: true,
+        scrollMonth: false,
+        scrollTime: false,
+        scrollInput: false,
+        endDate: date
+    });
+    $('#edate').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language: "zh-CN",
+        minView: 2,
+        autoclose: true,
+        pickerPosition: 'bottom-left',
+        scrollMonth: false,
+        scrollTime: false,
+        scrollInput: false,
+        endDate: date
+    });
+    $('#submit').click(function() {
+        var sdate = $('#sdate').val();
+        var edate = $('#edate').val();
+        // var pid = $('#promote_id').val();
+        // var pac = $('#promote_account').val();
+        // if(pid != '' && pac != '' && pid != pac) {
+        // 	layer.msg("渠道ID与渠道账号不匹配");
+        // 	return false;
+        // }
+        if(Date.parse(sdate) > Date.parse(edate)) {
+            layer.msg('开始时间必须小于等于结束时间');
+            return false;
+        }
+//				var url = $(this).attr('url');
+//				console.log(url);
+//				var query = $('.jssearch').find('input').serialize();
+//				query += "&" + $('.jssearch').find('select').serialize();
+//				query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+//				query = query.replace(/^&/g, '');
+//				if(url.indexOf('?') > 0) {
+//					url += '&' + query;
+//				} else {
+//					url += '?' + query;
+//				}
+//				window.location.href = url;
+
+    });
+</script>
+
+
+<script type="text/javascript">
+
+    var getServerUrl = "{:url('Support/getServer')}";
+    var changeRoleUrl = "{:url('Support/changeRoleName')}";
+    var getUsableNum = "{:url('Support/usableNum')}";
+    var followingUrl = "{:url('Support/following')}";
+    var game_id = "{:input('game_id')}";
+    var server_id = "{:input('server_id')}";
+
+
+    $(function () {
+
+        $('#game_id').change(function () {
+            var game_id = $(this).val();
+            getServerLists(game_id);
+        });
+
+        getServerLists(game_id, server_id);
+
+        $(document).on('click', '.js-support-edit', function () {
+            var that = $(this);
+            var game = that.attr('data-game');
+            var server = that.attr('data-server');
+            var account = that.attr('data-account');
+            var role = that.attr('data-role');
+            var id = that.attr('data-id');
+            layer.open({
+                type: 1,
+                title: '新增扶持-修改',
+                skin: 'lwx-layer-support',
+                area: ['520px', '350px'], //宽高
+                content: '<form class="lwx-layer-form"><table class="lwx-layer-table">' +
+                    '<tr><td class="lwx-layer-td llt1"><i>*</i>游戏名称</td>' +
+                    '<td class="lwx-layer-td llt2"><input type="text" name="" id="layer-game" readonly value="' + game + '" ></td></tr>' +
+                    '<tr><td class="lwx-layer-td llt1"><i>*</i>游戏区服</td>' +
+                    '<td class="lwx-layer-td llt2"><input type="text" name="" id="layer-server" readonly value="' + server + '" ></td></tr>' +
+                    '<tr><td class="lwx-layer-td llt1"><i>*</i>帐号</td>' +
+                    '<td class="lwx-layer-td llt2"><input type="text" name="" id="layer-account" readonly value="' + account + '" ></td></tr>' +
+                    '<tr><td class="lwx-layer-td llt1"><i>*</i>角色名称</td>' +
+                    '<td class="lwx-layer-td llt2"><input type="text" name="" id="layer-role" value="' + role + '" ></td></tr>' +
+                    '<tr><td class="lwx-layer-td llt1">&nbsp;</td>' +
+                    '<td class="lwx-layer-td llt2">' +
+                    '<input type="button" class="js-supportConfirm" value="保存">' +
+                    '<input type="button" class="js-supportCancel" value="取消">' +
+                    '</td></tr>' +
+                    '<p class="modalTip">注意：扶持未到账前，请不要在游戏内修改角色名称，避免无法到账！</p>'+
+                    '</table></form>',
+                success: function (layero, index) {
+                    layero.find('.js-supportConfirm').on('click', function () {
+                        var role = $.trim($('#layer-role').val());
+                        if (!role) {
+                            layer.msg('请输入角色名称');
+                            return false;
+                        }
+                        $.ajax({
+                            type: 'post',
+                            dataType: 'json',
+                            url: changeRoleUrl,
+                            data: {id: id, role: role},
+                            success: function (res) {
+                                layer.closeAll();
+                                if (res.code == '1') {
+                                    location.reload();
+                                }
+                            },
+                            error: function () {
+                            }
+                        });
+                        return false;
+                    });
+                    layero.find('.js-supportCancel').on('click', function () {
+                        layer.close(index);
+                        return false;
+                    });
+                },
+            });
+            return false;
+        });
+
+        //后续扶持发放
+        $(document).on('click', '.js-support-follow', function () {
+
+            var that = $(this);
+            var id = that.attr('data-id');
+            //获取额度上限
+            $.post(getUsableNum, {id: id}, function (res) {
+                usableNum = res;
+                layer.open({
+                    type: 1,
+                    title: '申请后续扶持',
+                    skin: 'lwx-layer-support',
+                    area: ['520px', '350px'], //宽高
+                    content: '<form class="lwx-layer-form"><table class="lwx-layer-table">' +
+                        '<tr><td class="lwx-layer-td llt1"><i>*</i>可申请额度上限</td>' +
+                        '<td class="lwx-layer-td llt2"><input type="text" name="" id="layer-usableNum" readonly value="' + usableNum + '" ></td></tr>' +
+                        '<tr><td class="lwx-layer-td llt1"><i>*</i>扶持数量</td>' +
+                        '<td class="lwx-layer-td llt2"><input type="text" name="apply_num" id="layer-apply_num" value="" ></td></tr>' +
+                        '<tr><td class="lwx-layer-td llt1">备注</td>' +
+                        '<td class="lwx-layer-td llt2"><textarea id="layer-remark" name="remark"></textarea></td></tr>' +
+                        '<tr><td class="lwx-layer-td llt1">&nbsp;</td>' +
+                        '<td class="lwx-layer-td llt2">' +
+                        '<input type="button" class="js-supportConfirm" value="保存">' +
+                        '<input type="button" class="js-supportCancel" value="取消">' +
+                        '</td></tr>' +
+                        '<p class="modalTip">注意：扶持未到账前，请不要在游戏内修改角色名称，避免无法到账！</p>'+
+                        '</table></form>',
+                    success: function (layero, index) {
+                        layero.find('.js-supportConfirm').on('click', function () {
+                            var apply_num = $.trim($('#layer-apply_num').val());
+                            if (!apply_num) {
+                                layer.msg('请输入扶持数量');
+                                return false;
+                            }
+                            var remark = $.trim($('#layer-remark').val());
+
+                            $.post(followingUrl, {id: id, apply_num: apply_num, remark: remark}, function (res) {
+                                if (res.code == 0) {
+                                    layer.msg(res.msg);
+                                    return false;
+                                }
+                                if (res.code == 1) {
+                                    layer.msg('后续扶持申请成功');
+                                    location.reload();
+                                }
+                                return false;
+                            });
+                            return false;
+                        });
+                        layero.find('.js-supportCancel').on('click', function () {
+                            layer.close(index);
+                            return false;
+                        });
+                    }
+                });
+            });
+
+
+            return false;
+        });
+
+    });
+
+
+    //获取区服列表
+    function getServerLists(game_id, server_id = 0) {
+        $("#server_id").empty();
+        $("#select2-server_id-container").text('请选择区服');
+        var html = '<option  value="">请选择区服</option>';
+        $.post(getServerUrl, {game_id: game_id}, function (res) {
+            if (res.code == '1') {
+                var data = res.data;
+                $.each(data, function (index, ele) {
+                    if (server_id == ele.id) {
+                        html += '<option  value="' + ele.id + '" selected>' + ele.server_name + '</option>';
+                        $("#select2-server_id-container").text(ele.server_name);
+                    } else {
+                        html += '<option  value="' + ele.id + '">' + ele.server_name + '</option>';
+                    }
+                });
+                $("#server_id").html(html);
+            }
+        });
+
+    }
+
+</script>
+
+
+</body>
+
+</html>

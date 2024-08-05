@@ -1,0 +1,162 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/type.css">
+</block>
+<block name="body">
+ 
+    <div class="ecard-header">
+      <div>
+	     <a href="javascript:history.go(-1);" class="fl"><img src="/themes/simpleboot3/mobilepublic/assets/images/common_btn_back.png" alt="" class=" back_icon"></a>
+		 <div class="ecard-header-title fl">选择尊享卡类型</div>
+	  </div>
+   </div>
+
+  <div class="daylist">
+	  <volist name="card" id="vo" key="k">
+		  <div data-card="{$vo.card_name}" class="day fl <if condition='$k eq 1'>day-active</if>">
+			  <div class="day-tag">{$vo.card_name}</div>
+			  <div class="day-num">{$vo.days}天</div>
+			  <div class="day-money">¥ <strong>{$vo.price}</strong></div>
+			  <notempty name="vo.free_days">
+				  <div class="day-give">送{$vo.free_days}天</div>
+			  </notempty>
+
+			  <div class="day-meal">{:round($vo['price']/($vo['days']+$vo['free_days']),2)}元/天</div>
+		  </div>
+	  </volist>
+  </div>
+  <div class="pay-title">选择付款方式</div>
+  <div class="pay-box">
+	  <!-- <if condition="pay_type_status('zfb') eq 1 && !cmf_is_wechat()" > -->
+      <if condition="pay_type_status('zfb') eq 1 " >
+      <div class="pay-way pay-way-active" data-way="alipay">
+	      <img src="__TMPL__/mobilepublic/assets/images/ecard/icon-zhifubao.png" class="fl pay-way-icon">
+		  <div class="fl pay-way-name">支付宝支付</div>
+		  <img src="__TMPL__/mobilepublic/assets/images/ecard/icon-weixuan.png" class="fg pay-way-choose">
+		  <img src="__TMPL__/mobilepublic/assets/images/ecard/icon-xuanzhong.png" class="fg pay-way-selected">
+	  </div>
+	  </if>
+	  <if condition="pay_type_status('wxscan') eq 1">
+	   <div class="pay-way" data-way="weixin">
+	      <img src="__TMPL__/mobilepublic/assets/images/ecard/icon-weixin.png" class="fl pay-way-icon">
+		  <div class="fl pay-way-name">微信支付</div>
+		  <img src="__TMPL__/mobilepublic/assets/images/ecard/icon-weixuan.png" class="fg pay-way-choose">
+		  <img src="__TMPL__/mobilepublic/assets/images/ecard/icon-xuanzhong.png" class="fg pay-way-selected">
+	  </div>
+	  </if>
+  </div>
+  <div class="btn-pay"><a href="javascript:;" class="btn-pay-con btn_pay">去付款</a></div>
+</block>
+<block name="script">
+<script>
+    var alipayUrl = "{:url('alipay')}";
+    // alipayUrl2  微信内打开支付宝
+    var alipayUrl2 = "{:url('alipay2')}";
+
+	var weixinUrl = "{:url('weixinpay')}";
+	var weixinWechatUrl = "{:url('@api/pay/get_wx_code',true,true)}";
+	var cardname = '';
+	var payway = 'alipay';
+	var is_wechat = "{:cmf_is_wechat()}";
+	$(function () {
+        $(".day").click(function(){
+            $(this).addClass("day-active").siblings().removeClass("day-active")
+        })
+        $(".pay-way").click(function(){
+            $(this).addClass("pay-way-active").siblings().removeClass("pay-way-active")
+        })
+
+		$(".btn_pay").click(function () {
+		    if(!$(".daylist div").hasClass('day-active')){
+		       layer.msg('请选择尊享卡类型');
+		       return false;
+			}
+			var card_name = $(".daylist").find('.day-active').data('card');
+		    if(card_name == ''){
+                layer.msg('请选择尊享卡类型');
+                return false;
+			}
+            cardname = card_name;
+            if(!$(".pay-box div").hasClass('pay-way-active')){
+                layer.msg('请选择支付方式');
+                return false;
+            }
+            var pay_way = $(".pay-box").find('.pay-way-active').data('way');
+            switch (pay_way){
+				case 'weixin':
+                    weixin_pay();
+				    break;
+				case 'alipay':
+                    alipay_pay();
+				    break;
+				default:
+                    layer.msg('请选择支付方式');
+                    return false;
+			}
+        })
+
+        //支付宝支付
+        var user_id = "{$user.id}";
+        function alipay_pay() {
+            var data = {
+                card_name: cardname,
+                user_id: user_id
+            };
+            
+            // $.post(alipayUrl, data, function (res) {
+            //     if(res.code ==1){
+            //         window.location.href = res.url;
+            //     }else if(res.code ==2){
+            //         window.location.href = res.url;
+            //     }else{
+            //         layer.msg(res.msg);
+            //     }
+            // });
+            $.post(alipayUrl, data, function (res) {
+                if(res.code ==1){
+                    window.location.href = res.url;
+                }else{
+                    layer.msg(res.msg);
+                }
+            });
+            
+        }
+
+        //微信支付
+        function weixin_pay() {
+            var data = {
+                card_name: cardname,
+                weixin_pay_type:5,
+            };
+            if(is_wechat == 1){
+                var generateHideElement = function (name, value) {
+                    var tempInput = document.createElement("input");
+                    tempInput.type = "hidden";
+                    tempInput.name = name;
+                    tempInput.value = value;
+                    return tempInput;
+                }
+                var form = document.createElement("form");
+                document.body.appendChild(form);
+                var form_card_name = generateHideElement("card_name", cardname),
+                    weixin_pay_type = generateHideElement("weixin_pay_type", 5);
+                form.appendChild(form_card_name);
+                form.appendChild(weixin_pay_type);
+                form.method = "post";
+                form.action = weixinWechatUrl;
+                form.submit();
+			}else{
+                $.post(weixinUrl, data, function (res) {
+                    //手机端支付
+                    if(res.code <1){
+                        layer.msg(res.msg);
+                    }else{
+                        window.location = res.url;
+                    }
+                });
+			}
+        }
+    })
+</script>
+</block>
+

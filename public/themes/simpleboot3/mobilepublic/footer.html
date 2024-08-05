@@ -1,0 +1,39 @@
+<footer class="footer">
+    <a href="{:url('Index/index')}" class="footerItem <eq name='controller_name' value='Index'>active</eq> ">
+        <div class="footerItemBox">
+            <i class="footerIcon "></i>
+            <p class="footerName">游戏</p>
+        </div>
+    </a>
+    <a href="{:url('Gift/index')}" class="footerItem <eq name='controller_name' value='Gift'>active</eq>">
+        <div class="footerItemBox">
+            <i class="footerIcon giftFooterIcon"></i>
+            <p class="footerName">礼包</p>
+        </div>
+    </a>
+    <if condition="cmf_get_option('wap_set')['trade_show'] eq 1">
+    <a href="{:url('Trade/index')}" class="footerItem <eq name='controller_name' value='Trade'>active</eq>">
+        <div class="footerItemBox">
+            <i class="footerIcon tradeFooterIcon"></i>
+            <p class="footerName" style="color: #018FFF">交易</p>
+        </div>
+    </a>
+    </if>
+    <if condition="cmf_get_option('wap_set')['zhuanjin'] neq '0'">
+        <a href="{:url('Point/index')}" class="footerItem <eq name='controller_name' value='Point'>active</eq>">
+            <div class="footerItemBox">
+                <i class="footerIcon mallFooterIcon"></i>
+                <p class="footerName" >赚金</p>
+            </div>
+        </a>
+    </if>
+    <a href="{:url('User/index')}" class="footerItem <eq name='controller_name' value='User'>active</eq>">
+        <div class="footerItemBox" style="position: relative">
+            <if condition="$tip_status">
+                <span class="red-spot2"></span>
+            </if>
+            <i class="footerIcon userFooterIcon"></i>
+            <p class="footerName">我的</p>
+        </div>
+    </a>
+</footer>

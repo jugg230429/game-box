@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+	<link href="__TMPL__/public/assets/css/promote/pay.css" rel="stylesheet" />
+	<link href="__TMPL__/public/assets/css/promote/select-edit.css" rel="stylesheet" />
+	<include file="public@head"/>
+</head>
+
+<body>
+<include file="public@nav"/>
+<include file="public@header"/>
+<link href="__TMPL__/public/assets/css/promote/balance.css" rel="stylesheet" />
+<div class="trunk">
+	<div class="trunk-con my-balance">
+		<div class="right-container">
+			<div class="normal-list">
+				<div class="trunk">
+					<ul class="tab">
+						<li class="tab-menu tab-menu-active"><a href="{:url('bind_balance')}">给玩家代充</a></li>
+						<li class="tab-menu "><a href="{:url('bind_record')}">代充记录</a></li>
+					</ul>
+
+					<div class="clear"></div>
+					<div class="tabpan mt30">
+						<li class="tabpan-con tabpan-show">
+
+							<from>
+								<div class="tabpan-con-con">
+									<label class="fl label-name">游戏名称：</label>
+									<select id="game_id" name="game_id" class="tab-input js-select-gallery-1 subchannel-select-gallery">
+										<empty name="pdata">
+											<option value="" data="" discount='0'>请选择游戏</option>
+										</empty>
+										<volist name="gdata" id="pz">
+											<option value="{$pz.id}" discount="{$pz.discount}">{$pz.game_name}</option>
+										</volist>
+									</select>
+								</div>
+								<div class="tabpan-con-con">
+									<label class="fl label-name">玩家账号：</label>
+									<select id="user_account" name="user_account" class="tab-input js-select-gallery-2 subchannel-select-gallery">
+										<option value="" data="" balance=''>请选择玩家</option>
+									</select>
+									<span class="explain-txt">请选择本渠道下玩家</span>
+								</div>
+								<div class="tabpan-con-con">
+									<label class="fl label-name">充值金额：</label>
+									<input type="text" class="tabpan-input" name="num" id="num" placeholder=" 输入正整数">
+									<span class="explain-txt">输入大于0的整数</span>
+								</div>
+								<div class="tabpan-con-con">
+									<label class="fl label-name">支付方式：</label>
+									<volist name="paytype" id="pt">
+										<if condition="$pt['name'] eq 'zfb'">
+											<label class="label-choose js_choose"><input type="radio" class="radio-choose" value="zfb" name="pay_type"><i class="label-choose-i"></i><span>支付宝</span></label>
+										</if>
+										<if condition="$pt['name'] eq 'wxscan'">
+											<label class="label-choose js_choose"><input type="radio" class="radio-choose" value="wx" name="pay_type"><i class="label-choose-i"></i><span>微信</span></label>
+										</if>
+										<if condition="$pt['name'] eq 'ptb_pay'">
+											<label class="label-choose js_choose"><input type="radio" class="radio-choose" value="ptb" name="pay_type"><i class="label-choose-i"></i><span>平台币</span></label>
+										</if>
+									</volist>
+								</div>
+								<div class="tabpan-con-con">
+									<label class="fl label-name discount_name">代充折扣：</label>
+									<span class="formtxt discount"><span style="color: #FFB22B;"><b>--</b></span></span>
+								</div>
+								<div class="tabpan-con-con">
+									<label class="fl label-name">应付金额：</label>
+									<span class="formtxt beforepay" style="color: #26C7DB;">--</span>
+								</div>
+								<div class="tabpan-con-con">
+									<label class="fl label-name">实付金额：</label>
+									<span class="formtxt afterpay" style="color: #26C7DB;">--</span>
+								</div>
+								<div class="tabpan-con-con">
+
+									<input type="submit" class="button jsbtn" style="background: #DDDDDD;" value="确认" title="">
+								</div>
+							</from>
+						</li>
+					</ol>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<div id="new_czinfobg" style="display: none;">
+		<div id="czerrots" class="czerrots">
+			<div class="qrcz_ts">
+				<h1 class="qrcz_title"><span>请在新打开的支付页面上完成付款充值！</span><a href="javascript:void(0);"  class="czinfobox_close3 qrcz_close">close</a></h1>
+				<ul class="czinfobox_con">
+					<li class="tscon1 czinfobox_con_con">付款前请不要关闭或刷新此窗口。</li>
+				</ul>
+				<span class="qrtjBtn">
+								<a class="getresult" href="javascript:getresult();" order_no=''>查看充值结果</a>
+					<!-- <a href="javascript:;" class="czinfobox_close3">返回</a> -->
+							</span>
+			</div>
+		</div>
+	</div>
+</div>
+<include file="public@scripts"/>
+<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script>
+	$(function() {
+        $(".js-select-gallery-1").select2({placeholder: '请选择游戏'});
+        $(".js-select-gallery-2").select2({placeholder: '请选择玩家'});
+		discount = 10;
+		$('#game_id').change(function(){
+			game_id = $(this).val();
+			discount = $(this).find('option:selected').attr('discount');
+			if(discount==0||discount>=10){
+				discount = 10;
+				$('.discount').html('<span style="color: #FF6600;"><b>--</b></span>');
+			}else{
+				$('.discount').html('<span style="color: #FF6600;"><b>'+discount+'折</b></span>');
+			}
+			$.ajax({
+				url:"{:url('get_user_play')}",
+				data:{game_id,game_id},
+				success:function (res) {
+					$('#select2-user_account-container').text('请选择玩家');
+					html = '<option value="" data="" balance="">请选择玩家</option>';
+					if(res.code!=1){
+						$('#user_account').html(html);
+					}else{
+						$.each(res.data,function (index,value) {
+							html=html+'<option value="';
+							html=html+value.user_id;
+							html=html+'" data="" balance="">';
+							html=html+value.user_account+'</option>';
+						})
+						$('#user_account').html(html);
+					}
+				},error:function () {
+					layer.msg('服务器出错，请稍后再试');
+				}
+			})
+			$.ajax({
+				url:"{:url('get_discount')}",
+				data:{game_id,game_id},
+				success:function (res) {
+					// console.log(res);return;
+					discount_name = res.data.discount.discount_name;
+					if(res.code==1){
+						discount = res.data.discount.discount;
+						$('.discount').html('<span style="color: #FF6600;"><b>'+discount+'折</b></span>');
+					}else{
+						$('.discount').html('<span style="color: #FF6600;"><b>'+discount+'折</b></span>');
+					}
+					$('.discount_name').text(discount_name);
+				},error:function () {
+					layer.msg('服务器出错，请稍后再试');
+				}
+			})
+		});
+
+		// 选择玩家之后再次获取折扣 看这个玩家是否符合首充的条件
+		$('#user_account').change(function(){
+			var game_id_tmp = $('#game_id').val();
+			var user_account = $(this).val();  // user_account 实际是 user_id
+			var user_id_tmp = user_account;
+			$.ajax({
+				url:"{:url('get_discount')}",
+				data:{game_id:game_id, user_id:user_id_tmp},
+				success:function (res) {
+					// console.log(res);return;
+					discount_name = res.data.discount.discount_name;
+					if(res.code==1){
+						discount = res.data.discount.discount;
+						$('.discount').html('<span style="color: #FF6600;"><b>'+discount+'折</b></span>');
+					}else{
+						$('.discount').html('<span style="color: #FF6600;"><b>'+discount+'折</b></span>');
+					}
+					$('.discount_name').text(discount_name);
+					$('#num').val('');
+					change_submit_btn($('.tabpan-con-con'), $('.jsbtn'));  //按钮置灰
+					$('.beforepay').text('--');
+					$('.afterpay').text('--');
+
+				},error:function () {
+					layer.msg('服务器出错，请稍后再试');
+				}
+			})
+		});
+
+		paytt = $('.js_choose:first').find('.radio-choose').val();
+		$('input[value='+paytt+']').attr('checked');
+		$('input[value='+paytt+']').addClass('paycheck');
+		$('input[value='+paytt+']').next('.label-choose-i').addClass('current');
+		$('.js_choose').click(function(){
+			that = $(this);
+			input = that.children('.radio-choose');
+			i = that.children('.label-choose-i');
+			$('.label-choose-i').removeClass('current');
+			i.addClass('current');
+			$('input[name=pay_type]').removeAttr('checked');
+			$('input[name=pay_type]').removeClass('paycheck');
+			input.attr('checked','checked').addClass('paycheck');
+		});
+		$('#num').on('input propertychange',function(){
+			amount = $(this).val();
+			re = /^[1-9]\d*$/ ;
+			if(amount == ''){
+				$('.beforepay').text('--');
+				$('.afterpay').text('--');
+			}else if(!re.test(amount)){
+				$('.beforepay').text('--');
+				$('.afterpay').text('--');
+			}else{
+				$('.beforepay').text(amount);
+				afterpay = amount*discount/10;
+				afterpay = afterpay.toFixed(2);
+				$('.afterpay').text(afterpay);
+
+			}
+		});
+		//按钮置灰
+        $('.tabpan-con-con input').keyup(function () {
+            change_submit_btn($('.tabpan-con-con'), $('.jsbtn'));
+        });
+        $('.tabpan-con-con select').change(function () {
+            change_submit_btn($('.tabpan-con-con'), $('.jsbtn'));
+        });
+        // 更改
+        function change_submit_btn(consa, registe_btn) {
+            registe_btn.addClass('can_click')
+            consa.find('input,select').each(function (i, n) {
+                if (!n.value) {
+                    registe_btn.removeClass('can_click');
+                    return false;
+                }
+            });
+        }
+		$('.jsbtn').click(function(){
+            if(!$(this).hasClass('can_click')){
+                return false;
+            }
+			game_id = $('#game_id').find('option:selected').val();
+			if(!game_id){
+				layer.msg('请选择游戏名称');
+				return false;
+			}
+			user_id = $('#user_account').find('option:selected').val();
+			if(!user_id){
+				layer.msg('请选择玩家');
+				return false;
+			}
+			amount = $('#num').val();
+			re = /^[1-9]\d*$/ ;
+			if(amount == ''){
+				layer.msg('充值金额数量不能为空');
+				return false;
+			}else if(!re.test(amount)){
+				layer.msg('充值金额数量错误，请输入正整数');
+				return false;
+			}
+			pay_type = $('.paycheck').val();
+			order_no = get_order();
+			if(!order_no){
+				layer.msg('订单生成失败，请刷新后重试');
+				return false;
+			}else{
+				$('.getresult').attr('order_no',order_no);
+			}
+			if(pay_type=='zfb'){
+				url = "{:url('recharge/PromotePay/alipay','',false)}";
+				url = url+'?'+'game_id='+game_id+'&user_id='+user_id+'&amount='+amount+'&order_no='+order_no+'&is_bind_pay='+1;
+				$("#new_czinfobg").show();
+				url_open(url);
+			}else if(pay_type=='wx'){
+				url = "{:url('recharge/PromotePay/weixinpay','',false)}";
+				url = url+'?'+'game_id='+game_id+'&user_id='+user_id+'&amount='+amount+'&order_no='+order_no+'&is_bind_pay='+1;
+				$("#new_czinfobg").show();
+				url_open(url);
+			}else if(pay_type=='ptb'){
+				ptbpay();
+			}else{
+				layer.msg('支付方式错误');
+				return false;
+			}
+		});
+	})
+</script>
+<script>
+	$(".czinfobox_close3").click(function() {
+		$("#new_czinfobg").hide();
+	})
+	//新开页面 防止浏览器拦截
+	function url_open(url){
+		var a = $("<a href='"+url+"' target='_blank'>支付</a>").get(0);
+		var e = document.createEvent('MouseEvents');
+		e.initEvent( 'click', true, true );
+		a.dispatchEvent(e);
+	}
+	//查看充值结果
+	function getresult(){
+		order_no = check_order_no()||$('.getresult').attr('order_no');
+		console.log(order_no);
+		$('.getresult').attr('order_no',order_no);
+		url = "{:url('check_bind_order_status')}"+'?'+'order_no='+order_no;
+		url_open(url);
+	}
+	//获取订单号
+	function get_order(){
+		order_no = '';
+		$.ajax({
+			type: 'POST',
+			url: "{:url('recharge/PromotePay/get_bind_order')}" ,
+			async:false,
+			dataType:'json',
+			success:function(data){
+				order_no = data.order_no;
+			}
+		})
+		return order_no;
+	}
+	function check_order_no(){
+		order_no = lwx.getItem('order_no');
+		return order_no;
+	}
+	//轮询查询订单状态
+	function checkStatus(timer){
+		order_no = $('.getresult').attr('order_no');
+		$.ajax({
+			type: 'POST',
+			url: "{:url('check_order_status')}" ,
+			data:{'order_no':order_no},
+			async:true,
+			dataType:'json',
+			success:function(data){
+				if(data.code==1){
+					$("#new_czinfobg").hide();
+					clearInterval(timer);
+				}
+			}
+		})
+
+	}
+	function ptbpay(){
+		layer.prompt({title: '请输入二级密码', formType: 1,placeholder:'请输入二级密码'}, function(text, index){
+			layer.close(index);
+			url = "{:url('recharge/PromotePay/ptb_bind_pay','',false)}";
+			url = url+'?'+'game_id='+game_id+'&user_id='+user_id+'&amount='+amount+'&order_no='+order_no+'&is_bind_pay='+1+'&second_pwd='+text;
+			$.ajax({
+				url:url,
+				success:function (res) {
+					if(res.code!=1){
+						layer.msg(res.msg, {icon: 5});
+					}else{
+						layer.msg('充值成功', {icon: 6},function(){
+							location.href= location.href;
+						});
+					}
+				},error:function () {
+					layer.msg('服务器错误，请稍后再试');
+				}
+			})
+		});
+	}
+</script>
+</body>
+
+</html>

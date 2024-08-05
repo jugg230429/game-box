@@ -1,0 +1,44 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('issue/user/register')}">玩家注册</a></li>
+        <li class="active"><a href="javascript:;">绑定</a></li>
+        <span class="title_remark">说明：此功能是将玩家账号绑定到另一玩家账号中,绑定后游戏中角色变为绑定的账号角色</span>
+    </ul>
+
+    <form class="form-horizontal js-ajax-form margin-top-20" action="{:url('issue/user/bind')}" method="post">
+
+        <input type="hidden" name="id" value="{:input('user_id',0,'intval')}" />
+
+        <div id="tab1" class="ttt ">
+            <div class="form-group">
+                <label for="input-parent_id" class="col-sm-2 control-label"><span class="form-required">*</span>绑定玩家id：</label>
+                <div class="col-md-6 col-sm-10">
+                    <select name="parent_id" class="selectpicker form-control user-input" id="input-parent_id" data-live-search="true">
+                        <option value="0">不绑定任何玩家</option>
+                        <volist name="lists" id="vo">
+                            <option value="{$vo['id']}" <?php if($info['parent_id']==$vo['id']) echo 'selected'; ?>>平台玩家ID : {$vo['id']}&nbsp;&nbsp;&nbsp;&nbsp;账号 : {$vo['account']}&nbsp;&nbsp;&nbsp;&nbsp;渠道玩家id : {$vo['openid']}</option>
+                        </volist>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-offset-1 col-sm-10">
+            <button type="submit" class="btn btn-primary js-ajax-submit save-btn">确定</button>
+            <a class="btn btn-default return-btn" href="javascript:history.back(-1)">返回</a>
+        </div>
+
+    </form>
+
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript">
+
+</script>
+
+</body>
+</html>

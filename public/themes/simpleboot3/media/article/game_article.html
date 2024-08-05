@@ -1,0 +1,81 @@
+<extend name="../mediapublic/base" />
+<!-- 主体内容 -->
+<block name="body">
+<!-- <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/newsinfo.css"> -->
+ <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/ydetail.css">
+
+ <div class="main" <if condition="$game['groom']">style="background: url({:cmf_get_image_url($game[groom])}) no-repeat;background-size: 100% 100%;"</if>>
+     <div class="service">
+	    <div class="service-con">
+            <div class="gameCenterName">
+                {:get_game_name(input('game_id',0,'intval'))}
+            </div>
+            <a href="{:url('game/ydetail',['game_id'=>input('game_id')])}" class="fl service-tab">服务器列表</a>
+            <a href="{:url('gift/game_gift',['game_id'=>input('game_id')])}" class="fl service-tab">礼包列表</a>
+            <a href="{:url('article/game_article',['game_id'=>input('game_id')])}" class="fl service-tab service-tab-active">资讯中心</a>
+            <a href="{:url('pay/pay')}" class="service-link fl">用户充值</a>
+            <a class="service-link fl" onclick="AddFavorite(window.location,document.title)" href="javascript:void(0)">收藏本页</a>
+		</div>
+	         <div class="news-list js-list display">
+			     <div class="service-title">资讯列表</div>
+				 <div class="news-list-con">
+                    <div>
+					   <a href="{:url('article/game_article',['category_id'=>4,'game_id'=>input('game_id')])}" class="news-menu <eq name='category_id' value='4'>news-menu-active</eq>">
+                          公告
+                       </a>
+                       <a href="{:url('article/game_article',['category_id'=>3,'game_id'=>input('game_id')])}" class="news-menu <eq name='category_id' value='3'>news-menu-active</eq>">
+                         活动
+                       </a>
+                        <a href="{:url('article/game_article',['category_id'=>5,'game_id'=>input('game_id')])}" class="news-menu <eq name='category_id' value='5'>news-menu-active</eq>">
+                          攻略
+                        </a>
+                       <a href="{:url('article/game_article',['category_id'=>2,'game_id'=>input('game_id')])}" class="news-menu <eq name='category_id' value='2'>news-menu-active</eq>">
+                         资讯
+                       </a>
+                   </div>
+			        <div class="clear"></div>
+                    <div class="newsleft_con">
+                       <div class="newsleft_has_con">
+                         <div class="zhanweidiv">
+                            <empty name="data">
+                                <div class="no_new_text" >
+                                    <p>~暂无内容~</p>
+                                </div>
+                             </empty>
+                         <!-- 有公告时显示 -->
+
+                             <ul class="news-con">
+                                 <php>static $first = 1;$ispage = input('page');</php>
+                                 <volist name="data" id="vo">
+                                     <volist name="vo" id="vv" key="kk" >
+                                         <li class="news-box-container <if condition='($first eq 1) and $ispage <=1'>today</if>">
+                                             <a href="{:url('Article/game_detail',['id'=>$vv['id'],'category_id'=>$category_id,'game_id'=>input('game_id')])}" class="news-box-content">
+                                                   <span class="news-box-type">{$vv.post_title}</span>
+												   <span class="news-box-time">{:date('m/d',$vv['update_time'])}</span>
+                                             </a>
+                                         </li>
+                                         <php>$first = 0;</php>
+                                     </volist>
+                                 </volist>
+
+                             </ul>
+
+                         </div>
+                     <notempty name="data">
+                         <div class="gamelistpage">{$page}</div>
+                     </notempty>
+                </div>
+            </div>
+        </div>
+
+			 </div>
+		    </div>
+	 </div>
+ </div>
+  <script src="__JS__/swiper.min.js"></script>
+  <script>
+
+
+
+  </script>
+</block>

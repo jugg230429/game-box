@@ -1,0 +1,100 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/select2.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/new_select2.css" type="text/css" />
+    <link href="__TMPL__/channelwappublic/assets/css/recharge.css" type="text/css" rel="stylesheet" />
+    <style>
+        header .header-title {
+            color: #333;
+            font-size: 0.44rem;
+        }
+    </style>
+</block>
+<block name="body">
+    <div class="page-container">
+        <header>
+            <a href="javascript:history.back()" class="back-btn"></a>
+            <div style="width: 100%;height: 100%" class="v-middle h-middle">
+                <p class="header-title ">添加子渠道</p>
+            </div>
+        </header>
+        <div class="page-content">
+            <form class="js-ajax-form" action="{:url('add_child')}" id="ajaxForm2" method="post">
+                <div class="form">
+                    <div class="form-item">
+                        <div class="form-item-title"><span style="color: red">*</span>账号：</div>
+                        <div class="form-item-text">
+                            <input type="text" name="account"  placeholder="6~30位字母或数字组合" value="" class="form-item-input">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-item-title"><span style="color: red">*</span>密码：</div>
+                        <div class="form-item-text">
+                            <input type="password" name="password" placeholder="6~30位字母或数字组合" value="" class="form-item-input">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-item-title"><span style="color: red">*</span>确认密码：</div>
+                        <div class="form-item-text">
+                            <input type="password" name="password_confirm" placeholder="再次输入确认密码" value="" class="form-item-input">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-item-title">二级密码：</div>
+                        <div class="form-item-text">
+                            <input type="password" name="second_pwd" placeholder="6~30位字母或数字组合" value="" class="form-item-input">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-item-title">姓名：</div>
+                        <div class="form-item-text">
+                            <input type="text" name="real_name"  placeholder="" value="" class="form-item-input">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-item-title">手机号：</div>
+                        <div class="form-item-text">
+                            <input type="text" name="mobile_phone"  placeholder="" value="" class="form-item-input">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-item-title">邮箱地址：</div>
+                        <div class="form-item-text">
+                            <input type="text" name="email"  placeholder="" value="" class="form-item-input">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-item-title">备注：</div>
+                        <div class="form-item-text">
+                            <textarea type="text" name= "mark1"  placeholder="" class="form-item-input"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-item">
+					     <div class="form-item-title"></div>
+                        <button class="submit-btn js_withdrawal js-ajax-submit">确认</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/select2.min.js"></script>
+    <script>
+        $(function () {
+            $('.header-title').click(function () {
+                location.href=$(this).data("url");
+            });
+            $(".select_gallery").select2({
+                minimumResultsForSearch: -1
+            });
+            $('input[name="amount"]').keyup(function () {
+                var val = $(this).val();
+                var discount = $('#recharge-discount').text();
+                $('input[name="should_pay"]').val(val);
+                $('input[name="real_pay"]').val(val*discount/10)
+            })
+        })
+    </script>
+</block>

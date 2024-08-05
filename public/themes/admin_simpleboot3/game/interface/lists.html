@@ -1,0 +1,117 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="javascript:;">页游接口</a></li>
+            <!-- <li><a href="{:url('add')}">添加接口</a></li> -->
+            <span class="title_remark">说明：仅用于PC网页游戏对接使用。</span>
+        </ul>
+        <!--        <a href="" class="btn btn-danger" style="margin-top:20px">删除</a>-->
+        <form id="search_form" class="well form-inline  fr" method="get" action="{:url('lists')}">
+            <input type="text" class="form-control" name="name" style="width: 120px;" value="{:input('name/s','')}" placeholder="接口名称">
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('lists')}">清空</a>
+        </form>
+
+        <form class="js-ajax-form" action="" method="post">
+
+            <div class="table-actions position" style="margin-left: -10px;">
+                <a class="btn btn-success  mtb17" href="{:url('add')}">添加接口</a>
+                <button class="btn btn-danger  js-ajax-submit  mtb17 ml20" type="submit"
+                        data-action="{:url('game/interface/del')}" data-subcheck="true" data-msg="您确定删除吗？">
+                    删除
+                </button>
+
+            </div>
+
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th width="15">
+                            <input type="checkbox" id="all-checkbox" class="table-item-checkbox js-check-all" data-direction="x" data-checklist="js-check-x">
+                            <label for="all-checkbox" class=""></label>
+                        </th>
+                        <th>ID</th>
+                        <th>名称</th>
+                        <th>标签</th>
+                        <th>标识</th>
+                        <th>登录地址</th>
+                        <th>充值地址</th>
+                        <th>添加时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <empty name="data_lists">
+                        <tr><td colspan="8" style="text-align: center;">暂无数据</td></tr>
+                    <else/>
+                        <foreach name="data_lists" item="vo">
+                        <tr>
+                            <td>
+                                <input type="checkbox" id="ids-checkbox{$vo.id}" class="table-item-checkbox js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
+                                       value="{$vo.id}" >
+                                <label for="ids-checkbox{$vo.id}" class=""></label>
+                            </td>
+                            <th>{$vo.id}</th>
+                            <td>{$vo['name']}</td>
+                            <td>{$vo.tag}</td>
+                            <td>{$vo.unid}</td>
+                            <td>{$vo.login_url}</td>
+                            <td>{$vo['pay_url']}</td>
+                            <td>{$vo['create_time']|date='Y-m-d H:i:s',###}</td>
+                            <td>
+                                <a href="{:url('edit',['id'=>$vo['id']])}">编辑</a>
+                                <a href="{:url('del',['id'=>$vo['id']])}" class="js-ajax-dialog-btn" data-msg="删除后将导致游戏接口失效，请谨慎操作！">删除</a>
+                            </td>
+                        </tr>
+                        </foreach>
+                    </empty>
+                </tbody>
+            </table>
+            <div class="pagination">{$page}</div>
+        </form>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script>
+        $(".hits").click(function () {
+            var id = $(this).attr('data-id');
+            var param = $(this).attr('data-param');
+            var url = $(this).attr('data-url');
+            var title = $(this).attr('data-title');
+            num = $.trim($(this).text());
+            layer.prompt({
+                formType: 3,
+                title: title,
+                value: num,
+                placeholder:'请输入正整数'
+            }, function (hits) {
+                preg = /^(?:0|[0-9]*[1-9][0-9]*)$/;
+                if (!preg.test(hits)) {
+                    layer.msg("请输入正整数");
+                    return false;
+                }
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    dataType: 'json',
+                    data: {id:id,sort:hits},
+                    success: function (data) {
+                        if (data.code > 0) {
+                            layer.msg(data.msg);
+                            setTimeout(function(){
+                                self.location.reload(true);
+                            },1000);
+                        } else {
+                            layer.msg(data.msg)
+                        }
+                    },
+                    error: function () {
+                        layer.msg("服务器故障！");
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

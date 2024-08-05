@@ -1,0 +1,439 @@
+<extend name="./public/base" />
+
+<block name="body">
+    <iframe id="game_ifr" src="{$login_url}" style=""></iframe>
+</block>
+<block name="css">
+<style>
+@media screen and (max-width: 1200px) {
+    .payContainer {
+    background: #fff;
+    box-shadow: 0px 0px 12px 0px rgba(86,157,236,0.2);
+    border-radius: 0.6rem;
+    padding: 0.65rem 0.85rem;
+    width: 15rem;
+    position: absolute;
+    left: 46%;
+    top: 50%;
+    margin: 0 auto;
+    transform: translate(-50%,-50%);
+    overflow-y: auto
+}  
+}
+.payContainer {
+    background: #fff;
+    box-shadow: 0px 0px 12px 0px rgba(86,157,236,0.2);
+    border-radius: 0.6rem;
+    padding: 0.65rem 0.85rem;
+    width: 15rem;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: 0 auto;
+    transform: translate(-50%,-50%);
+    overflow-y: auto
+}   
+.payTitle {
+    color: #999;
+    text-align: center;
+    font-size: 0.7rem;
+    padding-bottom: 0.3rem;
+    height: auto;
+    overflow: hidden;
+}
+.closeButton {
+    width: 13px;
+    height: 12px;
+    position: absolute;
+    right: 1rem;
+    top: 1.1rem;
+    z-index: 999;
+    cursor: pointer;
+}
+.payMoney {
+    color: #018FFF;
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.1rem;
+    margin: 0 0 0.5rem;
+}
+.payMoney span {
+    font-weight: normal;
+	font-size: 1.1rem;
+}
+.payWay {
+    color: #999;
+    font-size: 0.7rem;
+    text-align: center;
+    margin: 1rem 0;
+}
+.payWayList {
+    display: flex;
+}
+.payWayBox {
+    width: 23%;
+    border: 1px solid rgba(217,217,217,1);
+    border-radius: 8px;
+    text-align: center;
+    padding-bottom: 0.3rem;
+    margin: 0 4% 0 17%;
+    position: relative;
+    cursor: pointer
+}
+.payBox-icon {
+    width: 50%;
+    margin: 0.3rem 0;
+}
+.payBox-title {
+    font-size: 0.7rem;
+    color: #333;
+}
+.payCurrent {
+    text-align: center;
+    width: 71%;
+    margin: 1.5rem 2.4rem 0;
+    background: #18B1EA;
+    color: #fff;
+    font-size: 0.8rem;
+    line-height: 2rem;
+    border-radius: 0.5rem;
+    cursor: pointer
+}
+.payBox-select {
+    position: absolute;
+    width: 40%;
+    right: -15%;
+    bottom: -10%;
+    display: none;
+}
+
+
+.payNewBox {
+    width:100%;
+	height:100%;
+	position: fixed;
+	top: 0;
+    left: 0;
+	background-color: rgba(0, 0, 0,0.3);
+	display:none;
+	z-index:99;
+}
+.payNewBox-con {
+	background:#fff;
+    box-shadow:0px 0px 12px 0px rgba(86,157,236,0.2);
+    border-radius:0.6rem;
+	padding:0.8rem;
+	width:14rem;
+	position:absolute;
+	left:50%;
+	top:50%;
+	margin:0 auto;
+	transform: translate(-50%,-50%);
+}
+.payTop {
+    display: flex;
+    justify-content: space-between;
+}
+.pop-icon-return {
+    width: 0.8rem;
+    height: 0.8rem;
+}
+.payBoxClose {
+    width: 0.8rem;
+    height: 0.8rem;
+}
+.payNewBox-title{
+	color:#999;
+	font-weight:bold;
+	font-size:0.8rem;
+    line-height: 0.6rem;
+}
+.payNewBox-code{
+	border-radius:5px;
+	width: 6.8rem;
+    height: 6.8rem;
+    margin: 0 auto;
+    display: block;
+    margin-top: 1rem;
+}
+.payNewBox-money {
+    color:#018FFF;
+	font-weight:bold;
+	text-align:center;
+	font-size:1rem;
+	margin:0 0 0.5rem;
+}
+.markBotoom {
+    display: flex;
+}
+.scan-icon{
+    margin: 0.9rem 0.5rem 0 3.2rem;
+    width: 1.3rem;
+    height: 1.3rem;
+}
+.scan-text{
+	color:#9A9A9A;
+    font-size: 0.36rem;
+    margin-top: 0.8rem;
+}
+
+@media screen and (max-width: 768px) {
+    .pay202010 {
+        transform: scale(1.5) translate(-50%, -50%);
+        left: 62%;
+    }
+}
+</style>
+    <div class="iframepay">
+        <a title="关闭" id="iframecolse" class="iframecolse"><img style="background: rgba(0,0,0,.5);" src="/themes/simpleboot3/sdkh5/assets/images/close_white.png" alt=""></a>
+        <iframe id="jjspay_url_mainframe" frameborder="0" scrolling="yes" name="main" src="">
+        </iframe>
+    </div>
+    <div class="payNewBox js-pop">
+        <div class="payNewBox-con">
+            <div class="payTop">
+                <img src="/themes/simpleboot3/sdkh5/assets/images/notice_ico_return.png" class="pop-icon-return js-btn-close">
+                <div class="payNewBox-title">需支付</div>
+                <img src="/themes/simpleboot3/sdkh5/assets/images/icon_close.png" class="payBoxClose js-btn-close">
+            </div>
+            <div class="payNewBox-money"></div>
+            <img src="" class="payNewBox-code qrcode-img">
+            <div class="markBotoom">
+                <img src="/themes/simpleboot3/sdkh5/assets/images/scan-icon.png" class="scan-icon fl">
+                <div class="scan-text fl">请使用微信“扫一扫” <br>扫码二维码支付</div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script src="__TMPL__/sdkh5/assets/js/sdk/function.js"></script>
+    <script src="http://yyh.ceshi.vlcms.com/themes/simpleboot3/sdkh5/assets/js/xigusdk/h5gamesdk.js"></script>
+    <script>
+        var alipay = "{:pay_type_status('zfb')}";
+        var weixinpay = "{:pay_type_status('wxscan')}";
+        var is_wechat = "{:cmf_is_wechat()}";
+        var alipayUrl = "{:url('issueh5/pay/alipay')}";
+        var weixinUrl = "{:url('issueh5/pay/weixinpay')}";
+        var checkUrl = "{:url('issueh5/pay/check_status')}";
+        var is_weiduan = 0;
+        var data='';
+        $(function(){
+            if(isH5App()){
+                is_weiduan = 1;
+            }
+            window.addEventListener("message", function (event) {
+                // if(event.origin!='http://newsy.com'){
+                //     console.log('{"code":1007,"msg":"当前非分发状态"}');return false;
+                // }else{
+                    switch (event.data.operation) {
+                        case "pay": {
+                            var cporder = event.data.param;
+                            cporder.login_extend = getParameter('channelExt');
+                            cporder.login_game_appid = getParameter('game_appid');
+                            ajax_post('/issueh5/pay/pay_init', cporder, function (result) {
+                                console.log('{"code":'+result.code+',"msg":'+result.msg+'}');
+                                if (result.code == '200') {
+                                    if(result.type == 0){
+                                        pull_pay(result.data);
+                                    }else{
+                                        data = result.data;
+                                        //调起支付
+                                        var payDialog = '';
+                                        payDialog += ' <div class="payContainer pay202010">';
+                                        payDialog +=          '<div class="payTitle">需支付</div>';
+                                        payDialog +=        '<img src="/themes/simpleboot3/sdkh5/assets/images/icon_close.png" class="closeButton"/>';
+                                        payDialog +=         '<div class="payMoney">'+result.data.amount/100+'<span>元</span></div>';
+                                        payDialog +=        '<div class="payWay">请选择支付方式</div>';
+                                        if(alipay){
+                                            payDialog +=         '<div class="payWayList">';
+                                            payDialog +=            '<div class="payWayBox js-alipay">';
+                                            payDialog +=         '<img src="/themes/simpleboot3/sdkh5/assets/images/ico_zfb.png" class="payBox-icon">';
+                                            payDialog +=         '       <div class="payBox-title">支付宝</div>';
+                                            payDialog +=         '      <img src="/themes/simpleboot3/sdkh5/assets/images/sdk_pay_btn_choose_s.png" class="payBox-select payZhi">';
+                                            payDialog +=          '   </div>';
+                                        }
+                                        if(weixinpay && is_wechat == 0){
+                                            payDialog +=         '   <div class="payWayBox js-weixinpay">';
+                                            payDialog +=         '        <img src="/themes/simpleboot3/sdkh5/assets/images/ico_wx.png" class="payBox-icon">';
+                                            payDialog +=         '       <div class="payBox-title">微信</div>';
+                                            payDialog +=        '        <img src="/themes/simpleboot3/sdkh5/assets/images/sdk_pay_btn_choose_s.png" class="payBox-select payWechart">';
+                                            payDialog +=        '    </div>';
+                                        }
+                                        payDialog +=        '</div>';
+                                        payDialog +=     '</div>';
+                                        $('body').append(payDialog);
+                                        $(".closeButton").click(function () {
+                                            $(".payContainer").hide()
+                                        })
+                                    }
+
+                                }else{
+                                    alert('无法购买，请联系客服');return false;
+                                }
+                            });
+                            break;
+                        }
+                        case "role":
+                            var roledata = event.data.param;
+                            roledata.login_extend = getParameter('channelExt');
+                            roledata.login_game_appid = getParameter('game_appid');
+                            ajax_post('/issueh5/role/createRole', roledata, function (result) {
+                                console.log('{"code":'+result.code+',"msg":'+result.msg+'}');
+                                if (result.code == '200') {
+                                    pull_role(result.data);
+                                }
+                            });
+                            break;
+                    }
+               // }
+            }, false);
+
+            $("body").on('click','.js-alipay',function () {
+                $.post(alipayUrl, data, function (res) {
+                    if (res.status < 1) {
+                        layer.msg(res.message);
+                    } else if (res.status == 1) {
+                        //PC端支付宝扫码支付
+                        $(".payNewBox").show();
+                        $(".payContainer").hide();
+                        $(".payNewBox-money").html(res.amount + "<span>元</span>");
+                        $(".qrcode-img").attr('src', res.qrcode_url);
+                        $(".scan-text").html("请使用支付宝“扫一扫” <br>扫码二维码支付");
+                        check_pay(res.out_trade_no);
+                        $(".payBoxClose").click(function () {
+                            $(".payNewBox").hide();
+                        })
+                    } else if (res.status == 2) {
+                        $(".payContainer").hide();
+                        //手机端支付
+                        var param = {"url":res.url,"pay_way":3};
+                        XG_H5_GAME_SDK.payurl(param);
+                    } else if (res.status == 3) {
+                        //苹果APP支付
+                        if (is_weiduan == 1) {
+                            window.webkit.messageHandlers.h5shellzfbnative.postMessage(res);
+                        } else {
+                            window.webkit.messageHandlers.zfbAppPay.postMessage(res);
+                        }
+                        $(".payContainer").hide();
+                    } else if (res.status == 4) {
+                        layer.msg("支付成功");
+                        $(".payContainer").hide();
+                    }
+                })
+                $(".payZhi").toggle();
+            })
+            $("body").on('click','.js-weixinpay',function () {
+                $(".payWechart").toggle();
+                data.is_weiduan = is_weiduan;
+                $.post(weixinUrl, data, function (res) {
+                    if(res.status <1){
+                        layer.msg(res.message);
+                    }else if(res.status == 1){
+                        //PC端微信扫码支付
+                        $(".payNewBox").show();
+                        $(".payContainer").hide();
+                        $(".payNewBox-money").html(res.amount + "<span>元</span>");
+                        $(".qrcode-img").attr('src', res.qrcode_url);
+                        $(".scan-text").html("请使用微信“扫一扫” <br>扫码二维码支付");
+                        check_pay(res.out_trade_no);
+                        $(".payBoxClose").click(function () {
+                            $(".payNewBox").hide();
+                        })
+                    }else if(res.status == 2){
+                        $(".payContainer").hide();
+                        //手机端支付
+                        var param = {"url":res.url,"pay_way":4};
+                        XG_H5_GAME_SDK.payurl(param);
+                    }else if(res.status == 4){
+                        layer.msg("支付成功");
+                        $(".payContainer").hide();
+                    }else{
+                        $(".payContainer").hide();
+                        //公众号支付
+                        callpay(JSON.parse(res.jsApiParameters));
+                    }
+                });
+            })
+            //拉起支付
+            function pull_pay(data)
+            {
+                XG_H5_GAME_SDK.config([]);
+                XG_H5_GAME_SDK.pay(data);
+            }
+            //角色上报
+            //拉起支付
+            function pull_role(data)
+            {
+                XG_H5_GAME_SDK.config([]);
+                XG_H5_GAME_SDK.role(data);
+            }
+        })
+        function getParameter(name) {
+            var reg = new RegExp("[&?](" + name + ")=([^&?#]*)", "i");
+            var r = window.location.search.match(reg);
+            return r ? r[2] : null;
+        };
+
+        function isH5App(){
+            var ua = window.navigator.userAgent.toLowerCase();
+            if(ua.match(/app\/h5shell/i) == 'app/h5shell'){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        //调用微信JS api 支付
+        function jsApiCall(jsApiParameters)
+        {
+            WeixinJSBridge.invoke(
+                'getBrandWCPayRequest',jsApiParameters,
+                function(res){
+                    if(res.err_msg == "get_brand_wcpay_request:ok"){
+                        layer.msg("支付成功");
+
+                        $(".js-btn-close").click(function() {
+                            $(".payNewBox").hide();
+                        });
+                    }
+                    // alert(res.err_code+res.err_desc+res.err_msg);
+                }
+            );
+        }
+        function callpay(jsApiParameters)
+        {
+            if (typeof WeixinJSBridge == "undefined"){
+                if( document.addEventListener ){
+                    document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+                }else if (document.attachEvent){
+                    document.attachEvent('WeixinJSBridgeReady', jsApiCall);
+                    document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+                }
+            }else{
+                jsApiCall(jsApiParameters);
+            }
+        }
+
+        function check_pay(out_trade_no){
+            $.ajax({
+                type:'post',
+                url:checkUrl,
+                data:{'out_trade_no':out_trade_no},
+                success:function(data){
+                    if(data.code==1){
+                        layer.msg("支付成功");
+                        $(".js-btn-close").click(function() {
+                            console.log(666)
+                        });
+                    }else{
+                        check_b =setTimeout(function () {
+                            check_pay(out_trade_no);
+                        },1500);
+                    }
+                },error:function(){
+                    alert('服务器错误');
+                }
+            })
+        }
+    </script>
+</block>

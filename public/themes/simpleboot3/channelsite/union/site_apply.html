@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+		<include file="public@head"/>
+	</head>
+
+	<body>
+		<include file="public@nav"/>
+		<include file="public@header"/>
+		<div class="trunk">
+			<div class="trunk-con">
+				<div class="right-container">
+					<div class="normal-list">
+						<div class="trunk">
+							<div class="trunk-title">
+								<div class="location ">
+									<div class="location-container fr">当前位置：<span class="location-container-text">联盟站点></span><span class="location-container-text">站点申请</span></div>
+								</div>
+								<img src="__TMPL__/public/assets/images/icon_shenqing.png" class="fl trunk-icon">
+								<span class="title-main fl ">站点申请  </span>
+
+							</div>
+
+							<ol class="tabpan">
+
+								<li class="tabpan-con tabpan-show">
+									<div class="clear"></div>
+									<form id="data">
+										<div class="minh-table">
+											<!--<div class="desccontent top-descconten ml110 mt0">
+
+											</div>-->
+											<div class="tabpan-con-con">
+												<div class="fl">
+													<label class="fl ">选择站点来源：</label>
+												</div>
+												<div class="fl" style="margin-left: 10px">
+													<if condition="empty($union) || $union['status'] == -1">
+														<label class="sdis">
+															<input type="radio" name="apply_domain_type" data-url="{:PNAME}.{$admin_set['web_site']}" checked="checked" value="0" class="sdis-radio "><i ></i><span>系统分配</span></label>
+														<label class="sdis">
+															<input type="radio" name="apply_domain_type" value="1"  class="sdis-radio "><i></i><span>自主添加</span></label>
+														<div class="js-source show">
+															<input type="text" id="url_ipt" class="tabpan-input disabled" readonly=""  value="{:PNAME}.{$admin_set['web_site']}" placeholder="" name="site_url" style="width: 265px;">
+														</div>
+														<if condition="$union['status'] == -1">
+															<input type="hidden" name="is_bohui" value="1">
+														</if>
+														<a class="mixedbtn apply">立即申请</a>
+														<if condition="$union['status'] == -1">
+															<span class="error-prompt">驳回原因：{$union['remark']}</span>
+														</if>
+													<else/>
+														<label class="sdis">
+															<input type="radio" name="apply_domain_type" data-url="{:PNAME}.{$admin_set['web_site']}" <if condition="$union['apply_domain_type'] eq 0"> checked="checked" </if> disabled value="0" class="sdis-radio "><i ></i><span>系统分配</span></label>
+														<label class="sdis mr25">
+															<input type="radio" name="apply_domain_type" <if condition="$union['apply_domain_type'] eq 1"> checked="checked" </if> disabled  value="1"  class="sdis-radio "><i></i><span>自主添加</span></label>
+															<div class="js-source show" ><span class="ulrs">{$union['domain_url']}</span>
+																<if condition="$union['status'] == 1">
+																	<a class="btn-copylink" data-clipboard-action="copy" data-clipboard-target=".ulrs">复制链接</a>
+																</if>
+															</div>
+															
+															<if condition="$union['status'] == 0">
+																<a class="mixedbtn">审核中</a>
+															<elseif condition="$union['status'] == 1">
+																<a class="mixedbtn" href="{$union['domain_url']}" target="_blank">进入站点</a>
+															<else/>
+																状态错误
+															</if>
+															
+													</if>
+													<br />
+													<!-- <div class="js-source" ><span class="ulrs">http://sy.vlcms.com/Site/Index/asdasd</span>
+														<a class="btn-copylink" data-clipboard-action="copy" data-clipboard-target=".ulrs">复制链接</a>
+													</div> -->
+													<!-- <a class="mixedbtn">立即申请</a> -->
+												</div>
+
+											</div>
+										</div>
+									</form>
+									<div class="desccontent mt0 ml0">
+										<div class="desccontent-title fl">温馨提示：</div>
+										<div class="fl">
+											联盟站点是联运平台为广大渠道商们提供的一站式便利合作栏目。在这您可以获得平台官方为您专门定制手游PC站，您可以获取一个链接，也可以使用自己的域名建站。<!--可自由设置游戏的显示。-->
+										</div>
+										<br/>
+										<div style="margin-top: 5px">
+											<div class="desccontent-title fl">说明：</div>
+											<div class="fl">
+												系统分配站点只需申请，通过审核即可使用；自主添加站点需自行解析成功指向{$_SERVER['HTTP_HOST']}，保证其可正常访问，否则无效。推荐使用系统分配的域名链接，保证站点的稳定。
+											</div>
+										</div>
+
+									</div>
+								</li>
+
+							</ol>
+						</div>
+
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		<include file="public@scripts"/>
+		<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+		<script src="__STATIC__/js/layer/layer.js"></script>
+		<script src="__TMPL__/public/assets/js/clipboard.min.js"></script>
+		<script>
+			//			复制链接
+			var clipboard = new Clipboard('.btn-copylink');
+
+			clipboard.on('success', function(e) {
+				layer.msg("链接复制成功");
+			});
+
+			clipboard.on('error', function(e) {
+				console.log(e);
+			});
+			//点击来源
+			$("input[name='apply_domain_type']").click(function(){
+	          	var that = $(this);
+	          	var url = that.data('url');
+	          	if(that.val() == 0){
+	              	$("#url_ipt").val(url);
+	              	$("#url_ipt").addClass("disabled").prop('readonly',true);
+	          	}else{
+	              	$("#url_ipt").val('http://');
+	              	$("#url_ipt").removeClass("disabled").prop('readonly',false);
+	          	}
+	      	});
+	      	var sub = true;
+	      	$('.apply').click(function(){
+	      		if(!sub){
+		          	return false;
+		      	}
+		      	sub = false;
+				var data = $("#data").serialize();
+				$.ajax({
+				  type: "post",
+				  url: "{:url('apply_domain_url')}",
+				  dataType: "json",
+				  data: data,
+				  success: function (res) {
+				      if (res.code != 0) {
+				          layer.msg(res.msg, {icon: 1});
+				          setTimeout(function(){
+				          location.reload();
+				          },1500);
+				      }
+				      else {
+				          sub = true;
+				          layer.msg(res.msg, {icon: 2});
+				          return false;
+				      }
+				  },
+				  error: function () {
+				      layer.msg('服务器故障', {icon: 5});
+				  }
+				})
+	      	});
+		</script>
+
+	</body>
+
+</html>

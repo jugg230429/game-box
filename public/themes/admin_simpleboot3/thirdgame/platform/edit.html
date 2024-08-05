@@ -1,0 +1,145 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+
+	<div class="nav-tabs mb20">
+        <span class="pb10">编辑第三方平台</span>
+    </div>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('edit')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>平台名称：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control " name="platform_name" id="platform_name" value="{$data.platform_name}" placeholder="请输入平台名称">
+                            </div>
+                            <p class="help-block">例如：溪谷科技</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>平台域名：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control " name="platform_url" id="platform_url" value="{$data.platform_url}" placeholder="请输入平台域名">
+                            </div>
+                            <p class="help-block">例如：http://www.xigusdk.com</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>api密钥：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control " name="api_key" id="api_key" value="{$data.api_key}" placeholder=" 输入加密密钥">
+                            </div>
+                            <p class="help-block">长度12-32位的数字和字母</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>平台标识：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control " name="marking" id="marking" value="{$data.marking}" placeholder=" 平台标识">
+                            </div>
+                            <p class="help-block">本平台在第三方平台的标识，第三方平台提供</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                               获取可导入游戏接口地址：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control " name="select_game_url" id="select_game_url" value="{$data.select_game_url}" placeholder="接口地址">
+                            </div>
+                            <p class="help-block">获取可导入游戏接口地址，第三方平台提供</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                一键导入游戏接口地址：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control " name="import_game_url" id="import_game_url" value="{$data.import_game_url}" placeholder="接口地址">
+                            </div>
+                            <p class="help-block">一键导入游戏接口地址，第三方平台提供</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                导入游戏区服接口地址：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control " name="import_server_url" id="import_server_url" value="{$data.import_server_url}" placeholder="接口地址">
+                            </div>
+                            <p class="help-block">导入游戏区服接口地址，第三方平台提供</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                导入游戏礼包接口地址：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control " name="import_gift_url" id="import_gift_url" value="{$data.import_gift_url}" placeholder="接口地址">
+                            </div>
+                            <p class="help-block">导入游戏礼包接口地址，第三方平台提供</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                导入游戏原包接口地址：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control " name="import_source_url" id="import_source_url" value="{$data.import_source_url}" placeholder="接口地址">
+                            </div>
+                            <p class="help-block">导入游戏原包接口地址，第三方平台提供</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                导入游戏订单接口地址：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control " name="import_spend_url" id="import_spend_url" value="{$data.import_spend_url}" placeholder="接口地址">
+                            </div>
+                            <p class="help-block">导入游戏订单接口地址，第三方平台提供</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                订单补单接口地址：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control " name="import_pay_url" id="import_pay_url" value="{$data.import_pay_url}" placeholder="接口地址">
+                            </div>
+                            <p class="help-block">订单补单接口地址，第三方平台提供</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">平台状态：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" value="1"  name="status" <eq name="data.status" value="1">checked </eq> >开启
+                                </label>
+                                <label>
+                                    <input type="radio" value="0"  name="status" <eq name="data.status" value="0">checked</eq> >关闭
+                                </label>
+                            </div>
+                            <p class="help-block">设置平台状态</p>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <input type="hidden" name="id" value="{$data.id}">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                                <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

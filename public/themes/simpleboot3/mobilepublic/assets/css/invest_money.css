@@ -1,0 +1,307 @@
+body{
+	padding-bottom:0;
+}
+html{
+    background-color: #f3f3f3;
+}
+.invest_money_header{
+    width: 100%;
+    height: 3.8rem;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #EDEEEF;
+}
+.invest_money_header .back_icon{
+    width: 0.74rem;
+    margin-left: 1rem;
+}
+.invest_money_header_title{
+    font-size: 1.45rem;
+    font-weight:500;
+    color:#222222;
+    vertical-align: middle;
+    margin-left:14%;
+}
+.invest_money_header_right{
+    font-size: 1.2rem;
+    margin-right: 1rem;
+    color: #018FFF;
+}
+.type_down__long_hx{
+    width: 100%;
+    height: 1px;
+    background-color: #EDEEEF;
+    /* position: relative; */
+    /* top: -0.3rem; */
+    z-index: 1;
+    width: 94%;
+    margin: .3rem auto 0;
+}
+.invest_money_page{
+    background-color: #f3f3f3;
+    width: 100%;
+    height: 100%;
+}
+.invest_money_cons{
+    width: 100%;
+    background-color: #ffffff;
+    min-height: 17.2rem;
+    position: relative;
+}
+.invest_money_con_item{
+    height: 3.5rem;
+}
+.invest_money_con_item p{
+    line-height: 3.5rem;
+    position: relative;
+}
+.invest_money_con_item_right.game:after{
+    position: absolute;
+    right: -22.2rem;
+    top: 1.2rem;
+    content: '';
+    width:0.68rem;
+    height: 1.28rem;
+    background: url(../images/common_btn_xiala.png)no-repeat;
+    background-size: 100% 100%;
+    -webkit-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+.invest_money_con_item_left{
+    color: #666666;
+    font-size: 1.2rem;
+    width:7rem;
+    padding-left: 1rem;
+}
+.invest_money_con_item_right{
+    color: #222;
+    font-size: 1.2rem;
+}
+.invest_money_con_item_right.pay_num{
+    position: relative;
+    left:0.5rem;;
+}
+.invest_money_con_item_right .invest_mon{
+    height: 2.5rem;
+    width: 16.5rem;
+    font-size: 1.2rem;
+    /*position: absolute;
+    top: 0.3rem;*/
+
+}
+.invest_money_con_item_right .invest_mon::placeholder{
+    color: #cfcfcf;
+    font-size:1.16rem
+}
+.invest_money_con_item_right .invest_num{
+    height: 2.3rem;
+    width: 21rem;
+    position: absolute;
+    top: 0.3rem;
+    top: .18rem;
+    font-size:1.2rem;
+    left: 0;
+    color: #222;
+}
+.invest_money_con_item_right.pay_num{
+    font-size: 1.28rem
+}
+input,input:focus{
+    border: none !important;
+    box-shadow: none !important;
+}
+.get_ptb_money{
+    color: #018FFF;
+    position: relative;
+    left: 0.5rem;
+    /*top: -0.2rem*/
+}
+.invest_money_con_item_tap{
+    color: #999999;
+    font-size: 12px;
+    font-weight:500;
+    margin-left: 0.5rem;
+    position: relative;
+    top: -1.6rem;
+}
+.change_invest_type{
+    width: 100%;
+    height: 14rem;
+    background-color: #ffffff;
+    margin-top: 0.67rem;
+}
+.change_invest_type_title{
+    font-size: 12px;
+    text-align: center;
+    color: #999999;
+    padding-top: 1.35rem;
+}
+.change_invest_type_item,.change_invest_type_item2{
+    width: 7.5rem;
+    height: 7.5rem;
+    box-shadow:0px 0px 1rem 0px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    margin:1.35rem 0 0 5.4rem;
+    border-radius: 11px;
+}
+.change_invest_type_item .invest_type_img,.change_invest_type_item2 .invest_type_img{
+    width: 45%;
+    margin-top: 1rem;
+}
+.change_invest_type_item p,.change_invest_type_item2 p{
+    margin-top: 0.9rem;
+    font-size: 1rem
+}
+.invest_money_btn{
+    width: 94%;
+    height:3.3rem;
+    line-height:3rem;
+    background-color: #018fff;
+    border-radius: 0.5rem;
+    color: #fff;
+    font-size: 1.32rem;
+    text-align: center;
+    margin-left:3%;
+    margin-top: 1.8rem;
+}
+.invest_money_btn p{
+    line-height:3.3rem;
+}
+.change_type_selected,.change_type_selected2{
+    width: 23%;
+    position: relative;
+    left: 3.5rem;
+    top: -0.4rem;
+    display: none;
+}
+.charge-type-menu{
+    width:100%;
+    height: 3.413rem;
+    background: #EDEEEF;
+    line-height: 3.413rem ;
+    color: #222222;
+    font-size: 1.45rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.charge-type-menu .charge-type-item{
+    margin-left: 6.48rem;
+}
+.charge-type-item.active{
+    color: #018FFF;
+    position: relative;
+}
+.charge-type-item.active:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #018FFF;
+}
+input[readonly]{
+    background-color: #ffffff;
+}
+.charge-game-list{
+    display: none;
+    position: absolute;
+    top:3.6rem;
+    background-color: rgb(248, 248, 248);
+    left: 0.3rem;
+    width: 21rem;
+    min-height: 5.46rem;
+    max-height: 23.63rem;
+    z-index: 9;
+    padding: 4px 6px;
+    border:1px solid rgba(220, 220, 220, 1);
+    border-radius:0.5rem;
+    overflow: auto;
+}
+.charge-game-list .charge-game-item{
+    width:100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    height: 2.816rem;
+    border-bottom: 1px solid #ffffff;
+    display: block;
+    line-height: 2.816rem;
+    font-size: 1.1rem;
+    padding-left: 0.3rem;
+    color: #666666;
+    cursor: pointer;
+}
+.charge-game-list .charge-game-item:last-child{
+    border: none;
+}
+.select-game{
+    width: 18rem!important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-right: 3rem!important;
+}
+.invest_money_con_item_right.discount{
+    color: #FF4E00;
+    margin-left: 6px;
+}
+.invest_money_con_item_right.real-pay{
+    margin-left: 6px;
+}
+.get_binding_money {
+    color: #018FFF;
+    position: relative;
+    left: 0.5rem;
+    /*top: -0.2rem;*/
+}
+
+input::-webkit-input-placeholder{
+    font-size: 1.16rem;
+}
+input::-moz-placeholder{
+    font-size: 1.16rem;
+}
+input:-ms-input-placeholder{
+    font-size: 1.16rem;
+}
+input::-ms-input-placeholder{
+    font-size: 1.16rem;
+}
+input::placeholder{
+    font-size: 1.16rem;
+}
+.newInput-gameName{
+    width: 20rem;
+    height: 2rem;
+    border: 1px solid #666666!important;
+}
+@media screen and (max-width:320px) and (orientation:portrait){
+    /*.change_invest_type_item,.change_invest_type_item2{
+        width: 7rem!important;
+        height: 7rem!important;
+        margin-left: 1.4rem;
+    }*/
+   /* .change_invest_type_item img,.change_invest_type_item2 img{
+        width: 40%;
+        margin-top: 1rem;
+    }
+    .change_type_selected{
+        width: 23%!important;
+        position: relative;
+        left: 3.5rem!important;
+        top: -1.2rem!important;
+    }*/
+}
+@media screen and (min-width:360px) and (max-width:374px) and (orientation:portrait) {
+    /*.change_invest_type_item, .change_invest_type_item2{
+        margin-left: 1.5em;
+    }*/
+}

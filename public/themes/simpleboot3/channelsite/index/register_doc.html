@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<include file="public@head"/>
+		<link href="__TMPL__/public/assets/css/common.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/rule.css" rel="stylesheet" />
+	</head>
+	<body>
+		<!--header-->
+			<header>
+				<include file="public@indexheader"/>
+			</header>
+		<!--header end-->
+		<div class="main">
+			<div class="main-con">
+				{$data[0]['post_content']}
+			</div>
+		</div>
+		<!--footer-->
+		<include file="public@index_footer"/>
+	</body>
+</html>

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>游戏大厅</title>
+    <script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+    <script src="http://guanli:8078/themes/simpleboot3/sdkh5/assets/js/xigusdk/h5gamesdk.js"></script>
+    <script src="http://www.gongjuji.net/Content/files/jquery.md5.js"></script>
+</head>
+<body style="background: white;width: 100%;height:100%;overflow: hidden;">
+    <label class="role" style="z-index:1;position: absolute;text-align: center;width: 100%;">角色上报</label> <br><br><br><br>
+    <label class="recharge_buy" style="z-index:1;position: absolute;text-align: center;width: 100%;">支付</label> <br><br><br><br>
+</body>
+
+<script type="text/javascript">
+
+    window.onload=function(){
+
+        XG_H5_GAME_SDK.config([]);
+
+        var channelExt=XG_H5_GAME_SDK.getParameter('channelExt'),
+            agent_id=XG_H5_GAME_SDK.getParameter('agent_id'),
+            game_appid=XG_H5_GAME_SDK.getParameter('game_appid'),
+            timestamp=XG_H5_GAME_SDK.getParameter('timestamp'),
+            loginplatform2cp=XG_H5_GAME_SDK.getParameter('loginplatform2cp'),
+            user_id=XG_H5_GAME_SDK.getParameter('user_id'),
+            sign=XG_H5_GAME_SDK.getParameter('sign');
+
+        //支付
+        $('.recharge_buy').on('click', function () {
+            $.ajax({//充值金额
+                type: "POST",
+                url: './pay_sign.php/check_pay',
+                data: {
+                    user_id:user_id,
+                    pay_amount: 1,
+                    //运营方发送数据 原样返回
+                    channelExt:channelExt,
+                    game_appid:game_appid,
+                    server_id:1,
+                    server_name:'钢铁烈阳',
+                    role_id:1,
+                    role_name:'我的亚索贼溜',
+                    role_level:30,
+                    combat_number:999999,
+                    timestamp:parseInt((new Date()).valueOf()/1000),
+                },
+                dataType: "json",
+                    success: function (data) {
+                        var paydata = data.data.spen_data;
+                        XG_H5_GAME_SDK.pay({amount:paydata.amount, props_name:paydata.props_name, trade_no:paydata.trade_no,
+                            user_id:user_id, sign:paydata.sign, game_appid:game_appid, channelExt:channelExt,
+                            server_id:1,server_name:'钢铁烈阳', role_id:1,role_name:'我的亚索贼溜',role_level:30,combat_number:999999,timestamp:parseInt((new Date()).valueOf()/1000)
+                        },function(data){
+                            console.log(data);alert(data);
+                        });
+                }
+            });
+        });
+
+        ///角色上报
+        $('.role').on('click',function(){
+            $.ajax({
+                type:"POST",
+                url:'./role_sign.php/check_role',
+                data:{
+                    user_id:user_id,
+                    channelExt:channelExt,
+                    game_appid:game_appid,
+                    server_id:12,
+                    server_name:'钢铁烈阳',
+                    role_id:1,
+                    role_name:'我的亚索贼溜',
+                    role_level:30,
+                    combat_number:999999,
+                    timestamp:parseInt((new Date()).valueOf()/1000)
+
+                },
+                dataType:"json",
+                success:function(data){
+                    var roledata = data.data.spen_data;
+                    XG_H5_GAME_SDK.role({user_id:roledata.user_id,channelExt:channelExt,game_appid:roledata.game_appid,server_id:roledata.server_id,server_name:roledata.server_name,role_id:roledata.role_id,role_name:roledata.role_name,role_level:roledata.role_level,combat_number:roledata.combat_number,timestamp:parseInt((new Date()).valueOf()/1000),sign:roledata.sign},function(data){
+                        console.log(data);
+                    });
+                }
+            });
+        });
+
+
+    }
+
+
+</script>
+
+</html>

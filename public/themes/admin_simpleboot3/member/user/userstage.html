@@ -1,0 +1,366 @@
+<include file="public@header" />
+</head>
+<body>
+<style>
+    .bootstrap-select:not([class*="col-"]):not([class*="form-control"]):not(.input-group-btn) {
+        width: 120px;
+    }
+    .layui-equipment-num .layui-layer-content{
+        padding: 20px;
+    }
+    #search_form{
+        width:86% !important;
+    }
+    .layer-anim{
+        overflow: hidden;
+    border-radius: 5px;
+    }
+    .layui-layer-title {
+        font-size: 15px !important;
+
+        font-weight: bold;
+    }
+    .layui-layer-title {
+        background-color: #fff;
+    }
+    .layui-layer-iframe{
+        border-radius: 30px;
+        overflow: hidden;
+    }
+    .table-actions,.scroll-table-wrapper{
+        margin-left: -10px;
+    }
+</style>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('user/userstage')}">玩家阶段管理</a></li>
+            <span class="title_remark" style="color:rgb(231,76,60)">说明：记录所有已设置阶段管理的玩家数据，按照评分倒序展示。</span>
+        </ul>
+        <div class="table-actions position fl" >
+            <a id="unset_user_stage" class="btn btn-noSz  mtb17" href="javescript:;">
+                未设置玩家({$unset_user_count})
+            </a>
+
+            <a id="set_user" class="btn btn-Sz  mtb17" href="{:url('user/setUserStage')}" >
+                设置
+            </a>
+        </div>
+        <form id="search_form" class="well form-inline fr" method="get" action="{:url('User/userstage')}" onsubmit="return check();" style="width: 96%;margin-right: 0px;">
+            <input type="text" class="form-control notempty" name="user_id" style="width: 120px;" value="{:input('request.user_id/d','')}" placeholder="玩家ID">
+            <input type="text" class="form-control notempty" name="account" style="width: 120px;" value="{:input('request.account/s','')}" placeholder="玩家账号">
+            
+            <select name="promote_id" id="promote_id"  class="selectpicker" data-live-search="true"  data-size="8" style="width: 120px;">
+                <option value="">所属渠道</option>
+                <option value="0" <if condition="input('request.promote_id') eq '0'">selected</if>>官方渠道</option>
+                <volist name=":get_promote_list()" id="vo">
+                    <option promote-id="{$vo.id}" value="{$vo.id}" <if condition="input('request.promote_id') eq $vo['id']">selected</if>>{$vo.account}</option>
+                </volist>
+            </select>
+
+            <select name="user_stage_id" id="user_stage_id"  class="selectpicker" data-live-search="true"  data-size="8" style="width: 120px;">
+                <option value="">玩家阶段</option>
+                <volist name=":get_user_stage()" id="vo">
+                    <option promote-id="{$vo.id}" value="{$vo.id}" <if condition="input('request.user_stage_id') eq $vo['id']">selected</if>>{$vo.name}</option>
+                </volist>
+            </select>
+            
+            <input type="text" class="form-control notempty" name="user_score_1" style="width: 120px;" value="{:input('request.user_score_1/s','')}" placeholder="评分最小值">
+            <input type="text" class="form-control notempty" name="user_score_2" style="width: 120px;" value="{:input('request.user_score_2/s','')}" placeholder="评分最大值">
+            
+            <input type="hidden" name="sort" id="sort" value="{:input('request.sort',1)}">
+            <input type="hidden" name="sort_type" id="sort_type" value="{:input('request.sort_type')}">
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('User/userstage')}">清空</a>
+            <a class="btn btn-export js-ajax-dialog-btn-xz"  data-msg="确定导出吗？" href="{:url('Export/expUser',array_merge(['id'=>6,'xlsname'=>'玩家阶段管理'],input()))}">导出</a>
+
+        </form>
+        <div class="scroll-table-wrapper">
+        <table class="table table-hover table-bordered scroll-table" style="margin-left:0px;">
+            <thead>
+                <tr>
+                    <!-- <th><input type="checkbox" id="all-checkbox" class="table-item-checkbox js-check-all" data-direction="x" data-checklist="js-check-x"><label for="all-checkbox" class=""></label></th> -->
+                    <th>头像</th>
+                    <th>玩家账号</th>
+                    <th>账号ID</th>
+                    <th>玩家阶段</th>
+                    <th>玩家评分</th>
+                    <th>所属渠道</th>
+                    <th>注册时间</th>
+                    <th>备注</th>
+                    <!-- <th>
+                        <a href="javascript:changesort('balance');">平台币余额
+                        <if condition="input('request.sort_type') eq 'balance' and input('request.sort') eq 2">
+                            ▼
+                            <elseif condition="input('request.sort_type') eq 'balance' and input('request.sort') eq 3"/>
+                            ▲
+                            <else/>
+                            <img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+                        </if>
+                        </a>
+                    </th> -->
+                    <!-- <th>
+                        <a href="javascript:changesort('gold_coin');">金币
+                            <if condition="input('request.sort_type') eq 'gold_coin' and input('request.sort') eq 2">
+                                ▼
+                            <elseif condition="input('request.sort_type') eq 'gold_coin' and input('request.sort') eq 3"/>
+                                ▲
+                            <else/>
+                                <img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+                            </if>
+                        </a>
+                    </th> -->
+                </tr>
+            </thead>
+            <tbody>
+                <empty name="data_lists">
+                    <tr><td colspan="23" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <foreach name="data_lists" item="vo">
+                    <tr>
+                        <!-- <td><input type="checkbox" id="ids-checkbox{$vo.id}" class="table-item-checkbox js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
+                                   value="{$vo.id}" title="ID:{$vo.id}">
+                            <label for="ids-checkbox{$vo.id}" class=""></label>
+                        </td> -->
+
+                        <td>
+                            <img src="{$vo['head_img']}" style="width:50px;height:auto;border-radius: 7px;" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                        </td>
+                        <td>{$vo.account}</td>
+                        <td>{$vo.id}</td>
+                        <td>{$vo.user_stage_name}</td>
+                        <td style="cursor: pointer">
+                            <span class="change_user_score" data-user-id="{$vo.id}" style="color:#006fc4;text-decoration: underline;">{$vo.user_score}</span>
+                        </td>
+                        <td>{:get_promote_name($vo['promote_id'])}</td>
+                        <td>{:date('Y-m-d H:i:s',$vo['register_time'])}</td>
+                        <td style="cursor: pointer">
+                            <if condition="empty($vo.user_stage_remark)">
+                                <span class="change_userstage_remark" data-user-id="{$vo.id}" data_content="" style="color:#006fc4;">点击备注</span>
+                            <else/>
+                                <span class="change_userstage_remark" data-user-id="{$vo.id}" data_content="{$vo.user_stage_remark}" style="color:#006fc4;">{$vo.user_stage_remark}</span>
+                            </if>
+                            
+                        </td>
+                      
+                    </tr>
+                    </foreach>
+                </empty>
+            </tbody>
+        </table>
+        </div>
+        <div class="pagination">
+            {$page}
+           <!-- <li class="page-item"><a class="page-link" href="{:url('Export/expUser',array_merge(['id'=>1,'xlsname'=>'玩家_玩家列表'],input()))}">导出</a></li> -->
+        </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script>
+        //修改玩家评分
+        $('.change_user_score').click(function () {
+            var user_id = $(this).attr('data-user-id');
+            layer.prompt({title:'请输入评分', formType: 0,value: 0,placeholder:'请输入带1位小数的数字'}, function (value, index) {
+
+                if (!/^\d+(?:\.\d{0,1})$/.test(value)) {
+                    layer.msg('请输入带1位小数的数字');
+                    return false;
+                }
+                $.ajax({
+                    async: false,
+                    url: "{:url('changeUserScore')}",
+                    type: "POST",
+                    dataType: "json",
+                    data: {user_id: user_id, score: value},
+                    success: function (result) {
+                        layer.msg(result.msg, );
+                        setTimeout(function(){
+                            self.location.reload(true);
+                        },2000);
+                    },
+                    error: function () {
+                        layer.msg('服务器繁忙,请稍后再试!');
+                    }
+                });
+
+            });
+            return false;
+        });
+
+        // 修改用户阶段备注   
+        $('.change_userstage_remark').click(function () {
+            var user_id = $(this).attr('data-user-id');
+            var content = $(this).attr('data_content');
+            // layer.msg("haha");
+            layer.prompt({
+                formType: 2,
+                value: content,
+                title: '请输入备注信息',
+                area: ['400px', '175px'], //自定义文本域宽高
+                placeholder:'请输入备注信息'
+            }, function (value) {
+                // 验证value规则 ...
+                $.ajax({
+                    url: "{:url('changeUserStageRemark')}",
+                    type: 'post',
+                    dataType: 'json',
+                    data: {user_id: user_id, user_stage_remark:value},
+                    success: function (data) {
+                        layer.msg(data.msg);
+                        setTimeout(function(){
+                            self.location.reload(true);
+                        },2000);
+
+                    },
+                    error: function () {
+                        layer.msg("服务器繁忙,请稍后再试!");
+                    }
+                });
+            }); 
+     
+            return false;
+        });
+
+        $('#unset_user_stage').click(function(){
+            // href="{:url('user/addUserStage')}"
+            // var user_id = $("#id").val();
+            layer.open({
+                type: 2,
+                title: "未设置玩家",
+                shadeClose: true,
+                shade: 0.8,
+                area: ['1062px', '80%'],
+                // content: "{:url('user_bind_balance')}?user_id="+user_id //iframe的url
+                content: "{:url('user/addUserStage')}" //iframe的url
+            });
+        });
+
+
+        $('#register_type').selectpicker('val', $('#register_type').attr('register_type'));
+        $('#user_status').selectpicker('val', $('#user_status').attr('user_status'));
+        $('#viplevel').selectpicker('val', $('#viplevel').attr('viplevel'));
+        $(function () {
+            //去空处理
+            $('.notempty').bind('input onpropertychange',function(){
+                $(this).val(($(this).val()).replace(/\s/g,""));
+            });
+            $("#lock_user").click(function () {
+                var ids = '';
+                $('input[name="ids[]"]:checked').each(function(){
+                    //遍历每一个名字为interest的复选框，其中选中的执行函数
+                    ids = ids +$(this).val()+",";//将选中的值添加到数组chk_value中
+                });
+                if(ids == ''){
+                    layer.msg('请选择要操作的数据');
+                    return false;
+                }
+                ids = ids.substring(0,ids.length-1);
+                var url = $(this).attr('data-action');
+                window.location.href = url+"?id="+ids;
+            })
+            $("#bulian").click(function () {
+                var ids = '';
+                $('input[name="ids[]"]:checked').each(function(){
+                    //遍历每一个名字为interest的复选框，其中选中的执行函数
+                    ids = ids +$(this).val()+",";//将选中的值添加到数组chk_value中
+                });
+                if(ids == ''){
+                    layer.msg('请选择要操作的数据');
+                    return false;
+                }
+                ids = ids.substring(0,ids.length-1);
+                var url = $(this).attr('data-action');
+                window.location.href = url+"?id="+ids;
+            })
+
+            // 搜索验证
+            $("#search_btn").click(function(){
+                var user_score_1 = $("input[name=user_score_1]").val();
+                var user_score_2 = $("input[name=user_score_2]").val();
+                if(user_score_1>0 && user_score_2>0 && user_score_1 > user_score_2){
+                    layer.msg("评分最小值不能大于评分最大值!",{icon:2});
+                    return false;
+                }
+           });
+
+        })
+        function open_record(user_id){
+            layer.open({
+                type: 2,
+                title: '游戏付费记录',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['70%', '80%'],
+                content: "{:url('spendrecord')}?user_id="+user_id //iframe的url
+            });
+        }
+        function open_equipment_num(equipment_num) {
+            var content = '<p>'+equipment_num+'</p>'
+            layer.open({
+                type: 1,
+                skin: 'layui-equipment-num', //样式类名
+                closeBtn: 1, //不显示关闭按钮
+                title:'设备号',
+                anim: 2,
+                area: ['300px', '120px'],
+                shadeClose: true, //开启遮罩关闭
+                content: content
+            });
+        }
+        function open_balance(user_id){
+            layer.open({
+                type: 2,
+                title: '绑币余额',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['70%', '80%'],
+                content: "{:url('user_bind_balance')}?user_id="+user_id //iframe的url
+            });
+        }
+
+        /**
+         * 小号列表
+         * @param user_id
+         */
+        function open_small_lists(user_id) {
+            layer.open({
+                type: 2,
+                title: '小号数据',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['70%', '80%'],
+                content: "{:url('user_small_lists')}?user_id="+user_id //iframe的url
+            });
+        }
+        function check(){
+            var start_time = $("#start_time").val();
+            var end_time = $("#end_time").val();
+            if(start_time != '' && end_time != '' && start_time > end_time){
+                layer.msg('开始时间不能大于结束时间');
+                return false;
+            }
+            var login_start_time = $("#login_start_time").val();
+            var login_end_time = $("#login_end_time").val();
+            if(login_start_time != '' && login_end_time != '' && login_start_time > login_end_time){
+                layer.msg('最后登录开始时间不能大于结束时间');
+                return false;
+            }
+            return true;
+        }
+        function changesort(type){
+            var sort_type = $("#sort_type").val();
+            if(sort_type != type){
+                var sort = 1;
+            }else{
+                var sort = $("#sort").val();
+            }
+            $("#sort_type").val(type);
+            if(sort == 1){
+                $("#sort").val(2);
+            }else if(sort == 2){
+                $("#sort").val(3);
+            }else{
+                $("#sort").val(1);
+            }
+        }
+    </script>
+</body>
+</html>

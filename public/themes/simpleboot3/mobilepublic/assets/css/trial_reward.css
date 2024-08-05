@@ -1,0 +1,518 @@
+body{
+    background: #F4F4F4;
+}
+.v-middle{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.v-top{
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+.h-middle{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+.footer{
+    display: none;
+}
+.trial_reward_header {
+    width: 100%;
+    height: 3.8rem;
+}
+.trial_reward_header .back_icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0.94rem;
+    margin-top: 1.25rem;
+    margin-left: 0.94rem;
+    cursor: pointer;
+    display: block;
+}
+.trial_rules_page .trial_reward_header .back_icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0.84rem;
+    margin-top: 1.25rem;
+    margin-left: 0.94rem;
+    cursor: pointer;
+    display: block;
+}
+.trial_reward_title,.trial_rules_title {
+    width: 100%;
+    text-align: center;
+    font-size: 1.45rem;
+    line-height: 1.45rem;
+    padding-top: 1.4rem;
+    margin-bottom: 0.9rem;
+    font-weight: 500;
+    color: #ffffff;
+}
+.trial_rules_title{
+    color: #333333;
+}
+.trial_reward_part1{
+    width: 100%;
+    height: 14.24rem;
+    background: url(../images/trial_reward/try_bg.png)no-repeat;
+    background-size: 100% 100%;
+}
+.trial_reward_part1 .trial-rules-btn{
+    position: absolute;
+    right:0.94rem;
+    top:1.2rem;
+    width: 1.8rem;
+    height: 1.8rem;
+    display: block;
+    background: url(../images/trial_reward/try_tab_btn_more.png)no-repeat;
+    background-size: 100% 100%;
+}
+.trial-reward-step{
+    margin-top: 1.5rem;
+}
+.reward-steps{
+    padding:0 2rem;
+    position: relative;
+    z-index: 50;
+}
+.reward-steps .step{
+    width:1.956rem;
+    height: 1.956rem;
+    border-radius: 9.9rem;
+    text-align: center;
+    line-height: 1.956rem;
+    background: url(../images/trial_reward/try_bg_receive.png)no-repeat;
+    background-size: 100% 100%;
+    color: #ffffff;
+    margin: 0 auto;
+    position: relative;
+    z-index: 51;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+.reward-steps:not(:first-child):not(:last-child) .step:after,.reward-steps:not(:first-child):not(:last-child) .step:before{
+    position: absolute;
+    top: 1rem;
+    left: 100%;
+    width: 8.765rem;
+    height: 0;
+    border-top: 0.078rem dashed rgba(204,222,253,0.5);
+    content: '';
+    z-index: 49;
+}
+.reward-steps:not(:first-child):not(:last-child) .step:before{
+    right:100%;
+    left: auto;
+}
+.reward-steps:last-child{
+    padding-left: 1.9rem;
+}
+/*.reward-steps:first-child .step:after{
+    position: absolute;
+    top: 1rem;
+    left: 100%;
+    width: 5rem;
+    height: 0;
+    border-top: 0.078rem dashed rgba(204,222,253,0.5);
+    content: '';
+    z-index: 49;
+}
+.reward-steps:last-child .step:after{
+    position: absolute;
+    top: 1rem;
+    right: 100%;
+    width: 5rem;
+    height: 0;
+    border-top: 0.078rem dashed rgba(204,222,253,0.5);
+    content: '';
+    z-index: 49;
+}*/
+
+.reward-steps .reward-text{
+    margin-top: 0.5rem;
+    font-size: 1.095rem;
+    color:#FFFFFF ;
+    text-align: center;
+}
+.reward-steps .reward-text span{
+    font-weight: bold;
+}
+.no-data{
+    padding-top: 4rem;
+    font-size: 1.33rem;
+    color: #999999;
+    height: calc(100vh - 14.24rem);
+    background: #ffffff;
+    box-sizing: border-box;
+}
+.no-data .no-data-icon{
+    display: block;
+    margin: 0 auto;
+    width: 7.82rem;
+    height: 9.078rem;
+    background: url(../images/trial_reward/try_img_no.png)no-repeat;
+    background-size: 100% 100%;
+}
+.no-data .text{
+    margin-top: 1rem;
+    width: 100%;
+    text-align: center;
+}
+.trial-reward-list >ul{
+   /* background: #F4F4F4;*/
+    position: relative;
+    top:-2.034rem;
+    width: 100%;
+    padding: 0 0.94rem;
+    box-sizing: border-box;
+}
+.trial-reward-list .trial-reward-item{
+    width: 100%;
+    height: 6.02rem;
+    background: #ffffff;
+    border-radius: 0.78rem;
+    margin-bottom: 0.626rem;
+    padding: 0 0.78rem;
+    box-sizing: border-box;
+}
+.trial-reward-item >a{
+    width: 100%;
+    height: 100%;
+}
+.trial-reward-item .trial-game-icon{
+    width: 3.834rem;
+    height: 3.834rem;
+    display: block;
+    border-radius: 0.54rem;
+    margin-right: 0.75rem;
+}
+.trial-reward-item  .trial-game-info .line{
+    color: rgba(224, 223, 223, 1)!important;
+    margin-left: 0.4rem;
+    margin-right: 0.4rem;
+    position: relative;
+    top: -0.1rem;
+}
+.trial-reward-item  .trial-game-info .game-title{
+    font-size: 1.25rem;
+    color:#333333;
+    font-weight: bold;
+    width: 13rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.trial-reward-item  .trial-game-info .trial-end-time{
+    color: #999999;
+    font-size: 1.017rem;
+    margin-top: 0.4rem;
+}
+.trial-reward-item .arrow-icon{
+    margin-left: 0;
+    width: 2rem;
+    height: 2rem;
+    background: url(../images/trial_reward/arrow_right.png)no-repeat;
+    background-size: 100%;
+    margin-right: -0.5rem;
+}
+.trial-reward-item  .trial-status{
+    margin-left: auto;
+    margin-right: 0.5rem;
+    font-size: 1.017rem;
+}
+.trial-reward-item  .trial-status .already-bm{
+    color: #1C93E7;
+}
+.trial-reward-item  .trial-status .soon-begin{
+    color: #F6BD33;
+}
+.trial-reward-item  .trial-status .finish{
+    color: #048D11;
+    display: flex;
+    align-items: center;
+}
+.trial-reward-item  .trial-status .finish .b-icon{
+    width: 0.94rem;
+    height: 1.17rem;
+    margin: 0 0.1rem 0.1rem 0.2rem;
+    background: url(../images/trial_reward/try_state_complete_ico_money.png)no-repeat;
+    background-size: 100% 100%;
+}
+.trial-reward-item  .trial-status .number-fill{
+    color: #999999;
+}
+.type_down__long_hx {
+    width: 100%;
+    height: 1px;
+    background-color: #EDEEEF;
+    position: relative;
+    top: -0.1rem;
+    z-index: 1;
+    margin-top: 0.3rem;
+}
+.trial-rules-content{
+    width: 100%;
+    padding: 1.6rem 1.82rem 0;
+    box-sizing: border-box;
+    font-size: 1.17rem;
+    color: #333333;
+    line-height: 1.8rem;
+}
+.trial-rules-content p{
+    margin-bottom: 1rem;
+}
+.trial-detail-contain{
+    background: #F6F6F6;
+}
+.trial-detail-contain .trial-game-info-box{
+    width: 100%;
+    height: 8.06rem;
+    background: #ffffff;
+    padding: 0.62rem 0.94rem;
+    box-sizing: border-box;
+}
+.trial-detail-contain .trial-game-info-box .trial-game-info-item{
+    width: 15.02rem;
+    height: 3.99rem;
+    background: #F6F6F6;
+    border-radius: 0.62rem;
+    padding: 0.62rem 1.33rem;
+    box-sizing: border-box;
+    flex-wrap: wrap;
+}
+.trial-detail-contain .trial-game-info-item:not(:first-child){
+    margin-left: 0.547rem;
+}
+.trial-game-info-item p {
+    width: 100%;
+}
+
+.trial-game-info-item .title{
+    font-size: 0.94rem;
+    color: #333333;
+}
+.trial-game-info-item .text{
+    margin-top: 0.12rem;
+    font-size: 1.017rem;
+    font-weight: bold;
+    color:#FF7E00 ;
+}
+.trial-part-text{
+    font-size: 1.33rem;
+    color: #333333;
+    margin-top: 1rem;
+    text-align: center;
+}
+.trial-part-box{
+    width: 100%;
+    padding:0.5rem 0.782rem;
+    box-sizing: border-box;
+    background: #ffffff;
+    margin-top: 0.391rem;
+}
+.trial-part-box .trial-part-icon{
+    width: 3.44rem;
+    height: 3.44rem;
+    display: block;
+    font-style: normal;
+    text-align: center;
+    line-height: 3.44rem;
+    font-size: 1.486rem;
+    color: #018FFF;
+    font-weight: bold;
+    background: url(../images/trial_reward/try_task_Details_number_bg.png)no-repeat;
+    background-size: 100% 100%;
+}
+.trial-part-box .trial-part-title .line{
+    width: 13.77rem;
+    height: 0.08rem;
+    background: rgba(194,194,194,0.3);
+}
+.trial-part-box .task-title{
+    font-size: 1.17rem;
+    color: #000000;
+    margin-bottom: 0.5rem;
+}
+
+.trial-part-box .task-title .task-text{
+    color: #666666;
+}
+.trial-part-box .trial-game-img{
+   width: 100%;
+    height: 13.38rem;
+    border-radius: 0.62rem;
+    margin-top: 0.7rem;
+}
+.trial-part-box .trial-part-reward{
+    color: #048D11;
+    display: flex;
+    align-items: center;
+    margin: 1.17rem auto 0.94rem;
+    text-align: center;
+    justify-content: center;
+}
+.trial-part-box .trial-part-reward .b-icon{
+    width: 0.7rem;
+    height: 0.94rem;
+    margin: 0 0.2rem 0 0.3rem;
+    background: url(../images/trial_reward/try_state_complete_ico_money.png)no-repeat;
+    background-size: 100% 100%;
+}
+
+.footer-fixed-box{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    box-shadow: 0px -1px 11px 0px rgba(174,185,190,0.5);
+    box-sizing: border-box;
+    z-index: 9;
+    justify-content: center;
+}
+.footer-fixed-box a:first-child{
+    margin-left: 0;
+}
+.footer-fixed-box .download-btn {
+    width:13.77rem;
+    height: 3.13rem;
+    border: 0.08rem solid #CFCFCF;
+    border-radius: 9.9rem;
+    box-sizing: border-box;
+    font-size: 1.17rem;
+    color: #333333;
+    margin-left: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.footer-fixed-box .signUp-btn ,
+.footer-fixed-box .submit-btn,
+.footer-fixed-box .fill-btn,
+.footer-fixed-box .soon-begin-btn{
+    width: 13.77rem;
+    height: 3.13rem;
+    border-radius: 9.9rem;
+    box-sizing: border-box;
+    line-height: 3.13rem;
+    text-align: center;
+    font-size: 1.17rem;
+    color: #ffffff;
+    margin-left: 1.17rem;
+    background: #018EFE;
+}
+.footer-fixed-box .submit-btn{
+   background: #FF8C1B;
+}
+.footer-fixed-box .submit-btn.finish{
+    background: #018EFE;
+}
+.footer-fixed-box .fill-btn{
+    width: 30.44rem;
+    background: #D6D6D6;
+    color: #FFFFFF;
+    border: none;
+}
+.footer-fixed-box .download-btn.disabled {
+    background: #D6D6D6;
+    color: #FFFFFF;
+    border: none;
+}
+.footer-fixed-box .soon-begin-btn{
+    width: 30.44rem;
+    background: #D6D6D6;
+    color: #FFFFFF;
+    border: none;
+}
+.trial_detail_page{
+    padding-bottom: 5rem;
+}
+
+.pop-tips{
+    display: none;
+    -webkit-overflow-scrolling: touch;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999;
+    background: rgba(0,0,0,.5);
+}
+.pop-table {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: table;
+}
+.pop-cell {
+    display: table-cell;
+    position: relative;
+    vertical-align: middle;
+}
+.tips-box {
+    width: 21.6rem;
+    margin: 0 auto;
+    background: #FFF;
+    border-radius: 0.6rem;
+    font-size: 1.25rem;
+    box-sizing: border-box;
+    margin-top: -2rem;
+}
+.tips-box .tips-content {
+    padding: 1.3rem 1.4rem;
+    box-sizing: border-box;
+}
+.del_btn_box.z_clearfix {
+    padding: 0;
+}
+.del_btn_box a {
+    height: 3.6rem;
+    line-height: 3.6rem;
+    border-top: 1px solid #e7e7e9;
+    color: #222222;
+    width: 50%;
+    text-align: center;
+    font-size: 1.25rem;
+}
+.del_btn_box a:last-child {
+    border-left: 1px solid #e7e7e9;
+    border-bottom-left-radius: 0;
+}
+.z_clearfix:after {
+    display: block;
+    content: "";
+    height: 0;
+    line-height: 0;
+    visibility: hidden;
+    clear: both;
+}
+.tips-box .tips-content  p {
+    text-align: center;
+    margin: 0;
+    color: #222222;
+}
+.tips-box .tips-content  p.title {
+    margin-bottom: 0.8rem;
+    font-size: 1.33rem;
+    font-weight: bold;
+}

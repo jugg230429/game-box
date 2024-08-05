@@ -1,0 +1,344 @@
+.bag_detail_header{
+    width: 100%;
+    height: 3.8rem;
+	line-height: 3.8rem;
+    font-size: 1.45rem;
+    font-weight: 450;
+    position: relative;
+}
+.bag_detail_header .back_icon{
+    width: 0.74rem;
+    margin-left:1rem;
+	position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.bag_detail_header p{
+    margin-left: 2.5rem;
+}
+.game_bag_down_hx{
+    width: 100%;
+    height: 1px;
+    background-color: #F2F2F2;
+}
+.game_infos_img{
+    width: 4rem;;
+    background-color: #e2e2e2;
+    height:4rem;
+    border-radius: .8rem;
+    -webkit-border-radius: 11px;
+    -moz-border-radius: 11px;
+    border-radius: 11px;
+    margin-left: 1.2rem;
+}
+.game_infos_img img{
+    width: 4rem;
+    height:4rem;
+    border-radius: 11px;
+}
+.hot_bag_lq_btn{
+    text-align: center;
+    width:60px;
+    height:24px;
+    line-height:24px;
+    background:#018FFF;
+    font-size: 12px;
+    /* padding-left: 7px; */
+    color: #FFFFFF;
+    border-radius:2px;
+    margin-top: 11px;
+    cursor: pointer;
+}
+.game_infos_cons{
+    margin-left: 3.2%;
+    width: 55%;
+}
+.game_infos_cons_name{
+    font-size: 1.3rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-weight: bold;
+    margin-bottom: 0.2rem;
+    margin-top: 0.3rem;
+}
+.game_infos_cons_num{
+    font-size: 12px;
+    margin-left: 0.4rem;
+    color: #949494;
+}
+.game_infos_cons_num span{
+    color: #018FFF!important;
+}
+.layui-layer-hui {
+    border-radius: 8px!important;
+    min-width: 80px!important;
+}
+.layui-layer-hui .layui-layer-content{
+    padding: 6px 25px!important;
+}
+.game_bag_lingqu_btn{
+    background-color: #018FFF;
+    color: #ffffff;
+    width: 5.5rem;
+    height: 2.5rem;
+    line-height: 2.5rem;
+    box-shadow: none;
+    text-align: center;
+    border-radius: 5px;
+    text-align: center;
+    margin-right: 1rem;
+    margin-top: 0.7rem;
+    font-size: 14px;
+    position:relative;
+}
+.game_bag_lingqu_btn .disabled {
+	width: 5.5rem;
+	height: 2.5rem;
+    line-height: 2.5rem;
+    background-color: #ccc;
+    color: #ffffff;
+    width: 100%;
+    box-shadow: none;
+    border: 1px solid #ccc;
+    text-align: center;
+    border-radius: 5px;
+    height: 2.5rem;
+    margin: -1px;
+    padding: 0;
+	position:absolute;
+	top:0;
+	left:0;
+}
+.btn-record{
+	margin-right: 1rem;
+	font-weight: normal;
+	color:#018FFF;
+    font-size: 1.2rem;
+}
+.bag_detail_title_con{
+    /*height: 4rem;;*/
+    margin-top: 1rem;
+    padding-bottom: 1rem;
+}
+.game_bag_fuzhi_btn{
+    margin-left: 1rem;
+    padding-top: 0.8rem;
+    overflow: hidden;
+    clear: both;
+    position: relative;
+}
+.game_bag_fuzhi_btn input{
+    font-size: 13px;
+    width: 75%;
+    height: 2rem!important;
+    text-indent: 4.6rem;
+    color: #5C5C5C;
+    border-color: #EEEEEE!important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border-radius: 5px 0px 0px 5px!important;
+	vertical-align:middle;
+    line-height:2rem;
+
+}
+.game_bag_fuzhi_btn span{
+    color: #949494;
+    font-size: 13px;
+    position: absolute;
+    top:10.15rem;
+    letter-spacing: 1px;
+    left: 1.8rem;;
+}
+.game_bag_fuzhi_btn div{
+    height: 2.65rem;
+    border-radius: 0px 5px 5px 0px;
+    width: 6rem;
+    text-align: center;
+    background-color: #018FFF;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+.game_bag_fuzhi_btn div p{
+    font-size: 14px;
+    line-height: 2.65rem;
+}
+input,input:focus{
+    border: none !important;
+    box-shadow: none !important;
+}
+.bag_detail_info_con_title{
+    margin-top: 1.42rem;
+    color: #333333;
+    font-size: 14px;
+    font-weight: 500;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-bottom: 0.6rem;
+}
+.bag_detail_info_con_info{
+    font-size: 12px;
+    word-break:break-all;
+    color:#949494;
+    line-height: 20px;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+.bag_detail_info_con_item{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+.bag_open_modals{
+    display: none;
+}
+.bag_open_modals_closeimg{
+    position: absolute;
+    right: 1rem;
+    top: 1rem
+}
+.layui-layer{
+    border-radius:8px!important;
+}
+.bag_open_modals_firstline{
+    text-align: center;
+    margin-top: 1rem;
+    font-weight: bold;
+    font-size: 16px;
+}
+.bag_open_modals_secondline{
+    font-size: 10px;
+    text-align: center;
+    margin-top: 0.2rem;
+    color: gray
+}
+/*.bag_open_modals input{
+    margin-top: 1rem;
+    height: 26px!important;
+    width: 80%!important;
+    margin-left: 7%;
+    text-indent: 4rem;
+    font-size: 14px!important;
+    color: #018FFF!important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.bag_open_modals span{
+    color: gray;
+    font-size: 14px;
+    position: absolute;
+    top:4.5rem;
+    left: 9%;
+}*/
+.bag_open_modals input.bag_open_modals_input {
+    height: 1.83rem;
+    height: 2.2rem;
+    width: 100%;
+    text-indent: 5rem;
+    font-size: 14px!important;
+    color: #018FFF!important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+.bag_open_modals_prefix {
+    color: #666;
+    font-size: 13px;
+    position: absolute;
+    top: 0;
+    left: .5rem;
+    height: 1.83rem;
+    height: 2.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.bag_open_modals_notice {
+    padding-top: .7rem;
+}
+.bag_open_modals_btn{
+    margin: auto;
+    text-align: center;
+    margin-top: 1rem;
+    width: 5rem;
+    border-radius: 5px;
+    height: 2.2rem;
+    line-height: 2.2rem!important;
+    background-color: #018FFF;
+    background-color: #0090fe;
+    color: #ffffff;
+    font-size: 13px;
+}
+.bag_open_modals .tap{
+    font-size: 13px;
+    text-align: center;
+    color: gray;
+    letter-spacing: 1px
+}
+
+.game_bag_fuzhi_btn span {
+    top: 0.8rem!important;
+    height: 2.65rem;
+    /*line-height: 2.65rem;*/
+    left: .1rem!important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    float: none;
+}
+.game_bag_fuzhi_btn input {
+    padding: 0;
+    /*line-height: 2.65rem;*/
+    height: 2.65rem!important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.game_bag_fuzhi_btn div {
+
+}
+
+@media screen and (max-width:320px) and (orientation:portrait){
+    /*.game_bag_fuzhi_btn input{
+        width: 72%!important;
+        height: 1.75rem!important;
+    }*/
+    .bag_detail_title_con{
+        height: 3rem;
+    }
+    .game_bag_lingqu_btn{
+        width: 4.4rem!important;
+        height: 1.6!important;
+        line-height: 1.6!important;
+        margin-right: 1rem;
+    }
+    /*.game_bag_fuzhi_btn span{
+        top:9.52rem!important
+    }*/
+    .game_bag_fuzhi_btn div{
+        width: 5.1rem!important;
+        height: 2.4rem!important;
+        font-size: 12px
+    }
+}
+@media screen and (min-width:400px) and (max-width:413px) and (orientation:portrait) {
+    /*.game_bag_fuzhi_btn span{
+        top:10.4rem!important
+    }*/
+}
+@media screen and (min-width:414px) and (max-width:431px) and (orientation:portrait){
+    /*.game_bag_fuzhi_btn span{
+        top:10.15rem!important
+    }*/
+}
+@media screen and (min-width:375px) and (max-width:383px) and (orientation:portrait) {
+    /*.game_bag_fuzhi_btn span{
+        top:10.3rem!important
+    }*/
+}

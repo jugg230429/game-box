@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+		<link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+		<link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+		<include file="public@head"/>
+	</head>
+
+	<body>
+		<include file="public@nav"/>
+		<include file="public@header"/>
+		<div class="trunk">
+			<div class="trunk-con">
+				<div class="right-container">
+					<div class="normal-list">
+						<div class="trunk">
+							<div class="trunk-title">
+								<div class="location ">
+									<div class="location-container fr">当前位置：<span class="location-container-text">游戏管理&gt;</span><span class="location-container-text">子渠道游戏盒子</span></div>
+								</div>
+								<img src="__TMPL__/public/assets/images/icon_normal_game.png" class="fl trunk-icon">
+								<span class="title-main fl ">子渠道游戏盒子</span>
+
+							</div>
+
+							<div class="tabpan">
+								
+								<div class="tabpan-con tabpan-show">
+									<!-- <input type="button" class="btn-calc fl batch" data-pattern="{$baseinfo.pattern}" value="批量设置" > -->
+									<input type="button" class="btn-calc fl piapply" value="批量审核" >
+
+									<form action="{:url('child_app_lists')}">
+										<div class="trunk-search clearfix fr">
+
+											<!-- <php>$pmap['parent_id'] = PID</php> -->
+											<php>$pmap_parent_id = PID</php>
+											<select id="promote_id2" name="promote_id2" class="tab-input js-select-gallery normal-space  fl select2-hidden-accessible trunk-search-select">
+												<option value="" data="0">子渠道账号</option>
+												<volist name=":get_song_promote_lists($pmap_parent_id,3)" id="p">
+													<option data="" <if condition="$p['id'] eq input('promote_id2')"> selected</if> value="{$p.id}">{$p.account}</option>
+												</volist>
+											</select>
+
+											<select id="status" name="status" class="tab-input js-select-gallery normal-space  fl select2-hidden-accessible trunk-search-select">
+
+												<option value="" <if condition="input('status') neq 0 and input('status') neq 1 and input('status') neq 2"> </if> >审核状态</option>
+												
+												<option value="0" <if condition="input('status') === '0'"> selected </if> >待审核</option>
+												<option value="1" <if condition="input('status') eq 1"> selected </if> >已通过</option>
+												<!-- <option value="2" <if condition="input('status') eq 2"> selected </if> >未通过</option> -->
+											</select>
+											
+											<select id="is_user_define" name="is_user_define" class="tab-input js-select-gallery normal-space  fl select2-hidden-accessible trunk-search-select">
+
+												<option value="" <if condition="input('is_user_define') neq 0 and input('is_user_define') neq 1"> </if> >自定义渠道包</option>
+												
+												<option value="0" <if condition="input('is_user_define') === '0'"> selected </if> >否</option>
+												<option value="1" <if condition="input('is_user_define') eq 1"> selected </if> >是</option>
+											</select>
+
+											<!-- <input type="text" id="sdate" class="tabpan-input normal-space" autocomplete="off" name="start_time" placeholder="开始时间" value="{:input('start_time')}">
+											<label class="line-color">&nbsp;-&nbsp;</label>
+											<input type="text" id="edate" class="tabpan-input " name="end_time" autocomplete="off" placeholder="结束时间" value="{:input('end_time')}"> -->
+
+											<a href="{:url('child_app_lists')}"><input type="button" class="submit fr normal-space btn-clear" value="清空"></a>
+											<input type="submit" class="submit fr normal-space" id="submit" value="查询">
+										</div>
+									</form>
+									<div class="clear"></div>
+									<div class="minh-table">
+									<table class="table normal-table" id="promotecoin_table">
+										<tbody>
+											<tr>
+												<th><label class="checked"><input class="check-all" type="checkbox"><i class="check-icon"></i></label></th>
+												<th>APP名称</th>
+												<th>运营平台</th>
+												<th>子渠道账号</th>
+												<th>APP大小</th>
+												<th>审核状态</th>
+												<th>打包状态</th>
+												<th>自定义渠道包</th>
+												<th>操作 </th>
+											</tr>
+											<notempty name="data_lists">
+												<volist name="data_lists" id="vo">
+													<tr>
+														<td>
+															<eq name="vo.status" value="0">
+																<label class="checked" style="display:block"><input class="ids" type="checkbox" value="{$vo['id']}"><i class="check-icon"></i></label>
+															</eq>
+														</td>
+
+														<td>{:cmf_get_option('app_set')['app_name']?:"游戏盒子"}</td>
+														<td>{:get_info_status($vo['version'],5)}</td>
+														<td>{$vo.p_account}</td>
+														<td>{$vo.file_size|default='--'}</td>
+														<td>
+															<empty name="vo.file_url">
+																--
+															<else/>
+																<if condition="$vo['id'] gt 0">
+																	<eq name="vo.status" value="0"><span style="color: rgb(255,178,43)">待审核</span></eq>
+																	<eq name="vo.status" value="1"><span>已通过</span></eq>
+																</if>
+															</empty>
+														</td>
+														<td>
+																<if condition="$vo['enable_status'] == -1">
+																	打包失败
+																</if>
+																<if condition="$vo['enable_status'] == 0">
+																	未打包
+																</if>
+																<if condition="$vo['enable_status'] == 1">
+																	打包成功
+																</if>
+																<if condition="$vo['enable_status'] == 2">
+																	准备打包
+																</if>
+																<if condition="$vo['enable_status'] == 3">
+																	打包中
+																</if>
+														</td>
+														<td>
+															<if condition="$vo['is_user_define'] == 0">
+																否
+															</if>
+															<if condition="$vo['is_user_define'] == 1">
+																是
+															</if>
+
+														</td>
+														<td>
+															<if condition="$vo['id'] gt 0">
+																<eq name="vo.status" value="0">
+																	<!-- <span style="color:rgb(65,166,237)">
+																		<a href="{:url('changeAppStatus',['ids'=>$vo['id'],'status'=>$vo['status']])}" class="">审核</a>
+																	</span> -->
+																	<php>$tmp_id = $vo['id']</php>
+																	<a href="javascript:;" class="applycbtn " data-id="{$vo['id']}" data-url="" style="color: rgb(38,199,219)" pack_status=""  style="color: rgb(38,199,219)" onclick='apply("{$tmp_id}",0)'>审核</a>
+																</eq>
+
+																<eq name="vo.status" value="1"><span style="color: rgb(65,166,237)">--</span></eq>
+															</if>
+														</td>
+														<!-- <td>
+															<if condition="$vo['enable_status'] eq 1 and $vo['status'] eq 1">
+																<a href="javascript:;" class="copy-data light" data-clipboard-text="{:url('mobile/downfile/download_app',['promote_id'=>PID],'',true)}">复制链接</a>
+																<a href="{:url('mobile/downfile/downapp',['device'=>$vo['version'],'promote_id'=>PID])}" class="light">下载</a>
+																<p class="erwei" style="display:inline;">
+																	<php>$url = url('mobile/downfile/download_app',['promote_id'=>PID],'',true);</php>
+																	<a data-url="{$url}" class="erwei-btn" style="color: rgb(38,199,219);">下载二维码</a>
+																</p>
+																<a target="_blank" href="{:url('mobile/downfile/download_app',['promote_id'=>PID],'',true)}" class="light">H5分享页面</a>
+															<elseif condition="$vo['enable_status'] neq 1 and $vo['status'] eq 1"/>
+																<a href="javascript:;" class="disabled" >复制链接</a>
+																<a href="javascript:;" class="disabled">下载</a>
+																<p style="display:inline;">
+																	<a class="disabled" onclick=" return false; ">下载二维码</a>
+																</p>
+																<a href="javascript:;" class="disabled">H5分享页面</a>
+															<else/>
+																--
+															</if>
+														</td> -->
+													</tr>	
+												</volist>
+											<else/>
+												<!--暂无数据-->
+												<tr>
+													<td colspan="9">
+														<div class="no-data">
+															<img src="__TMPL__/public/assets/images/icon_wushujv2.png" alt="" class="no-data-img">
+															<p class="no-data-text">暂无数据</p>
+														</div>
+													</td>
+												</tr>
+											</notempty>
+										</tbody>
+									</table>
+									<notempty name="data_lists">
+										<div class="pagenation clearfix">
+											{$page}
+										</div>
+									</notempty>
+									</div>
+
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<include file="public@scripts"/>
+		<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+		<script src="__STATIC__/js/layer/layer.js"></script>
+		<script src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.js"></script>
+		<script src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+
+		<script>
+			$(function() {
+				$(".js-select-gallery").select2();
+			})
+			//			日历
+			var date = "{$setdate}";
+			$('#sdate').datetimepicker({
+				format: 'yyyy-mm-dd',
+				language: "zh-CN",
+				minView: 2,
+				autoclose: true,
+				scrollMonth: false,
+				scrollTime: false,
+				scrollInput: false,
+				endDate: date
+			});
+			$('#edate').datetimepicker({
+				format: 'yyyy-mm-dd',
+				language: "zh-CN",
+				minView: 2,
+				autoclose: true,
+				pickerPosition: 'bottom-left',
+				scrollMonth: false,
+				scrollTime: false,
+				scrollInput: false,
+				endDate: date
+			});
+
+			// 批量审核
+			$('.piapply').click(function(){
+				that = $(this);
+				ids = $('.ids');
+				sub_box_id = '0';
+				ids.each(function(index,element){
+					if($(this).prop('checked')){
+						sub_box_id = sub_box_id+','+$(this).val();
+					}
+				});
+				if(sub_box_id==0){
+					layer.msg('请选择要审核的渠道app盒子');
+					return false;
+				}else{
+					// alert(sub_box_id);
+					// return false;
+					apply(sub_box_id,1);
+				}
+			});
+
+			function apply(sub_box_id,is_pi){
+				if(!sub_box_id){
+					layer.msg('数据错误，申请失败');
+				}else{
+					$.ajax({
+						type:'post',
+						url:'{:url("changeAppStatus")}',
+						data:{ids:sub_box_id,is_pi:is_pi},
+						success:function(res){
+							layer.msg(res.msg,{time:1000},function(){
+								location.href = location.href;
+							});
+						},error:function(){
+							layer.msg('系统繁忙，请稍后再试');
+						}
+					});
+				}
+			}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            $(".check-all").click(function() {
+                $('.ids').prop("checked", this.checked);
+            });
+            $(".ids").click(function() {
+                var option = $(".ids");
+                option.each(function(i) {
+                    if(!this.checked) {
+                        $(".check-all").prop("checked", false);
+                        return false;
+                    } else {
+                        $(".check-all").prop("checked", true);
+                    }
+                });
+            });
+
+			$('#submit').click(function() {
+				var sdate = $('#sdate').val();
+				var edate = $('#edate').val();
+				var pid = $('#promote_id').val();
+				var pac = $('#promote_account').val();
+
+				if(Date.parse(sdate) > Date.parse(edate)) {
+					layer.msg('开始时间必须小于等于结束时间');
+					return false;
+				}
+//				var url = $(this).attr('url');
+//				console.log(url);
+//				var query = $('.jssearch').find('input').serialize();
+//				query += "&" + $('.jssearch').find('select').serialize();
+//				query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+//				query = query.replace(/^&/g, '');
+//				if(url.indexOf('?') > 0) {
+//					url += '&' + query;
+//				} else {
+//					url += '?' + query;
+//				}
+//				window.location.href = url;
+
+			});
+			$('.jschange .input-box').change(function(){
+				that = $(this);
+				td = that.parents('.jschange');
+				gid = that.data('gid');
+				pid = that.data('pid');
+				if(td.hasClass('jsmoney')){
+					msg = '注册单价';
+					field = 'promote_money';
+				}else{
+					msg = '分成比例';
+					field = 'promote_ratio';
+				}
+				value = that.val();
+				if (!/^(((\d|[1-9]\d)(\.\d{1,2})?)|100|100.0|100.00)$/.test(value)) {
+                    layer.msg('输入错误，0-100之间的两位小数',{time:2000});
+                    return false;
+                }
+				$.ajax({
+					type:'post',
+					url:'{:url("setRatioMoney")}',
+					data:{game_id:gid,promote_id:pid,field:field,value:value},
+					success:function(res){
+						layer.msg(msg+res.msg,{time:1000},function(){
+							location.href = location.href;
+						});
+						// console.log(res);
+					},error:function(){
+						layer.msg('服务器错误，请稍后再试');
+					}
+				});
+
+			});
+
+            $(".batch").click(function(){
+                var that = $(this);
+                var ids = $('.ids');
+                var apply_id = '0';
+				var pattern = that.attr('data-pattern');
+                ids.each(function(index,element){
+                    if($(this).prop('checked')){
+                        apply_id = apply_id+','+$(this).val();
+                    }
+                });
+                var title = '批量设置';
+				var patternPrefix = '分成比例比本渠道减少';
+				var patternSuffix = '%';
+				if (pattern=='1') {
+					patternPrefix = '注册单价比本渠道减少';
+					patternSuffix = '元';
+				}
+                layer.prompt({
+                    formType:0,
+                    title:title,
+                    value:0.00,
+                    success:function (layero, index) {
+                        layero.find('input').attr('placeholder','').css({'width': '80px','float':'left','padding-right':'30px'})
+								.before('<span style="float:left;margin-right: 10px;line-height: 30px;">'+patternPrefix+'</span>')
+								.after('<span style="position: absolute;right: 30px;line-height: 30px;">'+patternSuffix+'</span>')
+                    }
+                }, function(value,index) {
+                    if (!/^(((\d|[1-9]\d)(\.\d{1,2})?)|100|100.0|100.00)$/.test(value)) {
+                        layer.msg('输入错误，0-100之间的两位小数',{time:2000});
+                        return false;
+                    }
+                    $.ajax({
+                        async: false,
+                        url:"{:url('setprofit')}",
+                        type:"POST",
+                        dataType:'JSON',
+                        data:{apply_id:apply_id,value:value},
+                        success:function(result){
+                            layer.msg(result.msg,{time:1000},function(){
+                                !result.code || location.reload();
+                            });
+                        },
+                        error:function(){
+                            layer.msg('服务器异常',{time:2000});
+                        }
+                    })
+                });
+            })
+
+		</script>
+
+	</body>
+
+</html>

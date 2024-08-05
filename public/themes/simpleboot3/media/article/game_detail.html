@@ -1,0 +1,83 @@
+<extend name="../mediapublic/base" />
+<!-- 主体内容 -->
+<block name="body">
+ <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/ydetail.css">
+
+ <div class="main">
+     <div class="service">
+	     <div class="service-con">
+             <a href="{:url('game/ydetail',['game_id'=>input('game_id')])}" class="fl service-tab">服务器列表</a>
+             <a href="{:url('gift/game_gift',['game_id'=>input('game_id')])}" class="fl service-tab">礼包列表</a>
+             <a href="{:url('article/game_article',['game_id'=>input('game_id')])}" class="fl service-tab service-tab-active">资讯中心</a>
+             <a href="{:url('pay/pay')}" class="service-link fl">用户充值</a>
+             <a class="service-link fl" onclick="AddFavorite(window.location,document.title)" href="javascript:void(0)">收藏本页</a>
+		 </div>
+		 <div>
+			 <div class="news-list js-list display">
+			     <div class="service-title">资讯列表</div> 
+				 <div class="news-list-con">
+                     <div>
+                         <a href="{:url('article/game_article',['category_id'=>4,'game_id'=>input('game_id')])}" class="news-menu <eq name='category_id' value='4'>news-menu-active</eq>">
+                             公告
+                         </a>
+                         <a href="{:url('article/game_article',['category_id'=>3,'game_id'=>input('game_id')])}" class="news-menu <eq name='category_id' value='3'>news-menu-active</eq>">
+                             活动
+                         </a>
+                         <a href="{:url('article/game_article',['category_id'=>2,'game_id'=>input('game_id')])}" class="news-menu <eq name='category_id' value='2'>news-menu-active</eq>">
+                             活动
+                         </a>
+                         <a href="{:url('article/game_article',['category_id'=>5,'game_id'=>input('game_id')])}" class="news-menu <eq name='category_id' value='5'>news-menu-active</eq>">
+                             资讯
+                         </a>
+                     </div>
+					 <div class="clear"> </div>
+					 <div>
+					     <div class="news-con">
+						     <div class="news-title">{$data.post_title}</div>
+							 <div class="news-time">时间：{:date('Y-m-d H:i:s',$data['update_time'])} </div>
+							 <div class="news-box">
+							     <div class="news-article">
+                                    {$data.post_content}
+							     </div>
+							 </div>
+							 <div class="relation">
+							 <empty name="prev">
+                                <a href="javascript:;" class="fl relation-btn relationNext">
+                                   上一篇：无
+                                </a>
+                             <else />
+                                <a href="{:url('article/game_detail',['id'=>$prev['id'],'category_id'=>$category_id,'game_id'=>input('game_id')])}" class="fl relation-btn relationNext">
+                                    上一篇：{$prev.post_title}
+                                </a>
+                             </empty>
+							  <empty name="next">
+                                 <a href="javascript:;" class="fl relation-btn relationNext">
+                                    下一篇：无
+                                 </a>
+                              <else />
+                                    <a href="{:url('article/game_detail',['id'=>$next['id'],'category_id'=>$category_id,'game_id'=>input('game_id')])}" class="fl relation-btn relationNext">
+                                        下一篇：{$next.post_title}
+                                   </a>
+                              </empty>
+							    
+							 </div>
+						 </div>
+						  
+						 
+					 </div>
+				 </div>
+			 </div>
+		</div>    
+	 </div>
+ </div>
+  <script src="__JS__/swiper.min.js"></script>
+  <script>
+    
+	
+	$(".service-tab").click(function(){
+	   var index=$(this).index();
+	   $(".js-list").eq(index).addClass("display").siblings().removeClass("display");
+	})
+	
+  </script>
+</block>

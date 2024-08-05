@@ -1,0 +1,376 @@
+html,body{
+    width:100%;
+    height: 100%;
+    overflow-x: inherit;
+	padding-bottom:0;
+}
+ .back_icon {
+	display:block;
+    width: 0.939rem;
+    padding-top: 0.25rem;
+	margin:0 0 12.83rem 0.5rem;
+}
+.back_icon img{
+	width:100%;
+}
+.invite-contain{
+    width:100%;
+    min-height: 100%;
+    background: url(../images/invite/invite_bg.png)no-repeat;
+    background-size: 100% 100%;
+    padding-top: 2.19rem;
+    box-sizing: border-box;
+    padding-bottom: 3rem;
+}
+.invite-contain .invite-little-img{
+    width: 80%;
+    height:auto;
+    margin: 0 auto;
+    display: block;
+}
+.invite-contain .invite-little-text{
+    font-size: 1.09rem;
+    width: 100%;
+    text-align: center;
+    color: #ffffff;
+    margin: 0.6rem auto 1.4rem;
+}
+.invite-contain .invite_img_steps{
+    width: 90%;
+    height: 5.5rem;
+    margin: 0 auto;
+    background: url(../images/invite/invite_img_steps.png)no-repeat;
+    background-size: 100% 100%;
+   
+
+}
+.invite-contain .invite-btn{
+    width: 19rem;
+    height: 3.9rem;
+    display: block;
+    margin: 0.8rem auto;
+    background: url(../images/invite/invite_btn_invite.png)no-repeat;
+    background-size: 100% 100%;
+}
+.invite-contain .look-rules{
+    color: #ffffff;
+    font-size: 1rem;
+    text-align: center;
+    display: block;
+    text-decoration: underline!important;
+}
+.invite-contain .invite-award-box{
+    width: 96%;
+    height: 13.7rem;
+    margin: 1.5rem auto 0;
+    border-radius: 1rem;
+    background: #ffffff;
+    padding: 1.17rem 0.9rem ;
+    box-sizing: border-box;
+}
+.invite-contain .reward-tab{
+    width:15.34rem;
+    height: 2.66rem;
+    margin: 0 auto;
+    border: 1px solid rgb(251, 106, 41);
+    border-radius: 9.9rem;
+    color: #F96A2A;
+    font-size: 1.17rem;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+.invite-contain .reward-tab a{
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    line-height: 2.66rem;
+    color: #F96A2A;
+}
+.invite-contain .reward-tab a.active{
+    background: #F96A2A;
+    color: #ffffff;
+}
+.invite-contain .my-reward{
+    margin-top: 1.56rem;
+}
+.invite-contain .coupon-item:not(:first-child){
+    margin-left: 0.8rem;
+}
+.invite-contain  .coupon-box{
+    width:8.92rem;
+    padding-bottom: 0.65rem;
+    background: url(../images/invite/invite_reward_bg_coupons.png)no-repeat;
+    background-size: 100% 100%;
+    text-align: center;
+}
+.invite-contain  .coupon-box .coupon-num{
+     font-size: 0.93rem;
+     color: #ffffff;
+	 font-weight: bold;
+}
+.invite-contain  .coupon-box .coupon-num .coupon-money{
+    font-size: 2rem;
+    display: inline-block;
+}
+.invite-contain  .coupon-box .coupon-num .coupon-money span{
+    font-size: 1.017rem;
+}
+.invite-contain  .coupon-box .coupon-condition{
+    background: rgba(255,241,0,0.5);
+    color: #FF5D73;
+    font-size: 0.93rem;
+    width: 5.34rem;
+    height:1.17rem ;
+    line-height: 1.17rem;
+    text-align: center;
+    border-radius: 9.9rem;
+    margin: 0 auto;
+}
+.invite-contain   .lq-condition{
+    font-size: 1.017rem;
+    color: #333333;
+    margin-top: 0.8rem;
+    text-align: center;
+}
+.my-invited-box{
+    width: 96%;
+    min-height: 13.7rem;
+    margin: 0.9rem auto 0;
+    border-radius: 1rem;
+    background: #ffffff;
+    padding: 1.17rem 0.9rem ;
+    box-sizing: border-box;
+
+}
+.invited-title{
+    color: #333333;
+    font-size: 1.33rem;
+    font-weight: bold;
+    padding-left:0.5rem;
+}
+.invited-title i{
+    width:0.39rem;
+    height: 1.17rem;
+    background: #F96A2A;
+    margin-right: 0.8rem;
+    display: inline-block;
+}
+.v-middle{display: flex;align-items: center}
+.h-middle{display: flex;justify-content: center}
+
+.no-invited{
+    width: 100%;
+    height: 8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.09rem;
+    color: #999999;
+}
+.my-invited-box .invited-item{
+    width:100%;
+    height:2.426rem ;
+    background: rgb(254, 246, 244);
+    padding-left: 1rem;
+    box-sizing: border-box;
+    font-size: 1.33rem;
+    color: #333333;
+    margin-top: 0.547rem;
+    line-height: 2.426rem;
+}
+
+
+/*
+邀请规则*/
+.type_down__long_hx{
+    width: 100%;
+    height: 1px;
+    background-color: #EDEEEF;
+    position: relative;
+    top: -0.2rem;
+    z-index: 1;
+    margin-top: 0.3rem;
+}
+.invite_rules_header{
+    width: 100%;
+    height: 3.5rem;
+    background: #F0F0F0;
+}
+.invite_rules_header .back_icon{
+    width: 0.74rem;
+    margin-top: 1.25rem;
+    margin-left: 1rem;
+}
+.invite_rules_title {
+    width: 100%;
+    text-align: center;
+    font-size: 1.45rem;
+    line-height: 1.45rem;
+    padding-top: 1.2rem;
+    margin-bottom: 0.9rem;
+    font-weight: 500;
+    color: #222222;
+}
+.invite-rules-content{
+    width: 100%;
+    height: 100%;
+    padding: 0 1.33rem 2rem;
+    box-sizing: border-box;
+}
+.invite-rules-content p{
+
+    color: #666666;
+    font-size: 1.17rem;
+    line-height: 2.5rem;
+}
+.invite-rules-content p.title{
+    margin-top: 1.5rem;
+    font-weight: bold;
+    color: #333333;
+}
+
+.share-pop{
+    background-color: rgba(0, 0, 0, 0.6);
+    height: 100%;
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 1100;
+}
+.share-pop .share-content-box{
+    width: 100%;
+    background: #ffffff;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+.share-type-list{
+    width: 100%;
+    height: 8.92rem;
+    border: 1px solid #dddddd;
+    box-sizing: border-box;
+}
+.share-type-list .share-type-item{
+    font-size: 1.17rem;
+    text-align: center;
+    color: #666666;
+}
+.share-type-list .share-type-item:not(:first-child){
+    margin-left: 2rem;
+}
+.share-type-list .share-img{
+    width: 4.3rem;
+    height: 4.3rem;
+    margin:0 auto 0.5rem;
+}
+.share-pop .cancel-share-btn{
+    width: 100%;
+    height: 3.91rem;
+    text-align: center;
+    line-height: 3.91rem;
+    color: #666666;
+    font-size: 1.33rem;
+}
+.invite-steps{
+    padding: 0 1rem;
+    position: relative;
+    z-index: 50;
+}
+.invite-steps .step{
+    width:2rem;
+    height: 2rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    line-height: 2rem;
+    background: #fee450;
+    color: #f9692a;
+    margin: 0 auto;
+    position: relative;
+    z-index: 51;
+}
+.invite-steps:not(:first-child):not(:last-child):after{
+    position: absolute;
+    left: 0;
+    top: 1rem;
+    width: 100%;
+    height: 0.15rem;
+    background:#fee450 ;
+    content: '';
+    z-index: 49;
+}
+.invite-steps:first-child:after{
+    position: absolute;
+    top: 1rem;
+    left: 50%;
+    width: 50%;
+    height: 0.15rem;
+    background:#fee450 ;
+    content: '';
+    z-index: 49;
+}
+.invite-steps:last-child:after{
+    position: absolute;
+    top: 1rem;
+    right: 50%;
+    width: 50%;
+    height: 0.15rem;
+    background:#fee450 ;
+    content: '';
+    z-index: 49;
+}
+
+.invite-steps .invite-text{
+    margin-top: 0.5rem;
+    font-size: 0.94rem;
+    color:#fee450 ;
+}
+/* 邀请好友弹窗 */
+.inviteDialoge {
+    width: 100%;
+    height: 13rem;
+    background-color: #fff;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: none;
+}
+.inviteBottomIcon {
+    border-bottom: 1px solid #ccc;
+}
+.inviteList {
+    display: flex;
+    text-align: center;
+}
+.iconInviteImg {
+    padding-top: 1.4rem;
+    padding-bottom: 1rem;
+    cursor: pointer;
+}
+.iconInviteImg img {
+    width: 55%;
+    padding-bottom: 0.3rem
+}
+.iconTextContent {
+    font-size: 1.02rem;
+    color: #666;
+}
+.inviteClear {
+    text-align: center;
+    line-height: 3.4rem;
+    font-size: 1.5rem;
+    color: #666666;
+}
+.markOpacity {
+    background: rgba(0,0,0,.5);
+    z-index: 999999;
+}
+.inviteBigBox {
+    height: 100%;
+}
+.maskBox {
+    z-index: -1;
+    position: absolute;
+}

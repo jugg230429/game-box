@@ -1,0 +1,621 @@
+<extend name="../channelwappublic/base"/>
+<block name="css">
+    <link href="__TMPL__/channelwappublic/assets/css/profit.css" type="text/css" rel="stylesheet"/>
+    <style>
+        footer {
+            display: flex !important;
+        }
+
+        body {
+            background: #F4F4F4;
+        }
+
+        .noAccountBox2 .noticeContainer {
+            height: 12rem !important;
+            margin-top: -7rem !important;
+            margin-left: -4.56rem !important;
+            /* margin: -7rem -5.8rem  -4.56rem -4.56rem !important; */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 9.14rem;
+            background-color: #fff;
+            border-radius: 0.2rem;
+        }
+
+        .noAccountBox2 {
+            /* display: none; */
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, .5);
+            z-index: 99;
+        }
+
+        .noAccountBox2 .content-title {
+            line-height: 0.8rem;
+            border-radius: 0.18rem 0.18rem 0 0;
+            background-color: #29364C;
+            height: 1rem;
+            padding: 0rem 0.1rem 0rem 0.5rem;
+        }
+
+        .contentCenter.content1 {
+
+            padding-bottom: 1rem;
+
+        }
+
+        .noAccountBox2 .content-title p {
+            color: #ffffff;
+            font-size: 0.4rem;
+            font-weight: bold;
+            padding: 0.15rem 0.1rem 0rem 0rem;
+            position: relative;
+
+        }
+
+        .noAccountBox2 .dialogOperationClose {
+            position: absolute;
+            top: 0.3rem;
+            right: 0.3rem;
+            cursor: pointer;
+            margin: 0!important;
+        }
+
+        .noAccountBox2 .shang {
+            width: 8rem;
+            font-size: 0.36rem;
+            color: #26C7DB;
+            /* padding: 0 0.1rem 0rem 0.5rem; */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .noAccountBox2 .shang a {
+            color: #26C7DB;
+        }
+
+        .noAccountBox2 .containerTitle {
+            padding: 0.44rem 0.5em 0px 0.5rem !important;
+        }
+
+        .noAccountBox2 .contentCenter {
+            height: 7rem !important;
+            max-height: 7rem;
+        }
+
+        .bot {
+            /* margin-top:2.9rem !important; */
+
+        }
+
+        .contentCenter.content1 img {
+            width: 100%;
+            height: auto;
+        }
+
+        .content_em {
+            height: 8.9rem;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .content_em .containerTitle {
+            color: #333333;
+            font-size: 0.4rem !important;
+            font-weight: bold;
+        }
+
+        .previous-post {
+            padding: 0.38rem 0.1rem 0rem 0.5rem;
+        }
+
+        .next-post {
+            padding: 0.2rem 0.1rem 0rem 0.5rem;
+        }
+        .h-grade{
+            float: left;
+            width:auto;
+            height: 0.3rem;
+            line-height: 0.3rem;
+            font-size: 0.293333rem;
+            color: #ffffff;
+            text-align: center;
+        border-radius: 0.05rem;
+            transform:skew(-15deg);
+            margin-top: 0.05rem;
+            padding: 0.08rem;
+            margin-left: 0.2rem;
+        }
+        .h-grade span{
+            display: block;
+		 transform: skewX(15deg);
+        }
+        .xinshou{
+            background-color: #26C7DB;
+        }
+        .chuji{
+            background-color: #41A6ED;
+        }
+        
+        .zhongji{
+            background-color: #FFB22B;
+        }
+        
+        .gaoji{
+            background-color: #FF6046;
+        }
+        
+        .zhizun{
+            background-color: #B250FF;
+        }
+        .g-close{
+            margin: 0.4rem 0.57rem 0.4rem 0!important;}
+        .grade_table tbody .deferrentTd {
+            word-break: break-all;
+        }
+        .containerTitle {
+            word-break: break-word!important;
+        }
+        .grade_table tbody {
+            /* height: 6rem; */
+        }
+        .grade_table tbody td {
+            width: 1.8!important;
+        }
+    </style>
+</block>
+<block name="body">
+    <div class="page-container">
+        <div class="user-info-box">
+            <div class="user-function-box">
+                <a href="{:url('article')}" class="user-news">
+                    <if condition="$article_status"><i class="red-port"></i></if>
+                </a>
+                <a href="{:url('Promote/set')}" class="user-out-login"></a>
+            </div>
+            <a href="javascript:;" class="user-info v-middle">
+                <img src="" alt="" class="user-head-img"
+                     onerror="this.src='__TMPL__/channelwappublic/assets/images/profit/shouyi_ico_head.png';this.onerror=null">
+                <div>
+                    <p class="user-name">{$baseinfo['real_name'] ? : $baseinfo['account']}
+                        <!-- 新手 -->
+                       
+                        <!-- <img src="/themes/simpleboot3/channelwappublic/assets/images/profit/btn_xinshou.png" alt=""
+                             class="grade_img"> -->
+
+                        <!-- 初级 -->
+                        <!-- <img src="/themes/simpleboot3/channelwappublic/assets/images/profit/btn_chuji.png" alt=""
+                             class="grade_img"> -->
+                        <!-- 中级 -->
+                        <!-- <img src="/themes/simpleboot3/channelwappublic/assets/images/profit/btn_zhongji.png" alt=""
+                             class="grade_img"> -->
+                        <!-- 高级 -->
+                        <!-- <img src="/themes/simpleboot3/channelwappublic/assets/images/profit/btn_gaoji.png" alt=""
+                             class="grade_img"> -->
+                        <!-- 至尊 -->
+                        <!-- <img src="/themes/simpleboot3/channelwappublic/assets/images/profit/btn_zhizun.png" alt=""
+                             class="grade_img"> -->
+
+                    </p>
+                    <switch name="myLevel.level">
+                        <case value="0"> <div class="h-grade xinshou grade_img"> <span>{$myLevel['level_name']}</span></div></case>
+                        <case value="1">                    <div class="h-grade chuji grade_img"> <span>{$myLevel['level_name']}</span></div>
+                        </case>
+                        <case value="2"><div class="h-grade zhongji grade_img"> <span>{$myLevel['level_name']}</span></div></case>
+                        <case value="3"><div class="h-grade gaoji grade_img"> <span>{$myLevel['level_name']}</span></div></case>
+                        <case value="4"> <div class="h-grade zhizun grade_img"> <span>{$myLevel['level_name']}</span></div></case>
+                        <default/>
+                        <div class="h-grade zhizun grade_img"> <span>{$myLevel['level_name']}</span></div>
+                    </switch>
+                    <p class="user-account">账号：{$baseinfo['account']}</p>
+                </div>
+
+            </a>
+        </div>
+        <div class="user-profit-box">
+            <div class="user-profit v-middle">
+                <div class="user-tixian-box">
+                    <div class="title">可提现佣金(元）</div>
+                    <div class="money">{$baseinfo['balance_profit']}</div>
+                </div>
+                <a href="{:url('Settlement/exchange')}" class="profit-exchange-btn">兑换</a>
+                <a href="{:url('Settlement/exchange',array('type'=>1))}" class="profit-tixian-btn">提现</a>
+            </div>
+            <div class="user-profit-btn v-middle">
+                <a href="{:url('Settlement/profit')}" class="v-middle h-middle">
+                    我的收益
+                    <i class="profit-back-icon"></i>
+                </a>
+                <a href="{:url('Settlement/profit_record')}" class="v-middle h-middle">
+                    我的支出
+                    <i class="profit-back-icon"></i>
+                </a>
+            </div>
+        </div>
+        <div class="user-ptb-box v-middle">
+            <div class="user-ptb">
+                <div class="title">平台币余额(元）</div>
+                <div class="money">{$baseinfo['balance_coin']}</div>
+            </div>
+            <a href="{:url('Promote/balance')}" class="ptb-btn">充值</a>
+            <if condition="PID_LEVEL lt 3">
+                <a href="{:url('Promote/shift')}" class="ptb-btn">转移</a>
+            </if>
+            <a href="{:url('Promote/bind_balance')}" class="ptb-btn">代充</a>
+        </div>
+        <div class="user-channel-box v-middle channelItemGather">
+            <div>
+                <a href="{:url('Promote/welfare')}" class="channel-btn">
+                    <i class="gift-icon"></i>
+                    <p>我的福利</p>
+                </a>
+            </div>
+            <div>
+                <a href="{:url('Coupon/lists')}" class="channel-btn">
+                    <i class="coupon-icon"></i>
+                    <p>代金券发放</p>
+                </a>
+            </div>
+            <if condition="PID_LEVEL eq 1">
+                <div>
+                    <a href="{:url('Support/apply')}" class="channel-btn">
+                        <i class="support-icon"></i>
+                        <p>扶持管理</p>
+                    </a>
+                </div>
+            </if>
+            <if condition="PID_LEVEL eq 1">
+                <!--玩家福利:绑币首充续充折扣渠道自定义配置-->
+                <div>
+                    <a href="{:url('Promote/user_bind_discount')}" class="channel-btn">
+                        <i class="btn_bbcz-icon"></i>
+                        <p>绑币充值</p>
+                    </a>
+                </div>
+            </if>
+            <if condition="PID_LEVEL eq 1">
+                <!--玩家福利:首充续充渠道自定义配置-->
+                <div>
+                    <a href="{:url('Promote/user_welfare')}" class="channel-btn">
+                        <i class="btn_scxc-icon"></i>
+                        <p>首充续充</p>
+                    </a>
+                </div>
+            </if>
+
+
+            <div>
+                <a href="{:url('Promote/myserver_foreshow')}" class="channel-btn">
+                    <i class="btn_kfyg-icon"></i>
+                    <p>开服预告</p>
+                </a>
+            </div>
+            <div>
+                <a href="{:url('Settlement/period')}" class="channel-btn">
+                    <i class="jiesuan-icon"></i>
+                    <p>结算打款</p>
+                </a>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="noAccountBox">
+        <div class="noticeContainer">
+            <div class="containerTitle">{$cooperation['post_title']}
+
+            </div>
+            <img src="/themes/simpleboot3/channelwappublic/assets/images/profit/guanbi.png" alt=""
+                 class="grade-close cancle">
+            <div>
+                <div class="contentCenter">
+                    {$cooperation['post_content']}
+                </div>
+            </div>
+            <div style="margin-left: 2.4rem;margin-top: 0.4rem;" class="bottomPromoteBtn">
+                <button class="bottom-btns cancle">取消</button>
+                <button class="bottom-btns agree">同意</button>
+            </div>
+        </div>
+    </div>
+    <!-- 平台公告弹框 -->
+    <notempty name="gonggao_info">
+        <div class="noAccountBox2 need_show_zixun_gonggao" style="display:none">
+            <div class="noticeContainer">
+
+                <div class="content-title">
+                    <p class="fl">平台公告</p>
+                    <img src="/themes/simpleboot3/channelwappublic/assets/images/profit/ico_close.png" alt=""
+                         class="grade-close g-close dialogOperationClose">
+                   
+                    <!-- <img src="/themes/simpleboot3/channelwappublic/assets/images/profit/ico_close.png" alt=""
+                        class="dialogOperationClose"> -->
+                </div>
+                <div class="content_em">
+                    <div class="containerTitle title-bt" style="text-align: left;">{$gonggao_info[0]['post_title']}
+                    </div>
+
+                    <div class="contentCenter content1" style="padding: 0.2rem 0.69rem 1rem 0.59rem;">
+                        <!-- 最近关于超神之刃（无限爆真充）的下架公告相信是很多游
+                        最近关于超神之刃（无限爆真充）的下架公告相信是很多游戏玩家
+                        最近关于超神之刃（无限爆真充）的下架公告相信是很多游戏玩家 -->
+                        {$gonggao_info[0]['post_content']}
+
+                    </div>
+                    <input type="hidden" name="d_post_id" value="{$gonggao_info[0]['post_id']}">
+                </div>
+                <div style=" border-top:#E8E8E8 solid 1px ;margin-top:0rem" class="bottomPromoteBtn bot">
+                    <p class="shang previous-post">
+                        <span style="color:#666666">上一篇：</span>
+                        <a href="javascript:;" id="previous_title">
+                            <if condition="!empty($gonggao_info[1]['post_title'])">
+                                {$gonggao_info[1]['post_title']}
+                                <else/>
+                                暂无
+                            </if>
+                        </a>
+                        <input type="hidden" name="post_id_previous" value="{$gonggao_info[1]['post_id']}">
+                    </p>
+                    <p class="shang next-post">
+                        <span style="color:#666666">下一篇：</span>
+                        <a href="javascript:;" id="next_title">暂无</a>
+                        <input type="hidden" name="post_id_next" value="">
+                    </p>
+                </div>
+            </div>
+        </div>
+    </notempty>
+    <!--等级说明弹窗-->
+    <div class="pop" hidden>
+        <div class="grade-pop">
+            <div class="grade-box">
+                <div class="grade-top">
+                    <p>等级说明</p>
+                    <img src="/themes/simpleboot3/channelwappublic/assets/images/profit/ico_close.png" alt=""
+                         class="grade-close g-close">
+                </div>
+                <div class="grade-content">
+                    <div class="grade-title">
+                        您当前等级为<span class="grade">【{$myLevel['level_name']}】</span><br/>距离下一级还差：<span class="score">{$myLevel['next_money']??$levels[0]['sum_money']}</span>元累计流水，<span class="score">{$myLevel['next_cash']??$levels[0]['cash_money']}</span>元押金。
+                    </div>
+                    <div class="grade_table">
+                        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table">
+                            <thead>
+                            <tr class="t_header">
+                                <th>等级</th>
+                                <th>推广流水</th>
+                                <th>推广押金</th>
+                                <th style="width: 10rem;">可申请游戏</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <volist name="$levels" id="vo">
+                                <tr>
+                                    <td>{$vo.level_name}</td>
+                                    <td class="deferrentTd ">{$vo.sum_moneys}</td>
+                                    <td class="deferrentTd ">{$vo.cash_money}</td>
+                                    <td class="deferrentTd ">{$vo.game_count}</td>
+                                </tr>
+                            </volist>
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</block>
+
+<block name="script">
+    <script>
+
+    </script>
+    <script type="text/javascript">
+        var promote_id = "{$promote_id}";
+        // 上一篇公告 by wjd
+        $('.previous-post').click(function () {
+            var post_id = $("input[ name='post_id_previous'] ").val(); // 当前展示的公告id
+            var tmp_url = '{:url("promote/getPreviousNextArticle")}';
+            $.ajax({
+                url: tmp_url,
+                type: 'post',
+                dataType: 'json',
+                data: {post_id: post_id},
+                success: function (data) {
+                    if (data.code > 0) {
+                        // console.log(data.data);
+                        $('.title-bt').html(data.data.d_gonggaoInfo['post_title']);
+                        $('.content1').html(data.data.d_gonggaoInfo['post_content']);
+                        if (data.data.previous_gonggaoInfo == null || data.data.previous_gonggaoInfo == undefined || data.data.previous_gonggaoInfo == "") {
+                            // 上一篇为空
+                            $('#previous_title').html("暂无");
+                        } else {
+                            $('#previous_title').html(data.data.previous_gonggaoInfo['post_title']);
+                        }
+                        if (data.data.next_gonggaoInfo == null || data.data.next_gonggaoInfo == undefined || data.data.next_gonggaoInfo == "") {
+                            // 下一篇为空
+                            $('#next_title').html("暂无");
+                        } else {
+                            $('#next_title').html(data.data.next_gonggaoInfo['post_title']);
+                        }
+                        $("input[ name='post_id_previous'] ").val(data.data.previous_gonggaoInfo['id']);
+                        $("input[ name='post_id_next'] ").val(data.data.next_gonggaoInfo['id']);
+                    } else {
+                        // layer.msg(data.msg)
+                    }
+                },
+                error: function () {
+                    // layer.msg("系统繁忙,请销后再试！");
+                }
+            });
+        });
+        // 下一篇公告 by wjd
+        $('.next-post').click(function () {
+            // var limit_1 = $("input[ name='limit_1'] ").val();
+            var tmp_url = '{:url("promote/getPreviousNextArticle")}';
+            var post_id = $("input[ name='post_id_next'] ").val(); // 当前展示的公告id
+            $.ajax({
+                url: tmp_url,
+                type: 'post',
+                dataType: 'json',
+                data: {post_id: post_id},
+                success: function (data) {
+                    if (data.code > 0) {
+                        console.log(data.data);
+                        $('.title-bt').html(data.data.d_gonggaoInfo['post_title']);
+                        $('.content1').html(data.data.d_gonggaoInfo['post_content']);
+
+                        if (data.data.previous_gonggaoInfo == null || data.data.previous_gonggaoInfo == undefined || data.data.previous_gonggaoInfo == "") {
+                            // 上一篇为空
+                            $('#previous_title').html("暂无");
+
+                        } else {
+                            $('#previous_title').html(data.data.previous_gonggaoInfo['post_title']);
+                        }
+                        if (data.data.next_gonggaoInfo == null || data.data.next_gonggaoInfo == undefined || data.data.next_gonggaoInfo == "") {
+                            // 下一篇为空
+                            $('#next_title').html("暂无");
+                        } else {
+                            $('#next_title').html(data.data.next_gonggaoInfo['post_title']);
+                        }
+
+                        $("input[ name='post_id_previous'] ").val(data.data.previous_gonggaoInfo['id']);
+                        $("input[ name='post_id_next'] ").val(data.data.next_gonggaoInfo['id']);
+                    } else {
+                        // layer.msg(data.msg)
+                    }
+                },
+                error: function () {
+                    // layer.msg("系统繁忙,请销后再试！");
+                }
+            });
+        });
+
+        // 今天的时间
+        var myDate = new Date;
+        var year = myDate.getFullYear(); //获取当前年
+        var mon = myDate.getMonth() + 1; //获取当前月
+        var date = myDate.getDate();
+        var d_date = year + '.' + mon + '.' + date;
+        if (localStorage.getItem('need_show_zixun_gonggao' + promote_id + 'date_' + d_date) != '1') {
+            $('.need_show_zixun_gonggao').css('display', 'block')
+            localStorage.setItem('need_show_zixun_gonggao' + promote_id + 'date_' + d_date, '1');
+        }
+
+        $(function () {
+            if (localStorage.getItem('agree_rules_' + promote_id) != '1') {
+                $(".noAccountBox2").css("display", "none");
+                $('.noAccountBox').css('display', 'block')
+                $(".agree").click(function () {
+                    $(".noAccountBox2").css("display", "block");
+                });
+            }
+            $('.bottom-btns').click(function () {
+                $('.noAccountBox').css('display', 'none')
+                return false;
+
+            });
+
+            //同意
+            $(".agree").click(function () {
+                localStorage.setItem('agree_rules_' + promote_id, '1');
+                return false;
+            });
+
+            //取消
+            $(".cancle").click(function () {
+                $.ajax({
+                    url: "{:url('index/logout')}",
+                    type: 'post',
+                    success: function () {
+                        location.href = location.href;
+                    }
+                });
+                return false;
+            })
+            // 关闭弹框
+
+            $(".dialogOperationClose").click(function () {
+                $(".noAccountBox2").css("display", "none");
+            })
+            var u = navigator.userAgent;
+            var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+            var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+            if (isiOS) {
+                $('.noticeContainer').css('height', '12.6rem')
+                $('.contentCenter p').css({
+                    'width': '100%',
+                    'word-break': 'break-all',
+                    'padding': 'padding: 0rem 0.69rem 0 0.59rem;'
+                })
+                $('.containerTitle').css('padding', '0.44rem 3rem 0 3.06rem')
+                $('.noticeContainer').css('margin', '1.2rem 0.44rem')
+                $('.bottomPromoteBtn').css('margin-top', '0.3rem')
+                $('.contentCenter').css({'padding': '0.2rem 0.69rem 0 0.59rem', 'height': '9.7rem'})
+            }
+
+
+            // 是vivo手機還是UC瀏覽器訪問的
+            function judgeBrand(sUserAgent) {
+                var isIphone = sUserAgent.match(/iphone/i) == "iphone";
+                var isHuawei = sUserAgent.match(/huawei/i) == "huawei";
+                var isHonor = sUserAgent.match(/honor/i) == "honor";
+                var isOppo = sUserAgent.match(/oppo/i) == "oppo";
+                var isOppoR15 = sUserAgent.match(/pacm00/i) == "pacm00";
+                var isVivo = sUserAgent.match(/vivo/i) == "vivo";
+                var isXiaomi = sUserAgent.match(/mi\s/i) == "mi ";
+                var isXiaomi2s = sUserAgent.match(/mix\s/i) == "mix ";
+                var isRedmi = sUserAgent.match(/redmi/i) == "redmi";
+                var isSamsung = sUserAgent.match(/sm-/i) == "sm-";
+
+                if (isIphone) {
+                    return 'iphone';
+                } else if (isHuawei || isHonor) {
+                    return 'huawei';
+                } else if (isOppo || isOppoR15) {
+                    return 'oppo';
+                } else if (isVivo) {
+                    return 'vivo';
+                } else if (isXiaomi || isRedmi || isXiaomi2s) {
+                    return 'xiaomi';
+                } else if (isSamsung) {
+                    return 'samsung';
+                } else {
+                    return 'default';
+                }
+            }
+
+            var brand = judgeBrand(navigator.userAgent.toLowerCase());
+
+            console.log(666, brand)
+
+            var u = navigator.appVersion;
+            var uc = u.split('UCBrowser/').length > 1 ? 1 : 0;
+            if (brand == 'vivo' && uc) {
+                $('.noticeContainer').css({'height': '12.5rem', 'margin': '1rem 0.44rem'})
+                $('.contentCenter').css({'height': '9rem'})
+                console.log(2232323)
+            }
+
+        });
+        //  等级说明
+        $(function () {
+
+            $(".grade_img").click(function () {
+                $(".pop").css("display", "block");
+            })
+            $(".grade-close").click(function () {
+                $(".pop").css("display", "none");
+            })
+        })
+
+    </script>
+</block>

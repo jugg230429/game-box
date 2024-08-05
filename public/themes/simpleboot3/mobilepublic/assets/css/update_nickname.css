@@ -1,0 +1,144 @@
+.update_nickname_header {
+    width: 100%;
+    line-height: 3.75rem;
+    font-size: 1.54rem;
+    font-weight: 500;
+    position: relative;
+    text-align: center;
+}
+
+.update_nickname_header .back_icon {
+    width: 0.74rem;
+    left: 1rem;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.update_nickname_header p {
+    line-height: 3.75rem;
+    color: #222222;
+    text-align: center
+}
+
+.clear_textzzz {
+    display: none;
+    width: 5%;
+    position: relative;
+    right: 4rem;
+    top: 37px;
+}
+
+.game_bag_down_hx {
+    width: 100%;
+    height: 1px;
+    background-color: #F2F2F2;
+}
+
+.clear_text_btn {
+    text-align: center;
+}
+
+.clear_text_btn .warp-div {
+    width: 82%;
+	margin:0 0 0 8%;
+}
+
+.clear_text_btn div.close-div {
+    width: 1.33rem;
+    height: 1.33rem;
+    float: left;
+    position: absolute;
+    display: none;
+    left: 26.3rem;
+    margin-top: 3.5rem
+}
+
+.clear_text_btn input {
+    float: left;
+    margin: auto;
+    margin-top: 2.1rem;
+    background: rgba(242, 242, 242, 1)!important;
+    border-radius: 5px;
+    width: 100%;
+    height: 44px!important;
+    text-indent: 0.8rem;
+    color: #222222!important;
+    padding: 0 6px;
+}
+
+.clear_text_btn p {
+    font-size: 12px;
+    color: #999999;
+}
+
+.quedin_btn {
+    width: 82%;
+    margin:0 0 0 8%;
+    height: 3.6rem;
+    background-color: #018FFF;
+    text-align: center;
+    color: #ffffff;
+    border-radius: 5px;
+	padding: 0 6px;
+}
+
+.quedin_btn p {
+    text-align: center;
+    width: 100%;
+    line-height: 3.6rem;
+}
+
+input, input:focus {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.upodate_pwd_con input {
+    width: 80%!important;
+    height: 3rem!important;
+    background-color: #F2F2F2!important;
+    border-radius: 5px;
+    margin-bottom: 0rem!important;
+    margin-top: 1.18rem;
+    margin-left: 8%;
+    text-indent: 0.5rem;
+}
+.upodate_pwd_con input::placeholder{
+    font-size: 14px;
+}
+.look-text {
+    width: 26.2rem;
+    margin: auto;
+    text-align: left;
+    line-height: 2.5rem
+}
+
+@media screen and (max-width:320px) and (orientation:portrait) {
+    .quedin_btn {
+        width: 20rem!important;
+    }
+    .clear_text_btn input {
+        width: 16.8rem!important;
+    }
+    .look-text{
+        width: 20rem!important;
+    }
+}
+
+.update_pwd_btn {
+    width: 83%;
+    height: 3.34rem;
+    line-height: 3.34rem;
+    background: #ccc;
+    border-radius: 6px;
+    margin-top: 1.5rem;
+    margin-left: 8%;
+    color: #ffffff;
+    text-align: center;
+    padding: 2px 0;
+}
+
+.update_pwd_btn.can_click {
+    background: rgba(1, 143, 255, 1);
+}

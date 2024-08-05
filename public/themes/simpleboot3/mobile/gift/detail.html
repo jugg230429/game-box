@@ -1,0 +1,257 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/bag_detail.css">
+</block>
+
+<block name="body">
+
+    <div class="bag_detail_page">
+        <div class="bag_detail_header">
+            <a href="javascript:history.back(-1);" class="fl">
+                <img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon">
+            </a>
+            <p class="fl">礼包</p>
+            <if condition="UID gt 0">
+                <a class="fg btn-record" href="{:url('user/gift')}">领取记录</a>
+            <else/>
+                <a class="fg btn-record" ><span class="login">领取记录</span></a>
+            </if>
+        </div>
+        <div class="game_bag_down_hx clear"></div>
+        <div class="bag_detail_title_con clearfix">
+            <div class="fl game_infos_img">
+                <notempty name="data.icon">
+                <img src="{$data.icon}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                </notempty>
+            </div>
+            <div class="fl game_infos_cons">
+                <p class="game_infos_cons_name">{$data.game_name}{$data.giftbag_name}</p>
+                <p class="game_infos_cons_num"> 剩余 <span>{:null_to_0($data['remain_num']/$data['novice_num']*100)}</span> %</p>
+            </div>
+            <if condition="$data.received eq 1">
+                <div class="clear copy game_bag_fuzhi_btn" data-clipboard-text="{$data.novice}">
+                    <span class="fl">激活码：</span>
+                    <input type="text" class="fl" value='{$data.novice}' readonly>
+                    <div class="fl" >
+                        <p>复制</p>
+                    </div>
+                </div>
+                <else/>
+                <button class="fg game_bag_lingqu_btn" data-id="{$data.gift_id}">
+                    <if condition="$session['login_auth'] eq 1">
+                        <lt name="$session['vip_level']" value="$data['vip']">
+                            <span class="disabled">领取</span>
+                            <else/>
+                            领取
+                        </lt>
+                        <else/>
+                        领取
+                    </if>
+                </button>
+            </if>
+
+
+        </div>
+        <div class="game_bag_down_hx clear"></div>
+        <div class="bag_detail_info_con">
+            <div class="bag_detail_info_con_item">
+                <p class="bag_detail_info_con_title">使用期限</p>
+                <p class="bag_detail_info_con_info">有效期：{$data.start_time==0 ? '永久' : date('Y-m-d H:i:s',$data.start_time)} 至 {$data.end_time==0 ? '永久' : date('Y-m-d H:i:s',$data.end_time)}</p>
+            </div>
+            <notempty  name="$data.competence">
+            <div class="bag_detail_info_con_item">
+                <p class="bag_detail_info_con_title">兑换资格</p>
+                <p class="bag_detail_info_con_info">{$data.competence}</p>
+            </div>
+            </notempty>
+            <notempty name="$data.digest">
+            <div class="bag_detail_info_con_item">
+                <p class="bag_detail_info_con_title">礼包内容</p>
+                <volist name="$data.digest" id="digest">
+                    <p class="bag_detail_info_con_info">{$digest}</p>
+                </volist>
+            </div>
+            </notempty>
+            <notempty  name="$data.desribe">
+            <div class="bag_detail_info_con_item">
+                <p class="bag_detail_info_con_title">使用说明</p>
+                <volist name="$data.desribe" id="desribe">
+                <p class="bag_detail_info_con_info">{$desribe}</p>
+                </volist>
+
+            </div>
+            </notempty>
+            <notempty  name="$data.notice">
+            <div class="bag_detail_info_con_item">
+                <p class="bag_detail_info_con_title">注意事项</p>
+                <volist name="$data.notice" id="notice">
+                    <p class="bag_detail_info_con_info">{$notice}</p>
+                </volist>
+            </div>
+            </notempty>
+
+            <!-- 礼包领取弹窗 -->
+            <div class="bag_open_modals" style="padding-bottom:1.1rem">
+                <img src="__TMPL__/mobilepublic/assets/images/common_btn_close_n.png" alt="" class="bag_open_modals_closeimg" style="width: 1.25rem;">
+                <p class="bag_open_modals_firstline">礼包领取成功</p>
+                <div style="position: relative;margin: .7rem 1.2rem 0;">
+                <span class="bag_open_modals_prefix">激活码：</span><input type="text" readonly value="" id="novice" class="bag_open_modals_input" >
+                </div>
+                <p class="bag_open_modals_notice tap">可在[我的礼包]查看</p>
+                <div class="bag_open_modals_btn copy" data-clipboard-text="">
+                    <p>复制</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</block>
+<block name="script">
+<script src="__JS__/clipboard.min.js"></script>
+<script>
+    $(function () {
+        function Copy(str,that){
+            text = str;
+            var clipboard = new Clipboard('.copy',{
+                text: function() {
+                    return text;
+                }
+            });
+            clipboard.on('success', function(e) {
+                layer.msg('<p>已复制</p>');
+                e.clearSelection();
+                clipboard.destroy();
+            });
+            clipboard.on('error', function(e) {
+                layer.msg('此浏览器不支持此操作，请长按礼包码复制');
+            });
+        }
+
+    $('.bag_open_modals_btn').click(function () {
+        Copy($(this).attr('data-clipboard-text'),$(this));
+    })
+    $('.game_bag_fuzhi_btn').click(function () {
+        Copy($(this).attr('data-clipboard-text'),$(this));
+    })
+    $('.bag_open_modals_closeimg').click(function () {
+        layer.closeAll();
+    })
+
+    $('.game_bag_lingqu_btn').click(function () {
+        var is_login="{:session('member_auth.user_id')}";
+        var auth_user="{:AUTH_USER}";
+        if(auth_user!=1){
+            layer.msg('请购买用户权限');
+            return false;
+        }
+        if(is_login==''){
+            login();
+            return false;
+        }
+
+        if ($(this).html().indexOf('领取') !== -1&&$(this).html().indexOf("领取</span>") === -1) {
+            var gift_id = $(this).attr('data-id');
+
+            $.ajax({
+                type: 'post',
+                url: '{:url("Gift/getgift")}',
+                async: false,
+                data: {gift_id: gift_id},
+                dataType: 'json',
+                success: function(data) {
+                    if(data.code == 1) {
+                        $("#novice").val(data.novice);
+                        $(".bag_open_modals_btn").attr('data-clipboard-text',data.novice);
+                        var consa = $('.bag_open_modals')
+                        layer.open({
+                            type: 1,
+                            title: false,
+                            closeBtn: false,
+                            area: ['85%', '12rem'],
+                            offset: 'auto',
+                            content: consa,
+                            btnAlign: 'c',
+                            shadeClose: true,
+                            end: function () {
+                                $('.bag_open_modals').hide()
+                                location.reload();
+                            }
+                        })
+                    }else {
+                        layer.msg(data.msg);
+                    }
+                },
+                error: function(xhr, type) {
+                    alert('服务器错误');
+                }
+            });
+
+
+        }
+    })
+
+    function login() {
+        var consa = $('.login_modal')
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: false,
+            area: ['80%', '26rem'],
+            offset: 'auto',
+            content: consa,
+            btnAlign: 'c',
+            shadeClose: true,
+            success: function (layero, index) {
+
+                layero.find('.modal_login_btn').click(function () {
+                    var that=$(this);
+                    if (that.hasClass('no_send')) {return false;}
+                    that.addClass('no_send');
+                    var account = consa.find('input[name=account]').val();
+                    var password = consa.find('input[name=password]').val();
+                    $.ajax({
+                        type: 'post',
+                        dataType: 'json',
+                        url: '{:url("User/login")}',
+                        data: {account:account,password:password},
+                        success: function (data) {
+                            that.removeClass('no_send');
+                            layer.msg(data.msg);
+                            if (data.code == 1) {
+                                setTimeout(function () {
+                                    if (data.url) {
+                                        window.location.href = data.url;
+                                    } else {
+                                        window.location.reload();
+                                    }
+                                },data.wait*1000);
+                            }
+                        },
+                        error: function () {
+                            layer.msg('服务器故障，请稍候再试');
+                            that.removeClass('no_send');
+                        }
+                    });
+
+                    return false;
+                });
+
+                layero.find('.close_login_modal').click(function () {
+
+                    $('.login_modal input').val('');
+
+                    layer.close(index);
+
+                    return false;
+                });
+            },
+            end: function () {
+                $('.login_modal').hide();
+            }
+        })
+    }
+
+    })
+</script>
+
+</block>

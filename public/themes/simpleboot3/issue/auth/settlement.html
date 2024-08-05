@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="__TMPL__/issuepublic/assets/css/promote/select2.min.css" rel="stylesheet" />
+    <link href="__TMPL__/issuepublic/assets/css/promote/pay.css" rel="stylesheet" />
+    <link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+    <link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" media="all" href="__STATIC__/js/datejs/daterangepicker.css"/>
+    {:widget('issue/Management/css')}
+</head>
+
+<body>
+<!--左侧导航栏-->
+{:widget('issue/Management/left')}
+
+<!--头部-->
+{:widget('issue/Management/header')}
+
+
+<div class="trunk-con">
+    <div class="right-container">
+        <div class="normal-list">
+            <div class="trunk">
+                <ul class="tab">
+                    <li class="tab-menu "><a href="{:url('issue/Auth/index')}">基本信息</a></li>
+                    <li class="tab-menu tab-menu-active"><a href="{:url('issue/Auth/settlement')}">结算信息</a></li>
+                    <li class="tab-menu "><a href="{:url('issue/Auth/changePassword')}">修改密码</a></li>
+                </ul>
+                <div class="clear"></div>
+                <div class="data">
+                    <ol class="tabpan">
+                        <li class="tabpan-con tabpan-show">
+                            <form id="form1" action="{:url('issue/Auth/settlement')}" method="post">
+                                <div class="tabpan-con-con">
+                                    <label class="fl label-name"><span class="req"></span>结算账户:</label>
+                                    <label class="label-choose js_choose">
+                                        <input type="radio" class="radio-choose paycheck" value="bank" name="account_type" <?php if($info['account_type']=='bank' || $info['account_type']=='') echo 'checked="checked"'; ?>>
+                                        <i class="label-choose-i <?php if($info['account_type']=='bank' || $info['account_type']=='') echo 'current'; ?>"></i>
+                                        <span>银行卡</span>
+                                    </label>
+                                    <label class="label-choose js_choose">
+                                        <input type="radio" class="radio-choose" value="alipay" name="account_type" <?php if($info['account_type']=='alipay') echo 'checked="checked"'; ?>>
+                                        <i class="label-choose-i <?php if($info['account_type']=='alipay') echo 'current'; ?>"></i>
+                                        <span>支付宝</span>
+                                    </label>
+                                </div>
+
+                                <div id="bank_block">
+                                    <div class="tabpan-con-con">
+                                        <label class="fl label-name"><span class="req">*</span>手机号:</label>
+                                        <input type="text" class="tabpan-input" name="bank_phone" id="bank_phone" value="{$info.bank_phone}" maxlength="25"  placeholder="银行预留手机号">
+                                    </div>
+                                    <div class="tabpan-con-con">
+                                        <label class="fl label-name"><span class="req">*</span>银行卡号:</label>
+                                        <input type="text" maxlength="19" class="tabpan-input" name="bank_card" id="bank_card" value="{$info.bank_card}" placeholder="输入卡号">
+                                    </div>
+
+                                    <div class="tabpan-con-con">
+                                        <label class="fl label-name"><span class="req">*</span>收款银行:</label>
+                                        <select id="bank_name" name="bank_name" style="width: 280px;"></select>
+                                    </div>
+                                    <div class="tabpan-con-con">
+                                        <label class="fl label-name"><span class="req">*</span>持卡人:</label>
+                                        <input type="text" class="tabpan-input" name="bank_account" id="bank_account" maxlength="25" value="{$info.bank_account}" placeholder="持卡人姓名，2-25个字符">
+                                    </div>
+                                    <div class="tabpan-con-con">
+
+                                        <label class="fl label-name"><span class="req"></span>开户城市:</label>
+                                        <select id="province" name="province" class="areaselect1 select_gallery js-select-gallery" style="width: 90px;"></select>
+                                        <select id="city" name="city" class="areaselect2 select_gallery js-select-gallery" style="width: 90px;"></select>
+                                        <select id="county" name="county" class="areaselect3 select_gallery js-select-gallery" style="width: 90px;"></select>
+
+                                    </div>
+                                    <div class="tabpan-con-con">
+                                        <label class="fl label-name"><span class="req">*</span>开户网点:</label>
+                                        <input type="text" class="tabpan-input" name="account_openin" id="account_openin" value="{$info.account_openin}" placeholder="开户网点">
+                                    </div>
+                                    <div class="tabpan-con-con">
+                                        <label class="fl label-name"><span class="req">*</span>对账人:</label>
+                                        <input type="text" class="tabpan-input" name="check_people" id="check_people" value="{$info.check_people}" placeholder="对账人">
+                                    </div>
+                                    <div class="tabpan-con-con">
+                                        <label class="fl label-name"><span class="req">*</span>对账人QQ:</label>
+                                        <input type="text" class="tabpan-input" name="check_people_qq" id="check_people_qq" value="{$info.check_people_qq}" placeholder="对账人QQ">
+                                    </div>
+                                    <div class="tabpan-con-con">
+                                        <label class="fl label-name"><span class="req">*</span>对账人手机:</label>
+                                        <input type="text" class="tabpan-input" name="check_people_phone" id="check_people_phone" value="{$info.check_people_phone}" placeholder="对账人手机号">
+                                    </div>
+                                </div>
+
+                                <div id="zfb-block" style="display: none">
+                                    <div class="tabpan-con-con">
+                                        <label class="fl label-name"><span class="req">*</span>支付宝账号:</label>
+                                        <input type="text" class="tabpan-input" name="alipay_account" id="alipay_account" value="{$info.alipay_account}" placeholder="支付宝账号">
+                                    </div>
+                                    <div class="tabpan-con-con">
+                                        <label class="fl label-name"><span class="req">*</span>支付宝真实姓名:</label>
+                                        <input type="text" class="tabpan-input" name="alipay_realname" id="alipay_realname" value="{$info.alipay_realname}" placeholder="支付宝真实姓名">
+                                    </div>
+                                </div>
+
+                                <div class="tabpan-con-con">
+                                    <input type="button" class="button js-submit" value="确认" title="" >
+                                </div>
+								<div class="settlement-tip">用于结算打款，请确认填写无误</div>
+                            </form>
+                        </li>
+                    </ol>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="__TMPL__/issuepublic/assets/js/promote/jquery-1.11.1.min.js"></script>
+<script src="__TMPL__/issuepublic/assets/js/promote/common.js"></script>
+<script src="__TMPL__/issuepublic/assets/js/promote/select2.min.js"></script>
+<script src="__TMPL__/issuepublic/assets/js/promote/area.js"></script>
+<script src="__TMPL__/public/assets/js/promote/bank.js"></script>
+<script>
+    $(function() {
+        $(".js-select-gallery").select2();
+    })
+</script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+{:widget('issue/Management/footer')}
+
+<script type="text/javascript">
+
+    function blockDisplay() {
+        var current_val = $("input[name='account_type']:checked").val();
+        if (current_val == 'alipay') {
+            $("#bank_block").hide();
+            $("#zfb-block").show();
+        } else {
+            $("#bank_block").show();
+            $("#zfb-block").hide();
+        }
+    }
+
+
+    $(function () {
+        blockDisplay();
+
+        $('.js_choose').click(function(){
+            that = $(this);
+            input = that.children('.radio-choose');
+            i = that.children('.label-choose-i');
+            $('.label-choose-i').removeClass('current');
+            i.addClass('current');
+            $('input[name=pay_type]').removeAttr('checked');
+            $('input[name=pay_type]').removeClass('paycheck');
+            input.attr('checked','checked').addClass('paycheck');
+            blockDisplay();
+        });
+
+
+
+        $(".js-select-gallery").select2();
+        _init_area("province", "city", "county");
+
+        var pro="{:$info['province']?:'省'}";
+        var city="{:$info['city']?:'市'}";
+        var are="{:$info['county']?:'区/县'}";
+        // 默认选中
+        $("#select2-province-container").text(pro);
+        $("#select2-city-container").text(city);
+        $("#select2-county-container").text(are);
+        $('#province').val(pro);
+        change(1);
+        $('#province').change(function(){
+            $("#select2-city-container").text('市');
+            $("#select2-county-container").text('区/县');
+        });
+        $('#city').val(city);
+        change(2);
+        $('#county').val(are);
+        //银行选择
+        var data_bank_name = '{$info["bank_name"]}';
+        var bank_name = '<option value="">选择银行</option>';
+        // console.log(bank);
+        for(var bn in bank) {
+            if(data_bank_name == bank[bn]) {
+                bank_name += '<option value="' + bank[bn] + '" selected>' + bank[bn] + '</option>';
+            } else {
+                bank_name += '<option value="' + bank[bn] + '">' + bank[bn] + '</option>';
+            }
+        }
+        $('#bank_name').html(bank_name).select2();
+
+
+        $(".js-submit").click(function () {
+            var url = $("#form1").attr('action');
+            var data = $("#form1").serialize()
+
+            $.post(url, data, function (res) {
+
+                layer.msg(res.msg);
+                if (res.code == 0) {
+                    return false;
+                }
+                setTimeout(function () {
+                    location.reload();
+                }, 1500);
+                return false;
+            });
+        });
+
+
+    })
+
+</script>
+
+</body>
+</html>

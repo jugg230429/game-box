@@ -1,0 +1,103 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="javascript:;">新增{$promote_name}支付参数</a></li>
+        
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" action="{:url('add')}" method="post">
+        <input type="hidden" value="{$type}">
+        <div class="form-group">
+            <label for="input-name" class="col-sm-2 control-label"></span>游戏名称：</label>
+            <div class="col-md-6 col-sm-10 form-select">
+                <select name="game_id" id="game_id" class="selectpicker " game_id="{:input('request.game_id')}" data-live-search="true" style="width: 420px;">
+                    <option value="0">默认</option>
+                    <volist name=":get_game_list('id,game_name',[])" id="vo">
+                        <option game-id="{$vo.id}" value="{$vo.id}" >{$vo.game_name}</option>
+                    </volist>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input-name" class="col-sm-2 control-label"><span class="form-required">*</span>渠道名称：</label>
+            <div class="col-md-6 col-sm-10 form-select">
+                <select name="promote_id" id="promote_id" class="selectpicker " data-live-search="true" style="width: 420px;">
+                    <volist name="promote_list" id="vo">
+                        <option value="{$vo.promote_id}" >{$vo.promote_name}</option>
+                    </volist>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input-name" class="col-sm-2 control-label"><span class="form-required">*</span>支付类型</label>
+            <div class="col-md-6 col-sm-10 form-select">
+                <select name="type" id="type" class="selectpicker " data-live-search="true" style="width: 420px;">
+                    <option value="1" >支付宝</option>  
+                    <option value="2" >微信</option> 
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input-name" class="col-sm-2 control-label"><span class="form-required">*</span>商户号：</label>
+            <div class="col-md-6 col-sm-10">
+                <input type="text" class="form-control fl user-input" id="partner" name="partner">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input-name" class="col-sm-2 control-label"><span class="form-required">*</span>秘钥：</label>
+            <div class="col-md-6 col-sm-10">
+                <input type="text" class="form-control fl user-input" id="key" name="key">
+				<span  class="fl user-remarks "> 商户平台获取</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input-name" class="col-sm-2 control-label">支付下单地址：</label>
+            <div class="col-md-6 col-sm-10">
+                <input type="text" class="form-control fl user-input" id="order_address" name="order_address">
+				<span  class="fl user-remarks "> 商户支付请求地址</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input-name" class="col-sm-2 control-label">通道编码：</label>
+            <div class="col-md-6 col-sm-10">
+                <input type="text" class="form-control fl user-input" id="channel_coding" name="channel_coding">
+				 <span  class="fl user-remarks ">通道编码</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input-name" class="col-sm-2 control-label">回调ip组：</label>
+            <div class="col-md-6 col-sm-10">
+                <input type="text" class="form-control fl user-input" id="callback_ip" name="callback_ip">
+				 <span  class="fl user-remarks ">英文逗号隔开</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input-name" class="col-sm-2 control-label"><span class="form-required">*</span>权重：</label>
+            <div class="col-md-6 col-sm-10">
+                <input type="text" class="form-control fl user-input" id="weight" name="weight">
+            </div>
+        </div>
+   
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="form-required">&nbsp;</span>启用状态：</label>
+            <div class="col-md-6 col-sm-10">
+                <label class="radio-inline fl mr100">
+                    <input type="radio" name="status" value="0"> 禁用
+                </label>
+                <label class="radio-inline fl">
+                    <input type="radio" name="status" value="1" checked> 启用
+                </label>
+				<span  class="fl user-remarks ml26">微端微信APP支付开启状态</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-1 col-sm-10">
+                <button type="submit" class="btn btn-primary js-ajax-submit save-btn">确定</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+        <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/game_bill.css">
+</block>
+
+<block name="body">
+    <div class="game_bill_page">
+        <div class="my_bag_page_header">
+            <a href="{:url('User/index')}"><img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon"></a>
+            <p class="fl my_bag_page_item">游戏账单</p>
+        </div>
+        <div class="type_down__long_hx clear"></div>
+        <div class="game_bill_con">
+            <notempty name="list">
+            <volist name="list" id="vo">
+            <div class="game_bill_item">
+                <div class="firstline">
+                    <p class="fl" style="font-size:1.38rem;">{$vo.game_name}</p>
+                    <p class="fl money">-{$vo.pay_amount}</p>
+                </div>
+                <div class="secondline clear">
+                    <p class="fl" style="margin-top:0.1rem">{:get_pay_time($vo['pay_time'])}</p>
+                    <p class="fl type" style="margin-top:0.1rem">{:get_pay_way($vo['pay_way'])}</p>
+                </div>
+            </div>
+            </volist>
+            <div class="game_bill_sum">
+                <p>总计消费：<span>￥{$total}</span></p>
+            </div>
+                <else />
+                <div class="empty-box">~空空如也~</div>
+            </notempty>
+        </div>
+    </div>
+</block>
+<block name="script">
+</block>

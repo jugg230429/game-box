@@ -1,0 +1,200 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/invest_record.css">
+</block>
+<block name="body">
+    <div class="invest_record_page">
+        <div class="invest_record_header">
+            <a href="javascript:history.back(-1);" style="height: 100%;width: 3rem;display: flex;align-items: center;"><img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon"></a>
+            <p class="fl record_page_item active">平台币充值</p>
+            <p class="fl record_page_item">绑币充值</p>
+            <!--<a href="{:url('pay/search')}"><p class="fg invest_record_header_right"><img src="__TMPL__/mobilepublic/assets/images/common_btn_search.png" alt=""></p></a>-->
+        </div>
+        <div class="record-tab" >
+            <div class="invest_money_sum deposit_sum"><p>总计充值 : <span class="deposit_money"></span></p></div>
+            <div id="depositload">
+            </div>
+        </div>
+        <div class="record-tab" style="display: none" >
+            <div class="invest_money_sum bind_sum"><p> <p>总计充值 : <span class="bind_money"></span></p></div>
+            <div id="bindload">
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+        var itemIndex = 1;
+        var now_url = window.location.href;
+        var moren = now_url.split('#')[1];
+        if(moren != undefined){
+            itemIndex = parseInt(moren);
+            if(itemIndex>2) {itemIndex=1;}
+            moren = moren-1
+            $(".invest_record_header p:eq("+moren+")").addClass('active').siblings().removeClass('active');
+            $('.record-tab').eq(moren).show().siblings(".record-tab").hide();
+        }
+        var lwx = window.lwx || {};
+        lwx.ready = true;
+        lwx.width = $(window).width();
+        lwx.height = $(window).height();
+        lwx.number = {deposit:1,bind:1};
+        lwx.row = {deposit:10,bind:10};
+        lwx.http = {
+            getJSON:function(url,callback){
+                $.getJSON(url + '&v=' + Date.now(),function(data){
+                    callback(data);
+                });
+            },
+            postJSON:function(url,args,callback) {
+                $.post(url + '&v=' + Date.now(), args, function(data) {
+                    callback(data);
+                },"json")
+            },
+        };
+        lwx.url ={
+            deposit:'{:url("Pay/get_deposit")}',
+            bind:'{:url("Pay/get_bind")}',
+        };
+        lwx.page = {
+            deposit:function(){
+                if(lwx.number.deposit) {
+                    lwx.http.getJSON(lwx.url.deposit+'&limit='+lwx.row.deposit+'&p='+lwx.number.deposit,function(data) {
+                        var hotload = $('#depositload');
+                        var sum = data.sum;
+                        var data = data.data;
+                        if(data && data.length) {
+                            $(".deposit_money").text('￥'+sum);
+                            $(".deposit_sum").show();
+                            var html = '';
+                            html += '<div class="invest_money_cons">';
+                            for (var i in data) {
+                                html += '<div class="invest_money_item">';
+                                if(data[i].pay_way == 3){
+                                    html += '<p class="invest_money_item_mon fl zfb_money">￥'+data[i].pay_amount+'</p>';
+                                }  else if(data[i].pay_way == 4){
+                                    html += '<p class="invest_money_item_mon fl wx_money">￥'+data[i].pay_amount+'</p>';
+                                }else{
+                                    html += '<p class="invest_money_item_mon fl jz_money">￥'+data[i].pay_amount+'</p>'
+                                }
+                                html += '<p class="invest_money_item_time fl">'+data[i].pay_time+'</p>';
+                                html += '<p class="invest_money_item_type fr" style="float: right">'+data[i].pay_way+'</p>';
+                                html += '</div><div class="type_down__long_hx clear"></div>';
+                            }
+                            html += '</div>';
+                            hotload.append(html);
+                            hotload.find('.jsdropload').remove();
+                            if(data.length >= lwx.row.deposit) {
+                                lwx.number.deposit++;
+                                lwx.ready = true;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.deposit = false;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                        } else {
+                            if(lwx.number.deposit==1){
+                                $(".deposit_sum").hide();
+                                hotload.html('').append('<p class="no_invest_info">~空空如也~</p>');
+                            } else{
+                                hotload.find('.jsdropload').remove();
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                            lwx.number.deposit = false;
+                        }
+                    });
+                }
+            },
+            bind:function(){
+                if(lwx.number.bind) {
+                    lwx.http.getJSON(lwx.url.bind+'&limit='+lwx.row.bind+'&p='+lwx.number.bind,function(data) {
+                        var bindload = $('#bindload');
+                        var sum = data.sum;
+                        var data = data.data;
+                        if(data && data.length) {
+                            $(".bind_money").text('￥'+sum);
+                            $(".bind_sum").show();
+                            var html = '';
+                            html += '<div class="invest_money_cons">';
+                            for (var i in data) {
+                                html += '<div class="binding-record-item">';
+                                html += '<div class="charge-part1">';
+                                html += '<p class="game-name">'+data[i].game_name+'</p>';
+                                html += '<p class="game-date-account"><span>'+data[i].pay_time+'</span><span class="division"> | </span><span>充值账号：'+data[i].user_account+'</span></p>'
+                                html += '</div>';
+                                html += '<div class="charge-part2">';
+                                html += '<p class="charge-unm zfb">￥'+data[i].pay_amount+'</p>';
+                                html += '<p class="charge-type">'+data[i].pay_way+'</p>';
+                                html += '</div></div>';
+                            }
+                            html += '</div>';
+                            bindload.append(html);
+                            bindload.find('.jsdropload').remove();
+                            if(data.length >= lwx.row.bind) {
+                                lwx.number.bind++;
+                                lwx.ready = true;
+                                bindload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.bind = false;
+                                bindload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                        } else {
+                            if(lwx.number.bind==1){
+                                $(".bind_sum").hide();
+                                bindload.html('').append('<p class="no_invest_info">~空空如也~</p>');
+                            } else{
+                                bindload.find('.jsdropload').remove();
+                                bindload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                            lwx.number.bind = false;
+                        }
+                    });
+                }
+            },
+        };
+        pageChange('#'+itemIndex);
+        function pageChange(n) {
+            switch (n) {
+                case '#1': {
+                    lwx.page.deposit();
+                    if(lwx.number.deposit) {lwx.ready=true;}
+                };break;
+                case '#2':{
+                    lwx.page.bind();
+                    if(lwx.number.bind) {lwx.ready=true;}
+                };break;
+            }
+        }
+        function pageScroll(scrollTop, boxHeight, maxScrollHeight) {
+            if (scrollTop + boxHeight >= maxScrollHeight - 50) {
+                if (lwx.ready) {
+                    lwx.ready = false;
+                    switch (itemIndex) {
+                        case 1:
+                            lwx.page.deposit();
+                            break;
+                        case 2:
+                            lwx.page.bind();
+                            break;
+                    }
+                }
+            }
+        }
+        window.onscroll = function() {
+            var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+            pageScroll(scrollTop, lwx.height, $(document).height())
+        }
+        $(function () {
+            $('.record_page_item').click(function () {
+                $(this).addClass("active").siblings(".record_page_item").removeClass("active");
+                var index =$(this).index();
+                $('.record-tab').eq(index-1).show().siblings(".record-tab").hide();
+                itemIndex = index;
+                location.hash = index;
+            })
+        })
+        $(window).on("hashchange", function() {
+            pageChange(location.hash);
+        });
+    </script>
+</block>

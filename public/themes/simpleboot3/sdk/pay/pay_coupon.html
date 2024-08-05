@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link href="__CSS__/pay_way.css" rel="stylesheet" />
+    <style>input{outline:none;-webkit-appearance:none;}
+    html{font-size:12px;}
+    body {background:#ffffff;font-size:inherit;margin: 0}
+    i{font-style:normal;font-weight:normal;}
+    ul,li{list-style-type:none;margin: 0;padding: 0}
+    a{text-decoration: none}
+    .containers_{width:100%;padding:0.52rem 1rem 2rem;box-sizing:border-box;overflow:auto}
+    .coupon-list{}
+    .coupon-item{width:3.94rem;height:4.747rem;background:url(__STATIC__/images/receive_list_bg_coupons_n.png)no-repeat;background-size:100% 100%;color:#ffffff;float:left;margin-bottom:0.34rem;position:relative}
+    .coupon-item.select .select-coupon{position:absolute;bottom:0;right:0;display:block;width:1.04rem;height:1.04rem;background:url(../../../../static/images/use_coupouns_btn_choose_s.png)no-repeat;background-size:100% 100%}
+    .coupon-item .coupon-date{width:100%;text-align:center;height:1.04rem;font-size:0.286rem;line-height:1.04rem;color:#ffffff;position:relative}
+    .coupon-item .coupon-date:after{position:absolute;bottom:0;margin:0 auto;left:0.35rem;width:3.234rem;height:1px;border-bottom:1px dotted #ffffff;content:''}
+    .coupon-item .coupon-num{padding-left:0.12rem;text-align:center;font-size:1.2rem;position:relative;margin-top:0.1rem}
+    .coupon-item:nth-child(2n){margin-left:0.8rem}
+    .coupon-item .coupon-num span{position:absolute;top:0.12rem;left:0.12rem;font-size:0.39rem;display:inline-block;vertical-align:super}
+    .coupon-item .coupon-condition{font-size:0.34rem;text-align:center}
+    .coupon-item .coupon-btn{width:1.95rem;height:0.652rem;margin:0.4rem auto 0;font-size:0.34rem;border-radius:9.9rem;background:#ffffff;color:#FF7734;text-align:center;line-height:0.652rem}
+    .no-data{padding-top:3rem;text-align:center;font-size:0.4rem;color:#999999}
+    .no-use-btn{width:100%;height:1.8rem;background:#ffffff;position:fixed;bottom:0;left:0}
+    .no-use-btn a{width:10rem;height:1rem;margin:0 auto;line-height:1rem;text-align:center;color:#ffffff;font-size:0.417rem;display:block;background:#18B1EA;border-radius:0.2rem}
+    .v-middle{display:flex;align-items:center}
+     .coupon-item .radio {
+        position: absolute;
+        opacity: 0;
+    }
+    @media screen and (max-width:400px){.recharge_game{border-top-width:1px}
+    }
+    </style>
+    <script src="__JS__/jquery-1.11.1.min.js"></script>
+    <script src="__JS__/layer/layer.js"></script>
+
+</head>
+
+<body>
+<div class="containers_">
+    <div class="coupon-list">
+        <ul>
+            <li class="coupon-item select">
+                <div class="coupon-date">有效期19.11.21至19.12.30</div>
+                <div class="coupon-num">
+                    <span>￥</span>
+                    10.01
+                </div>
+                <div class="coupon-condition">满99元使用</div>
+                <div class="coupon-btn">已领取</div>
+                <label>
+                    <input type="radio" name="way" class="radio" checked>
+                    <i class="select-coupon"></i>
+                </label>
+
+            </li>
+            <li class="coupon-item">
+                <div class="coupon-date">有效期19.11.21至19.12.30</div>
+                <div class="coupon-num">
+                    <span>￥</span>
+                    10.01
+                </div>
+                <div class="coupon-condition">满99元使用</div>
+                <div class="coupon-btn">已领取</div>
+                <label>
+                    <input type="radio" name="way" class="radio">
+                    <i class="select-coupon"></i>
+                </label>
+            </li>
+            <li class="coupon-item">
+                <div class="coupon-date">有效期19.11.21至19.12.30</div>
+                <div class="coupon-num">
+                    <span>￥</span>
+                    10.01
+                </div>
+                <div class="coupon-condition">满99元使用</div>
+                <div class="coupon-btn">已领取</div>
+                <label>
+                    <input type="radio" name="way" class="radio">
+                    <i class="select-coupon"></i>
+                </label>
+            </li>
+            <li class="coupon-item">
+                <div class="coupon-date">有效期19.11.21至19.12.30</div>
+                <div class="coupon-num">
+                    <span>￥</span>
+                    10.01
+                </div>
+                <div class="coupon-condition">满99元使用</div>
+                <div class="coupon-btn">已领取</div>
+                <label>
+                    <input type="radio" name="way" class="radio">
+                    <i class="select-coupon"></i>
+                </label>
+            </li>
+            <li class="coupon-item">
+                <div class="coupon-date">有效期19.11.21至19.12.30</div>
+                <div class="coupon-num">
+                    <span>￥</span>
+                    10.01
+                </div>
+                <div class="coupon-condition">满99元使用</div>
+                <div class="coupon-btn">已领取</div>
+                <label>
+                    <input type="radio" name="way" class="radio">
+                    <i class="select-coupon"></i>
+                </label>
+            </li>
+            <li class="coupon-item">
+                <div class="coupon-date">有效期19.11.21至19.12.30</div>
+                <div class="coupon-num">
+                    <span>￥</span>
+                    10.01
+                </div>
+                <div class="coupon-condition">满99元使用</div>
+                <div class="coupon-btn">已领取</div>
+                <label>
+                    <input type="radio" name="way" class="radio">
+                    <i class="select-coupon"></i>
+                </label>
+            </li>
+            <li class="coupon-item">
+                <div class="coupon-date">有效期19.11.21至19.12.30</div>
+                <div class="coupon-num">
+                    <span>￥</span>
+                    10.01
+                </div>
+                <div class="coupon-condition">满99元使用</div>
+                <div class="coupon-btn">已领取</div>
+                <label>
+                    <input type="radio" name="way" class="radio">
+                    <i class="select-coupon"></i>
+                </label>
+                .
+            </li>
+            <li class="coupon-item">
+                <div class="coupon-date">有效期19.11.21至19.12.30</div>
+                <div class="coupon-num">
+                    <span>￥</span>
+                    10.01
+                </div>
+                <div class="coupon-condition">满99元使用</div>
+                <div class="coupon-btn">已领取</div>
+                <label>
+                    <input type="radio" name="way" class="radio">
+                    <i class="select-coupon"></i>
+                </label>
+            </li>
+        </ul>
+        <div class="no-data"  style="display: none">暂无代金券</div>
+    </div>
+    <div class="occupy"></div>
+    <div class="no-use-btn v-middle">
+        <a href="javascript:;" class="js-no-use">不使用代金券</a>
+    </div>
+
+</div>
+</body>
+<script>
+    (function(doc, win) {
+        var docEl = doc.documentElement,
+            isIOS = navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/),
+            dpr = isIOS ? Math.min(win.devicePixelRatio, 3) : 1,
+            dpr = window.top === window.self ? dpr : 1, //被iframe引用时，禁止缩放
+            dpr = 1,
+            scale = 1 / dpr,
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
+        docEl.dataset.dpr = dpr;
+        var metaEl = doc.createElement('meta');
+        metaEl.name = 'viewport';
+        metaEl.content = 'initial-scale=' + scale + ',maximum-scale=' + scale + ', minimum-scale=' + scale;
+        docEl.firstElementChild.appendChild(metaEl);
+        var recalc = function() {
+            var width = docEl.clientWidth;
+            if (width / dpr > 1080) {
+                width = 1080 * dpr;
+            }
+            // 乘以100，px : rem = 100 : 1
+            docEl.style.fontSize = 100 * (width / 1080) + 'px';
+        };
+        recalc()
+        if (!doc.addEventListener) return;
+        win.addEventListener(resizeEvt, recalc, false);
+    })(document, window);
+</script>
+<script>
+    $(function () {
+        $('.coupon-list .coupon-item').click(function () {
+            $(this).addClass("select").siblings(".coupon-item").removeClass("select");
+            $(this).find(".radio").prop("checked",true)
+
+            //点击跳转
+
+        })
+        $('.js-no-use').click(function () {
+            $('.coupon-list .coupon-item').removeClass("select")
+        })
+    })
+</script>
+</html>

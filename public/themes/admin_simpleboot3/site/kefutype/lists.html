@@ -1,0 +1,115 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li <if condition="input('type','1') eq 1"> class="active"</if>><a href="{:url('lists')}">SDK</a></li>
+            <li <if condition="input('type') eq 2"> class="active"</if>><a href="{:url('lists',array('type'=>2))}">推广平台</a></li>
+            <li <if condition="input('type') eq 3"> class="active"</if>><a href="{:url('lists',array('type'=>3))}">PC官网</a></li>
+        </ul>
+        <div class="table-actions position" style="margin-left: -10px;"><a href="{:url('add',array('type'=>input('type')))}" class="btn btn-success   mtb17">新增分类</a></div>
+        <form id="search_form" class="well form-inline fr" method="get" action="{:url('lists',['type'=>input('type')])}">
+            <input type="submit" class="btn btn-primary hidden" id="search_btn" value="搜索" />
+        </form>
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th style="width: 500px;">类型</th>
+                    <th>状态</th>
+                    <th>添加人员</th>
+                    <th>添加时间</th>
+                    <th>排序</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <empty name="data_lists">
+                    <tr><td colspan="8" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <foreach name="data_lists" item="vo">
+                    <tr>
+                        <td>{$vo['name']}</td>
+                        <td>
+                            <a href="{:url('setstatus',['id'=>$vo['id'],'type'=>input('type'),'status'=>$vo['status']])}" class="js-ajax-dialog-btn">
+                                <span <if condition="$vo['status'] eq 1"> class="label label-success"<else/>class="label label-danger"</if>>{:get_info_status($vo['status'],4)}</span>
+                            </a>
+                        </td>
+                        <td>{$vo.admin_name}</td>
+                        <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+                        <td>
+                            <div data-id="{$vo.id}" class="tab_not_same editTab">
+                                <span style="color:#18BC9C;">{$vo.sort}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <a href="{:url('edit',['id'=>$vo['id'],'type'=>input('type')])}">编辑</a>
+                            <a href="{:url('del',['id'=>$vo['id']])}" class="js-ajax-delete" data-msg="确定要删除吗？">删除</a>
+                        </td>
+                    </tr>
+                    </foreach>
+                </empty>
+            </tbody>
+        </table>
+        <div class="pagination">{$page}</div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+<script>
+    game_id = $("#game_id").attr('game_id');
+    $("#game_id").selectpicker('val', game_id);
+    $(function () {
+        $('.editTab').click(function () {
+            var that = $(this), num = $.trim(that.children('span').text());
+            var id = that.attr('data-id');
+            var title = "排序设置";
+
+
+            layer.prompt({title: title, formType: 0,value:num}, function (value, index) {
+
+                if (!/^(?:0|[1-9][0-9]*)$/.test(value)) {
+                    alert('请输入正整数');
+                    setTimeout(function () {
+                        $('#tip').find('.tipclose').click();
+                    }, 2000);
+                    return false;
+                }
+
+                layer.close(index);
+
+                $.ajax({
+                    async: false,
+                    url: "{:url('setsort')}",
+                    type: "POST",
+                    dataType: "json",
+                    data: {id: id, value: value},
+                    success: function (result) {
+                        if (result.code) {
+                            layer.msg('修改成功');
+                            setTimeout(function () {
+                                $('#tip').find('.tipclose').click();
+                                window.location.reload();
+                            }, 2000);
+
+                        } else {
+                            layer.msg('修改失败');
+                            setTimeout(function () {
+                                $('#tip').find('.tipclose').click();
+                            }, 2000);
+                        }
+                    },
+                    error: function () {
+                        layer.msg('服务器异常');
+                        setTimeout(function () {
+                            $('#tip').find('.tipclose').click();
+                        }, 2000);
+                    }
+                });
+
+            });
+
+            return false;
+        });
+
+    })
+</script>
+</body>
+</html>

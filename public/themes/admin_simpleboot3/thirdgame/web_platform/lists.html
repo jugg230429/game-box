@@ -1,0 +1,111 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('GameType/lists')}">简化版平台</a></li>
+            <!-- <li><a href="{:url('add')}">添加游戏类型</a></li> -->
+        </ul>
+        <a class="btn btn-success" href="{:url('add')}" style="margin-top:20px;margin-left:-10px;">添加平台</a>
+        <form id="search_form" class="well form-inline  fr" method="get" action="{:url('lists')}" style="margin-right: 10px;">
+            <input type="text" class="form-control" name="name" style="width: 120px;" value="{:input('request.name/s','')}" placeholder="平台名称">
+			<select name="status" id="status" class="selectpicker" status="{:url('lists')}" style="width: 120px;">
+				<option value="">平台状态</option>
+                <option value="0" <if condition="input('request.status') eq '0'">selected</if>>关闭</option>
+                <option value="1" <if condition="input('request.status') eq '1'">selected</if>>开启</option>
+			</select>
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('lists')}">清空</a>
+        </form>
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>平台名称</th>
+                    <th>平台域名</th>
+                    <th>api密钥</th>
+                    <!--<th>支付通道</th>-->
+                    <th>平台状态</th>
+                    <th>添加时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <empty name="data_lists">
+                    <tr><td colspan="7" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <foreach name="data_lists" item="vo">
+                    <tr>
+                        <td>{$vo['id']}</td>
+                        <td>{$vo['platform_name']}</td>
+                        <td>{$vo['platform_url']}</td>
+                        <td>{$vo['api_key']}</td>
+                        <!--<eq name="pay_type" value="1">-->
+                            <!--<td>本平台</td>-->
+                            <!--<else/>-->
+                            <!--<td>{$vo['platform_name']}</td>-->
+                        <!--</eq>-->
+                        <eq name="vo.status" value="1">
+                            <td>开启</td>
+                        <else/>
+                            <td style="color: red">关闭</td>
+                        </eq>
+                        <td>{$vo['create_time']|date='Y-m-d H:i:s',###}</td>
+                        <td>
+                            <a href="{:url('edit',['id'=>$vo['id']])}">编辑</a>
+                            <eq name="vo.status" value="1">
+                                <a href="{:url('setstatus',['id'=>$vo['id'],'field'=>'status','value'=>0])}" class="js-ajax-dialog-btn" data-msg="确定要操作吗？">关闭</a>
+                            <else/>
+                                <a href="{:url('setstatus',['id'=>$vo['id'],'field'=>'status','value'=>1])}" class="js-ajax-dialog-btn" data-msg="确定要操作吗？">开启</a>
+                            </eq>
+                        </td>
+                    </tr>
+                    </foreach>
+                </empty>
+            </tbody>
+        </table>
+        <div class="pagination">{$page}</div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script>
+        $(".hits").click(function () {
+            var id = $(this).attr('data-id');
+            var param = $(this).attr('data-param');
+            var url = $(this).attr('data-url');
+            var title = $(this).attr('data-title');
+            num = $.trim($(this).text());
+            layer.prompt({
+                formType: 3,
+                title: title,
+                value: num,
+                placeholder:'请输入正整数'
+            }, function (hits) {
+                preg = /^(?:0|[0-9]*[1-9][0-9]*)$/;
+                if (!preg.test(hits)) {
+                    layer.msg("请输入正整数");
+                    return false;
+                }
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    dataType: 'json',
+                    data: {id:id,sort:hits},
+                    success: function (data) {
+                        if (data.code > 0) {
+                            layer.msg(data.msg);
+                            setTimeout(function(){
+                                self.location.reload(true);
+                            },1000);
+                        } else {
+                            layer.msg(data.msg)
+                        }
+                    },
+                    error: function () {
+                        layer.msg("服务器故障！");
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

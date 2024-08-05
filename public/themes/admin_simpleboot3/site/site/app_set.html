@@ -1,0 +1,351 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#A" data-toggle="tab">站点配置</a></li>
+        <li><a href="{:url('app/lists')}">原包上传</a></li>
+        <li><a href="{:url('app/superSignOrder')}">超级签付费下载记录</a></li>
+        <span class="title_remark">说明：针对游戏盒子APP的显示进行基本配置</span>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('sitePost')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">APP接口加密Key：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control"  name="app_key"
+                                       value="{$data.app_key|default=''}">
+                            </div>
+                            <p class="help-block">APP请求接口加密KEY，需要和APP内保持统一</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">Android版本号：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control"  name="and_version"
+                                       value="{$data.and_version|default=''}">
+                            </div>
+                            <p class="help-block">安卓APP版本号，如v5.1.0版，输入510</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">Android版本名：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="version_name"
+                                       value="{$data.version_name|default=''}">
+                            </div>
+                            <p class="help-block">APP版本名，如v5.1.0</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">IOS版本号：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control"  name="ios_version" value="{$data.ios_version|default=''}">
+                            </div>
+                            <p class="help-block">苹果APP版本号，如v5.1.0版，输入510</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">APP版权信息：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="app_copyright"
+                                       value="{$data.app_copyright|default=''}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">APP版权信息（英）：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="app_copyright_en"
+                                       value="{$data.app_copyright_en|default=''}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">APP名称：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="app_name"
+                                       value="{$data.app_name|default=''}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">Scheme配置：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="scheme" value="{$data.scheme|default=''}">
+                            </div>
+                            <p class="help-block">用户APP支付返回APP的参数</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">APP图标：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="app_logo" type="hidden" name="app_logo" value="{$data.app_logo}" >
+                                <img id="app_logo-preview" class="upload-img" <if condition="$data['app_logo']">src="{:cmf_get_image_preview_url($data['app_logo'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#app_logo');">上传</a>
+                                <a href="javascript:(function(){$('#app_logo-preview').attr('src','');$('#app_logo').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">尺寸240*240px</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">引导页1：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="guide_1" type="hidden" name="guide_1" value="{$data.guide_1}" >
+                                <img id="guide_1-preview" class="upload-img" <if condition="$data['guide_1']">src="{:cmf_get_image_preview_url($data['guide_1'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#guide_1');">上传</a>
+                                <a href="javascript:(function(){$('#guide_1-preview').attr('src','');$('#guide_1').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">尺寸750*1334px</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">引导页2：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="guide_2" type="hidden" name="guide_2" value="{$data.guide_2}" >
+                                <img id="guide_2-preview" class="upload-img" <if condition="$data['guide_2']">src="{:cmf_get_image_preview_url($data['guide_2'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#guide_2');">上传</a>
+                                <a href="javascript:(function(){$('#guide_2-preview').attr('src','');$('#guide_2').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">尺寸750*1334px</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">引导页3：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="guide_3" type="hidden" name="guide_3" value="{$data.guide_3}" >
+                                <img id="guide_3-preview" class="upload-img" <if condition="$data['guide_3']">src="{:cmf_get_image_preview_url($data['guide_3'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#guide_3');">上传</a>
+                                <a href="javascript:(function(){$('#guide_3-preview').attr('src','');$('#guide_3').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">尺寸750*1334px</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">关于我们图标：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="about_icon" type="hidden" name="about_icon" value="{$data.about_icon}" >
+                                <img id="about_icon-preview" class="upload-img" <if condition="$data['about_icon']">src="{:cmf_get_image_preview_url($data['about_icon'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#about_icon');">上传</a>
+                                <a href="javascript:(function(){$('#about_icon-preview').attr('src','');$('#about_icon').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">尺寸260*260px (预留入口,目前无需上传)</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">APP下载页背景图：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="app_backgroup" type="hidden" name="app_backgroup" value="{$data.app_backgroup}" >
+                                <img id="app_backgroup-preview" class="upload-img" <if condition="$data['app_backgroup']">src="{:cmf_get_image_preview_url($data['app_backgroup'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#app_backgroup');">上传</a>
+                                <a href="javascript:(function(){$('#app_backgroup-preview').attr('src','');$('#app_backgroup').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">尺寸750*1110px</p>
+                        </div>
+                        <if condition="PERMI eq 1 || PERMI eq 3">
+
+                            <div class="form-group">
+                                <label for="input-site_adminstyle" class="col-sm-2 control-label">APP强制更新：</label>
+                                <div class="col-md-3 col-sm-5">
+                                    <label  class="label-width">
+                                        <input type="radio" class="inp_radio" value="0" name="forced_update" <eq name='data.forced_update' value='0'>checked="checked"</eq>> 关闭
+                                    </label>
+                                    <label  class="label-width">
+                                        <input type="radio" class="inp_radio" value="1" name="forced_update" <if condition="$data['forced_update'] eq '1'">checked="checked"</if>> 开启
+                                    </label>
+                                </div>
+                                <!-- <p class="help-block">控制APP首页是否显示折扣标签</p> -->
+                            </div>
+
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">安卓首页一级标签：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="model_and" <empty name='data.model_and'>checked="checked"</empty>> 全部
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="model_and" <eq name='data.model_and' value='1'>checked="checked"</eq>> 手游
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="2" name="model_and" <eq name='data.model_and' value='2'>checked="checked"</eq>> H5
+                                </label>
+                            </div>
+                            <p class="help-block">控制安卓APP首页是否显示手游/H5标签</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">IOS首页一级标签：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="model_ios" <empty name='data.model_ios'>checked="checked"</empty>> 全部
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="model_ios" <eq name='data.model_ios' value='1'>checked="checked"</eq>> 手游
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="2" name="model_ios" <eq name='data.model_ios' value='2'>checked="checked"</eq>> H5
+                                </label>
+                            </div>
+                            <p class="help-block">控制苹果APP首页是否显示手游/H5标签</p>
+                        </div>
+                        </if>
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">安卓默认选中:</label>
+                            <div class="col-md-3 col-sm-5">
+                                <!-- <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="default_show_sy_h5" <eq name='data.default_show_sy_h5' value='0'>checked="checked"</eq>> 不做设置
+                                </label> -->
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="android_default_show_sy_h5" <eq name='data.android_default_show_sy_h5' value='1'>checked="checked"</eq>> 手游
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="2" name="android_default_show_sy_h5" <eq name='data.android_default_show_sy_h5' value='2'>checked="checked"</eq>> H5
+                                </label>
+                            </div>
+                            <p class="help-block">控制APP默认首先显示手游或H5(优先级小于安卓/IOS首页一级标签)</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">IOS默认选中:</label>
+                            <div class="col-md-3 col-sm-5">
+                                <!-- <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="default_show_sy_h5" <eq name='data.default_show_sy_h5' value='0'>checked="checked"</eq>> 不做设置
+                                </label> -->
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="ios_default_show_sy_h5" <eq name='data.ios_default_show_sy_h5' value='1'>checked="checked"</eq>> 手游
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="2" name="ios_default_show_sy_h5" <eq name='data.ios_default_show_sy_h5' value='2'>checked="checked"</eq>> H5
+                                </label>
+                            </div>
+                            <p class="help-block">控制APP默认首先显示手游或H5(优先级小于安卓/IOS首页一级标签)</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">折扣标签：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="discount_show" <neq name='data.discount_show' value='0'>checked="checked"</neq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="discount_show" <if condition="$data['discount_show'] heq '0'">checked="checked"</if>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制APP首页是否显示折扣标签</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">开服标签：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="server_show" <neq name='data.server_show' value='0'>checked="checked"</neq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="server_show" <if condition="$data['server_show'] heq '0'">checked="checked"</if>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制APP首页是否显示开服标签</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">排行标签：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="rank_show" <neq name='data.rank_show' value='0'>checked="checked"</neq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="rank_show" <if condition="$data['rank_show'] heq '0'">checked="checked"</if>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制APP首页是否显示排行标签</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">分类标签：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="category_show" <neq name='data.category_show' value='0'>checked="checked"</neq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="category_show" <if condition="$data['category_show'] heq '0'">checked="checked"</if>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制APP首页是否显示分类标签</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">视频一级标签：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="video_show" <neq name='data.video_show' value='0'>checked="checked"</neq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="video_show" <if condition="$data['video_show'] heq '0'">checked="checked"</if>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制APP内是否显示视频入口，默认开启</p>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">登录页LOGO：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="app_login_logo" type="hidden" name="app_login_logo" value="{$data.app_login_logo}">
+                                <img id="app_login_logo-preview" class="upload-img imgShow"  <if condition="$data['app_login_logo']">src="{:cmf_get_image_preview_url($data['app_login_logo'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#app_login_logo');" class="btn btn-sm btn-default">上传图片</a>
+                                <a href="javascript:(function(){$('#app_login_logo-preview').attr('src','');$('#app_login_logo').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">用于一键登录页显示，尺寸360px *104px</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">一键登录：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="yidun_login_switch" <eq name='data.yidun_login_switch' value='1'>checked="checked"</eq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="yidun_login_switch" <eq name='data.yidun_login_switch' value='0'>checked="checked"</eq>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制APP内是否启用易盾的本机号码一键登录功能</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">易盾业务ID：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control"  name="yidun_business_id"
+                                       value="{$data.yidun_business_id|default=''}">
+                            </div>
+                            <p class="help-block">开启盒子APP内的易盾一键登录功能时使用</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">单端登录：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="sso" <eq name='data.sso' value='1'>checked="checked"</eq>> 开启
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="sso" <if condition="empty($data['sso'])">checked="checked"</if>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block"> 开启时，同一账号可在多个APP内保持同时在线状态；关闭状态，同一时间只可单端登录，其他端自动被下线</p>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <input type="hidden" name="set_type" value="{$name}">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

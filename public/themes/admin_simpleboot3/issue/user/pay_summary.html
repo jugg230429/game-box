@@ -1,0 +1,133 @@
+<include file="public@header" />
+<link href="__TMPL__/public/assets/simpleboot3/css/pro_promote.css" rel="stylesheet">
+</head>
+<body>
+<div class="wrap js-check-wrap" >
+    <ul class="nav nav-tabs">
+        <li ><a href="{:url('issue/user/recharge')}">游戏充值</a></li>
+        <li class="active"><a href="{:url('issue/user/paySummary')}" >充值汇总</a></li>
+        <span class="title_remark">说明：根据用户、平台，对游戏充值数据按每日进行数据汇总统计</span>
+    </ul>
+    <div class="table-actions position" style="margin-left: -10px;">
+        <if condition="is_buy_h5_issue()">
+            <a href="{:url('issue/user/paySummary',['type'=>1])}" class="btn mtb17 <if condition='empty($type) or $type eq 1'>btn-info active<else/>btn-default</if>">H5</a>
+        </if>
+        <if condition="is_buy_sy_issue()">
+            <a href="{:url('issue/user/paySummary',['type'=>2])}" class="btn mtb17 <if condition='$type eq 2'>btn-info active<else/>btn-default</if>">手游</a>
+        </if>
+        <if condition="is_buy_yy_issue()">
+            <a href="{:url('issue/user/paySummary',['type'=>3])}" class="btn mtb17 <if condition='$type eq 3'>btn-info active<else/>btn-default</if>">页游</a>
+        </if>
+    </div>
+    <form id="search_form" class="well form-inline fr" method="get" action="{:url('issue/user/paySummary',['type'=>$type])}">
+
+        <input type="text" class="form-control js-bootstrap-date" name="start_time" id="start_time" placeholder="查询开始时间"
+               value="{$start_time}" style="width: 120px;" autocomplete="off">-
+        <input type="text" class="form-control js-bootstrap-date" name="end_time" id="end_time" placeholder="查询结束时间"
+               value="{$end_time}" style="width: 120px;" autocomplete="off">
+
+        <select name="open_user_id" id="open_user_id"  class="selectpicker" data-live-search="true"  data-size="8" style="width: 120px;">
+            <option value="">分发用户</option>
+            <volist name=":get_issue_open_user('id,account')" id="vo">
+                <option value="{$vo.id}" <if condition="input('request.open_user_id') eq $vo['id']">selected</if>>{$vo.account}</option>
+            </volist>
+        </select>
+
+        <select name="platform_id" id="platform_id"  class="selectpicker" data-live-search="true"  data-size="8" style="width: 120px;">
+            <option value="">分发平台</option>
+            <volist name=":get_pt_list('id,account')" id="vo">
+                <option value="{$vo.id}" <if condition="input('request.platform_id') eq $vo['id']">selected</if>>{$vo.account}</option>
+            </volist>
+        </select>
+
+        <php>
+            $sdk_version_arr = [1=>'(安卓版)',2=>'(苹果版)','3'=>''];
+            if($type=='1'){
+                $map['sdk_version'] = 3;
+            }else{
+                $map['sdk_version'] = ['neq',3];
+            }
+        </php>
+        <select name="game_id" id="game_id"  class="selectpicker" data-live-search="true"  data-size="8" style="width: 120px;">
+            <option value="">游戏名称</option>
+            <volist name=":get_issue_game_entity($map,'id,game_name,sdk_version',0)" id="vo">
+                <option value="{$vo.id}" <if condition="input('request.game_id') eq $vo['id']">selected</if>>{$vo.game_name}{$sdk_version_arr[$vo['sdk_version']]}</option>
+            </volist>
+        </select>
+
+        <input type="submit" class="btn btn-search" id="search_btn" value="搜索" />
+        <a class="btn btn-clear" href="{:url('issue/user/paySummary')}">清空</a>
+        <a class="btn btn-export js-ajax-dialog-btn-xz" data-msg="确定导出吗？" href="{:url('Export/expUser',array_merge(['id'=>1,'xlsname'=>'汇总'],input()))}">导出</a>
+    </form>
+    <form class="js-ajax-form" action="" method="post">
+        <table class="table table-hover table-bordered scroll-table" id="promotecoin_table">
+            <thead>
+            <tr>
+                <th>日期</th>
+                <th>分发用户</th>
+                <th>分发平台</th>
+                <th>游戏名称</th>
+                <th>新增玩家</th>
+                <th>活跃玩家</th>
+                <th>新增玩家付费</th>
+                <th>累计充值</th>
+                <th>结算金额</th>
+            </tr>
+            </thead>
+            <tbody>
+            <empty name="data_lists">
+                <tr><td colspan="100" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                <foreach name="data_lists" item="vo">
+                    <tr>
+                        <php>
+                            $newUserNumTotal +=$vo['newUserNum'];
+                            $activeNumTotal +=$vo['activeNum'];
+                            $newUserAmountTotal +=$vo['newUserAmount'];
+                            $totalAmountTotal +=$vo['totalAmount'];
+                            $totalAmountFenfa +=$vo['totalFenfa'];
+                        </php>
+                        <td>{$vo['date']}</td>
+                        <if condition="input('open_user_id',0)">
+                            <td>{:get_issue_open_useraccount(input('open_user_id'))}</td>
+                        <else/>
+                            <td>全部</td>
+                        </if>
+                        <if condition="input('platform_id',0)">
+                            <td>{:get_pt_account(input('platform_id'))}</td>
+                        <else/>
+                            <td>全部</td>
+                        </if>
+                        <if condition="input('game_id',0)">
+                            <td>{:get_issue_game_name(input('game_id'))}</td>
+                        <else/>
+                            <td>全部</td>
+                        </if>
+                        <td>{$vo['newUserNum']}</td>
+                        <td>{$vo['activeNum']}</td>
+                        <td>{$vo['newUserAmount']}</td>
+                        <td>{$vo['totalAmount']}</td>
+                        <td>{$vo['totalFenfa']}</td>
+                    </tr>
+                </foreach>
+                <tr class="data_summary">
+                    <td><span style="margin-right: 10px;">汇总</span></td>
+                    <td><span>--</span></td>
+                    <td><span>--</span></td>
+                    <td><span>--</span></td>
+                    <td><span>{$newUserNumTotal}</span></td>
+                    <td><span>{$activeNumTotal}</span></td>
+                    <td><span>{$newUserAmountTotal}</span></td>
+                    <td><span>{$totalAmountTotal}</span></td>
+                    <td><span>{$totalAmountFenfa}</span></td>
+                </tr>
+            </empty>
+            </tbody>
+        </table>
+    </form>
+<!--    <div class="pagination" style="padding-bottom: 50px">{$page}</div>-->
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+</body>
+</html>

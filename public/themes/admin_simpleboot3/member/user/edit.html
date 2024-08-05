@@ -1,0 +1,427 @@
+<include file="public@header"/>
+</head>
+<body>
+<style>
+   /* .form-control[readonly].no-bg{
+        background-color: #f8f9fb;
+        opacity: 1;
+        border: none;
+        padding-left: 0;
+    }*/
+</style>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="nav-tab-con">查看用户</li>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('edit')}" method="post">
+        <div class="tabbable">
+            <div class="tab-content">
+                <div class="tab-pane active">
+                    <div class="form-group">
+                        <label for="input-site-name" class="col-sm-2 control-label">玩家账号：</label>
+                        <div class="col-md-6 col-sm-10">
+								<div class="user-input fl">{$data.account}</div>
+							  <span class="fl user-remarks">玩家登录账号，一经注册，全平台通用</span>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="input-admin_url_password" class="col-sm-2 control-label">登录密码：</label>
+                        <div class="col-md-6 col-sm-10">
+                            <input type="password" placeholder=" 6-15位的密码（仅限数字和字母）" class="form-control user-input fl" id="password" name="password" value="">
+							  <span class="fl user-remarks" style="margin-left: 30px;">不可查看，只能修改</span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input-mobile_tpl_enabled" class="col-sm-2 control-label">用户昵称：</label>
+                        <div class="col-md-6 col-sm-10">
+                            <div class="user-input fl">{$data.nickname}&nbsp;</div>
+							  <span class="fl user-remarks">注册账号默认为昵称，玩家可自行设置</span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input-site_adminstyle" class="col-sm-2 control-label">用户头像：</label>
+                        <div class="col-md-6 col-sm-10">
+                             <div class="user-input fl">
+                                 <div class="user-portrait">
+                                     <span>
+
+                                 <img src="{$data.head_img}" class="user-head"/>
+                                         </span>
+                                 </div>
+                             </div>
+						    <span class="fl user-remarks">初次登录显示系统默认头像，玩家可自行设置</span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="input-html_cache_on" class="col-sm-2 control-label">APP单点登录：</label>
+                        <div class="col-md-6 col-sm-10">
+                            <div class="user-input fl">
+                                <input type="radio"  name="sso" <eq name="data.sso" value="0">checked</eq> value="0">关闭
+                                <label class="ml50"></label>
+                                <input type="radio"  name="sso" <eq name="data.sso" value="1">checked</eq> value="1">开启
+                            </div>
+                            <span class="fl user-remarks">限制玩家同时只可登录一个APP，其他设备上登录会退出</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input-html_cache_on" class="col-sm-2 control-label">账号状态：</label>
+                        <div class="col-md-6 col-sm-10">
+						  <div class="user-input fl">
+                            <input type="radio"  name="lock_status" <eq name="data.lock_status" value="1">checked</eq> value="1">开启
+                            <label class="ml50"></label><input type="radio"  name="lock_status" <eq name="data.lock_status" value="0">checked</eq> value="0">锁定
+							</div>
+							   <span class="fl user-remarks">可设置玩家的登录状态，锁定后无法登录网站</span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input-site_icp" class="col-sm-2 control-label">VIP等级：</label>
+                        <div class="col-md-6 col-sm-10">
+                           VIP {$data.vip_level}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input-site_icp" class="col-sm-2 control-label">实名认证状态：</label>
+                        <div class="col-md-6 col-sm-10">
+						 <div class="user-input fl">
+                            <switch name="data.age_status">
+                                <case value="0">未认证</case>
+                                <case value="1">未通过</case>
+                                <case value="2">已成年</case>
+                                <case value="3">未成年</case>
+                                <case value="4">审核中</case>
+                                <default />意外数据
+                            </switch>
+							 </div>
+							 <span class="fl user-remarks">需玩家认证真实姓名和身份证号码</span>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site_admin_email" class="col-sm-2 control-label">真实姓名：</label>
+                        <div class="col-md-6 col-sm-10">
+                            <if condition="$data['age_status'] gt 0">
+                            <input type="text" readonly class="form-control user-input no-bg" value="{$data.real_name|default=''}">
+                            </if>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site_analytics" class="col-sm-2 control-label">身份证号:</label>
+                        <div class="col-md-6 col-sm-10">
+                            <if condition="$data['age_status'] gt 0">
+                            <input  type="text" readonly class="form-control user-input no-bg" value="{$data['idcard']|default=''}">
+                            </if>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input-site_copyright" class="col-sm-2 control-label">绑定手机号:</label>
+                        <div class="col-md-6 col-sm-10">
+                            <input type="text" readonly class="form-control user-input fl" name="phone" value="{$data.phone|default=''}" placeholder="暂无手机号码">
+                            <span id="phone" class="table_click fl"><span class="table_click_text btn-click">点击修改</span></span>
+							 <span class="fl user-remarks membeuser-remarks" style="width:520px">玩家绑定的手机号，玩家可用于找回密码，可通过修改更换玩家的绑定手机（慎重使用）</span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input-email" class="col-sm-2 control-label">绑定邮箱:</label>
+                        <div class="col-md-6 col-sm-10">
+                            <input type="text" readonly class="form-control user-input fl" name="email" value="{$data.email|default=''}" placeholder="暂无邮箱">
+                            <span id="email" class="table_click fl"><span class="table_click_text btn-click">点击修改</span></span>
+                            <span class="fl user-remarks membeuser-remarks"></span>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site_admin_email" class="col-sm-2 control-label">收货地址：</label>
+                        <div class="col-md-6 col-sm-10">
+                            <input type="text" readonly class="form-control user-input no-bg" value="{$data.receive_address|default=''}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site_analytics" class="col-sm-2 control-label">注册时间:</label>
+                        <div class="col-md-6 col-sm-10">
+                            {$data['register_time']|date=' Y-m-d H:i:s',###}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site_analytics" class="col-sm-2 control-label">注册IP：</label>
+                        <div class="col-md-6 col-sm-10">
+                            {$data['register_ip']}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site_analytics" class="col-sm-2 control-label">最后登录时间：</label>
+                        <div class="col-md-6 col-sm-10">
+                            {$data['login_time']|date=' Y-m-d H:i:s',###}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site_analytics" class="col-sm-2 control-label">最后登录IP：</label>
+                        <div class="col-md-6 col-sm-10">
+                            {$data['login_ip']}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site_analytics" class="col-sm-2 control-label">平台币余额:</label>
+                        <div class="col-md-6 col-sm-10">
+                            <input  style="width:50%;" type="text" class="form-control user-input fl disabled" readonly name="balance" value="{$data['balance']|default='空'}" placeholder="0.00">
+                            <span id="balance" class="table_click"><span class="table_click_text btn-click">点击修改</span></span>
+							 <span class="fl user-remarks">玩家平台币的账户余额，可点击修改（需输入二级密码）</span>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site_analytics" class="col-sm-2 control-label">绑币余额：</label>
+                        <div class="col-md-6 col-sm-10">
+                            <div class="user-input fl "> <span id="bind_balance" class="table_click table_btn"><span class="table_click_text">{$data.bind_balance}</span></span></div>
+                            <span class="fl user-remarks">点击查看玩家绑币余额列表</span>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site_analytics" class="col-sm-2 control-label">累计消费：</label>
+                        <div class="col-md-6 col-sm-10">
+                              <div class="user-input fl mt8"><if condition="AUTH_PAY eq 1">￥{$data['cumulative']|default='0.00'}<else/>请购买充值权限</if></div>
+							 <span class="fl user-remarks">统计玩家游戏内的消费总额</span>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site_analytics" class="col-sm-2 control-label">游戏付费记录：</label>
+                        <div class="col-md-6 col-sm-10">
+                           <div class="user-input fl "> <if condition="AUTH_PAY eq 1 && AUTH_GAME eq 1"><span id="chongzhi" class="table_click table_btn"><span class="table_click_text">{$count|default=0}</span></span><else/>请购买充值权限和游戏权限</if></div>
+							<span class="fl user-remarks">点击查看玩家游戏内的消充值记录</span>
+					  </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site_analytics" class="col-sm-2 control-label">上次消费：</label>
+                        <div class="col-md-6 col-sm-10">
+                            <if condition="AUTH_PAY eq 1"><notempty name="last_pay_time">
+                            {$last_pay_time|date='Y-m-d H:i:s',###}<else/>&nbsp;
+                            </notempty><else/>请购买充值权限</if>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site_analytics" class="col-sm-2 control-label">间隔天数：</label>
+                        <div class="col-md-6 col-sm-10">
+                            <if condition="AUTH_PAY eq 1">{$count_day|default=0}<else/>请购买充值权限</if>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site_analytics" class="col-sm-2 control-label">游戏登录记录：</label>
+                        <div class="col-md-6 col-sm-10">
+                            <div class="user-input fl"> <span <if condition="AUTH_GAME eq 1">id="denglu"</if> class="table_click table_btn"><span class="table_click_text"> <if condition="AUTH_GAME eq 1">{$login_count|default=0}<else/>请开通游戏权限</if></span></span></div>
+							 <span class="fl user-remarks">点击查看玩家游戏登录记录</span>
+						</div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            <input type="hidden" name="id" id="id" value="{:input('id',0)}" />
+                            <button type="submit" class="btn btn-primary js-ajax-submit save-btn " data-refresh="1">
+                                {:lang('SAVE')}
+                            </button>
+							 <a class="btn btn-default return-btn" href="javascript:history.back(-1)">{:lang('BACK')}</a>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script>
+    $(function () {
+        $("#phone").click(function () {
+            layer.prompt({
+                formType: 0,
+                title: "请输入手机号码",
+                value: '',
+                success:function (layero, index) {
+                    layero.find('input').attr('placeholder','');
+                }
+            }, function (phone) {
+                var jsid = $('#id').val();
+                preg = /^[1]([3-9])[0-9]{9}$/;
+                if (!preg.test(phone)) {
+                    layer.msg("请输入正确手机号");
+                    return false;
+                }
+
+                $.ajax({
+                    url: '{:url("changephone")}',
+                    type: 'post',
+                    dataType: 'json',
+                    data: {phone:phone,id:jsid},
+                    success: function (data) {
+                        if (data.code > 0) {
+                            layer.msg(data.msg);
+                            setTimeout(function(){
+                                self.location.reload(true);
+                            },1000);
+                        } else {
+                            layer.msg(data.msg)
+                        }
+                    },
+                    error: function () {
+                        layer.msg("服务器故障！");
+                    }
+                });
+            });
+        });
+
+        $("#email").click(function () {
+            layer.prompt({
+                formType: 0,
+                title: "请输入邮箱",
+                value: '',
+                success: function (layero, index) {
+                    layero.find('input').attr('placeholder', '');
+                }
+            }, function (email) {
+                var jsid = $('#id').val();
+                preg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+                if (!preg.test(email)) {
+                    layer.msg("请输入正确邮箱");
+                    return false;
+                }
+
+                $.ajax({
+                    url: '{:url("changeemail")}',
+                    type: 'post',
+                    dataType: 'json',
+                    data: {email: email, id: jsid},
+                    success: function (data) {
+                        if (data.code > 0) {
+                            layer.msg(data.msg);
+                            setTimeout(function () {
+                                self.location.reload(true);
+                            }, 1000);
+                        } else {
+                            layer.msg(data.msg)
+                        }
+                    },
+                    error: function () {
+                        layer.msg("服务器故障！");
+                    }
+                });
+            });
+        });
+
+        $("#balance").click(function () {
+            layer.prompt(
+                {
+                    formType: 1,
+                    title: "请输入二级密码(如果没有请设置)",
+                    value: '',
+                    success:function (layero, index) {
+                        layero.find('input').attr('placeholder','');
+                    }
+                }
+                , function (val) {
+                    $.ajax({
+                        url: '{:url("checkpwd")}',
+                        type: 'post',
+                        dataType: 'json',
+                        data: {'second_pwd': val},
+                        success: function (data) {
+                            if (data.code > 0) {
+                                sub_from(val);
+                            } else {
+                                layer.msg(data.msg)
+                            }
+                        },
+                        error: function () {
+                            alert("错误");
+                        }
+                    });
+                });
+        });
+
+        $("#chongzhi").click(function () {
+            var user_id = $("#id").val();
+            layer.open({
+                type: 2,
+                title: "游戏付费记录",
+                shadeClose: true,
+                shade: 0.8,
+                area: ['1062px', '80%'],
+                content: "{:url('spendrecord')}?user_id="+user_id//iframe的url
+            });
+        });
+
+        $("#bind_balance").click(function () {
+            var user_id = $("#id").val();
+            layer.open({
+                type: 2,
+                title: "绑币余额",
+                shadeClose: true,
+                shade: 0.8,
+                area: ['1062px', '80%'],
+                content: "{:url('user_bind_balance')}?user_id="+user_id //iframe的url
+            });
+        });
+
+        $("#denglu").click(function () {
+            var user_id = $("#id").val();
+            layer.open({
+                type: 2,
+                title: "游戏登录记录",
+                shadeClose: true,
+                shade: 0.8,
+                area: ['70%', '80%'],
+                content: "{:url('denglu')}?user_id="+user_id //iframe的url
+            });
+        });
+    })
+    function sub_from(val) {
+        var second_pwd_ = val;
+        layer.prompt(
+            {
+                formType: 0,
+                title: "修改平台币金额",
+                value: '',
+                success:function (layero, index) {
+                    layero.find('input').attr('placeholder','');
+                }
+            }
+            , function (val) {
+                $id = $('#id').val();
+                $.ajax({
+                    url: '{:url("balance_edit")}',
+                    type: 'post',
+                    dataType: 'json',
+                    data: {'balance': val, 'id': $id, 'second_pwd': second_pwd_},
+                    success: function (data) {
+                        if (data.code > 0) {
+                            self.location.reload(true);
+                        } else {
+                            layer.msg(data.msg)
+                        }
+                    },
+                    error: function () {
+                        alert("服务器故障！");
+                    }
+                });
+            });
+    }
+</script>
+</body>
+</html>

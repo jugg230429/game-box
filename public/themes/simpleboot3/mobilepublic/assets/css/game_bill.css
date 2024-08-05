@@ -1,0 +1,76 @@
+.type_down__long_hx{
+    width: 100%;
+    height: 1px;
+    background-color: #EDEEEF;
+    position: relative;
+    top: -0.2rem;
+    z-index: 1;
+    margin-top: 0.3rem;
+}
+.my_bag_page_header{
+    width: 100%;
+    height: 3.5rem;
+}
+.my_bag_page_header .back_icon{
+    width: 0.74rem;
+    margin-top: 1.25rem;
+    margin-left: 1rem;
+}
+.my_bag_page_item{
+    margin-left: 36%;
+    font-size: 1.45rem;
+    line-height: 1.5rem;
+    padding-top: 1.1rem;
+    margin-bottom: 0.9rem;
+    font-weight: 500;
+    color: #222222;
+}
+.game_bill_item{
+    padding-left: 4%;
+    height:2.85rem;
+    padding-top: 2rem;
+}
+.game_bill_item .firstline .money{
+    color:rgba(255,78,0,1);
+    float: right;
+    padding-right: 4%;
+	font-size: 1.38rem;
+}
+.game_bill_item .firstline{
+    font-size:1.38rem;
+    font-weight:500;
+    color:rgba(34,34,34,1);
+}
+.game_bill_item .secondline{
+    font-size:10px;
+    font-weight:400;
+    color:#999999;
+}
+.game_bill_item .secondline .type{
+    float: right;
+    padding-right: 4%;
+	font-size: 1rem;
+}
+.game_bill_item p{
+    margin-bottom: 0px;
+	font-size: 1rem;
+}
+.game_bill_sum{
+    width: 100%;
+    height: 3rem;
+    background-color: #F2F2F2;
+    margin-top: 1rem;
+    margin-top: 1.5rem;
+    font-size:12px;
+    font-weight:500;
+    color: #999999;
+}
+.game_bill_sum p{
+    line-height: 3rem;
+    font-size: 14px;
+    padding-left: 4%;
+}
+.game_bill_sum span{
+    color: #FF4E00;
+	font-size: 1.36rem;
+}

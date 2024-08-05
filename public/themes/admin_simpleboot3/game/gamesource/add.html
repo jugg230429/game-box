@@ -1,0 +1,140 @@
+<include file="public@header"/>
+<style>
+    .cpNew.game .bootstrap-select:not([class*="col-"]):not([class*="form-control"]):not(.input-group-btn) {
+    width: 100% !important;
+}
+.btn-tijiao-load-img{
+    width: 54px;
+}
+</style>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+
+	<div class="nav-tabs mb20">
+        <span class="pb10">上传原包</span>
+    </div>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('add')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group game cpNew">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>游戏名称：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <php>
+                                    $map['sdk_version']=['in',[1,2]];
+                                    $map['down_port'] = 1;
+                                </php>
+                                <select name="game_id" id="game_id"  class="selectpicker user-input" data-live-search="true" >
+                                    <option value="">选择游戏</option>
+                                    <volist name=":get_game_list('id,game_name',$map)" id="vo">
+                                        <option value="{$vo.id}" >{$vo.game_name}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>上传原包：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+
+                                <input id="file_url" type="hidden" name="file_url" >
+                                <input id="file_url-name" name="file_name" type="text" title="文件名称" style="display: block;" class="form-control">
+								<div>
+                                <a href="javascript:uploadPack('文件上传','#file_url','file',{'retain_local':'1'});" class="js-upload">上传原包</a>
+                                <a href="javascript:(function(){$('#file_url-name').val('');$('#file_url').val('')})();">移除</a>
+								</div>
+                            </div>
+                            <p class="help-block">更新原包后会自动进行渠道游戏包更新，打包完成后，对应渠道下的游戏包无需更新，渠道玩家即可下载最新版游戏包（前提：服务器开启定时任务）</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>包名：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input  name="bao_name" id="bao_name" class="form-control"  >
+                            </div>
+                            <p class="help-block">填写内容须与游戏对应，且每个游戏对应单独的一个包名</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>版本号：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input  name="source_version" class="form-control"  >
+                            </div>
+                            <p class="help-block">用于SDK版本更新提示，如700，如果设置值比玩家已安装游戏原包版本号大，用户进入游戏时显示更新弹窗</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>版本名：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input  name="source_name" class="form-control"  >
+                            </div>
+                            <p class="help-block">用于游戏版本名显示，如7.0.0</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                更新说明：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <textarea maxlength="100" name="remark" class="form-control"></textarea>
+                            </div>
+                            <p class="help-block">用于SDK版本更新弹窗内展示，当游戏开启强更后在SDK内对玩家做版本更新内容提示，方便玩家了解更新功能</p>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <button type="submit" class="btn btn-primary js-ajax-submit ml9 btn-tijiao-load-img" data-refresh="1" style="margin-left:76px">
+                                    {:lang('SAVE')}
+                                </button>
+                                <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script>
+    var type ="{:cmf_get_option('storage')['type']}";
+    $('.btn-tijiao-load-img').on('click', function(){
+        if(type != 'Local'){
+            btn_tijiao_load_img_id=layer.msg('上传服务器中，请耐心等待', {
+                icon: 16,
+                shade: 0.4,
+                time:false //取消自动关闭
+            });
+        }
+    });
+	$(".js-upload").click(function(){
+	      console.log($("#file_url").val());
+	})
+
+
+    function get_pack_name() {
+        var get_pack_name_url = "{:url('game/Gamesource/getPackName')}";
+        var pack_url = $("#file_url").val();
+        $.post(get_pack_name_url, {pack_url: pack_url}, function (res) {
+            if (res.code == '1') {
+                $("#bao_name").val(res.data.bao_name);
+            }
+        });
+        return false;
+    }
+
+</script>
+</body>
+</html>

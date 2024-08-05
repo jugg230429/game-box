@@ -1,0 +1,189 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/select2.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/new_select2.css" type="text/css" />
+    <link href="__TMPL__/channelwappublic/assets/css/channel.css" type="text/css" rel="stylesheet" />
+    <style>
+        header .header-title {
+            color: #333;
+            font-size: 0.44rem;
+        }
+    </style>
+</block>
+<block name="body">
+    <div class="page-container">
+        <header>
+            <a href="javascript:history.back(-1);" class="back-btn"></a>
+            <div style="width: 100%;height: 100%" class="v-middle h-middle">
+                <p class="header-title ">子渠道</p>
+                <a href="{:url('promote/add_child')}" class="add-child-icon"><img src="__TMPL__/channelwappublic/assets/images/common/shouyi_erjiqudao_ico_tianjia.png" alt=""></a>
+                <a href="javascript:;" class="tips-pop-btn"><img src="__TMPL__/channelwappublic/assets/images/common/shouyi_wenhao.png" alt=""></a>
+            </div>
+        </header>
+        <div class="page-content">
+            <div class="search-box">
+                <div class="search-item">
+                    <select id="promote_id" class="select_gallery" data-placeholder="子渠道账号">
+                        <option value="0">子渠道账号</option>
+                        <volist name=":get_song_promote_lists(PID)" id="p">
+                            <option <if condition="$p['id'] eq input('promote_id')"> selected</if> value="{$p.id}">{$p.account}</option>
+                        </volist>
+                    </select>
+                </div>
+            </div>
+            <div class="child-channel-list">
+                <ul id="childload">
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="pop"></div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/select2.min.js"></script>
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/pop.lwx.min.js"></script>
+    <script>
+        $(function () {
+            $('.header-title').click(function () {
+                location.href=$(this).data("url");
+            });
+            $(".select_gallery").select2({});
+            $('body').on('click','.tips-pop-btn',function () {
+                var pid_level = {:PID_LEVEL};
+                var tips_prop = $(".pop").pop();
+                var that = $(this);
+                if(pid_level == 1){
+                    tips_prop.addClass("tips-prop-pop").open(300,'<div class="pop-title">提示说明</div><div class="pop-content"><p>1.推广员默认为一级渠道，可新增二级渠道</p><p>2.二级渠道由一级渠道管理开启权限、结算</p></div></div><div class="pop-btn-box"><a href="javascript:;" class="pop-btn cancel-btn">知道了</a></div>');
+                }else{
+                    tips_prop.addClass("tips-prop-pop").open(300,'<div class="pop-title">提示说明</div><div class="pop-content"><p>1.推广员默认为二级渠道，可新增三级渠道</p><p>2.三级渠道由二级渠道管理开启权限、结算</p></div></div><div class="pop-btn-box"><a href="javascript:;" class="pop-btn cancel-btn">知道了</a></div>');
+                }
+                tips_prop.find('.cancel-btn').click(function() {
+                    tips_prop.close();
+                    return false;
+                });
+            })
+
+        })
+    </script>
+    <script>
+        var itemIndex = 0;
+        var promote_id = '';
+        var lwx = window.lwx || {};
+        lwx.ready = true;
+        lwx.width = $(window).width();
+        lwx.height = $(window).height();
+        lwx.number = {child:1};
+        lwx.row = {child:15};
+        lwx.http = {
+            getJSON:function(url,callback){
+                $.getJSON(url + '&v=' + Date.now(),function(data){
+                    callback(data);
+                });
+            },
+            postJSON:function(url,args,callback) {
+                $.post(url + '&v=' + Date.now(), args, function(data) {
+                    callback(data);
+                },"json")
+            },
+        };
+        lwx.url ={
+            child:'{:url("Promote/get_mychild")}',
+        };
+        lwx.page = {
+            child:function(){
+                if(lwx.number.child) {
+                    lwx.http.getJSON(lwx.url.child+'?row='+lwx.row.child+'&page='+lwx.number.child+'&child_id='+promote_id,function(data) {
+                        var hotload = $('#childload');
+                        var data = data.data;
+                        if(data && data.length) {
+                            var html = '';
+                            for (var i in data) {
+                                html += '<li class="child-channel-item">';
+                                html += '<div class="child-channel-content">';
+                                html += '<div class="channel-name-date">'
+                                html += '<p class="channel-name">'+data[i].account+'</p>';
+                                html += '<p class="channel-date">'+data[i].create_time+'</p>';
+                                html += '</div>';
+                                html += '<div class="channel-id-status">';
+                                html += '<p class="channel-id">ID:'+data[i].id+'</p>';
+                                if(data[i].status==1){
+                                    html += '<p class="channel-status bottomStatusShow"> 正常 </p>';
+                                }else {
+                                    html += '<p class="channel-status bottomStatusShow"> 已锁定 </p>';
+                                }
+                                html += '</div>';
+                                html += '<div class="channel-id-status editButton">'
+                                html += '<p class="channel-edit js_edit blueEditColor" data-id="'+data[i].id+'">修改</p>';
+                                html += '</div>';
+                                html += '</div>';
+                                if(data[i]['union']!=null){
+                                    html += '<p class="channel-status showChannelStatus">'+data[i]['union']['domain_url']+'</p>';
+                                }else{
+                                    html += '<p class="channel-status showChannelStatus"> -- </p>';
+                                }
+                                html += '</li>';
+                            }
+                            hotload.append(html);
+                            hotload.find('.jsdropload').remove();
+                            if(data.length >= lwx.row.child) {
+                                lwx.number.child++;
+                                lwx.ready = true;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.child = false;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                        } else {
+                            if(lwx.number.child==1){
+                                hotload.html('').append('<p class="no_invest_info jsdropload">~空空如也~</p>');
+                            } else{
+                                hotload.find('.jsdropload').remove();
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                            lwx.number.child = false;
+                        }
+                    });
+                }
+            }
+        };
+        pageChange();
+        function pageChange() {
+            lwx.page.child();
+        }
+        function pageScroll(scrollTop, boxHeight, maxScrollHeight) {
+            if (scrollTop + boxHeight >= maxScrollHeight - 50) {
+                if (lwx.ready) {
+                    lwx.ready = false;
+                    lwx.page.child();
+                }
+            }
+        }
+        window.onscroll = function() {
+            var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+            pageScroll(scrollTop, lwx.height, $(document).height())
+        }
+        $(function () {
+            $('.game-menu-box a').click(function () {
+                $(this).addClass("active").siblings().removeClass("active");
+                var index = $(this).index();
+                $('.menu-tab').eq(index).show().siblings(".menu-tab").hide();
+                itemIndex = index;
+                location.hash = index;
+            });
+            $("#promote_id").change(function () {
+                promote_id = $("#promote_id").val();
+                $("#childload").empty();
+                lwx.number.child = 1;
+                pageChange();
+            })
+        })
+        $(window).on("hashchange", function() {
+            pageChange();
+        });
+        $("body").on('click','.js_edit',function () {
+            var id = $(this).attr('data-id');
+            window.location.href = "{:url('Promote/edit_child')}?id="+id;
+        })
+    </script>
+</block>

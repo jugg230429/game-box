@@ -1,0 +1,175 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#A" data-toggle="tab">{:lang('WEB_SITE_INFOS')}</a></li>
+        <!--<li><a href="#B" data-toggle="tab">{:lang('SEO_SETTING')}</a></li>
+        <li><a href="#C" data-toggle="tab">{:lang('URL_SETTING')}</a></li>
+        <li><a href="#E" data-toggle="tab">{:lang('COMMENT_SETTING')}</a></li>
+        <li><a href="#F" data-toggle="tab">用户注册设置</a></li>-->
+<!--        <li><a href="#G" data-toggle="tab">CDN设置</a></li>-->
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('setting/sitePost')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                       <!-- <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label"><span
+                                    class="form-required">*</span>{:lang('WEBSITE_NAME')}</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" class="form-control" id="input-site-name" name="options[site_name]"
+                                       value="{$site_info.site_name|default=''}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label"><span
+                                    class="form-required">*</span>网站域名</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" class="form-control" id="input-site-name" name="options[site_domain]"
+                                        placeholder="不含http等协议" value="{$site_info[site_domain]}">
+                            </div>
+                        </div>-->
+                        <div class="form-group">
+                            <label for="input-admin_url_password" class="col-sm-2 control-label">
+                                后台加密码：
+                            </label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" class="form-control user-input fl" id="input-admin_url_password"
+                                       name="admin_settings[admin_password]"
+                                       value="{$admin_settings.admin_password|default=''}"
+                                       id="js-site-admin-url-password">
+								 <span class="fl user-remarks siteuser-remarks">英文字母数字<br>
+                                    设置加密码后必须通过以下地址访问后台,请劳记此地址，<br>为了安全，您也可以定期更换此加密码!<br>
+                                <php>
+                                    $root=cmf_get_root();
+                                    $root=empty($root)?'':'/'.$root;
+                                    $site_domain = cmf_get_domain().$root;
+                                </php>
+                               后台登录地址：{$site_domain}/{$admin_settings.admin_password|default='admin'}
+                               </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_seo_title" class="col-sm-2 control-label">REDIS缓存库号：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" class="form-control user-input fl" id="input-dbid" name="options[dbid]" value="{$site_info.dbid|default=''}">
+                                  <span class="help-block fl" style="margin-left: 2.5%;"><a href="{:url('clear_redis')}" class="js-ajax-dialog-btn btn-primary " style="padding:2px;margin-right:5px;" data-msg="确定清除REDIS缓存吗？">清除REDIS缓存</a>默认10号库</span>
+                        
+							</div>
+                           
+						</div>
+
+                        <div class="form-group">
+                            <label for="input-site_seo_title" class="col-sm-2 control-label">REDIS密码：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" class="form-control user-input fl" id="input-redis_password" name="options[redis_password]" value="{$site_info.redis_password|default=''}">
+                                  <span class="help-block " style="margin-left: 2.5%;">REDIS 密码</span>
+							</div>
+                          
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="B">
+                        <div class="form-group">
+                            <label for="input-site_seo_title" class="col-sm-2 control-label">{:lang('WEBSITE_SEO_TITLE')}</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" class="form-control user-input" id="input-site_seo_title"
+                                       name="options[site_seo_title]" value="{$site_info.site_seo_title|default=''}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_seo_keywords" class="col-sm-2 control-label">{:lang('WEBSITE_SEO_KEYWORDS')}</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" class="form-control user-input" id="input-site_seo_keywords"
+                                       name="options[site_seo_keywords]" value="{$site_info.site_seo_keywords|default=''}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_seo_description" class="col-sm-2 control-label">{:lang('WEBSITE_SEO_DESCRIPTION')}</label>
+                            <div class="col-md-6 col-sm-10">
+                                <textarea class="form-control user-input" id="input-site_seo_description"
+                                          name="options[site_seo_description]">{$site_info.site_seo_description|default=''}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn" data-refresh="0">
+                                    {:lang('SAVE')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="F">
+                        <div class="form-group">
+                            <label for="input-banned_usernames" class="col-sm-2 control-label">用户注册验证</label>
+                            <div class="col-md-6 col-sm-10">
+                                <select class="form-control" name="cmf_settings[open_registration]">
+                                    <option value="0">是</option>
+                                    <php>
+                                        $open_registration_selected = empty($cmf_settings['open_registration'])?'':'selected';
+                                    </php>
+                                    <option value="1" {$open_registration_selected}>否</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group" style="display: none;">
+                            <label for="input-banned_usernames" class="col-sm-2 control-label">{:lang('SPECAIL_USERNAME')}</label>
+                            <div class="col-md-6 col-sm-10">
+                                <textarea class="form-control" id="input-banned_usernames"
+                                          name="cmf_settings[banned_usernames]">{$cmf_settings.banned_usernames}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn" data-refresh="0">
+                                    {:lang('SAVE')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="G">
+                        <div class="form-group">
+                            <label for="input-cdn_static_root" class="col-sm-2 control-label">静态资源cdn地址</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" class="form-control user-input fl" id="input-cdn_static_root"
+                                       name="cdn_settings[cdn_static_root]"
+                                       value="{$cdn_settings.cdn_static_root|default=''}">
+                                <span class="user-remarks siteuser-remarks fl">
+                                    不能以/结尾；设置这个地址后，请将系统下的静态资源文件放在其下面；<br>
+                                    系统下的静态资源文件大致包含以下(如果你自定义后，请自行增加)：<br>
+                                    themes/admin_simplebootx/public/assets<br>
+                                    static<br>
+                                    themes/simplebootx/public/assets<br>
+                                    例如未设置cdn前：jquery的访问地址是/static/js/jquery.js, <br>
+                                    设置cdn是后它的访问地址就是：静态资源cdn地址/static/js/jquery.js
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn" data-refresh="0">
+                                    {:lang('SAVE')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

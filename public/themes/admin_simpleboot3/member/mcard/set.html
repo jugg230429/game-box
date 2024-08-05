@@ -1,0 +1,107 @@
+<include file="public@header"/>
+</head>
+<body>
+ <link href="__TMPL__/public/assets/simpleboot3/css/ecard.css" rel="stylesheet">
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('mcard/lists')}">购买记录</a></li>
+        <li class="active"><a href="{:url('mcard/set')}">尊享卡设置</a></li>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('sitePost')}" method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active">
+
+                        <div class="form-group">
+                            <div class="col-md-8 col-sm-12">
+                                <div class="fl pt7 mcardcon">
+                                    <div class="mcard  "><input type="text"  class="form-control mcard-input" name="config1[card_name]" value="{$data['config1']['card_name']}" placeholder="输入卡名称，如悦享卡"></div>
+                                    <span class="fl mcard-line">-</span>
+                                    <div class="mcard"><input type="text"  class="form-control mcard-input" name="config1[days]" value="{$data['config1']['days']}" placeholder="输入天数，如30"><span class="mycard-tip">天</span></div>
+                                     <span class="fl mcard-line">-</span>
+                                   <div class="mcard"> <input type="text"  class="form-control mcard-input" name="config1[price]" value="{$data['config1']['price']}" placeholder="输入价格，如50"><span class="mycard-tip">￥</span></div>
+                                     <span class="fl mcard-line">-</span>
+                                    <div class="mcard"><input type="text" class="form-control mcard-input" name="config1[free_days]" value="{$data['config1']['free_days']}" placeholder="输入赠送天数，如5(选填)"><span class="mycard-tip">天</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-8 col-sm-12">
+                                <div class="fl pt7 mcardcon">
+                                    <div class="mcard"><input type="text"  class="form-control mcard-input" name="config2[card_name]" value="{$data['config2']['card_name']}" placeholder="输入卡名称，如季享卡"></div>
+                                    <span class="fl mcard-line">-</span>
+                                    <div class="mcard"><input type="text" class="form-control mcard-input" name="config2[days]" value="{$data['config2']['days']}" placeholder="输入天数，如90"><span class="mycard-tip">天</span></div>
+                                    <span class="fl mcard-line">-</span>
+                                    <div class="mcard"> <input type="text" class="form-control mcard-input" name="config2[price]" value="{$data['config2']['price']}" placeholder="输入价格，如150"><span class="mycard-tip">￥</span></div>
+                                    <span class="fl mcard-line">-</span>
+                                    <div class="mcard"><input type="text"  class="form-control mcard-input" name="config2[free_days]" value="{$data['config2']['free_days']}" placeholder="输入赠送天数，如15(选填)"><span class="mycard-tip">天</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-8 col-sm-12">
+                                <div class="fl pt7  mcardcon">
+                                    <div class="mcard"><input type="text" class="form-control mcard-input" name="config3[card_name]" value="{$data['config3']['card_name']}" placeholder="输入卡名称，如年享卡"></div>
+                                     <span class="fl mcard-line">-</span>
+                                    <div class="mcard"><input type="text"  class="form-control mcard-input" name="config3[days]" value="{$data['config3']['days']}" placeholder="输入天数，如360"><span class="mycard-tip">天</span></div>
+                                    <span class="fl mcard-line"> -</span>
+                                    <div class="mcard"><input type="text" class="form-control mcard-input" name="config3[price]" value="{$data['config3']['price']}" placeholder="输入价格，如500"><span class="mycard-tip">￥</span></div>
+                                     <span class="fl mcard-line">-</span>
+                                    <div class="mcard"><input type="text"  class="form-control mcard-input" name="config3[free_days]" value="{$data['config3']['free_days']}" placeholder="输入赠送天数，如30(选填)"><span class="mycard-tip">天</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">代金券名称：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control"  name="coupon_name" value="{$data.coupon_name|default='尊享卡专属代金券'}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">发放对象：</label>
+                            <div class="col-md-3 col-sm-5">
+                                尊享卡会员
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>选择代金券：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <php>$map['coupon_type'] = ['in',[0,4]]</php>
+                                <select name="coupon_id"  class="selectpicker form-control" >
+                                    <option value="">请选择代金券</option>
+                                    <volist name=":get_coupon_list('id,coupon_name',$map,1)" id="vo">
+                                        <option <if condition="$vo['id'] eq $data['coupon_id']">selected</if> value="{$vo.id}">{$vo.coupon_name}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">状态：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="fl pt7 user-input">
+                                    <input type="radio" name="status" value="1" <eq name="data.status" value="1">checked="checked"</eq>> 开启
+                                    <label class="ml50"></label>
+                                    <input type="radio" name="status" value="0" <eq name="data.status" value="0">checked="checked"</eq>> 关闭
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <input type="hidden" name="set_type" value="mcard_set">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

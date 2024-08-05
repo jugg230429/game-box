@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" media="all" href="__STATIC__/js/datejs/daterangepicker.css"/>
+		<include file="public@head"/>
+	</head>
+
+	<body>
+		<include file="public@nav"/>
+		<include file="public@header"/>
+		<div class="trunk">
+			<div class="trunk-con">
+				<div class="right-container">
+					<div class="normal-list">
+						<div class="trunk">
+							<div class="trunk-title">
+								<div class="location ">
+									<div class="location-container fr">当前位置：<span class="location-container-text">数据管理&gt;</span><span class="location-container-text">注册明细</span></div>
+								</div>
+								<img src="__TMPL__/public/assets/images/icon_zhuce.png" class="fl trunk-icon">
+								<span class="title-main fl ">注册明细  </span>
+								<span class="tagging">说明：对所有渠道用户玩家产生的注册信息，进行记录的功能</span>
+							</div>
+
+							<div class="tabpan">
+
+								<div class="tabpan-con tabpan-show">
+									<form action="{:url('register')}">
+										<div class="trunk-search clearfix fr">
+                                            <input type="text" class="tabpan-input normal-space" name="equipment_num"
+                                                   placeholder="IMEI码" value="{:input('equipment_num')}">
+                                            <input type="text" readonly style="width: 160px;" class="tabpan-input normal-space"
+												   autocomplete="off" name="rangepickdate" id="rangepickdate" placeholder="注册时间" value="{:input('rangepickdate')}">
+											<input type="text" class="tabpan-input normal-space" name="user_id" placeholder="玩家ID" value="{:input('user_id')}">
+											<input type="text" class="tabpan-input normal-space" name="user_account" placeholder="玩家账号" value="{:input('user_account')}">
+											<php>$pmap['parent_id'] = PID</php>
+											<select id="promote_id" name="promote_id" class="tab-input js-select-gallery normal-space trunk-search-smallselect fl">
+												<option value="" data="0">渠道账号</option>
+												<option value="{:PID}" <if condition="PID eq input('promote_id')"> selected</if> data="0">自己</option>
+												<volist name=":get_promote_list($pmap)" id="p">
+													<option data="" <if condition="$p['id'] eq input('promote_id')"> selected</if> value="{$p.id}">{$p.account}</option>
+												</volist>
+											</select>
+
+											<select id="game_id" name="game_id" class="tab-input js-select-gallery normal-space trunk-search-smallselect fl" >
+												<option value="" data="0">游戏名称</option>
+												<php>$gmap['game_status'] = 1;</php>
+												<volist name=":get_game_list('id,game_name,relation_game_id,relation_game_name',$gmap,null,'sort desc ,id desc')" id="vv">
+													<option <if condition="$vv['id'] eq input('game_id')"> selected</if> data="{$vv['game_name']}" value="{$vv['id']}">{$vv['game_name']}</option>
+												</volist>
+											</select>
+											<input type="submit" class="submit fr normal-space" id="submit" value="查询">
+											<input type="hidden" id="page" name="row" value="{:input('row',10)}">
+										</div>
+									</form>
+									<div class="clear"></div>
+									<table class="table normal-table" id="promotecoin_table">
+										<tbody>
+											<tr>
+
+												<th>ID</th>
+												<th>玩家账号</th>
+												<th>绑币余额</th>
+												<th>累计充值</th>
+												<th>累计实付</th>
+												<th>游戏名称</th>
+                                                <th>IMEI码</th>
+                                                <th>注册时间</th>
+												<th>注册IP</th>
+												<th>注册机型</th>
+												<th>渠道账号</th>
+											</tr>
+											<notempty name="data_lists">
+												<volist name="data_lists" id='vo'>
+													<tr>
+														<td>{$vo.id}</td>
+														<td>{$vo.user_account}</td>
+														<td><a data-user_id="{$vo.id}" href="javascript:;" class="js_show">{:get_user_bind_total($vo['id'])}</a></td>
+														<td>{$vo['total_cost']?:'0.00'}</td>
+														<td>{$vo['total_pay']?:'0.00'}</td>
+                                                        <td>{:$vo['fgame_id']>0?get_game_name($vo['fgame_id']):'--'}</td>
+                                                        <td>{$vo['equipment_num']?:''}</td>
+														<td>{:date('Y-m-d H:i:s',$vo['register_time'])}</td>
+														<td>{$vo['register_ip']}</td>
+														<td>{$vo['device_name']}</td>
+														<td>
+															<if condition="PID_LEVEL eq 1">
+																{:$vo['pid']==PID?'自己':($vo['promote_level'] == 2 ? $vo['account'] : get_parent_name($vo['pid']))}
+																<else/>
+																{:$vo['pid']==PID?'自己':$vo['account']}
+															</if>
+														</td>
+													</tr>
+												</volist>
+												<tr style="background-color:#F0EFF5 ;">
+													<td>统计：</td>
+													<td></td>
+													<td></td>
+													<td style="color: #26C7DB;font-weight:bold;">{$total.total_cost}</td>
+													<td style="color: #26C7DB;font-weight:bold;">{$total.total_pay}</td>
+													<td></td>
+													<td></td>
+													<td></td>
+													<td></td>
+                                                    <td></td>
+                                                    <td></td>
+												</tr>
+											<else/>
+												<!--暂无数据-->
+												<tr>
+													<td colspan="11" >
+													<div class="no-data">
+														<img src="__TMPL__/public/assets/images/icon_wushujv2.png"  alt="" class="no-data-img"/>
+														<p class="no-data-text">暂无数据</p>
+													</div>
+													</td>
+												</tr>
+											</notempty>
+										</tbody>
+									</table>
+									<notempty name="data_lists">
+									<div class="pagenation clearfix">
+										<!--<a download class="sch-btn" href="{:url('Export/expUser',array_merge(['id'=>3],input()))}">导出</a>-->
+										{$page}
+									</div>
+									</notempty>
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<include file="public@scripts"/>
+		<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+		<script src="__STATIC__/js/layer/layer.js"></script>
+		<script type="text/javascript" src="__STATIC__/js/datejs/moment.min.js"></script>
+		<script type="text/javascript" src="__STATIC__/js/datejs/momentfunction.js"></script>
+		<script type="text/javascript" src="__STATIC__/js/datejs/daterangepicker.js"></script>
+		<include file="public@date_config_scripts"/>
+		<script>
+            var maxDate = moment().startOf('day');
+            var date_autoUpdateInput = false;
+            var start = '{$start}',end  = '{$end}';
+            $(function() {
+				$(".js-select-gallery").select2();
+			})
+			//			日历
+			var date = "{$setdate}";
+			$('#submit').click(function() {
+				var sdate = $('#sdate').val();
+				var edate = $('#edate').val();
+				// var pid = $('#promote_id').val();
+				// var pac = $('#promote_account').val();
+				// if(pid != '' && pac != '' && pid != pac) {
+				// 	layer.msg("渠道ID与渠道账号不匹配");
+				// 	return false;
+				// }
+				if(Date.parse(sdate) > Date.parse(edate)) {
+					layer.msg('开始时间必须小于等于结束时间');
+					return false;
+				}
+//				var url = $(this).attr('url');
+//				console.log(url);
+//				var query = $('.jssearch').find('input').serialize();
+//				query += "&" + $('.jssearch').find('select').serialize();
+//				query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+//				query = query.replace(/^&/g, '');
+//				if(url.indexOf('?') > 0) {
+//					url += '&' + query;
+//				} else {
+//					url += '?' + query;
+//				}
+//				window.location.href = url;
+			});
+            $(".js_show").click(function () {
+                var user_id = $(this).data('user_id');
+                layer.open({
+                    type: 2,
+                    title: '绑币余额记录',
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['70%', '80%'],
+                    content: "{:url('bind_record')}?user_id="+user_id //iframe的url
+                });
+            })
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,81 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap jskeyup">
+    <ul class="nav nav-tabs">
+        <li ><a href="{:url('business/lists')}">商务列表</a></li>
+        <li class="active"><a href="{:url('edit')}">编辑商务</a></li>
+        <span class="title_remark">说明：创建商务时所需填写信息。</span>
+
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" action="{:url('edit')}" method="post">
+
+        <div class="form-group">
+            <label for="input-name" class="col-sm-2 control-label"><span class="form-required">*</span>商务账号：</label>
+            <div class="col-md-3 col-sm-5">
+                <input type="text" class="form-control jsmust" id="" name="account" readonly placeholder="6-30位字母或数字组合"  value="{$data['account']}">
+            </div>
+            <p class="help-block">账号由管理后台创建，发放给商务专员</p>
+        </div>
+        <div class="form-group">
+            <label for="input-remark" class="col-sm-2 control-label"><span class="form-required"></span>登录密码：</label>
+            <div class="col-md-3 col-sm-5">
+                <input type="password" class="form-control" id="" name="password" placeholder=" 6-30位字母或数字组合">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="input-remark" class="col-sm-2 control-label"><span class="form-required">*</span>真实姓名：</label>
+            <div class="col-md-3 col-sm-5">
+                <input type="text" class="form-control jsmust" id="" name="real_name" maxlength="25" placeholder="2-25个字符" value="{$data['real_name']}">
+            </div>
+            <p class="help-block"></p>
+        </div>
+
+        <div class="form-group">
+            <label for="input-remark" class="col-sm-2 control-label"><span class="form-required">*</span>联系电话：</label>
+            <div class="col-md-3 col-sm-5">
+                <input type="text" class="form-control jsmust" id="" name="mobile_phone" maxlength="11" placeholder="" value="{$data['mobile_phone']}">
+            </div>
+            <p class="help-block"></p>
+        </div>
+
+        <div class="form-group">
+            <label for="input-remark" class="col-sm-2 control-label">QQ号：</label>
+            <div class="col-md-3 col-sm-5">
+                <input type="text" class="form-control" id="" name="qq" placeholder="" value="{$data['qq']}">
+            </div>
+            <p class="help-block"></p>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">账号状态：</label>
+            <div class="col-md-3 col-sm-5">
+                <label class="radio-inline label-width" tab_id="1">
+                    <input type="radio" name="status" value="1" <if condition="$data['status'] eq 1"> checked</if>> 开启
+                </label>
+                <label class="radio-inline label-width" tab_id="2">
+                    <input type="radio" name="status" value="-1" <if condition="$data['status'] eq -1"> checked</if>> 锁定
+                </label>
+            </div>
+            <p class="help-block">锁定状态下，渠道账号无法登录</p>
+        </div>
+        <div class="form-group">
+            <input type="hidden" name="id" value="{$data['id']}">
+            <div class="col-sm-offset-1 col-sm-5">
+                <button type="submit" disabled class="btn btn-primary js-ajax-submit save-btn ml9">保存</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript">
+    change_submit_btn($('.jskeyup'), $('.jskeyup .js-ajax-submit'));
+    $('.jskeyup input,select').keyup(function () {
+        change_submit_btn($('.jskeyup'), $('.jskeyup .js-ajax-submit'));
+    });
+    $('.jskeyup input,select').click(function () {
+        change_submit_btn($('.jskeyup'), $('.jskeyup .js-ajax-submit'));
+    });
+</script>
+</body>
+</html>

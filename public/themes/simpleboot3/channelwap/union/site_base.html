@@ -1,0 +1,307 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/select2.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/new_select2.css" type="text/css" />
+    <link href="__TMPL__/channelwappublic/assets/css/site_base.css" type="text/css" rel="stylesheet" />
+</block>
+<block name="body">
+    <div class="page-container profit-exchange-container">
+        <header>
+            <a href="javascript:history.back(-1);" class="back-btn"></a>
+            <p class="siteItem accountSet">站点配置</p>
+        </header>
+        <div class="v-middle h-middle tabSwitch" id="tabItem">
+            <p class="header-title active">WAP/APP</p>
+            <p class="header-title ">PC官网</p>
+            <p class="header-title ">SDK</p>
+        </div>
+
+        <div class="page-content-box">
+            <div class="profit-exchange-content">
+                <div class="exchange-tab">
+                    <form action="" id="ajaxForm1" method="post">
+                        <div class="form">
+                            <div class="form-item ">
+                                <label class="fl label-name form-item-title">APP图标：</label>
+                                <span class="formtxt">
+                                    <input id="app_ico" type="hidden" name="app_ico" value="{$config['app_ico']}">
+                                    <img id="app_ico-preview" class="upload-img" style="max-width: 0.8rem;" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null" <if condition="$config['app_ico']">src="{:cmf_get_image_preview_url($config['app_ico'])}"</if>>
+                                    <a href="javascript:uploadOneImage('上传图片','#app_ico');" class="btn btn-sm btn-default btn-uploadify">上传图片</a>
+                                    <a class="btn-uploadify removeText" href="javascript:(function(){$('#app_ico-preview').removeAttr('src');$('#app_ico').val('')})();">移除</a>
+                                </span>
+                                <span class="notice-tip">240*240px</span>
+                            </div>
+
+                            <div class="form-item">
+                                <label class="fl label-name form-item-title">APP名称：</label>
+                                <input type="text" class="tabpan-input" name="app_name_ico"   value="{$config['app_name_ico']}" placeholder="">
+                            </div>
+
+                            <div class="form-item ">
+                                <label class="fl label-name form-item-title">分享图标：</label>
+                                <span class="formtxt">
+                                    <input id="share_ico" type="hidden" name="share_ico" value="{$config['share_ico']}">
+                                    <img id="share_ico-preview" class="upload-img" style="max-width: 0.8rem;" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null" <if condition="$config['share_ico']">src="{:cmf_get_image_preview_url($config['share_ico'])}"</if>>
+                                    <a href="javascript:uploadOneImage('上传图片','#share_ico');" class="btn btn-sm btn-default btn-uploadify">上传图片</a>
+                                    <a class="btn-uploadify removeText" href="javascript:(function(){$('#share_ico-preview').removeAttr('src');$('#share_ico').val('')})();">移除</a>
+                                </span>
+                            </div>
+                            <div class="form-item ">
+                                <label class="fl label-name form-item-title">分享标题：</label>
+                                <input type="text" class="tabpan-input" name="share_title"   value="{$config['share_title']}" placeholder="">
+                            </div>
+                            <div class="form-item ">
+                                <label class="fl label-name form-item-title">分享描述：</label>
+                                <input type="text" class="tabpan-input" name="share_describe"  value="{$config['share_describe']}" placeholder="">
+                            </div>
+
+                            <div class="form-item ">
+                                <label class="fl label-name form-item-title">LOGO图标：</label>
+                                <span class="formtxt">
+                                    <input id="app_login_logo" type="hidden" name="app_login_logo" value="{$config['app_login_logo']}">
+                                    <img id="app_login_logo-preview" class="upload-img" style="max-width: 0.8rem;" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null" <if condition="$config['app_login_logo']">src="{:cmf_get_image_preview_url($config['app_login_logo'])}"</if>>
+                                    <a href="javascript:uploadOneImage('上传图片','#app_login_logo');" class="btn btn-sm btn-default btn-uploadify">上传图片</a>
+                                    <a class="btn-uploadify removeText" href="javascript:(function(){$('#app_login_logo-preview').removeAttr('src');$('#app_login_logo').val('')})();">移除</a>
+                                </span>
+                                <span class="notice-tip">360*104px</span>
+                            </div>
+
+                            <div class="form-item">
+                                <div class="submit-btn js_submit">确认</div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="exchange-tab" style="display: none">
+                    <form action="" id="ajaxForm2" method="post">
+                    <div class="form">
+                        <div class="form-item">
+                            <label class="fl label-name form-item-title">网站标题：</label>
+                            <input type="text" name="site_name" class="tabpan-input" maxlength="20" value="{$config['site_name']}" placeholder="">
+                        </div>
+                        <div class="form-item">
+                            <label class="fl label-name form-item-title">客服电话：</label>
+                            <input type="text" class="tabpan-input" name="tel" id="tel" value="{$config['tel']}" placeholder=" 客服联系电话或手机号">
+                        </div>
+                        <div class="form-item">
+                            <label class="fl label-name form-item-title">客服QQ：</label>
+                            <input type="text" class="tabpan-input" name="qq" id="qq" value="{$config['qq']}" placeholder="">
+                        </div>
+                        <div class="form-item">
+                            <label class="fl label-name form-item-title">客服邮箱：</label>
+                            <input type="text" class="tabpan-input" name="mailbox" id="mailbox" value="{$config['mailbox']}" placeholder="">
+                        </div>
+                        <div class="form-item">
+                            <label class="fl label-name form-item-title">QQ群：</label>
+                            <input type="text" class="tabpan-input" name="qq_group" id="qq_group" value="{$config['qq_group']}" placeholder="">
+                        </div>
+                        <div class="form-item">
+                            <label class="fl label-name form-item-title">QQ群key：</label>
+                            <input type="text" class="tabpan-input" name="qq_group_key" id="qq_group_key" value="{$config['qq_group_key']}" placeholder="">
+                        </div>
+                        <div class="checkStep"><span class="notice-tip "><a id="create_group" class="create_group clickCheck" href="javascript:;">点击查看</a>交流群生成步骤</span></div>
+                        <div class="form-item">
+                            <label class="fl label-name form-item-title">QQ群地址：</label>
+                            <input type="text" class="tabpan-input" name="qq_group_url" id="qq_group_url" value="{$config['qq_group_url']}" placeholder="">
+                        </div>
+                        <div class="form-item">
+                            <label class="fl label-name form-item-title">微信公众号：</label>
+                            <input type="text" class="tabpan-input" name="app_weixin"  maxlength="200" value="{$config['app_weixin']}" placeholder="微信公众号">
+                        </div>
+
+
+                        <div class="form-item">
+                            <label class="fl form-item-title">网站备案号：</label>
+                            <input type="text" class="tabpan-input" name="pc_set_for_the_record"  value="{$config['pc_set_for_the_record']}" placeholder="">
+                            <span class="notice-tip"></span>
+                        </div>
+                        <div class="newForm-item">
+                            <label class="fl ">增值电信业务经营许可证：</label>
+                            <input type="text" class="tabpan-input itemInput" name="pc_set_telecom_license"  value="{$config['pc_set_telecom_license']}" placeholder="">
+                            <span class="notice-tip"></span>
+                        </div>
+                        <div class="newForm-item">
+                            <label class="fl">网络文化经营许可证：</label>
+                            <input type="text" class="tabpan-input itemInput" name="pc_set_license"  value="{$config['pc_set_license']}" placeholder="">
+                            <span class="notice-tip"></span>
+                        </div>
+                        <div class="form-item upload-height">
+                            <label class="fl  form-item-title">ICP备案号：</label>
+                            <input type="text" class="tabpan-input" name="pc_set_for_the_record_icp"  value="{$config['pc_set_for_the_record_icp']}" placeholder="">
+                            <span class="notice-tip"></span>
+                        </div>
+                        <div class="form-item upload-height">
+                            <label class="fl  form-item-title ">版权信息：</label>
+                            <input type="text" class="tabpan-input" name="pc_set_copyright"  value="{$config['pc_set_copyright']}" placeholder="">
+                            <span class="notice-tip"></span>
+                        </div>
+                        <div class="form-item upload-height">
+                            <label class="fl label-name form-item-title" style="width: 5rem;">联盟PC站首页LOGO：</label>
+                            <span class="formtxt">
+                                <input id="pc_logo" type="hidden" name="pc_logo" value="{$config['pc_logo']}">
+
+                                <img id="pc_logo-preview" class="upload-img" style="max-width: 0.8rem" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null" <if condition="$config['pc_logo']">src="{:cmf_get_image_preview_url($config['pc_logo'])}"</if>>
+                                <a href="javascript:uploadOneImage('上传图片','#pc_logo');" class="btn btn-sm btn-default btn-uploadify">上传图片</a>
+                                <a class="btn-uploadify" href="javascript:(function(){$('#pc_logo-preview').removeAttr('src');$('#pc_logo').val('')})();">移除</a>
+                            </span>
+                        </div>
+                        <div class="form-item upload-height">
+                            <label class="fl label-name form-item-title"  style="width: 5rem;">联盟PC站ICO图标：</label>
+                            <span class="formtxt">
+                                <input id="pc_icon" type="hidden" name="pc_icon" value="{$config['pc_icon']}">
+                                <img id="pc_icon-preview" class="upload-img" style="max-width: 0.8rem" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null" <if condition="$config['pc_icon']">src="{:cmf_get_image_preview_url($config['pc_icon'])}"</if>>
+                                <a href="javascript:uploadOneImage('上传图片','#pc_icon');" class="btn btn-sm btn-default btn-uploadify">上传图片</a>
+                                <a class="btn-uploadify" href="javascript:(function(){$('#pc_icon-preview').removeAttr('src');$('#pc_icon').val('')})();">移除</a>
+                            </span>
+                        </div>
+                        <div class="clear"></div>
+                        <div class="form-item upload-height">
+                            <label class="fl label-name form-item-title"  style="width: 5rem;">联盟PC站底部LOGO：</label>
+                            <span class="formtxt">
+                                <input id="pc_ft_logo" type="hidden" name="pc_ft_logo" value="{$config['pc_ft_logo']}">
+                                <img id="pc_ft_logo-preview" class="upload-img" style="max-width: 0.8rem" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null" <if condition="$config['pc_ft_logo']">src="{:cmf_get_image_preview_url($config['pc_ft_logo'])}"</if>>
+                                <a href="javascript:uploadOneImage('上传图片','#pc_ft_logo');" class="btn btn-sm btn-default btn-uploadify">上传图片</a>
+                                <a class="btn-uploadify" href="javascript:(function(){$('#pc_ft_logo-preview').removeAttr('src');$('#pc_ft_logo').val('')})();">移除</a>
+                            </span>
+                        </div>
+
+                        <div class="form-item upload-height">
+                            <label class="fl label-name form-item-title"  style="width: 5rem;">网站LOGO：</label>
+                            <span class="formtxt">
+                                <input id="website_logo" type="hidden" name="website_logo" value="{$config['website_logo']}">
+                                <img id="website_logo-preview" class="upload-img" style="max-width: 0.8rem" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null" <if condition="$config['website_logo']">src="{:cmf_get_image_preview_url($config['website_logo'])}"</if>>
+                                <a href="javascript:uploadOneImage('上传图片','#website_logo');" class="btn btn-sm btn-default btn-uploadify">上传图片</a>
+                                <a class="btn-uploadify" href="javascript:(function(){$('#website_logo-preview').removeAttr('src');$('#website_logo').val('')})();">移除</a>
+                            </span>
+                        </div>
+
+                        <div class="form-item upload-height">
+                            <label class="fl label-name form-item-title"  style="width: 5rem;">二维码图片：</label>
+                            <span class="formtxt">
+                                <input id="qrcode" type="hidden" name="qrcode" value="{$config['qrcode']}">
+                                <img id="qrcode-preview" class="upload-img" style="max-width: 0.8rem" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null" <if condition="$config['qrcode']">src="{:cmf_get_image_preview_url($config['qrcode'])}"</if>>
+                                <a href="javascript:uploadOneImage('上传图片','#qrcode');" class="btn btn-sm btn-default btn-uploadify">上传图片</a>
+                                <a class="btn-uploadify" href="javascript:(function(){$('#qrcode-preview').removeAttr('src');$('#qrcode').val('')})();">移除</a>
+                            </span>
+                        </div>
+                        <div class="form-item" style="padding-bottom:0.2rem">
+                            <div class="submit-btn js_submit">确认</div>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+                <div class="exchange-tab" style="display: none">
+                    <form action="" id="ajaxForm3" method="post">
+                        <div class="form">
+                            <div class="form-item ">
+                                <label class="fl label-name form-item-title">悬浮球图标：</label>
+                                <span class="formtxt">
+                                    <input id="xfq" type="hidden" name="xfq" value="{$config['xfq']}">
+                                    <img id="xfq-preview" class="upload-img" style="max-width: 0.8rem;" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null" <if condition="$config['xfq']">src="{:cmf_get_image_preview_url($config['xfq'])}"</if>>
+                                    <a href="javascript:uploadOneImage('上传图片','#xfq');" class="btn btn-sm btn-default btn-uploadify">上传图片</a>
+                                    <a class="btn-uploadify newRemoveText" href="javascript:(function(){$('#xfq-preview').removeAttr('src');$('#xfq').val('')})();">移除</a>
+                                </span>
+                                <span class="notice-tip">尺寸430*430px</span>
+                            </div>
+                            <!-- <div class="form-item ">
+                                <label class="fl label-name form-item-title">显示状态：</label>
+                                <div class="col-md-3 col-sm-5">
+                                    <label  class="label-width radioChoose radioItem">
+                                        <input type="radio" class="inp_radio" value="1" name="xfq_show" <if condition="$config['xfq_show'] neq '0'">checked="checked"</if>> <i class="radioItemIcon"></i>开启
+                                    </label>
+                                    <label  class="label-width radioItem">
+                                        <input type="radio" class="inp_radio" value="0" name="xfq_show" <if condition="$config['xfq_show'] heq '0'">checked="checked"</if>><i class="radioItemIcon"></i> 关闭
+                                    </label>
+                                </div>
+                            </div> -->
+
+                            <div class="form-item ">
+                                <label class="fl label-name form-item-title">显示状态：</label>
+                                <div class="col-md-3 col-sm-5">
+                                    <label  class="label-width radioChoose radioItem">
+                                        <input type="radio" class="inp_radio" value="1" name="xfq_show_switch" <if condition="$config['xfq_show_switch'] neq '0'">checked="checked"</if>> <i class="radioItemIcon"></i>开启
+                                    </label>
+                                    <label  class="label-width radioItem">
+                                        <input type="radio" class="inp_radio" value="0" name="xfq_show_switch" <if condition="$config['xfq_show_switch'] heq '0'">checked="checked"</if>><i class="radioItemIcon"></i> 关闭
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-item ">
+                                <label class="fl label-name form-item-title">LOGO图标：</label>
+                                <span class="formtxt">
+                                    <input id="sdk_login_logo" type="hidden" name="sdk_login_logo" value="{$config['sdk_login_logo']}">
+                                    <img id="sdk_login_logo-preview" class="upload-img" style="max-width: 0.8rem;" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null" <if condition="$config['sdk_login_logo']">src="{:cmf_get_image_preview_url($config['sdk_login_logo'])}"</if>>
+                                    <a href="javascript:uploadOneImage('上传图片','#sdk_login_logo');" class="btn btn-sm btn-default btn-uploadify">上传图片</a>
+                                    <a class="btn-uploadify removeText" href="javascript:(function(){$('#sdk_login_logo-preview').removeAttr('src');$('#sdk_login_logo').val('')})();">移除</a>
+                                </span>
+                                <span class="notice-tip">276*80px</span>
+                            </div>
+
+                            <div class="form-item">
+                                <div class="submit-btn js_submit withdraw-submit-btn  payButton confirmEnd">确认</div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+
+    <script>
+
+        $(function () {
+            var height = $(window).height() - $('header').outerHeight() - $('#tabItem').outerHeight()
+            $('.profit-exchange-content').height(height)
+
+            //加载页面判断
+            var path = location.pathname;
+            var path_index = path.indexOf('type');
+            var type = path.substring(path_index+5,path_index+6);
+            $('.header-title').eq(type).addClass("active").siblings(".header-title").removeClass("active");
+            $('.exchange-tab').eq(type).show().siblings().hide();
+            //点击tap
+            $('.header-title').click(function () {
+                var that = $(this);
+                that.addClass("active").siblings(".header-title").removeClass("active");
+                var index = that.index();
+                $('.exchange-tab').eq(index).show().siblings().hide()
+            })
+        })
+        $(".js_submit").click(function () {
+            var form = $(this).parents('form');
+
+            $(".js_submit").attr('disabled',true);
+            $.ajax({
+                type: 'post',
+                url: '{:url("domain_set")}',
+                data: form.serialize(),
+                async: false,
+                success: function (res) {
+                    layer.msg(res.msg);
+                    $(".js_exchange").attr('disabled',false);
+                    setTimeout(function () {
+                        window.location.reload();
+                    },1000)
+                },
+                error: function () {
+                    $(".js_exchange").attr('disabled',false);
+                    layer.msg('服务器错误，请稍后再试');
+                }
+            });
+        })
+        $("#create_group").click(function() {
+            layer.open({
+                type: 2,
+                title: '生成交流群地址',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['100%', '100%'],
+                content: ["create_group.html"], //iframe的url，no代表不显示滚动条
+            });
+        });
+    </script>
+</block>

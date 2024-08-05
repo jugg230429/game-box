@@ -1,0 +1,79 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link href="__TMPL__/channelwappublic/assets/css/set.css" type="text/css" rel="stylesheet" />
+</block>
+<block name="body">
+    <div class="page-container profit-exchange-container">
+        <header>
+            <a href="javascript:history.back(-1);" class="back-btn"></a>
+            <div class="v-middle h-middle">
+                <p class="siteItem">修改二级密码</p>
+            </div>
+
+        </header>
+        <div class="page-content psdContent">
+            <div class="profit-exchange-content">
+                <div class="exchange-tab">
+                <form action="{:url('doexchange')}" id="ajaxForm1" method="post">
+                    <div class="form">
+                        <notempty name="data['second_pwd']">
+                            <div class="form-item psdItem">
+                                <input type="password" class="tabpan-input psdInput" name="old_second_pwd" id="old_second_pwd" placeholder="请输入原二级密码">
+                                <i class="clearIcon"></i>
+                            </div>
+                        </notempty>
+                        <div class="form-item psdItem">
+                            <input type="password" class="tabpan-input psdInput" name="second_pwd" id="second_pwd" placeholder="新二级密码（6-30位字母或数字组合）">
+                            <i class="clearIcon"></i>
+                        </div>
+                        <div class="form-item psdItem">
+                            <input type="password" class="tabpan-input psdInput" name="second_pwd_confirm" id="second_pwd_confirm" placeholder="再次输入确认密码">
+                            <i class="clearIcon"></i>
+                        </div>
+                        <div class="form-item">
+                            <input type="hidden" name="tab" value="4">
+                            <div class="submit-btn js_submit confirmButtton">确认</div>
+                        </div>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script>
+        $('.psdInput').on('input',function() {
+            $(this).parent().find('.clearIcon').css('display','block')
+        })
+        $('.clearIcon').click(function() {
+            $(this).parent().find(".psdInput").val('')
+            $(this).css('display','none')
+        })
+
+        $(".js_submit").click(function () {
+            var form = $(this).parents('form');
+            $(".js_submit").attr('disabled',true);
+            $.ajax({
+                type: 'post',
+                url: '{:url("do_set")}',
+                data: form.serialize(),
+                async: false,
+                success: function (res) {
+                    layer.msg(res.msg);
+                    $(".js_exchange").attr('disabled',false);
+                    if(res.code == 1){
+                        setTimeout(function () {
+                            window.history.back(-1);
+                        },1000)
+                    }
+                },
+                error: function () {
+                    $(".js_exchange").attr('disabled',false);
+                    layer.msg('服务器错误，请稍后再试');
+                }
+            });
+        })
+    </script>
+</block>

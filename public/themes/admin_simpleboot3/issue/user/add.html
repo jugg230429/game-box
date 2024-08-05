@@ -1,0 +1,76 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap jskeyup">
+    <ul class="nav nav-tabs">
+        <li ><a href="{:url('user/lists')}">用户列表</a></li>
+        <li class="active"><a href="{:url('add')}">添加用户</a></li>
+        <span class="title_remark">说明：新增分发平台用户</span>
+        
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" action="{:url('add')}" method="post">
+        
+        <div class="form-group">
+            <label for="account" class="col-sm-2 control-label"><span class="form-required">*</span>用户账号：</label>
+            <div class="col-md-3 col-sm-5">
+                <input type="text" class="form-control jsmust" id="account" name="account" placeholder="6-30位字母或数字组合">
+            </div>
+            <p class="help-block"></p>
+        </div>
+        <div class="form-group">
+            <label for="password" class="col-sm-2 control-label"><span class="form-required">*</span>登录密码：</label>
+            <div class="col-md-3 col-sm-5">
+                <input type="password" class="form-control jsmust" id="password" name="password" placeholder="6-30位字母或数字组合">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="nickname" class="col-sm-2 control-label">简称：</label>
+            <div class="col-md-3 col-sm-5">
+                <input type="text" class="form-control" id="nickname" name="nickname" placeholder="请输入用户简称，便于查询">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">结算模式：</label>
+            <div class="col-md-3 col-sm-5">
+                <label class="radio-inline label-width" tab_id="1">
+                    <input type="radio" name="settle_type" value="0" checked=""> 预付款
+                </label>
+                <label class="radio-inline label-width" tab_id="2">
+                    <input type="radio" name="settle_type" value="1"> 平台结算
+                </label>
+            </div>
+            <p class="help-block">预付款：玩家充值到分发平台账户内，分成金额从联运币内扣除；平台结算：玩家充值到平台账户内，由平台方进行定期结算；</p>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">账号状态：</label>
+            <div class="col-md-3 col-sm-5">
+                <label class="radio-inline label-width" tab_id="1">
+                    <input type="radio" name="status" value="1" checked=""> 开启
+                </label>
+                <label class="radio-inline label-width" tab_id="2">
+                    <input type="radio" name="status" value="0"> 锁定
+                </label>
+            </div>
+            <p class="help-block">锁定状态下，账号无法登录</p>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-1 col-sm-5">
+                <button type="submit" disabled class="btn btn-primary js-ajax-submit save-btn ml9">添加</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript">
+    $('.jskeyup input,select').keyup(function () {
+        change_submit_btn($('.jskeyup'), $('.jskeyup .js-ajax-submit'));
+    });
+    $('.jskeyup input,select').click(function () {
+        change_submit_btn($('.jskeyup'), $('.jskeyup .js-ajax-submit'));
+    });
+</script>
+</body>
+</html>

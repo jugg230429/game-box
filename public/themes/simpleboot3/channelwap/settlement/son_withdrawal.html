@@ -1,0 +1,325 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/select2.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/new_select2.css" type="text/css" />
+    <link href="__TMPL__/channelwappublic/assets/css/settlement.css" type="text/css" rel="stylesheet" />
+    <link href="__TMPL__/channelwappublic/assets/css/swiper-bundle.min.css" type="text/css" rel="stylesheet" />
+</block>
+<block name="body">
+    <div class="page-container">
+        <header>
+            <a href="{:url('promote/child')}" class="back-btn"></a>
+            <div style="width: 100%;height: 100%" class="v-middle h-middle">
+                <a href="javascript:;" class="header-title active">收益提现</a>
+                <a href="{:url('settlement/son_exchange')}" class="header-title ">收益兑换</a>
+            </div>
+        </header>
+        <div class="page-content">
+            <div class="search-box">
+                <div class="search-item">
+                    <div class="search-item col-4">
+                        <input type="text" class="input-date" id="widthdraw_number" placeholder="提现单号">
+                    </div>
+                    <select id="status" class="select_gallery" data-placeholder="提现状态">
+                        <option value="0">提现状态</option>
+                        <option value="1" >已通过</option>
+                        <option value="-1" >待审核</option>
+                        <option value="2" >已驳回</option>
+                        <option value="3" >已打款</option>
+                    </select>
+                    <php>$pmap['parent_id'] = PID;</php>
+                    <select id="promote_id" class="select_gallery" data-placeholder="渠道账号">
+                        <option value="0" >渠道账号</option>
+                        <volist name=":get_promote_list($pmap)" id="p">
+                            <option value="{$p.id}">{$p.account}</option>
+                        </volist>
+                    </select>
+                    <input type="button" class="btn-calc fl jssettlement" value="通过" >
+                    <input type="button" class="btn-calc fl bg-26c jspaid" value="打款" >
+                </div>
+            </div>
+            <div class="newBox">
+                <div class="swiper-container" >
+                    <div class="swiper-wrapper" >
+
+                      <div class="swiper-slide" style="width: 1000px;">
+                        <div class="table-box">
+                            <table>
+                                <tbody>
+                                <tr class="table-title">
+                                    <th style="width: 1rem;"><label class="checked"><input class="check-all" type="checkbox"><i class="check-icon"></i></label></th>
+                                    <th>提现单号</th>
+                                    <th>提现金额</th>
+                                    <th>子渠道账号</th>
+                                    <th>申请时间</th>
+                                    <th>提现状态</th>
+                                    <th>审核时间</th>
+                                    <th>操作</th>
+                                </tr>
+                                </tbody>
+                                <tbody id="withdrawalload">
+                                </tbody>
+                                <tr class="total">
+                                    <td><span style="margin-right: 10px;">汇总(元) </span></td>
+                                    <td colspan="7"><span>今日提现：<span class="today">0.00</span> ； 昨日提现：<span class="yes">0.00</span> ；当页提现：<span class="now">0.00</span> ； 累计提现：<span class="all">0.00</span></span></td>
+                                </tr>
+                            </table>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+           
+        </div>
+    </div>
+    <div class="pop"></div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/select2.min.js"></script>
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/pop.lwx.min.js"></script>
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/swiper-bundle.min.js"></script>
+    <script>
+        $(function () {
+            $(".select_gallery").select2({});
+            var swiper = new Swiper('.swiper-container', {
+                slidesPerView: 'auto',
+                freeMode: true,
+                mousewheel: true,
+            });
+        })
+        var itemIndex = 0;
+        var widthdraw_number = '';
+        var status = '';
+        var promote_id = 0;
+        var lwx = window.lwx || {};
+        lwx.ready = true;
+        lwx.width = $(window).width();
+        lwx.height = $(window).height();
+        lwx.number = {withdrawal:1};
+        lwx.row = {withdrawal:15};
+        lwx.http = {
+            getJSON:function(url,callback){
+                $.getJSON(url + '&v=' + Date.now(),function(data){
+                    callback(data);
+                });
+            },
+            postJSON:function(url,args,callback) {
+                $.post(url + '&v=' + Date.now(), args, function(data) {
+                    callback(data);
+                },"json")
+            },
+        };
+        lwx.url ={
+            withdrawal:'{:url("Settlement/get_son_withdrawal")}',
+        };
+        lwx.page = {
+            withdrawal:function(){
+                if(lwx.number.withdrawal) {
+                    lwx.http.getJSON(lwx.url.withdrawal+'?widthdraw_number='+widthdraw_number+'&status='+status+'&promote_id='+promote_id+'&row='+lwx.row.withdrawal+'&page='+lwx.number.withdrawal,function(data) {
+                        var hotload = $('#withdrawalload');
+                        var total = data.total;
+                        var data = data.data.data;
+                        if(data && data.length) {
+                            $(".total").show();
+                            if(total.now > 0){
+                                $(".now").text(total.now);
+                            }
+                            if(total.yestoday > 0){
+                                $(".yes").text(total.yestoday);
+                            }
+                            if(total.today > 0){
+                                $(".today").text(total.today);
+                            }
+                            if(total.total > 0){
+                                $(".all").text(total.total);
+                            }
+                            var html = '';
+                            for (var i in data) {
+                                html += '<tr class="child-channel-item">';
+                                // if(data[i].status  == 3){
+                                //     html += '<td class="channel-date"></td>';
+                                // }else{
+                                    html += '<td class="channel-name"><input type="checkbox" class="js-check ids " name="ids[]" value="'+data[i].id+'"> <i class="check-icon"></i></td>';
+                                // }
+                                html += '<td class="channel-date">'+data[i].widthdraw_number+'</td>';
+                                html += '<td class="channel-date">'+data[i].sum_money+'</td>';
+                                html += '<td class="channel-date">'+data[i].promote_account+'</td>';
+                                html += '<td class="channel-date">'+data[i].create_time+'</td>';
+                                html += '<td class="channel-date">'+data[i].status_name+'</td>';
+                                html += '<td class="channel-date">'+data[i].audit_time+'</td>';
+                                if(data[i].status == 0){
+                                    html += '<td class="channel-date"><a href="javascript:;" data-url="'+data[i].url+'" class="js_btn">通过</a></td>';
+                                }else if(data[i].status == 1){
+                                    html += '<td class="channel-date"><a href="javascript:;" data-url="'+data[i].url+'" class="js_btn">打款</a></td>';
+                                }else if(data[i].status == 2){
+                                    html += '-';
+                                }
+                                html += '</tr>';
+                            }
+                            hotload.append(html);
+                            hotload.find('.jsdropload').remove();
+                            if(data.length >= lwx.row.withdrawal) {
+                                lwx.number.withdrawal++;
+                                lwx.ready = true;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.withdrawal = false;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                        } else {
+                            if(lwx.number.withdrawal==1){
+                                $(".total").hide();
+                                hotload.html('').append('<p class="no_invest_info jsdropload">~空空如也~</p>');
+                            } else{
+                                hotload.find('.jsdropload').remove();
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                            lwx.number.withdrawal = false;
+                        }
+                    });
+                }
+            }
+        };
+        pageChange();
+        function pageChange() {
+            lwx.page.withdrawal();
+        }
+        function pageScroll(scrollTop, boxHeight, maxScrollHeight) {
+            if (scrollTop + boxHeight >= maxScrollHeight - 50) {
+                if (lwx.ready) {
+                    lwx.ready = false;
+                    lwx.page.withdrawal();
+                }
+            }
+        }
+        window.onscroll = function() {
+            var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+            pageScroll(scrollTop, lwx.height, $(document).height())
+        }
+        $(function () {
+            $('.game-menu-box a').click(function () {
+                $(this).addClass("active").siblings().removeClass("active");
+                var index = $(this).index();
+                $('.menu-tab').eq(index).show().siblings(".menu-tab").hide();
+                itemIndex = index;
+                location.hash = index;
+            });
+            $("#widthdraw_number").bind('input porpertychange',function(){
+                widthdraw_number = $("#widthdraw_number").val();
+                $("#widthdrawload").empty();
+                lwx.number.widthdraw = 1;
+                pageChange();
+            });
+            $("#status").change(function () {
+                status = $("#status").val();
+                $("#withdrawalload").empty();
+                lwx.number.withdrawal = 1;
+                pageChange();
+            })
+            $("#promote_id").change(function () {
+                promote_id = $("#promote_id").val();
+                $("#withdrawalload").empty();
+                lwx.number.withdrawal = 1;
+                pageChange();
+            })
+
+        })
+        $(window).on("hashchange", function() {
+            pageChange();
+        });
+        $('body').on('click',".js_btn",function () {
+            var url = $(this).data('url');
+            $.ajax({
+                type:'post',
+                url:url,
+                success:function(res){
+                    layer.msg(res.msg,{time:1000},function(){
+                        location.href = location.href;
+                    });
+                },error:function(){
+                    layer.msg('服务器错误，请稍后再试');
+                }
+            });
+        })
+
+        //批量通过
+        $('.jssettlement').click(function(){
+            that = $(this);
+            ids = $('.ids');
+            value = '';
+            ids.each(function(index,element){
+                if($(this).prop('checked')){
+                    value = value+$(this).val()+',';
+                }
+            });
+            value = value.substr(0,value.length-1);
+            if(!value){
+                layer.msg('请选择要操作的数据');
+                return false;
+            }
+            $.ajax({
+                type:'post',
+                url:"{:url('changeSettlementStatus')}",
+                data:{ids:value,status:1},
+                success:function(res){
+                    layer.msg(res.msg,{time:1000},function(){
+                        location.href = location.href;
+                    });
+                },error:function(){
+                    layer.msg('服务器错误，请稍后再试');
+                }
+            });
+        });
+
+        //全选
+        $(".check-all").click(function() {
+            var option = $(".ids");
+            that = $(this);
+            option.each(function(i) {
+                if(!this.disabled){
+                    this.checked = that.prop('checked');
+                }
+            });
+        });
+        $(".ids").click(function() {
+            var option = $(".ids");
+            option.each(function(i) {
+                if(!this.checked) {
+                    $(".check-all").prop("checked", false);
+                    return false;
+                } else {
+                    $(".check-all").prop("checked", true);
+                }
+            });
+        });
+        //批量打款
+        $('.jspaid').click(function(){
+            that = $(this);
+            ids = $('.ids');
+            value = '';
+            ids.each(function(index,element){
+                if($(this).prop('checked')){
+                    value = value+$(this).val()+',';
+                }
+            });
+            value = value.substr(0,value.length-1);
+            if(!value){
+                layer.msg('请选择要操作的数据');
+                return false;
+            }
+            $.ajax({
+                type:'post',
+                url:"{:url('paid')}",
+                data:{id:value,status:3},
+                success:function(res){
+                    layer.msg(res.msg,{time:1000},function(){
+                        location.href = location.href;
+                    });
+                },error:function(){
+                    layer.msg('服务器错误，请稍后再试');
+                }
+            });
+        });
+    </script>
+</block>

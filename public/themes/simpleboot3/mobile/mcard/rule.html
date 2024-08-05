@@ -1,0 +1,50 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/rule.css">
+</block>
+<block name="body">
+  <div class="rule-header">
+	  <a href="javascript:history.go(-1);" class="fl"><img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="back_icon"></a>
+	  <div class="rule-header-title">
+		  尊享卡规则
+	  </div>
+	  <a data-value="<empty name='union_set.qq'>{:cmf_get_option('kefu_set')['pc_set_server_qq']}<else />{$union_set['qq']}</empty>" href="javascript:;" class="btn_qq jschatqq">
+  	       <img src="__TMPL__/mobilepublic/assets/images/ecard/btn_service.png" alt="" class="service-btn" >
+	   </a>
+	</div>
+	<div class="rule-que">1、尊享卡发的代金券哪些游戏可以用？</div>
+	<div class="rule-ask">
+		发放的<if condition="$coupon['limit_money'] eq 0">{$coupon.money}元<else/>{$coupon['money']}元满{$coupon['limit_money']}元可用</if>代金券平台上<if condition="$coupon['mold'] eq 0">全部游戏可用<else/>{$coupon.game_name}可用</if>。
+	</div>
+	<div class="rule-que">2、买了尊享卡会发多久的代金券？</div>
+	<div class="rule-ask">
+	    根据购买数选择的天数加上赠送的天数，从购买当天开始计算。
+	</div>
+	<div class="rule-que">3、买了尊享卡后什么时候会发放代金券？</div>
+	<div class="rule-ask">
+	    购买成功够直接发放当天的代金券，之后每天的代金券将在0点陆续发放。
+	</div>
+	<div class="rule-warn">
+	    特别提醒：尊享卡属虚拟产品，售出后不予退款，最终解释权归本平台所有。
+	</div>
+</block>
+<block name="script">
+	<script>
+        $('.jschatqq').click(function() {
+            var qq = $.trim($(this).attr('data-value'));
+            var u = navigator.userAgent;
+            try{
+                $mt = "{:get_devices_type()}";
+                if($mt==2){
+                    window.webkit.messageHandlers.sy_small_serviceQQ.postMessage(qq);
+                }else{
+                    window.xgsdk.sy_small_serviceQQ(qq);
+                }
+            }catch (e) {
+				window.location.href="mqqwpa://im/chat?chat_type=wpa&uin="+qq+"&version=1&src_type=web";
+                return false;
+            }
+        });
+	</script>
+</block>
+

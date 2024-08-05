@@ -1,0 +1,586 @@
+.main {
+    width: 100%;
+    background: #eee;
+    padding-bottom: 1.79rem;
+}
+
+.share_tip {
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 998;
+    display: none;
+}
+
+.share_tip_in {
+    position: absolute;
+    z-index: 999;
+    max-width: 100%;
+    background-color: rgba(0,0,0,0.5);
+    border-radius: 0.2rem;
+    padding: 0.4rem 0.6rem;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 0.4rem;
+    text-align: center;
+}
+
+.cover {
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.7);
+    z-index: 998;
+    display: none;
+}
+
+.user_center {
+    position: absolute;
+    z-index: 999;
+    width: 8.4rem;
+    max-width: 100%;
+    background: #fff;
+    border-radius: 0.2rem;
+    padding: 0.3rem 0;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    display: none;
+}
+
+.guide {
+    position: absolute;
+    z-index: 999;
+    width: 8.4rem;
+    max-width: 100%;
+    background: #fff;
+    border-radius: 0.2rem;
+    padding: 0 0 0.3rem 0;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    display: none;
+}
+
+.user_center .logo {
+    text-align: center;
+}
+
+.user_center .logo img {
+    display: inline-block;
+    width: 3.5rem;
+}
+
+.close {
+    position: absolute;
+    top: 0.2rem;
+    right: 0.1rem;
+}
+
+.close a {
+    font-size: 0.6rem;
+    text-decoration:none;
+    padding: 0.2rem;
+}
+
+.user_center .login,.user_center .register {
+    padding: 0 0.4rem 0.1rem;
+    display: none;
+}
+
+.user_center input {
+    width: 100%;
+    height: 1rem;
+    line-height: 1rem;
+    border: 1px solid #999;
+    font-size: 0.4rem;
+    border-radius: 0.15rem;
+    padding-left: 1rem;
+}
+
+.user_center .login_in,.user_center .register_in {
+    margin-top: 0.4rem;
+    position: relative;
+}
+
+.tishi {
+    margin-top: 0.2rem;
+}
+
+.tishi span {
+    font-size: 0.4rem;
+    color: #fb6329;
+}
+
+.user_center .user_icon {
+    /* display: inline-block; */
+    width: 0.5rem;
+    height: 0.5rem;
+    background-image: url(../../images/jjy_common/user_icon.png)!important;
+    background-size: contain;
+    position: absolute;
+    bottom: 0.25rem;
+    left: 0.3rem;
+}
+
+.user_center .pass_icon {
+    /* display: inline-block; */
+    width: 0.5rem;
+    height: 0.5rem;
+    background-image: url(../../images/jjy_common/password_icon.png)!important;
+    background-size: contain;
+    position: absolute;
+    bottom: 0.25rem;
+    left: 0.3rem;
+}
+
+.user_center .login_in a,.user_center .register_in a {
+    display: block;
+    width: 100%;
+    text-align: center;
+    height: 1rem;
+    line-height: 1rem;
+    background: #ff661a;
+    color: #fff;
+    font-size: 0.5rem;
+    border-radius: 0.15rem;
+    text-decoration: none;
+}
+
+.user_center .go_reg,.user_center .go_login {
+    margin-top: 0.4rem;
+    text-align: right;
+    color: #1cace0;
+}
+
+.user_center .go_reg a,.user_center .go_login a {
+    color: #1cace0;
+    text-decoration: none;
+    font-size: 0.4rem;
+}
+
+.guide_hed {
+    text-align: center;
+    height: 1.4rem;
+    line-height: 1.4rem;
+    background: #37363b;
+    color: #fff;
+    border-radius: 0.2rem 0.2rem 0 0;
+    font-size: 0.6rem;
+}
+
+.guide .close a {
+    color: #fff!important;
+    text-decoration:none;
+}
+
+.guide_banner {
+    padding: 0 0.2rem;
+}
+
+.guide_banner img {
+    width: 100%;
+}
+
+.img_tishi {
+    width: 100%;
+    margin: 0 auto;
+    display: none;
+    padding-top: 1.5333rem;
+    position: relative;
+}
+.img_tishi .weixin-tip-img{
+    width:5.333rem;
+    margin: 0 auto;
+}
+
+.img_tishi img {
+    width: 9rem;
+}
+.img_tishi .weixin-tip-img{
+    width:5.333rem;
+    margin: 0 auto;
+}
+.img_tishi .tip-step {
+    width:5.333rem;
+    margin: 1.0666rem auto;
+    font-size: 0.4rem;
+    color: #ffffff;
+    margin-left: 2.45rem;
+}
+.img_tishi .tip-step .first-icon{
+    width:0.4rem;
+    height: 0.4rem;
+    background: url(../img/ico_number1.png)no-repeat;
+    background-size: 100% 100%;
+    display: inline-block;
+    margin-right: 0.3rem;
+    vertical-align: text-top;
+}
+.img_tishi .tip-step .second-icon{
+    width:0.4rem;
+    height: 0.4rem;
+    background: url(../img/ico_number2.png)no-repeat;
+    background-size: 100% 100%;
+    display: inline-block;
+    margin-right: 0.23rem;
+    vertical-align: text-top;
+}
+.img_tishi .tip-step .second-step{
+    margin-top: 0.12rem;
+}
+.img_tishi .tip-step .dian{
+    color: #FCFA62;
+    font-size: 0.66666rem;
+}
+.tip-step .guide-img{
+    position: absolute;
+    top: 0.85rem;
+    right: 0.72rem;
+    width: 1.5rem;
+    height: 3.8rem;
+}
+.img_bg {
+    width: 10rem;
+    height: 14rem;
+    position: relative;
+    margin: 0 auto;
+}
+
+.img_bg img {
+    width: 100%;
+    height: 100%;
+}
+.v-middle{
+    display: flex;
+    align-items: center;
+}
+.guanwang a {
+    width: 2.8rem;
+    height: 1rem;
+    text-decoration: none!important;
+    position: absolute;
+    top: 0.2rem;
+    right: 0.2rem;
+    display: inline-block;
+    border-radius: 0.15rem;
+    text-align: center;
+    line-height: 1rem;
+    font-size: 0.45rem;
+    color: #fff;
+    background: -webkit-linear-gradient(top, #ffac36 , #c37200);
+    background: -o-linear-gradient(top, #ffac36, #c37200);
+    background: -moz-linear-gradient(top, #ffac36, #c37200);
+    background: -ms-linear-gradient(top, #ffac36, #c37200);
+    background: linear-gradient(top, #ffac36 , #c37200);
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType = 1, startColorstr = #ffac36, endColorstr = #c37200);
+}
+
+.content {
+    width: 10rem;
+    padding: 0 0.2rem;
+    background: #fff;
+    margin: 0 auto;
+}
+
+.game_details {
+    padding: 0.2rem 0;
+}
+
+.game_details_top p {
+    font-size: 0.6rem;
+    color: #666;
+    font-weight: bold;
+}
+
+.game_details_top .share {
+    font-size: 0.4rem;
+    color: #5e97f6;
+    text-decoration: none;
+}
+
+.game_det_icon {
+    width: 2rem;
+    height: 2rem;
+    margin: 0.2rem;
+    border-radius: 0.45rem;
+}
+
+.game_det_icon img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    -webkit-border-radius: .15rem;
+    -moz-border-radius: .15rem;
+    border-radius: .15rem;
+}
+
+.game_det_xinxi {
+    width: 55%;
+    padding: 0.2rem 0 0;
+    overflow: hidden;
+}
+
+.game_det_xinxi_t span {
+    background: #b8ccee;
+    color: #fff;
+    font-size: 0.35rem;
+    display: inline-block;
+    padding: 0 0.2rem;
+    height: 0.6rem;
+    line-height: 0.6rem;
+    border-radius: 0.1rem;
+}
+
+.game_down_count {
+    margin-top: 0.2rem;
+    width: 100%;
+}
+
+.game_down_count p {
+    font-size: 0.4rem;
+    height: 0.65rem;
+    line-height: 0.65rem;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap
+}
+
+.game_anzhuang {
+    margin: 0.7rem 0.2rem 0 0;
+}
+
+.game_anzhuang a {
+    display: inline-block;
+    background: #f67b29;
+    color: #fff;
+    width: 1.5rem;
+    height: 0.8rem;
+    line-height: 0.8rem;
+    font-size: 0.4rem;
+    text-align: center;
+    border-radius: 0.1rem;
+    text-decoration: none!important;
+}
+
+.game_jianjie {
+    /*height: 3rem;*/
+    /*overflow: hidden;*/
+}
+
+.game_jianjie div {
+    font-size: 0.4rem;
+    color: #777;
+}
+
+.game_jianjie .game_jianjie_til {
+    font-size: 0.5rem;
+    font-weight: bold;
+    border-left: 6px solid #f67b29;
+    height: 0.6rem;
+    line-height: 0.6rem;
+    padding-left: 0.2rem;
+}
+
+.game_jianjie .game_jianjie_content {
+    height: 2rem;
+    overflow: hidden;
+}
+
+.game_jianjie .game_jianjie_content p {
+    text-indent: 0.8rem;
+    margin-top: 0.2rem;
+    line-height: 0.6rem;
+}
+
+.game_jianjie .see {
+    text-align: right;
+}
+
+.game_jianjie .see a {
+    color: #5e97f6;
+    text-decoration: none;
+}
+
+.game_jietu img {
+    width: 100%;
+    display: block;
+}
+
+.game_community {
+    padding: 0.4rem 0;
+}
+
+.game_community .game_community_til {
+    font-size: 0.5rem;
+    font-weight: bold;
+    border-left: 6px solid #f67b29;
+    height: 0.6rem;
+    line-height: 0.6rem;
+    padding-left: 0.2rem;
+}
+
+.game_community_content {
+    width: 100%;
+}
+
+.game_community_content img {
+    width: 100%;
+}
+
+.game_community_content_tishi {
+    text-align: center;
+    color: #fba21c;
+    font-size: 0.4rem;
+}
+
+.footer {
+    background: #16304b;
+    width: 10rem;
+    height: 2rem;
+    padding: 0.3rem 0;
+    margin: 0 auto;
+}
+
+.footer .footer_t ul {
+    display: flex;
+}
+
+.footer .footer_t ul li {
+    flex: 1;
+    text-align: center;
+    font-size: 0.4rem;
+}
+
+.footer .footer_t ul li a {
+    text-decoration: none!important;
+}
+
+.footer li i {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    background-size: contain;
+    vertical-align: text-bottom;
+}
+
+.footer li a span {
+    text-decoration: none;
+    color: #ccc;
+}
+
+.footer li i.icon_qq {
+    background-image: url(../../images/jjy_common/icon_qq.png)!important;
+}
+
+.footer li i.icon_share {
+    background-image: url(../../images/jjy_common/icon_share.png)!important;
+}
+
+.footer li i.icon_home {
+    background-image: url(../../images/jjy_common/icon_home.png)!important;
+}
+
+.footer_b {
+    margin-top: 0.3rem;
+}
+
+.footer_b p {
+    text-align: center;
+    color: #ccc;
+    font-size: 0.4rem;
+}
+
+.footer_fix {
+    width: 10rem;
+    height: 1.8rem;
+    background: rgba(0,0,0,1);
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin-left:auto;
+    margin-right:auto;
+    z-index: 990;
+}
+
+.game_icon {
+    width: 1.6rem;
+    height: 1.6rem;
+    margin: 0.1rem 0.2rem 0 0.1rem;
+    border-radius: 0.45rem;
+}
+
+.game_icon img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    -webkit-border-radius: .15rem;
+    -moz-border-radius: .15rem;
+    border-radius: .15rem;
+}
+
+.game_name {
+    margin-top: 0.2rem;
+}
+
+.game_name p {
+    font-size: 0.5rem;
+    color: #fff;
+    line-height: 1.2;
+}
+
+.game_name .game_des {
+    font-size: 0.4rem;
+    margin-top: 0.1rem;
+}
+
+.game_down {
+    margin: 0.4rem 0.3rem 0 0;
+}
+
+.game_down a {
+    width: 2.8rem;
+    height: 1rem;
+    text-decoration: none!important;
+    display: inline-block;
+    border-radius: 0.15rem;
+    text-align: center;
+    line-height: 1rem;
+    font-size: 0.45rem;
+    color: #fff;
+    background: -webkit-linear-gradient(top, #ffac36 , #c37200);
+    background: -o-linear-gradient(top, #ffac36, #c37200);
+    background: -moz-linear-gradient(top, #ffac36, #c37200);
+    background: -ms-linear-gradient(top, #ffac36, #c37200);
+    background: linear-gradient(top, #ffac36 , #c37200);
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType = 1, startColorstr = #ffac36, endColorstr = #c37200);
+}
+
+.swiper-container-horizontal>.swiper-pagination-bullets, .swiper-pagination-custom, .swiper-pagination-fraction {
+    bottom: 0px!important;
+}
+.down_btn.dis_btn,.down_btn.disabled{
+    background: #D6D6D6;
+    color: #FFFFFF;
+    border: none;
+}

@@ -1,0 +1,398 @@
+<include file="public@header"/>
+<link href="__TMPL__/public/assets/simpleboot3/css/game.css" rel="stylesheet">
+<script src="__STATIC__/js/ajaxForm.js"></script>
+</head>
+<body>
+<style>
+    .copy {
+        position: absolute;
+        right: 50px;
+        top: 11px;
+        text-decoration: underline;
+        font-size: 12px;
+        color: #659be1;
+        cursor: pointer;
+    }
+    .layui-layer-demo .layui-layer-content {
+        position: static;
+    }
+    .layui-layer-demo .layui-layer-content td {
+        height: 42px;
+        padding-left: 20px;
+    }
+    .layui-layer-demo .layui-layer-title {
+        background: #F0F5F7;
+        font-weight: bold;
+    }
+    .layui-layer{
+        border: none;
+    }
+    .layui-layer-iframe{
+        border-radius: 30px;
+        overflow: hidden;
+    }
+    .table-actions {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 0px;
+    margin-left: -10px;
+}
+.changeGame{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(39, 49, 69, 0.3);
+    z-index: 19891015;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top:0px;
+    left: 0px;
+}
+.p_content{
+		width: 430px;
+		height: 242px;
+		border-radius: 5px;
+		/* overflow: hidden; */
+		position: static;
+		left: 50%;
+		top: 25%;
+		margin-left: 0;
+		background-color: #fff;
+}
+.p_content .pro_promot_title1 {
+    height: 45px;
+    width: 100%;
+    line-height: 45px;
+    background: #ffffff;
+    border-radius: 5px;
+    border-bottom: 1px solid #F2F3F7;
+}
+.p_content .pro_promot_title_bigtext {
+    font-size: 15px;
+    font-family: 'Microsoft YaHei';
+    font-weight: bold;
+    color: #333333;
+    line-height: 48px;
+    margin: 0 0 0 20px;
+}
+.p_content .pro_promot_close {
+    margin-right: 20px;
+}
+.p_neirong{
+    width: 100%;
+    height: 130px;
+}
+.p_input{
+    width:390px;
+    float: left;
+    margin-left: 20px;
+}
+.zhishi{
+    width: 100%;
+    font-size: 14px;
+font-family: Microsoft YaHei;
+font-weight: 400;
+color: #FF0000;
+line-height: 50px;
+margin-left: 20px;
+float: left;
+}
+.p_bottom{
+    width: 100%;
+    float: left;
+    display: flex;
+    justify-content: center;
+}
+.p_bottom .pro_promot_btn_cancel1 {
+    width: 76px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    border-radius: 3px;
+    cursor: pointer;
+    background: #DEDEDE;
+    color: #FFFFFF;
+}
+.p_bottom .pro_promot_btn_confirm1 {
+    width: 76px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    border-radius: 3px;
+    cursor: pointer;
+    background: rgb(0, 111, 196);
+    color: rgb(255, 255, 255);
+}
+.form-group {
+    margin-top: 5px !important;
+}
+.layui-layer-content img {
+    max-width: 800px;
+    height: 450px;
+}
+.layui-layer-content {
+    height: auto !important;
+    width: auto;
+    padding: 20px;
+}
+/* .layui-layer-iframe{
+    border-radius: 20px;
+    overflow: hidden;
+} */
+</style>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active" ><a href="{:url('Settlement/remit_record')}">CP打款记录</a></li>
+        
+    </ul>
+    <form id="search_form" class="well form-inline  fr" method="get" action="{:url('remit_record')}">
+
+        <select name="cp_id" id="cp_id" class="selectpicker " cp_id="{:input('request.cp_id')}" data-live-search="true" data-size="7" style="width: 100px;">
+            <option value="">选择CP名称</option>
+            <volist name=":get_cp_list()" id="vo">
+                <option promote-id="{$vo.id}" value="{$vo.id}" <if condition="$vo['id'] eq input('request.cp_id')">selected</if>>{$vo.cp_name}</option>
+            </volist>
+        </select>
+
+        <php>
+            // $map['sdk_version']=['in',[1,2]];
+            $map['game_status'] = 1;
+        </php>
+        <select name="game_id" id="game_id" class="selectpicker " game_id="{:input('request.game_id')}"
+                data-live-search="true" data-size="7" style="width: 100px;">
+            <option value="">游戏名称</option>
+            <volist name=":get_game_list('id,game_name',$map)" id="vo">
+                <option game-id="{$vo.id}" value="{$vo.id}">{$vo.game_name}</option>
+            </volist>
+        </select>
+
+        <input type="text" class="form-control " name="order_num" placeholder="结算单号" value="{:input('request.order_num/s','')}" style="width: 140px;" autocomplete="off" >
+
+        <input type="text" class="form-control js-bootstrap-date jstime" name="start_time" placeholder="打款开始时间" value="{:input('request.start_time/s','')}" style="width: 140px;" autocomplete="off" >-
+        <input type="text" class="form-control js-bootstrap-date jstime" name="end_time" placeholder="打款结束时间" value="{:input('request.end_time/s','')}" style="width: 140px;" autocomplete="off">
+
+        <input type="submit" class="btn btn-primary" id="search_btn" value="搜索"/>
+        <a class="btn btn-clear" href="{:url('remit_record')}">清空</a>
+        <a class="btn btn-export js-ajax-dialog-btn-xz" data-msg="确定导出吗？" href="{:url('exp_remit_record',array_merge(['xlsname'=>'打款记录'],input()))}">导出</a>
+    </form>
+    <form class="js-ajax-form" action="" method="post">
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>打款时间</th>
+                <th>结算单号</th>
+                <th>打款金额</th>
+                <th>CP名称</th>
+                <th>创建人</th>
+                <th>创建时间</th>
+                <th>打款信息</th>
+                <th>操作</th>
+                <th width="200">备注</th>
+            </tr>
+            </thead>
+            <tbody>
+            <empty name="data_lists">
+                <tr>
+                    <td colspan="13" style="text-align: center;">暂无数据</td>
+                </tr>
+                <else/>
+                <php>
+                    $pay_type = [
+                        1=>'银行卡',
+                        2=>'支付宝'
+                    ];
+                </php>
+                <foreach name="data_lists" item="vo">
+                    <tr>
+                        <td>{$vo['remit_time']}</td>
+                        <td>{$vo['order_num']}</td>
+                        <td>{$vo['remit_amount']}</td>
+                        <td>{$vo['cp_name']}</td>
+                        <td>{$vo['operator']} </td>
+                        <td>{$vo['create_time']} </td>
+                        <td>
+                            打款时间：{$vo.remit_time}
+                            <br>
+                            打款人：{$vo['operator']}
+                            <br>
+                            打款金额：{$vo.remit_amount}
+                            <br>
+                            打款方式：{$pay_type[$vo['type_of_receive']]}
+                            <br>
+                            打款账户：
+                            <if condition="!empty($vo.name_of_receive)">{$vo.name_of_receive}</if>
+                            <if condition="!empty($vo.accounts_of_receive)">, {$vo.accounts_of_receive}</if>
+
+                        </td>
+                        <td>
+                            <a href="javascript:showBigImg('{$vo.receipt}');">
+                                查看回执单
+                            </a>
+                            <br>
+                            <a href="javascript:editSettlement('{$vo.id}');">
+                                编辑
+                            </a>
+                        </td>
+                        <td style="word-wrap: break-word;max-width: 200px;">{$vo.remark}</td>
+        
+                    </tr>
+                </foreach>
+                <tr class="data_summary">
+                    <td>汇总</td>
+                    <td colspan="8" style="text-align: center;">
+                        本页打款：{$total_tmp.d_page_remit_amount} 元 ； 今日打款：{$total_tmp.today_amount}元 ； 本月打款：{$total_tmp.d_month_amount} 元 ； 累计打款：{$total_tmp.all_amount} 元
+                    </td>
+
+                </tr>
+            </empty>
+            </tbody>
+        </table>
+    </form>
+  
+    <div class="pagination">{$page}</div>
+    
+</div>
+
+<script src="__STATIC__/js/admin.js"></script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script src="__STATIC__/js/clipboard.min.js"></script>
+<script type="text/javascript">
+
+    game_id = $("#game_id").attr('game_id');
+    game_name = $("#game_name").attr('game_name');
+    $("#game_id").selectpicker('val', game_id);
+    $("#game_name").selectpicker('val', game_name);
+    $("#sdk_version").selectpicker('val', $('#sdk_version').attr('sdk_version'));
+    $("#recommend_status").selectpicker('val', $('#recommend_status').attr('recommend_status'));
+    $("#game_status").selectpicker('val', $('#game_status').attr('game_status'));
+    $("#type").selectpicker('val', $('#type').attr('type'));
+    $(function () {
+        // 搜索框提交之前验证
+        $("#search_form").click(function(){
+
+            var start_date = $("input[name=start_time]").val();
+            var end_date = $("input[name=end_time]").val();
+            var start_time = (new Date(start_date).getTime())/1000;
+            var end_time = (new Date(end_date).getTime())/1000;
+            if(start_date != '' && end_date != '' && start_time > end_time){
+                layer.msg('结算周期开始时间不能大于结束时间');
+                return false;
+            }
+            var start_date2 = $("input[name=start_time2]").val();
+            var end_date2 = $("input[name=end_time2]").val();
+            var start_time2 = (new Date(start_date2).getTime())/1000;
+            var end_time2 = (new Date(end_date2).getTime())/1000;
+            if(start_date2 != '' && end_date2 != '' && start_time2 > end_time2){
+                layer.msg('结算开始时间不能大于结束时间');
+                return false;
+            }
+            return true;
+
+        });
+
+        //保存修改
+        $(".confirmModalBtn").click(function(){
+            $("#ajaxForm").ajaxSubmit(function(res){
+                layer.msg(res.msg);
+                location.reload();
+                $(".pro_promot").hide();
+            });
+            return false;
+        });
+
+        $("#jsgamecheckall").click(function(){
+            $('.promoteGameSelect').find(".jsgameid:visible").prop("checked",this.checked);
+        });
+
+        //点击取消按钮，弹窗关闭
+        $('.cancelModalBtn').click(function(){
+            $('.pro_promot').css('display','none');
+            return false;
+        });
+
+        $('.btnCloseModal').click(function() {
+            $('.pro_promot').css('display','none');
+            return false;
+        });
+
+        //全部显示
+        $(".js-show-all").click(function () {
+            $(this).addClass('firstNumCurrent').siblings().removeClass('firstNumCurrent')
+            $(".promoteSelectLabel").show();
+            return false;
+        });
+        //筛选条件
+        $(".js-screen").click(function () {
+            $(this).addClass('firstNumCurrent').siblings().removeClass('firstNumCurrent')
+            var keys = $(this).attr("key");
+            var keyArr = keys.split("");
+            $(".promoteSelectLabel").hide();
+            keyArr.forEach(function (ele) {
+                $(".short-" + ele + "").show();
+            });
+            return false;
+        });
+
+        //搜索
+        $('.searchButtonPromote').click(function () {
+            var content = $(".inputSearchContent").val();
+            if (content == '') {
+                $(".promoteSelectLabel").show();
+                return false;
+            }
+            $(".promoteSelectLabel").hide();
+            $("label[id*=" + content + "]").show();
+            return false;
+        });
+    })
+    
+    // 查看大图
+    function showBigImg(pic_url){
+        // alert(pic_url);
+        if(pic_url==undefined || pic_url=="" || pic_url==null){
+            var img = "没有上传回执单!"; //图片路径
+            layer.open({
+            top:10,
+            type: 1,
+            title: "回执单详情",
+            skin: ['layui-layer-rim' ], //加上边框
+            area: ['854px','552px'], //宽高
+            content: img
+        });
+
+        }else{
+            var img = "<div style='text-align:center;'> <img src=' "+ pic_url +"'> </div> "; //图片路径
+        
+            //layer
+            layer.open({
+                top:10,
+                type: 1,
+                title: "回执单详情",
+                // skin: ['layui-layer-rim img_layui' ], //加上边框
+                // area: ['854px','552px'], //宽高
+                area: ['854px','552px'],  //宽高
+                content: img,
+                success:function(layero,index){
+                    layer.style(index, {
+                        top: '42px',
+                        left:"399.5px",
+                        transform:'translateY(-10%)'
+                    });
+                    
+                }
+
+            }); }
+            
+            // $(".layui-layer").css("border-radius", "10px");
+    }
+    
+    // 编辑
+    function editSettlement(id){
+        var edit_url = "{:url('settlement/edit_remit')}"+"?id="+id;
+        window.location.href=edit_url;
+    }
+   
+</script>
+</body>
+</html>

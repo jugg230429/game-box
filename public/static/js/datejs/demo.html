@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>在选择事件范围时,选择一个日期根据选择的左面还是右面,进行自动匹配开始日期和结束日期</title>
+    <link rel="stylesheet" href="bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="daterangepicker.css" />
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="moment.min.js"></script>
+    <script type="text/javascript" src="daterangepicker.js"></script>
+    <script type="text/javascript" src="momentfunction.js"></script>
+    <script type="text/javascript">
+ 
+        $(function () {
+            //区间时间插件
+            $("input[name='date2']").daterangepicker(
+                {
+                    maxDate: moment().subtract('days',1).format('YYYY-MM-DD') , //最大昨日时间
+                    // maxDate:moment(),
+                    startDate: '2019-06-06',
+                    endDate: '2019-06-12',
+                    // dateLimit: {
+                    //     days: 10
+                    // }, //起止时间的最大间隔 
+                    showDropdowns: false,//年月份下拉选择
+                    showWeekNumbers: false, //是否改年显示第几周
+                    // autoApply:true,
+                    opens:'right',//位置
+                    // drops:true,//确定取消按钮
+                    showDropdowns:true,
+                    locale:true,
+                    // showWeekNumbers:true,
+                    ranges: {
+                        //'最近1小时': [moment().subtract('hours',1), moment()],
+                        // '今日': [moment().startOf('day'), moment()],
+                        '昨日': getYesterday(),
+                        '过去7天': getLast7Days(1),
+                        '过去14天': getLast7Days(2),
+                        '过去30天': getLast30Days(),
+                        '过去4周': getLastWeekDays(4),
+                        '过去8周': getLastWeekDays(8),
+                        '过去12周': getLastWeekDays(12),
+                        '过去3个月': getLastMonthDays(3),
+                    },
+                    locale: {
+                        format: "YYYY-MM-DD",
+                        separator: "至",
+                        applyLabel: "确认",
+                        cancelLabel: "取消",
+                        // fromLabel: "开始时间",
+                        // toLabel: "结束时间",
+                        customRangeLabel: "自定义日期",
+                        daysOfWeek: ["日","一","二","三","四","五","六"],
+                        monthNames: ["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"],
+                        firstDay: 1
+                    },
+                }
+            ).on('cancel.daterangepicker', function(ev, picker) {
+                $("#date2").val(picker.startDate.format('YYYY-MM-DD')+"至"+picker.endDate.format('YYYY-MM-DD'));
+            }).on('apply.daterangepicker', function(ev, picker) {
+                $("#date2").val(picker.startDate.format('YYYY-MM-DD')+"至"+picker.endDate.format('YYYY-MM-DD'));
+            }, function(start, end, label) {
+                 // $('.daterangepicker').find('.ranges ul li:last-child').addClass('active').siblings().removeClass('active');
+                // console.log(start);
+            });
+            $('.daterangepicker').find('.ranges ul li:last-child').css('color','green');
+ 
+        });
+    </script>
+</head>
+<body>
+ 
+    <div class="form-group">
+        <label>区间</label>
+        <div>
+            <input type="text" name="date2" id="date2" class="form-control" style="width: 20%;margin-left: 20%;" readonly="">
+        </div>
+        <label>区间</label>
+        <label>区间</label>
+        <label>区间</label>
+        <label>区间</label>
+        <label>区间</label>
+        <label>区间</label>
+        <label>区间</label>
+        <label>区间</label>
+        <label>区间</label>
+        <label>区间</label>
+        <label>区间</label>
+        <label>区间</label>
+        <label>区间</label>
+        <label>区间</label>
+        <label>区间</label>
+        <label>区间</label>
+        <label>区间</label>
+    </div>
+</body>
+</html>

@@ -1,0 +1,602 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/invest_money.css">
+</block>
+<block name="body">
+    <div class="invest_money_page">
+        <div class="invest_money_header">
+            <a href="javascript:back();"><img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon"></a>
+            <p class="fl invest_money_header_title">账户充值</p>
+            <a href="{:url('pay/record')}"><p class="fg invest_money_header_right">充值记录</p></a>
+        </div>
+        <div class="charge-type-menu">
+            <if condition="get_ptb_bind_recharge_status('ptb_pay') eq 1">
+                <p class="charge-type-item active">平台币充值</p>
+            </if>
+            <if condition="get_ptb_bind_recharge_status('ptb_pay') eq 0 and get_ptb_bind_recharge_status('bind_pay') eq 1">
+                <p class="charge-type-item active">绑币充值</p>
+            <elseif condition="get_ptb_bind_recharge_status('ptb_pay') eq 1 and get_ptb_bind_recharge_status('bind_pay') eq 1">
+                <p class="charge-type-item">绑币充值</p>
+            </if>
+        </div>
+        <php>if(get_ptb_bind_recharge_status('ptb_pay') == 1){</php>
+            <div class="charge-type-tab" >
+                <form action="" method="post" id="pay_form" target="_self">
+                <div class="invest_money_cons">
+                    <div class="invest_money_con_item" style="margin-top: 0.1rem">
+                        <p class="fl invest_money_con_item_left">充值账号</p>
+                        <p class="fl invest_money_con_item_right">
+                            <input type="text" id="account1" name="account" placeholder="请输入充值账号" value="{$session.login_account}" class="invest_num account invest_money_con_item_right" style="margin-bottom: 0">
+                        </p>
+                    </div>
+                    <div class="type_down__long_hx clear"></div>
+                    <div class="invest_money_con_item">
+                        <p class="fl invest_money_con_item_left">账号余额</p>
+                        <p class="fl invest_money_con_item_right pay_num">{$user_info.balance}</p>
+                    </div>
+                    <div class="type_down__long_hx clear"></div>
+                    <div class="invest_money_con_item">
+                        <p class="fl invest_money_con_item_left">充值金额</p>
+                        <p class="fl invest_money_con_item_right">
+                            <input name="money" class="money invest_mon" onkeyup="this.value = this.value.replace(/\D|^0/g, '');" type="text" placeholder="最低充值1元" style="margin-bottom: 0">
+                        </p>
+                    </div>
+                    <div class="type_down__long_hx clear"></div>
+                    <div class="invest_money_con_item">
+                        <p class="fl invest_money_con_item_left" style="position: relative;top: -0.2rem">获得平台币</p>
+                        <p class="fl invest_money_con_item_right" style="position: relative;top: -0.2rem"><span class="get_ptb_money">0</span></p>
+                        <p class="clear invest_money_con_item_tap" style="margin-top: 0.4rem">（充值比例：1元=1平台币）</p>
+                    </div>
+                </div>
+                <div class="change_invest_type">
+                    <p class="change_invest_type_title">选择支付方式</p>
+                    <input type="hidden" name="pay_way" id="pay_way" value=""  />
+                    <!-- 选中样式通过js控制 平台币充值 -->
+                    <!-- <if condition="pay_type_status('zfb') eq 1 && !cmf_is_wechat()" > -->
+                    <if condition="pay_type_status('zfb') eq 1" >
+                        <div class="fl change_invest_type_item" data-pay-way="3" data-pay-url="{:url('pay/alipay')}">
+                            <img src="__TMPL__/mobilepublic/assets/images/pay_icon_zfb.png" alt="" class="invest_type_img">
+                            <p>支付宝</p>
+                            <img src="__TMPL__/mobilepublic/assets/images/btn_selected_xuanzhon.png" alt="" class="change_type_selected" style="display: none">
+                        </div>
+                    </if>
+
+                    <if condition="pay_type_status('wxscan') eq 1">
+                        <div class="fl change_invest_type_item" data-pay-way="4" data-pay-url="{:url('pay/weixinpay')}">
+                            <img src="__TMPL__/mobilepublic/assets/images/pay_icon_wx.png" alt="" class="invest_type_img">
+                            <p>微信</p>
+
+                            <img src="__TMPL__/mobilepublic/assets/images/btn_selected_xuanzhon.png" alt="" class="change_type_selected" style="display: none">
+                        </div>
+                    </if>
+
+                </div>
+                <div class="invest_money_btn">
+                    <input type="hidden" name="weixin_pay_type" value="1">
+                    <input type="hidden" name="coin_type" value="0">
+                    <p id="do_pay">确认支付</p>
+                </div>
+            </form>
+            </div>
+        <php>}</php>
+        <php>if(get_ptb_bind_recharge_status('ptb_pay') == 0 && get_ptb_bind_recharge_status('bind_pay') == 1){</php>
+            <div class="charge-type-tab" >
+                <form action="" method="post" id="pay_form2" target="_self">
+                <div class="invest_money_cons">
+                    <div class="invest_money_con_item" style="margin-top: 0.1rem">
+                        <p class="fl invest_money_con_item_left">充值账号</p>
+                        <p class="fl invest_money_con_item_right">
+                            <input type="text" name="account" id="account" placeholder="请输入充值账号" value="{$session.login_account}" class="invest_num account invest_money_con_item_right" style="margin-bottom: 0">
+                        </p>
+                    </div>
+                    <div class="type_down__long_hx clear"></div>
+                    <div class="invest_money_con_item" style="margin-top: 0.1rem">
+                        <p class="fl invest_money_con_item_left">选择游戏</p>
+                        <p class="fl invest_money_con_item_right game">
+                            <input type="text" name="select_game" placeholder="请选择游戏" id="cur_game" value="" readonly class="invest_num select-game invest_money_con_item_right" style="margin-bottom: 0">
+                            <span class="charge-game-list" id="game-list">
+                                <input type="text" placeholder="请输入游戏" style="border: 1px solid rgba(220, 220, 220, 1)!important" class="newInput-gameName js-filter">
+                                <php>
+                                    $map['game_status'] = 1;
+                                    $map['id'] = ['in',$user_play_game];
+                                </php>
+                                <volist name=":get_game_list('id,game_name',$map)" id="vo">
+                                    <span class="charge-game-item js-select-game" data-game_id="{$vo.id}" data-game_name="{$vo['game_name']}" data-discount="10.00">{$vo.game_name}</span>
+                                </volist>
+                            </span>
+                            <input type="hidden" name="game_id" id="game_id" value="0">
+                        </p>
+                    </div>
+                    <div class="type_down__long_hx clear"></div>
+                    <div class="invest_money_con_item">
+                        <p class="fl invest_money_con_item_left">充值金额</p>
+                        <p class="fl invest_money_con_item_right">
+                            <input name="money" class="money2 invest_mon" onkeyup="this.value = this.value.replace(/\D|^0/g, '');" type="text" placeholder="请输入充值金额" style="margin-bottom: 0">
+                        </p>
+                    </div>
+                    <div class="type_down__long_hx clear"></div>
+                    <div class="invest_money_con_item">
+                        <p class="fl invest_money_con_item_left">折扣比例</p>
+                        <p class="fl invest_money_con_item_right discount"><span id="discount">0.00</span>折</p>
+                    </div>
+                    <div class="type_down__long_hx clear"></div>
+                    <div class="invest_money_con_item">
+                        <p class="fl invest_money_con_item_left">实付金额</p>
+                        <p class="fl invest_money_con_item_right real-pay" ><span id="real_pay">0.00</span></p>
+                    </div>
+                    <div class="type_down__long_hx clear"></div>
+                    <div class="invest_money_con_item">
+                        <p class="fl invest_money_con_item_left" style="position: relative;top: -0.2rem">获得绑币</p>
+                        <p class="fl invest_money_con_item_right" style="position: relative;top: -0.2rem"><span class="get_binding_money">0</span></p>
+                    </div>
+                </div>
+                <div class="change_invest_type">
+                    <p class="change_invest_type_title">选择支付方式</p>
+                    <input type="hidden" name="pay_way" id="pay_way2" value=""  />
+                    <!-- 选中样式通过js控制 折扣充值 -->
+                    <!-- <if condition="pay_type_status('zfb') eq 1 && !cmf_is_wechat()" > -->
+                    <if condition="pay_type_status('zfb') eq 1" >
+                        <div class="fl change_invest_type_item2" data-pay-way="3" data-pay-url="{:url('pay/alipay')}">
+                            <img src="__TMPL__/mobilepublic/assets/images/pay_icon_zfb.png" alt="" class="invest_type_img">
+                            <p>支付宝</p>
+                            <img src="__TMPL__/mobilepublic/assets/images/btn_selected_xuanzhon.png" alt="" class="change_type_selected2" style="display: none">
+                        </div>
+                    </if>
+
+                    <!-- changed by wjd -->
+                    <if condition="pay_type_status('wxscan') eq 1 && cmf_is_wechat()">
+                        <!-- <div class="fl change_invest_type_item2" data-pay-way="4" data-pay-url="{:url('pay/weixinpay')}"> -->
+                        <div class="fl change_invest_type_item2" data-pay-way="4" data-pay-url="{:url('api/Pay/get_wx_code')}">
+                            <img src="__TMPL__/mobilepublic/assets/images/pay_icon_wx.png" alt="" class="invest_type_img">
+                            <p>微信</p>
+                            <img src="__TMPL__/mobilepublic/assets/images/btn_selected_xuanzhon.png" alt="" class="change_type_selected2" style="display: none">
+                        </div>
+
+                    <elseif condition="pay_type_status('wxscan') eq 1"/>
+                        <div class="fl change_invest_type_item2" data-pay-way="4" data-pay-url="{:url('pay/weixinpay')}">
+                            <img src="__TMPL__/mobilepublic/assets/images/pay_icon_wx.png" alt="" class="invest_type_img">
+                            <p>微信</p>
+                            <img src="__TMPL__/mobilepublic/assets/images/btn_selected_xuanzhon.png" alt="" class="change_type_selected2" style="display: none">
+                        </div>
+
+                    <else/>
+
+                    </if>
+
+                </div>
+                <div class="invest_money_btn">
+                    <input type="hidden" name="weixin_pay_type" value="1">
+                    <input type="hidden" name="coin_type" value="1">
+                    <p id="do_pay2">确认支付</p>
+                </div>
+            </form>
+            </div>
+        <php>}elseif(get_ptb_bind_recharge_status('ptb_pay') == 1 && get_ptb_bind_recharge_status('bind_pay') == 1){</php>
+            <div class="charge-type-tab" style="display: none">
+                <form action="" method="post" id="pay_form2" target="_self">
+                    <div class="invest_money_cons">
+                        <div class="invest_money_con_item" style="margin-top: 0.1rem">
+                            <p class="fl invest_money_con_item_left">充值账号</p>
+                            <p class="fl invest_money_con_item_right">
+                                <input type="text" name="account" id="account" placeholder="请输入充值账号" value="{$session.login_account}" class="invest_num account invest_money_con_item_right" style="margin-bottom: 0">
+                            </p>
+                        </div>
+                        <div class="type_down__long_hx clear"></div>
+                        <div class="invest_money_con_item" style="margin-top: 0.1rem">
+                            <p class="fl invest_money_con_item_left">选择游戏</p>
+                            <p class="fl invest_money_con_item_right game">
+                                <input type="text" name="select_game" placeholder="请选择游戏" id="cur_game" value="" readonly class="invest_num select-game invest_money_con_item_right" style="margin-bottom: 0">
+                                <span class="charge-game-list" id="game-list">
+                                <input type="text" placeholder="请输入游戏" style="border: 1px solid rgba(220, 220, 220, 1)!important" class="newInput-gameName js-filter">
+                                <php>
+                                    $map['game_status'] = 1;
+                                    $map['id'] = ['in',$user_play_game];
+                                </php>
+                                <volist name=":get_game_list('id,game_name',$map)" id="vo">
+                                    <span class="charge-game-item js-select-game" data-game_id="{$vo.id}" data-game_name="{$vo['game_name']}" data-discount="10.00">{$vo.game_name}</span>
+                                </volist>
+                            </span>
+                                <input type="hidden" name="game_id" id="game_id" value="0">
+                            </p>
+                        </div>
+                        <div class="type_down__long_hx clear"></div>
+                        <div class="invest_money_con_item">
+                            <p class="fl invest_money_con_item_left">充值金额</p>
+                            <p class="fl invest_money_con_item_right">
+                                <input name="money" class="money2 invest_mon" onkeyup="this.value = this.value.replace(/\D|^0/g, '');" type="text" placeholder="请输入充值金额" style="margin-bottom: 0">
+                            </p>
+                        </div>
+                        <div class="type_down__long_hx clear"></div>
+                        <div class="invest_money_con_item">
+                            <p class="fl invest_money_con_item_left">折扣比例</p>
+                            <p class="fl invest_money_con_item_right discount"><span id="discount">0.00</span>折</p>
+                        </div>
+                        <div class="type_down__long_hx clear"></div>
+                        <div class="invest_money_con_item">
+                            <p class="fl invest_money_con_item_left">实付金额</p>
+                            <p class="fl invest_money_con_item_right real-pay" ><span id="real_pay">0.00</span></p>
+                        </div>
+                        <div class="type_down__long_hx clear"></div>
+                        <div class="invest_money_con_item">
+                            <p class="fl invest_money_con_item_left" style="position: relative;top: -0.2rem">获得绑币</p>
+                            <p class="fl invest_money_con_item_right" style="position: relative;top: -0.2rem"><span class="get_binding_money">0</span></p>
+                        </div>
+                    </div>
+                    <div class="change_invest_type">
+                        <p class="change_invest_type_title">选择支付方式</p>
+                        <input type="hidden" name="pay_way" id="pay_way2" value=""  />
+                        <!-- 选中样式通过js控制 折扣充值 -->
+                        <!-- <if condition="pay_type_status('zfb') eq 1 && !cmf_is_wechat()" > -->
+                        <if condition="pay_type_status('zfb') eq 1" >
+                            <div class="fl change_invest_type_item2" data-pay-way="3" data-pay-url="{:url('pay/alipay')}">
+                                <img src="__TMPL__/mobilepublic/assets/images/pay_icon_zfb.png" alt="" class="invest_type_img">
+                                <p>支付宝</p>
+                                <img src="__TMPL__/mobilepublic/assets/images/btn_selected_xuanzhon.png" alt="" class="change_type_selected2" style="display: none">
+                            </div>
+                        </if>
+
+                        <!-- changed by wjd -->
+                        <if condition="pay_type_status('wxscan') eq 1 && cmf_is_wechat()">
+                            <!-- <div class="fl change_invest_type_item2" data-pay-way="4" data-pay-url="{:url('pay/weixinpay')}"> -->
+                            <div class="fl change_invest_type_item2" data-pay-way="4" data-pay-url="{:url('api/Pay/get_wx_code')}">
+                                <img src="__TMPL__/mobilepublic/assets/images/pay_icon_wx.png" alt="" class="invest_type_img">
+                                <p>微信</p>
+                                <img src="__TMPL__/mobilepublic/assets/images/btn_selected_xuanzhon.png" alt="" class="change_type_selected2" style="display: none">
+                            </div>
+
+                            <elseif condition="pay_type_status('wxscan') eq 1"/>
+                            <div class="fl change_invest_type_item2" data-pay-way="4" data-pay-url="{:url('pay/weixinpay')}">
+                                <img src="__TMPL__/mobilepublic/assets/images/pay_icon_wx.png" alt="" class="invest_type_img">
+                                <p>微信</p>
+                                <img src="__TMPL__/mobilepublic/assets/images/btn_selected_xuanzhon.png" alt="" class="change_type_selected2" style="display: none">
+                            </div>
+
+                            <else/>
+
+                        </if>
+
+                    </div>
+                    <div class="invest_money_btn">
+                        <input type="hidden" name="weixin_pay_type" value="1">
+                        <input type="hidden" name="coin_type" value="1">
+                        <p id="do_pay2">确认支付</p>
+                    </div>
+                </form>
+            </div>
+        <php>}</php>
+    </div>
+</block>
+<block name="script">
+    <script>
+        var errormsg = '';
+        var is_weixin = "{:cmf_is_wechat()}";
+        var is_company_weixin = "{:cmf_is_company_wechat()}";
+        var weixinUrl="{:url('api/Pay/get_wx_code')}";
+        var is_alipay = 0;
+        var pay_url = '';
+        $(function () {
+            //充值类型切换tab
+            $('.charge-type-item').click(function () {
+                $(this).addClass("active").siblings(".charge-type-item").removeClass("active");
+                var index =$(this).index();
+                $('.charge-type-tab').eq(index).show().siblings(".charge-type-tab").hide();
+            });
+            $("#account1").change(function () {
+                var account = "{$user_info.account}";
+                var coin = "{$user_info.balance}";
+                if($("#account1").val() != account){
+                    $(".pay_num").text('--');
+                }else{
+                    $(".pay_num").text(coin);
+                }
+            })
+            //选择游戏
+            // $(document).click(function(){
+            //     $("#game-list").hide();
+            // });
+            //折扣账号变化
+            $("#account").bind("input propertychange",function(event){
+                that = $(this);
+                $('#game-list').html('');
+                $('#cur_game').val('');
+                $.post("{:url('get_user_play_game')}",{account:that.val()},function(res){
+                    var html = '';
+                    if(res.code==200){
+                        $.each(res.data,function (index,value) {
+                            html += '<span class="charge-game-item js-select-game" data-game_id="';
+                            html += value.id;
+                            html += '" data-discount="';
+                            html += value.bind_recharge_discount;
+                            html += '">';
+                            html += value.game_name;
+                            html += '</span>';
+                        })
+                    }
+                    $('#game-list').html(html);
+                });
+            });
+            $('#cur_game').click(function () {
+                var account = $("#account").val();
+                if(account == ''){
+                    layer.msg('请输入充值账号');
+                    return false;
+                }
+                var gamelist = $('#game-list').html().trim();
+                if(gamelist==''){
+                    layer.msg('充值账号还未玩过游戏，不可享受折扣优惠');
+                    return false;
+                }
+                event.stopPropagation();
+                $('#game-list').toggle();
+            });
+
+            // $('#game-list span').click(function () {
+            $('body').on('click','#game-list .js-select-game',function(){
+                event.stopPropagation();
+                var game_name=$(this).text();
+                $('#cur_game').val(game_name);
+                // 游戏折扣
+
+                // $("#discount").text($(this).data("discount"));
+                $('.money2').val('');
+                $(".get_binding_money").text(0);
+                $('#real_pay').text(0);
+                $('#game-list').hide();
+                $('#game_id').val($(this).attr('data-game_id'));
+                //查询折扣-只作为展示
+                var account = $("#account").val();
+                if(!account){
+                    layer.msg("账号不能为空");
+                    return false;
+                }
+                var game_id = $('#game_id').val();
+                $.post("{:url('get_account_game_bind_discount')}",{account:account,game_id:game_id},function(res){
+                    if(res.code==200){
+                        $("#discount").text(res.discount);
+                    }
+                });
+            });
+
+            //验证充值金额
+            $(".money,.money2").on("propertychange input",function () {
+                var money = $(this).val();
+                if(money == ''){
+                    layer.msg('充值金额不能为空');
+                    return false;
+                }
+                if(money<1 || money>50000){
+                    layer.msg('充值金额不正确');
+                    return false;
+                }
+            });
+            //计算获得平台币
+            $('.money').keyup(function () {
+                if($(this).val()>=1){
+                    $(".get_ptb_money").text($(this).val());
+                }else{
+                    $(".get_ptb_money").text(0);
+                }
+            });
+            //计算获得绑币
+            $('.money2').keyup(function () {
+                if($(this).val()>=1){
+                    var discount =parseFloat($('#discount').text());
+                    var real_pay =($(this).val())*discount*0.1;
+                    $('#real_pay').text(real_pay.toFixed(2));
+                    $(".get_binding_money").text($(this).val());
+                }else{
+                    $(".get_binding_money").text(0);
+                }
+            });
+
+            //选择支付方式 平台币充值
+            $('.change_invest_type_item').click(function () {
+                var pay_way = $(this).attr('data-pay-way');
+                // 新增 alipay
+                if(pay_way == 3){
+                    is_alipay = 1;
+                }
+                pay_url = $(this).attr('data-pay-url');
+                $("#pay_way").val(pay_way);
+                $("#pay_form").attr("action",pay_url);
+
+                $('.change_type_selected').hide();
+                $(this).children('.change_type_selected').show();
+            });
+            $(".change_invest_type_item").eq(0).click();
+
+            // 选择支付方式 折扣充值
+            $('.change_invest_type_item2').click(function () {
+                var pay_way = $(this).attr('data-pay-way');
+                if(pay_way == 3){
+                    is_alipay = 1;
+                }
+                pay_url = $(this).attr('data-pay-url');
+
+                $("#pay_way2").val(pay_way);
+                $("#pay_form2").attr("action",pay_url);
+
+                $('.change_type_selected2').hide();
+                $(this).children('.change_type_selected2').show();
+            });
+            $(".change_invest_type_item2").eq(0).click();
+
+            //提交订单
+            $("#do_pay").click(function () {
+                //检查用户是否存在
+                var url = "{:url('pay/checkAccount')}";
+                var account = $(".account").val();
+                if(!account){
+                    layer.msg("账号不能为空");
+                    return false;
+                }
+                $.ajaxSettings.async = false; //同步请求
+                $.post(url,{account:account},function(res){
+                    if(res.code==0){
+                        layer.msg(res.msg);
+                        return false;
+                    }else{
+                        if($(".money").val() == ''){
+                            layer.msg('充值金额不能为空');
+                            return false;
+                        }
+                        if($(".money").val()<1 || $(".money").val()>50000){
+                            layer.msg('充值金额不正确');
+                            return false;
+                        }
+
+                        if(is_weixin && !is_company_weixin && $("#pay_way").val() == 4){
+                            $("#pay_form").attr('action',weixinUrl);
+                            $("#pay_form").submit();
+                            return false;
+                        }
+                        // 新增
+                        // $("#pay_form").submit();
+
+                        //更改为ajax请求---原支付逻辑直接跳转URL-安卓的支付宝APP支付则通知安卓拉起APP支付-byh-s
+                        $.ajax({
+                            url: pay_url,
+                            type: 'post',
+                            dataType: 'json',
+                            data: $("#pay_form").serialize(),
+                            success: function (res) {
+                                if (res.code == 0) {
+                                    layer.msg(res.msg);
+                                    return false;
+                                }else if(res.code == 1){
+                                    //支付返回信息统一跳转,如是支付宝支付,再行判断wap和APP(只有安卓)
+                                    if(res.data.ali_app == 1){
+                                        //支付宝APP支付-通知安卓
+                                        window.xgsdk.appaliapppay(res.data.orderInfo);//安卓
+                                        return false;
+                                    }
+                                    //其他URL跳转的
+                                    layer.msg('请稍后...');
+                                    window.location.href = res.url;
+                                    return false;
+
+                                }else{
+                                    layer.msg(res);
+                                    return false;
+                                }
+                            },
+                            error: function () {
+                                layer.msg("错误");
+                            }
+                        });
+                        //更改为ajax请求---原支付逻辑直接跳转URL-安卓的支付宝APP支付则通知安卓拉起APP支付-byh-e
+
+
+                    }
+                });
+
+            })
+
+            //提交订单
+            $("#do_pay2").click(function () {
+
+                //检查用户是否存在
+                var url = "{:url('pay/checkAccount')}";
+                var account = $("#account").val();
+                var select_game=$('#cur_game').val();
+                var game_id=$('#game_id').val();
+                if(!account){
+                    layer.msg("账号不能为空");
+                    return false;
+                }
+                if(!select_game){
+                    layer.msg("请选择游戏");
+                    return false;
+                }
+
+                if(errormsg != ''){
+                    layer.msg(errormsg);
+                    return false;
+                }
+                $.ajaxSettings.async = false; //同步请求
+                $.post(url,{account:account,game_id:game_id},function(res){
+                    if(res.code==0){
+                        layer.msg(res.msg);
+                        return false;
+                    }else{
+                        if($("#pay_form2 .money2").val() == ''){
+                            layer.msg('充值金额不能为空');
+                            return false;
+                        }
+                        if($("#pay_form2 .money2").val()<1 || $("#pay_form2 .money2").val()>50000){
+                            layer.msg('充值金额不正确');
+                            return false;
+                        }
+
+                        if(is_weixin && !is_company_weixin && $("#pay_way2").val() == 4){
+                            $("#pay_form2").attr('action',weixinUrl);
+                            $("#pay_form2").submit();
+                            return false;
+                        }
+
+                        // $("#pay_form2").submit();
+                        //更改为ajax请求---原支付逻辑直接跳转URL-安卓的支付宝APP支付则通知安卓拉起APP支付-byh-s
+                        $.ajax({
+                            url: pay_url,
+                            type: 'post',
+                            dataType: 'json',
+                            data: $("#pay_form2").serialize(),
+                            success: function (res) {
+                                if (res.code == 0) {
+                                    layer.msg(res.msg);
+                                    return false;
+                                }else if(res.code == 1){
+                                    //支付返回信息统一跳转,如是支付宝支付,再行判断wap和APP(只有安卓)
+                                    if(res.data.ali_app == 1){
+                                        //支付宝APP支付-通知安卓
+                                        window.xgsdk.appaliapppay(res.data.orderInfo);//安卓
+                                        return false;
+                                    }
+                                    //其他URL跳转的
+                                    layer.msg('请稍后...');
+                                    window.location.href = res.url;
+                                    return false;
+
+                                }else{
+                                    layer.msg(res);
+                                    return false;
+                                }
+                            },
+                            error: function () {
+                                layer.msg("错误");
+                            }
+                        });
+                        //更改为ajax请求---原支付逻辑直接跳转URL-安卓的支付宝APP支付则通知安卓拉起APP支付-byh-e
+                    }
+                });
+                return false;
+            })
+
+
+            // 过滤游戏列表
+            $(".js-filter").bind('input propertychange', function () {
+                var s_text = $(this).val();
+                if (typeof (s_text) == "undefined" || s_text === '' || s_text == null) {
+                    $(".js-select-game").show();
+                } else {
+                    $(".js-select-game").hide();
+                    $("span[data-game_name^='" + s_text + "']").show();
+                }
+                return false;
+            });
+
+        })
+        function back(){
+            try{
+                $mt = "{:get_devices_type()}";
+                if($mt==2){
+                    window.webkit.messageHandlers.xgsdk_finishPage.postMessage(1);
+                }else{
+                    window.xgsdk.finishPage()
+                }
+            }catch (e) {
+                history.go(-1);
+            }
+        }
+    </script>
+</block>

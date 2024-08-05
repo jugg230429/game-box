@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>充值结果</title>
+		<link href="__TMPL__/mediapublic/assets/css/pay_result.css" rel="stylesheet">
+	</head>
+	<body>
+		<div id="czjgbox" style="margin: 70px auto 250px;">
+	<div class="jgboxTop"></div>
+
+	<div class="jgCon_sb jgCon">
+		<if condition="$data['pay_status'] eq 0">
+			<b class="jgimg">充值失败！</b>
+		<else/>
+			<b class="succedimg">充值成功!</b>
+		</if>
+
+
+		<div class="czinfo">
+			<if condition="$data['pay_status'] eq 0">
+				<h1 class="czinfo_title"><span>很抱歉，<font>充值失败！</font>可能是因为网络原因延迟，请稍后查看充值是否成功。</span></h1>
+			<else/>
+				<h1 class="succed_czinfo_title"><span class="fl">恭喜您，<font style="color: #00C33C">充值成功！</font></span></h1>
+			</if>
+			<dl>
+				<dt>您的充值方式：</dt>
+				<dd>{:get_info_status($data['pay_way'],1)}<if condition="$data['type'] eq 1">充平台币<elseif condition="$data['type'] eq 2" />充游戏币<else/>充绑币</if><d>
+			</dl>
+			<dl>
+				<dt>您的订单号：</dt>
+				<dd><i>{$data.pay_order_number}</i></dd>
+			</dl>
+			<dl>
+				<dt>您的账号：</dt>
+				<dd>{:get_user_name($data['user_id'])}</dd>
+			</dl>
+			<dl>
+				<dt>您的充值金额：</dt>
+				<dd><em><font>{$data.pay_amount}</font>元</em></dd>
+			</dl>
+			<neq name="data.type" value="1">
+			<dl>
+				<dt>充值游戏：</dt>
+				<dd><em><font>{$data.game_name}</font></em></dd>
+			</dl>
+			</neq>
+			<dl>
+				<dt>您获得：</dt>
+				<dd><em><font><if condition="$data['type'] eq 2">{:get_game_coin($data['game_id'],$data.cost)}<else/>{$data.cost}</if></font><if condition="$data['type'] eq 1">平台币<elseif condition="$data['type'] eq 2" />游戏币<else/>绑币</if></em></dd>
+			</dl>
+			<ul>
+				<li>
+					<a href="{:url('Pay/pay')}" class="ag3r"><div class="clsoewin"><p>继续充值</p></div></a>
+				</li>
+				<li>
+					<a href="{:url('Index/index')}" class="ag3r"><div class="clsoewin"><p>返回Web平台</p></div></a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="jgboxBottom"></div>
+</div>
+	</body>
+</html>

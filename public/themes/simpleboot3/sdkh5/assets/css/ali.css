@@ -1,0 +1,330 @@
+@charset "utf-8";
+
+/**
+* 模块样式
+* @author 鹿文学[lwx]<fyj301415926@126.com>
+*/
+html {
+    overflow: auto;
+    overflow-x: hidden;
+    font-size: 12px;
+    font-family: Tahoma,'Droid Sans Fallback','苹方','Microsoft Yahei','微软雅黑',SimHei,"黑体",Tahoma,Verdana,Arial,'宋体',sans-serif;
+    line-height: 1.4;
+}
+html,body,div,ul,li,ol,input,select,teatarea {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+img {
+    border: none;
+    vertical-align: middle;
+}
+
+ol,ul {
+    margin: 0;
+    padding: 0;
+    color: inherit;
+    list-style: none;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+body {
+    overflow: auto;
+    overflow-x: hidden;
+    margin: 0;
+    font-size: inherit;
+    -webkit-touch-callout: none;
+    -webkit-text-size-adjust: none;
+    -webkit-user-select: none;
+    -webkit-highlight: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body::-webkit-scrollbar {
+    width: 3px;
+    height: 4px;
+}
+
+body::-webkit-scrollbar-button {
+    display: none;
+    background-color: #f4f4f4;
+}
+
+body::-webkit-scrollbar-track,body::-webkit-scrollbar-track-piece {
+    background: #f4f4f4;
+}
+
+body::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: #ababab;
+}
+
+body::-webkit-scrollbar-corner {
+    background: #f4f4f4;
+}
+
+body::-webkit-scrollbar-resizer {
+    background: #ababab;
+}
+
+body {
+    scrollbar-arrow-color: #f4f4f4;
+    scrollbar-face-color: #f4f4f4;
+    scrollbar-3dlight-color: #f4f4f4;
+    scrollbar-highlight-color: #f4f4f4;
+    scrollbar-shadow-color: #f4f4f4;
+    scrollbar-darkshadow-color: #f4f4f4;
+    scrollbar-track-color: #f4f4f4;
+    scrollbar-base-color: #ababab;
+}
+
+button,input,select,textarea {
+    outline: 0;
+    font-size: inherit;
+    color: inherit;
+    font-family: 'Droid Sans Fallback','苹方','Microsoft Yahei','微软雅黑',SimHei,"黑体";
+}
+
+input[type="text"],
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+input[type="search"],
+select,
+textarea,
+button {
+    -webkit-appearance: none;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 100px white inset;
+}
+.clear {
+    zoom: 1;
+}
+
+.clear:after {
+    clear: both;
+    display: block;
+    overflow: hidden;
+    height: 0;
+    content: "";
+    font-size: 0;
+}
+
+.hidden {
+    display: none!important;
+}
+
+.table {
+    display: table;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+.tableHeadGroup {
+    display: table-header-group;
+}
+.tableRowGroup {
+    display: table-row-group;
+}
+.tableRow {
+    display: table-row;
+}
+.tableCell {
+    position: relative;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.ellipsis {
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: normal;
+}
+.center {
+    text-align: center;
+}
+.empty {
+    width: 100% !important;
+    height: 100% !important;
+    border-bottom: none !important;
+    font-size: .46rem;
+}
+.empty .tableCell {
+    text-align: center !important;
+}
+
+.moneyIcon::after,
+.moneyPrefixIcon::before {
+    font-size: inherit;
+    color: inherit;
+    margin-left: .01rem;
+}
+.moneyIcon::after {
+    content: '元';
+}
+.moneyPrefixIcon::before {
+    content: '￥';
+}
+
+body {
+    color: #333;
+    font-size: .38rem;
+}
+
+.gameInfo {
+    width: 100%;
+    height: 2rem;
+    padding: 0 .3rem;
+}
+.gameInfo .first {
+    width: 1.8rem;
+}
+.gameIcon {
+    width: 1.4rem;
+    height: 1.4rem;
+    -webkit-border-radius: .3rem;
+    -moz-border-radius: .3rem;
+    border-radius: .3rem;
+}
+.gameName {
+    font-size: .42rem;
+    margin: 0;
+    padding-bottom: .106rem;
+}
+.gameMoney {
+    font-size: .35rem;
+    color: #999;
+    padding-top: .05rem;
+}
+.gameMoney .number {
+    color: #0189FF;
+    font-size: .38rem;
+}
+.payWarning {
+    border-top: .2rem solid #F6F6F6;
+    padding-top: .604rem;
+}
+.warningText {
+    color: #FE5454;
+    padding: 0 .31rem;
+    margin: 0;
+}
+.warningList {
+    width: 100%;
+    padding: .07rem .31rem 0;
+}
+.warningList .top,
+.warningList .bottom {
+    padding-top: .424rem;
+}
+.warningList .top .omitHorizontalIcon {
+    display: inline-block;
+    width: .3rem;
+    height: .09rem;
+    margin: 0 .1rem;
+    background: url("../images/wechat_alipay/lh.png") no-repeat center center / 100% 100%;
+}
+.warningList .top .omitVerticalIcon {
+    display: inline-block;
+    width: .09rem;
+    height: .31rem;
+    margin: 0 .12rem;
+    background: url("../images/wechat_alipay/ls.png") no-repeat center center / 100% 100%;
+}
+.warningList .bottom .omitHorizontalIcon,
+.warningList .bottom .omitVerticalIcon,
+.warningList .bottom .browserOtherIcon,
+.warningList .bottom .browserSafariIcon {
+    display: inline-block;
+    width: .76rem;
+    height: .76rem;
+    background: #EDEDED url("../images/wechat_alipay/l2h.png") no-repeat center center / 47% 11.8%;
+    border-radius: .14rem;
+    margin-left: .58rem;
+}
+.warningList .bottom .omitVerticalIcon {
+    background-image: url("../images/wechat_alipay/l2s.png");
+    background-size: 11.8% 47%;
+    margin-left: .4rem;
+}
+
+.warningList .top .browserOther,
+.warningList .top .browserSafari {
+    color: #0189FF;
+}
+
+.warningList .bottom .browserOtherIcon {
+    background-image: url("../images/wechat_alipay/browser.png");
+    background-size: 58% 58%;
+}
+
+.warningList .bottom .browserSafariIcon {
+    background-image: url("../images/wechat_alipay/safari.png");
+    background-size: 58% 58%;
+    margin-left: .4rem;
+}
+
+.warningList .full {
+    margin-top: 1.07rem;
+    width: 100%;
+    height: 7.43rem;
+    padding: 0 .6rem;
+}
+.warningList .full .guidIcon {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: url("../images/wechat_alipay/ts_jpg.png") no-repeat center center / 100% 100%;
+}
+
+
+@media (min--moz-device-pixel-ratio: 1.5) and (max--moz-device-pixel-ratio: 2.49),
+(-webkit-min-device-pixel-ratio: 1.5) and (-webkit-max-device-pixel-ratio: 2.49),
+(min-device-pixel-ratio: 1.5) and (max-device-pixel-ratio: 2.49),
+(min-resolution: 144dpi) and (max-resolution: 239dpi),
+(min-resolution: 1.5dppx) and (max-resolution: 2.49dppx),
+(min--moz-device-pixel-ratio: 2.5),
+(-webkit-min-device-pixel-ratio: 2.5),
+(min-device-pixel-ratio: 2.5),
+(min-resolution: 240dpi),
+(min-resolution: 2.5dppx) {
+    .warningList .top .omitHorizontalIcon {
+        background-image: url("../images/wechat_alipay/lh@2x.png");
+    }
+    .warningList .top .omitVerticalIcon {
+        background-image: url("../images/wechat_alipay/ls@2x.png");
+    }
+    .warningList .bottom .omitHorizontalIcon {
+        background-image: url("../images/wechat_alipay/l2h@2x.png");
+    }
+    .warningList .bottom .omitVerticalIcon {
+        background-image: url("../images/wechat_alipay/l2s@2x.png");
+    }
+    .warningList .bottom .browserOtherIcon {
+        background-image: url("../images/wechat_alipay/browser@2x.png");
+    }
+    .warningList .bottom .browserSafariIcon {
+        background-image: url("../images/wechat_alipay/safari@2x.png");
+    }
+
+    .warningList .full .guidIcon {
+        background-image: url("../images/wechat_alipay/ts_jpg@2x.png");
+    }
+}

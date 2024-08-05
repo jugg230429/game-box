@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" media="all" href="__STATIC__/js/datejs/daterangepicker.css"/>
+		<include file="public@head"/>
+	</head>
+
+	<body>
+		<include file="public@nav"/>
+		<include file="public@header"/>
+		<div class="trunk">
+			<div class="trunk-con">
+				<div class="right-container">
+					<div class="normal-list">
+						<div class="trunk">
+							<div class="trunk-title">
+								<div class="location ">
+									<div class="location-container fr">当前位置：<span class="location-container-text">数据管理&gt;</span><span class="location-container-text">角色查询</span></div>
+								</div>
+								<img src="__TMPL__/public/assets/images/icon_chongzhi.png" class="fl trunk-icon">
+								<span class="title-main fl ">角色查询  </span>
+								<span class="tagging">说明：仅作为玩家角色查询的辅助工具。</span>
+							</div>
+
+							<div class="tabpan">
+
+								<div class="tabpan-con tabpan-show">
+									<form action="{:url('role')}">
+										<div class="trunk-search clearfix fr">
+											<input type="text" class="tabpan-input normal-space" name="user_account" placeholder="玩家账号" value="{:input('user_account')}">
+											<input type="text" readonly style="width: 160px;" class="tabpan-input normal-space"
+												   autocomplete="off" name="rangepickdate" id="rangepickdate" placeholder="登录时间" value="{:input('rangepickdate')}">
+											<select id="game_id" name="game_id" class="tab-input js-select-gallery normal-space trunk-search-smallselect fl" >
+												<option value="" data="0">游戏名称</option>
+												<php>$gmap['game_status'] = 1;</php>
+												<volist name=":get_game_list('id,game_name,relation_game_id,relation_game_name',$gmap,null,'sort desc ,id desc')" id="vv">
+													<option <if condition="$vv['id'] eq input('game_id')"> selected</if> data="{$vv['game_name']}" value="{$vv['id']}">{$vv['game_name']}</option>
+												</volist>
+											</select>
+											<select name="server_id" id="server_id" class="tab-input js-select-gallery normal-space trunk-search-smallselect fl">
+												<option value="">区服名称</option>
+											</select>
+											<input type="text" class="tabpan-input normal-space" name="role_name" placeholder="角色名称" value="{:input('role_name')}">
+											<input type="submit" class="submit fr normal-space" id="submit" value="查询">
+											<input type="hidden" id="page" name="row" value="{:input('row',10)}">
+										</div>
+									</form>
+									<div class="clear"></div>
+									<table class="table normal-table" id="promotecoin_table">
+										<tbody>
+											<tr>
+												<th>数据更新时间</th>
+												<th>玩家账号</th>
+												<th>游戏名称</th>
+												<th>区服</th>
+												<th>角色</th>
+												<th>游戏等级</th>
+												<th>战力值</th>
+												<th>最后登录时间</th>
+												<th>最后登录IP</th>
+											</tr>
+											<if condition="(AUTH_PAY eq 1) and (AUTH_GAME eq 1)">
+											<notempty name="data_lists">
+												<volist name="data_lists" id='vo'>
+												<tr>
+													<td>{:date('Y-m-d H:i:s',$vo['update_time'])}</td>
+													<td>{$vo.user_account}
+													<td>{:$vo['game_name']}</td>
+													<td>{:$vo['server_name']?$vo['server_name']:'--'}</td>
+													<td>{:$vo['role_name']?$vo['role_name']:'--'}</td>
+													<td>{:$vo['role_level']?$vo['role_level']:'--'}</td>
+													<td>{:$vo['combat_number']?$vo['combat_number']:'--'}</td>
+													<td>{:date('Y-m-d H:i:s',$vo['play_time'])}</td>
+													<td>{$vo.play_ip}</td>
+												</tr>
+												</volist>
+											<else/>
+												<!--暂无数据-->
+												<tr>
+													<td colspan="9" >
+													<div class="no-data">
+														<img src="__TMPL__/public/assets/images/icon_wushujv2.png"  alt="" class="no-data-img"/>
+														<p class="no-data-text">暂无数据</p>
+													</div>
+													</td>
+												</tr>
+											</notempty>
+											<else/>
+												<tr>
+													<td colspan="10" >
+														<div class="no-data">
+															<img src="__TMPL__/public/assets/images/icon_wushujv2.png"  alt="" class="no-data-img"/>
+															<p class="no-data-text">请购买充值权限和游戏权限</p>
+														</div>
+													</td>
+												</tr>
+											</if>
+										</tbody>
+									</table>
+									<if condition="(AUTH_PAY eq 1) and (AUTH_GAME eq 1)">
+									<notempty name="data_lists">
+										<div class="pagenation clearfix">
+											{$page}
+										</div>
+									</notempty>
+									</if>
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+					
+				</div>
+			</div>
+		</div>
+
+		<include file="public@scripts"/>
+		<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+		<script src="__STATIC__/js/layer/layer.js"></script>
+		<script type="text/javascript" src="__STATIC__/js/datejs/moment.min.js"></script>
+		<script type="text/javascript" src="__STATIC__/js/datejs/momentfunction.js"></script>
+		<script type="text/javascript" src="__STATIC__/js/datejs/daterangepicker.js"></script>
+		<include file="public@date_config_scripts"/>
+		<script>
+            game_id = "{:input('game_id')}";
+            server_id = "{:input('request.server_id')}";
+            var maxDate = moment().startOf('day');
+            var date_autoUpdateInput = false;
+            var start = '{$start}',end  = '{$end}';
+            $(function() {
+				$(".js-select-gallery").select2();
+                if(game_id){
+                    get_game_server(game_id);
+                }
+                $('#game_id').change(function(){
+                    gi = $("#game_id").val();
+                    get_game_server(gi);
+                });
+                $("#server_id").click(function () {
+                    if($('#game_id').val()==0 ){
+                        layer.msg('请先选择游戏');
+                        return false;
+                    }
+                    if($('#game_id').val()=='' ){
+                        layer.msg('请先选择游戏');
+                        return false;
+                    }
+                })
+			})
+			//			日历
+			var date = "{$setdate}";
+			$('#sdate').datetimepicker({
+				format: 'yyyy-mm-dd',
+				language: "zh-CN",
+				minView: 2,
+				autoclose: true,
+				scrollMonth: false,
+				scrollTime: false,
+				scrollInput: false,
+				endDate: date
+			});
+			$('#edate').datetimepicker({
+				format: 'yyyy-mm-dd',
+				language: "zh-CN",
+				minView: 2,
+				autoclose: true,
+				pickerPosition: 'bottom-left',
+				scrollMonth: false,
+				scrollTime: false,
+				scrollInput: false,
+				endDate: date
+			});
+			$('#submit').click(function() {
+				var sdate = $('#sdate').val();
+				var edate = $('#edate').val();
+				// var pid = $('#promote_id').val();
+				// var pac = $('#promote_account').val();
+				// if(pid != '' && pac != '' && pid != pac) {
+				// 	layer.msg("渠道ID与渠道账号不匹配");
+				// 	return false;
+				// }
+				if(Date.parse(sdate) > Date.parse(edate)) {
+					layer.msg('开始时间必须小于等于结束时间');
+					return false;
+				}
+//				var url = $(this).attr('url');
+//				console.log(url);
+//				var query = $('.jssearch').find('input').serialize();
+//				query += "&" + $('.jssearch').find('select').serialize();
+//				query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+//				query = query.replace(/^&/g, '');
+//				if(url.indexOf('?') > 0) {
+//					url += '&' + query;
+//				} else {
+//					url += '?' + query;
+//				}
+//				window.location.href = url;
+
+			});
+
+            function get_game_server(game_id){
+                $('#server_id').empty();
+                $('#server_id').append("<option value=''>区服名称</option>");
+                $.ajax({
+                    url:"{:url('query/get_role_server')}",
+                    type:'post',
+                    dataType:'json',
+                    data:{game_id:game_id},
+                    success:function(res){
+                        if(res.code!=1){
+                            layer.msg(res.msg);
+                        }else{
+                            option = '';
+                            $.each(res.data,function (key,value) {
+                                option+="<option value='";
+                                option+=value['server_id']+"'";
+                                if(value['server_id']==server_id){
+                                    option+="selected";
+                                }
+                                option+=" >"+value['server_name'];
+                                option+="</option>";
+                            });
+                            $('#server_id').append(option).select2();
+                        }
+                    },error(){
+                        layer.msg('服务器错误');
+                    }
+                })
+            }
+		</script>
+	</body>
+
+</html>

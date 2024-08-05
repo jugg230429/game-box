@@ -1,0 +1,32 @@
+/*
+* @description: 用户协议样式
+ *@author:王奉
+* @update: name(xxxx-xx-xx xx:xx)
+ */
+
+.main {
+	min-height: 721px;
+	background: #f3f3f3;
+	padding-top: 40px;
+	padding-bottom: 30px;
+}
+
+.main-con {
+	width: 1071px;
+	min-height: 660px;
+	overflow: hidden;
+	padding: 30px 71px 0 58px;
+	background: #fff;
+	margin: 0 auto;
+	padding-bottom: 45px;
+}
+.main-con img {
+	max-width: 100%;
+}
+.main-titile{
+	font-weight: bold;
+	margin-bottom: 30px;
+}
+.main-text{
+	line-height: 30px;
+}

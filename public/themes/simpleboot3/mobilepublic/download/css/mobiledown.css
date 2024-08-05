@@ -1,0 +1,671 @@
+html {
+    color: #000;
+    background: #fff;
+    overflow-y: scroll;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%
+}
+
+html * {
+    outline: 0;
+    -webkit-text-size-adjust: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
+}
+
+html, body {
+    font-family: sans-serif
+}
+
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, textarea, p, blockquote, th, td, hr, button, article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+    margin: 0;
+    padding: 0
+}
+
+input, select, textarea {
+    font-size: 100%
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0
+}
+
+fieldset, img {
+    border: 0
+}
+
+abbr, acronym {
+    border: 0;
+    font-variant: normal
+}
+
+del {
+    text-decoration: line-through
+}
+
+address, caption, cite, code, dfn, em, th, var {
+    font-style: normal;
+    font-weight: 500
+}
+
+ol, ul {
+    list-style: none
+}
+
+caption, th {
+    text-align: left
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-size: 100%;
+    font-weight: 500
+}
+
+q:before, q:after {
+    content: ''
+}
+
+sub, sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline
+}
+
+sup {
+    top: -.5em
+}
+
+sub {
+    bottom: -.25em
+}
+
+a:hover {
+    text-decoration: underline
+}
+
+ins, a {
+    text-decoration: none
+}
+.game_community_content_sao{color:#f38105;
+    font-weight: bold;font-size:.35rem;text-align:center;}
+.game_community_content_sao strong{font-size:.6rem;}
+.game_community_content_title{color:#fba21c;text-align: center;font-size:.3rem;}
+
+.game_community_content_qrcode {
+    width: 3.426rem;
+    height: 3.426rem;margin:0.5rem auto;position: relative;
+}
+.game_community_content_qrcode:before,.game_community_content_qrcode:after,.game_community_content_qrcode_inner:before,.game_community_content_qrcode_inner:after {
+    content:'';position: absolute;display: block;
+    background: transparent;border:.12rem solid #fba21c;
+    width: .4rem;
+    height: .4rem;
+}
+.game_community_content_qrcode:before{
+    border-right: none;
+    border-bottom: none;
+    left: -.2rem;
+    top: -.2rem;
+    border-top-left-radius: .1rem;
+}
+.game_community_content_qrcode:after {
+    border-top: none;
+    border-left: none;
+    right: -.2rem;
+    bottom: -.2rem;
+    border-bottom-right-radius: .1rem;
+}
+.game_community_content_qrcode_inner:before{
+    border-left: none;
+    border-bottom: none;
+    right: -.2rem;
+    top: -.2rem;
+    border-top-right-radius: .1rem;
+}
+.game_community_content_qrcode_inner:after {
+    border-top: none;
+    border-right: none;
+    left: -.2rem;
+    bottom: -.2rem;
+    border-bottom-left-radius: .1rem;
+}
+.game_community_content_qrcode img {
+    position: relative;width:100%;
+    height: 100%;
+}
+
+.game_down {
+    position: relative;
+}
+.game-down-qrcode {
+    display: none;
+    position: absolute;
+    bottom: 1.44rem;
+    width: 2.8rem;
+    height: 3.2rem;
+    background:#fff;
+    border: 1px solid #ffac36;
+    border-radius: .05rem;
+    -webkit-box-shadow:  .1rem .1rem .3rem #5d5d5d;
+    -moz-box-shadow:  .1rem .1rem .3rem #5d5d5d;
+    box-shadow:  .1rem .1rem .3rem #5d5d5d;
+}
+.game-down-qrcode-wrap {
+    padding: .3rem .3rem 0;
+    position: relative;
+}
+.game-down-qrcode-image {
+    width: 2.2rem;
+    height: 2.2rem;
+}
+.game-down-qrcode-text {
+    font-size: .3rem;
+    line-height: .6rem;text-align:center;color:#ffac36;
+}
+.game-down-qrcode-wrap:before,.game-down-qrcode-wrap:after {
+    content: '';
+    width: 0;
+    height: 0;
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    border:.4rem solid transparent;
+    margin: 0 auto;
+}
+.game-down-qrcode-wrap:before {
+    border-top-color: #ffac36;
+    bottom: -.88rem;
+}
+.game-down-qrcode-wrap:after {
+    border-top-color: #FFF;
+    bottom: -.849rem;
+}
+
+.game_down:hover .game-down-qrcode {
+    display: block;
+}
+.game_name {
+    width: 40%;
+}
+.game_title,.game_des {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+}
+.game_details_top p {
+    color: #f67b29;
+}
+.game_name .game_des {
+    color: rgba(255,255,255,.7);
+}
+.disabled {
+    background: #999;
+}
+.download_notice {
+    height: 100%;
+    width: 100%;
+}
+
+.download_notice-content {
+    height: 65%;
+    text-align: center;
+    display: table;
+    width: 100%;
+}
+
+.download_notice-cell {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.download_notice-content p {
+    font-size: .5rem;
+}
+
+.download_notice_text {
+    padding-top: .3rem;
+    color: #999;
+}
+
+.download_notice-butn {
+    width: 100%;
+    height: 35%;
+    border-top: 1px solid #eee;
+    display: table;
+
+}
+
+.download_notice-butn a {
+    display: block;
+    line-height: .8rem;
+    text-align: center;
+}
+
+/*
+app下载页*/
+.app-main{
+    width: 100%;
+    height:48rem;
+    /* max-height: 43.24rem; */
+    background-size: 100% 100%;
+    padding-top: 6.66rem;
+    box-sizing: border-box;
+    position: relative;
+}
+.app-main .download-title{
+    font-weight: bold;
+    font-size: 3.52rem;
+    width: 100%;
+    text-align: center;
+    color: #ffffff;
+}
+.app-main .download-title2{
+    margin-top: 1.48rem;
+    width: 100%;
+    text-align: center;
+    font-size: 1.48rem;
+    color:#FFBF3E ;
+    font-weight: bold;
+}
+.app-main  .download-app-btn{
+    width: 24.96rem;
+    height: 4.07rem;
+    background:linear-gradient(180deg,rgba(244,166,0,1),rgba(255,222,132,1));
+    box-shadow:0px 0px 13px 0px rgba(26,122,172,1);
+    margin: 3.28rem auto 3.28rem;
+    border-radius: 99.9rem;
+    font-size: 1.4rem;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+.app-main  .download-app-btn .down-icon{
+    width: 1.64rem;
+    height: 1.48rem;
+    display: block;
+    background:url(../img/download_btn_download_s.png)no-repeat ;
+    background-size: 100% 100%;
+    margin-right: 0.8rem;
+}
+.download-app-btn.disabled{
+    background:rgba(255,255,255,0.5);
+    box-shadow:0px 0px 13px 0px rgba(26,122,172,1);
+    color: rgba(255,255,255,0.7);
+
+}
+.app-main .mobile-img {
+    width: 19.8rem;
+    height: 30.67rem;
+    margin: 0 auto;
+    position: absolute;
+    bottom: 0;
+    left: 6.5rem;
+}
+.dowloadGameLogo {
+    width: 7.71rem;
+    height: 7.71rem;
+    border: 0.09rem solid #FFFFFF;
+    box-shadow: 0px 0px 30px 0px rgba(17, 79, 177, 0.5);
+    border-radius: 1.23rem;
+    margin: auto;
+}
+.dowloadGameLogo img {
+    width: 100%;
+    height: 100%;
+    border-radius: 1.23rem;
+}
+.dowloadTitle {
+    width: 100%;
+    font-size: 4.17rem;
+    text-align: center;
+    font-weight: bold;
+    font-style: italic;
+    color: #FEFEFE;
+    background: linear-gradient(0deg, #A5C4FF 0%, #FFFFFF 50%, #E5DAFF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-top: 4.93rem;
+}
+.dowloadDesc{
+    width: 26.5rem;
+    height: 4.9rem;
+    text-align: center;
+    background-image: url('../img/img-tuxing.png');
+    background-size: 100% 100%;
+    margin: auto;
+    margin-top: 1.51rem;
+    line-height: 4.4rem;
+    color: #FFFFFF;
+    font-size: 1.48rem;
+    font-style: italic;
+    font-weight: bold;
+    font-family: 'PingFang SC';
+}
+.rightDowloadBtn{
+    display: block;
+    width: 21.6rem;
+    height: 4.32rem;
+    background: linear-gradient(90deg, #3064E9, #72B1FF);
+    box-shadow: 0px 0.31rem 0.95rem 0px rgba(67, 102, 255, 0.5);
+    border-radius: 0.31rem;
+    color: #fff;
+    font-size: 1.54rem;
+    text-align: center;
+    line-height: 4.32rem;
+    margin: 0 auto;
+    cursor: pointer;
+    margin-top: 5.5rem;
+}
+.bottomDownloadTip{
+    width: 100%;
+    height: 16.23rem;
+    background-image: url('../img/img-xiazai1.png');
+    background-size: 100% 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: none;
+}
+.dowload-tootipContent {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+}
+.dowload-tootipContent img {
+    width: 4.63rem;
+    height: 4.63rem;
+    border-radius: 0.93rem;
+    margin: 2.99rem 0 0 5.93rem;
+}
+.tootipBox {
+    margin-top: 2.5rem;
+    margin-left: 1.38rem;
+}
+.title-tootip {
+    color: #3E475D;
+    font-size:1.85rem;
+    font-weight: 700;
+}
+.desc-tootip{
+    color: #96ACC4;
+    font-size: 1.23rem;
+    margin-top: 0.3rem;
+}
+.finalDowloadBtn {
+    display: block;
+    width: 12.34rem;
+    height: 3.7rem;
+    background: linear-gradient(90deg, #3064E9, #72B1FF);
+    box-shadow: 0px 0.31rem 0.95rem 0px rgba(67, 102, 255, 0.5);
+    border-radius: 0.31rem;
+    color: #fff;
+    line-height: 3.7rem;
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 2.47rem;
+    cursor: pointer;
+}
+.xialaCheck {
+    display: block;
+    width: 1.67rem;
+    height: 1.54rem;
+    background-image: url('../img/ico-jiantou.png');
+    background-size: 100% 100%;
+    margin: 0 auto;
+    margin-top: 2.36rem;
+}
+.rightDowloadBtn:hover {
+    color: #fff;
+}
+.finalDowloadBtn:hover {
+    color: #fff;
+}
+
+/* 微信跳转提示 */
+.wechat{
+	position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .7);
+	text-align:center;
+	display:none;
+}
+.wechat-tip{
+	color:#68B9DD;
+	font-size:2rem;
+	font-weight:bold;
+	margin: 5rem 0 3.4rem 0;
+}
+.wechat-tip img{
+    width: 18.39rem;
+    height: 5.55rem;
+    margin: 0 auto;
+}
+.point{
+	font-weight: bold;
+    font-size: 1.25rem;
+    letter-spacing: 0.25rem;
+}
+.clear{
+	clear:both;
+}
+.coloryellow{
+	color:#FFFF83;
+}
+.wechat-step span{
+	display:block;
+	float:left;
+}
+.number{
+	
+	width:1.5rem;
+	height:1.5rem;
+	line-height:1.5rem;
+	border-radius:1.5rem;
+	background:#FFFF83;
+	margin-right:1rem;
+	color:#000;
+    margin-top: 0.15rem;
+}
+.wechat-step{
+	width: 17rem;
+    margin: 1rem auto 0 auto;
+    color: #fff;
+    font-size: 1.3rem;
+    letter-spacing: 0.02rem;
+}
+.wechat-rightimg{
+	position: absolute;
+    right:2.3rem;
+    top: 2.7rem;
+    width: 4.8rem;
+    height: 12.3rem;
+}
+
+.wechatShowContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, .5);
+    display: block;
+}
+.img_tishi {
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 4.5333rem;
+    position: relative;
+}
+.img_tishi .weixin-tip-img {
+    width: 16.333rem;
+    margin: 0 auto;
+}
+.img_tishi img {
+    width: 9rem;
+}
+.img_tishi .tip-step {
+    width: 26.333rem;
+    margin: 6.0666rem auto;
+    font-size: 1.4rem;
+    color: #ffffff;
+    margin-left: 8.45rem;
+}
+.img_tishi .tip-step .first-icon{
+    width:1.4rem;
+    height: 1.4rem;
+    background: url(../img/ico_number1.png)no-repeat;
+    background-size: 100% 100%;
+    display: inline-block;
+    margin-right: 0.5rem;
+    vertical-align: text-top;
+}
+.img_tishi .tip-step .second-icon{
+    width:1.4rem;
+    height: 1.4rem;
+    background: url(../img/ico_number2.png)no-repeat;
+    background-size: 100% 100%;
+    display: inline-block;
+    margin-right: 0.53rem;
+    vertical-align: text-top;
+}
+.img_tishi .tip-step .second-step{
+    margin-top: 0.12rem;
+}
+.img_tishi .tip-step .dian{
+    color: #FCFA62;
+    font-size: 0.66666rem;
+}
+.tip-step .guide-img{
+    position: absolute;
+    top: 2.85rem;
+    right: 2.72rem;
+    width: 4.5rem;
+    height: 13.8rem;
+}
+
+/* 下载弹窗 */
+.popbg{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 11;
+  }
+  .popbox{
+    position: fixed;
+    width: 28.8rem;
+    height: 18rem;
+    background: #fff;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
+    -moz-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    -o-transform: translate(-50%,-50%);
+    overflow: hidden;
+  }
+  .popbox .close{
+    position: absolute;
+    right: 1.5rem;
+    top: 1.5rem;
+    width: 15px;
+    height: 15px;
+    background: url(../img/btn_close.png) no-repeat center center;
+    background-size: 15px 15px;
+    opacity: 1;
+  }
+  .popbox .pop-head{
+    height: 5rem;
+    line-height: 5rem;
+    background: #018FFF;
+    text-align: center;
+    font-size: 1.8rem;
+    color: #fff;
+  }
+  .popbox .pop-body{
+    padding: 0 1.9rem;
+    box-sizing: border-box;
+  }
+  .choose-method li{
+    position: relative;
+    height: 6rem;
+    line-height: 6rem;
+    font-size: 1.6rem;
+    color: #333333;
+    padding-left: 3.5rem;
+    text-align: left;
+  }
+  .choose-method .mwechat{
+    background: url(../img/ico_wechat.png) no-repeat left center;
+    background-size: 2.7rem 2.7rem;
+    border-bottom: 1px solid #DDDDDD;
+  }
+  .choose-method .mapply{
+    background: url(../img/ico_zhifubao.png) no-repeat left center;
+    background-size: 2.7rem 2.7rem;
+  }
+  .choosebox{
+    height: 35rem;
+  }
+  .choosebox .pop-body{
+    padding-top: 1rem;
+  }
+  .choose-confirm{
+    color: #777777;
+    font-size: 1.3rem;
+    line-height: 2.4rem;
+    position: relative;
+  }
+  .choose-confirm .copy{
+    position: absolute;
+    display: block;
+    right: 0;
+    top: 1.5rem;
+  }
+  .choose-confirm .copy,.choose-confirm .csbtn{
+    background: #018FFF;
+    width: 5.3rem;
+    height: 3rem;
+    line-height: 3rem;
+    color: #fff;
+    font-size: 1.2;
+    text-align: center;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -ms-border-radius: 2px;
+    -o-border-radius: 2px;
+  }
+  .choose-confirm p{
+    word-break:break-all;
+  }
+  .choose-confirm .csbtn{
+    width: 8rem;
+    margin: 1.3rem auto 0;
+  }
+  .blue{
+    color: #018FFF;
+  }
+  .hide{
+    display: none;
+  }
+  
+  
+ 

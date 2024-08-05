@@ -1,0 +1,114 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/user_rebate.css">
+</block>
+
+<block name="body">
+    <div class="user_rebate_page">
+        <div class="my_bag_page_header">
+            <a href="javascript:back();"><img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon"></a>
+            <p class="fl my_bag_page_item">我的返利</p>
+        </div>
+        <div class="type_down__long_hx clear"></div>
+
+        <div class="user-rebate-list" >
+            <ul id="recordload">
+            </ul>
+            <if condition="$total">
+            <div class="rebate-total">累计返绑币：<span class="rebate-total-num">￥{$total}</span></div>
+            </if>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+        var lwx = window.lwx || {};
+        lwx.ready = true;
+        lwx.width = $(window).width();
+        lwx.height = $(window).height();
+        lwx.number = {record:1};
+        lwx.row = {record:20};
+        lwx.http = {
+            getJSON:function(url,callback){
+                $.getJSON(url + '&v=' + Date.now(),function(data){
+                    callback(data);
+                });
+            },
+            postJSON:function(url,args,callback) {
+                $.post(url + '&v=' + Date.now(), args, function(data) {
+                    callback(data);
+                },"json")
+            },
+        };
+        lwx.url ={
+            record:'{:url("User/get_rebate")}',
+        };
+        lwx.page = {
+            record:function(){
+                if(lwx.number.record) {
+                    lwx.http.getJSON(lwx.url.record+'&limit='+lwx.row.record+'&p='+lwx.number.record,function(data) {
+                        var recordload = $('#recordload');
+                        if(data && data.length) {
+                            var html = '';
+                            for (var i in data) {
+                                html += '<li class="rebate-item">';
+                                html += ' <span class="rebate-money">'+data[i].ratio_amount+'</span>';
+                                html += '  <span class="rebate-game-name">'+data[i].game_name+'</span>';
+                                html += ' <span class="rebate-date">'+data[i].create_time+'</span>';
+                                html += ' </li>';
+                            }
+                            html += '</ul></div>';
+                            recordload.append(html);
+                            recordload.find('.jsdropload').remove();
+                            if(data.length >= lwx.row.record) {
+                                lwx.number.record++;
+                                lwx.ready = true;
+                                recordload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.record = false;
+                                recordload.append('<div class=" jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                        } else {
+                            if(lwx.number.record==1){
+                                recordload.html('').append('<div class="empty-box">~暂无返利~</div>');
+                            } else{
+                                recordload.find('.jsdropload').remove();
+                                recordload.append('<div class="jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                            lwx.number.record = false;
+                        }
+                    });
+                }
+            },
+        };
+        pageChange();
+        function pageChange(n) {
+            lwx.page.record();
+            if(lwx.number.record) {lwx.ready=true;}
+        }
+        function pageScroll(scrollTop, boxHeight, maxScrollHeight) {
+            if (scrollTop + boxHeight >= maxScrollHeight - 50) {
+                if (lwx.ready) {
+                    lwx.ready = false;
+                    lwx.page.record();
+                }
+            }
+        }
+        window.onscroll = function() {
+            var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+            pageScroll(scrollTop, lwx.height, $(document).height())
+        }
+        function back(){
+            try{
+                $mt = "{:get_devices_type()}";
+                if($mt==2){
+                    window.webkit.messageHandlers.xgsdk_finishPage.postMessage(1);
+                }else{
+                    window.xgsdk.finishPage()
+                }
+            }catch (e) {
+                history.go(-1);
+            }
+        }
+    </script>
+</block>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<include file="public@head"/>
+		<link href="__TMPL__/public/assets/css/promote/mychlid.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+	</head>
+	<body>
+		<include file="public@nav"/>
+		<include file="public@header"/>
+		<div class="trunk">
+			<div class="trunk-con">
+				<div class="right-container">
+					<div class="normal-list">
+						<div class="trunk">
+							<div class="trunk-title">
+								<div class="location ">
+									<div class="location-container fr">当前位置：<span class="location-container-text">管理中心&gt;</span><span class="location-container-text">子渠道</span></div>
+								</div>
+								<img src="__TMPL__/public/assets/images/promote/icon_normal_zhanghu.png" class="fl trunk-icon">
+								<span class="title-main fl "> 子渠道列表 </span>
+
+							</div>
+							<div class="tabpan">
+
+								<div class="tabpan-con tabpan-show mychlid-tabcon">
+								<a href="{:url('add_chlid')}" class="add-btn  fl" style="width:102px"><i class="add-qudao"></i><span>添加子渠道</span></a>
+									<form action="{:url('mychlid')}">
+										<div class="trunk-search clearfix fr">
+											<input type="text" name="account" class="tabpan-input" placeholder="请输入子渠道" value="{:input('account')}">
+											<input type="submit" class="submit fr normal-space" id="submit" value="查询">
+										</div>
+									</form>
+									<div class="clear"></div>
+
+									<table class="table normal-table" id="promotecoin_table" >
+										<tbody>
+											<tr class="odd">
+												<th>账号ID</th>
+												<th>子渠道</th>
+												<th>创建时间</th>
+												<th>联盟站地址</th>
+												<th>审核状态</th>
+												<th>状态</th>
+												<th>操作</th>
+											</tr>
+											<empty name="data_lists">
+												<tr>
+													<td colspan="5">
+														<div class="no-data">
+															<img src="/themes/simpleboot3/public/assets/images/icon_wushujv2.png" alt="" class="no-data-img">
+															<p class="no-data-text">暂无数据</p>
+														</div>
+													</td>
+												</tr>
+											<else/>
+												<volist name="data_lists" id="vo">
+													<tr>
+														<td>{$vo.id}</td>
+														<td>{$vo.account}</td>
+														<td>{:date("Y-m-d H:i:s",$vo['create_time'])}</td>
+														<td>{$vo['union']['domain_url']|default='--'}</td>
+														<if condition="$vo['union']['status'] eq '-1'">
+															<td>驳回</td>
+														<elseif condition="$vo['union']['status'] eq '0'" />
+															<td>待审核</td>
+														<elseif condition="$vo['union']['status'] eq '1'" />
+															<td>已通过</td>
+														<else/>
+															<td>--</td>
+														</if>
+														<td>
+															<if condition="$vo['status'] eq 1">
+																<span style="">正常</span>
+															<else/>
+																<span style="color: red;">已锁定</span>
+															</if>
+														</td>
+														<td>
+															<a href="{:url('edit_child',['id'=>$vo['id']])}"  class="editbtn">修改</a>
+															<if condition="$vo['status'] eq 1">
+																<a href="javascript:;"  class="editbtn jseditbtn" data-id="{$vo.id}" data-status="{$vo['status']}">锁定</a>
+															<else/>
+																<a href="javascript:;"  class="editbtn jseditbtn" data-id="{$vo.id}" data-status="{$vo['status']}">解锁</a>
+															</if>
+														</td>
+													</tr>
+												</volist>
+											</empty>
+										</tbody>
+									</table>
+									<notempty name="data_lists">
+									<div class="pagenation clearfix">
+										<a download class="sch-btn" href="{:url('Export/expUser',['id'=>1])}">导出</a>
+										{$page}
+									</div>
+									</notempty>
+									<div class="clear"></div>
+									<div class="desccontent mychlid-desccontent">
+										<div class="desccontent-title fl"><if condition="PID_LEVEL eq 1">二<else/>三</if>级渠道说明：</div>
+										<div class="fl">
+											<if condition="PID_LEVEL eq 1">
+												渠道默认为一级渠道，一级渠道可通过渠道后台新增二级渠道；二级渠道由一级渠道管理开启权限，并由一级渠道给二级渠道结算，结算可到【渠道结算】操作。
+											<else/>
+												渠道默认为二级渠道，二级渠道可通过渠道后台新增三级渠道；三级渠道由二级渠道管理开启权限，并由二级渠道给三级渠道结算，结算可到【渠道结算】操作。
+											</if>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<include file="public@scripts"/>
+		<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+		<script src="__STATIC__/js/layer/layer.js"></script>
+		<script>
+
+			$(function(){
+				$(".js-select-gallery").select2();
+				$(".jseditbtn").click(function(){
+					that = $(this);
+					$.ajax({
+						type: 'POST',
+	                  	url: "{:url('changeStatus')}" ,
+	                  	data:{"zid":that.data('id'),'value':that.data('status')},
+	                  	async:false,
+	                  	dataType:'json',
+						success:function(data){
+							if (data.code > 0){
+								layer.msg(data.msg,{time:1000},function(){
+									location.href= location.href;
+								})
+							}
+							else{
+								layer.msg(data.msg,{time:1000});
+							}
+						}
+					})
+				})
+			})
+		</script>
+	</body>
+
+</html>

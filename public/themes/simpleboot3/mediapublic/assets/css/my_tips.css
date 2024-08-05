@@ -1,0 +1,78 @@
+.myTipsBox {
+    margin-bottom: 18px;
+}
+
+.noticeOver {
+    position: relative;
+    margin-left: 14px;
+    font-family: 'Microsoft YaHei';
+    padding-bottom: 8px;
+}
+.noticeOver::before {
+    content: '';
+    display: block;
+    background-color: #0189FF;
+    width: 3px;
+    height: 3px;
+    position: absolute;
+    top: 10px;
+    left: -9px;
+    border-radius: 50%;
+}
+.my_tips_detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.checkClick {
+    color: #018ff0;
+    margin-left: 50px;
+    display: inline-block;
+    width: 58px;
+    border-bottom: 1px solid #018ff0;
+}
+.checkClick:hover {
+    color: #018ff0;
+}
+.detailTiming {
+    color: #999999;
+    font-size: 12px;
+    font-family: 'Microsoft YaHei';
+}
+.detailTiming span:nth-child(1) {
+    padding-right: 10px;
+}
+.overNotice {
+    font-size: 13px;
+    font-family: 'Microsoft YaHei';
+    font-weight: 400;
+    color: #999999;
+}
+.my_bag_item {
+    height: auto!important;
+}
+.my_bag_item:first-child {
+    margin-top: 22px!important;
+}
+.goToExperience {
+    color: #018ff0;
+    display: inline-block;
+    width: 45px;
+    border-bottom: 1px solid #018ff0;
+}
+.goToExperience:hover {
+    color: #018ff0;
+}
+.noticeBox {
+    position: relative;
+}
+.numberNotice {
+    position: absolute;
+    top: 0px;
+    right: -3px;
+    color: #fff;
+    background: red;
+    border-radius: 50%;
+    width: 5px;
+    height: 5px;
+}

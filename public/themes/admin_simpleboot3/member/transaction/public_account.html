@@ -1,0 +1,200 @@
+<include file="public@header"/>
+</head>
+<body>
+
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('site/Site/transaction_set')}">卖号设置</a></li>
+        <li class="active"><a href="javascript:;">公用账号</a></li>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('public_account')}" method="post">
+        <div class="tabbable">
+            <div class="tab-content">
+                <div class="tab-pane active">
+                    <if condition="$data">
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">公用账号：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" disabled class="form-control fl user-input" value="{$data.account}">
+                                <span class="fl user-remarks2">此公用账号用于暂放出售中的小号，审核出售小号的真实性，需保证账号安全避免泄漏</span>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_copyright" class="col-sm-2 control-label">账号密码:</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="password" placeholder="6-15位的密码" class="form-control user-input fl" name="password" value="">
+                                <span id="password" class="table_click fl"><span class="table_click_text btn-click">点击修改</span></span>
+                                <span class="fl user-remarks2 membeuser-remarks">修改需验证二级密码</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_admin_email" class="col-sm-2 control-label">真实姓名：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" disabled class="form-control user-input" value="{$data.real_name|default=''}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">身份证号:</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input  type="text" disabled class="form-control user-input" value="{$data['idcard']|default=''}">
+                            </div>
+                        </div>
+                    <else/>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">公用账号：</label>
+                            <div class="col-md-6 col-sm-10" >
+                                <input type="text" name="account" class="form-control user-input fl" value="{$data.account}">
+                                <span class="fl user-remarks2">此公用账号用于暂放出售中的小号，审核出售小号的真实性，需保证账号安全避免泄漏</span>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_copyright" class="col-sm-2 control-label">账号密码:</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="password" placeholder="6-15位的密码" class="form-control user-input fl" name="password" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_admin_email" class="col-sm-2 control-label">真实姓名：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" name="real_name" maxlength="25" minlength="2" class="form-control user-input" value="{$data.real_name|default=''}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">身份证号:</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input  type="text" name="idcard" maxlength="18" minlength="15" class="form-control user-input" value="{$data['idcard']|default=''}">
+                            </div>
+                        </div>
+                    </if>
+                    <div class="form-group">
+                        <label for="input-site_analytics" class="col-sm-2 control-label">注册时间:</label>
+                        <div class="col-md-6 col-sm-10">
+                            <notempty name="data.register_time">{$data['register_time']|date=' Y-m-d H:i:s',###}</notempty>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site_analytics" class="col-sm-2 control-label">注册IP：</label>
+                        <div class="col-md-6 col-sm-10">
+                            {$data['register_ip']}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site_analytics" class="col-sm-2 control-label">最后登录时间：</label>
+                        <div class="col-md-6 col-sm-10">
+                            <notempty name="data.login_time">{$data['login_time']|date=' Y-m-d H:i:s',###}</notempty>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site_analytics" class="col-sm-2 control-label">最后登录IP：</label>
+                        <div class="col-md-6 col-sm-10">
+                            {$data['login_ip']}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site_analytics" class="col-sm-2 control-label">小号：</label>
+                        <div class="col-md-6 col-sm-10">
+                            <div class="user-input fl"> <span id="small" class="table_click table_btn"><span class="table_click_text">{$data.small_count|default=0}</span></span></div>
+                            <span class="fl user-remarks2">存放待审核、出售中、待支付3种状态的小号，可点击查看</span>
+                        </div>
+                    </div>
+
+                    <if condition="!$data">
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            <input type="hidden" name="id" id="id" value="{:input('id',0)}" />
+                            <button type="submit" class="btn btn-primary js-ajax-submit save-btn " data-refresh="1">
+                                {:lang('SAVE')}
+                            </button>
+							 <a class="btn btn-default return-btn" href="javascript:history.back(-1)">{:lang('BACK')}</a>
+                        </div>
+                    </div>
+                    </if>
+                </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script>
+    $(function () {
+        $("#password").click(function () {
+            layer.prompt(
+                {
+                    formType: 1,
+                    title: "请输入二级密码(如果没有请设置)",
+                    value: '',
+                    success:function (layero, index) {
+                        layero.find('input').attr('placeholder','');
+                    }
+                }
+                , function (val) {
+                    $.ajax({
+                        url: '{:url("User/checkpwd")}',
+                        type: 'post',
+                        dataType: 'json',
+                        data: {'second_pwd': val},
+                        success: function (data) {
+                            if (data.code > 0) {
+                                sub_from(val);
+                            } else {
+                                layer.msg(data.msg)
+                            }
+                        },
+                        error: function () {
+                            alert("错误");
+                        }
+                    });
+                });
+        });
+
+        $("#small").click(function () {
+            var user_id = "{$data.id}";
+            layer.open({
+                type: 2,
+                title: '小号数据',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['70%', '80%'],
+                content: "{:url('User/user_small_lists')}?user_id="+user_id //iframe的url
+            });
+        });
+    })
+    function sub_from(val) {
+        var second_pwd_ = val;
+        layer.prompt(
+            {
+                formType: 0,
+                title: "请输入新密码",
+                value: '',
+                success:function (layero, index) {
+                    layero.find('input').attr('placeholder','');
+                }
+            }
+            , function (val) {
+                $id = "{$data.id}";
+                $.ajax({
+                    url: '{:url("password_edit")}',
+                    type: 'post',
+                    dataType: 'json',
+                    data: {'password': val, 'id': $id},
+                    success: function (data) {
+                        layer.msg(data.msg)
+                        if (data.code > 0) {
+                            setTimeout(function () {
+                                self.location.reload(true);
+                            },1000)
+                        }
+                    },
+                    error: function () {
+                        alert("服务器故障！");
+                    }
+                });
+            });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<include file="public@header"/>
+<style>
+    .help-block {
+	margin: 0 0 0 -415px !important;
+}
+</style>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <if condition="input('platform_type') eq 2">
+            <li><a href="{:url('lists',array('platform_type'=>2))}">推广平台</a></li>
+        <elseif condition="input('platform_type') eq 3"/>
+            <li><a href="{:url('lists',array('platform_type'=>3))}">PC官网</a></li>
+        <else/>
+            <li><a href="{:url('lists')}">SDK</a></li>
+        </if>
+        <li class="active"><a href="{:url('add')}">新增问题</a></li>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('add')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>标题：
+                            </label>
+                            <div class="col-md-6 col-sm-10">
+                                <input  name="zititle" class="form-control"  style="width: 380px;">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>所属站点：
+                            </label>
+                            <div class="col-md-6 col-sm-10">
+                                <if condition="input('platform_type') eq 2">
+                                    <input type="checkbox" name="platform_type" checked value="2">  推广平台
+                                <elseif condition="input('platform_type') eq 3"/>
+                                    <input type="checkbox" name="platform_type" checked value="3">  PC官网
+                                <else/>
+                                    <input type="checkbox" name="platform_type" checked value="1">  SDK
+                                </if>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>问题分类：
+                            </label>
+                            <div class="col-md-6 col-sm-10">
+                                <php>$map['platform_type'] = input('platform_type',1,'intval');</php>
+                                <select name="type" id="type" class="form-control" style="width: 380px;">
+                                    <option value="">分类</option>
+                                    <volist name=":get_kf_type($map)" key="k" id="vo">
+                                        <option value="{$vo.id}">{$vo.name}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>描述：
+                            </label>
+                            <div class="col-md-6 col-sm-10">
+                                <textarea name="content" class="form-control" style="width: 380px;"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">
+                                排序：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input  name="sort" class="form-control" value="0"style="width: 380px;" >
+                            </div>
+                            <p class="help-block">默认值为0，数值越大排序越靠前</p>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                                <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+        <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/vip.css">
+</block>
+
+<block name="body">
+   <div class="vip_header">
+	   <a <if condition="session('member_auth.request_source') eq null"> href="javascript:history.go(-1);" <else/> href="javascript:js_close();"</if> class="fl">
+                <img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon">
+            </a>
+            <p class="">会员等级</p>
+     </div>
+    <div class="vip_modals" >
+	    
+		<div class="vip_modals_title"><span class="">当前等级：</span><span class="vip_num">VIP{:session('member_auth.vip_level')}</span><if condition="$next_pay nheq false"><span class="vip_tip">（距离升级还差￥<span>{$next_pay}</span>）</if></div>
+		 <table class="vip_table">
+		    <tbody>
+			    <tr>
+		           <th style="width:15%;">等级</th>
+		           <th>消费额</th>
+				   <th>特权礼包</th>
+		           <th>升级积分</th>
+				   <th>兑换折扣</th>
+		           
+				</tr>
+				<volist name="data" id="vo">
+					<tr>
+					   <td>VIP {$key}</td>
+					   <td>{$vo}</td>
+						<td><span <if condition="$key eq 0"> class="no"<else/>class="yes"</if>></span></td>
+						<if condition="$vip_upgrade[$key] neq ''">
+							<td><span class="">{$vip_upgrade[$key]['user_get_point']}</span></td>
+							<else/>
+							<td><span class="no"></span></td>
+						</if>
+					   <td><span <if condition="$key eq 0"> class="no"<else/>class="yes"</if>></span></td>
+					</tr>
+				</volist>
+		    </tbody>
+		 </table>
+		 <div class="vip_title_tip">
+		     会员等级由消费额决定，满足相应消费额即可升级。
+		 </div>
+		 <div class="vip_text_tip">
+		     1、消费额指在游戏内使用支付宝、微信、平台币、绑币等方式进行支付的消费金额。
+         </div>
+		 <div class="vip_text_tip">
+             2、消费额在支付成功后，实时增加，每日无上限。
+         </div>
+		 <div class="vip_text_tip">
+             3、使用代金券、话费充值手游金额及充值平台增值服务金额不包含在内。
+		 </div>
+		 </div>
+	</div>
+</block>
+<block name="script">
+	<script>
+		function js_close(){
+			try{
+				$mt = "{:get_devices_type()}";
+				if($mt==2){
+					window.webkit.messageHandlers.xgsdk_finishPage.postMessage(1);
+				}else{
+					window.xgsdk.finishPage()
+				}
+			}catch (e) {
+				return false;
+			}
+		}
+	</script>
+</block>

@@ -1,0 +1,73 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs mb20" style="margin-bottom:5px">
+            <li class="active"><a href="{:url('adv_pos')}">广告管理</a></li>
+            <li><a href="{:url('adv_adv')}">广告列表</a></li>
+        </ul>
+        <php>
+            $module = input('module','');
+        </php>
+        <div class="table-actions position" style="margin-bottom: 20px; margin-left: -10px;">
+            <a href="{:url('adv_pos',['module'=>''])}" style="margin-bottom: 0;" class="btn changePurpleColor mtb17 <?php if($module=='') echo 'btn-info active'; else echo 'btn-default'; ?> ">全部</a>
+            <a href="{:url('adv_pos',['module'=>'sdk'])}" style="margin-bottom: 0;" class="btn changePurpleColor mtb17 <?php if($module=='sdk') echo 'btn-info active'; else echo 'btn-default'; ?>">手游SDK</a>
+            <a href="{:url('adv_pos',['module'=>'app'])}" style="margin-bottom: 0;" class="btn changePurpleColor mtb17 <?php if($module=='app') echo 'btn-info active'; else echo 'btn-default'; ?>">APP</a>
+            <a href="{:url('adv_pos',['module'=>'wap'])}" style="margin-bottom: 0;" class="btn changePurpleColor mtb17 <?php if($module=='wap') echo 'btn-info active'; else echo 'btn-default'; ?>">WAP站</a>
+            <a href="{:url('adv_pos',['module'=>'media'])}" style="margin-bottom: 0;" class="btn changePurpleColor mtb17 <?php if($module=='media') echo 'btn-info active'; else echo 'btn-default'; ?>">PC官网</a>
+            <a href="{:url('adv_pos',['module'=>'h5game'])}" style="margin-bottom: 0;" class="btn changePurpleColor mtb17 <?php if($module=='h5game') echo 'btn-info active'; else echo 'btn-default'; ?>">H5悬浮球</a>
+            <a href="{:url('adv_pos',['module'=>'simple_sdk'])}" style="margin-bottom: 0;" class="btn changePurpleColor mtb17 <?php if($module=='simple_sdk') echo 'btn-info active'; else echo 'btn-default'; ?>">简化SDK</a>
+        </div>
+<!--        <form id="search_form" class="well form-inline fr" method="get" action="{:url('adv_pos')}">-->
+<!--            <select name="module" id="module" class="selectpicker bs-select-hidden" data-size="8" data-live-search="true" style="width: 100px;">-->
+<!--                <option value="" <?php if(input('module')=='') echo 'selected'; ?>>广告模块</option>-->
+<!--                <option value="sdk" <?php if(input('module')=='sdk') echo 'selected'; ?>>手游SDK</option>-->
+<!--                <option value="app" <?php if(input('module')=='app') echo 'selected'; ?>>APP</option>-->
+<!--                <option value="wap" <?php if(input('module')=='wap') echo 'selected'; ?>>WAP站</option>-->
+<!--                <option value="media" <?php if(input('module')=='media') echo 'selected'; ?>>PC官网</option>-->
+<!--            </select>-->
+<!--            <input type="submit" class="btn btn-search" id="search_btn" value="搜索" />-->
+<!--            <a class="btn btn-clear" href="{:url('adv_pos')}">清空</a>-->
+<!--        </form>-->
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>标题</th>
+                    <th>标识</th>
+                    <th>模块</th>
+                    <th>广告类型</th>
+                    <th>宽度</th>
+                    <th>高度</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <empty name="data_lists">
+                    <tr><td colspan="8" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <foreach name="data_lists" item="vo">
+                    <tr>
+                        <td>{$vo['id']}</td>
+                        <td>{$vo.title}</td>
+                        <td>{$vo.name}</td>
+                        <td>{$vo['module']}</td>
+                        <td>{:get_info_status($vo['type'],14)}</td>
+                        <td>{$vo.width}</td>
+                        <td>{$vo['height']}</td>
+                        <td>
+                            <a href="{:url('edit',['id'=>$vo['id']])}">设置</a>
+                            <empty name="vo.add_status">
+                                <a href="{:url('add_adv',['id'=>$vo['id']])}">添加广告</a>
+                            </empty>
+                        </td>
+                    </tr>
+                    </foreach>
+                </empty>
+            </tbody>
+        </table>
+        <div class="pagination">{$page}</div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+		<include file="public@head"/>
+	</head>
+
+	<body>
+		<include file="public@nav"/>
+		<include file="public@header"/>
+		<div class="trunk">
+			<div class="trunk-con">
+				<div class="right-container">
+					<div class="normal-list">
+						<div class="trunk">
+							<div class="trunk-title">
+								<div class="location ">
+									<div class="location-container fr">当前位置：<span class="location-container-text">游戏管理&gt;</span><span class="location-container-text">游戏列表</span></div>
+								</div>
+								<img src="__TMPL__/public/assets/images/icon_normal_game.png" class="fl trunk-icon">
+								<span class="title-main fl ">游戏列表  </span>
+
+							</div>
+
+							<div class="tabpan">
+								<div class="tabpan-con-type-btn">
+									<if condition="PERMI eq 1 or PERMI eq 3">
+										<a class="btn-examine fl" href="{:url('game/apply_game')}">手游</a>
+									</if>
+									<if condition="PERMI eq 2 or PERMI eq 3">
+										<a class="btn-examine fl" href="{:url('game/apply_game_h5')}">H5</a>
+									</if>
+									<if condition="YPERMI gt 0">
+										<a class="btn-examine btn-examine-active fl" href="javascript:;">页游</a>
+									</if>
+								</div>
+								<div class="tabpan-con tabpan-show">
+									<input type="button" class="btn-calc fl piapply" value="批量申请" >
+									<form action="{:url('apply_game_pc')}" method="get">
+										<div class="trunk-search clearfix fr">
+											<select id="game_name" name="game_name" class="tab-input js-select-gallery normal-space  fl select2-hidden-accessible">
+												<option value="" data="0">选择游戏</option>
+												<php>
+													$gmap['game_status'] = 1;
+													$gmap['sdk_version'] = 4;
+													$gmap['test_game_status'] = 0;  // 测试游戏不显示,但可以正常进入
+													$gmap['id'] = $map_id;  // 测试游戏不显示,但可以正常进入
+												</php>
+												<volist name=":get_game_list('id,game_name,relation_game_id,relation_game_name',$gmap,'relation_game_name','sort desc ,id desc')" id="vv">
+													<option <if condition="$vv['relation_game_name'] eq input('game_name')"> selected</if> data="{$vv['relation_game_name']}" value="{$vv['relation_game_name']}">{$vv['relation_game_name']}</option>
+												</volist>
+											</select>
+											<input type="submit" class="submit fr normal-space" id="submit" value="查询">
+											<input type="hidden" id="page" name="row" value="{:input('row',10)}">
+										</div>
+									</form>
+									<div class="clear"></div>
+
+
+									<table class="table normal-table" id="promotecoin_table">
+										<tbody>
+											<tr>
+												<th><label class="checked"><input class="check-all" type="checkbox"><i class="check-icon"></i></label></th>
+												<th>ICON</th>
+												<th>游戏名称</th>
+												<th>平台</th>
+                                                <th>严控</th>
+                                                <th>推广限制等级</th>
+                                                <th>推广说明</th>
+												<!--<th>版本号</th>-->
+												<!--<th>包的大小</th>-->
+												<!--<th>原包更新时间</th>-->
+												<notempty name="baseinfo.pattern">
+													<th>注册单价</th>
+                                                    <th>当前注册单价生效时间</th>
+												<else/>
+													<th>分成比例</th>
+                                                    <th>当前分成比例生效时间</th>
+												</notempty>
+												<th>申请状态</th>
+											</tr>
+											<php>$count = $data->total();</php>
+											<if condition="!empty($count)">
+												<volist name="data" id="vo">
+													<tr>
+														<td><label class="checked"><input class="ids" type="checkbox" value="{$vo['relation_game_name']}"><i class="check-icon"></i></label></td>
+														<td><img src="{:cmf_get_image_preview_url($vo['icon'])}" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null"  class="graphic-icon"></td>
+														<td>{$vo['relation_game_name']}</td>
+														<!-- 渠道分包信息 -->
+														<td>
+															PC
+														</td>
+                                                        <td>
+                                                            <php>$is_control = get_game_attr_entity($vo['id'],'is_control')['is_control']</php>
+                                                            <p><eq name="is_control" value="1">是<else/>--</eq></p>
+                                                        </td>
+                                                        <td><p style="color: #FF6600">{:get_game_level($vo['id'],1)}</p></td>
+                                                        <td><p>{:get_game_attr_entity($vo['id'],'promote_declare')['promote_declare']?:'--'}</p></td>
+														<!--<td>-->
+															<!--<if condition="array_search(1,$vo['sdk_version']) nheq false">-->
+																<!--<p>{:$gamesource1['source_version']?:'无'}</p>-->
+															<!--</if>-->
+															<!--<if condition="array_search(2,$vo['sdk_version']) nheq false">-->
+																<!--<p>{:$gamesource2['source_version']?:'无'}</p>-->
+															<!--</if>-->
+														<!--</td>-->
+														<!--<td>-->
+															<!--<if condition="array_search(1,$vo['sdk_version']) nheq false">-->
+																<!--<p>{$vo['game_size'][array_search(1,$vo['sdk_version'])]}</p>-->
+															<!--</if>-->
+															<!--<if condition="array_search(2,$vo['sdk_version']) nheq false">-->
+																<!--<p>{$vo['game_size'][array_search(2,$vo['sdk_version'])]}</p>-->
+															<!--</if>-->
+														<!--</td>-->
+														<!--<td> -->
+															<!--<if condition="array_search(1,$vo['sdk_version']) nheq false">-->
+																<!--<p>{:empty($gamesource1)?'无':date('Y-m-d',$gamesource1['create_time'])}</p>-->
+															<!--</if>-->
+															<!--<if condition="array_search(2,$vo['sdk_version']) nheq false">-->
+																<!--<p>{:empty($gamesource2)?'无':date('Y-m-d',$gamesource2['create_time'])}</p>-->
+															<!--</if>-->
+														<!--</td>-->
+														<notempty name="baseinfo.pattern">
+																<td>
+																	<if condition="PID_LEVEL eq 1">
+																		<p>{:sprintf("%.2f",$vo['money'])}</p>
+																	<else/>
+																		<p>0.00</p>
+																	</if>
+																	<!-- 渠道分包信息 -->
+																</td>
+                                                              <td>
+                                                                <if condition="PID_LEVEL eq 1">
+                                                                    <p>{:get_game_begin_time($vo['id'],'money')}</p>
+                                                                    <else/>
+                                                                    <p>--</p>
+                                                                </if>
+                                                                <!-- 渠道分包信息 -->
+                                                            </td>
+															<else/>
+																<td>
+																	<if condition="PID_LEVEL eq 1">
+																	<!-- 渠道分包信息 -->
+																		<p>{:sprintf("%.2f",$vo['ratio'])}%</p>
+																	<else/>
+																		<p>0.00%</p>
+																	</if>
+																</td>
+                                                            <td>
+                                                                <if condition="PID_LEVEL eq 1">
+                                                                    <p>{:get_game_begin_time($vo['id'],'ratio')}</p>
+                                                                    <else/>
+                                                                    <p>--</p>
+                                                                </if>
+                                                                <!-- 渠道分包信息 -->
+                                                            </td>
+															</notempty>
+														<td>
+															<!-- 渠道分包信息 -->
+                                                            <if condition="get_game_level($vo['id'],0) gt PROMOTE_LEVEL">
+                                                                <p>申请</p>
+                                                                <else/>
+															<a href="javascript:;" class="applycbtn " data-id="{$vo['id']}" data-url="" style="color: rgb(38,199,219)" pack_status=""  style="color: rgb(38,199,219)" onclick='apply("{$vo['id']}",0)'>申请</a>
+                                                            </if>
+														</td>
+													</tr>
+												</volist>
+											<else/>
+												<!--暂无数据-->
+												<tr>
+													<td colspan="9">
+														<div class="no-data">
+															<img src="__TMPL__/public/assets/images/icon_wushujv2.png" alt="" class="no-data-img">
+															<p class="no-data-text">暂无数据</p>
+														</div>
+													</td>
+												</tr>
+											</if>
+										</tbody>
+									</table>
+									<notempty name="data">
+									<div class="pagenation clearfix">
+										{$page}
+									</div>
+									</notempty>
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<include file="public@scripts"/>
+		<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+		<script src="__STATIC__/js/layer/layer.js"></script>
+		<script>
+			$(function() {
+				$(".js-select-gallery").select2();
+			})
+			function apply(game_id,is_pi){
+				if(!game_id){
+					layer.msg('数据错误，申请失败');
+				}else{
+					$.ajax({
+						type:'post',
+						url:'{:url("apply")}',
+						data:{game_id:game_id,is_pi:is_pi},
+						success:function(res){
+							layer.msg(res.msg,{time:1000},function(){
+								location.href = location.href;
+							});
+						},error:function(){
+							layer.msg('服务器错误，请稍后再试');
+						}
+					});
+				}
+			}
+			$('.piapply').click(function(){
+				that = $(this);
+				ids = $('.ids');
+				game_id = '0';
+				ids.each(function(index,element){
+					if($(this).prop('checked')){
+						game_id = game_id+','+$(this).val();
+					}
+				});
+				if(game_id==0){
+					layer.msg('请选择申请的游戏');
+					return false;
+				}else{
+					apply(game_id,1);
+				}
+			});
+			//			全选
+			$(".check-all").click(function() {
+				$('.ids').prop("checked", this.checked);
+			});
+			$(".ids").click(function() {
+				var option = $(".ids");
+				option.each(function(i) {
+					if(!this.checked) {
+						$(".check-all").prop("checked", false);
+						return false;
+					} else {
+						$(".check-all").prop("checked", true);
+					}
+				});
+			});
+		</script>
+
+	</body>
+
+</html>

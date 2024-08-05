@@ -1,0 +1,351 @@
+.type_down__long_hx {
+    width: 100%;
+    height: 1px;
+    background-color: #EDEEEF;
+    position: relative;
+    top: -0.2rem;
+    z-index: 1;
+    margin-top: 0.3rem;
+}
+
+.my_bag_page_header {
+    width: 100%;
+    height: 3.5rem;
+}
+
+.my_bag_page_header .back_icon {
+    width: 0.74rem;
+    margin-top: 1.25rem;
+    margin-left: 1rem;
+}
+
+.layui-layer-hui {
+    border-radius: 8px!important
+}
+.layui-layer-hui .layui-layer-content {
+    padding: 6px 25px!important;
+}
+.my_bag_page_item {
+    margin-left: 7.4rem;
+    font-size: 1.45rem;
+    line-height: 1.5rem;
+    color: #999999;
+    padding-top: 1.2rem;
+    margin-bottom: 0.9rem;
+}
+
+.active_my_bag_page_type {
+    color: #018FFF;
+    font-weight: bold;
+}
+
+.type_down_hx1, .type_down_hx2 {
+    width: 5.2rem;
+    height: 2px;
+    position: relative;
+    top: -0.1rem;
+    z-index: 2;
+}
+
+.type_down_hx1 {
+    margin-left: 9rem;
+}
+
+.active_type_down_hx {
+    background-color: #018FFF;
+}
+
+.type_down_hx2 {
+    margin-left: 6.6rem;
+}
+
+.baglist_con_ygq {
+    display: none
+}
+
+.no_gamelist_text {
+    width: 100%;
+    font-size: 1.3rem;
+    text-align: center;
+    color: gray;
+    position: absolute;
+    top: 48%
+}
+
+.delete_btns {
+    text-align: center;
+    width: 14%;
+    line-height: 2rem;
+    color: #ef0000;
+    border: 1px solid #ef0000;
+    border-radius: 1rem;
+    position: relative;
+    top: 50%;
+	transform: translateY(-50%);
+    font-size: 1rem;
+    background-color: #fff;
+}
+
+.baglist_con_ygq .baglist_con_item {
+    height: 5.8rem!important;
+}
+
+.baglist_con_ylq {
+    margin-top: 1.6rem;
+}
+
+.baglist_con_item {
+    height: 8rem;
+}
+
+.baglist_con_item_info {
+    height: 4.7rem;
+    width: 94%;
+    display: block;
+    /* background-color: #0092FF; */
+    margin-left: 3%;
+	margin-bottom:0.5rem;
+}
+
+.baglist_con_item_info .img {
+    width: 4.7rem;
+    height: 4.7rem;
+    background-color: #e2e2e2;
+    border-radius: 10px;
+	margin-right:1.5rem;
+
+}
+
+.baglist_con_item_info .img img {
+    width: 4.7rem;
+    height: 4.7rem;
+    border-radius: 11px;
+}
+
+.baglist_con_item_info .title p {
+    font-size: 1.38rem;
+    font-weight: 400;
+    color: rgba(34, 34, 34, 1);
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.baglist_con_ygq .baglist_con_item_info .time {
+    width: 100%;
+}
+.baglist_edition{
+	padding-bottom:8px;
+	padding-left:3px;
+}
+@media screen and (max-width:320px) and (orientation:portrait) {
+    .baglist_con_ygq .baglist_con_item_info .time {
+        width: 14rem;
+    }
+}
+
+.baglist_con_ygq .baglist_con_item_info .time p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.baglist_con_item_info .time {
+    font-size: 1rem;
+    font-weight: 400;
+    color: rgba(153, 153, 153, 1);
+}
+
+.baglist_con_item_info .game_type {
+    width: 1.75rem;
+}
+
+.title_time {
+    width: 67%;
+    height: 4.7rem;
+    margin-left: -0.87rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.baglist_con_item_info .game_type img {
+    position: relative;
+    top: 2.85rem;
+    left: -1.75rem;
+
+}
+
+input, input:focus {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.baglist_con_item_info_attr input {
+    width: calc(75% - 2rem);
+    width: calc(84% - 2rem);
+    height: 2.35rem;
+    /*line-height:2.35rem;*/
+	padding:0.1rem 2rem 0 1rem;
+    text-indent: 3.8rem;
+    margin:0 0 0 3%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 1.1rem;
+    border-radius: 2px 0px 0px 2px;
+    color: #0092ff;
+    letter-spacing: 0.5px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.baglist_con_item_info_attr .tap {
+    font-size: 1.1rem;
+/*    line-height: 2.45rem;*/
+    color: #999;
+    position: absolute;
+    left: 5%;
+    height: 2.35rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.delete_one_modal, .delete_all_modal {
+    display: none;
+    font-size: 14px;
+    font-weight: bold;
+    color: rgba(34, 34, 34, 1);
+    text-align: center;
+}
+
+.delete_one_modal p, .delete_all_modal p {
+    padding-top: 2rem;
+}
+.btn_ground {
+    width: 100%;
+    height: 3.5rem;
+    position: absolute;
+    bottom: 0px;
+}
+
+.btn_ground div {
+    width: 49%;
+    height: 95%;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(34, 34, 34, 1);
+}
+
+.btn_ground div p {
+    padding-top: 0.8rem;
+}
+
+.btn_ground .quxiao {
+    border-top: 1px solid #DEE2E5;
+    border-right: 1px solid #DEE2E5;
+}
+
+.btn_ground .queren {
+    border-top: 1px solid #DEE2E5;
+}
+
+.delete_all_modal {
+    display: none
+}
+
+.layui-layer-shade {
+    opacity: 0.6!important;
+}
+@media screen and (min-width:414px) and (orientation:portrait) {
+    .fuzhi_btn {
+        height: 2.2rem!important;
+        line-height: 2.2rem!important;
+    }
+}
+
+.fuzhi_btn {
+    width: 16%;
+    height: 2.35rem;
+    border: 1px solid #018FFF;
+    line-height: 2.35rem;
+    border-radius: 0px 2px 2px 0px;
+    background-color: #018FFF;
+    color: #ffffff;
+    text-align: center;
+    font-size: 12px;
+    box-shadow: none;
+}
+
+.my_bag_footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    text-align: center;
+    display: none;
+    background-color: #fff;
+}
+
+.delete_all_btn {
+    width: 95%;
+    line-height: 3.3rem;
+    border: 1px solid #018FFF;
+    background-color: #018FFF;
+    color: #ffffff;
+    border-radius: 5px;
+    text-align: center;
+    margin: auto
+}
+
+@media screen and (max-width:320px) and (orientation:portrait) {
+    .my_bag_page_item {
+        margin-left: 5rem;
+    }
+    .type_down_hx2 {
+        margin-left: 15rem;
+    }
+    .type_down_hx1 {
+        margin-left: 6.4rem;
+        position: relative;
+        top: 0.1rem
+    }
+    .fuzhi_btn p {
+        padding-top: 0.55rem!important;
+    }
+    .delete_btns {
+        width: 15%;
+        margin-right: 2%;
+    }
+    .title_time {
+        width: 58%;
+    }
+}
+
+@media screen and (min-width:360px) and (max-width:374px) and (orientation:portrait) {
+    .my_bag_page_item {
+        margin-left: 6.4rem
+    }
+    .type_down_hx1 {
+        margin-left: 8rem;
+    }
+    .type_down_hx2 {
+        margin-left: 5.4rem
+    }
+}
+
+@media screen and (min-width:414px) and (max-width:431px) and (orientation:portrait) {
+    .type_down_hx1, .type_down_hx2 {
+        position: relative;
+        top: -0.1rem!important;
+    }
+}
+
+@media screen and (min-width:375px) and (max-width:383px) and (orientation:portrait) {
+    .type_down_hx2 {
+        margin-left: 6.6rem
+    }
+}

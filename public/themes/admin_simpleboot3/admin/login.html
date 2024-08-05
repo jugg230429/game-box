@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>{$config.web_site_title}</title>
+		<meta http-equiv="X-UA-Compatible" content="chrome=1,IE=edge"/>
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta name="robots" content="noindex,nofollow">
+		<!-- HTML5 shim for IE8 support of HTML5 elements -->
+		<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<![endif]-->
+		<link href="__TMPL__/public/assets/themes/{:cmf_get_admin_style()}/bootstrap.min.css" rel="stylesheet">
+		<link href="__STATIC__/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+		<link href="__STATIC__/css/login.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/newLogin.css" rel="stylesheet" >
+		<!--[if lt IE 9]>
+		<script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+		<script src="//captcha.luosimao.com/static/dist/api.js"></script>
+		<script>
+            if (window.parent !== window.self) {
+                document.write              = '';
+                window.parent.location.href = window.self.location.href;
+                setTimeout(function () {
+                    document.body.innerHTML = '';
+                }, 0);
+            }
+		</script>
+		<style>
+			html,body {
+				height: 100%;
+			}
+			.btn_delphil{
+				margin-left:312px;
+				margin-bottom: 15px
+			}
+			.geetest_radar_btn{
+				width: 345px!important;
+			}
+			.geetest_logo,.geetest_feedback,.geetest_copyright,.geetest_success_logo{
+				display: none!important;
+			}
+			.geetest_holder.geetest_wind{
+				width: 345px!important;
+			}
+			.fl {
+				float: left;
+			}
+			a {
+				text-decoration: none;
+			}
+			li {
+				list-style: none;
+			}
+			ul {
+				margin: 0;
+				padding: 0;
+			}
+			.sliderSystem{
+				max-width:30px;
+				color:#C5D2E8;
+				width:auto;
+				padding:20px 8px;
+				background:#000A1B;
+				line-height: 19px;
+				word-break: break-all;
+				text-align: center
+        	}
+			.sliderSystem a {
+            	color:#C5D2E8;
+				text-decoration: none;
+        	}
+			.login-con{
+				margin: auto;
+			}
+			.js-ajax-form{
+				padding-top: 169px;
+				display: block;
+			}
+			.leftBoxChoose{
+				width: 1.6%;
+				height: 100%;
+				background:#000A1B;
+			}
+			.activeSystem{
+				background-color: #162642;
+				color: #fff;
+        	}
+			.yz_box{
+				position: fixed;
+			width: 100%;
+			height: 100%;
+			background: rgba(39, 49, 69, 0.3);
+			z-index: 19891015;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		top:0px;
+			left: 0px;
+			}
+			.conts{
+				width: 406px;
+		height: 294px;
+			border-radius: 5px;
+			/* overflow: hidden; */
+		position: static;
+		left: 50%;
+		top: 50%;
+		margin-left: 0;
+		background-color: #fff;
+		border-radius: 5px;
+			}
+			.yz_tip{
+				float: left;
+				font-size: 16px;
+			color: #222222;
+			text-align: left;
+			margin-bottom: 10px;
+			/* margin-top: 25px; */
+			margin-top: 45px;
+			margin-left: 30px;
+
+			}
+			.yz_form{
+
+				float: left;
+				background-color: #fff;
+				text-align: center;
+				width: 100%;
+				height: 100%;
+				border-radius: 5px;
+			}
+			.yzm{
+				width: 226px;
+			}
+			.yz_btn{
+				width: 96px;
+    			height: 37px;
+    			line-height: 33px;
+				margin-left: 18px;
+				background-color: #fff;
+				border: 1px solid #006ec5;
+				color: #006ec5;
+			}
+			.close1{
+				width: 100%;
+				padding: 12px 12px 0 0;
+				text-align: right;
+			}
+			.btn_yz:active, .btn_yz.active {
+				outline: 0;
+				background-image: none;
+				-webkit-box-shadow: inset 0 3px 5px rgb(0 0 0 / 13%);
+				box-shadow: inset 0 3px 5px rgb(0 0 0 / 13%);
+			}
+			.btn_yz:hover, .btn_yz:focus, .btn_yz.focus {
+				color: #333333;
+				text-decoration: none;
+			}
+			.btn_yz {
+				width: 345px;
+				height: 37px;
+				background: #006ec5;
+				border: none;
+				font-size: 16px;
+				color: #fff;
+				cursor: pointer;
+				border-radius: 2px;
+			}
+			.btn_yz {
+				display: inline-block;
+				margin-bottom: 0;
+				font-weight: normal;
+				text-align: center;
+				vertical-align: middle;
+				-ms-touch-action: manipulation;
+				touch-action: manipulation;
+				cursor: pointer;
+				background-image: none;
+				border: 1px solid transparent;
+				white-space: nowrap;
+				padding: 6px 12px;
+				font-size: 14px;
+				line-height: 1.42857143;
+				border-radius: 4px;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div style="height: 100%;">
+			<div class="fl leftBoxChoose">
+				<ul style="cursor: pointer;padding-top: 59px;">
+					<li class="sliderSystem activeSystem" id="js-homeBack">旗舰管理后台</li>
+					<!-- <li class="sliderSystem" id="js-advert"><a href="javaScript:;" >广告监测分析系统</a></li> -->
+					<li class="sliderSystem" id="js-scrm" ><a href="javascript:;">玩家维护和公会服务系统</a></li>
+					<li class="sliderSystem" id="js-oa"><a href="javaScript:;" >工作室OA系统</a></li>
+<!--					<li class="sliderSystem" id="js-fuwu"><a href="javaScript:;" >售后服务平台</a></li>-->
+<!--					<li class="sliderSystem" id="js-kf_business" ><a href="javascript:;">在线客服系统</a></li>-->
+<!--					<li class="sliderSystem" id="js-kf_work" ><a href="javascript:;">客服工作台</a></li>-->
+					<!-- <li class="sliderSystem" onclick="openapp('{:url('admin/setting/system')}','','系统设置',true)" >系统设置</li> -->
+				</ul>
+			</div>
+			<div style="height:100%;margin-left: 1.6%;">
+
+				<form class="js-ajax-form main-page admin_login_form" action="{:url('public/doLogin')}" method="post">
+					<div class="login-con">
+						<div class="login-title">
+							<div class="">
+								<php>$llogo = cmf_get_image_url($config['web_set_logo']);</php>
+								<if condition="!varify_url($llogo)">
+									<span class="login-img">手游联运系统管理后台</span>
+								<else/>
+									<img src="{:cmf_get_image_url($config['web_set_logo'])}" alt="手游联运系统管理后台" class="login-img">
+								</if>
+							</div>
+						</div>
+						<div class="login-tip">管理员登录</div>
+						<div>
+							<input type="text" id="input_username" class="login-input" name="username"
+								   placeholder="账号" title="账号" data-rule-required="true" data-msg-required="">
+						</div>
+						<div>
+							<input type="password" id="input_password" class="login-input" name="password"
+								   placeholder="密码" title="密码" data-rule-required="true" autocomplete="new-password" data-msg-required="">
+						</div>
+						<div class="btn_delphil textc"  id="embed-captcha"></div>
+						<p id="wait" class="show">正在加载验证码......</p>
+						<p id="notice" class="hide">请先完成验证</p>
+						<!--<div class="captcha">
+							&lt;!&ndash;<div class="l-captcha login-input" data-site-key="{$config.auto_verify_index}" ></div>&ndash;&gt;
+							<input type="text" name="captcha" placeholder="验证码" class="input-captcha captcha" >
+							&lt;!&ndash;<captcha height="32" width="150" font-size="18" class="captcha-img" />&ndash;&gt;
+							<span class="new-capcha">1246</span>
+						</div>-->
+						<div class="">
+							<input type="hidden" name="redirect" value="">
+							<button class="btn js-ajax-submit" type="submit" data-success="successCheckCode"
+                                    style="margin-left:
+							0px"
+									data-loadingmsg="{:lang('LOADING')}">
+								{:lang('LOGIN')}
+							</button>
+						</div>
+					</div>
+			<!--		<div class="footer-copy">-->
+			<!--			<span class="footer-copy-con">网络备案：{$config.web_set_for_the_record}</span>-->
+			<!--			<span  class="footer-copy-con">网络文化经营许可证编号：{$config.web_set_license}</span>-->
+			<!--			<span  class="footer-copy-con">版权所有：{$config.web_set_copyright}</span>-->
+			<!--		</div>-->
+
+
+					<div class="yz1" style="display: none">
+						<div class="yz_box">
+							<div class="conts">
+								<div class="yz_form" >
+									<div class="close1">
+										<!-- <img src="__TMPL__/public/assets/images/login/close_n1.png" alt="" class="closen1"> -->
+									</div>
+									<div class="yz_tip">管理员登录</div>
+									<div>
+										<input type="text" id="number" class="login-input" value="" name="number" disabled  data-rule-required="true" data-msg-required="">
+									</div>
+									<div>
+										<input type="text" id="yzm" class="login-input yzm" value="" name="yzm" title="验证码" placeholder="验证码" data-rule-required="true" data-msg-required="">
+										<!--								<button class="yz_btn" onclick="get_yzm(this)" type="submit" >获取验证码</button>-->
+										<input class="yz_btn" onclick="get_yzm(this)" type="submit" value="获取验证码" />
+
+									</div>
+									<input type="hidden" name="login_check_code" class="login_check_code" value="0">
+									<button class="btn_yz admin_yz_login" type="button"  onclick="admin_yz_login()"
+											style="margin-left:
+							0px"
+											data-loadingmsg="{:lang('LOADING')}">
+										{:lang('LOGIN')}
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</form>
+
+				<include file="website"/>
+
+			</div>
+		</div>
+
+	<script type="text/javascript">
+        window.successCheckCode = function (data){
+            if(data.data.need_code===1){
+                //发送验证码接口"{:url('Verify/send_sms')}" 传值 手机号：phone，登录账号：username
+				$(".yz1").css("display","block");
+				var admin_mobile = data.data.admin_mobile;
+				$("#number").val(admin_mobile);
+				return false;
+            }else{
+                _refresh(data);
+            }
+        }
+        function _refresh(data) {
+            if (data.url) {
+                //返回带跳转地址
+                window.location.href = data.url;
+            } else {
+                //刷新当前页
+                reloadPage(window);
+            }
+        }
+
+        //全局变量
+        var GV = {
+            ROOT: "__ROOT__/",
+            WEB_ROOT: "__WEB_ROOT__/",
+            JS_ROOT: "static/js/",
+            APP: ''/*当前应用名*/
+        };
+	</script>
+	<script src="__TMPL__/public/assets/js/jquery-1.10.2.min.js"></script>
+	<script src="__STATIC__/js/wind.js"></script>
+	<script src="__STATIC__/js/admin.js"></script>
+	<script src="__STATIC__/js/gt.js"></script>
+	<script>
+		$(".closen1").click(function(){
+			$(".yz1").css("display","none");
+		})
+        var handlerEmbed = function (captchaObj) {
+            var validate = captchaObj.getValidate();
+            captchaObj.onSuccess(function () {
+                validate = captchaObj.getValidate();
+                if (validate) {
+                 $(".btn").click();
+                }
+            });
+            // 将验证码加到id为captcha的元素里，同时会有三个input的值：geetest_challenge, geetest_validate, geetest_seccode
+            captchaObj.appendTo("#embed-captcha");
+            captchaObj.onReady(function () {
+                $("#wait")[0].className = "hide";
+            });
+            // 更多接口参考：http://www.geetest.com/install/sections/idx-client-sdk.html
+        };
+        $.ajax({
+            // 获取id，challenge，success（是否启用failback）
+            url: "{:url('Public/checkGeetest')}?t=" + (new Date()).getTime(), // 加随机数防止缓存
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                // 使用initGeetest接口
+                // 参数1：配置参数
+                // 参数2：回调，回调的第一个参数验证码对象，之后可以使用它做appendTo之类的事件
+                initGeetest({
+                    gt: data.gt,
+                    challenge: data.challenge,
+                    new_captcha: data.new_captcha,
+                    product: "embed", // 产品形式，包括：float，embed，popup。注意只对PC版验证码有效
+                    offline: !data.success // 表示用户后台检测极验服务器是否宕机，一般不需要关注
+                    // 更多配置参数请参见：http://www.geetest.com/install/sections/idx-client-sdk.html#config
+                }, handlerEmbed);
+            }
+        });
+        (function () {
+            document.getElementById('input_username').focus();
+        })();
+
+
+	</script>
+
+		<script src="__JS__/layer/layer.js" type="text/javascript"></script>
+	<script>
+
+
+		//获取验证码
+		function get_yzm(obj){
+			var account = $("#input_username").val();
+			// alert(account);
+			$.ajax({
+				type: 'post',
+				dataType: 'json',
+				url: '{:url("Verify/send_sms")}',
+				data: {username: account},
+				success: function (data) {
+					layer.msg(data.msg);
+					if(data.code == 1){
+						//倒计时
+						settime(obj);
+					}
+
+				},
+				error: function () {
+					layer.msg('服务器故障，请稍候再试');
+					that.removeClass('no_send');
+				}
+			});
+			return false;
+
+		}
+
+		countdown = 60;
+		function settime(obj) {
+			if (countdown == 0) {
+				obj.removeAttribute("disabled");
+				obj.value="获取验证码";
+				countdown = 60;
+				return;
+			} else {
+				obj.setAttribute("disabled", true);
+				obj.value="重新发送(" + countdown + ")";
+				countdown--;
+			}
+			setTimeout(function() {
+						settime(obj) }
+					,1000)
+		}
+
+		// 登录
+		function admin_yz_login() {
+			var yzm = $(".yzm").val();
+			if(yzm == ''){
+				layer.msg('验证码不能为空');
+				return false;
+			}
+			$(".login_check_code").val('1');
+			$.ajax({
+				type: 'post',
+				dataType: 'json',
+				url: '{:url("doLogin")}',
+				data: $('.admin_login_form').serialize(),
+				success: function (data) {
+					layer.msg(data.msg);
+					if(data.data.need_code===1){
+						//发送验证码接口"{:url('Verify/send_sms')}" 传值 登录账号：username
+						$(".yz1").css("display","block");
+						var admin_mobile = data.data.admin_mobile;
+						$("#number").val(admin_mobile);
+						return false;
+					}
+					if (data.code == 1) {
+						window.location.href = data.url;
+					}
+					if(data.code == 2){
+						$('#ip_change').css('display','block');
+					}
+				},
+				error: function () {
+					layer.msg('服务器故障，请稍候再试');
+					that.removeClass('no_send');
+				}
+
+			});
+			$(".login_check_code").val('0');
+			return false;
+		}
+	</script>
+	</body>
+</html>

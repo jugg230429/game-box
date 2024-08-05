@@ -1,0 +1,267 @@
+<include file="public@header"/>
+</head>
+<style>
+    .btn.disabled, .btn[disabled], fieldset[disabled] .btn {
+        background-color: rgb(238,238,238)!important;
+        border-color: rgb(238,238,238)!important;
+        opacity: 1;
+    }
+    img{
+        border-radius:10px;
+    }
+    .mar_top5{
+        margin-top: 6px;
+    }
+</style>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs mb20">
+        <li ><a href="{:url('promoteunion/lists')}">联盟申请</a></li>
+        <li class="active"><a href="{:url('view_detail')}">查看渠道信息</a></li>
+        <span class="title_remark">说明：查看渠道申请的基础信息。</span>
+        
+    </ul>
+    <ul class="nav nav-menu">
+        <li class="active fl nav-menu-con"><a href="#A" data-toggle="tab">WAP / APP</a></li>
+        <li class="fl  nav-menu-con"><a href="#B" data-toggle="tab">PC官网</a></li>
+        <li class="fl  nav-menu-con"><a href="#C" data-toggle="tab">SDK</a></li>
+        <!-- <li class="fl  nav-menu-con"><a href="#D" data-toggle="tab">其他1</a></li> -->
+        <!-- <li class="fl  nav-menu-con"><a href="#E" data-toggle="tab">其他2</a></li> -->
+        <if condition="$data['promote_level'] eq '1'"></if>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" action="{:url('view_detail')}" method="post">
+        <div class="tabbable">
+            <div class="tab-content">
+                <div class="tab-pane active" id="A">
+                    
+                    <div class="form-group">
+                        <label for="input-name" class="col-sm-2 control-label"><span class="form-required"></span>APP图标：</label>
+                        <div class="col-md-3 col-sm-5 mar_top5">
+                            <input id="app_ico" type="hidden" name="app_ico" value="{$data.app_ico}">
+                            <img id="app_ico-preview" class="upload-img"  <if condition="$data['app_ico']">src="{:cmf_get_image_preview_url($data['app_ico'])}"</if>>
+                            <!-- <a href="javascript:uploadOneImage('图片上传','#app_ico');">上传</a>
+                            <a href="javascript:(function(){$('#app_ico-preview').attr('src','');$('#app_ico').val('')})();">移除</a> -->
+                        </div>
+                        <!-- <p class="help-block">通过渠道后台注册申请或者管理后台创建的账号，用于推广平台登录</p> -->
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input-name" class="col-sm-2 control-label"><span class="form-required"></span>分享图标：</label>
+                        <div class="col-md-3 col-sm-5 mar_top5">
+                            <input id="share_ico" type="hidden" name="share_ico" value="{$data.share_ico}">
+                            <img id="share_ico-preview" class="upload-img"  <if condition="$data['share_ico']">src="{:cmf_get_image_preview_url($data['share_ico'])}"</if>>
+                            <!-- <a href="javascript:uploadOneImage('图片上传','#share_ico');">上传</a>
+                            <a href="javascript:(function(){$('#share_ico-preview').attr('src','');$('#share_ico').val('')})();">移除</a> -->
+                        </div>
+                        <!-- <p class="help-block">通过渠道后台注册申请或者管理后台创建的账号，用于推广平台登录</p> -->
+                    </div>
+                    <div class="form-group">
+                        <label for="input-name" class="col-sm-2 control-label"><span class="form-required"></span>APP名称：</label>
+                        <div class="col-md-3 col-sm-5 mar_top5">
+                            <span>{$data['app_name_ico']}</span>
+                        </div>
+                        <!-- <p class="help-block">通过渠道后台注册申请或者管理后台创建的账号，用于推广平台登录</p> -->
+                    </div>
+                    <div class="form-group">
+                        <label for="input-name" class="col-sm-2 control-label"><span class="form-required"></span>分享标题：</label>
+                        <div class="col-md-3 col-sm-5 mar_top5">
+                            <span>{$data['share_title']}</span>
+                        </div>
+                        <!-- <p class="help-block">通过渠道后台注册申请或者管理后台创建的账号，用于推广平台登录</p> -->
+                    </div>
+                    <div class="form-group">
+                        <label for="input-name" class="col-sm-2 control-label"><span class="form-required"></span>分享描述：</label>
+                        <div class="col-md-3 col-sm-5 mar_top5">
+                            <span>{$data['share_describe']}</span>
+                        </div>
+                        <!-- <p class="help-block">通过渠道后台注册申请或者管理后台创建的账号，用于推广平台登录</p> -->
+                    </div>
+
+                    <!-- <div class="form-group">
+                        <input type="hidden" name="id" value="{$data['id']}">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            <button type="submit" class="btn btn-primary js-ajax-submit save-btn">保存</button>
+                            <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                        </div>
+                    </div> -->
+                </div>
+
+                <div class="tab-pane" id="B">
+                    <div class="form-group">
+                        <label for="input-name" class="col-sm-2 control-label"><span class="form-required"></span>网站标题：</label>
+                        <div class="col-md-3 col-sm-5 mar_top5">
+                            <span>{$data['site_name']}</span>
+                        </div>
+                        <!-- <p class="help-block">通过渠道后台注册申请或者管理后台创建的账号，用于推广平台登录</p> -->
+                    </div>
+                    <div class="form-group">
+                        <label for="input-name" class="col-sm-2 control-label"><span class="form-required"></span>客服电话：</label>
+                        <div class="col-md-3 col-sm-5 mar_top5">
+                            <span>{$data['tel']}</span>
+                        </div>
+                        <!-- <p class="help-block">通过渠道后台注册申请或者管理后台创建的账号，用于推广平台登录</p> -->
+                    </div>
+                    <div class="form-group">
+                        <label for="input-name" class="col-sm-2 control-label"><span class="form-required"></span>客服QQ：</label>
+                        <div class="col-md-3 col-sm-5 mar_top5">
+                            <span>{$data['qq']}</span>
+                        </div>
+                        <!-- <p class="help-block">通过渠道后台注册申请或者管理后台创建的账号，用于推广平台登录</p> -->
+                    </div>
+                    <div class="form-group">
+                        <label for="input-name" class="col-sm-2 control-label"><span class="form-required"></span>客服邮箱：</label>
+                        <div class="col-md-3 col-sm-5 mar_top5">
+                            <span>{$data['mailbox']}</span>
+                        </div>
+                        <!-- <p class="help-block">通过渠道后台注册申请或者管理后台创建的账号，用于推广平台登录</p> -->
+                    </div>
+                    <div class="form-group">
+                        <label for="input-name" class="col-sm-2 control-label"><span class="form-required"></span>QQ群：</label>
+                        <div class="col-md-3 col-sm-5 mar_top5">
+                            <span>{$data['qq_group']}</span>
+                        </div>
+                        <!-- <p class="help-block">通过渠道后台注册申请或者管理后台创建的账号，用于推广平台登录</p> -->
+                    </div>
+                    <div class="form-group">
+                        <label for="input-name" class="col-sm-2 control-label"><span class="form-required"></span>QQ群地址：</label>
+                        <div class="col-md-3 col-sm-5 mar_top5">
+                            <span>{$data['qq_group_url']}</span>
+                        </div>
+                        <!-- <p class="help-block">通过渠道后台注册申请或者管理后台创建的账号，用于推广平台登录</p> -->
+                    </div>
+                    <div class="form-group">
+                        <label for="input-name" class="col-sm-2 control-label"><span class="form-required"></span>QQ群key：</label>
+                        <div class="col-md-3 col-sm-5 mar_top5">
+                            <span>{$data['qq_group_key']}</span>
+                        </div>
+                        <!-- <p class="help-block">通过渠道后台注册申请或者管理后台创建的账号，用于推广平台登录</p> -->
+                    </div>
+                    <div class="form-group">
+                        <label for="input-name" class="col-sm-2 control-label"><span class="form-required"></span>微信公众号：</label>
+                        <div class="col-md-3 col-sm-5 mar_top5">
+                            <span>{$data['app_weixin']}</span>
+                        </div>
+                        <!-- <p class="help-block">通过渠道后台注册申请或者管理后台创建的账号，用于推广平台登录</p> -->
+                    </div>
+                    <div class="form-group">
+                        <label for="input-name" class="col-sm-2 control-label"><span class="form-required"></span>网站备案号：</label>
+                        <div class="col-md-3 col-sm-5 mar_top5">
+                            <span>{$data['pc_set_for_the_record']}</span>
+                        </div>
+                        <!-- <p class="help-block">通过渠道后台注册申请或者管理后台创建的账号，用于推广平台登录</p> -->
+                    </div>
+                    <div class="form-group">
+                        <label for="input-name" class="col-sm-2 control-label"><span class="form-required"></span>增信电信业务经营许可证：</label>
+                        <div class="col-md-3 col-sm-5 mar_top5">
+                            <span>{$data['pc_set_telecom_license']}</span>
+                        </div>
+                        <!-- <p class="help-block">通过渠道后台注册申请或者管理后台创建的账号，用于推广平台登录</p> -->
+                    </div>
+                    <div class="form-group">
+                        <label for="input-name" class="col-sm-2 control-label"><span class="form-required"></span>网络文化经营许可证：</label>
+                        <div class="col-md-3 col-sm-5 mar_top5">
+                            <span>{$data['pc_set_license']}</span>
+                        </div>
+                        <!-- <p class="help-block">通过渠道后台注册申请或者管理后台创建的账号，用于推广平台登录</p> -->
+                    </div>
+                    <div class="form-group">
+                        <label for="input-name" class="col-sm-2 control-label"><span class="form-required"></span>ICP备案号：</label>
+                        <div class="col-md-3 col-sm-5 mar_top5">
+                            <span>{$data['pc_set_for_the_record_icp']}</span>
+                        </div>
+                        <!-- <p class="help-block">通过渠道后台注册申请或者管理后台创建的账号，用于推广平台登录</p> -->
+                    </div>
+                    <div class="form-group">
+                        <label for="input-name" class="col-sm-2 control-label"><span class="form-required"></span>官网版权信息设置：</label>
+                        <div class="col-md-3 col-sm-5 mar_top5">
+                            <span>{$data['pc_set_copyright']}</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input-name" class="col-sm-2 control-label"><span class="form-required"></span>微信二维码：</label>
+                        <div class="col-md-3 col-sm-5 mar_top5">
+                            <input id="qrcode" type="hidden" name="qrcode" value="{$data.qrcode}">
+                            <img id="qrcode-preview" class="upload-img"  <if condition="$data['qrcode']">src="{:cmf_get_image_preview_url($data['qrcode'])}"</if>>
+                            <!-- <a href="javascript:uploadOneImage('图片上传','#qrcode');">上传</a>
+                            <a href="javascript:(function(){$('#qrcode-preview').attr('src','');$('#qrcode').val('')})();">移除</a> -->
+                        </div>
+                        <!-- <p class="help-block">通过渠道后台注册申请或者管理后台创建的账号，用于推广平台登录</p> -->
+                    </div>
+                    <div class="form-group">
+                        <label for="input-name" class="col-sm-2 control-label"><span class="form-required"></span>官网LOGO：</label>
+                        <div class="col-md-3 col-sm-5 mar_top5">
+                            <input id="pc_logo" type="hidden" name="pc_logo" value="{$data.pc_logo}">
+                            <img id="pc_logo-preview" class="upload-img"  <if condition="$data['pc_logo']">src="{:cmf_get_image_preview_url($data['pc_logo'])}"</if>>
+                            <!-- <a href="javascript:uploadOneImage('图片上传','#pc_logo');">上传</a>
+                            <a href="javascript:(function(){$('#pc_logo-preview').attr('src','');$('#pc_logo').val('')})();">移除</a> -->
+                        </div>
+                        <!-- <p class="help-block">通过渠道后台注册申请或者管理后台创建的账号，用于推广平台登录</p> -->
+                    </div>
+                    <div class="form-group">
+                        <label for="input-name" class="col-sm-2 control-label"><span class="form-required"></span>官网iCO：</label>
+                        <div class="col-md-3 col-sm-5 mar_top5">
+                            <input id="pc_icon" type="hidden" name="pc_icon" value="{$data.pc_icon}">
+                            <img id="pc_icon-preview" class="upload-img"  <if condition="$data['pc_icon']">src="{:cmf_get_image_preview_url($data['pc_icon'])}"</if>>
+                            <!-- <a href="javascript:uploadOneImage('图片上传','#pc_icon');">上传</a>
+                            <a href="javascript:(function(){$('#pc_icon-preview').attr('src','');$('#pc_icon').val('')})();">移除</a> -->
+                        </div>
+                        <!-- <p class="help-block">通过渠道后台注册申请或者管理后台创建的账号，用于推广平台登录</p> -->
+                    </div>
+                    <div class="form-group">
+                        <label for="input-name" class="col-sm-2 control-label"><span class="form-required"></span>官网底部LOGO：</label>
+                        <div class="col-md-3 col-sm-5 mar_top5">
+                            <input id="pc_ft_logo" type="hidden" name="pc_ft_logo" value="{$data.pc_ft_logo}">
+                            <img id="pc_ft_logo-preview" class="upload-img"  <if condition="$data['pc_ft_logo']">src="{:cmf_get_image_preview_url($data['pc_ft_logo'])}"</if>>
+                            <!-- <a href="javascript:uploadOneImage('图片上传','#pc_ft_logo');">上传</a>
+                            <a href="javascript:(function(){$('#pc_ft_logo-preview').attr('src','');$('#pc_ft_logo').val('')})();">移除</a> -->
+                        </div>
+                        <!-- <p class="help-block">通过渠道后台注册申请或者管理后台创建的账号，用于推广平台登录</p> -->
+                    </div>
+
+                </div>
+
+                <div class="tab-pane" id="C">
+                    <div class="form-group">
+                        <label for="input-name" class="col-sm-2 control-label"><span class="form-required"></span>悬浮球图片：</label>
+                        <div class="col-md-3 col-sm-5 mar_top5">
+                            <input id="xfq" type="hidden" name="xfq" value="{$data.xfq}">
+                            <img id="xfq-preview" class="upload-img"  <if condition="$data['xfq']">src="{:cmf_get_image_preview_url($data['xfq'])}"</if>>
+                            <!-- <a href="javascript:uploadOneImage('图片上传','#xfq');">上传</a>
+                            <a href="javascript:(function(){$('#xfq-preview').attr('src','');$('#xfq').val('')})();">移除</a> -->
+                        </div>
+                        <!-- <p class="help-block">通过渠道后台注册申请或者管理后台创建的账号，用于推广平台登录</p> -->
+                    </div>
+                    <div class="form-group">
+                        <label for="input-name" class="col-sm-2 control-label"><span class="form-required"></span>显示状态：</label>
+                        <div class="col-md-3 col-sm-5 mar_top5">
+                            <if condition="$data['xfq_show_switch'] eq 1">开启</if>
+                            <if condition="$data['xfq_show_switch'] eq 0">关闭</if>
+                        </div>
+                        <!-- <p class="help-block">通过渠道后台注册申请或者管理后台创建的账号，用于推广平台登录</p> -->
+                    </div>
+
+                </div>
+
+                <div class="tab-pane" id="D">
+                    DDDDDDDDDDDD
+                </div>
+
+                <div class="tab-pane" id="E">
+                    测试测试测试
+                </div>
+                
+
+            </div>
+        </div>
+    </form>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript">
+    $(function () {
+        
+    })
+
+</script>
+</body>
+</html>

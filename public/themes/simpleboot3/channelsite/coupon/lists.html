@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<include file="public@head"/>
+		<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/promote/mychlid.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+	</head>
+	<body>
+		<include file="public@nav"/>
+		<include file="public@header"/>
+		<div class="trunk">
+			<div class="trunk-con">
+				<div class="right-container">
+					<div class="normal-list">
+						<div class="trunk">
+							<div class="trunk-title">
+								<div class="location ">
+									<div class="location-container fr">当前位置：<span class="location-container-text">我的收益&gt;</span><span class="location-container-text">代金券列表</span></div>
+								</div>
+								<img src="__TMPL__/public/assets/images/promote/icon_normal_zhanghu.png" class="fl trunk-icon">
+								<span class="title-main fl "> 代金券列表 </span>
+								<span class="tagging">说明：游戏内的充值抵用优惠券。</span>
+							</div>
+							<div class="tabpan">
+								<div class="tabpan-con tabpan-show mychlid-tabcon">
+								<a href="{:url('add_coupon')}" class="add-btn  fl"><i class="add-qudao"></i><span>新增</span></a>
+									<form action="{:url('lists')}">
+										<div class="trunk-search clearfix fr">
+											<input type="text" name="coupon_name" class="tabpan-input" placeholder="代金券名称" value="{:input('coupon_name')}">
+											<select id="limit_money" name="limit_money" class="tab-input js-select-gallery normal-space trunk-search-select fl">
+												<option value="" >使用条件</option>
+												<option value="0" <if condition="input('limit_money') heq '0'"> selected</if> data="0">无门槛</option>
+												<option data="" <if condition="input('limit_money') eq 1"> selected</if> value="1">满减</option>
+											</select>
+											<select id="game_id" name="game_id" class="tab-input js-select-gallery normal-space  fl trunk-search-select">
+												<option value="" data="0">选择游戏</option>
+												<php>
+													$gmap['game_status'] = 1;
+													$gmap['sdk_version'] = ['lt',4];
+												</php>
+												<volist name=":get_game_list('id,game_name',$gmap,false,'sort desc ,id desc')" id="vv">
+													<option <if condition="$vv['id'] eq input('game_id')"> selected</if> value="{$vv['id']}">{$vv['game_name']}</option>
+												</volist>
+											</select>
+											<input type="submit" class="submit fr normal-space" id="submit" value="查询">
+										</div>
+									</form>
+									<div class="clear"></div>
+
+									<table class="table normal-table" id="promotecoin_table" >
+										<tbody>
+											<tr class="odd">
+												<th>ID</th>
+												<th>名称</th>
+												<th>所属游戏</th>
+												<th>优惠金额</th>
+												<th>使用条件</th>
+												<th>有效期</th>
+												<th>创建时间</th>
+												<th>操作</th>
+											</tr>
+											<empty name="data_lists">
+												<tr>
+													<td colspan="7">
+														<div class="no-data">
+															<img src="/themes/simpleboot3/public/assets/images/icon_wushujv2.png" alt="" class="no-data-img">
+															<p class="no-data-text">暂无数据</p>
+														</div>
+													</td>
+												</tr>
+											<else/>
+												<volist name="data_lists" id="vo">
+													<tr>
+														<td>{$vo.id}</td>
+														<td>{$vo.coupon_name}</td>
+														<td>{$vo.game_name}</td>
+														<td>{$vo.money}</td>
+														<td><empty name="vo.limit_money">无门槛<else/>满减：满{$vo.limit_money}</empty></td>
+														<td>{$vo.start_time|date='Y-m-d H:i:s',###}至<empty name="vo.end_time">永久<else/>{$vo.end_time|date='Y-m-d H:i:s',###}</empty></td>
+														<td>{:date("Y-m-d H:i:s",$vo['create_time'])}</td>
+														<td>
+															<a href="{:url('del',['id'=>$vo['id']])}" class="js-ajax-delete" data-msg="确定要删除吗？">删除</a>
+														</td>
+													</tr>
+												</volist>
+											</empty>
+										</tbody>
+									</table>
+									<notempty name="data_lists">
+									<div class="pagenation clearfix">
+										{$page}
+									</div>
+									</notempty>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<include file="public@scripts"/>
+		<script type="text/javascript">
+            //全局变量
+            var GV = {
+                ROOT: "__ROOT__/",
+                WEB_ROOT: "__WEB_ROOT__/",
+                JS_ROOT: "static/js/",
+                APP: '{$Request.module}'/*当前应用名*/
+            };
+		</script>
+		<script src="__STATIC__/js/wind.js"></script>
+		<script src="__TMPL__/public/assets/js/frontend.js"></script>
+		<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+		<script src="__STATIC__/js/layer/layer.js"></script>
+		<script>
+
+			$(function(){
+				$(".js-select-gallery").select2();
+				$(".jseditbtn").click(function(){
+					that = $(this);
+					$.ajax({
+						type: 'POST',
+	                  	url: "{:url('changeStatus')}" ,
+	                  	data:{"zid":that.data('id'),'value':that.data('status')},
+	                  	async:false,
+	                  	dataType:'json',
+						success:function(data){
+							if (data.code > 0){
+								layer.msg(data.msg,{time:1000},function(){
+									location.href= location.href;
+								})
+							}
+							else{
+								layer.msg(data.msg,{time:1000});
+							}
+						}
+					})
+				})
+			})
+		</script>
+	</body>
+
+</html>

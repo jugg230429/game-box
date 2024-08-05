@@ -1,0 +1,150 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap wpx">
+
+    <form class="form-horizontal js-ajax-form margin-top-20" id="set_game_config_form" role="form" action="" method="POST">
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 p_control-label">
+                                <span class="form-required">*</span>游戏登录通知地址: 
+                            </label>
+                            <div class="col-md-9 col-sm-9">
+                                <input type="text" class="form-control " name="login_notify_url" id="login_notify_url" value="{$data.login_notify_url}"  placeholder="">
+                                <p class="help-block p_help">平台用户游戏登录时，通知CP方所用，该地址由CP方提供</p>
+                            </div>
+                            <br>
+                        </div>
+                       
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 p_control-label">
+                                <span class="form-required">*</span>游戏支付通知地址: 
+                            </label>
+                            <div class="col-md-9 col-sm-9">
+                                <input type="text" class="form-control " name="pay_notify_url" id="pay_notify_url" value="{$data.pay_notify_url}" placeholder="">
+                           
+                             <p class="help-block p_help">平台用户游戏充值时，通知CP方所用，该地址由CP方提供</p>
+                            </div>
+                         </div>
+                       
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 p_control-label">
+                                <span class="form-required">*</span> 游戏key: 
+                            </label>
+                            <div class="col-md-9 col-sm-9">
+                                <input type="text" class="form-control " name="game_key" value="{$data.game_key}" id="game_key"  placeholder=" ">
+                            <p class="help-block p_help">游戏支付通知时的加密key，可自由设置，长度不得超过32位字符串，设置完必须提供给CP方进行同步</p>
+                            </div>
+                            
+                        </div>
+                       
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 p_control-label">
+                                安卓微端下载地址: 
+                            </label>
+                            <div class="col-md-9 col-sm-9">
+                                <input type="text" class="form-control " name="add_game_address" value="{$data.add_game_address}" id="add_game_address" value="" placeholder="">
+                            <p class="help-block p_help"></p>
+                            </div>
+                            
+                        </div>
+                       
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 p_control-label">
+                                IOS微端下载地址: 
+                            </label>
+                            <div class="col-md-9 col-sm-9">
+                                <input type="text" class="form-control "  name="ios_game_address" value="{$data.ios_game_address}" placeholder="">
+                           <p class="help-block p_help"></p>
+                            </div>
+                           
+                        </div>
+                        
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 p_control-label">
+                                第三方游戏地址: 
+                            </label>
+                            <div class="col-md-9 col-sm-9">
+                                <input type="text" class="form-control " name="third_party_url" value="{$data.third_party_url}" placeholder="">
+                             <p class="help-block p_help"></p>
+                            </div>
+                           
+                        </div>
+                        
+                        <input type="hidden" name="game_id" value="{$data.game_id}">
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5 buts">
+                                <!-- <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button> -->
+                                <a href="javascript:;" class="btn btn-primary submit_save onfirem">确定</a>
+                                <!-- <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a> -->
+                                <a href="javascript:;" class="btn btn-default return-btn close_layer qx">取消</a>
+
+                                <!-- <button class="btn btn-default return-btn close_layer qx" href="javascript:;">取消</button> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript" src="__STATIC__/js/statistical_word_number.js"></script>
+<script>
+    $(function () {
+        // startMonitor('content', 'aaa',1000);
+    })
+    $(".submit_save").click(function(){
+        var params = jQuery("#set_game_config_form").serialize();
+        params = decodeURIComponent(params,true);
+        // console.log(params.marking);
+        // return false;
+        var flag = 1;
+        var login_notify_url = $('input[name="login_notify_url"]').val();
+        var game_key = $('input[name="game_key"]').val();
+        var pay_notify_url = $('input[name="pay_notify_url"]').val();
+        console.log(login_notify_url);
+        console.log(game_key);
+        console.log(pay_notify_url);
+        if(login_notify_url == '' || game_key == '' || pay_notify_url == ''){
+            layer.msg("缺少必填参数!")
+            return false;
+        }
+        
+        $.ajax({
+            url:"{:url('setH5GameConfig')}",
+            type:'post',
+            data:params,
+            success:function(res){
+                if(res.code==1){
+                    layer.msg(res.msg,{time:1000},function(){
+                        // location.href= "{:url('lists')}";
+                        // 关闭当前ifram
+                        var index = parent.layer.getFrameIndex(window.name);  
+                        parent.layer.close(index);
+                        window.parent.location.reload(); 
+                    })
+                }else{
+                    layer.msg(res.msg,{time:1500})
+                }
+            },error:function(){
+                layer.msg('系统繁忙，请稍后再试');
+            }
+        })
+    });
+
+    $(".close_layer").click(function(){
+        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+        parent.layer.close(index);  // 关闭layer
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+@charset "UTF-8";
+
+/*
+* @description: 商城首页
+ *@author:王奉
+* @update: name(2020/05/18)
+ */
+ .banner{
+	 width:100%;
+	 height:11rem;
+	 background: url(../images/mall/shangcheng_jifen_bg.png)no-repeat;
+	 background-size:100% 100%;
+	 margin:0;
+	 padding:0;
+	 text-align:center;
+	 color:#fff;
+ }
+ .back_icon {
+    display: block;
+    width: 0.939rem;
+    padding-top: 1.25rem;
+	position:absolute;
+	left:1rem;
+}
+ .integral-title{
+	font-size:1.1rem;
+	padding: 1.3rem 0 0.1rem 0;
+	
+}
+ .integral-num{
+    margin-top: -0.6rem;
+    font-size:2.98rem;
+    font-weight:bold; 
+    text-shadow:0px 1px 3px rgba(219,81,5,0.41);
+
+ }
+ .integral-box{
+	width:94%;
+    height:8rem;
+    background:#fff;
+    box-shadow:0px 1px 18px 0px rgba(158,71,17,0.18);
+    border-radius:1rem;
+	margin:-4.3rem auto 0;
+	cursor:pointer;
+	display: flex;
+    flex-direction: row;
+
+ }
+ .integral-box-con{
+	text-align: center;
+	flex: 1;
+ }
+ .integral-box-img{
+	 width:3.6rem;
+	 margin:1.1rem auto 0.75rem;
+ }
+ .integral-box-text{
+	 color:#666;
+	 font-size:1.175rem;
+ }
+ .mall-confition{
+	 width:94%;
+	 margin:0.2rem auto 0;
+	 
+ }
+  .mall-confition-fixed{
+	  background:#fff;
+	  position:fixed;
+	  top:0;
+	  left:3%;
+	  padding-bottom:1rem;
+  }
+ .mall-confition-con{
+	 width:100%;
+	 height:auto;
+	 overflow:hidden;
+	 margin: 1.5rem 0 0 0;
+	 line-height:1.2rem;
+ }
+.mall-confition-con:last-child{
+    margin-top: 1rem;
+}
+ .mall-confition-name{
+	 color:#999;
+	 font-size:1.0175rem;
+ }
+ .mall-confition-butn{
+	 color:#666;
+	 font-size:0.9rem;
+	 padding-right:0.3rem;
+	 cursor:pointer;
+ }
+ .mall-confition-active{
+	 color:#F97306;
+	 font-weight:bold;
+ }
+ .mall-goods{
+	 width:94%;
+	 margin:0 auto;
+	 height:auto;
+	 overflow:hidden;
+ }
+ .mall-goods-second{
+    margin: -1rem auto 0;
+}
+ .mall-goods:last-child{
+	 padding-bottom:4.2rem;
+ }
+ .mall-goods-type{
+	 color:#333;
+	 font-weight:bold;
+	 margin:1.5rem 0 0 0;
+	 font-size:1.25rem;
+ }
+ .mall-goods-item{
+	 height:auto;
+	 overflow:visible;
+ }
+ .mall-goods-list{
+	 width:48%;
+	 border:1px solid #E6E6E6;
+	 border-radius:0.3rem;
+	 margin: 0.5rem 0 1rem 0;
+ }
+ .mall-goods-list:nth-child(2n){
+	margin-left:2%;
+ }
+ .mall-goods-icon{
+	 width:100%;
+	 height:7rem;
+ }
+ .mall-goods-textbox{
+	padding: 0.1rem 0.4rem
+ }
+ .mall-goods-name{
+	 color:#333;
+	 font-size:1.1rem;
+	 white-space: nowrap;
+	 overflow: hidden;
+	 text-overflow: ellipsis;
+ }
+ .mall-goods-info{
+	 font-size:0.8rem;
+ }
+ .mall-goods-num{
+	 color:#F97306;
+	 font-weight:bold;
+ }
+ .mall-goods-num span{
+	 color:#666;
+	 font-weight:400;
+ }
+ .tradeEmpty {
+    padding-top:5rem;
+    text-align: center;
+}
+.tradeEmptyIcon {
+    display: block;
+    width: 5rem;
+    height:5.84rem;
+    margin: 0 auto;
+    background: url("../images/trade/deal_img_no@2x.png") center center no-repeat;
+    background-size: 100% 100%;
+    position: relative;
+    left: .1rem;
+}
+.tradeEmptyText {
+    padding-top: 1.2rem;
+    font-size: 1.34rem;
+    color: #999;
+}
+.tradeSaleEmpty {
+    padding-top: 2.95rem;
+}

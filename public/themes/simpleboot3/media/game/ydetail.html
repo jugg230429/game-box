@@ -1,0 +1,122 @@
+<extend name="../mediapublic/base" />
+<!-- 主体内容 -->
+<block name="body">
+ <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/ydetail.css">
+
+	<div class="main" <if condition="$game['groom']">style="background: url({:cmf_get_image_url($game[groom])}) no-repeat;background-size: 100% 100%;"</if>>
+     <div class="service">
+	     <div class="service-con">
+            <div class="gameCenterName">
+                {:get_game_name(input('game_id',0,'intval'))}
+            </div>
+			 <a href="javascript:;" class="fl service-tab service-tab-active">服务器列表</a>
+			 <a href="{:url('gift/game_gift',['game_id'=>$game['relation_game_id']])}" class="fl service-tab">礼包列表</a>
+			 <a href="{:url('article/game_article',['game_id'=>$game['relation_game_id']])}" class="fl service-tab">资讯中心</a>
+			 <a href="{:url('pay/pay')}" class="service-link fl">用户充值</a>
+			 <a class="service-link fl" onclick="AddFavorite(window.location,document.title)" href="javascript:void(0)">收藏本页</a>
+		 </div>
+
+		 <div class="service-list js-list">
+			 <div class="fl service-title">推荐服务器：</div>
+				  <div class="fg"><input type="type" id="server_num" placeholder="输入服务器" class="fl  service-search">
+				 <a href="javascript:;" class="fl service-enter">进入游戏</a></div>
+				 <div class="clear"></div>
+				 <div class="service-box">
+				 <ul>
+					 <php>$count = count($server);</php>
+					 <volist name="server" key="key" id="vo">
+						 <li class="fl service-item">
+							 <if condition="$vo['start_time'] gt time()">
+								 <a data-href="javascript:;"  data-time="{$vo.start_time|date='Y-m-d H:i:s',###}" data-server_name="{$vo.server_name}" data-valid="0" class="gonew get_server_{$count-$key+1}"><span class="fl server-name">{$vo.server_name}</span><span class="fl">即将开始</span></a>
+							 <else/>
+								 <a data-href="{:url('open_ygame',['game_id'=>$vo['game_id'],'server_id'=>$vo['id']])}" data-valid="1" class="gonew get_server_{$count-$key+1}"><span class="fl server-name">{$vo.server_name}</span><span class="fl">火爆开启</span></a>
+							 </if>
+						 </li>
+					 </volist>
+				 </ul>
+			</div>
+		</div>
+	 </div>
+ </div>
+  <script src="__JS__/swiper.min.js"></script>
+  <script>
+	  var server_count = "{:count($server)}";
+	  var game_name = "{$game['game_name']}";
+	  $(function () {
+		  $(".service-enter").click(function () {
+              var login_auth = "{$session['login_auth']}";
+              if (login_auth == 0 || login_auth == '') {
+                  var conss = $('.login_modals')
+                  layer.open({
+                      type: 1,
+                      title: false,
+                      closeBtn: false,
+                      area: ['305px', '320px'],
+                      skin:'loginclass',
+                      offset: 'auto',
+                      content: conss,
+                      btnAlign: 'c',
+                      shadeClose: true,
+                      end: function () {
+                          $('.login_modals').hide()
+                      }
+                  })
+				  return false;
+              }
+		      var $this = $(this);
+			  var num = $("#server_num").val();
+			  if(num == 0 || num == '' || num == undefined){
+			      layer.msg('请输入区服');
+			      return false;
+			  }
+			  if(num > server_count){
+                  layer.msg('输入的区服id不存在，请重新输入');
+                  return false;
+			  }
+			  var valid = $(".service-list").children('ul').find('.get_server_'+num).data('valid');
+			  if(valid == 1){
+                  var url = $(".service-list").children('ul').find('.get_server_'+num).attr('data-href');
+                  window.location.href = url;
+			  }else{
+			      var server_name = $(".service-list").children('ul').find('.get_server_'+num).data('server_name');
+			      var time = $(".service-list").children('ul').find('.get_server_'+num).data('time');
+			      layer.msg('《'+game_name+'》'+server_name+' 将于'+time+' 火爆开启，敬请期待！');
+			      return false;
+			  }
+
+          })
+
+		  $(".gonew").click(function () {
+              var login_auth = "{$session['login_auth']}";
+              if (login_auth == 0 || login_auth == '') {
+                  var conss = $('.login_modals')
+                  layer.open({
+                      type: 1,
+                      title: false,
+                      closeBtn: false,
+                      area: ['305px', '320px'],
+                      skin:'loginclass',
+                      offset: 'auto',
+                      content: conss,
+                      btnAlign: 'c',
+                      shadeClose: true,
+                      end: function () {
+                          $('.login_modals').hide()
+                      }
+                  })
+                  return false;
+              }
+              var valid = $(this).data('valid');
+              if(valid == 0){
+                  var server_name = $(this).data('server_name');
+                  var time = $(this).data('time');
+                  layer.msg('《'+game_name+'》'+server_name+' 将于'+time+' 火爆开启，敬请期待！');
+                  return false;
+			  }else{
+                  var url = $(this).attr('data-href');
+                  window.location.href = url;
+			  }
+          })
+      })
+  </script>
+</block>

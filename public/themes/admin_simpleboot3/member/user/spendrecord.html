@@ -1,0 +1,63 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap" style="padding: 11px 11px 70px 30px;">
+        <form id="search_form" class="well form-inline fr" method="get" action="{:url('User/spendrecord',['user_id'=>input('user_id')])}" >
+            <input type="submit" class="btn btn-primary hidden" id="search_btn" value="搜索" />
+        </form>
+        <table class="table table-hover table-bordered" style="margin-left: -10px;">
+            <thead>
+            <tr><th colspan="8" style="background: #ffffff">玩家账号：{$user.account}</th></tr>
+                <tr>
+                    <th>订单号</th>
+                    <th>游戏名称</th>
+                    <th>游戏区服</th>
+                    <th>角色名</th>
+                    <th>消费方式</th>
+                    <th>消费金额</th>
+                    <th>消费时间</th>
+                    <th>消费IP</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            <if condition="AUTH_PAY eq 1">
+                <empty name="data_lists">
+                    <tr><td colspan="8" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <foreach name="data_lists" item="vo">
+                        <tr>
+                            <td>{$vo['pay_order_number']}</td>
+                            <td>{$vo.game_name}</td>
+                            <td>{$vo.server_name}</td>
+                            <td>{$vo.game_player_name}</td>
+                            <td>{:get_info_status($vo['pay_way'],1)}</td>
+                            <td>{$vo.pay_amount}</td>
+                            <td>{$vo['pay_time']|date='Y-m-d H:i:s',###}</td>
+                            <td>{$vo.spend_ip}</td>
+                        </tr>
+                    </foreach>
+                    <tr class="data_summary">
+                        <td>汇总</td>
+                        <td colspan="7" >
+                            当页充值{:null_to_0(array_sum(array_column($data_lists->toarray()['data'],'pay_amount')))} ；
+                            今日充值{:null_to_0($todaytotal)} ；
+                            昨日充值{:null_to_0($yestodaytotal)} ；
+                            累计充值{:null_to_0($total)}；
+                            平台币充值{:null_to_0($deposit_total)}
+                        </td>
+                    </tr>
+                </empty>
+            <else/>
+                <tr><td colspan="8" style="text-align: center;">请购买充值权限</td></tr>
+            </if>
+
+            </tbody>
+        </table>
+        <div class="pagination">
+            {$page}
+            <li class="page-item"><a class="page-link" href="{:url('Export/expUser',array_merge(['id'=>2,'xlsname'=>'玩家_游戏付费记录'],input()))}">导出</a></li>
+        </div>
+    </div>
+</body>
+</html>

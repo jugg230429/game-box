@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="__TMPL__/issuepublic/assets/css/promote/select2.min.css" rel="stylesheet" />
+	<link href="__TMPL__/issuepublic/assets/css/promote/game.css" rel="stylesheet" />
+    <link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+    <link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" media="all" href="__STATIC__/js/datejs/daterangepicker.css"/>
+    {:widget('issue/Management/css')}
+</head>
+
+<body>
+<!--左侧导航栏-->
+{:widget('issue/Management/left')}
+
+<!--头部-->
+{:widget('issue/Management/header')}
+
+<div class="trunk">
+
+    <div class="trunk-con">
+        <div class="right-container">
+            <div class="normal-list">
+                <div class="trunk">
+                    <div class="tabpan">
+
+                        <div class="tabpan-con tabpan-show">
+                            <form action="{:url('issue/stat/recharge_lists')}">
+                                <div class="trunk-search clearfix fr">
+                                    <input type="text" class="tabpan-input normal-space" name="user_id" placeholder="玩家ID" value="{:input('user_id')}">
+                                    <input type="text" class="tabpan-input normal-space" name="user_account" placeholder="玩家账号" value="{:input('user_account')}">
+                                    <input type="text" class="tabpan-input normal-space" name="pay_order_number" placeholder="订单号" value="{:input('pay_order_number')}">
+                                    <php>
+                                        $sdk_version_arr = [1=>'(安卓版)',2=>'(苹果版)',3=>''];
+                                    </php>
+                                    <select id="game_id" name="game_id" class="tab-input js-select-gallery normal-space trunk-search-smallselect fl"  style="width: 200px">
+                                        <option value="" data="0">游戏名称</option>
+                                        <volist name=":get_issue_game_entity([],'id,game_name,sdk_version',0)" id="vv">
+                                            <option <if condition="$vv['id'] eq input('game_id')"> selected</if> data="{$vv['game_name']}" value="{$vv['id']}">{$vv['game_name']}{$sdk_version_arr[$vv['sdk_version']]}</option>
+                                        </volist>
+                                    </select>
+                                    <input type="text" readonly style="width: 160px;" class="tabpan-input normal-space"
+                                           autocomplete="off" name="rangepickdate" id="rangepickdate" placeholder="充值时间" value="{:input('rangepickdate')}">
+                                    <input type="submit" class="submit fr normal-space" id="submit" value="查询">
+                                    <input type="hidden" id="page" name="row" value="{:input('row',10)}">
+                                </div>
+                            </form>
+                            <div class="clear"></div>
+                            <table class="table normal-table" id="promotecoin_table">
+                                <tbody>
+                                <tr>
+                                    <th>玩家ID</th>
+                                    <th>玩家账号</th>
+                                    <th>订单号</th>
+                                    <th>充值游戏</th>
+                                    <th>充值金额(元)</th>
+                                    <th>分成比例</th>
+                                    <th>分成状态</th>
+                                    <th>分成金额(元)</th>
+                                    <th>扣除联运币金额</th>
+                                    <th>充值时间</th>
+                                </tr>
+                                <notempty name="data_lists">
+                                    <volist name="data_lists" id='vo'>
+                                        <tr>
+                                            <php>
+                                                $sdk_version_arr = [1=>'(安卓版)',2=>'(苹果版)',3=>''];
+                                            </php>
+                                            <td>{$vo.user_id}</td>
+                                            <td>{$vo.user_account}</td>
+                                            <td>{$vo.pay_order_number}</td>
+                                            <td>{$vo.game_name}{$sdk_version_arr[$vo['sdk_version']]}</td>
+                                            <td>{$vo.pay_amount}</td>
+                                            <td>{$vo.ratio}%</td>
+                                            <td>{:$vo['is_check'] == 1 ? '已结算':'未结算'}</td>
+                                            <td><gt name="vo.ratio_money">{$vo['ratio_money']}<else/>0</gt></td>
+                                            <td><gt name="vo.dec_balance">{$vo['dec_balance']}<else/>0</gt></td>
+                                            <td>{:show_time($vo['pay_time'])}</td>
+                                        </tr>
+                                    </volist>
+
+                                    <tr class="data_summary">
+                                        <td><span style="margin-right: 10px;">汇总 </span></td>
+                                        <td>--</td>
+                                        <td>--</td>
+                                        <td>--</td>
+                                        <td>{$total.total}</td>
+                                        <td>--</td>
+                                        <td>--</td>
+                                        <td>{$total.total_ratio_money}</td>
+                                        <td>{$total.total_dec_balance}</td>
+                                        <td>--</td>
+                                    </tr>
+
+                                <else/>
+                                    <!--暂无数据-->
+                                    <tr>
+                                        <td colspan="10" >
+                                            <div class="no-data">
+                                                <img src="__TMPL__/issuepublic/assets/images/icon_wushujv2.png"  alt="" class="no-data-img"/>
+                                                <p class="no-data-text">暂无数据</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </notempty>
+                                </tbody>
+                            </table>
+                            <notempty name="data_lists">
+                                <div class="pagenation clearfix">
+                                    {$page}
+                                </div>
+                            </notempty>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="__TMPL__/issuepublic/assets/js/promote/jquery-1.11.1.min.js"></script>
+<script src="__TMPL__/issuepublic/assets/js/promote/common.js"></script>
+<script src="__TMPL__/issuepublic/assets/js/promote/select2.min.js"></script>
+<script type="text/javascript" src="__STATIC__/js/datejs/moment.min.js"></script>
+<script type="text/javascript" src="__STATIC__/js/datejs/momentfunction.js"></script>
+<script type="text/javascript" src="__STATIC__/js/datejs/daterangepicker.js"></script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script src="__STATIC__/js/ajaxForm.js"></script>
+{:widget('issue/Management/footer')}
+<script>
+    $(function() {
+        $(".js-select-gallery").select2();
+    })
+</script>
+<script type="text/javascript">
+        var maxDate = moment().startOf('day');
+        var date_autoUpdateInput = false;
+        var start = '{$start}',end  = '{$end}';
+        //			日历
+        var date = "{$setdate}";
+</script>
+
+</body>
+
+</html>

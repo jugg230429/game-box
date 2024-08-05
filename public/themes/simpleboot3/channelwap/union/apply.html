@@ -1,0 +1,125 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/LCalendar.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/select2.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/new_select2.css" type="text/css" />
+    <link href="__TMPL__/channelwappublic/assets/css/apply.css" type="text/css" rel="stylesheet" />
+    <style>
+        .search-item.col-4{
+            width: 33.33%;
+            border-top: 0.0267rem solid #E0E0E0;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+    </style>
+</block>
+<block name="body">
+    <div class="page-container profit-exchange-container" style="padding-bottom: 1.3rem">
+        <div class="page-content">
+            <div class="operate-data-box">
+                <div class="summary-title pt-53">
+                    站点申请
+                    <span class="iconTitle"><img src="__TMPL__/channelwappublic/assets/images/common/shouyi_wenhao.png" class="summary-picture" ></span>
+                </div>
+                <div class="summary-date-tab">
+                    <div class="summary-data-box">
+                       <ul class="chooseFrom"> 
+                           选择来源
+                            <li>
+                                <label class="radioItem"><input type="radio" class="system" checked> 系统分配</label>
+                            </li>
+                            <li>
+                                <label class="radioItem"><input type="radio" class="myselfAdd"> 自主添加</label>
+                            </li>
+                       </ul>
+                       <div class="chooseForm-data">liudidizi5.sytp5.ceshi.vlcms.com</div>
+                       <div class="chooseForm-addData" ><input type="text" class="inputAddress"></div>
+                       <div class="chooseForm-btns">
+                            <button class="applyBtn">申请</button>
+                       </div>
+                       <div class="chooseMyself">
+                            <button class="addApply">申请</button>
+                            <div class="reject">
+                                <span>驳回原因：<span>驳回原因是因为嘻嘻哈哈或很舒服和 耗时间恢复上课方式符合</span></span>
+                            </div>
+                       </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="data-summary-box">
+                <div class="summary-title pt-32">
+                    APP申请
+                </div>
+                <div class="table-box">
+                    <table>
+                        <tbody>
+                        <tr class="table-title">
+                            <th style="width: 2.2rem;">名称</th>
+                            <th>平台</th>
+                            <th>大小/MB</th>
+                            <th>操作</th>
+                        </tr>
+                        </tbody>
+                        <tbody id="summaryload" >
+						  <tr>
+                              <td>游戏盒子</td>
+                              <td>安卓</td>
+                              <td> 65.00</td>
+                              <td><a href="javascript:;" class="apply">申请</a></td>
+                          </tr>
+                          <tr>
+                            <td>IOS</td>
+                            <td> 65.00</td>
+                            <td> <a href="javascript:;">申请</a></td>
+                        </tr>
+						</tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/select2.min.js"></script>
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/LCalendar.min.js"></script>
+    <script>
+        $(function () {
+             // 点击单选框切换后的内容显示，样式控制
+          $('.system').click(function () {
+            $('.system').attr("checked",true)
+            $('.myselfAdd').attr("checked",false)
+            $('.chooseForm-data').css('display','block')
+            $('.chooseForm-addData').css('display','none')
+            $('.chooseMyself').css('display','none')
+            $('.applyBtn').css('display','block')
+          })
+          $('.myselfAdd').click(function () {
+            $('.myselfAdd').attr("checked",true)
+            $('.system').attr("checked",false)
+            $('.chooseForm-data').css('display','none')
+            $('.chooseForm-addData').css('display','block')
+            $('.chooseMyself').css('display','block')
+            $('.applyBtn').css('display','none')
+          })
+
+          // 点击站点申请的申请按钮后
+          $('.applyBtn').click(function() {
+              $('.applyBtn').html('审核中')
+              $('.applyBtn').css({'background-Color':'#FEB72E','disabled':'true'})
+          })
+
+          // 点击下面的申请
+          $('.apply').click(function() {
+            $('.apply').html('审核中')
+            $('.apply').addClass('changeColor')
+          })
+        })
+
+    </script>
+    <script>
+        
+    </script>
+</block>

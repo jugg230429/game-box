@@ -1,0 +1,74 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs mb20">
+        <li><a href="{:url('media_seo')}">PC端SEO设置</a></li>
+        <li><a href="{:url('wap_seo')}">WAP站SEO设置</a></li>
+        <li class="active"><a href="#A" data-toggle="tab">推广平台SEO设置</a></li>
+        <span class="title_remark">说明：针对推广平台的网页标题显示进行基本配置</span>
+    </ul>
+    <ul class="nav nav-menu">
+        <foreach name="list" item="vo">
+            <li <eq name="data.name" value="$vo['name']">class="active fl nav-menu-con"<else>class=" fl nav-menu-con"</eq>><a href="{:url('promote_seo',['type'=>$vo['name']])}">{$vo.title}</a></li>
+        </foreach>
+    </ul>
+
+    <div class="describe ml20">
+        <p>提示：</p>
+        <p>插入的变量两边必须包括百分号" %变量% "，当游戏范围不支持该变量时，该变量 将不会在前台显示（变量后边的分隔符也不会显示）。以下是可用SEO变量：</p>
+        <p>站点名称： %webname%</p>
+        <p>游戏名称： %gamename%</p>
+        <p>礼包名称： %giftname%</p>
+        <p>资讯名称： %newsname%</p>
+        <p>游戏类型： %gametype%</p>
+        <p>设备类型： %gamedevice%</p>
+        <p>资讯栏目： %catetitle%</p>
+    </div>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('save')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">Title：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" value="{$data.seo_title}" name="seo_title">
+                            </div>
+                            <p class="help-block">页面标题，如： %溪谷手游%最新最热门的游戏免费下载，不填则默认显示站点设置-基本配置下的网站标题内容</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">KeyWord：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" value="{$data.seo_keyword}" name="seo_keyword">
+                            </div>
+                            <p class="help-block">页面关键字</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">Description：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" value="{$data.seo_description}" name="seo_description">
+                            </div>
+                            <p class="help-block">页面描述</p>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <input type="hidden" name="name" value="{$data.name}">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

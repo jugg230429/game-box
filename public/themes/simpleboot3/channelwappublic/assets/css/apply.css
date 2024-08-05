@@ -1,0 +1,295 @@
+@charset "utf-8";
+
+.operate-data-box {
+    padding-bottom: 0.6rem;
+    border-bottom: 5px solid #F6F6F6
+}
+.summary-title{
+    font-size: 0.39rem;
+    color: #333333;
+    font-weight: bold;
+    padding-left: 0.373rem;
+}
+.summary-title.pt-53{
+    padding-top: 0.28rem;
+}
+.iconTitle {
+    display: inline-block;
+    padding-left: 0.1rem
+}
+.summary-picture {
+    width: 0.4rem;
+    margin-bottom: 0.1rem;
+}
+.summary-date-tab {
+    padding-left: 0.373rem;
+    padding-top: 0.2rem;
+}
+.chooseFrom {
+    display: flex;
+    font-size: 0.38rem;
+    font-family: 'PingFang SC';
+    color: #666666;
+}
+.cooperation {
+    display: flex;
+}
+.radioItem {
+    padding-left: 0.2rem;
+    position: relative;
+}
+.radioItem img {
+    width: 0.42rem;
+}
+.radioItem input[type="radio"] {
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    visibility: hidden;
+    z-index: 100;
+}
+
+.radioItemIcon {
+    width: 0.4rem;
+    height: 0.4rem;
+    display: inline-block;
+    background: url('../../../channelwappublic/assets/images/common/order_pay_btn_choose_s.png') no-repeat;
+    background-size: 100% 100%;
+    margin-left: 0.1rem;
+    vertical-align: middle;
+}
+.radioItem input[type="radio"]:checked+.radioItemIcon {
+    background-image: url('../../../channelwappublic/assets/images/common/order_pay_btn_choose.png');
+}
+.chooseForm-data {
+    padding: 0rem 0 0.4rem 0.5rem;
+    font-size: 0.38rem;
+    font-family: 'PingFang SC';
+    font-weight: bold;
+    color: #333333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 65%;
+}
+.chooseForm-data-apply {
+    padding: 0.2rem 0 0.2rem 2.1rem;
+    font-size: 0.38rem;
+    font-family: 'PingFang SC';
+    color: #333333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 65%;
+}
+.chooseForm-btns {
+    padding-left: 2.1rem;
+}
+.applyBtn {
+    width: 1.90rem;
+    height: 0.80rem;
+    background: #26C7DB;
+    border-radius: 0.1rem;
+    outline: none;
+    border: none;
+    color: #fff;
+    font-size: 0.4rem;
+}
+.addApply {
+    width: 1.90rem;
+    height: 0.80rem;
+    background: #26C7DB;
+    border-radius: 0.1rem;
+    outline: none;
+    border: none;
+    color: #fff;
+    font-size: 0.4rem;
+    margin-left: 2.1rem;
+}
+.summary-title.pt-32 {
+    padding-top: 0.3rem;
+}
+.table-box {
+    padding-left: 0.373rem;
+    width: 93%;
+    padding-top: 0.2rem;
+}
+.table-box tr td {
+    border-bottom: none;
+    color:#666666;
+    padding: 0.15rem 0.1rem;
+    padding-left: 0.3rem;
+}
+.table-box .gameBox-table{
+    color: #666666;
+    padding-left: 0.3rem;
+}
+.table-box tr td a {
+    color: #26C7DB;
+    display: block;
+    text-decoration: none
+}
+.changeColor {
+    color: #FEB72E!important;
+}
+.setBtn {
+    background-color: #fff;
+    color: #26C7DB;
+    border: 1px solid  #26C7DB;
+    width: 2rem;
+    height: 0.8rem;
+    border-radius: 0.1rem;
+    margin-right: 0.2rem;
+}
+.goToSite {
+    width: 2rem;
+    height: 0.8rem;
+    border-radius: 0.1rem;
+    background: #26C7DB;
+    color: #fff;
+    border: none;
+    margin-right: 0.2rem;
+    margin-bottom: 0.2rem;
+}
+.iconBox {
+    width: 0.47rem;
+    height: 0.47rem;
+    position: absolute;
+    right: 13px;
+    display: inline-block;
+}
+.addIcon {
+    width: 100%;
+    height: 100%;
+}
+.chooseForm-addData {
+    display: none;
+}
+.inputAddress {
+    margin: 0.3rem 0 0.4rem 2.1rem;
+    outline: none;
+    border: 1px solid #E6E4E4;
+    border-radius: 0.1rem;
+    width: 68%;
+    height: 0.7rem;
+    font-size: 0.36rem;
+}
+.reject {
+    padding-left: 2.1rem;
+    padding-top: 0.31rem;
+    width: 71%;
+    font-size: 0.36rem;
+    font-family: 'PingFang SC';
+    font-weight: 500;
+    color: #FEB72E;
+}
+.rejectSystem {
+    padding-top: 0.31rem;
+    width: 90%;
+    font-size: 0.36rem;
+    font-family: 'PingFang SC';
+    font-weight: 500;
+    color: #FEB72E;
+}
+.erweima {
+    text-align: center;
+    margin-top: 0.7rem
+}
+.textConfirm {
+    font-size: 0.36rem;
+    font-family: 'PingFang SC';
+    color: #999999;
+    margin-top: 0.3rem
+}
+.linkBtn {
+    width: 2.51rem;
+    height: 0.8rem;
+    background: #26C7DB;
+    border-radius: 0.1rem;
+    border: none;
+    color: #fff;
+    margin-top: 0.2rem;
+    font-size: 0.38rem
+
+}
+.erweimaImg {
+    background: url('../images/common/false-border.png') no-repeat;
+    background-size: cover;
+    width: 3.8rem;
+    height: 3.8rem;
+    margin: auto;
+}
+.codePicture {
+    width: 3.5rem;
+    height: 3.5rem;
+    padding: 0.1rem 0;
+}
+.chooseMyself {
+    display: none;
+}
+.descriptionBox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999;
+    background: rgba(0,0,0,.5);
+    display: none;
+}
+.shadowBox {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: table;
+}
+.shadow-cell {
+    display: table-cell;
+    position: relative;
+    vertical-align: middle
+}
+.descriptionContent {
+    width: 8.56rem;
+    background: #FFFFFF;
+    border-radius: 0.08rem;
+    margin: -1rem auto 0;
+    padding-top: 0.48rem;
+    box-sizing: border-box;
+}
+.content-title {
+    font-size: 0.44rem;
+    color: #222222;
+    font-weight: bold;
+    line-height: 1.1;
+    text-align: center
+}
+.content-item {
+    margin-top: 0.32rem;
+    font-size: 0.42rem;
+    line-height: 0.6rem;
+    color: #222222;
+}
+.konwBtn {
+    width: 100%;
+    margin-top: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 0.5rem;
+}
+.footerButton {
+    width: 2.1333rem;
+    height: 0.74667rem;
+    border-radius: 0.08rem;
+    background: #FFB22B;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff
+}
+.descriptionContent .content-item p {
+    margin: 0.16rem 0.9rem
+}

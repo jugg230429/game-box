@@ -1,0 +1,135 @@
+html,body{
+    width:100%;
+    height: 100%;
+	padding: 0;
+}
+.footer{
+    display: none;
+}
+.invite-contain{
+    width:100%;
+    height:100%;
+    background: url(../images/invite/redEnvelope_bg.png)no-repeat;
+    /* background-size: cover; */
+    background-size: 100%;
+    padding-top: 50%;
+    box-sizing: border-box;
+    position: relative;
+
+}
+.invite-contain .register-box{
+    width: 25.2rem;
+    margin: 0 auto;
+    height: auto;
+}
+.close-page{
+    width: 1.17rem;
+    height: 1.17rem;
+    position: absolute;
+    right: 1.1rem;
+    top:1.9rem;
+}
+.close-page img{
+    width: 100%;
+    height: 100%;
+}
+.form-item{
+    width:100%;
+    height: 3.2rem;
+    margin-bottom: 1.1rem;
+}
+.form-item .form-input{
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    background: rgb(250, 247, 248);
+    padding-left: 1.33rem;
+    box-sizing: border-box;
+    margin-bottom:0;
+    box-shadow: none;
+}
+.v-middle{
+    display: flex;
+    align-items: center;
+}
+.get-yzm-btn{
+    margin-left: auto;
+    width: 8.92rem;
+    height: 3.2rem;
+    line-height: 3.2rem;
+    text-align: center;
+    font-size: 1.17rem;
+    color: #333333;
+    border: 1px solid #E7E7E7;
+    box-sizing: border-box;
+}
+.form-item .geetest_box{
+    margin:0!important; ;
+}
+.agree_con_img, .agree_con_two_img {
+    left: 0;
+    top:0;
+}
+/* .can_jieshou {
+    height: 2.5rem;
+} */
+.can_jieshou p{
+    left: 0.6rem;
+    top:0;
+}
+label{
+    width: 100%;
+}
+.geetest_box .geetest-heart span {
+    background: #F96A2A!important;
+}
+.can_jieshou span, .can_jieshou_two span {
+    color: #F96A2A;
+}
+.register-btn{
+    width: 100%;
+    line-height: 3.28rem;
+    text-align: center;
+    color: #ffffff;
+    font-size: 1.4rem;
+    background: #F96A2A;
+    border-radius: 0.3rem;
+    margin-top: 0.9rem;
+}
+
+
+.register-success-contain{
+    width:100%;
+    height: 100%;
+    background: url(../images/invite/success_bg.png)no-repeat;
+    background-size: 100% 100%;
+    padding-top: 17.14rem;
+    box-sizing: border-box;
+    position: relative;
+}
+.register-success-contain .success-tips{
+    color: #ffffff;
+    font-size: 1.8rem;
+    width: 100%;
+    text-align: center;
+    /* margin-top: 4rem; */
+}
+.register-success-contain .official-btn{
+    display: block;
+    margin: 2rem auto 1rem;
+    width:25.2rem;
+    height: 3.756rem;
+    line-height: 3.756rem;
+    text-align: center;
+    color: #F96A2A;
+    font-size: 1.486rem;
+    background: #ffffff;
+    border-radius: 0.3rem;
+}
+.register-success-contain  .goToIndexHome {
+    background: #F96A2A;
+    border: 2px solid #FFFFFF;
+    color: #fff;
+}

@@ -1,0 +1,97 @@
+<extend name="../mediapublic/base" />
+<!-- 主体内容 -->
+<block name="body">
+    <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/really_name.css">
+    <!-- 用户信息 -->
+    <div class="userinfo_con">
+        <div class="layui-container">
+            <div class="fl left_user_info">
+                <div class="left_user_info_img">
+                    <img src="{:cmf_get_image_url($user['head_img'])}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                    <span class="levelIcon">V{$user['vip_level']}</span>
+                </div>
+                <!-- <div class="left_user_info_grade">
+                    <if condition="$user['vip_level'] gt 0">
+                        <img src="__STATIC__/images/my_ico_grade{$user['vip_level']}.png" alt="">
+                    </if>
+
+                </div> -->
+                <p class="left_user_info_name">{$user.nickname}</p>
+                <div class="checked_item_con">
+                    <include file="mediapublic@left_menu" />
+                </div>
+            </div>
+            <div class="fl right_user_info">
+                <div class="right_user_info_title">
+                    <p class="fl right_user_info_title_left">实名认证</p>
+                    <p class="fg right_user_info_title_right">您当前的位置：<a href="{:url('Index/index')}">平台首页</a>><a href="{:url('User/userinfo')}"> 用户中心</a>><span>实名认证</span></p>
+                </div>
+                <if condition="empty($user['real_name']) || empty($user['idcard'])">
+                    <!-- 未认证 -->
+                    <form class="js-ajax-form mt20" action="{:url('User/realauth')}" method="post">
+                    <div class="right_user_info_con">
+                        <div class="really_name_item">
+                            <div class="fl key">
+                                <p>真实姓名：</p>
+                            </div>
+                            <div class="fl">
+                                <input type="text" name="real_name" maxlength="25" placeholder="输入真实姓名">
+                            </div>
+                        </div>
+                        <div class="really_name_item">
+                            <div class="fl key">
+                                <p>身份证号：</p>
+                            </div>
+                            <div class="fl">
+                                <input type="text" name="idcard" maxlength="18" placeholder="输入身份证号码">
+                            </div>
+                        </div>
+                        <div class="really_name_item_">
+                            <div >
+                                <button class="js-ajax-submit really_name_btn" style="background:#999;" type="submit">确认</button>
+                            </div>
+                        </div>
+                    </div>
+                    </form>
+                <else/>
+                    <!-- 已认证 -->
+                    <div class="no_renzheng">
+                        <p class="no_renzheng_one">您已进行过实名认证</p>
+                        <p class="no_renzheng_two">真实姓名：{$user.real_name}</p>
+                        <p class="no_renzheng_three">身份证号：{:substr($user['idcard'],0,3)}***********{:substr($user['idcard'],-4)}</p>
+                    </div>
+                    <div class="clear no_renzheng_tap">
+                        <p class="one">温馨提示</p>
+                        <p class="two">信息仅用于认证，绝对保密，未成年人不允许在游戏内支付！</p>
+                    </div>
+                </if>
+            </div>
+        </div>
+        <script>
+            $('.right_user_info_con input').keyup(function () {
+                change_submit_btn($('.right_user_info_con'), $('.really_name_btn'));
+            });
+            // 更改
+            function change_submit_btn(consa, registe_btn) {
+                registe_btn.addClass('can_click')
+                consa.find('input').each(function (i, n) {
+                    switch (n.type) {
+                        case 'text':
+                            if (!n.value) { registe_btn.removeClass('can_click'); return false; } break;
+                        case 'password':
+                            if (!n.value) { registe_btn.removeClass('can_click'); return false; } break;
+                        case 'checkbox':
+                            if (!n.checked) { registe_btn.removeClass('can_click'); return false; } break;
+                        default:
+                            registe_btn.addClass('can_click')
+                    }
+                });
+            }
+            $('.really_name_btn').click(function(){
+                if(!$(this).hasClass('can_click')){
+                    return false;
+                }
+            });
+        </script>
+    </div>
+</block>

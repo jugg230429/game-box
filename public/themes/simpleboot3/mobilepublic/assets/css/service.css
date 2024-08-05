@@ -1,0 +1,210 @@
+
+body {
+    background-color: #ffffff!important;
+    position: relative;
+    height: auto;
+    width: 100%;
+    -webkit-overflow-scrolling: auto;
+}
+.service-contain {
+    width: 100%;
+    height: auto;
+    background: url('../images/bg-kefuzhongxin.png') no-repeat;
+    background-size: contain;
+    box-sizing: border-box;
+}
+.back_whiteIcon {
+    display: block;
+    width: 0.7rem;
+}
+ .back_whiteIcon img {
+    width: 100%;
+    height: 100%;
+}
+.service-contain .instructions-part1 {
+    padding: 1rem 0 0 1.31rem;
+    color: #fff;
+}
+.service-title {
+    font-size: 2rem;
+    font-weight: bold;
+}
+.fenge {
+    width: 3.5rem;
+    height: 0.1rem;
+    background-color: #fff;
+    margin: 0.6rem 0 0.6rem 0;
+}
+.contact-text {
+    font-size: 1.1rem;
+}
+.bottom-centerText {
+    margin: 0.5rem 1rem;
+}
+.time-text {
+    margin-top: 0.25rem;
+}
+.service-contain .instructions-part2 {
+    height: 16.21rem;
+    background: #fff;
+    margin: 0 1.1rem;
+    box-shadow: 0px 0px 40px 0px rgba(51, 80, 201, 0.2);
+    border-radius: 0.5rem;
+    padding: 0.6rem 1.5rem 0 1.5rem;
+}
+.contactService {
+    font-size: 1.3rem;
+    font-weight: bold;
+    border-bottom: 1px solid #EDEEEF;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+.contactService.sameProblem{
+    margin-bottom: .5rem;
+    padding-bottom: .2rem;
+}
+.iconContact {
+    display: inline-block;
+    width: 2.16rem;
+    vertical-align: bottom;
+}
+.iconContact img {
+    width: 100%;
+    height: 100%;
+}
+.phoneContact {
+    font-size: 1.23rem;
+    margin-left: .5rem;
+    display: inline-block;
+    max-width: 18rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.contractInvite {
+    float:  right;
+    border: 1px solid #018FFF;
+    border-radius: 1.08rem;
+    width: 4.63rem;
+    font-size: 1.1rem;
+    text-align: center;
+    color: #018FFF;
+    line-height: 1.86rem;
+}
+.detailService {
+    margin-bottom:.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.service-contain .instructions-part3 {
+    height: auto;
+    background: #fff;
+    margin: 0 1.1rem;
+    box-shadow: 0px 0px 40px 0px rgba(51, 80, 201, 0.2);
+    border-radius: 0.5rem;
+    padding: .8rem 1.5rem 0 1.5rem;
+    margin-top: 1.36rem;
+    min-height: 13rem;
+}
+.problemTabs {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.3rem;
+    columns: #222222;
+    font-weight: bold;
+}
+.problemItem{
+    /* margin-top: 1.5rem; */
+    position: relative;
+    margin-bottom: 1rem;
+}
+.blueIcon {
+    width: 0.5rem;
+    display: inline-block;
+    height: 0.5rem;
+    background: #018FFF;
+    border-radius: 50%;
+    vertical-align: top;
+    margin-top: .5rem;
+}
+.problemDetail-text {
+    display: inline-block;
+    font-size: 1.1rem;
+    color: #222;
+    font-weight: bold;
+    margin-left: 0.3rem;
+    margin-bottom: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 90%;
+}
+.transformIcon {
+    display: none;
+    width: 1rem;
+    height: 0.5rem;
+    background-image: url('../images/btn_up.png');
+    background-size: 100% 100%;
+    vertical-align: middle;
+    position: absolute;
+    right: 0;
+    top: 0.55rem;
+    cursor: pointer;
+}
+.transformDownIcon{
+    width: 1rem;
+    height: 0.5rem;
+    background-image: url('../images/btn_down.png');
+    background-size: 100% 100%;
+    vertical-align: middle;
+    position: absolute;
+    right: 0;
+    top: 0.55rem;
+    cursor: pointer;
+}
+.active {
+    color: #018FFF;
+    font-size: 1.3rem;
+    position: relative;
+}
+.active::after {
+    content: '';
+    display: block;
+    width: 1.57rem;
+    height: 0.68rem;
+    background-image: url(../images/ico-xuanzhong.png);
+    background-size: 100% 100%;
+    position: absolute;
+    left: 7px;
+    top: 24px;
+}
+.bottomDetailContainer {
+    margin-top: 2rem;
+}
+
+.downDetailProblem {
+    display: none;
+    width: 96%;
+    background: rgba(1, 143, 255, 0.05);
+    border-radius: 0.8rem;
+    font-size: 1.2rem;
+    columns: #666666;
+    padding: 0.6rem 0.6rem;
+    margin-bottom: 0.5rem;
+}
+.problemList{
+    height:2.2rem
+}
+.tabMenuItem {
+    
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+}
+.serviceQues .swiper-slide {
+    width: 33.33%;
+    width: auto;
+    margin-right: 20px;
+}

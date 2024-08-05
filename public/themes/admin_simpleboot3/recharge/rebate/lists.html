@@ -1,0 +1,117 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('Rebate/lists')}">返利设置</a></li>
+            <li><a href="{:url('Rebate/record')}">返利记录</a></li>
+            <span class="title_remark">说明：给平台玩家设置相关游戏的充值返利优惠（如用户A在游戏A内充值100.00，以50%返绑定平台币，即返用户A游戏A的绑币50.00，使用绑币充值的订单是否参与返利根据设置时是否选择包含绑币来决定）</span>
+        </ul>
+        <form id="search_form" class="well form-inline  fr" method="get" action="{:url('Rebate/lists')}">
+            <select name="type" id="type" class="selectpicker" type="{:input('request.type')}" data-live-search="true">
+                <option value="">返利对象</option>
+                <option value="1" >全站玩家</option>
+                <option value="2" >官方渠道</option>
+                <option value="3" >推广渠道</option>
+                <option value="4" >部分渠道</option>
+                <option value="5" >部分玩家</option>
+            </select>
+            <select <if condition="input('request.type') neq 4">disabled</if> name="promote_id" id="promote_id" class="selectpicker" promote_id="{:input('request.promote_id')}" data-live-search="true">
+                <option value="">渠道账号</option>
+                <volist name="promote_list" id="vo">
+                    <option value="{$vo.id}" <if condition="input('request.promote_id') eq $vo['id']">selected</if>>{$vo.account}</option>
+                </volist>
+            </select>
+
+            <select name="game_id" id="game_id" class="selectpicker " game_id="{:input('request.game_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+                <option value="">游戏名称</option>
+                <volist name=":get_game_list('id,game_name,sdk_version')" id="vo">
+                    <option game-id="{$vo.id}" value="{$vo.id}" >{$vo.game_name}<eq name="vo.sdk_version" value="3">（H5）</eq></option>
+                </volist>
+            </select>
+            <select name="status" id="status" class="selectpicker" pay_status="{:input('request.status')}" style="width: 120px;">
+                <option value="">金额限制状态</option>
+                <option value="1" <if condition="input('request.status') eq 1">selected</if>>开启</option>
+                <option value="0" <if condition="input('request.status') heq '0'">selected</if>>关闭</option>
+            </select>
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('Rebate/lists')}">清空</a>
+        </form>
+        <form class="js-ajax-form" action="" method="post">
+            <div class="table-actions position" style="margin-left: -10px;">
+                <button class="btn btn-success mtb17" type="button"  onclick="rebateadd()" >新增</button>
+                <button class="btn btn-danger  js-ajax-submit mtb17" type="submit"
+                        data-action="{:url('del')}" data-subcheck="true" data-msg="您确定删除吗？">
+                    删除
+                </button>
+            </div>
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="all-checkbox" class="table-item-checkbox js-check-all" data-direction="x" data-checklist="js-check-x"><label for="all-checkbox" class=""></label></th>
+                        <th>返利对象</th>
+                        <th>游戏名称</th>
+                        <th>金额限制状态</th>
+                        <th>限制金额</th>
+                        <th>返利比例%</th>
+                        <th>绑币消费</th>
+                        <th>返利周期</th>
+                        <th>添加时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <empty name="data_lists">
+                        <tr><td colspan="9" style="text-align: center;">暂无数据</td></tr>
+                    <else/>
+                        <foreach name="data_lists" item="vo">
+                        <tr>
+                            <td><input type="checkbox" id="ids-checkbox{$vo.id}" class="table-item-checkbox js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
+                                       value="{$vo.id}" title="ID:{$vo.id}">
+                                <label for="ids-checkbox{$vo.id}" class=""></label></td>
+                            <td>{:get_promote_type($vo['type'])}</td>
+                            <td>{$vo['game_name']}</td>
+                            <td><if condition="$vo['status'] eq 1"><span style="color: blue">开启</span><else/>关闭</if></td>
+                            <td>{$vo['money']}</td>
+                            <td>{$vo['ratio']}</td>
+                            <td><eq name="vo.bind_status" value="1">包含<else/>排除</eq></td>
+                            <td>{$vo['cycle_time']}</td>
+                            <td>{$vo['create_time']|date="Y-m-d H:i:s",###}</td>
+                            <td>
+                                <a href="{:url('edit',['id'=>$vo['id']])}">编辑</a>
+                                <a href="{:url('del',['ids'=>$vo['id']])}" class="js-ajax-delete" data-msg="确定要删除吗？">删除</a>
+                            </td>
+
+                        </tr>
+                        </foreach>
+                    </empty>
+                </tbody>
+            </table>
+        </form>
+        <div class="pagination">
+            {$page}
+
+        </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script type="text/javascript">
+        $("#type").selectpicker('val', $('#type').attr('type'));
+        $("#game_id").selectpicker('val', $('#game_id').attr('game_id'));
+        function rebateadd() {
+          window.location.href = "{:url('add')}";
+        }
+        $(function () {
+            $("#type").change(function () {
+                var val = $(this).val();
+                if(val == 4){
+                    $("#promote_id").prop('disabled', false);
+                }else{
+                    $("#promote_id").prop('disabled', true);
+                }
+                $('#promote_id').selectpicker('refresh');
+            })
+        })
+    </script>
+</body>
+</html>

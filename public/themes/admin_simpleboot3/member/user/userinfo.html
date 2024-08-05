@@ -1,0 +1,451 @@
+<include file="public@header" />
+</head>
+<body>
+<style>
+    .bootstrap-select:not([class*="col-"]):not([class*="form-control"]):not(.input-group-btn) {
+        width: 120px;
+    }
+    .layui-equipment-num .layui-layer-content{
+        padding: 20px;
+    }
+    #search_form{
+        width:86% !important;
+    }
+    .layui-layer-iframe{
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    .circle_class{
+        border-radius: 20%;
+        border:1px dotted gainsboro;
+    }
+    .circle_class2{
+        border-radius: 25px;
+        border:1px dotted gainsboro;
+        text-align: center;
+        background:floralwhite;
+    }
+    .table-actions,.scroll-table-wrapper{
+        margin-left: -10px;
+    }
+</style>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('user/userinfo')}">用户列表</a></li>
+            <li ><a href="{:url('user/unsubscribe')}">已注销</a></li>
+            <span class="title_remark" style="color:rgb(231,76,60)">说明：用户注册的实时列表。补链节点前的用户充值等数据归属原渠道，补链节点后归属补链后的渠道。</span>
+        </ul>
+        <div class="table-actions position fl" >
+            <button id="bulian" class="btn btn-danger  mtb17" type="button"
+                    data-action="{:url('Mend/add')}" data-subcheck="true" data-msg="您确定删除吗？">
+                补链
+            </button>
+            <button id="lock_user" class="btn btn-danger  mtb17" type="button"
+                    data-action="{:url('User/ban')}" data-subcheck="true" data-msg="您确定要锁定这些用户吗？">
+                锁定
+            </button>
+            <a id="piliang" class="btn btn-danger mtb17" href="{:url('member/user/batchCreate')}">批量创建</a>
+        </div>
+        <form id="search_form" class="well form-inline fr" method="get" action="{:url('User/userinfo')}" onsubmit="return check();" style="width: 96%;margin-right: 0px;">
+            <input type="text" class="form-control notempty" name="user_id" style="width: 120px;" value="{:input('request.user_id/d','')}" placeholder="玩家ID">
+            <input type="text" class="form-control notempty" name="account" style="width: 120px;" value="{:input('request.account/s','')}" placeholder="玩家账号">
+            <input type="text" class="form-control notempty" name="account" style="width: 120px;" value="{:input('request.account/s','')}" placeholder="玩家账号">
+            <input type="text" class="form-control notempty" name="small_nickname" style="width: 120px;" value="{:input('request.small_nickname/s','')}" placeholder="小号账号">
+            <if condition="cmf_get_admin_access('member/user/search') eq true">
+            <input type="text" class="form-control notempty" name="equipment_num" style="width: 120px;" value="{:input('request.equipment_num/s','')}" placeholder="设备号">
+            <input type="text" class="form-control notempty" name="register_ip" style="width: 120px;" value="{:input('request.register_ip/s','')}" placeholder="注册IP">
+            </if>
+            <input type="text" class="form-control js-bootstrap-date" name="start_time" id="start_time" placeholder="注册开始时间"
+                   value="{:input('request.start_time/s','')}" style="width: 120px;" autocomplete="off"><span style="position: relative;top: 10px;">-</span>
+            <input type="text" class="form-control js-bootstrap-date" name="end_time" id="end_time" placeholder="注册结束时间"
+                   value="{:input('request.end_time/s','')}" style="width: 120px;" autocomplete="off">
+            <if condition="cmf_get_admin_access('member/user/search') eq true">
+            <select name="register_type" id="register_type"  class="selectpicker" register_type="{:input('request.register_type')}" style="width: 120px;">
+                <option value="">注册方式</option>
+                <option value="1" <if condition="input('request.register_type') eq 1">selected</if>>账号</option>
+                <option value="2" <if condition="input('request.register_type') eq 2">selected</if>>手机号</option>
+                <option value="7" <if condition="input('request.register_type') eq 7">selected</if>>邮箱</option>
+                <option value="0" <if condition="input('request.register_type') eq '0'">selected</if>>游客</option>
+                <option value="4" <if condition="input('request.register_type') eq 4">selected</if>>QQ</option>
+                <option value="3" <if condition="input('request.register_type') eq 3">selected</if>>微信</option>
+                <option value="catch_create" <if condition="input('request.register_type') eq 'catch_create'">selected</if>>系统创建</option>
+            </select>
+            </if>
+            <select name="age_status" id="age_status"  class="selectpicker" register_type="{:input('request.age_status')}" style="width: 120px;">
+                <option value="">实名认证</option>
+                <option value="0" <if condition="input('request.age_status') eq '0' ">selected</if>>未认证</option>
+                <option value="2" <if condition="input('request.age_status') eq 2">selected</if>>已成年</option>
+                <option value="3" <if condition="input('request.age_status') eq 3">selected</if>>未成年</option>
+                <option value="4" <if condition="input('request.age_status') eq 4">selected</if>>审核中</option>
+            </select>
+            <select name="user_status" id="user_status"  class="selectpicker" user_status="{:input('request.user_status')}" style="width: 120px;">
+                <option value="">账号状态</option>
+                <option value="1" <if condition="input('request.user_status') eq 1">selected</if>>正常</option>
+                <option value="0" <if condition="input('request.user_status') heq '0'">selected</if>>已锁定</option>
+                <option value="2" <if condition="input('request.user_status') eq '2'">selected</if>>待注销</option>
+            </select>
+            <if condition="AUTH_PROMOTE eq 1">
+                <select name="promote_id" id="promote_id"  class="selectpicker" data-live-search="true"  data-size="8" style="width: 120px;">
+                    <option value="">所属渠道</option>
+                    <option value="0" <if condition="input('request.promote_id') eq '0'">selected</if>>官方渠道</option>
+                    <volist name=":get_promote_list()" id="vo">
+                        <option promote-id="{$vo.id}" value="{$vo.id}" <if condition="input('request.promote_id') eq $vo['id']">selected</if>>{$vo.account}</option>
+                    </volist>
+                </select>
+            </if>
+            <select name="fgame_id" id="fgame_id" class="selectpicker " game_id="{:input('request.fgame_id')}" data-live-search="true" data-size="8">
+                <option value="">注册游戏</option>
+                <volist name=":get_game_list('id,game_name',$map)" id="vo">
+                    <option value="{$vo.id}"  <if condition="input('request.fgame_id') eq $vo['id']">selected</if>>{$vo.game_name}</option>
+                </volist>
+            </select>
+            <php>$vip = explode(',',cmf_get_option('vip_set')['vip']);</php>
+            <!--<input type="text" class="form-control notempty" name="equipment_num" style="width: 120px;" placeholder="OAID">-->
+            <select id="viplevel" name="viplevel" class="selectpicker" style="width: 120px;">
+                <option value="">VIP等级</option>
+                <option value="0" <if condition="input('request.viplevel') eq '0'">selected</if>>VIP 0</option>
+                <volist name="vip" id="vo" key="$key">
+                    <option value="{$key+1}" <if condition="input('request.viplevel') eq ($key+1)">selected</if>>VIP {$key+1}</option>
+                </volist>
+            </select>
+            <select id="cumulative" name="cumulative" class="selectpicker"  style="width: 120px;">
+                <option value="">充值金额</option>
+                <option value="1" <if condition="input('request.cumulative') eq '1'">selected</if>>0-100元</option>
+                <option value="2" <if condition="input('request.cumulative') eq '2'">selected</if>>101-1000元</option>
+                <option value="3" <if condition="input('request.cumulative') eq '3'">selected</if>>1001-10000元</option>
+                <option value="4" <if condition="input('request.cumulative') eq '4'">selected</if>>10001-50000元</option>
+                <option value="5" <if condition="input('request.cumulative') eq '5'">selected</if>>50001-100000元</option>
+                <option value="6" <if condition="input('request.cumulative') eq '6'">selected</if>>100001及以上</option>
+            </select>
+            <input type="text" class="form-control js-bootstrap-date" name="login_start_time" id="login_start_time" placeholder="登录开始时间"
+                   value="{:input('request.login_start_time/s','')}" style="width: 120px;" autocomplete="off"> <span style="position: relative;top: 10px;">-</span>
+            <input type="text" class="form-control js-bootstrap-date" name="login_end_time" id="login_end_time" placeholder="登录结束时间"
+                   value="{:input('request.login_end_time/s','')}" style="width: 120px;" autocomplete="off">
+            <input type="hidden" name="sort" id="sort" value="{:input('request.sort',1)}">
+            <input type="hidden" name="sort_type" id="sort_type" value="{:input('request.sort_type')}">
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('User/userinfo')}">清空</a>
+            <if condition="cmf_get_admin_access('member/export/expuser') eq true">
+            <a class="btn btn-export js-export"  data-msg="确定导出吗？" href="{:url('Export/expUser',array_merge(['id'=>1,'xlsname'=>'玩家列表'],input()))}">导出</a>
+            </if>
+        </form>
+        <div class="scroll-table-wrapper">
+        <table class="table table-hover table-bordered scroll-table" style="margin-left:0px;">
+            <thead>
+                <tr>
+                    <th style="width: 32px;"><input type="checkbox" id="all-checkbox" class="table-item-checkbox js-check-all" data-direction="x" data-checklist="js-check-x"><label for="all-checkbox" class=""></label></th>
+                    <!-- <th width="50">ID</th> -->
+                    <th>账号信息</th>
+                    <th>消费信息</th>
+                    <th>VIP信息</th>
+                    <th>实名信息</th>
+                    <if condition="cmf_get_admin_access('member/user/search') eq true">
+                        <th>注册信息</th>
+                    </if>
+                    <th>最后登录信息</th>
+                    <th width="130">{:lang('ACTIONS')}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <php>$user_statuses=array("0"=>'已锁定',"1"=>'正常');</php>
+                <empty name="data_lists">
+                    <tr><td colspan="23" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <foreach name="data_lists" item="vo">
+                    <tr>
+                        <td><input type="checkbox" id="ids-checkbox{$vo.id}" class="table-item-checkbox js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
+                                   value="{$vo.id}" title="ID:{$vo.id}">
+                            <label for="ids-checkbox{$vo.id}" class=""></label></td>
+                        <!-- <td>{$vo['id']}</td> -->
+                        <td>
+                            账号ID：{$vo['id']} <br>
+                            账号：<b>{$vo.account} </b><br>
+                            小号：
+                            <a href="javascript:open_small_lists('{$vo[id]}');" class="js_small_list" style="text-decoration: underline;">{$vo.small_count}</a>
+                            <br>
+                            设备号：<if condition="!empty($vo.equipment_num)">{$vo.equipment_num}<else/>--</if> <br>
+                            所属渠道：
+                            <if condition="AUTH_PROMOTE eq 1">{:get_promote_name($vo['promote_id'])}<else/>请购买渠道权限</if>
+                            <br>
+                            账号状态:
+                            <if condition="$vo['is_unsubscribe'] eq 1">
+                                已注销
+                            <elseif condition="$vo['unsubscribe_status'] eq 1"/>
+                                <span style="color: #d97416;font-size:14px">待注销</span>
+                            <else/>
+                                <if condition="$vo['lock_status'] eq 1">
+                                    <span style="color: #3FAD46;font-size:14px">{$user_statuses[$vo['lock_status']]}</span>
+                                <else/>
+                                    <span style="color:#d9534f;font-size:14px">{$user_statuses[$vo['lock_status']]}</span>
+                                </if>
+                            </if>
+                            <br>
+                        </td>
+                        <td>
+                            累计消费：<if condition="AUTH_PAY eq 1">{$vo.cumulative}<else/>请购买充值权限</if>
+                            <br>
+                            付费记录：
+                            <if condition="AUTH_PAY eq 1"><a href="javascript:open_record('{$vo[id]}');" style="text-decoration: underline;">{$vo.count}</a><else/>请购买充值权限</if>
+                            <br>
+                            上次消费：<if condition="AUTH_PAY eq 1">{$vo.last_pay_time|default='0'}<else/>请购买充值权限</if>
+                            <br>
+                            平台币余额：{$vo.balance}
+                            <br>
+                            金币余额：{$vo.gold_coin}
+                            <br>
+                            绑币余额：
+                            <a href="javascript:open_bangbi_lists('{$vo[id]}');" class="js_small_list">查看></a>
+                            <!-- vo.bind_balance -->
+
+                        </td>
+                        <td>
+                            VIP等级：{$vo.vip_level}
+                            <br>
+                            尊享卡：<if condition="$vo['member_days']">{$vo.member_days}天（剩余{$vo.valid_days}天）<else/>无</if>
+                            <br>
+                            剩余积分：{$vo.point}
+
+                        </td>
+                        <td>
+                            {:get_user_age_status($vo['age_status'])}
+                        </td>
+                        <if condition="cmf_get_admin_access('member/user/search') eq true">
+                            <td>
+                                注册方式：
+                                <if condition="$vo['is_batch_create']=='1'">
+                                    系统创建
+                                <else/>
+                                    {:get_user_register_type($vo['register_type'])}
+                                </if>
+                                <br>
+                                注册时间：
+                                <if condition="$vo['register_time'] eq ''">
+                                    --
+                                <else />
+                                    {:date('Y-m-d H:i:s',$vo['register_time'])}
+                                </if>
+                                <br>
+                                注册游戏：{$vo.fgame_name|default='--'}
+                                <br>
+                                注册IP：{$vo.register_ip}
+                                <br>
+                                注册设备：<if condition="!empty($vo.device_name)">{$vo.device_name}<else/>--</if>
+                                <br>
+                                设备码：<if condition="!empty($vo.equipment_num)">{$vo.equipment_num}<else/>--</if>
+                            </td>
+                        </if>
+                        <td>
+                            最后登录时间：
+                            <if condition="$vo['login_time'] eq ''">
+                                --
+                            <else />
+                                {$vo['login_time']}
+                            </if>
+                            <br>
+                            最后登录IP：{$vo.login_ip}
+                            <br>
+                            设备码：<if condition="!empty($vo.login_equipment_num)">{$vo.login_equipment_num}<else/>--</if>
+                        </td>
+
+                        <td>
+                            <!-- <a href="javascript:;" class="show_head_img" data-img="{$vo['head_img']}">用户头像</a> -->
+                            <a href="{:url('user/user_data_analyze',array('id'=>$vo['id']))}" >用户画像</a>
+
+                            <!-- <a href='{:url("user/edit",array("id"=>$vo["id"]))}'>查看</a> -->
+                            <br>
+                            <if condition="$vo['lock_status'] eq 1">
+                                <a href="{:url('user/ban',array('id'=>$vo['id']))}" class="js-ajax-dialog-btn" data-msg="{:lang('您确定要锁定此用户吗？')}">冻结</a>
+                            <else />
+                                <a href="{:url('user/cancelban',array('id'=>$vo['id']))}" class="js-ajax-dialog-btn" data-msg="{:lang('您确定要解锁此用户吗？')}">解冻</a>
+                            </if>
+                            <br>
+                            <if condition="AUTH_PROMOTE eq 1"><a  href="{:url('Mend/add',array('id'=>$vo['id']))}">补链</a><else/>补链请购买渠道权限</if>
+                        </td>
+                    </tr>
+                    </foreach>
+                </empty>
+            </tbody>
+        </table>
+        </div>
+        <div class="pagination">
+            {$page}
+<!--            <li class="page-item"><a class="page-link" href="{:url('Export/expUser',array_merge(['id'=>1,'xlsname'=>'玩家_玩家列表'],input()))}">导出</a></li>-->
+        </div>
+    </div>
+
+    <script src="__STATIC__/js/admin.js"></script>
+    <script>
+        $('#register_type').selectpicker('val', $('#register_type').attr('register_type'));
+        $('#user_status').selectpicker('val', $('#user_status').attr('user_status'));
+        $('#viplevel').selectpicker('val', $('#viplevel').attr('viplevel'));
+        $(function () {
+            //去空处理
+            $('.notempty').bind('input onpropertychange',function(){
+                $(this).val(($(this).val()).replace(/\s/g,""));
+            });
+            $("#lock_user").click(function () {
+                var ids = '';
+                $('input[name="ids[]"]:checked').each(function(){
+                    //遍历每一个名字为interest的复选框，其中选中的执行函数
+                    ids = ids +$(this).val()+",";//将选中的值添加到数组chk_value中
+                });
+                if(ids == ''){
+                    layer.msg('请选择要操作的数据');
+                    return false;
+                }
+                ids = ids.substring(0,ids.length-1);
+                var url = $(this).attr('data-action');
+                window.location.href = url+"?id="+ids;
+            })
+            $("#bulian").click(function () {
+                var ids = '';
+                $('input[name="ids[]"]:checked').each(function(){
+                    //遍历每一个名字为interest的复选框，其中选中的执行函数
+                    ids = ids +$(this).val()+",";//将选中的值添加到数组chk_value中
+                });
+                if(ids == ''){
+                    layer.msg('请选择要操作的数据');
+                    return false;
+                }
+                ids = ids.substring(0,ids.length-1);
+                var url = $(this).attr('data-action');
+                window.location.href = url+"?id="+ids;
+            })
+            // 查看用户头像
+            $(".show_head_img").click(function(){
+                var head_img_url = $(this).attr("data-img");
+                if(head_img_url.length < 1){
+                    layer.msg("该用户暂无头像!",{skin: 'circle_class2'});
+                    // layer.alert('见到你真的很高兴', {icon: 6});
+                    return false;
+                }
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: 0,
+                    shadeClose: true,
+                    skin: 'circle_class',
+                    content: '<div> <img style="width:220px;height:220px; border-radius:80%" src="'+head_img_url+'" alt=""> </div>'
+                });
+                // alert(head_img_url);
+            });
+
+            
+            $(".js-export").click(function () {
+                var param = '{:json_encode(input("",""))}';
+                param_obj = eval('(' + param + ')');
+                if (param_obj.length == 0) {
+                    layer.msg('请选择任一筛选条件后进行导出');
+                    return false;
+                }
+                var msg = $(this).attr('data-msg');
+                var href = $(this).attr('href');
+                //询问框
+                layer.confirm(msg, {
+                    btn: ['确定', '取消'] //按钮
+                }, function () {
+                    location.href = href;
+                    layer.closeAll();
+                });
+                return false;
+            });
+
+        })
+        function open_record(user_id){
+            layer.open({
+                type: 2,
+                title: '游戏付费记录',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['70%', '80%'],
+                content: "{:url('spendrecord')}?user_id="+user_id //iframe的url
+            });
+        }
+        function open_equipment_num(equipment_num) {
+            var content = '<p>'+equipment_num+'</p>'
+            layer.open({
+                type: 1,
+                skin: 'layui-equipment-num', //样式类名
+                closeBtn: 1, //不显示关闭按钮
+                title:'设备号',
+                anim: 2,
+                area: ['300px', '120px'],
+                shadeClose: true, //开启遮罩关闭
+                content: content
+            });
+        }
+        function open_balance(user_id){
+            layer.open({
+                type: 2,
+                title: '绑币余额',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['70%', '80%'],
+                content: "{:url('user_bind_balance')}?user_id="+user_id //iframe的url
+            });
+        }
+
+        /**
+         * 小号列表
+         * @param user_id
+         */
+        function open_small_lists(user_id) {
+            layer.open({
+                type: 2,
+                title: '小号数据',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['70%', '80%'],
+                content: "{:url('user_small_lists')}?user_id="+user_id //iframe的url
+            });
+        }
+        function check(){
+            var start_time = $("#start_time").val();
+            var end_time = $("#end_time").val();
+            if(start_time != '' && end_time != '' && start_time > end_time){
+                layer.msg('开始时间不能大于结束时间');
+                return false;
+            }
+            var login_start_time = $("#login_start_time").val();
+            var login_end_time = $("#login_end_time").val();
+            if(login_start_time != '' && login_end_time != '' && login_start_time > login_end_time){
+                layer.msg('最后登录开始时间不能大于结束时间');
+                return false;
+            }
+            return true;
+        }
+        function changesort(type){
+            var sort_type = $("#sort_type").val();
+            if(sort_type != type){
+                var sort = 1;
+            }else{
+                var sort = $("#sort").val();
+            }
+            $("#sort_type").val(type);
+            if(sort == 1){
+                $("#sort").val(2);
+            }else if(sort == 2){
+                $("#sort").val(3);
+            }else{
+                $("#sort").val(1);
+            }
+           $("#search_btn").click();
+        }
+
+        // 点击查看綁币信息
+        function open_bangbi_lists(user_id) {
+            var user_id = user_id;
+            // alert(user_id);
+            layer.open({
+                type: 2,
+                title: "绑币余额",
+                shadeClose: true,
+                shade: 0.8,
+                area: ['1062px', '80%'],
+                content: "{:url('user_bind_balance')}?user_id="+user_id //iframe的url
+            });
+        };
+
+    </script>
+</body>
+</html>

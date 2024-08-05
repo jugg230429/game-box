@@ -1,0 +1,215 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="javascript:;">编辑返利设置</a></li>
+        <span class="title_remark">说明：设置返利对象，返利游戏，返利比例等。</span>
+    </ul>
+
+    <div class="describe">
+        <p>注意①：此处的返利，全部以绑币平台币的形式自动发放到玩家账户</p>
+        <p>注意②：绑币消费选择包含时，代表在SDK内绑币消费也可享受充值返利；选择排除时，则不可享受充值返利（因绑币来源可能非玩家充值，请慎重勾选）。</p>
+        <p>注意③：设置某款游戏的返利对象为全站玩家时，则不可再设置官方渠道、推广渠道或部分渠道，反之同理。</p>
+        <p>注意④：设置某款游戏的官方渠道返利时，可设置同一游戏的推广渠道、部分推广渠道返利。</p>
+    </div>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('edit')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label for="input-site_icp" class="col-sm-2 control-label">绑币消费：</label>
+                            <div class="col-md-4 col-sm-6">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="bind_status" <eq name="data.bind_status" value="0">checked="checked"</eq>> 排除
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="bind_status" <eq name="data.bind_status" value="1">checked="checked"</eq>> 包含
+                                </label>
+
+                            </div>
+                            <p class="help-block">设置绑定平台币消费是否参与返利，默认排除</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>游戏名称：
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <select  disabled class="selectpicker form-control" data-live-search="true">
+                                    <volist name=":get_game_list('id,game_name,sdk_version')" id="vo">
+                                        <option <eq name="data.game_id" value="$vo.id">selected</eq> value="{$vo.id}" >{$vo.game_name}<eq name="vo.sdk_version" value="3">（H5）</eq></option>
+                                    </volist>
+                                </select>
+                            </div>
+                            <p class="help-block">设置可进行返利活动的游戏</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_icp" class="col-sm-2 control-label">返利对象：</label>
+                            <div class="col-md-4 col-sm-6">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" disabled <eq name="data.type" value="1">checked="checked"</eq>> 全站玩家
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" disabled <eq name="data.type" value="2">checked="checked"</eq>> 官方渠道
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" disabled <eq name="data.type" value="3">checked="checked"</eq>> 推广渠道
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio"  disabled <eq name="data.type" value="4">checked="checked"</eq> > 部分渠道
+                                </label>
+                                <if condition="$data['type'] eq 4">
+                                <button type="button" class="choose_promote">查看推广员</button>
+                                </if>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio"  disabled <eq name="data.type" value="5">checked="checked"</eq> > 部分玩家
+                                </label>
+                                <if condition="$data['type'] eq 5">
+                                    <button type="button" class="choose_game_user">查看玩家</button>
+                                </if>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">金额限制状态：</label>
+                            <div class="col-md-4 col-sm-6">
+                                <label class="label-width">
+                                    <input type="radio" value="0"  name="status" data-input="type2" <eq name="data.status" value="0">checked="checked"</eq>>关闭
+                                </label>
+                                <label>
+                                    <input type="radio" value="1"  name="status" data-input="type1" <eq name="data.status" value="1">checked="checked"</eq>>开启
+                                </label>
+                            </div>
+                            <p class="help-block">关闭：充值任意金额即可获得返利；开启：需设置单笔充值最低金额，金额达标才可获得返利</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>返利周期：
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" class="form-control js-bootstrap-datetime fl" name="start_time" id="start_time"  style="width:47.6%;" value="{$data.start_time|date='Y-m-d H:i:s',###}" autocomplete="off">
+                                <span class="fl to-span">至</span>
+                                <input type="text" class="form-control js-bootstrap-datetime fl" name="end_time" id="end_time"  style="width:47.6%;" value="<empty name='data.end_time'><else/>{$data.end_time|date='Y-m-d H:i:s',###}</empty>"  autocomplete="off" placeholder="选择结束时间，不填默认永久有效">
+                            </div>
+                        </div>
+                        <div class="form-group rebate-all " <eq name="data.status" value="1">hidden</eq>>
+                            <label for="input-site-name" class="col-sm-2 control-label">返利比例：</label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" <eq name="data.status" value="0">value="{$data.ratio}"</eq> onkeyup="value=value.replace(/^(\d*\.?\d{0,2}).*/,'$1')" min="1" class="form-control"  name="ratio1"  >
+                            </div>
+                            <p class="help-block">设置可获得绑定平台币的比例值，1-100.00</p>
+                        </div>
+                        <div class="form-group rebate-item" <eq name="data.status" value="0">hidden</eq>>
+                            <label for="input-site_analytics" class="col-sm-2 control-label">返利档位1</label>
+                            <div class="col-md-4 col-sm-6 v-middle" >
+                                <span style="position: relative;width: 47%">
+                                    <input value="{$data.money[0]}"  name="money[]" style="width: 100%" onkeyup="this.value = this.value.replace(/\D|^0/g, '');" class="form-control js-money" placeholder="单笔最低消费金额"  >
+                                    <span class="input-suffix">元</span>
+                                </span>
+
+                                <span class="line"></span>
+                                <span style="position: relative;width: 47%">
+                                    <input value="{$data.ratio[0]}"  name="ratio[]" style="width: 100%" onkeyup="value=value.replace(/^(\d*\.?\d{0,2}).*/,'$1')" min="1" class="form-control js-rebate" placeholder="返利比例值，1-100.00"  >
+                                    <span class="input-suffix">%</span>
+                                </span>
+                                <div class="dynamic-btn rebate-dynamic-btn">
+                                    <span class="rebate-add-btn js-rebate-add-btn">+</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="rebate-list" >
+                            <volist name="data.money" id="vo" key="key" offset="1">
+                                <div class="form-group rebate-item">
+                                    <label for="input-site_analytics" class="col-sm-2 control-label js-rank">返利档位{$key}</label>
+                                    <div class="col-md-4 col-sm-6 v-middle" >
+                                            <span style="position: relative;width: 47%">
+                                                <input value="{$vo}"  name="money[]" style="width: 100%" onkeyup="this.value = this.value.replace(/\D|^0/g, '');" class="form-control js-money" placeholder="单笔最低消费金额"  >
+                                                <span class="input-suffix">元</span>
+                                            </span>
+                                        <span class="line"></span>
+                                        <span style="position: relative;width: 47%">
+                                                <input value="{$data['ratio'][$key-1]}"  name="ratio[]" style="width: 100%" onkeyup="value=value.replace(/^(\d*\.?\d{0,2}).*/,'$1')" min="1" class="form-control js-rebate" placeholder="返利比例值，1-100.00"  >
+                                                <span class="input-suffix">%</span>
+                                            </span>
+                                        <div class="dynamic-btn rebate-dynamic-btn">
+                                            <span class="rebate-del-btn js-rebate-del-btn">×</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </volist>
+                        </div>
+                        <div class="promote_list" hidden>
+                            {$promote_choose}
+                        </div>
+                        <div class="game_user_list" hidden>
+                            {$game_user_choose}
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <input type="hidden" name="id" value="{$data.id}">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                                <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script>
+    $(function () {
+        //动态添加返利档位
+        var add_one = function () {
+            $('.js-rebate-add-btn').unbind('click');
+            $('.js-rebate-add-btn').click(function () {
+                var tr = $(this).closest('.rebate-item');
+                var parent = $('#rebate-list') ;
+                var html ='<div class="form-group rebate-item"> <label for="input-site_analytics" class="col-sm-2 control-label js-rank">返利档位</label> <div class="col-md-4 col-sm-6 v-middle" > <span style="position: relative;width: 47%"> <input  name="money[]" style="width: 100%" onkeyup="this.value = this.value.replace(/\\D|^0/g, \'\');" class="form-control js-money" placeholder="单笔最低消费金额"  > <span class="input-suffix">元</span> </span> <span class="line"></span> <span style="position: relative;width: 47%"> <input  name="ratio[]" style="width: 100%" onkeyup="value=value.replace(/^(\\d*\\.?\\d{0,2}).*/,\'$1\')"  min="1" class="form-control js-rebate" placeholder="返利比例值，1-100.00"  > <span class="input-suffix">%</span> </span> <div class="dynamic-btn rebate-dynamic-btn"> <span class="rebate-del-btn js-rebate-del-btn">×</span> </div> </div> </div>'
+                parent.append(html);
+                re_bind();
+            })
+        };
+        var remove_li = function () {
+            $('.js-rebate-del-btn').unbind('click');
+            $('.js-rebate-del-btn').click(function () {
+                var parent = $(this).closest('.rebate-item');
+                parent.remove();
+                re_bind();
+            })
+        };
+        var add_flag = function () {
+            $('#rebate-list .rebate-item').each(function (index, element) {
+                $(this).find('.js-rank').text("返利档位"+(index+2));
+            })
+        };
+        var re_bind = function () {
+            add_one();
+            remove_li();
+            add_flag();
+        };
+        re_bind();
+
+        $('input[type=radio][name=status]').change(function() {
+            $(".rebate-item").toggle();
+            $(".rebate-all").toggle();
+        });
+        $(".choose_promote").click(function () {
+            $(".promote_list").show();
+            $(".pro_promot").show();
+        })
+        $(".choose_game_user").click(function () {
+            $(".game_user_list").show();
+            $(".pro_promot").show();
+        })
+    })
+
+</script>
+</body>
+</html>

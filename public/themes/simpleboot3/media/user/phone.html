@@ -1,0 +1,180 @@
+<extend name="../mediapublic/base" />
+<!-- 主体内容 -->
+<block name="body">
+    <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/account_gl.css">
+    <!-- 用户信息 -->
+    <div class="userinfo_con">
+        <div class="layui-container">
+            <div class="fl left_user_info">
+                <div class="left_user_info_img">
+                    <img src="{:cmf_get_image_url($user['head_img'])}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                </div>
+                <div class="left_user_info_grade">
+                    <if condition="$user['vip_level'] gt 0">
+                        <img src="__STATIC__/images/my_ico_grade{$user['vip_level']}.png" alt="">
+                    </if>
+
+                </div>
+                <p class="left_user_info_name">{$user.account}</p>
+                <div class="checked_item_con">
+                    <include file="mediapublic@left_menu" />
+                </div>
+            </div>
+        <if condition="$phone eq ''">
+            <!-- 未绑定 -->
+            <div class="fl right_user_info">
+                <div class="right_user_info_title">
+                    <p class="fl right_user_info_title_left">手机验证</p>
+                    <p class="fg right_user_info_title_right">您当前的位置：<a href="{:url('Index/index')}">平台首页</a>><a href="{:url('User/userinfo')}"> 用户中心</a>><a href="{:url('User/safe')}">账号管理</a>><span>手机验证</span></p>
+                </div>
+                <div class="update_pwd_con">
+                    <form class="js-ajax-form" style="margin-top: 38px" action="{:url('User/phone')}" method="post">
+                    <div class="update_pwd_con_item three">
+                        <p class="clear fl mt8">手机号：</p><input type="text" id="register_phone" name="phone" placeholder="11位手机号" class="fl">
+                    </div>
+
+                    <div class="update_pwd_con_item jsverify three">
+                        <p class="clear fl mt8" style="width: 63px;"></p>
+                        <div class="zhuce_name_slide">
+                            <div class="geetest_box">
+                                <div class="geetest-heart"><span></span></div>
+                                <a href="javascript:;" id="verify_pop2">点击按钮进行图形验证</a>
+                                <a href="javascript:;" id="verify_refresh2" class="geetest-refresh">
+                                    <img src="__TMPL__/mediapublic/assets/images/refresh.png" >
+                                </a>
+                                <input type="hidden" class="verify_tag" name="verify_tag">
+                                <input type="hidden" class="verify_token" name="verify_token">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="update_pwd_con_item check_verify three">
+                        <p class="clear fl mt8">验证码：</p><input type="text" id="code" name="code" placeholder="" class=" fl">
+                        <a href="javascript:;" class="check_verify_btn getbindyanzhengma">获取验证码</a>
+                    </div>
+                    <div class="update_pwd_con_item">
+                        <div>
+                            <button type="submit" class="js-ajax-submit update_pwd_con_btn" style="background:#999;">确认</button>
+                        </div>
+                    </div>
+                        <p class="update_notice">手机号停用？<a
+                            <if condition="get_xgkf_info(0) eq 1"> href="{:get_xgkf_info(1)}"  <else/>
+                                href="http://wpa.qq.com/msgrd?v=3&amp;uin=<if condition='$union_set[qq]'>{$union_set['qq']}<else/>{:cmf_get_option('kefu_set')['pc_set_server_qq']}</if>&amp;site=qq&amp;menu=yes"
+                            </if>
+                                target="_blank">联系客服</a></p>
+                    </form>
+                </div>
+            </div>
+        <else/>
+
+            <!-- 已绑定  -->
+            <div class="fl right_user_info">
+                <div class="right_user_info_title">
+                    <p class="fl right_user_info_title_left">手机换绑</p>
+                    <p class="fg right_user_info_title_right">您当前的位置：<a href="{:url('Index/index')}">平台首页</a>><a href="{:url('User/userinfo')}"> 用户中心</a>><a href="{:url('User/safe')}">账号管理</a>><span>手机换绑</span></p>
+                </div>
+                <div class="update_pwd_con">
+
+                    <div class="bind_yes_phone">您绑定的手机号：{:hideStar($phone)}</div>
+
+                    <div class="bind_yes_notice">
+                        绑定手机号后，您可以通过手机号找回密码，同时提高账户安全性，<br/>如需更换手机号请先解绑手机号
+                    </div>
+
+                    <div class="bind_yes_btn_wrapper">
+                        <a href="phone_check.html" class="bind_yes_btn">解绑手机号</a>
+                    </div>
+
+                </div>
+            </div>
+        </if>
+
+
+        </div>
+    </div>
+
+</block>
+<block name="script">
+    <script>
+        $('.update_pwd_con input').keyup(function () {
+            change_submit_btn($('.update_pwd_con'), $('.update_pwd_con_btn'));
+        });
+        // 更改
+        function change_submit_btn(consa, registe_btn) {
+            registe_btn.addClass('can_click')
+            consa.find('input').each(function (i, n) {
+                switch (n.type) {
+                    case 'text':
+                        if (!n.value) { registe_btn.removeClass('can_click'); return false; } break;
+                    case 'password':
+                        if (!n.value) { registe_btn.removeClass('can_click'); return false; } break;
+                    case 'checkbox':
+                        if (!n.checked) { registe_btn.removeClass('can_click'); return false; } break;
+                    default:
+                        registe_btn.addClass('can_click')
+                }
+            });
+        }
+        $('.update_pwd_con_btn').click(function(){
+            if(!$(this).hasClass('can_click')){
+                return false;
+            }
+        });
+        // 获取验证码button效果
+        var counttime=60
+        var can_click=true
+        $('.getbindyanzhengma').click(function(){
+            reg_type = "{:$phone?3:4}";
+            if($('#register_phone').siblings('.error_text').text()!=''){
+                return false;
+            }
+            if(counttime!==60){
+            }else{
+                var phone = $("#register_phone").val();
+                var verify_tag = $('#verify_pop2').siblings('.verify_tag').val();
+                var verify_token = $('#verify_pop2').siblings('.verify_token').val();
+                if(verify_tag == '' || verify_token==''){
+                    layer.msg('请先进行图形验证',{skin: 'demo-red'});
+                    return false;
+                }
+                var isok = false;
+                $.ajax({
+                    url:send_sms_url,
+                    type:'post',
+                    dataType:'json',
+                    async:false,
+                    data:{phone:phone,account:"{:session('member_auth.account')}",verify_tag:verify_tag,verify_token:verify_token,reg:reg_type},
+                    success:function(res){
+                        if(res.code!=1){
+                            isok = true;
+                            layer.msg(res.msg,{skin: 'demo-red'});
+                        }else{
+                            layer.msg(res.msg,{skin: 'demo-blue'});
+                            $('.getbindyanzhengma').css('cursor','not-allowed');
+                            $('.getbindyanzhengma').css('background-color','#CCCCCC');
+                        }
+                    },error:function(){
+                        layer.msg('服务器错误',{skin: 'demo-red'});
+                    }
+                })
+                if(!isok){
+                    if(can_click){
+                        can_click=false
+                        var send_num=setInterval(function(){
+                            counttime--
+                            $('.getbindyanzhengma').text('正在发送('+counttime+')');
+                            if(counttime===0){
+                                clearInterval(send_num)
+                                can_click=true
+                                counttime=60
+                                $('.getbindyanzhengma').text('获取验证码');
+                                $('.getbindyanzhengma').css('cursor','pointer');
+                                $('.getbindyanzhengma').css('background-color','#018FFF');
+                            }
+                        },1000)
+                    }
+                }
+            }
+        })
+    </script>
+</block>

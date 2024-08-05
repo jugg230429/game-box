@@ -1,0 +1,381 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/select2.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/new_select2.css" type="text/css" />
+    <link href="__TMPL__/channelwappublic/assets/css/game.css" type="text/css" rel="stylesheet" />
+</block>
+<block name="body">
+    <div class="page-container my-game-container">
+        <div class="addTopHeader">
+            <a href="/channelwap/Simulator/white_list" class="whiteCard ">模拟器白名单</a>
+            <a href="javascript:;" class="chooseActive">游戏管理</a>
+         </div>
+        <header>
+            <div style="width: 100%;" class="v-middle h-middle">
+                <p class="header-title active" data-url="{:url('game/index')}">我的游戏</p>
+                <if condition="PID_LEVEL lt 3">
+                <p class="header-title" data-url="{:url('game/child')}">子渠道游戏</p>
+                </if>
+                <p class="header-title" data-url="{:url('game/apply_game')}">申请游戏</p>
+            </div>
+        </header>
+        <div class="page-content">
+           <div class="game-menu-box js-gmb">
+               <a href="javascript:;" class="active">审核通过</a>
+               <a href="javascript:;">审核中</a>
+           </div>
+            <div class="game-menu-box">
+                <if condition="PERMI neq 2">
+                    <a href="{:url('index')}" id="game_url">手游</a>
+                </if>
+                <if condition="PERMI neq 1">
+                    <a id="game_h5_url" class="active" href="javascript:;">H5</a>
+                </if>
+                <if condition="YPERMI eq 1">
+                    <a id="game_pc_url" href="{:url('indexpc')}">页游</a>
+                </if>
+            </div>
+            <div class="menu-tab">
+                <div class="search-box">
+                    <div class="search-item">
+                        <select id="game1"  class="select_gallery search-select" data-placeholder="游戏名称" style="display:none;">
+                            <option value="0" >选择游戏</option>
+                            <php>
+                                $gmap['game_status'] = 1;
+                                $gmap['sdk_version'] = 3;
+                                $gmap['test_game_status'] = 0;  // 测试游戏不显示,但可以正常进入
+                            </php>
+                            <volist name=":get_game_list('id,game_name,relation_game_id,relation_game_name',$gmap,'relation_game_id','sort desc ,id desc')" id="vv">
+                                <option <if condition="$vv['relation_game_id'] eq input('game_id')"> selected</if> data="{$vv['relation_game_id']}" value="{$vv['relation_game_id']}">{$vv['relation_game_name']}</option>
+                            </volist>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-box">
+                    <table>
+                        <tbody>
+                        <tr class="table-title">
+                            <th style="width:1.4rem;">名称</th>
+                            <th style="width:1.2rem;">平台</th>
+                            <if condition="$baseinfo['pattern'] eq 0">
+                                <th style="width:2rem;">分成比例/%</th>
+                            <else/>
+                                <th style="width:2rem;">注册单价/元</th>
+                            </if>
+                            <th style="width:1rem;">链接</th>
+                            <th style="width:1.15rem;">二维码</th>
+                        </tr>
+                        </tbody>
+                        <tbody id="applyload">
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+            <div class="menu-tab" style="display: none">
+                <div class="search-box">
+                    <div class="search-item">
+                        <select id="game2" class="select_gallery search-select" data-placeholder="游戏名称" style="display:none;">
+                            <option value="0" >选择游戏</option>
+                            <php>
+                                $gmap['game_status'] = 1;
+                                $gmap['sdk_version'] = 3;
+                            </php>
+                            <volist name=":get_game_list('id,game_name,relation_game_id,relation_game_name',$gmap,'relation_game_id','sort desc ,id desc')" id="vv">
+                                <option <if condition="$vv['relation_game_id'] eq input('game_ide')"> selected</if> data="{$vv['relation_game_id']}" value="{$vv['relation_game_id']}">{$vv['relation_game_name']}</option>
+                            </volist>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-box js-choose">
+                    <table>
+                        <tbody>
+                        <tr class="table-title">
+                            <th style="width:1.8rem;">名称</th>
+                            <th style="width:1.4rem;">平台</th>
+                            <if condition="$baseinfo['pattern'] eq 0">
+                                <th style="width:2rem;">分成比例/%</th>
+                            <else/>
+                                <th style="width:2rem;">注册单价/元</th>
+                            </if>
+                        </tr>
+                        </tbody>
+                        <tbody id="napplyload">
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        <div class="save-code">
+		   <div class="save-code-con">
+		   <div class="save-code-close"><img src="__TMPL__/channelwappublic/assets/images/login/login_ico_guanbi.png"></div>
+		   <div class="save-code-text">截图保存到相册，微信内识别二维码</div>
+		   <img src="" class="save-code-img">
+		   </div>
+
+		</div>
+		</div>
+
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/select2.min.js"></script>
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/clipboard.min.js"></script>
+    <script>
+        var pid_level = "{:PID_LEVEL}";
+        $(function () {
+            selectHeight = $(window).outerHeight() - $('.js-choose').offset().top;
+            //点击tab
+            $('.header-title').click(function () {
+                location.href=$(this).data("url");
+            });
+
+            $(".select_gallery").select2({
+
+            });
+            $(".select_gallery").on('select2:open', function() {
+               $('.select2-container:not(.select2)').css({
+                   'height': selectHeight,
+                   'background-color':'rgba(0,0,0,.5)',
+                   'z-index': 9
+               })
+                return false;
+            });
+
+			$('body').on('click', '.js-savecode', function () {
+			$(".save-code").show();
+                var imgsrc=$(this).attr('data-img');
+				$(".save-code-img").attr('src',imgsrc);
+
+            });
+			$(".save-code-close").click(function(){
+			   $(".save-code").hide();
+			});
+            $('body').on('click', '.js-copy', function () {
+                var copy_val = $(this).attr('data-clipboard-text');
+                var clipboard = new Clipboard(this,{
+                    text: function() {
+                        return copy_val;
+                    }
+                });
+                clipboard.on('success', function(e) {
+                    layer.msg('<p>复制成功</p>');
+                    e.clearSelection();
+                    clipboard.destroy();
+                });
+                clipboard.on('error', function(e) {
+                    layer.msg('此浏览器不支持此操作');
+                });
+                this.click(); //解决clipboard二次点击生效问题
+                clipboard.destroy();
+
+           })
+
+        });
+    </script>
+    <script>
+        var pattern = {$baseinfo['pattern']};
+        var itemIndex = 0;
+        var now_url = window.location.href;
+        var moren = now_url.split('#')[1];
+        var relation_game_id1 = 0;
+        var relation_game_id2 = 0;
+        if(moren != undefined){
+            itemIndex = parseInt(moren);
+            if(itemIndex>2) {itemIndex=1;}
+            $(".game-menu-box a:eq("+moren+")").addClass('active').siblings().removeClass('active');
+            $('.menu-tab').eq(moren).show().siblings(".menu-tab").hide();
+            // var href = $('#game_url').attr('href').replace(/#.+$/i,'')+'#'+itemIndex;
+            // $('#game_url').attr('href', href);
+        }
+        var lwx = window.lwx || {};
+        lwx.ready = true;
+        lwx.width = $(window).width();
+        lwx.height = $(window).height();
+        lwx.number = {apply:1,napply:1};
+        lwx.row = {apply:15,napply:15};
+        lwx.http = {
+            getJSON:function(url,callback){
+                $.getJSON(url + '&v=' + Date.now(),function(data){
+                    callback(data);
+                });
+            },
+            postJSON:function(url,args,callback) {
+                $.post(url + '&v=' + Date.now(), args, function(data) {
+                    callback(data);
+                },"json")
+            },
+        };
+        lwx.url ={
+            apply:'{:url("Game/my_game",[],false)}',
+        };
+        lwx.page = {
+            apply:function(){
+                if(lwx.number.apply) {
+                    lwx.http.getJSON(lwx.url.apply+'?row='+lwx.row.apply+'&page='+lwx.number.apply+'&version=h5&game_id='+relation_game_id1,function(data) {
+                        var hotload = $('#applyload');
+                        var data = data.data;
+                        if(data && data.length) {
+                            var html = '';
+                            for (var i in data) {
+                                html += '<tr>';
+                                html += '<td>'+data[i].relation_game_name+'</td>';
+                                html += '<td><span class="box-span">H5</span></td>';
+                                if (pattern == 0) {
+                                    html += '<td><span class="box-span">' + data[i]['promote_ratio'][0] + '</span></td>';
+                                } else {
+                                    html += '<td><span class="box-span">' + data[i]['promote_money'][0] + '</span></td>';
+                                }
+                                if(data[i].down_url !== ''){
+                                    html += '<td><a href="javascript:;" class="js-copy" data-clipboard-text="'+data[i].down_url+'">复制</a></td>';
+                                    html += '<td><a href="javascript:;" class="js-savecode" data-img="'+data[i].img_url+'">保存</a></td>';
+                                }else{
+                                    html += '<td><a href="javascript:;" class="disabled">复制</a></td>';
+                                    html += '<td><a href="javascript:;" class="disabled" >保存</a></td>';
+                                }
+                                html += '</tr>';
+                            }
+                            hotload.append(html);
+                            hotload.find('.jsdropload').remove();
+                            if(data.length >= lwx.row.apply) {
+                                lwx.number.apply++;
+                                lwx.ready = true;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.apply = false;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                        } else {
+                            if(lwx.number.apply==1){
+                                $(".apply_sum").hide();
+                                hotload.html('').append('<p class="no_invest_info nodata  jsdropload">~空空如也~</p>');
+                            } else{
+                                hotload.find('.jsdropload').remove();
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                            lwx.number.apply = false;
+                        }
+                    });
+                }
+            },
+            napply:function(){
+                if(lwx.number.napply) {
+                    lwx.http.getJSON(lwx.url.apply+'?row='+lwx.row.napply+'&page='+lwx.number.napply+'&version=h5&type=1&game_id='+relation_game_id2,function(data) {
+                        var napplyload = $('#napplyload');
+                        var data = data.data;
+                        if(data && data.length) {
+                            var html = '';
+                            for (var i in data) {
+                                html += '<tr>';
+                                html += '<td>'+data[i].relation_game_name+'</td>';
+                                html += '<td><span>H5</span></td>';
+                                // if(pid_level == 1){
+                                    if (pattern == 0) {
+                                        html += '<td><span span class="box-span">' + data[i]['promote_ratio'][0] + '</span></td>';
+                                    } else {
+                                        html += '<td><span span class="box-span">' + data[i]['promote_money'][0] + '</span></td>';
+                                    }
+                                // }
+                                html += '</tr>';
+                            }
+                            html += '</div>';
+                            napplyload.append(html);
+                            napplyload.find('.jsdropload').remove();
+                            if(data.length >= lwx.row.napply) {
+                                lwx.number.napply++;
+                                lwx.ready = true;
+                                napplyload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.napply = false;
+                                napplyload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                        } else {
+                            if(lwx.number.napply==1){
+
+                                 napplyload.html('').append('<p class="no_invest_info nodata jsdropload">~空空如也~</p>');
+                            } else{
+                                napplyload.find('.jsdropload').remove();
+                                napplyload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                            lwx.number.napply = false;
+                        }
+                    });
+                }
+            },
+        };
+        pageChange('#'+itemIndex);
+        function pageChange(n) {
+            console.log(5555,n)
+            switch (n) {
+                case '#0': {
+                    lwx.page.apply();
+                    if(lwx.number.apply) {lwx.ready=true;}
+                    var yhref = $('#game_pc_url').attr('href').replace(/#.+$/i,'')+'#'+itemIndex;
+                    $('#game_pc_url').attr('href', yhref);
+                    var href = $('#game_url').attr('href').replace(/#.+$/i,'')+'#'+itemIndex;
+                    $('#game_url').attr('href', href);
+                };break;
+                case '#1':{
+                    lwx.page.napply();
+                    if(lwx.number.napply) {lwx.ready=true;}
+                    var yhref = $('#game_pc_url').attr('href').replace(/#.+$/i,'')+'#'+itemIndex;
+                    $('#game_pc_url').attr('href', yhref);
+                    var href = $('#game_url').attr('href').replace(/#.+$/i,'')+'#'+itemIndex;
+                    $('#game_url').attr('href', href);
+                };break;
+            }
+        }
+        function pageScroll(scrollTop, boxHeight, maxScrollHeight) {
+            if (scrollTop + boxHeight >= maxScrollHeight - 50) {
+                if (lwx.ready) {
+                    lwx.ready = false;
+                    switch (itemIndex) {
+                        case 0:
+                            lwx.page.apply();
+                            break;
+                        case 1:
+                            lwx.page.napply();
+                            break;
+                    }
+                }
+            }
+        }
+        window.onscroll = function() {
+            var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+            pageScroll(scrollTop, lwx.height, $(document).height())
+        }
+        $(function () {
+            $('.js-gmb a').click(function () {
+                console.log(7777)
+                $(this).addClass("active").siblings().removeClass("active");
+                var index = $(this).index();
+                $('.menu-tab').eq(index).show().siblings(".menu-tab").hide();
+                itemIndex = index;
+                location.hash = index;
+                var yhref = $('#game_pc_url').attr('href').replace(/#.+$/i,'')+'#'+index;
+                $('#game_pc_url').attr('href', yhref);
+                var href = $('#game_url').attr('href').replace(/#.+$/i,'')+'#'+index;
+                $('#game_url').attr('href', href);
+            });
+            $("#game1").change(function () {
+                relation_game_id1 = $("#game1").val();
+                $("#applyload").empty();
+                lwx.number.apply = 1;
+                pageChange('#'+itemIndex);
+            })
+            $("#game2").change(function () {
+                relation_game_id2 = $("#game2").val();
+                $("#napplyload").empty();
+                lwx.number.napply = 1;
+                pageChange('#'+itemIndex);
+            })
+        })
+        $(window).on("hashchange", function() {
+            pageChange(location.hash);
+            console.log(66,location.hash)
+        });
+    </script>
+
+</block>

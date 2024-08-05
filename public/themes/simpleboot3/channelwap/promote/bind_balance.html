@@ -1,0 +1,320 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/select2.min.css" type="text/css" />
+    <link href="__TMPL__/channelwappublic/assets/css/recharge.css" type="text/css" rel="stylesheet" />
+	<link href="__TMPL__/channelwappublic/assets/css/agency.css" type="text/css" rel="stylesheet" />
+	<link href="__TMPL__/channelwappublic/assets/css/bind_balance.css" type="text/css" rel="stylesheet" />
+</block>
+<block name="body">
+    <div class="page-container">
+        <header>
+            <a href="{:url('promote/index')}" class="back-btn"></a>
+            <div style="width: 100%;height: 100%" class="v-middle h-middle">
+                <p class="header-title ">给玩家代充</p>
+                <a href="{:url('promote/bind_record')}" class="agency-record">代充记录</a>
+            </div>
+        </header>
+        <div class="page-content bindBalanceForm">
+            <form action="" id="ajaxForm2" method="post">
+                <div class="form agency-form">
+                    <div class="form-item">
+                        <div class="agency-item-title">游戏名称：</div>
+                        <div class="form-item-text">
+                            <select id="game_id" name="game_id" class="select_gallery" data-placeholder="请选择游戏" style="width:100%;">
+                                <empty name="pdata">
+                                    <option value="0" data="" discount='0'>请选择游戏</option>
+                                </empty>
+                                <volist name="gdata" id="pz">
+                                    <option value="{$pz.id}" discount="{$pz.discount}">{$pz.game_name}</option>
+                                </volist>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="agency-item-title">玩家账号：</div>
+                        <div class="form-item-text">
+                            <select id="user_account" name="user_account"  class="select_gallery" data-placeholder="请选玩家" style="width:100%;">
+                                <option value="" data="" balance=''>请选择玩家</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="agency-item-title">充值金额：</div>
+                        <div class="form-item-text">
+                            <input type="text" id="num" onkeyup="this.value=this.value.replace(/\D/, '');" name="num" placeholder="输入大于0的整数" class="form-item-input">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="agency-item-title">支付方式：</div>
+                        <div class="form-item-text">
+                            <volist name="paytype" id="pt">
+                                <if condition="$pt['name'] eq 'zfb'" >
+                                <label class="label-choose js_choose">
+                                     <input type="radio" name="pay_type"  class="radio-choose " value="zfb" checked><i class="label-choose-i current"></i><span>支付宝</span>
+                                </label>
+                                </if>
+                                <if condition="$pt['name'] eq 'wxscan'">
+                                    <label class="label-choose js_choose">
+                                     <input type="radio" name="pay_type"  class="radio-choose " value="wx"><i class="label-choose-i"></i><span>微信</span>
+                                </label>
+                                </if>
+                                <if condition="$pt['name'] eq 'ptb_pay'">
+                                <label class="label-choose js_choose">
+                                     <input type="radio" name="pay_type"  class="radio-choose " value="ptb"><i class="label-choose-i"></i><span>平台币</span>
+                                </label>
+                                </if>
+                            </volist>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="agency-item-title discount_name">代充折扣：</div>
+                        <div class="form-item-text" style="color: #26c7db">
+                            <span id="recharge-discount"></span>折
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="agency-item-title">应付金额：</div>
+                        <div class="form-item-text">
+                            <input type="text"  placeholder="" readonly value="0" class="form-item-input agency-item-input beforepay">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="agency-item-title">实付金额：</div>
+                        <div class="form-item-text">
+                            <input type="text"  placeholder="" readonly value="0" class="form-item-input agency-item-input afterpay">
+                        </div>
+                    </div>
+                    <div class="form-item">
+					    <div class="agency-item-title"></div>
+                        <div class="submit-btn jsbtn agency-submit-btn">确认</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/select2.min.js"></script>
+    <script>
+        var is_wechat = "{:cmf_is_wechat()}";
+        var is_company_weixin = "{:cmf_is_company_wechat()}";
+        var promote_id = "{:PID}";
+    $(function () {
+        $('.header-title').click(function () {
+            location.href=$(this).data("url");
+        });
+        $(".select_gallery").select2({
+          
+        });
+        $('input[name="amount"]').keyup(function () {
+            var val = $(this).val();
+            var discount = $('#recharge-discount').text();
+            $('input[name="should_pay"]').val(val);
+            $('input[name="real_pay"]').val(val*discount/10)
+        })
+        paytt = $('.js_choose:first').find('.radio-choose').val();
+		$('input[value='+paytt+']').attr('checked');
+		$('input[value='+paytt+']').addClass('paycheck');
+		$('input[value='+paytt+']').next('.label-choose-i').addClass('current');
+		$('.js_choose').click(function(){
+			that = $(this);
+			input = that.children('.radio-choose');
+			i = that.children('.label-choose-i');
+			$('.label-choose-i').removeClass('current');
+			i.addClass('current');
+			$('input[name=pay_type]').removeAttr('checked');
+			$('input[name=pay_type]').removeClass('paycheck');
+			input.attr('checked','checked').addClass('paycheck');
+		});
+        discount = 10;
+        $('#game_id').change(function(){
+            game_id = $(this).val();
+            discount = $(this).find('option:selected').attr('discount');
+            if(discount==0||discount>=10){
+                discount = 10;
+                $('#recharge-discount').html('<span style="color: #26c7db;"><b>--</b></span>');
+            }else{
+                $('#recharge-discount').html('<span style="color: #26c7db;"><b>'+discount+'</b></span>');
+            }
+            $.ajax({
+                url:"{:url('get_user_play')}",
+                data:{game_id,game_id},
+                success:function (res) {
+                    $('#select2-user_account-container').text('请选择玩家');
+                    html = '<option value="" data="" balance="">请选择玩家</option>';
+                    if(res.code!=1){
+                        $('#user_account').html(html);
+                    }else{
+                        $.each(res.data,function (index,value) {
+                            html=html+'<option value="';
+                            html=html+value.user_id;
+                            html=html+'" data="" balance="">';
+                            html=html+value.user_account+'</option>';
+                        })
+                        $('#user_account').html(html);
+                    }
+                },error:function () {
+                    layer.msg('服务器出错，请稍后再试');
+                }
+            })
+            $.ajax({
+                url:"{:url('get_discount')}",
+                data:{game_id,game_id},
+                success:function (res) {
+                    // console.log(res);return;
+                    discount_name = res.data.discount.discount_name;
+                    if(res.code==1){
+                        discount = res.data.discount.discount;
+                        $('#recharge-discount').html('<span style="color: #26c7db;"><b>'+discount+'</b></span>');
+                    }else{
+                        $('#recharge-discount').html('<span style="color: #26c7db;"><b>'+discount+'</b></span>');
+                    }
+                    $('.discount_name').text(discount_name);
+                    
+                },error:function () {
+                    layer.msg('服务器出错，请稍后再试');
+                }
+            })
+        });
+
+        // 选择玩家之后再次获取折扣 看这个玩家是否符合首充的条件
+		$('#user_account').change(function(){
+			var game_id_tmp = $('#game_id').val();
+			var user_account = $(this).val();  // user_account 实际是 user_id
+			var user_id_tmp = user_account;
+	
+			$.ajax({
+				url:"{:url('get_discount')}",
+				data:{game_id:game_id, user_id:user_id_tmp},
+				success:function (res) {
+                    discount_name = res.data.discount.discount_name;
+					// console.log(res); // return;
+					if(res.code==1){
+						discount = res.data.discount.discount;
+						$('#recharge-discount').html('<span style="color: #26c7db;"><b>'+discount+'</b></span>');
+                    }else{
+                        $('#recharge-discount').html('<span style="color: #26c7db;"><b>'+discount+'</b></span>');
+                    }
+                    $('.discount_name').text(discount_name);
+					$('#num').val('');
+					// change_submit_btn($('.tabpan-con-con'), $('.jsbtn'));  //按钮置灰
+					$('.beforepay').val('--');
+                    $('.afterpay').val('--');
+
+				},error:function () {
+					layer.msg('服务器出错，请稍后再试');
+				}
+			})
+		});
+
+
+        $('#num').on('input propertychange',function(){
+            amount = $(this).val();
+            re = /^[1-9]\d*$/ ;
+            if(amount == ''){
+                $('.beforepay').val('--');
+                $('.afterpay').val('--');
+            }else if(!re.test(amount)){
+                $('.beforepay').val('--');
+                $('.afterpay').val('--');
+            }else{
+                $('.beforepay').val(amount);
+                afterpay = amount*discount/10;
+                afterpay = afterpay.toFixed(2);
+                $('.afterpay').val(afterpay);
+            }
+        });
+        $('.jsbtn').click(function(){
+            game_id = $('#game_id').find('option:selected').val();
+            if(!game_id){
+                layer.msg('请选择游戏名称');
+                return false;
+            }
+            user_id = $('#user_account').find('option:selected').val();
+            if(!user_id){
+                layer.msg('请选择玩家');
+                return false;
+            }
+            amount = $('#num').val();
+            re = /^[1-9]\d*$/ ;
+            if(amount == ''){
+                layer.msg('充值金额数量不能为空');
+                return false;
+            }else if(!re.test(amount)){
+                layer.msg('充值金额数量错误，请输入正整数');
+                return false;
+            }
+            pay_type = $('.paycheck').val();
+            order_no = get_order();
+            if(!order_no){
+                layer.msg('订单生成失败，请刷新后重试');
+                return false;
+            }else{
+                $('.getresult').attr('order_no',order_no);
+            }
+            if(pay_type=='zfb'){
+                url = "{:url('recharge/PromoteWapPay/alipay','',false)}";
+                url = url+'?'+'game_id='+game_id+'&user_id='+user_id+'&amount='+amount+'&order_no='+order_no+'&is_bind_pay='+1;
+                $("#new_czinfobg").show();
+                url_open(url);
+            }else if(pay_type=='wx'){
+                if(is_wechat && !is_company_weixin){
+                    url = "{:url('api/Pay/get_wx_code','',false)}";
+                }else{
+                    url = "{:url('recharge/PromoteWapPay/weixinpay','',false)}";
+                }
+                url = url+'?'+'weixin_pay_type=4&game_id='+game_id+'&user_id='+user_id+'&amount='+amount+'&order_no='+order_no+'&is_bind_pay=1&promote_id='+promote_id;
+                $("#new_czinfobg").show();
+                url_open(url);
+            }else if(pay_type=='ptb'){
+                ptbpay();
+            }else{
+                layer.msg('支付方式错误');
+                return false;
+            }
+        });
+    })
+    //新开页面 防止浏览器拦截
+    function url_open(url){
+        var a = $("<a href='"+url+"' target='_blank'>支付</a>").get(0);
+        var e = document.createEvent('MouseEvents');
+        e.initEvent( 'click', true, true );
+        a.dispatchEvent(e);
+    }
+    function ptbpay(){
+        layer.prompt({title: '请输入二级密码', formType: 1,placeholder:'请输入二级密码'}, function(text, index){ 
+      
+			layer.close(index);
+            url = "{:url('recharge/PromoteWapPay/ptb_bind_pay','',false)}";
+            url = url+'?'+'game_id='+game_id+'&user_id='+user_id+'&amount='+amount+'&order_no='+order_no+'&is_bind_pay='+1+'&second_pwd='+text;
+            $.ajax({
+                url:url,
+                success:function (res) {
+                    if(res.code!=1){
+                        layer.msg(res.msg);
+                    }else{
+                        layer.msg('充值成功');
+                    }
+                },error:function () {
+                    layer.msg('服务器错误，请稍后再试');
+                }
+            })
+        });
+    }
+    //获取订单号
+    function get_order(){
+        order_no = '';
+        $.ajax({
+            type: 'POST',
+            url: "{:url('recharge/PromoteWapPay/get_bind_order')}" ,
+            async:false,
+            dataType:'json',
+            success:function(data){
+                order_no = data.order_no;
+            }
+        })
+        return order_no;
+    }
+    </script>
+</block>

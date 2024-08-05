@@ -1,0 +1,286 @@
+.par_sub_sys_banner img{
+    width:100%;
+    height:271px;
+}
+.par_sub_sys_con{
+    height: 1100px;
+    position: relative;
+    top: 30px
+}
+.par_sub_sys_left{
+    padding-bottom: 20px;
+    width:840px;
+     height:1040px;
+    background:rgba(255,255,255,1);
+    border-top: 2px solid #0092FE;
+    border-right: 1px solid rgba(221,221,221,1);
+    border-bottom: 1px solid rgba(221,221,221,1);
+    border-left: 1px solid rgba(221,221,221,1);
+}
+.par_sub_sys_right{
+    margin-left: 27px
+}
+.par_sub_sys_right_first{
+    width:334px;
+    height:290px;
+    background:rgba(255,255,255,1);
+    border:1px solid rgba(221,221,221,1);
+}
+a:hover p{
+    color: rgba(1,143,255,1)
+}
+a.disabled p{
+    color: #ffffff!important
+}
+.par_sub_sys_right_first a:hover p{
+    color: #fff;
+}
+.par_sub_sys_right_second{
+    margin-top: 15px;
+    width:334px;
+    height:249px;
+    background:rgba(255,255,255,1);
+    border:1px solid rgba(221,221,221,1);
+}
+.par_sub_sys_right_third{
+    margin-top: 15px;
+    width:334px;
+    height:468px;
+    background:rgba(255,255,255,1);
+    border:1px solid rgba(221,221,221,1);
+}
+.par_sub_sys_left_tophx{
+    width:840px;
+    height:2px;
+    background-color: #0092FE;
+    position: relative;
+    top: -1px
+}
+.par_sub_sys_left_nav{
+    width:840px;
+    height:62px;
+    background-color: #F7F7F7;
+    
+}
+.par_sub_sys_left_nav div{
+    width:97px;
+    height:28px;
+    background-color: #FFFFFF;
+    margin-left: 8px;
+    text-align: center;
+    font-size:16px;
+    font-weight:400;
+    color:rgba(51,51,51,1);
+    padding-top: 6px;
+    position: relative;
+    top: 32px;
+    left: 260px;
+    cursor: pointer;
+}
+.active_par_sub_sys_left_nav{
+    background-color: #31A1D4!important;
+    color: #FFFFFF!important;
+}
+.par_sub_sys_left_con{
+    margin-left: 30px;
+    margin-top: 25px;
+    width: 780px;
+    /* height:800px; */
+}
+.par_sub_sys_left_con_first{
+    margin-top: 20px;
+    font-size:12px;
+    font-weight:400;
+    color:rgba(51,51,51,1);
+    line-height: 30px;
+    text-indent:2em;
+}
+.par_sub_sys_left_con_third p{
+    font-size:12px;
+    font-weight:400;
+    color:rgba(51,51,51,1);
+    line-height: 30px;
+    text-indent:2em;
+    margin-top: 25px
+}
+.par_sub_sys_left_con_firstbtn,.par_sub_sys_left_con_firstbtn{
+    margin-top: 25px;
+    width:777px;
+    height:27px;
+    background-color: #31A1D4;
+    color: #ffffff;
+    text-align: center;
+    padding-top: 7px;
+	font-size:14px;
+}
+.par_sub_sys_left_con_second p{
+    font-size:12px;
+    font-weight:400;
+    color:#333333;
+    line-height: 30px;
+}
+.par_sub_sys_left_con_four p{
+    font-size:12px;
+    font-weight:400;
+    color:rgba(51,51,51,1);
+    line-height: 30px;
+    margin-top: 25px;
+    text-indent:2em;
+}
+.par_sub_sys_left_con_four p span{
+    color: #018FFF
+}
+.par_sub_sys_left_con_four p a{
+    text-decoration: none
+}
+.par_sub_sys_right_hx_first{
+    width:137px;
+    height:2px;
+    background-color: #0092FE;
+    position: relative;
+    top: 1px
+}
+a:hover .par_sub_sys_right_third_item_title{
+    color: rgba(1, 143, 255, 1)
+}
+.par_sub_sys_right_hx{
+    width:137px;
+    height:2px;
+    background-color: #0092FE;
+    position: relative;
+    top: 16px;
+}
+.par_sub_sys_right_linetitle{
+    font-size:16px;
+    font-weight:400;
+    color:rgba(13,148,254,1);
+    margin-top: 12px;
+    margin-left: 25px
+}
+.downloadtextbtn{
+    width:282px;
+    height:52px;
+    background:linear-gradient(0deg,rgba(14,126,178,1),rgba(52,164,215,1));
+    border-radius:4px;
+    margin-left: 27px;
+    margin-top: 25px;
+    cursor: pointer;
+}
+.downloadtextbtn img{
+    margin-left: 60px;
+    margin-top: 15px
+}
+.downloadtextbtn p{
+    font-size:16px;
+    font-weight:400;
+    color:rgba(255,255,255,1);
+    margin-top: 14px;
+    margin-left: 14px
+}
+.par_sub_sys_right_first_title{
+    font-size:12px;
+    font-weight:400;
+    color:rgba(51,51,51,1);
+    margin-left: 25px;
+    margin-top: 30px;
+    margin-bottom: 20px
+}
+.par_sub_sys_right_first_con_item{
+    font-size:12px;
+    font-weight:400;
+    color:#333333;
+    margin-left: 25px;
+    cursor: pointer;
+    margin-top: 11px
+}
+.par_sub_sys_right_first_con_item:hover{
+   /* color:rgba(13,148,254,1);*/
+}
+.zhanweihangxian{
+    width:284px;
+    height:1px;
+    background:rgba(222,226,229,1);
+    margin-top: 8px
+}
+.par_sub_sys_right_second_con{
+    width: 300px;
+    height: 170px;
+    margin-left: 25px;
+    margin-top: 20px
+}
+.right_second_con_item{
+    height: 35px;
+    overflow: hidden;
+}
+.right_second_con_item_sx{
+    width:1px;
+    height:13px;
+    background:rgba(103,103,103,1);
+    margin-top: 6px;
+    margin-left: 8px
+}
+.right_second_con_item_summ{
+    margin-left: 8px;
+    margin-top: 3px;
+    /* width: 70px; */
+}
+.right_second_con_item_con{
+    margin-top: 4px;
+    font-size:14px;
+    font-weight:bold;
+    color:rgba(168,138,121,1);
+    width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.right_second_con_item_con.n-width{
+    margin-left: 0.95px;
+    width: 212px;
+}
+.right_second_con_item_con.n-width2{
+    width: 196px;
+}
+.right_second_con_item_con_adress{
+    margin-top: 2px;
+    font-size:14px;
+    font-weight:bold;
+    color:rgba(168,138,121,1);
+    width: 183px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.par_sub_sys_right_third_con{
+    width:286px;
+    height:414px;
+    margin-left: 28px;
+    margin-top: 12px;
+}
+.dot_par_sub_sys{
+    width:4px;
+    height:4px;
+    background:#666666;
+    border-radius:50%;
+    position: relative;
+    top: 17px
+}
+.par_sub_sys_right_third_item{
+    width: 285px;
+    height: 28px;
+    margin-top: 9px;
+}
+.par_sub_sys_right_third_item_title{
+    width: 270px;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    margin-left: 10px;
+    padding-top: 10px;
+    height: 27px;
+}
+.par_sub_sys_right_third_item_hx{
+    width: 280px;
+    height: 1px;
+    border-bottom: 1px dashed #E9E9E9;
+}

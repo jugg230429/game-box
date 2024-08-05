@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" media="all" href="__STATIC__/js/datejs/daterangepicker.css"/>
+	</head>
+	<body>
+		<div class="trunk">
+			<div class="trunk-con">
+				<div class="right-container">
+					<div class="normal-list">
+						<div class="trunk">
+							<div class="tabpan">
+								<div class="tabpan-con tabpan-show">
+									<table class="table normal-table" id="promotecoin_table">
+										<tbody>
+											<tr>
+												<th>游戏名称</th>
+												<th>余额</th>
+											</tr>
+											<notempty name="data_lists">
+												<volist name="data_lists" id='vo'>
+												<tr>
+													<td>{:$vo['game_name']}</td>
+													<td>{:$vo['bind_balance']?:'0.00'}</td>
+												</tr>
+												</volist>
+											<else/>
+												<!--暂无数据-->
+												<tr>
+													<td colspan="9" >
+													<div class="no-data">
+														<img src="__TMPL__/public/assets/images/icon_wushujv2.png"  alt="" class="no-data-img"/>
+														<p class="no-data-text">暂无数据</p>
+													</div>
+													</td>
+												</tr>
+											</notempty>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	</body>
+
+</html>

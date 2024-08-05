@@ -1,0 +1,32 @@
+<div class="nav-new fl">
+
+    <div class="logo-picture">
+        <a href="{:url('index/index')}">
+            <if condition="cmf_get_option('issue_set')['logo']" >
+                <img src="{:cmf_get_image_url(cmf_get_option('issue_set')['logo'])}" this.onerror=null" >
+                <else>
+                    <div class="emptyDiv"></div>
+                </else>
+
+            </if>
+            
+            <!-- <img src="{:cmf_get_image_url(cmf_get_option('issue_set')['logo'])}" this.onerror=null" > -->
+        </a>
+    </div>
+    <div class="subNavBox">
+        <div class="subNav jssubNav "><i class="prev-icon icon-guanli"></i><span>管理中心</span>
+            <!-- <i class="arrow-icon"></i> -->
+        </div>
+        <div class="navContent jsnavContent">
+            <a href="{:url('issue/management/index')}" <?php if($highlight=='index') echo 'class="active"' ?>>游戏概览</a>
+            <a href="{:url('issue/management/game')}" <?php if($highlight=='game') echo 'class="active"' ?>>游戏管理</a>
+            <a href="{:url('issue/article/index')}" <?php if($highlight=='article') echo 'class="active"' ?>>资讯管理</a>
+            <a href="{:url('issue/stat/user_lists')}" <?php if($highlight=='statuser') echo 'class="active"' ?>>玩家记录</a>
+            <a href="{:url('issue/stat/recharge_lists')}" <?php if($highlight=='statpay') echo 'class="active"' ?> >充值结算</a>
+            <a href="{:url('issue/Currency/index')}" <?php if($highlight=='currency') echo 'class="active"' ?> >联运币管理</a>
+            <a href="{:url('issue/Auth/index')}" <?php if($highlight=='auth') echo 'class="active"' ?> >认证信息</a>
+        </div>
+    </div>
+
+
+</div>

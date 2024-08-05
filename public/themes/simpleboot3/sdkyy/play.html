@@ -1,0 +1,272 @@
+<!--<link href="__TMPL__/sdkyy/assets/css/public.css" rel="stylesheet" >-->
+<link href="__TMPL__/sdkyy/assets/css/play.css" rel="stylesheet" >
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+
+<div class="topbar-wrap">
+	<a target="_blank" href="{:url('Index/index')}" ><img src="{:cmf_get_image_url($icon)}" class="topbar-wrap-logo fl"></a>
+	<a class="fl  topbar-wrap-game">{$game_name}-<span class="topbar-wrap-zone">[{:get_server_name(input('server_id'))}]</span></a>
+	<div class="topbar-wrap-news fl">
+	   <ul>
+		   <volist name="ggList" id="vo">
+			   <li class="topbar-wrap-news-title"><a href="{:url('media/article/detail',['id'=>$vo['id'],'category_id'=>$vo['category_id']])}" target="_blank">{$vo['post_title']}</a></li>
+		   </volist>
+	   </ul>
+	</div>
+	<div class="fr">
+	     <div class="user-box fl">
+		   <div class="fl">账号：{:session('member_auth.account')}</div>
+		   <div class="user-level fl">
+		      <span class="user-level-lv">Lv</span>
+			  <span class="user-level-num">{$user_info['vip_level']}</span>
+		   </div>
+
+		 </div>
+	     <a href="{:url('media/user/userinfo')}" target="_blank" class="fl topbar-wrap-link">用户中心</a>
+		 <a href="{:url('Index/index')}" target="_blank" class="fl topbar-wrap-link">官网</a>
+		 <a href="{:url('media/pay/pay',['gameid'=>input('game_id'),'serverid'=>input('server_id')])}" target="_blank" class="fl topbar-wrap-link">充值</a>
+		 <div class="allgame fl">所有游戏
+		    <img src="__TMPL__/sdkyy/assets/images/btn_xl.png" class="allgame-down">
+			 <img src="__TMPL__/sdkyy/assets/images/btn_xl_top.png" class="allgame-up">
+		    <div class="allgame-con">
+			   	<ul>
+					<volist name="game_lists" id="vo">
+						<li class="fl allgame-item">
+							<a href="{:url('media/game/ydetail',['game_id'=>$vo['id']])}" target="_blank" class="allgame-game">{$vo['game_name']}</a>
+						</li>
+					</volist>
+			   	</ul>
+			</div>
+		 </div>
+
+	</div>
+	<div class="silder">
+	    <div class="silder-text">游戏助手</div>
+		<img src="__TMPL__/sdkyy/assets/images/assistant_off.png" class="silder-arrow-right">
+	</div>
+	<div class="silder-info">
+	    <ul>
+		<li class="silder-menu js-my ">我的</li>
+		<li class="silder-menu silder-menu2 js-server ">换服</li>
+		<li class="silder-menu silder-menu3 js-gift ">礼包</li>
+		<li class="silder-menu silder-menu4 js-news ">公告</li>
+		</ul>
+		<div class="retract">收起<img src="__TMPL__/sdkyy/assets/images/assistant_on.png" class="retract-icon"></div>
+	</div>
+	<div class="vip_modals" style="">
+		<span class="btn_close"><img src="__STATIC__/images/login_btn_close_n.png" alt=""></span>
+		<div class="vip_modals_title"><span class="">当前等级：</span><span class="vip_num">VIP{:session('member_auth.vip_level')}</span>
+			<if condition="$next_pay nheq false"><span class="vip_tip">（距离升级还差￥<span>{$next_pay}）</span></span></if>
+		</div>
+		<table class="vip_table">
+			<tbody>
+			<tr>
+				<th>等级</th>
+				<th>消费额</th>
+				<th>特权礼包</th>
+				<th>升级积分</th>
+				<th>兑换折扣</th>
+			</tr>
+			<volist name="vip_data" id="vo">
+				<tr>
+					<td>VIP {$key}</td>
+					<td>{$vo}</td>
+					<td><span <if condition="$key eq 0"> class="no"<else/>class="yes"</if>></span></td>
+					<if condition="$vip_upgrade[$key] neq ''">
+						<td><span class="">{$vip_upgrade[$key]['user_get_point']}</span></td>
+						<else/>
+						<td><span class="no"></span></td>
+					</if>
+					<td><span <if condition="$key eq 0"> class="no"<else/>class="yes"</if>></span></td>
+				</tr>
+			</volist>
+			</tbody>
+		</table>
+		<div class="vip_title_tip">
+			会员等级由消费额决定，满足相应消费额即可升级。
+		</div>
+		<div class="vip_text_tip">
+			1、消费额指在游戏内使用支付宝、微信、平台币、绑币等方式进行支付的消费金额。
+		</div>
+		<div class="vip_text_tip">
+			2、消费额在支付成功后，实时增加，每日无上限。
+		</div>
+		<div class="vip_text_tip">
+			3、使用代金券、话费充值手游金额及充值平台增值服务金额不包含在内。
+		</div>
+	</div>
+
+	<script src="__TMPL__/sdkyy/assets/js/sdk/function.js"></script>
+	<script>
+		var game_id = "{:input('game_id',0,'intval')}";
+		var area_id = "{:input('server_id',0,'intval')}";
+		var auth_status = "{:get_user_config('age')}";
+		var auth_msg = "{:get_user_config_info('age')['contents_off']}";
+		var age_prevent = "{:get_user_config('age_prevent')}";
+		var age_status = 0;
+		var check_b = 0;
+		var pay_url = "{:url('media/pay/pay',['gameid'=>input('game_id'),'serverid'=>input('server_id')])}";
+		var verfiy_url = "{:url('media/user/realauth')}";
+		var do_sign_url = "{:url('media/user/doSign')}";
+		var today_signed = "{$signDetail['today_signed']}";
+        var is_force_real = "1";
+		var prevent_way = "{$prevent_way|default='2'}";
+		var surplus_second = "{$surplus_second|default='0'}";
+		$(function () {
+            //请求角色信息
+            var basetime = 300;
+            var truetime = 60;
+            var time = 60;
+            var b = setInterval(function(){
+                time--;
+                if(time <=0){
+                    truetime = truetime + basetime;
+                    time = truetime;
+                    $.ajax({
+                        type:'post',
+                        url:"{:url('@sdkyy/Game/get_role_info')}",
+                        data:{game_id:game_id,area_id:area_id},
+                        success:function(data){
+                        }
+                    })
+                    //定时请求实名认证等待结果
+                    $.ajax({
+                        type:'post',
+                        url:"{:url('@member/User/get_user_age_result')}",
+                        data:{game_id:game_id},
+                        success:function(data){
+                        }
+                    })
+                }
+            },1000);
+        })
+	</script>
+	<script src="__TMPL__/sdkyy/assets/js/jquery-1.11.1.min.js"></script>
+	<script src="__TMPL__/sdkyy/assets/js/sdk/perinfo.js"></script>
+	<!-- 礼包弹窗 -->
+	<script src="__TMPL__/sdkyy/assets/js/sdk/gift.js"></script>
+	<!-- 礼包详情弹窗-->
+	<script src="__TMPL__/sdkyy/assets/js/sdk/giftdetail.js"></script>
+	<!-- 公告弹窗 -->
+	<script src="__TMPL__/sdkyy/assets/js/sdk/news.js"></script>
+	<!-- 公告详情弹窗 -->
+	<script src="__TMPL__/sdkyy/assets/js/sdk/newsdetail.js"></script>
+	<!--选择区服弹窗-->
+	<script src="__TMPL__/sdkyy/assets/js/sdk/server.js"></script>
+	<!--个人中心弹窗-->
+	<script src="__TMPL__/sdkyy/assets/js/sdk/my.js"></script>
+
+	<script src="__STATIC__/js/clipboard.min.js"></script>
+	<script>
+		if(age_status == 0){
+            $.getScript('__TMPL__/sdkyy/assets/js/sdk/realname.js',function(){});
+		}
+		//未成年并且官方防沉迷并且开启防沉迷
+		if ((age_status == 3 || age_status == 4) && prevent_way == 1 && age_prevent == 1 ) {
+			$.getScript("__TMPL__/sdkyy/assets/js/sdk/anti_addiction.js");
+		}
+
+
+		$(function () {
+			$(document).on('click','.js-btn-close',function(){
+				window.coupon_money=0;
+				coupon_id = 0;
+				clearInterval(check_b);
+				$(".js-pop").hide();
+				$(".pay-sdk-item").remove();
+
+				$(".silder-menu").removeClass('highBlcok');
+				$(".silder-menu").removeClass('highBlcokTwo');
+				$(".silder-menu").removeClass('highBlcokThree');
+				$(".silder-menu").removeClass('highBlcokFour');
+
+			});
+			// 返回按钮
+			$("body").on('click',".js-btn-return",function(){
+				window.coupon_money=0;
+				clearInterval(check_b);
+				$(this).closest(".js-pop").hide();
+
+				$(".silder-menu").removeClass('highBlcok');
+				$(".silder-menu").removeClass('highBlcokTwo');
+				$(".silder-menu").removeClass('highBlcokThree');
+				$(".silder-menu").removeClass('highBlcokFour');
+			});
+
+			//设置剪切板数据
+			var clipboard = new Clipboard('.copy', {
+				text: $(".copy").on("click", function (e) {
+					//点击之后，再拿到当前点击的那一个存储的值
+					let $target = $(e.target);
+					return $target.data(`clipboard-text`);
+				})
+			});
+			clipboard.on("success", function (e) {
+				layer.msg("复制成功");
+			});
+
+		})
+
+
+	</script>
+
+	<script>
+	    // 新闻滚动
+    function AutoScroll(obj) {
+        $(obj).find("ul:first").animate({
+                marginTop: "-20px"
+            },
+            500,
+            function() {
+                $(this).css({
+                    marginTop: "0px"
+                }).find("li:first").appendTo(this);
+            });
+    }
+    $(document).ready(function() {
+        setInterval('AutoScroll(".topbar-wrap-news")', 1500)
+    });
+	$(".allgame").click(function(){
+	    $(".allgame-con").toggle();
+		$(".allgame-down").toggle();
+		$(".allgame-up").toggle();
+
+	})
+	$(".silder").click(function(){
+	console.log("chufa");
+	  $(".silder").hide();
+	   $(".silder-info").show();
+	})
+	$(".retract").click(function(){
+
+	   $(".silder-info").hide();
+		$(".silder").show();
+		$(".js-pop").hide();
+	})
+
+	</script>
+
+	<script>
+
+		<!-- 查看等级弹窗 -->
+		$('.js-btn-vip').on('click', function () {
+			layer.closeAll();
+			var cons = $('.vip_modals');
+			layer.open({
+				type: 1,
+				title: false,
+				closeBtn: 0,
+				area: ['517px', 'auto'],
+				content: cons,
+				end: function () {
+					$('html,body').removeClass('no-scroll');
+				}
+			});
+			return false;
+		});
+		$(".btn_close").click(function () {
+			layer.closeAll();
+			$(".vip_modals").hide();
+		})
+	</script>
+
+</div>

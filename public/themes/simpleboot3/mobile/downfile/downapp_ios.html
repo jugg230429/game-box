@@ -1,0 +1,125 @@
+<extend name="../mobilepublic/base" />
+
+<block name="css">
+    <link href="__TMPL__/mobilepublic/download/css/mobiledown.css" rel="stylesheet">
+    <link href="__TMPL__/mobilepublic/download/css/mobilereset.css" rel="stylesheet">
+    <link href="__TMPL__/mobilepublic/download/css/downapp_ios.css" rel="stylesheet">
+    <link href="__TMPL__/mobilepublic/download/css/swiper-3.4.2.min.css" rel="stylesheet">
+	<script src="__TMPL__/mobilepublic/download/js/swiper-3.4.2.jquery.min.js"></script>
+</block>
+
+<block name="body">
+    <div class="iosInstallBox">
+        <div class="bannerInstall">
+            <p class="install-title">安装说明</p>
+            <div class="installSafe">
+                由于ios9以上系统限制，安装<span>{$ios_package_name}</span>后，首次打开会提示“未受信任的企业级开发者”，为正常情况， 请按如下流程操作：
+            </div>
+        </div>
+        <!-- <div class="borderRadiusIcon">
+            <img src="__TMPL__/mobilepublic/download/img/img-bianyuan.png" alt="">
+        </div> -->
+        <div class="bottomInstallData">
+            <div class="firstStep">
+                <p class="stepNumber">Step1</p>
+                <p class="middleInstall">安装<span>{$ios_package_name}</span></p>
+               <button class="rightNowInstall">
+                <a href="{:url('Downfile/downapp',['device'=>2,'promote_id'=>input('promote_id')])}" style="color: #fff;">
+                    直接安装
+                </a>
+
+                </button>
+            </div>
+            <div>
+                <p class="stepNumber">Step2</p>
+                <p class="tipsContent">安装完成后设置“信任”才能正常打开哦，同时您可以返回桌面查看安装进度。</p>
+               <button class="trustBtn">去信任</button>
+            </div>
+            <div class="finalPhotoInstall">
+                <img src="__TMPL__/mobilepublic/download/img/img-liucheng.png" alt="">
+            </div>
+        </div>
+    </div>
+
+   <div class="wechatShowContainer">
+    <div class="img_tishi">
+        <img src="__TMPL__/mobilepublic/download/img/ico_write.png" class="weixin-tip-img">
+        <div class="tip-step">
+            <p class="first-step v-middle">
+                <i class="first-icon"></i>
+                <span class="v-middle">点击右上角的" <span class="dian">...</span> "按钮</span>
+                <img src="__TMPL__/mobilepublic/download/img/ico_arrow.png" class="guide-img">
+            </p>
+            <p class="second-step v-middle">
+                <i class="second-icon"></i>
+                <span class="v-middle">选择在<span style="color: #FCFA62">浏览器</span>中打开</span>
+            </p>
+        </div>
+        <!--<img alt="" src="__TMPL__/mobilepublic/download/img/weixin_zd01.png">-->
+    </div>
+   </div>
+
+</block>
+<script src="__TMPL__/mobilepublic/download/js/jquery-1.10.1.min.js"></script>
+<!-- <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
+<block name="script">
+    <script type="text/javascript">
+        $('.trustBtn').click(function(){
+            window.location.href = "__TMPL__/mobilepublic/download/bb.mobileprovision";
+            // return false;
+            // alert("调起苹果的设置");
+            // Try this, Working in iOS 13
+            // layer.confirm('此网站正尝试下载一个配置描述文件，您要允许吗?', {
+            //     btn: ['允许', '忽略'], //可以无限个按钮
+            //     btn1: function(index, layero){
+            //         // window.location.href = 'App-prefs://prefs:root=Settings';
+            //         // window.location.href = "App-prefs://prefs:root=General&path=ManagedConfigurationList";
+            //         window.location.href = "__TMPL__/mobilepublic/download/bb.mobileprovision";
+            //         //按钮【按钮1】的回调
+
+            //     },
+            //     btn2: function(index, layero){
+            //         //按钮【按钮2】的回调
+            //         layer.msg('您也可以选择直接安装');
+            //     }
+            // });
+
+        });
+
+        //获取浏览器信息
+        var is_safari_browser = 0;
+        $(function () {
+            var ua = navigator.userAgent.toLowerCase();
+
+            var isChrome = ua.indexOf("chrome") != -1;
+
+            var isSafari = ua.indexOf("safari") != -1;
+            var isqq = ua.indexOf("qq") != -1;  // 是否是qq浏览器
+            var isuc = ua.indexOf("uc") > -1;  // 是否是uc浏览器
+
+            // 是否是safari 是is_safari_browser:1, 不是 is_safari_browser:0
+
+            if(isSafari){
+                is_safari_browser = 1;
+            }
+            if(isqq){
+                is_safari_browser = 0;
+            }
+            if(isuc){
+                is_safari_browser = 0;
+            }
+            // 其他浏览器可以单独加判断(类似添加的判断qq浏览器...) ......
+
+            if(is_safari_browser == 1){
+                // 不是苹果浏览器 跳出门窗指引打开苹果浏览器
+                // $('.cover').css('display','block');
+                // $('.img_tishi').css('display','block');
+                $('.wechatShowContainer').css('display','none');
+
+            }
+
+        });
+
+
+    </script>
+</block>

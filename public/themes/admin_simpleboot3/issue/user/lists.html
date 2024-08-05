@@ -1,0 +1,95 @@
+<include file="public@header" />
+<link href="__TMPL__/public/assets/simpleboot3/css/pro_promote.css" rel="stylesheet">
+</head>
+<body>
+    <div class="wrap js-check-wrap" >
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('user/lists')}">用户列表</a></li>
+            <!-- <li><a href="{:url('add')}">添加用户</a></li> -->
+            <span class="title_remark">说明：显示全部分发平台用户及其详细信息</span>
+        </ul>
+        <a href="{:url('add')}" class="btn btn-success" style="margin-top:20px;margin-left: -10px;">新增</a>
+        <form id="search_form" class="well form-inline fr" method="get" action="{:url('lists')}">
+            <input type="text" class="form-control notempty" name="id" style="width: 120px;" value="{:input('request.id/d','')}" placeholder="用户ID">
+            <select name="account" id="account"  class="selectpicker" data-live-search="true"  data-size="8" style="width: 120px;">
+                <option value="">用户账号</option>
+                <volist name=":get_issue_open_user('id,account')" id="vo">
+                    <option value="{$vo.id}" <if condition="input('request.account') eq $vo['id']">selected</if>>{$vo.account}</option>
+                </volist>
+            </select>
+            <input type="text" class="form-control notempty" name="nickname" style="width: 120px;" value="{:input('request.nickname','')}" placeholder="用户简称">
+
+            <select name="settle_type" id="settle_type"  class="selectpicker" style="width: 120px;">
+                <option value="">结算模式</option>
+                <option value="1" <if condition="input('request.settle_type') eq 1">selected</if>>平台结算</option>
+                <option value="0" <if condition="input('request.settle_type') heq '0'">selected</if>>预付款</option>
+            </select>
+
+            <select name="status" id="status"  class="selectpicker" style="width: 120px;">
+                <option value="">账号状态</option>
+                <option value="1" <if condition="input('request.status') eq 1">selected</if>>正常</option>
+                <option value="0" <if condition="input('request.status') heq '0'">selected</if>>锁定</option>
+            </select>
+
+            <input type="text" class="form-control js-bootstrap-date" name="start_time" id="start_time" placeholder="注册开始时间"
+                   value="{:input('request.start_time/s','')}" style="width: 120px;" autocomplete="off">-
+            <input type="text" class="form-control js-bootstrap-date" name="end_time" id="end_time" placeholder="注册结束时间"
+                   value="{:input('request.end_time/s','')}" style="width: 120px;" autocomplete="off">
+            <input type="submit" class="btn btn-search" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('lists')}">清空</a>
+        </form>
+        <form class="js-ajax-form" action="" method="post">
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>用户ID</th>
+                        <th>用户账号</th>
+                        <th>联运币</th>
+                        <th>结算模式</th>
+                        <th>用户简称</th>
+                        <th>账号状态</th>
+                        <th>认证状态</th>
+                        <th>注册时间</th>
+                        <th width="230">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <empty name="data_lists">
+                        <tr><td colspan="9" style="text-align: center;">暂无数据</td></tr>
+                    <else/>
+                        <foreach name="data_lists" item="vo">
+                        <tr>
+                            <td>{$vo['id']}</td>
+                            <td>{$vo['account']}</td>
+                            <td>{$vo['balance']}</td>
+                            <td>{:get_info_status($vo['settle_type'],34)}</td>
+                            <td>{$vo.nickname}</td>
+                            <td>{$vo['status_text']}</td>
+                            <td>{$vo['auth_status_text']}</td>
+                            <td>{:date('Y-m-d H:i:s',$vo['create_time'])}</td>
+                            <td>
+                                <a href="{:url('edit',['id'=>$vo['id']])}">查看</a>
+                                <if condition="$vo['status'] eq 1">
+                                    <a href="{:url('changeStatus',['ids'=>$vo['id'],'status'=>0])}" class="js-ajax-dialog-btn">锁定</a>
+                                <else/>
+                                    <a href="{:url('changeStatus',['ids'=>$vo['id'],'status'=>1])}" class="js-ajax-dialog-btn">解锁</a>
+                                </if>
+                                <if condition="$vo['auth_status'] eq 2 || $vo['auth_status'] eq 3">
+                                    <a href="{:url('changeStatus',['ids'=>$vo['id'],'auth_status'=>1])}" class="js-ajax-dialog-btn">认证通过</a>
+                                    <if condition="$vo['auth_status'] eq 2">
+                                        <a href="{:url('changeStatus',['ids'=>$vo['id'],'auth_status'=>3])}" class="js-ajax-dialog-btn">认证驳回</a>
+                                    </if>
+                                </if>
+                            </td>
+                        </tr>
+                        </foreach>
+                    </empty>
+                </tbody>
+            </table>
+        </form>
+        <div class="pagination" style="padding-bottom: 50px">{$page}</div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+</body>
+</html>

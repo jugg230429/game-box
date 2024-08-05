@@ -1,0 +1,114 @@
+<include file="public@header"/>
+<script type="text/javascript" src="__STATIC__/js/datejs/momentfunction.js"></script>
+
+</head>
+
+<body>
+<link href="__TMPL__/public/assets/simpleboot3/css/survey.css" rel="stylesheet">
+<link rel="stylesheet" href="/themes/admin_simpleboot3/public/assets/js/laydate.css" id="layuicss-laydate">
+<link rel="stylesheet" href="__JS__/layui/css/layui.css">
+<style>
+    #test {
+        position: relative;
+        top: 2px;
+    }
+</style>
+<div class="wrap">
+    <!--//头部实时-->
+    <div class="top-row">
+        <include file="datareport@game/survey_header"/>
+    </div>
+    <!--//下方图表-->
+    <php>
+        $description = request()->param('paymenttype');
+        $game_id = request()->param('game_id');
+        $rangepickdate = $start.'至'.$end;
+    </php>
+    <div class="menu">
+        <a class="menu-link " href="{:url('game_survey',['game_id'=>$game_id,'rangepickdate'=>$rangepickdate])}">运营指标</a>
+        <a class="menu-link" href="{:url('payment',['game_id'=>$game_id,'rangepickdate'=>$rangepickdate])}">付费渗透</a>
+
+        <a class="menu-link menu-link-active" href="javascript:;">平均游戏时长</a>
+        <form id="search_form" class="fr search-form survey-right" action="{:url('game/game_duration',['paymenttype'=>$description])}" onsubmit="return check();">
+            <span class="form-cell-wrap">
+                <input type="text" name="datetime" class="laydate-input-ico01" id="test" placeholder="开始时间-结束时间" value="{:input('datetime')}" autocomplete="off">
+            <!-- <input type="text" class="form-time-control" name="rangepickdate" id="rangepickdate" style="width: 220px;"
+                   value="" readonly placeholder="请选择日期"> -->
+            </span>
+            <span class="form-cell-wrap">
+            <select name="game_id" id="game_id" class="selectpicker fl " game_id="{:input('game_id')}"
+                    data-live-search="true" data-size="8" style="width: 100px;">
+                <option value="">全部游戏</option>
+                <volist name=":get_game_list('id,game_name')" id="vo">
+                    <option game-id="{$vo.id}" value="{$vo.id}" <if condition="input('game_id') eq $vo['id']">selected</if>>{$vo.game_name}</option>
+                </volist>
+            </select>
+            </span>
+            <input type="hidden" name="type" value="{:input('type')}">
+            <input type="hidden" name="description" value="{:input('description')}">
+            <span class="form-cell-wrap">
+            <input type="submit" class="btn btn-search" id="search_btn" value="搜索"/>
+            </span>
+            <span class="form-cell-wrap">
+            <a class="btn btn-clear" href="{:url('game/game_duration',['paymenttype'=>$description])}">清空</a>
+            </span>
+        </form>
+    </div>
+    <div id="newwusers" class="echarts-form"></div>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script src="__STATIC__/js/echarts-all.js"></script>
+<script src="/themes/admin_simpleboot3/public/assets/js/laydate.js"></script>
+<script>
+
+     //定义接收本月的第一天和最后一天
+     var startDate1=new Date(new Date().setDate(1));
+        var endDate1=new Date(new Date(new Date().setMonth(new Date().getMonth()+1)).setDate(0));
+        //定义接收上个月的第一天和最后一天
+        var startDate2=new Date(new Date(new Date().setMonth(new Date().getMonth()-1)).setDate(1));
+        var endDate2=new Date(new Date().setDate(0));
+        laydate.render({
+            elem: '#test',
+            type: 'date',
+            range: '~',
+            format: 'yyyy-M-d',
+            //max:'2018-1-15',//可选最大日期（当然如果加个这上，那扩展的那几个快捷选择时间按扭的值就得判断处理一下了）
+            //min:'2018-1-15',//可选最小日期（当然如果加个这上，那扩展的那几个快捷选择时间按扭的值就得判断处理一下了）
+            extrabtns: [
+                {id: 'today', text: '今天', range: [new Date(), new Date()]},
+                {id: 'lastday-7', text: '过去7天', range: [new Date(new Date().setDate(new Date().getDate()-7)), new Date(new Date().setDate(new Date().getDate()-1))]},
+                {id: 'lastday-30', text: '过去30天', range: [new Date(new Date().setDate(new Date().getDate()-30)), new Date(new Date().setDate(new Date().getDate()-1))]},
+                {id: 'yesterday', text: '昨天', range: [new Date(new Date().setDate(new Date().getDate()-1)), new Date(new Date().setDate(new Date().getDate()-1))]},
+                {id: 'thismonth', text: '本月', range: [startDate1,endDate1]},
+                {id: 'lastmonth', text: '上个月', range: [startDate2,endDate2]}
+            ],
+            done: function(val, stdate, ovdate){
+                //当确认选择时间后调用这里
+            }
+        });
+
+
+    //时间插件 默认时间
+    var start = '{$start}', end = '{$end}';
+    function check() {
+        layer.load(1);
+        var jsdate = $("#rangepickdate").val();
+        datearr = jsdate.split('至');
+        var start_time = datearr[0];
+        var end_time = datearr[1];
+        if(start_time != '' && end_time != '' && start_time > end_time) {
+            layer.msg('开始时间不能大于结束时间');
+            return false;
+        }
+        return true;
+    }
+    var keys = '{$keys}';//图表x轴
+    var online_time = '{$online_time}';
+    var login_count = '{$login_count}';
+    $.getScript('__TMPL__/public/assets/js/game_survey/game_duration.js');
+</script>
+
+</body>
+
+</html>

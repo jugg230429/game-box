@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/summary.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" media="all" href="__STATIC__/js/datejs/daterangepicker.css"/>
+		<include file="public@head"/>
+	</head>
+
+<body>
+	<include file="public@nav"/>
+	<include file="public@header"/>
+	<div class="trunk">
+		<div class="trunk-con">
+			<div class="right-container">
+				<div class="normal-list">
+					<div class="trunk">
+					 	<div class="trunk-title">
+							<div class="location ">
+								<div class="location-container fr">当前位置：<span class="location-container-text">数据管理&gt;</span><span class="location-container-text">数据汇总</span></div>
+							</div>
+							<img src="/themes/simpleboot3/public/assets/images/icon_normal_shujvhuizong.png" class="fl trunk-icon">
+							<span class="title-main fl ">数据汇总</span><span class="tagging">说明：渠道数据汇总(缓存处理)，默认显示截至今日数据</span>
+							<!-- <i class="question_mark"></i>
+						   		<i class="question_mark"></i>
+							 	<ul class="question_content">
+									<li class="question_title">数据说明</li>
+									<li class="question_list">
+										<strong>新增用户</strong>
+										<span> 新注册用户数</span>
+									</li>
+									<li class="question_list">
+										<strong> 注册IP</strong>
+										<span>用户注册时的所属IP汇总</span>
+									</li>
+									<li class="question_list">
+										<strong> 活跃用户</strong>
+										<span>登录游戏用户数（含新老用户，累计时去重）</span>
+									</li>
+									<li class="question_list">
+										<strong>付费用户</strong>
+										<span>游戏内充值用户数（统计充值成功，累计时去重）</span>
+									</li>
+								   <li class="question_list">
+										<strong>新增付费用户</strong>
+										<span> 新注册用户充值数</span>
+									</li>
+									<li class="question_list">
+										<strong>总付费额</strong>
+										<span>累计充值总额</span>
+									</li>
+								</ul> -->
+							</div>
+						</div>
+						<div class="tabpan">
+
+						  <!-- <ul class="nav-tabs"> -->
+						   <!-- <li class="nav-tabs-con fl nav-tabs-active"> -->
+						   <!-- <a href="" class="nav-link">数据汇总</a></li> -->
+						   <!-- <span class="title-remark">说明：渠道数据汇总，默认显示截至昨日数据</span> -->
+
+						<!-- </ul> -->
+
+							<div class="tabpan-con tabpan-show">
+								<form action="{:url('summary')}">
+									<div class="trunk-search clearfix fr">
+										<input type="text" readonly style="width: 160px;" class="tabpan-input normal-space"
+											   autocomplete="off" name="rangepickdate" id="rangepickdate" placeholder="时间" value="{:input('rangepickdate')}">
+										<php>$pmap['parent_id'] = PID</php>
+										<select id="promote_id" name="promote_id" class="tab-input js-select-gallery normal-space trunk-search-select fl">
+											<option value="" data="0">全部渠道</option>
+											<option value="{:PID}" <if condition="PID eq input('promote_id')"> selected</if> data="0">自己</option>
+											<volist name=":get_promote_list($pmap)" id="p">
+												<option data="" <if condition="$p['id'] eq input('promote_id')"> selected</if> value="{$p.id}">{$p.account}</option>
+											</volist>
+										</select>
+										<a href="{:url('query/summary')}"><input type="button" class="submit fr normal-space btn-clear" value="清空"></a>
+										<input type="submit" class="submit fr normal-space" id="submit" value="搜索">
+										<input type="hidden" name="sort" id="sort" value="{:input('request.sort',1)}">
+										<input type="hidden" name="sort_type" id="sort_type" value="{:input('request.sort_type')}">
+										<input type="hidden" id="page" name="row" value="{:input('row',10)}">
+									</div>
+								</form>
+								<div class="clear"></div>
+								<table class="table normal-table" id="promotecoin_table">
+									<tbody>
+										<tr>
+											<th>渠道ID</th>
+											<th>渠道</th>
+											<th>
+												<a href="javascript:changesort('count_new_register_user');">新增用户
+													<if condition="input('request.sort_type') eq 'count_new_register_user' and input('request.sort') eq 3">
+														▼
+														<elseif condition="input('request.sort_type') eq 'count_new_register_user' and input('request.sort') eq 2"/>
+														▲
+														<else/>
+														<img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+													</if>
+												</a>
+												<div class="question_">
+													<i class="question_mark">?</i>
+													<div class="question_content">
+														<ul class="question_content_box">
+															<li class="question_list">
+																<span class="title">新增用户</span>
+																<span class="">平台新注册用户数</span>
+															</li>
+														</ul>
+													</div>			
+												</div>
+											</th>
+											<th>
+												<a href="javascript:changesort('count_active_user');">活跃用户
+													<if condition="input('request.sort_type') eq 'count_active_user' and input('request.sort') eq 3">
+														▼
+														<elseif condition="input('request.sort_type') eq 'count_active_user' and input('request.sort') eq 2"/>
+														▲
+														<else/>
+														<img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+													</if>
+												</a>
+												<div class="question_">
+													<i class="question_mark">?</i>
+													<div class="question_content">
+														<ul class="question_content_box">
+															<li class="question_list">
+																<strong>活跃用户</strong>
+																<span>登录游戏用户数（含新老用户，累计时去重）</span>
+															</li>
+														</ul>
+													</div>			
+												</div>
+											</th>
+											<th>
+												<a href="javascript:changesort('count_pay_user');">付费用户
+													<if condition="input('request.sort_type') eq 'count_pay_user' and input('request.sort') eq 3">
+														▼
+														<elseif condition="input('request.sort_type') eq 'count_pay_user' and input('request.sort') eq 2"/>
+														▲
+														<else/>
+														<img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+													</if>
+												</a>
+												<div class="question_">
+													<i class="question_mark">?</i>
+													<div class="question_content">
+														<ul class="question_content_box">
+															<li class="question_list">
+																<strong>付费用户</strong>
+																<span>游戏内充值用户数（统计充值成功，累计时去重）</span>
+															</li>
+														</ul>
+													</div>			
+												</div>
+											</th>
+											<th>
+												<a href="javascript:changesort('count_new_pay_user');">新增付费用户
+													<if condition="input('request.sort_type') eq 'count_new_pay_user' and input('request.sort') eq 3">
+														▼
+														<elseif condition="input('request.sort_type') eq 'count_new_pay_user' and input('request.sort') eq 2"/>
+														▲
+														<else/>
+														<img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+													</if>
+												</a>
+												<div class="question_">
+													<i class="question_mark">?</i>
+													<div class="question_content">
+														<ul class="question_content_box">
+															<li class="question_list">
+																<span>新增付费用户</span>
+																<span> 新注册用户充值数</span>
+															</li>
+														</ul>
+													</div>			
+												</div>
+											</th>
+											<th>
+												<a href="javascript:changesort('total_pay');">总付费额
+													<if condition="input('request.sort_type') eq 'total_pay' and input('request.sort') eq 3">
+														▼
+														<elseif condition="input('request.sort_type') eq 'total_pay' and input('request.sort') eq 2"/>
+														▲
+														<else/>
+														<img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+													</if>
+												</a>
+												<div class="question_">
+													<i class="question_mark">?</i>
+													<div class="question_content">
+														<ul class="question_content_box">
+															<li class="question_list">
+																<strong>总付费额</strong>
+																<span>累计充值总额</span>
+															</li>
+														</ul>
+													</div>			
+												</div>
+											</th>
+										</tr>
+										<notempty name="data_lists">
+											<volist name='data_lists' id='vo'>
+												<tr>
+													<td>{$vo.promote_id}</td>
+													<td>{:$vo['promote_account']==PNAME?'自己':$vo['promote_account']}</td>
+													<td>{$vo.count_new_register_user}</td>
+													<td>{$vo.count_active_user}</td>
+													<td>{$vo.count_pay_user}</td>
+													<td>{$vo.count_new_pay_user}</td>
+													<td>{$vo.total_pay}</td>
+												</tr>
+											</volist>
+											<tr class="data_summary">
+												<td><span style="margin-right: 10px;">汇总 </span></td>
+												<td>--</td>
+												<td style="color: #26C7DB;font-weight:bold;">{$total_data.new_register_user}</td>
+												<td style="color: #26C7DB;font-weight:bold;">{$total_data.active_user}</td>
+												<td style="color: #26C7DB;font-weight:bold;">{$total_data.pay_user}</td>
+												<td style="color: #26C7DB;font-weight:bold;">{$total_data.new_pay_user}</td>
+												<td style="color: #26C7DB;font-weight:bold;">{$total_data.total_pay}</td>
+											</tr>
+										<else/>
+											<!--暂无数据-->
+											<tr>
+												<td colspan="5" >
+												<div class="no-data">
+													<img src="__TMPL__/public/assets/images/icon_wushujv2.png"  alt="" class="no-data-img"/>
+													<p class="no-data-text">暂无数据</p>
+												</div>
+												</td>
+											</tr>
+										</notempty>
+									</tbody>
+								</table>
+								<notempty name="data_lists">
+								<div class="pagenation clearfix">
+									<a download class="sch-btn" href="{:url('Export/expUser',array_merge(['id'=>2],input()))}">导出</a>
+									{$page}
+								</div>
+								</notempty>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<include file="public@scripts"/>
+	<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+	<script src="__STATIC__/js/layer/layer.js"></script>
+	<script type="text/javascript" src="__STATIC__/js/datejs/moment.min.js"></script>
+	<script type="text/javascript" src="__STATIC__/js/datejs/momentfunction.js"></script>
+	<script type="text/javascript" src="__STATIC__/js/datejs/daterangepicker.js"></script>
+	<script>
+        var maxDate = moment().startOf('day');
+        var date_autoUpdateInput = false;
+        var start = '{$start}',end  = '{$end}';
+		$(function() {
+			$(".js-select-gallery").select2();
+
+		})
+		//排序
+		function changesort(type){
+			var sort_type = $("#sort_type").val();
+			if(sort_type != type){
+				var sort = 1;
+			}else{
+				var sort = $("#sort").val();
+			}
+			$("#sort_type").val(type);
+			if(sort == 1){
+				$("#sort").val(3);
+			}else if(sort == 3){
+				$("#sort").val(2);
+			}else{
+				$("#sort").val(1);
+			}
+			$("#submit").click();
+		}
+
+		 //经过表头字段热区时出现？
+		$(".question_").click(function () {
+        	$(this).find(".question_content").toggleClass("open")
+			$(this).find(".question_content").css("display",'block')
+		});
+		$("tr th").mouseover(function () {
+			$(this).find(".question_").addClass("on");
+		});
+		$("tr th").mouseout(function () {
+			$(this).find(".question_").removeClass("on");
+			$(this).find(".question_content").css("display",'none')
+		});
+		// $(".question_on").click(function() {
+		// 	$('.contentBox').css('display','block')
+		// })
+	</script>
+</body>
+
+</html>

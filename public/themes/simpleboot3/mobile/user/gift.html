@@ -1,0 +1,227 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/my_bag.css">
+</block>
+
+<block name="body">
+    <div class="bag_page">
+        <div class="my_bag_page_header">
+            <a href="{:url('User/index')}"><img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon"></a>
+            <p class="fl my_bag_page_item active_my_bag_page_type">已领取</p>
+            <p class="fl my_bag_page_item ">已过期</p>
+            <div class="type_down_hx1 clear fl active_type_down_hx"></div>
+            <div class="type_down_hx2 fl "></div>
+        </div>
+        <div class="type_down__long_hx clear"></div>
+        <!-- 已领取 -->
+        <div class="baglist_con_ylq">
+            <notempty name="received">
+            <volist name="received" id="vo">
+            <div class="baglist_con_item">
+                <a class="baglist_con_item_info" href="{:url('Gift/detail',array('gift_id'=>$vo['gift_id']))}">
+                    <div class="fl img">
+                        <notempty name="vo.icon">
+                        <img src="{:cmf_get_image_url($vo['icon'])}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                        </notempty>
+                    </div>
+                    <div class="fl title_time">
+                        <div class="clear title">
+                            <p>{$vo.relation_game_name}{$vo.gift_name}</p>
+                        </div>
+                        <div class="clear time">
+                            <p class="fl">有效期：{:show_time($vo['start_time'],0)}至{:show_time($vo['end_time'],0)}</p>
+                        </div>
+                    </div>
+                </a>
+                <div class="baglist_con_item_info_attr">
+                    <p class="fl tap">激活码：</p>
+                    <input type="text" class="fl select_con" readonly value="{$vo.novice}">
+                    <button class="fl fuzhi_btn" data-clipboard-text="{$vo.novice}">复制</button>
+                </div>
+            </div>
+            </volist>
+            <else />
+                <p class="no_gamelist_text">~空空如也~</p>
+            </notempty>
+        </div>
+        <!-- 删除弹窗 -->
+        <div class="delete_one_modal">
+            <p>确认删除过期礼包？</p>
+            <div class="btn_ground">
+                <div class="fl quxiao"><p>取消</p></div>
+                <div class="fl queren"><p>确认</p></div>
+            </div>
+        </div>
+        <!-- 删除全部弹窗 -->
+        <div class="delete_all_modal">
+            <p>确认清空所有过期礼包？</p>
+            <div class="btn_ground">
+                <div class="fl quxiao"><p>取消</p></div>
+                <div class="fl queren"><p>确认</p></div>
+            </div>
+        </div>
+        <!-- 已过期 -->
+        <div class="baglist_con_ygq" style="margin-top: 1.6rem">
+            <notempty name="overdue">
+            <volist name="overdue" id="vo">
+            <div class="baglist_con_item overdue" id="overdue_{$vo.id}">
+                <div class="baglist_con_item_info" >
+                    <div class="fl img">
+                        <notempty name="vo.icon">
+                        <img src="{:cmf_get_image_url($vo['icon'])}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                        </notempty>
+                    </div>
+                    
+                    <div class="fl title_time">
+                        <div class="clear title">
+                            <p>{$vo.relation_game_name}{$vo.gift_name}</p>
+                        </div>
+                        <div class="clear time">
+                            <p class="fl">有效期：{:show_time($vo['start_time'],0)}至{:show_time($vo['end_time'],0)}
+							</p>
+                        </div>
+                    </div>
+                    <button class="fg delete_btns" data-id="{$vo.id}">删除</button>
+                </div>
+            </div>
+            </volist>
+            <else />
+                <p class="no_gamelist_text">~空空如也~</p>
+            </notempty>
+        </div>
+        <notempty name="overdue">
+        <div class="my_bag_footer">
+            <button class="delete_all_btn">一键清空</button>
+        </div>
+        </notempty>
+    </div>
+</block>
+<block name="script">
+<script src="__JS__/clipboard.min.js"></script>
+<script>
+    $(function () {
+        var clipboard = new Clipboard('.fuzhi_btn');
+        clipboard.on('success', function(e) {
+            layer.msg('<p">已复制</p>');
+            e.clearSelection();
+        });
+        clipboard.on('error', function(e) {
+            layer.msg('此浏览器不支持此操作，请长按礼包码复制');
+        });
+    })
+    $('.my_bag_page_item').click(function () {
+        $('.my_bag_page_item').removeClass('active_my_bag_page_type')
+        $(this).addClass('active_my_bag_page_type')
+        $('.type_down_hx1').removeClass('active_type_down_hx')
+        $('.type_down_hx2').removeClass('active_type_down_hx')
+        $(this).next().next().addClass('active_type_down_hx')
+        console.log($(this).text().indexOf('已过期')>-1)
+        if($(this).text().indexOf('已领取')>-1){
+            $('.baglist_con_ylq').show()
+            $('.baglist_con_ygq').hide()
+            $('.my_bag_footer').hide()
+        }
+        if($(this).text().indexOf('已过期')>-1){
+            $('.baglist_con_ylq').hide()
+            $('.baglist_con_ygq').show()
+            $('.my_bag_footer').show()
+        }
+    })
+    $('.baglist_con_item_info .delete_btns').click(function(){
+        var consa = $('.delete_one_modal')
+        var parent = $(this);
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: false,
+                area: ['20.4rem', '8.5rem'],
+                offset: 'auto',
+                content: consa,
+                btnAlign: 'c',
+                shadeClose: true,
+                success: function(layero, index) {
+                    layero.find('.queren').click(function () {
+                        var id = parent.data('id');
+                        var that=$(this);
+                        if(id) {
+                            if(that.hasClass('no_delete')) {return false;}
+                            that.addClass('no_delete');
+                            $.ajax({
+                                type: 'post',
+                                dataType: 'json',
+                                url: '{:url("User/deleteGift")}',
+                                data: {ids:id},
+                                success: function (data) {
+                                    that.removeClass('no_delete');
+                                    layer.msg(data.msg);
+                                    if(data.code == 1) {
+                                        $('#overdue_'+id).remove();
+                                    }
+                                    layer.close(index);
+                                },
+                                error: function () {
+                                    layer.msg('服务器故障，请稍候再试');
+                                    that.removeClass('no_delete');
+                                }
+                            });
+                        } else {
+                            layer.msg('请选择要删除的数据');
+                        }
+                        return false;
+                    });
+                    layero.find('.quxiao').click(function () {
+                        layer.close(index);
+                    });
+                },
+                end: function () {
+                    $('.delete_one_modal').hide()
+                }
+            })
+    })
+    $('.my_bag_footer .delete_all_btn').click(function(){
+        var consa = $('.delete_all_modal')
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: false,
+                area: ['20.4rem', '8.5rem'],
+                offset: 'auto',
+                content: consa,
+                btnAlign: 'c',
+                shadeClose: true,
+                success: function(layero, index) {
+                    layero.find('.queren').click(function () {
+                        var that=$(this);
+                        if(that.hasClass('no_delete')) {return false;}
+                        that.addClass('no_delete');
+                        $.ajax({
+                            type: 'post',
+                            dataType: 'json',
+                            url: '{:url("User/deleteGift")}',
+                            data: {ids:'all'},
+                            success: function (data) {
+                                that.removeClass('no_delete');
+                                layer.msg(data.msg);
+                                if(data.code == 1) {
+                                    setTimeout('location.href=location.href',500);
+                                }
+                                layer.close(index);
+                            },
+                            error: function () {
+                                layer.msg('服务器故障，请稍候再试');
+                                that.removeClass('no_delete');
+                            }
+                        });
+                        return false;
+                    });
+                    layero.find('.quxiao').click(function () {
+                        layer.close(index);
+                    });
+                },
+                end: function () {
+                    $('.delete_all_modal').hide()
+                }
+            })
+    })
+</script>
+</block>

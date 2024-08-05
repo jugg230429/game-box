@@ -1,0 +1,149 @@
+/*
+* @description: 充值页样式
+ *@author:王奉
+* @update: name(xxxx-xx-xx xx:xx)
+ */
+@charset "utf-8";
+
+/* CSS Document */
+
+body {
+	margin: 0 auto;
+	font-size: 12px;
+	color: #333;
+	font-family: SimHei,'黑体';
+}
+
+div,
+form,
+input,
+img,
+ul,
+li,
+dl,
+dd,
+dt {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+img {
+	vertical-align: top;
+}
+
+ul,
+dl {
+	list-style-type: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 12px;
+	font-weight: normal;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {}
+
+p {
+	margin: 0;
+	padding: 0;
+}
+
+p.warning {
+	color: #999
+}
+
+
+/* 确认充值信息 */
+.czerrots ul {
+    margin-top: 10px;
+}
+.czerrots ul li {
+    width: 360px !important;
+    padding: 3px 0px !important;
+    text-align: center;
+    color: #555;
+	font-weight: bold;
+}
+
+#new_czinfobg {
+    display: none;
+    color: #000;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1001;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1001;
+}
+.czerrots {
+    width: 360px;
+    background: #fff;
+    margin: 300px auto auto auto;
+    padding: 16px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 4px solid #BDBDBD;
+}
+.qrcz_ts {
+    line-height: 25px;
+    display: inline;
+    display: block;
+    text-align: center;
+    position: relative;
+}
+.qrcz_title {
+    color: #c70000;
+    font: bold 16px/20px "microsoft yahei";
+}
+.czerrots .qrtjBtn {
+	display: block;
+	height: 32px;
+	overflow: hidden;
+    padding: 10px 0px 5px 0;
+}
+
+.qrcz_close {
+    position: absolute;
+    background: url(../../images/hfClose.png) no-repeat;
+    width: 30px;
+    height: 30px;
+    display: block;
+    top: -30px;
+    right: -30px;
+    text-indent: -999em;
+    z-index: 999;
+}
+.czerrots .qrtjBtn a {
+    display: block;
+	width: 90px;
+	height: 20px;
+	line-height:20px;
+    padding: 5px 8px;
+	border: 1px #fb7b00 solid;
+	background: #FFF8F0;
+	margin: 0 auto;
+	color: #fb7b00;
+	overflow: hidden;
+}
+.czerrots .qrtjBtn a:hover{
+	color:#fff;
+	background: #fb7b00;
+}

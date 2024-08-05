@@ -1,0 +1,138 @@
+<include file="public@header" />
+</head>
+<style>
+    .aui_dialog{
+        /*max-width:380px;*/
+    }
+    .aui_content{
+        text-align: center !important;
+    }
+    .aui_icon{
+        display: none;
+    }
+    .aui_buttons{
+        text-align: center !important;
+    }
+    .aui_titleBar{
+        display: none;
+    }
+</style>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('Rebate/agent')}">会长代充折扣</a></li>
+            <li><a href="{:url('Bindagent/lists')}">会长代充记录</a></li>
+            <span class="title_remark">说明：设置渠道为玩家代充绑币的折扣，代充后以绑币形式发放到玩家账户内，可用于游戏内充值。</span>
+        </ul>
+        <form id="search_form" class="well form-inline  fr" method="get" action="{:url('Rebate/agent')}">
+            <select name="promote_id" id="promote_id" class="selectpicker" promote_id="{:input('promote_id')}" data-live-search="true">
+                <php>$map['status'] = 1;</php>
+                <option value="">渠道账号</option>
+                <volist name=":get_promote_list($map,'id,account')" id="vo">
+                    <option value="{$vo.id}" >{$vo.account}</option>
+                </volist>
+            </select>
+
+            <select name="game_id" id="game_id" class="selectpicker " game_id="{:input('request.game_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+                <option value="">游戏名称</option>
+                <volist name=":get_game_list('id,game_name,sdk_version')" id="vo">
+                    <option game-id="{$vo.id}" value="{$vo.id}" >{$vo.game_name}<eq name="vo.sdk_version" value="3">（H5）</eq></option>
+                </volist>
+            </select>
+            <select name="status" id="first_status" class="selectpicker" pay_status="{:input('request.status')}" style="width: 120px;">
+                <option value="">折扣状态</option>
+                <option value="1" <if condition="input('request.status') eq 1">selected</if>>开启</option>
+                <option value="0" <if condition="input('request.status') heq '0'">selected</if>>关闭</option>
+            </select>
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('Rebate/agent')}">清空</a>
+        </form>
+        <form class="js-ajax-form" action="" method="post">
+            <div class="table-actions position" style="margin-left: -10px;">
+                <button class="btn btn-success mtb17" type="button" onclick="agentadd()" >新增</button>
+                <button class="btn btn-danger  js-ajax-submit mtb17 " type="submit"
+                        data-action="{:url('adel')}" data-subcheck="true" data-msg="">
+                    删除
+                </button>
+            </div>
+            <table class="table table-hover table-bordered">
+                <thead>
+                <tr>
+                    <th><input type="checkbox" id="all-checkbox" class="table-item-checkbox js-check-all" data-direction="x" data-checklist="js-check-x"><label for="all-checkbox" class=""></label></th>
+                    <th>渠道账号</th>
+                    <th>游戏名称</th>
+                    <th>统一首充折扣</th>
+                    <th>统一续充折扣</th>
+                    <th>渠道首充折扣</th>
+                    <th>渠道续充折扣</th>
+                    <th>添加时间</th>
+                    <th>添加人员</th>
+                    <th>渠道首充状态</th>
+                    <th>渠道续充状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <empty name="data_lists">
+                        <tr><td colspan="9" style="text-align: center;">暂无数据</td></tr>
+                    <else/>
+                        <foreach name="data_lists" item="vo">
+                        <tr>
+                            <td><input type="checkbox" id="ids-checkbox{$vo.id}" class="table-item-checkbox js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
+                                       value="{$vo.id}" title="ID:{$vo.id}">
+                                <label for="ids-checkbox{$vo.id}" class=""></label></td>
+                            <td>{:$vo.promote_account}</td>
+                            <td>{$vo['game_name']}</td>
+                            <td>{$vo.game_discount}</td>
+                            <td>{$vo.game_continue_discount}</td>
+                            <td>{$vo['promote_discount_first']}</td>
+                            <td>{$vo['promote_discount_continued']}</td>
+                            <td>{$vo['create_time']|date="Y-m-d H:i:s",###}</td>
+                            <td>{:get_admin_name($vo['op_id'])}</td>
+                            <td>
+                                <a href="{:url('changeAgentStatus',['id'=>$vo['id'],name=>'promote_first_status','status'=>$vo['promote_first_status']])}" class="js-ajax-dialog-btn">
+                                    <span <if condition="$vo['promote_first_status'] eq 1"> class="label label-success"<else/>class="label label-danger"</if>>
+                                    {:get_info_status($vo['promote_first_status'],4)}
+                                    </span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{:url('changeAgentStatus',['id'=>$vo['id'],name=>'promote_continue_status','status'=>$vo['promote_continue_status']])}" class="js-ajax-dialog-btn">
+                                    <span <if condition="$vo['promote_continue_status'] eq 1"> class="label label-success"<else/>class="label label-danger"</if>>
+                                    {:get_info_status($vo['promote_continue_status'],4)}
+                                    </span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{:url('aedit',['id'=>$vo['id']])}">编辑</a>
+                                <a href="{:url('adel',['ids'=>$vo['id']])}" class="js-ajax-delete" data-msg="">删除</a>
+                            </td>
+                        </tr>
+                        </foreach>
+                    </empty>
+                </tbody>
+            </table>
+        </form>
+        <div class="pagination">
+            {$page}
+        </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script type="text/javascript">
+        $("#promote_id").selectpicker('val', $('#promote_id').attr('promote_id'));
+        $("#game_id").selectpicker('val', $('#game_id').attr('game_id'));
+        function agentadd() {
+          window.location.href = "{:url('aadd')}";
+        }
+        $('.js-ajax-delete').click(function() {
+            var html = `确定要删除吗？<p style="color:red;margin-top:10px" >${'删除后,相关折扣设置将失效,请慎重操作!'}</p>`
+            $(this).attr('data-msg', html)
+        })
+        $('.btn-danger').click(function() {
+            var html = `确定要删除吗？<p style="color:red;margin-top:10px" >${'删除后,相关折扣设置将失效,请慎重操作!'}</p>`
+            $(this).attr('data-msg', html)
+        })
+    </script>
+</body>
+</html>

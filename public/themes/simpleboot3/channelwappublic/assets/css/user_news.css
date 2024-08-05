@@ -1,0 +1,129 @@
+@charset "utf-8";
+
+
+footer{
+    display: none!important;
+}
+header .header-title {
+	color:#333;
+}
+.page-container{
+	background:#fff;
+    padding-bottom: 0;
+}
+.user-news-container{
+    width: 100%;
+    padding: 0 0 0 0.32rem;
+    box-sizing: border-box;
+
+}
+.user-news-list .news-item{
+    width: 100%;
+    height: 1.09333rem;
+   
+    box-sizing: border-box;
+}
+.user-news-list .news-item:last-child{
+    border: none;
+}
+.user-news-list .news-item .news-tag,.user-news-list .news-item .news-information{
+    width: 0.45rem;
+    height: 0.45rem;
+    background: url(../images/news/shouyi_news_ico_gonggao.png) no-repeat;
+    background-size: 100% 100%;
+    text-align: center;
+    line-height: 0.45333rem;
+    font-size: 0.266667rem;
+    color: #ffffff;
+}
+.user-news-list .news-item .news-information{
+   
+    background: url(../images/news/shouyi_news_ico_zixun.png) no-repeat;
+    background-size: 100% 100%;
+    
+}
+.news-right{
+	 position:relative;
+	 width:calc(100% - 0.55rem) ;
+	 border-bottom: 0.0267rem solid rgba(221,221,221,0.5);
+	 height: 1.093rem;
+     line-height: 1.093rem;
+	 margin-left:0.1rem;
+    box-sizing: border-box;
+}
+.user-news-list .news-item:last-child .news-right{
+    border-bottom: none;
+}
+.user-news-list .news-item .news-title{
+	display: block;
+    width: 8rem;
+    font-size: 0.4rem;
+    color: #333333;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-left: 0.16rem;
+	
+}
+.news-jump{
+	
+	position:absolute;
+	right: 0.2rem;
+	top: 0;
+}
+.news-jump img{
+	width: 0.2rem;
+	
+}
+.user-news-list .news-item .news-date{
+    margin-left: auto;
+    color: #999999;
+    font-size: 0.26667rem;
+    font-weight: 500;
+}
+.no-data{
+    padding-top: 4rem;
+    text-align: center;
+    width: 100%;
+    font-size: 0.4rem;
+    color: #999999;
+}
+
+
+.news-detail-container{
+    width: 100%;
+    padding:0.24rem 0.32rem 1rem;
+    box-sizing: border-box;
+}
+.news-detail-container .detail-title{
+    width: 100%;
+    font-size: 0.4rem;
+    color: #333;
+    font-weight: bold;
+    text-align: left;
+    word-break: break-word;
+}
+.news-detail-container .detail-date{
+    width: 100%;
+    text-align: center;
+    line-height: 1.1;
+    color: #999999;
+    font-size: 0.32rem;
+	margin-top: 0.42rem;
+}
+.news-detail-content{
+    padding: 0.24rem 0;
+    width: 100%;
+    box-sizing: border-box;
+    word-break: break-word;
+}
+.news-detail-content .news-detail-img,.news-detail-content img{
+    width: 100%;
+    display: block;
+    margin: 0.12rem auto;
+}
+.news-detail-content p{
+    font-size: 0.34rem;
+    color: #666666;
+    line-height: 0.667rem;
+}

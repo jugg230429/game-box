@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <include file="public@head"/>
+    <link href="__TMPL__/public/assets/css/promote/mychlid.css" rel="stylesheet" />
+    <link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+    <style>
+        #edui149_body {
+            width: 668px!important;
+            height: 455px!important;
+        }
+        .edui-default .edui-dialog-titlebar {
+            width: 668px!important;
+        }
+        .edui-default .edui-dialog-buttons {
+            right: 16px!important;
+            bottom: 5px!important;
+        }
+        .edui-default .edui-dialog-buttons .edui-label {
+            padding-left: 33px!important;
+        }
+    </style>
+</head>
+<body>
+<include file="public@nav"/>
+<include file="public@header"/>
+<div class="trunk">
+    <div class="trunk-con">
+        <div class="right-container">
+            <div class="normal-list">
+                <div class="trunk">
+                    <div class="trunk-title">
+                        <div class="location ">
+                            <div class="location-container fr">当前位置：<span class="location-container-text">推广联盟&gt;</span>
+                                <span class="location-container-text">文档管理>&gt;</span><span class="location-container-text">编辑文档</span></div>
+                        </div>
+                        <img src="__TMPL__/public/assets/images/promote/icon_normal_ziqudao.png" class="fl trunk-icon">
+                        <span class="title-main fl ">编辑文档</span>
+                    </div>
+
+                    <div class="clear"></div>
+                    <ol class="tabpan">
+                        <li class="tabpan-con tabpan-show">
+                            <form id="form1">
+                                <input type="hidden" name="id" value="{$info['id']}" />
+                                <div class="tabpan-con-con">
+                                    <label class="fl label-name"><span class="req">*</span>文档标题：</label>
+                                    <input type="text" class="tabpan-input" style="width:792px" name="title" id="title" maxlength="30" value="{$info['title']|default=''}" placeholder="请输入文档标题">
+                                </div>
+
+                                <div class="tabpan-con-con">
+                                    <label class="fl label-name"><span class="req">*</span>文档内容：</label>
+                                    <script type="text/plain" id="content" name="content">{:htmlspecialchars_decode($info['content'])}</script>
+                                </div>
+                                <div class="clear"></div>
+                                <div class="tabpan-con-con">
+                                    <input type="button" style="margin-left:139px" class="button jssub" value="确认" title="" target-form="paw_er_info">
+                                    <a class="back-btn " alt="返回上一页" title="返回上一页" href="javascript:window.history.back();">返回</a>
+                                </div>
+                            </form>
+                        </li>
+
+                    </ol>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<include file="public@scripts"/>
+<script type="text/javascript">
+    //全局变量
+    var GV = {
+        ROOT: "__ROOT__/",
+        WEB_ROOT: "__WEB_ROOT__/",
+        JS_ROOT: "static/js/",
+        APP: '{$Request.module}'/*当前应用名*/
+    };
+    var editorURL = GV.WEB_ROOT;
+</script>
+<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script type="text/javascript" src="__STATIC__/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="__STATIC__/js/ueditor/ueditor.all.min.js"></script>
+
+<script>
+
+
+    $(function () {
+
+        editorcontent = new baidu.editor.ui.Editor({initialFrameHeight:200});
+        editorcontent.render('content');
+        try {
+            editorcontent.sync();
+        } catch (err) {
+        }
+
+    });
+
+
+
+
+    $(".js-select-gallery").select2();
+
+    $(function() {
+        $(".js-select-gallery").select2();
+        $('.jssub').click(function(){
+            that = $(this);
+            data = $("#form1").serialize()
+            $.ajax({
+                url:"{:url('articleEdit')}",
+                type:'post',
+                data:data,
+                success:function(res){
+                    if(res.code==1){
+                        layer.msg(res.msg,{time:1000},function(){
+                            location.href= "{:url('article')}";
+                        })
+                    }else{
+                        layer.msg(res.msg,{time:1500})
+                    }
+                },error:function(){
+                    layer.msg('服务器错误，请稍后再试');
+                }
+            })
+        });
+    })
+</script>
+</body>
+
+</html>

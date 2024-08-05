@@ -1,0 +1,385 @@
+<include file="public@header"/>
+<link href="__TMPL__/public/assets/simpleboot3/css/game.css" rel="stylesheet">
+<script src="__STATIC__/js/ajaxForm.js"></script>
+</head>
+<body>
+<style>
+    .copy {
+        position: absolute;
+        right: 50px;
+        top: 11px;
+        text-decoration: underline;
+        font-size: 12px;
+        color: #659be1;
+        cursor: pointer;
+    }
+    .layui-layer-demo .layui-layer-content {
+         position: static;
+     }
+    .layui-layer-demo .layui-layer-content td {
+          height: 42px;
+          padding-left: 20px;
+      }
+    .layui-layer-demo .layui-layer-title {
+        background: #F0F5F7;
+        font-weight: bold;
+    }
+    .layui-layer{
+        border: none;
+    }
+</style>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <if condition="is_buy_h5_issue()">
+            <li class="active"><a href="{:url('Game/lists',['type'=>1])}">H5</a></li>
+        </if>
+        <if condition="is_buy_sy_issue()">
+            <li><a href="{:url('Game/lists',['type'=>2])}">手游</a></li>
+        </if>
+        <if condition="is_buy_yy_issue()">
+            <li><a href="{:url('Game/lists',['type'=>3])}">页游</a></li>
+        </if>
+        <span class="title_remark">说明：显示分发平台可对接的全部游戏，通过对接的自运营游戏为联运游戏，可进行cps渠道推广。</span>
+    </ul>
+    <form id="search_form" class="well form-inline  fr" method="get" action="{:url('lists')}">
+        <input type="text" class="form-control notempty" name="id" style="width: 120px;" value="{:input('request.id/d','')}" placeholder="游戏ID">
+        <php>
+            $sdk_version_arr = [1=>'(安卓版)',2=>'(苹果版)','3'=>''];
+            $map['sdk_version'] = 3;
+        </php>
+        <select name="game_name" id="game_name"  class="selectpicker" data-live-search="true"  data-size="8" style="width: 120px;">
+            <option value="">游戏名称</option>
+            <volist name=":get_issue_game_entity($map,'id,game_name,sdk_version',0)" id="vo">
+                <option value="{$vo.game_name}" <if condition="input('request.game_name') eq $vo['game_name']">selected</if>>{$vo.game_name}{$sdk_version_arr[$vo['sdk_version']]}</option>
+            </volist>
+        </select>
+
+        <select name="game_type_id" id="game_type_id" data-size="7" class="selectpicker" type="{:input('request.game_type_id')}" style="width: 120px;">
+            <option value="">游戏类型</option>
+            <volist name=":get_game_type_all()" id="vo">
+                <option value="{$vo.id}"<eq name=":input('game_type_id')" value="$vo.id">selected</eq>>{$vo.type_name}</option>
+            </volist>
+        </select>
+
+        <select name="status" id="status" data-size="7" class="selectpicker" type="{:input('request.status')}" style="width: 120px;">
+            <option value="">显示状态</option>
+            <option value="1" <?php if(input('status')==='1') echo 'selected'; ?>>显示</option>
+            <option value="0" <?php if(input('status')==='0') echo 'selected'; ?>>关闭</option>
+        </select>
+
+        <input type="text" class="form-control js-bootstrap-date" name="start_time" id="start_time" placeholder="上架开始时间"
+               value="{:input('request.start_time/s','')}" style="width: 120px;" autocomplete="off">-
+        <input type="text" class="form-control js-bootstrap-date" name="end_time" id="end_time" placeholder="上架结束时间"
+               value="{:input('request.end_time/s','')}" style="width: 120px;" autocomplete="off">
+
+        <input type="submit" class="btn btn-primary" id="search_btn" value="搜索"/>
+        <a class="btn btn-clear" href="{:url('lists')}">清空</a>
+    </form>
+    <form class="js-ajax-form" action="" method="post">
+        <div class="table-actions position" style="margin-left: -10px;">
+            <a class="btn btn-success  mtb17 ajax-view">一键导入</a>
+        </div>
+        <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>游戏名称</th>
+            <th>游戏类型</th>
+            <th>上架时间</th>
+            <th>游戏APPID</th>
+            <th>状态</th>
+            <th>分发分成比例(%)</th>
+            <th>CP分成比例(%)</th>
+            <th>累计充值</th>
+            <th>累计注册</th>
+            <th>排序</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <empty name="data_lists">
+            <tr>
+                <td colspan="100" style="text-align: center;">暂无数据</td>
+            </tr>
+            <else/>
+            <foreach name="data_lists" item="vo">
+                <tr>
+                    <td>{$vo['id']}</td>
+                    <td>{$vo['game_name']}</td>
+                    <td>{$vo['game_type_name']}</td>
+                    <td>{$vo['create_time']|date="Y-m-d H:i:s",###}</td>
+                    <td>{$vo['game_appid']}</td>
+                    <td>{$vo['status']=='1'?'显示':'<font color="red">关闭</font>'}</td>
+                    <td>
+                        <a href="javascript:;" class="editTab underline" data-title="分发分成比例(%)" data-field="ff_ratio"
+                           data-id="{$vo['id']}">{$vo['ff_ratio']}</a>
+                    </td>
+                    <td>
+                        <a href="javascript:;" class="editTab underline" data-title="CP分成比例(%)" data-field="cp_ratio"
+                           data-id="{$vo['id']}">{$vo['cp_ratio']}</a>
+                    </td>
+                    <td>{$vo['total_pay']}</td>
+                    <td>{$vo['total_reg']}</td>
+                    <td>
+                        <a href="javascript:;" class="editTab underline" data-title="排序" data-field="sort"
+                           data-id="{$vo['id']}">{$vo['sort']}</a>
+                    </td>
+                    <td class="js_list-data list-data">
+                        <a  href="{:url('issueh5/AdminGame/edit',['id'=>$vo['id']])}">编辑</a>
+                        <a href="{:url('issueh5/AdminGame/delete',['ids'=>$vo['id']])}" class="js-ajax-dialog-btn" data-msg="删除后游戏不可被用户申请推广，已推广的游戏链接失效，请谨慎操作！">删除</a>
+                        <if condition="$vo['status'] eq 1">
+                            <a href="{:url('issueh5/AdminGame/changeStatus',['ids'=>$vo['id'],'status'=>0])}" class="js-ajax-dialog-btn">关闭</a>
+                        <else/>
+                            <a href="{:url('issueh5/AdminGame/changeStatus',['ids'=>$vo['id'],'status'=>1])}" class="js-ajax-dialog-btn">开启</a>
+                        </if>
+                    </td>
+                </tr>
+            </foreach>
+        </empty>
+        </tbody>
+    </table>
+    </form>
+    <div class="pagination">{$page}</div>
+</div>
+<div class="pro_promot" style="display:none">
+    <form action="{:url('issueh5/AdminGame/add')}" id="ajaxForm" method="post" />
+    <div class="pro_promot_main">
+        <div class="pro_promot_title">
+            <div class="fl pro_promot_title_text">
+                <div class="fl pro_promot_title_bigtext">一键导入游戏</div></div>
+            <div class="pro_promot_close fr" style="display: none;"><img src="__TMPL__/public/assets/images/pro_promot_close.png"></div>
+        </div>
+        <div class="pro_promot_con">
+          
+            <div class="clear"></div>
+             <div class="pro_promot_account">
+                <div class="pro_promot_select_title fl">按字母：</div>
+                <span class="pro_game_name fl"><a class="pro_game_name_link" data-value="A">ABCD</a></span>
+				<span class="pro_game_name fl"><a class="pro_game_name_link" data-value="E">EFGH</a></span>
+				<span class="pro_game_name fl"><a class="pro_game_name_link" data-value="I">IJKL</a></span>
+				<span class="pro_game_name fl"><a class="pro_game_name_link" data-value="M">MNOP</a></span>
+				<span class="pro_game_name fl"><a class="pro_game_name_link" data-value="Q">QRST</a></span>
+				<span class="pro_game_name fl"><a class="pro_game_name_link" data-value="U">UVWX</a></span>
+				<span class="pro_game_name fl"><a class="pro_game_name_link" data-value="Y">YZ</a></span>
+				
+				
+            </div>
+			<div class="clear"></div>
+            <div class="pro_promot_game">
+			    <div class=" jsgamecheckallbox allcheck">
+			        <input type="checkbox"  class="fl pro_promot_game_check jsgamecheckall" id="gameCheckall">
+				    <label for="gameCheckall" class="fl"></label>
+				    <span class="fl pro_promot_game_name omission">全部</span>
+			     </div>
+                <ul id="promote_list" class="z_clearfix game_list">
+                </ul>
+            </div>
+            <div class="clear"></div>
+            <div class="pro_promot_btn">
+                <div class="fr pro_promot_btn_confirm">确定</div>
+                <div class="fl pro_promot_btn_cancel">取消</div>
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script src="__STATIC__/js/clipboard.min.js"></script>
+<script type="text/javascript">
+
+    game_id = $("#game_id").attr('game_id');
+    game_name = $("#game_name").attr('game_name');
+    $("#game_id").selectpicker('val', game_id);
+    $("#game_name").selectpicker('val', game_name);
+    $("#sdk_version").selectpicker('val', $('#sdk_version').attr('sdk_version'));
+    $("#recommend_status").selectpicker('val', $('#recommend_status').attr('recommend_status'));
+    $("#game_status").selectpicker('val', $('#game_status').attr('game_status'));
+    $("#type").selectpicker('val', $('#type').attr('type'));
+    $(function () {
+        $(".ajax-view").click(function(){
+            //获取游戏列表
+            var url = "{:url('issueh5/AdminGame/xt_lists')}";
+            var id = $(this).attr('data-id');
+            $.post(url,{id:id},function(res){
+                if(res.code==200){
+                    var data = res.data;
+                    console.log(data);
+                    pids = '';
+                    var lis = [];
+                    $.each(data,function(index,ele){
+                        lis.push('<li class="fl pro_promot_game_con" data-short="'+ele.short+'" data-initial="'+ele.initial+'">');
+                        if(pids==''){
+                            lis.push('<input type="checkbox" data-check="0" value="'+ele.game_id+'" name="game_ids[]" class="fl pro_promot_game_check jsgameid" id="gameCheck'+index+'" />');
+                        }else{
+                            if($.inArray(ele.id.toString(), pids)!=-1){
+                                lis.push('<input type="checkbox" value="'+ele.id+'" name="game_ids[]" class="fl pro_promot_game_check jsgameid" checked="checked" id="gameCheck'+index+'" />');
+                            }else{
+                                lis.push('<input type="checkbox" value="'+ele.id+'" name="game_ids[]" class="fl pro_promot_game_check jsgameid" id="gameCheck'+index+'" />');
+                            }
+                        }
+                        lis.push('<label for="gameCheck'+index+'" class="fl"></label>');
+                        lis.push('<span class="fl pro_promot_game_name omission" title="'+ele.game_name+'">'+ele.game_name+'</span>');
+                        lis.push('</li>');
+                    });
+
+                    $("#promote_list").html(lis.join(''));
+                    $(".pro_promot").css("display","block");
+                    jsgameid();
+
+                }else{
+                    layer.msg('请求失败');
+                }
+            });
+        });
+
+        //保存修改
+        $(".pro_promot_btn_confirm").click(function(){
+            $("#ajaxForm").ajaxSubmit(function(res){
+                layer.msg(res.msg,{time:500},function () {
+                    top.location.reload();
+                });
+            });
+            return false;
+        });
+
+        //关闭弹窗
+        $(".pro_promot_close").click(function(){
+            $(".pro_promot").css("display","none");
+        });
+        //取消修改
+        $(".pro_promot_btn_cancel").click(function(){
+            $(".pro_promot").css("display","none");
+            /*layer.msg('修改已取消');*/
+        });
+
+        $(".jsgamecheckall").click(function(){
+            $(this).closest('.jsgamecheckallbox').siblings(".game_list").find(".jsgameid").prop("checked", this.checked);
+        });
+
+        //设置字段数值
+        $(".editTab").click(function(){
+            var that = $(this);
+            var title = that.attr("data-title");
+            var field = that.attr('data-field');
+            var id = that.attr('data-id');
+            var num = that.text();
+            layer.prompt({
+                formType:0,
+                title:title,
+                value:num,
+                success:function (layero, index) {
+                    layero.find('input').attr('placeholder','');
+                }
+            }, function(value,index) {
+
+                if(field!='sort'){
+                    if (!/^(((\d|[1-9]\d)(\.\d{1,2})?)|100|100.0|100.00)$/.test(value)) {
+                        layer.msg('输入错误，0-100之间的两位小数',{time:2000});
+                        return false;
+                    }
+                }
+                $.ajax({
+                    async: false,
+                    url:"{:url('issueh5/AdminGame/changeField')}",
+                    type:"POST",
+                    dataType:'JSON',
+                    data: {id:id,field:field,value:value},
+                    success:function(result){
+                        layer.msg(result.msg,{time:1000},function(){
+                            !result.code || location.reload();
+                        });
+                    },
+                    error:function(){
+                        layer.msg('服务器异常',{time:2000});
+                    }
+                })
+            });
+        })
+
+
+        $(".pro_game_name_link").click(function () {
+            var chooseValue = $(this).attr('data-value');
+			$(".pro_game_name_link").removeClass("pro_game_name_link_active");
+			$(this).addClass("pro_game_name_link_active");
+            $(".pro_promot_game_con").hide();
+            switch (chooseValue) {
+                case 'A':
+                    $("li[data-initial='" + 'A' + "']").show();
+                    $("li[data-initial='" + 'B' + "']").show();
+                    $("li[data-initial='" + 'C' + "']").show();
+                    $("li[data-initial='" + 'D' + "']").show();
+                    break;
+                case 'E':
+                    $("li[data-initial='" + 'E' + "']").show();
+                    $("li[data-initial='" + 'F' + "']").show();
+                    $("li[data-initial='" + 'G' + "']").show();
+                    $("li[data-initial='" + 'H' + "']").show();
+                    break;
+                case 'I':
+                    $("li[data-initial='" + 'I' + "']").show();
+                    $("li[data-initial='" + 'J' + "']").show();
+                    $("li[data-initial='" + 'K' + "']").show();
+                    $("li[data-initial='" + 'L' + "']").show();
+                    break;
+                case 'M':
+                    $("li[data-initial='" + 'M' + "']").show();
+                    $("li[data-initial='" + 'N' + "']").show();
+                    $("li[data-initial='" + 'O' + "']").show();
+                    $("li[data-initial='" + 'P' + "']").show();
+                    break;
+                case 'Q':
+                    $("li[data-initial='" + 'Q' + "']").show();
+                    $("li[data-initial='" + 'R' + "']").show();
+                    $("li[data-initial='" + 'S' + "']").show();
+                    $("li[data-initial='" + 'T' + "']").show();
+                    break;
+                case 'U':
+                    $("li[data-initial='" + 'U' + "']").show();
+                    $("li[data-initial='" + 'V' + "']").show();
+                    $("li[data-initial='" + 'W' + "']").show();
+                    $("li[data-initial='" + 'X' + "']").show();
+                    break;
+                case 'Y':
+                    $("li[data-initial='" + 'Y' + "']").show();
+                    $("li[data-initial='" + 'Z' + "']").show();
+                    break;
+            }
+        });
+
+        $(".all-game").click(function () {
+            $(".pro_promot_game_con").show();
+        });
+
+
+    });
+    //不可申请渠道 全选及全选反选 功能  @author  zwm  date 20180604
+    function jsgameid(){
+        $(".jsgameid").click(function(){
+            var option = $(this).closest('ul').find(".jsgameid"),
+                checkall = $(this).closest('ul').siblings('.jsgamecheckallbox').find('.jsgamecheckall');
+            option.each(function(i){
+                if(!this.checked){
+                    checkall.prop("checked", false);
+                    return false;
+                }else{
+                    checkall.prop("checked", true);
+                }
+            });
+        });
+    }
+    function copy(option,txt){
+        var clipboard = new Clipboard(option,{
+            text: function() {
+                return txt;
+            }
+        });
+        clipboard.on('success', function(e) {
+            layer.msg("复制成功");
+            e.clearSelection();
+            clipboard.destroy();
+        });
+    }
+</script>
+</body>
+</html>

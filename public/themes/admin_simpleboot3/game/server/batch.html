@@ -1,0 +1,146 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <div class="nav-tabs mb20">
+        <span class="pb10">添加区服</span>
+    </div>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('batch')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">添加方式：</label>
+                            <div class="col-md-6 col-sm-9">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="type" checked="checked"> 单个添加
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="2" name="type"> Excel导入
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="3" name="type" > 批量导入
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group model1">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>游戏名称：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <select name="game_id" id="game_id" class="selectpicker form-control" data-live-search="true" >
+                                    <option value="">选择游戏</option>
+                                    <volist name=":get_game_list('id,game_name,sdk_version')" id="vo">
+                                        <option value="{$vo.id}" >{$vo.game_name}<eq name="vo.sdk_version" value="3">（H5）</eq></option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group model1">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>区服名称：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input  name="server_name" class="form-control"  >
+                            </div>
+                        </div>
+                        <div class="form-group model1">
+                            <label for="input-site_icp" class="col-sm-2 control-label">显示状态：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="status"> 关闭
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="status" checked="checked"> 开启
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group model1">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>开服时间：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control js-bootstrap-datetime" name="start_time" id="start_time"  autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-group model1">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">区服描述：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <textarea maxlength="300" name="desride" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group model1">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>对接区服ID：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input  name="server_num" class="form-control"  >
+                            </div>
+                            <span class="help-block">需保证填写ID与CP传递的区服ID对应，填写错误将影响扶持数据等</span>
+                        </div>
+                        <div class="form-group model2" hidden>
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                Excel模板：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <a href="/upload/excel/server_game.xls" target="_blank">下载模板</a>
+                            </div>
+                        </div>
+                        <div class="form-group model2" hidden>
+                            <label for="input-site_icp" class="col-sm-2 control-label"><span class="form-required">*</span>导入模板：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="file" name="server_list" value="file"  >
+                            </div>
+                        </div>
+                        <div class="form-group model3" hidden>
+                            <label for="input-site-name" class="col-sm-2 control-label">导入：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <textarea name="content" class="form-control" placeholder="game_id=1,server_name=初出茅庐,time=2017-01-04 15:00:00,server_num=1 ;" style="resize:none;width:435px;height:332px;"  ></textarea>
+                            </div>
+							<div class="clear"></div>
+                            <div style="color: #999;margin:1% 0 0 14%;font-size: 12px;" >按模板样式添加，一行一个，最多可同时添加100行，用“;”隔开。<br>
+                                game_id（游戏id）,server_name（区服名称）,time（开服时间）,server_num（对接区服ID）
+							</div>
+                        </div>
+						
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                                <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script>
+    $(function () {
+        $('input:radio[name="type"]').change( function() {
+            var radio = $('input:radio[name="type"]:checked').val();
+            if(radio == 1){
+                $('.model1').attr('hidden',false);
+                $('.model2').attr('hidden',true);
+                $('.model3').attr('hidden',true);
+            }else if(radio == 2){
+                $('.model1').attr('hidden',true);
+                $('.model2').attr('hidden',false);
+                $('.model3').attr('hidden',true);
+            }else{
+                $('.model1').attr('hidden',true);
+                $('.model2').attr('hidden',true);
+                $('.model3').attr('hidden',false);
+            }
+        })
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+<include file="public@header" />
+<link href="__TMPL__/public/assets/simpleboot3/css/pro_promote.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li><a href="{:url('promote/prepayment_record')}">充值记录</a></li>
+            <li><a href="{:url('promote/sendPrepaymentRecord')}">发放记录</a></li>
+            <li class="active"><a href="{:url('promote/prepayment_deduct_record')}">扣除记录</a></li>
+        </ul>
+        <form id="search_form" class="well form-inline fr" method="get" action="{:url('prepayment_deduct_record')}" onsubmit="return check();">
+            <input type="text" class="form-control" name="pay_order_number" style="width: 120px;" value="{:input('pay_order_number/s','')}" placeholder="订单号" autocomplete="off">
+
+            <!-- <select name="promote_id" id="promote_id" class="selectpicker bs-select-hidden" promote_id="{:input('request.promote_id')}" data-size="8" data-live-search="true" style="width: 100px;">
+                <option value="">渠道ID</option>
+                <volist name=":get_promote_list()" id="vo">
+                    <option game-id="{$vo.id}" value="{$vo.id}" >{$vo.id}</option>
+                </volist>
+            </select> -->
+            <select name="account" id="account" class="selectpicker bs-select-hidden" account="{:input('request.account')}" data-live-search="true" data-size="8" style="width: 100px;">
+                <option value="">渠道账号</option>
+                <php>
+                    $map = [];
+                    $map['promote_level'] = '1';
+                </php>
+                <volist name=":get_promote_list($map)" id="vo">
+                    <option value="{$vo.account}" >{$vo.account}</option>
+                </volist>
+            </select>
+            <!-- <php>$pmap['parent_id'] = 0</php>
+            <select name="parent_id" id="parent_id" class="selectpicker bs-select-hidden" parent_id="{:input('request.parent_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+                <option value="">上线渠道</option>
+                <volist name=":get_promote_list($pmap)" id="vo">
+                    <option value="{$vo.id}" >{$vo.account}</option>
+                </volist>
+            </select> -->
+            
+            <!-- <select id="pay_way" name="pay_way" class="selectpicker">
+                <option value="" data="0">支付方式选择</option>
+                <option value="3" <if condition="input('pay_way') eq 3"> selected </if> >支付宝</option>
+                <option value="4" <if condition="input('pay_way') eq 4"> selected </if> >微信</option>
+            </select> -->
+
+            <input type="text" class="form-control js-bootstrap-date" name="start_time" id="start_time" placeholder="开始时间"
+               value="{:input('request.start_time/s','')}" style="width: 120px;" autocomplete="off"> <span style="position: relative;top: 10px;">-</span>
+            <input type="text" class="form-control js-bootstrap-date" name="end_time" id="end_time" placeholder="结束时间"
+               value="{:input('request.end_time/s','')}" style="width: 120px;" autocomplete="off">
+
+
+            <input type="submit" class="btn btn-search" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('prepayment_deduct_record')}">清空</a>
+            <!-- <a class="btn btn-export" href="{:url('Export/expUser',array_merge(['id'=>1,'xlsname'=>'渠道列表'],input()))}">导出</a> -->
+        </form>
+        <form class="js-ajax-form" action="" method="post">
+        
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>订单号</th>
+                        <th>账号</th>
+                        <th>时间</th>
+                        <th>扣款金额</th>
+                        <th>扣除前余额</th>
+                        <th>扣除后余额</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <empty name="data_lists">
+                        <tr><td colspan="18" style="text-align: center;">暂无数据</td></tr>
+                    <else/>
+                        <foreach name="data_lists" item="vo">
+                        <tr>
+                            <td>{$vo['pay_order_number']}</td>
+                            <td>{$vo['promote_account']}</td>
+                            <td>{:date('Y-m-d H:i:s',$vo['create_time'])}</td>
+                            <td>{:null_to_0($vo['deduct_amount'])}</td>
+                            <td>{:null_to_0($vo['old_amount'])}</td>
+                            <td>{:null_to_0($vo['new_amount'])}</td>
+                        </tr>
+                        </foreach>
+                        <tr style="background: #E4E4E4;">
+                            <td>累计汇总</td>
+                            <td></td>
+                            <td></td>
+                            <td><strong style="color: rgba(255, 177, 112);">{:null_to_0($total_amount)}</strong></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </empty>
+                </tbody>
+            </table>
+        </form>
+        <div class="pagination">
+            {$page}
+
+        </div>
+    </div>
+    <div class="pro_promot" style="display:none">
+        <form action="{:url('Promote/savePromoteGame')}" id="ajaxForm" method="post" />
+        <input type="hidden" name="promote_id" id="se_promote_id" value="" />
+        <div class="pro_promot_main">
+            <div class="pro_promot_title">
+                <div class="fl pro_promot_title_text">
+                    <div class="fl pro_promot_title_bigtext">不可推广游戏</div>（选中的游戏将不在推广后台展示，渠道不可进行游戏申请并推广；二三级渠道推广权限同一级）</div>
+                <div class="pro_promot_close fr" style="display: none;"><img src="__TMPL__/public/assets/images/pro_promot_close.png"></div>
+            </div>
+            <div class="pro_promot_con">
+                <div class="pro_promot_account"><div class="pro_promot_select_title fl">渠道账号：</div><span class="pro_promot_number fl"></span></div>
+				<div class="clear"></div>
+
+                    <div class="pro_promot_select_title pro_promot_mt20 fl">选择游戏：</div>
+
+
+                <div class="pro_promot_game fl">
+
+                    <ul id="game_list" class="z_clearfix game_list">
+
+                    </ul>
+                </div>
+                <div class="clear"></div>
+                <div class="pro_promot_btn">
+                    <div class="fr pro_promot_btn_confirm">确定</div>
+                    <div class="fl pro_promot_btn_cancel">取消</div>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script type="text/javascript">
+        promote_id = $("#promote_id").attr('promote_id');
+        account = $("#account").attr('account');
+        parent_id = $("#parent_id").attr('parent_id');
+        busier_id = $("#busier_id").attr('busier_id');
+        register_type = $("#register_type").attr('register_type');
+        $("#promote_id").selectpicker('val', promote_id);
+        $("#account").selectpicker('val', account);
+        $("#busier_id").selectpicker('val', busier_id);
+        $("#parent_id").selectpicker('val', parent_id);
+        $("#register_type").selectpicker('val', register_type);
+        $("#level").selectpicker('val', $('#level').attr('level'));
+        $("#status").selectpicker('val', $('#status').attr('status'));
+
+        function check() {
+            var start_time = $("#start_time").val();
+            var end_time = $("#end_time").val();
+            if (start_time != '' && end_time != '' && start_time > end_time) {
+                layer.msg('开始时间不能大于结束时间');
+                return false;
+            }
+            return true;
+        }
+        //打开弹窗
+
+        $(function () {
+            $(".ajax-view").click(function(){
+                //获取游戏列表
+                var url = "{:url('Promote/getPromoteGame')}";
+                var id = $(this).attr('data-id');
+                $.post(url,{id:id},function(res){
+                    if(res.code==1){
+
+                        $(".pro_promot_select_list a").eq(0).addClass('active');
+                        $(".pro_promot_select_list a").eq(0).siblings().removeClass('active');
+
+                        var game_list = res.data.game_list;
+                        var promote_info = res.data.promote_info;
+                        var lis = [];
+                        var pids = '';
+                        if(promote_info['game_ids']){
+                            pids = ','+promote_info['game_ids'].toString()+','; //字符分割
+                        }
+                        $.each(game_list,function(index,ele){
+                            if(ele.game_name.length>7){
+                                ele.game_name = ele.game_name .substring(0,7)+"..."
+                            }
+                            lis.push('<li class="fl pro_promot_game_con" data-short="'+ele.short+'">');
+
+                            if(promote_info['game_ids']==''){
+                                lis.push('<input type="checkbox" value="'+ele.id+'" name="game_ids[]" class="fl pro_promot_game_check jsgameid" id="gameCheck'+index+'" />');
+                            }else{
+
+                                if(pids.indexOf(','+ele.id+',')>-1){
+                                    lis.push('<input type="checkbox" value="'+ele.id+'" name="game_ids[]" class="fl pro_promot_game_check jsgameid" checked="checked" id="gameCheck'+index+'" />');
+                                }else{
+                                    lis.push('<input type="checkbox" value="'+ele.id+'" name="game_ids[]" class="fl pro_promot_game_check jsgameid" id="gameCheck'+index+'" />');
+                                }
+                            }
+                            lis.push('<label for="gameCheck'+index+'" class="fl"></label>');
+                            lis.push('<span class="fl pro_promot_game_name">'+ele.game_name+'</span>');
+                            lis.push('</li>');
+                        });
+
+                        $("#game_list").html(lis.join(''));
+                        $(".pro_promot_number").text(res.data.promote_info.account);
+                        $("#se_promote_id").val(res.data.promote_info.id);
+                        $(".pro_promot").css("display","block");
+
+                        jsgameid();
+
+                    }else{
+                        alert('请求失败');
+                    }
+                });
+            });
+
+            //保存修改
+            $(".pro_promot_btn_confirm").click(function(){
+                $("#ajaxForm").ajaxSubmit(function(res){
+                    layer.msg(res.msg);
+                    setTimeout(function () {
+                        top.location.reload();
+                    },1000);
+                    $(".pro_promot").hide();
+                });
+                return false;
+            });
+
+            //关闭弹窗
+            $(".pro_promot_close").click(function(){
+                $(".pro_promot").css("display","none");
+            });
+            //取消修改
+            $(".pro_promot_btn_cancel").click(function(){
+                $(".pro_promot").css("display","none");
+                //layer.msg('修改已取消');
+            });
+
+            $(".jsgamecheckall").click(function(){
+                $(this).closest('.jsgamecheckallbox').siblings("#game_list").find(".jsgameid").prop("checked", this.checked);
+            });
+        })
+
+        //可申请游戏 全选及全选反选 功能  @author  zwm  date 20180604
+        function jsgameid(){
+            $(".jsgameid").click(function(){
+                var option = $(this).closest('ul').find(".jsgameid"),
+                    checkall = $(this).closest('ul').siblings('.jsgamecheckallbox').find('.jsgamecheckall');
+                option.each(function(i){
+                    if(!this.checked){
+                        checkall.prop("checked", false);
+                        return false;
+                    }else{
+                        checkall.prop("checked", true);
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+</html>

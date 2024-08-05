@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+		<include file="public@head"/>
+	</head>
+
+	<body>
+		<include file="public@nav"/>
+		<include file="public@header"/>
+		<div class="trunk">
+			<div class="trunk-con">
+				<div class="right-container">
+					<div class="normal-list">
+						<div class="trunk">
+							<div class="trunk-title">
+								<div class="location ">
+									<div class="location-container fr">当前位置：<span class="location-container-text">游戏管理&gt;</span><span class="location-container-text">游戏盒子</span></div>
+								</div>
+								<img src="__TMPL__/public/assets/images/icon_normal_game.png" class="fl trunk-icon">
+								<span class="title-main fl ">游戏盒子</span>
+								<span class="tagging">说明：IOS选择自定义打包方式，改签时需修改包名，防止出现安装覆盖问题。</span>
+							</div>
+							<div class="tabpan">
+								<div class="tabpan-con tabpan-show">
+									<div class="clear"></div>
+									<div class="minh-table">
+										<table class="table normal-table" id="promotecoin_table">
+											<tbody>
+												<tr>
+													<th>APP名称</th>
+													<th>运营平台</th>
+													<th>APP大小</th>
+													<th>申请</th>
+													<th>打包方式</th>
+													<th>操作 </th>
+												</tr>
+												<notempty name="data_lists">
+													<volist name="data_lists" id="vo">
+													<tr>
+														<if condition="$vo['app_new_name']">
+															<td>{$vo['app_new_name']}</td>
+														<else/>
+															<notempty name="union_set['app_name_ico']">
+																<td>{$union_set['app_name_ico']}</td>
+															<else/>
+																<if condition="cmf_get_option('app_set')['app_name']">
+																	<td>{:cmf_get_option('app_set')['app_name']}</td>
+																<else/>
+																	<td>游戏盒子</td>
+																</if>
+															</notempty>
+														</if>
+														<td>{:get_info_status($vo['version'],5)}</td>
+														<td>{$vo.file_size|default='--'}</td>
+														<td>
+															<empty name="vo.file_url">
+																--
+															<else/>
+																<if condition="$vo['apply_id'] gt 0">
+																	<eq name="vo.status" value="0"><span style="color: rgb(255,178,43)">审核中</span></eq>
+																	<eq name="vo.status" value="1"><span>已通过</span></eq>
+																<else/>
+																	<a href="javascript:;" class="applybtn " data-id="{$vo['id']}"  style="color: rgb(38,199,219)">申请</a>
+																</if>
+															</empty>
+														</td>
+														<td>
+
+															<if condition="$vo['apply_id']">
+																<if condition="$vo['is_user_define'] eq '1'">
+																	自定义
+																<else/>
+																	官方
+																</if>
+															<else/>
+																--
+															</if>
+														</td>
+														<td>
+															<if condition="$vo['enable_status'] eq 1 and $vo['status'] eq 1">
+																<a href="javascript:;" class="copy-data light" data-clipboard-text="{:url('mobile/downfile/download_app',['promote_id'=>PID],'',true)}">复制链接</a>
+																<a href="{:url('mobile/downfile/downapp',['device'=>$vo['version'],'promote_id'=>PID])}" class="light">下载</a>
+																<p class="erwei" style="display:inline;">
+																	<php>$url = url('mobile/downfile/download_app',['promote_id'=>PID],'',true);</php>
+																	<a data-url="{$url}" class="erwei-btn" style="color: rgb(38,199,219);">下载二维码</a>
+																</p>
+																<a target="_blank" href="{:url('mobile/downfile/download_app',['promote_id'=>PID],'',true)}" class="light">H5分享页面</a>
+															<elseif condition="$vo['enable_status'] neq 1 and $vo['status'] eq 1"/>
+																<a href="javascript:;" class="disabled" >复制链接</a>
+																<a href="javascript:;" class="disabled">下载</a>
+																<p style="display:inline;">
+																	<a class="disabled" onclick=" return false; ">下载二维码</a>
+																</p>
+																<a href="javascript:;" class="disabled">H5分享页面</a>
+															<else/>
+																--
+															</if>
+														</td>
+													</tr>
+													</volist>
+												<else/>
+													<!--暂无数据-->
+													<tr>
+														<td colspan="8">
+															<div class="no-data">
+																<img src="__TMPL__/public/assets/images/icon_wushujv2.png" alt="" class="no-data-img">
+																<p class="no-data-text">暂无数据</p>
+															</div>
+														</td>
+													</tr>
+												</notempty>
+											</tbody>
+										</table>
+									</div>
+									<div class="desccontent">
+										<div class="desccontent-title fl">温馨提示：</div>
+										<div class="fl">
+											1.在您传输渠道包时，请勿使用QQ等即时通讯工具，以免渠道号丢失。推荐使用邮箱传输或分享下载链接。<br />
+											2.游戏审核需要1个工作日，如需加速审核请联系商务》联系我们
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<div class="apply-container">
+							<div class="apply-box">
+								<div class="apply-title">打包方式</div>
+								<div class="apply-choose">
+										打包方式：
+									<label for="js-offical" class="publicOfficial label-choose">
+										<input type="radio" id="js-offical" name="is_user_define" value="0" class="radio-choose js-offical" checked>
+										<i class="label-choose-i current"></i>
+										<span>官方</span>
+									</label>
+									<label for="js-custom" class="label-choose">
+										<input type="radio" id="js-custom" name="is_user_define" value="1" class="radio-choose js-custom"  >
+										<i class="label-choose-i"></i>
+										<span>自定义</span>
+									</label>
+								</div>
+								<div class="showCustom">
+									<div class="apply-choose">
+										APP名称：
+										<input type="text" name="app_new_name" id="app_new_name" placeholder="您的APP专属名称" class="nickNameInput">
+									</div>
+									<div class="apply-choose">
+										APP图标：
+										<span class="pictureUploadBox newWidthBox">
+											<input id="app_new_icon" type="hidden" name="app_new_icon" value="" />
+											<img id="app_new_icon-preview" class="uploadPic" style="max-width: 60px;" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null" <if condition="$config['app_new_icon']">src="{:cmf_get_image_preview_url($config['app_new_icon'])}"</if>>
+											<a href="javascript:uploadOneImage('上传图片','#app_new_icon');" class="btn btn-sm btn-default btn-uploadify">上传图片</a>
+											<a class="btn-uploadify" href="javascript:(function(){$('#app_new_icon-preview').removeAttr('src');$('#app_new_icon').val('')})();">移除</a>
+											<span style="font-size: 2px;color: grey">(200px * 200px)</span>
+										</span>
+									</div>
+									<div class="apply-choose">
+										启动图(上)：
+										<span class="pictureUploadBox">
+											<input id="start_img1" type="hidden" name="start_img1" value="" />
+											<img id="start_img1-preview" class="uploadPic" style="max-width: 60px;" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null" <if condition="$config['start_img1']">src="{:cmf_get_image_preview_url($config['start_img1'])}"</if>>
+											<a href="javascript:uploadOneImage('上传图片','#start_img1');" class="btn btn-sm btn-default btn-uploadify">上传图片</a>
+											<a class="btn-uploadify" href="javascript:(function(){$('#start_img1-preview').removeAttr('src');$('#start_img1').val('')})();">移除</a>
+											<span style="font-size: 2px;color: grey">(890px * 825px)</span>
+										</span>
+									</div>
+									<div class="apply-choose">
+										启动图(下)：
+										<span class="pictureUploadBox">
+											<input id="start_img2" type="hidden" name="start_img2" value="" />
+											<img id="start_img2-preview" class="uploadPic" style="max-width: 60px;" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null" <if condition="$config['start_img2']">src="{:cmf_get_image_preview_url($config['start_img2'])}"</if>>
+											<a href="javascript:uploadOneImage('上传图片','#start_img2');" class="btn btn-sm btn-default btn-uploadify">上传图片</a>
+											<a class="btn-uploadify" href="javascript:(function(){$('#start_img2-preview').removeAttr('src');$('#start_img2').val('')})();">移除</a>
+											<span style="font-size: 2px;color: grey">(660px * 200px)</span>
+										</span>
+									</div>
+								</div>
+								<div class="bottomButtons">
+									<div class="cancelBtn">取消</div>
+									<div class="confirmBtn">确定</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<div id="code"></div>
+		<include file="public@scripts"/>
+		<script type="text/javascript">
+			//全局变量
+			var GV = {
+				ROOT: "__ROOT__/",
+				WEB_ROOT: "__WEB_ROOT__/",
+				JS_ROOT: "static/js/",
+				APP: '{$Request.module}'/*当前应用名*/
+			};
+		</script>
+		<script src="__STATIC__/js/wind.js"></script>
+		<script src="__TMPL__/public/assets/js/frontend.js"></script>
+		<script src="__TMPL__/public/assets/js/qrcode.min.js"></script>
+		<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+		<script src="__STATIC__/js/layer/layer.js"></script>
+		<script src="__TMPL__/public/assets/js/clipboard.min.js"></script>
+		<script>
+			var app_id = 0;
+
+			$(function() {
+                $(" .erwei-btn").click(function () {
+                    var url = $(this).attr('data-url');
+                    var qrcode = new QRCode(document.getElementById("code"), {
+                        width : 200,
+                        height : 200,
+                        colorDark : "#000000",
+                        colorLight : "#ffffff",
+                        correctLevel:0//容错级别
+                    });
+                    qrcode.makeCode(url);
+                    var canvas=$("#code").find('canvas').get(0);
+                    //如果有循环,此句必不可少 qrcode.find('canvas').remove();
+                    var data = canvas.toDataURL('image/jpg');
+                    saveFile(data,"二维码");
+                });
+                //复制下载链接
+
+                //设置剪切板数据
+                var clipboard = new Clipboard('.copy-data', {
+                    text: $(".copy-data").on("click",function (e) {
+                        //点击之后，再拿到当前点击的那一个存储的值
+                        let $target = $(e.target);
+                        return $target.data('clipboard-text');
+                    })
+                });
+
+                clipboard.on("success",function (e) {
+                    //layer.msg($(this).attr('data-platform')+"下载复制成功",{icon:1,time:1000});
+                    layer.msg("复制成功",{icon:1,time:1000});
+                })
+
+				$(".applybtn").click(function () {
+
+					app_id = $(this).data('id');
+
+					if (app_id == 1) {
+						$(".apply-container").show();
+
+						$(".confirmBtn").click(function () {
+							var is_user_define = $("input[name='is_user_define']:checked").val();
+							if (is_user_define == '0') {
+								post_apply(app_id);
+								return false;
+							}
+
+							var app_new_name = $("#app_new_name").val();
+							var app_new_icon = $("#app_new_icon").val();
+							var start_img1 = $("#start_img1").val();
+							var start_img2 = $("#start_img2").val();
+
+							if (app_new_name == '') {
+								layer.msg('请输入APP名称');
+								return false;
+							}
+							if (app_new_icon == '') {
+								layer.msg('请上传APP图标');
+								return false;
+							}
+							post_apply(app_id, is_user_define, app_new_name, app_new_icon, start_img1, start_img2);
+
+							return false;
+						});
+						return false;
+					}
+
+					if (app_id == 2) {
+						$(".apply-container").show();
+						$(".showCustom").hide();
+
+						$(".confirmBtn").click(function () {
+							var is_user_define = $("input[name='is_user_define']:checked").val();
+							if (is_user_define == '0') {
+								post_apply(app_id);
+								return false;
+							}
+							post_apply(app_id, is_user_define);
+
+							return false;
+						});
+						return false;
+					}
+
+					// post_apply(app_id);
+
+				})
+            })
+
+			//提交APP申请
+			function post_apply(app_id,is_user_define=0,app_new_name='',app_new_icon='',start_img1='',start_img2='') {
+				$.ajax({
+					type:'post',
+					url:'{:url("apply")}',
+					data:{app_id:app_id,is_user_define:is_user_define,app_new_name:app_new_name,app_new_icon:app_new_icon,start_img1:start_img1,start_img2:start_img2},
+					success:function(res){
+						if (res.code == 0) {
+							layer.msg(res.msg);
+							return false;
+						}
+						layer.msg(res.msg,{time:1000},function(){
+							location.href = location.href;
+						});
+					},error:function(){
+						layer.msg('服务器错误，请稍后再试');
+					}
+				});
+			}
+
+
+            function saveFile(data,filename){
+                var save_link=document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
+                save_link.href=data;
+                save_link.download=filename;
+                var event=document.createEvent('MouseEvents');
+                event.initMouseEvent('click',true,false,window,0,0,0,0,0,false,false,false,false,0,null);
+                save_link.dispatchEvent(event);
+			};
+
+			$('.js-offical').click(function() {
+				$(this).attr('checked','checked').next('i').addClass('current');
+				$("#js-custom").attr('checked',false).next('i').removeClass('current');
+				$(".showCustom").hide();
+			});
+			$('.js-custom').click(function() {
+				$(this).attr('checked','checked').next('i').addClass('current');
+				$("#js-offical").attr('checked',false).next('i').removeClass('current');
+				if(app_id == 1){
+					$(".showCustom").show();
+				}
+
+			});
+			$(".cancelBtn").click(function () {
+				$(".apply-container").hide();
+			});
+
+		</script>
+
+	</body>
+
+</html>

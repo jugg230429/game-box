@@ -1,0 +1,307 @@
+<include file="public@header" />
+</head>
+<style>
+    li {
+        list-style: none;
+    }
+    .checkDetailBox{
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(51, 51, 51, .3);
+        display: block;
+        z-index: 9;
+    }
+    .feedBackContainer{
+        width: 800px;
+        height: 470px;
+        background: #fff;
+        border-radius: 5px;
+        margin-left: 20%;
+        margin-top: 10%;
+    }
+    .titleTopDetail{
+        height: 50px;
+        background: #aaa;
+        padding: 16px 20px 16px 20px;
+        border-radius:5px 5px 0 0
+    }
+    .title-name{
+        font-size: 16px;
+        font-weight: bold;
+        color: #333333;
+    }
+    .bottomModal{
+        padding: 25px 20px 0 20px;
+    }
+    .descFirstText{
+        margin-bottom: 35px;
+    }
+    .blueText{
+        font-size: 14px;
+        font-weight: bold;
+        color: #006FC4;
+    }
+    .contentDesc {
+        font-size: 14px;
+        color: #333333;
+        line-height: 30px;
+    }
+    .commnetListDetailBox {
+        width: 100% ;
+        height: 170px;
+        background-color: #eee;
+        overflow: auto;
+        border-radius: 4px;
+        box-sizing: border-box;
+        padding: 10px;
+    }
+    .backCommentName {
+        color: #006FC4;
+        font-size: 14px;
+    }
+
+</style>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="javascript:;">评论列表</a></li>
+        </ul>
+        <form id="search_form" class="well form-inline  fr" method="get" action="{:url('lists')}" onsubmit="return check();">
+            <input type="text" class="form-control" name="user_account" style="width: 120px;" value="{:input('request.user_account/s','')}" placeholder="账号">
+            <select name="game_id" id="game_id" class="selectpicker " game_id="{:input('request.game_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+                <option value="">游戏名称</option>
+                <volist name=":get_game_list('id,game_name')" id="vo">
+                    <option game-id="{$vo.id}" value="{$vo.id}" >{$vo.game_name}</option>
+                </volist>
+            </select>
+            <select name="status" id="status" class="selectpicker" status="{:input('request.status')}" style="width: 120px;">
+                <option value="">状态</option>
+                <option value="0" <if condition="input('status') eq '0'">selected</if>>待审核</option>
+                <option value="1" <if condition="input('status') eq 1">selected</if>>正常</option>
+                <option value="2" <if condition="input('status') eq 2">selected</if>>隐藏</option>
+            </select>
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('lists')}">清空</a>
+        </form>
+        <form class="js-ajax-form" action="" method="post">
+            <div class="table-actions position" style="margin-left: -10px;">
+                <button class="btn btn-danger  js-ajax-submit mtb17" type="submit" data-action="{:url('changestatus',['status'=>1])}">
+                    审核
+                </button>
+                <button class="btn btn-danger  js-ajax-submit mtb17" type="submit" data-action="{:url('changestatus',['status'=>2])}">
+                    隐藏
+                </button>
+                <button class="btn btn-primary  js-ajax-submit mtb17" type="submit" data-action="{:url('changestatus',['status'=>1])}">
+                    显示
+                </button>
+                <button class="btn   js-ajax-submit mtb17 btn-audit" type="submit"
+                        data-action="{:url('set_config_auto_audit',['status'=>$autostatus])}" data-subcheck="false" data-msg="您确定操作吗？">
+                <input type="checkbox" id="auto-check" name="" <if condition="$autostatus eq 1">checked</if> class="auto-checkbox promote_auto_audit"><label for="auto-check" class="fl"></label><div class="span-audit"> 自动审核</div>
+                </button>
+            </div>
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="all-checkbox" class="table-item-checkbox js-check-all" data-direction="x" data-checklist="js-check-x"><label for="all-checkbox" class=""></label></th>
+                        <th>游戏名称</th>
+                        <th>玩家账号</th>
+                        <th style="width:30%;">评论内容</th>
+                        <th>发表时间</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <empty name="data_lists">
+                        <tr><td colspan="7" style="text-align: center;">暂无数据</td></tr>
+                    <else/>
+                        <foreach name="data_lists" item="vo">
+                        <tr>
+                            <td><input type="checkbox" id="ids-checkbox{$vo.id}" class="table-item-checkbox js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
+                                       value="{$vo.id}" title="ID:{$vo.id}">
+                                <label for="ids-checkbox{$vo.id}" class=""></label></td>
+                            <td>{$vo.game_name}</td>
+                            <td>{$vo.user_account}</td>
+                            <td style="width:30%;">{$vo.content}</td>
+                            <td>{$vo['create_time']|date='Y-m-d H:i:s',###}</td>
+                            <td><span <if condition="$vo['status'] eq 0">style="color:#43C22E;"</if>>{:get_info_status($vo['status'],27)}</span></td>
+                            <td>
+                                <switch name="vo.status">
+                                    <case value="0">
+                                        <a href="{:url('changestatus',['ids'=>$vo['id']])}" class="js-ajax-dialog-btn" >审核</a>
+                                    </case>
+                                    <case value="1">
+                                        <empty name="vo.comment_id">
+                                            <php>
+                                                $user_account = $vo['user_account'];
+                                                $content = $vo['content'];
+                                                $comment_data = $vo['comment_data'];
+                                            </php>
+                                            <!-- <a href="{:url('show',['id'=>$vo['id']])}">查看</a> -->
+                                            <a onclick="show_comment_detail('{$user_account}','{$content}','{:htmlspecialchars($comment_data)}');" href="javascript:void(0)">查看</a>
+
+                                        </empty>
+                                        <a href="{:url('changestatus',['ids'=>$vo['id']])}" class="js-ajax-dialog-btn" >隐藏</a>
+                                    </case>
+                                    <case value="2">
+                                        <empty name="vo.top_id">
+                                            <a class="show" data-href="{:url('show',['id'=>$vo['id']])}">查看</a>
+                                        </empty>
+                                        <a href="{:url('changestatus',['ids'=>$vo['id']])}" class="js-ajax-dialog-btn">显示</a>
+                                    </case>
+                                </switch>
+                                <div style="display:none">
+
+                                </div>
+
+
+                            </td>
+                        </tr>
+                        </foreach>
+                    </empty>
+                </tbody>
+            </table>
+            <div class="pagination">
+                {$page}
+            </div>
+
+            <!-- 查看弹窗 -->
+            <div class="checkDetailBox" style="display:none">
+                <div class="feedBackContainer">
+                    <div class="titleTopDetail">
+                        <div class="fl title-name">评论详情：</div>
+                        <div class="fr closeBtn"><img src="__TMPL__/public/assets/images/btn_close_pop.png" alt=""></div>
+                    </div>
+                    <div class="bottomModal">
+                        <div class="descFirstText">
+                            <p class="blueText">玩家账号：</p>
+                            <div class="contentDesc user_account"><span>77777777</span></div>
+                        </div>
+                        <div class="descFirstText">
+                            <p class="blueText">评论内容：</p>
+                            <div class="contentDesc content_"><span>77777777</span></div>
+                        </div>
+
+                        <div class="commnetListDetailBox">
+                            <ul id="comment_list">
+
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script type="text/javascript">
+        game_id = $("#game_id").attr('game_id');
+        $("#game_id").selectpicker('val', game_id);
+        $("#status").selectpicker('val', $('#status').attr('status'));
+        $(".sort").click(function () {
+            var id = $(this).attr('gift_id');
+            var sort = $(this).text();
+            layer.prompt(
+                {
+                    formType: 3,
+                    title: "请输入优先级",
+                    value: sort
+                }
+                , function (val) {
+                    $.ajax({
+                        url: '{:url("setsort")}',
+                        type: 'post',
+                        dataType: 'json',
+                        data: {'sort': val,id:id},
+                        success: function (data) {
+                            layer.msg(data.msg);
+                            setTimeout(function () {
+                               window.location.reload();
+                            },1000)
+                        },
+                        error: function () {
+                            layer.msg("错误");
+                        }
+                    });
+                });
+        });
+        $(".show").click(function () {
+            var url = $(this).attr('data-href');
+            layer.open({
+                type: 2,
+                title: '查看评论',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['70%', '80%'],
+                content: url //iframe的url
+            });
+        })
+        function check(){
+            var start_time = $("#start_time").val();
+            var end_time = $("#end_time").val();
+            if(start_time != '' && end_time != '' && start_time > end_time){
+                layer.msg('开始时间不能大于结束时间');
+                return false;
+            }
+            return true;
+        }
+
+        $('.closeBtn').click(function() {
+            $('.checkDetailBox').css('display','none')
+        })
+
+        // 查看评论的详情
+        function show_comment_detail(account, content,comment_data){
+
+            var comment = eval('('+comment_data+')'); // 子评论列表
+            var html = "";
+            if (comment.length > 0) {
+                $.each(comment, function (index, ele) {
+
+                    console.log(ele);
+
+                    if(ele.comment_id==ele.top_id){
+                        if(ele.status==1){
+                            html += "<li><a href='javascript:;' data-id='"+ele.zi_id+"' class='change-status'>[隐藏]</a> " + "<span class='backCommentName'>" + ele.user_account +"</span>" + "回复：" + ele.content + "</li>";
+                        }else{
+                            html += "<li><a href='javascript:;' data-id='"+ele.zi_id+"' class='change-status'>[显示]</a> " + "<span class='backCommentName'>" + ele.user_account +"</span>" + "回复：" + ele.content + "</li>";
+                        }
+                    }else{
+                        if(ele.status==1){
+                            html += "<li><a href='javascript:;' data-id='"+ele.zi_id+"' class='change-status'>[隐藏]</a> " + "<span class='backCommentName'>" + ele.user_account +"</span>" + "回复<span class='backCommentName'>" + ele.comment_account + "</span>：" + ele.content + "</li>";
+                        }else{
+                            html += "<li><a href='javascript:;' data-id='"+ele.zi_id+"' class='change-status'>[显示]</a> " + "<span class='backCommentName'>" + ele.user_account +"</span>" + "回复<span class='backCommentName'>" + ele.comment_account + "</span>：" + ele.content + "</li>";
+                        }
+                    }
+
+                });
+            }
+            $("#comment_list").html(html);
+
+            $('.user_account').text(account);
+            $('.content_').text(content);
+            $('.checkDetailBox').css('display','block');
+            $(".change-status").click(function () {
+                var that = $(this);
+                var zi_id = $(this).attr('data-id');
+                var url = "{:url('changestatus')}";
+                $.post(url,{ids:zi_id},function (res) {
+
+                    if(res.code=='1'){
+                        if(that.text()=='[隐藏]'){
+                            that.text('[显示]');
+                        }else{
+                            that.text('[隐藏]');
+                        }
+                    }
+                    return false;
+                });
+            });
+        }
+    </script>
+</body>
+</html>

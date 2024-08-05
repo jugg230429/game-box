@@ -1,0 +1,70 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/ecard.css">
+</block>
+<block name="body">
+   <div class="ecard-header">
+      <div>
+	     <a href="javascript:back();" class="fl"><img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class=" back_icon"></a>
+		<div class="ecard-header-title fl">尊享卡特权说明</div>
+		<a class="fg link-rule" href="{:url('Mcard/rule')}">规则说明</a>
+	  </div>
+   </div>
+	<if condition="$user['end_time']">
+		<div class="info <if condition='$user[end_time] lt time()'>infodisable</if>">
+			<div class="fl">
+				<div class="info-title">{$user.mcard_name}({$user.member_days}天)</div>
+				<div  class="info-text">有效期至：{$user.end_time|date='Y-m-d',###}<if condition="$user['end_time'] lt time()">(已过期)</if></div>
+			</div>
+			<div class="fg">
+				<div class="setmeal"><span class="money"></span></div>
+				<a  href="{:url('buy')}" class="btn-buy">立即续费</a>
+			</div>
+		</div>
+	<else/>
+		<div class="info">
+			<div class="fl">
+				<div class="info-title">超值代金券天天领</div>
+				<div  class="info-text">火爆发售中！</div>
+			</div>
+			<div class="fg">
+				<div class="setmeal"><span class="money">¥{$card['price']}/</span>{$card['days']+$card['free_days']}天</div>
+				<a <eq name='session.login_auth' value='1'> href="{:url('buy')}" class="btn-buy" <else/>href="javascript:;" class="btn-buy login" </eq>>立即购买</a>
+			</div>
+		</div>
+	</if>
+
+   <div class="privilege-title">尊享卡特权</div>
+   <div class="box">
+       <div class="privilege">特权1</div>
+	   <img src="__TMPL__/mobilepublic/assets/images/ecard/icon-youhuiquan.png" class="coupon-icon">
+	   <div class="coupon-title"><span>{$coupon.money}</span>元代金券天天送</div>
+	   <div class="coupon-text">自开卡日起，每天送1张<if condition="$coupon['limit_money'] eq 0">{$coupon.money}元<else/>{$coupon['money']}元满{$coupon['limit_money']}元可用</if>代金券</div>
+	   <div class="coupon-text">（有效期为1天，<if condition="$coupon['mold'] eq 0">全部游戏<else/>{$coupon.game_name}</if>有效）</div>
+   </div>
+   <div class="box">
+       <div class="privilege">特权2</div>
+	   <img src="__TMPL__/mobilepublic/assets/images/surplus.png" class="coupon-icon2">
+	   <div class="coupon-title">尊享卡身份专属认证</div>
+	   <div class="coupon-text">尊享卡用户显示认证图标</div>
+   </div>
+</block>
+<block name="script">
+<script>
+    function back(){
+        try{
+            $mt = "{:get_devices_type()}";
+            if($mt==2){
+                window.webkit.messageHandlers.xgsdk_finishPage.postMessage(1);
+            }else{
+                window.xgsdk.finishPage()
+            }
+        }catch (e) {
+            history.go(-1);
+        }
+    }
+	
+
+</script>
+</block>
+

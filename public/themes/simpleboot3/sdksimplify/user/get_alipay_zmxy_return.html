@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>实名认证</title>
+		<link href="__CSS__/cert.css" rel="stylesheet" />
+	</head>
+	<body>
+		<if condition="$result eq 'success'">
+			<img src="__STATIC__/images/common_icon_Success@2x.png"  class="cert_img"/>
+			<div class="cert_title textc">认证成功</div>
+			<div class="cert_text textc">恭喜你，完成了身份认证！</div>
+		<else/>
+			<img src="__STATIC__/images/common_icon_Failure@2x.png"  class="cert_img"/>
+			<div class="cert_title textc cert_failtitle">认证失败</div>
+			<div class="cert_text textc">很抱歉，认证失败！</div>
+		</if>
+	</body>
+</html>

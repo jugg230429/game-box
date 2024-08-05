@@ -1,0 +1,72 @@
+<extend name="../mediapublic/base" />
+<!-- 主体内容 -->
+<block name="body">
+    <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/user_game_bill.css">
+	<style>
+	    .user_triangle::before, .user_triangle::after{
+		   top: 525px;
+		}
+        .sort_fgx_fe {
+            width: 81px;
+            left: 0;
+        }
+	</style>
+    <!-- 用户信息 -->
+    <div class="userinfo_con">
+        <div class="layui-container">
+            <div class="fl left_user_info">
+                <div class="left_user_info_img">
+                    <img src="{:cmf_get_image_url($user['head_img'])}" alt="">
+                    <span class="levelIcon">V{$user['vip_level']}</span>
+                </div>
+                <!-- <div class="left_user_info_grade">
+                    <if condition="$user['vip_level'] gt 0">
+                        <img src="__STATIC__/images/my_ico_grade{$user['vip_level']}.png" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                        
+                    </if>
+
+                </div> -->
+                <p class="left_user_info_name">{$user.nickname}</p>
+                <div class="checked_item_con">
+                    <include file="mediapublic@left_menu" />
+                </div>
+            </div>
+            <div class="fl right_user_info">
+                <div class="right_user_info_title">
+                    <a href="{:url('User/pay_record')}" class="fl right_user_info_title_left ">平台币充值
+                    </a>
+                    <a href="javascript:;" class="fl right_user_info_title_left active">绑币充值
+                    </a>
+                    <p class="fg right_user_info_title_right">您当前的位置：<a href="{:url('Index/index')}">平台首页</a>><a href="{:url('User/userinfo')}"> 用户中心</a>><span>绑币充值</span></p>
+                </div>
+                <div class="game_bill_list">
+
+                    <div class="game_bill_header">
+                        <div class="game_title fl"><p>充值账号</p></div>
+                        <div class="game_money fl"><p>充值金额</p></div>
+                        <div class="game_time fl"><p>时间</p></div>
+                        <div class="game_type fl"><p>支付方式</p></div>
+                    </div>
+                    <empty name="list">
+                        <p class="no_mygame_con_item">~暂无充值记录~</p>
+                    </empty>
+                    <volist name="list" id="vo">
+                        <div class="game_bill_item">
+                            <div class="game_title fl"><p>{$vo.user_account}</p></div>
+                            <div class="game_money fl"><p>{$vo.pay_amount}</p></div>
+                            <div class="game_time fl"><p>{:get_pay_time($vo['pay_time'])}</p></div>
+                            <div class="game_type fl"><p>{:get_info_status($vo['pay_way'],1)}</p></div>
+                        </div>
+                    </volist>
+                    <notempty name="list">
+                        <div class="recharge-total">累计充值：<span style="color: #018FFF">{$total}</span></div>
+                    </notempty>
+                </div>
+
+                <notempty name="list">
+                <div id="page1" class="gamelistpage">{$page}</div>
+                </notempty>
+            </div>
+        </div>
+    </div>
+</block>

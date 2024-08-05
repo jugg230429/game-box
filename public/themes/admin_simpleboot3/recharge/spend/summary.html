@@ -1,0 +1,95 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('spend/summary')}">游戏充值</a></li>
+            <span class="title_remark">说明：根据渠道和游戏信息，对游戏充值数据按每日进行数据汇总统计。</span>
+        </ul>
+        <form id="search_form" class="well form-inline  fr" method="get" action="{:url('spend/summary')}" onsubmit="return check();">
+
+            <input type="text" class="form-control js-bootstrap-date" id="start_time" name="start_time" placeholder="开始时间"
+                   value="{:input('request.start_time/s','')}" style="width: 140px;" autocomplete="off">-
+            <input type="text" class="form-control js-bootstrap-date" id="end_time" name="end_time" placeholder="结束时间"
+                   value="{:input('request.end_time/s','')}" style="width: 140px;" autocomplete="off"> &nbsp; &nbsp;
+            <if condition="AUTH_GAME eq 1">
+                <select name="game_id" id="game_id" class="selectpicker " game_id="{:input('request.game_id')}" data-live-search="true" style="width: 100px;">
+                    <option value="">游戏名称</option>
+                    <volist name=":get_game_list('id,game_name')" id="vo">
+                        <option game-id="{$vo.id}" value="{$vo.id}" >{$vo.game_name}</option>
+                    </volist>
+                </select>
+            </if>
+
+            <if condition="AUTH_PROMOTE eq 1">
+                <select name="promote_id" id="promote_id"  class="selectpicker" data-live-search="true" promote_id="{:input('request.promote_id','all')}">
+                    <option value="all">来源统计</option>
+                    <option value="0" <if condition="input('request.promote_id') eq '0'">selected</if>>官方来源</option>
+                    <option value="tui" <if condition="input('request.promote_id') eq 'tui'">selected</if>>推广来源</option>
+                    <volist name=":get_promote_list()" id="vo">
+                        <option promote-id="{$vo.id}" value="{$vo.id}" <if condition="input('request.promote_id') eq $vo['id']" >selected</if>>{$vo.account}</option>
+                    </volist>
+                </select>
+            </if>
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('spend/summary')}">清空</a>
+        </form>
+        <table class="table table-hover table-bordered">
+            <thead >
+                <tr>
+                    <th>时间</th>
+                    <if condition="AUTH_PROMOTE eq 1"><th>渠道来源</th></if>
+                    <th>游戏名称</th>
+                    <th>新增人数</th>
+                    <th>活跃人数</th>
+                    <th>玩家付费/￥</th>
+                </tr>
+            </thead>
+            <tbody>
+                <empty name="data_lists">
+                    <tr><td colspan="6" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <php>$game_name =get_game_list('game_name',['id'=>input('request.game_id')])[0]['game_name'];</php>
+                    <php>$promote_name = get_promote_name(input('request.promote_id'));</php>
+                    <foreach name="data_lists" item="vo">
+                    <tr>
+                        <php>$page_total +=$vo['recharge'];</php>
+                        <td>{:$key}</td>
+                        <if condition="AUTH_PROMOTE eq 1"><td><if condition="input('request.promote_id') eq '0'">官方来源<elseif condition="input('request.promote_id') eq 'tui'" />推广来源<elseif condition="input('request.promote_id') gt 0"/>{$promote_name}<else/>全部</if></td></if>
+                        <td><if condition="input('request.game_id') gt 0">{$game_name}<else/>全部</if></td>
+                        <td>{$vo['new_user']}</td>
+                        <td>{$vo['active_user']}</td>
+                        <td>{$vo['recharge']}</td>
+                    </tr>
+                    </foreach>
+                     <tr class="data_summary">
+                        <td><span style="margin-right: 10px;">汇总（只汇总充值成功） </span></td>
+                        <td colspan="5"><span>当页付费：{:null_to_0($page_total)}元 ； 累计付费：{:null_to_0($total)}元</span></td>
+                    </tr>
+                </empty>
+            </tbody>
+        </table>
+        <div class="pagination">
+            {$page}
+            <li class="page-item"><a class="page-link" href="{:url('Export/expUser',array_merge(['id'=>2,'xlsname'=>'充值汇总'],input()))}">导出</a></li>
+        </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script type="text/javascript">
+        game_id = $("#game_id").attr('game_id');
+        promote_id = $("#promote_id").attr('promote_id');
+        $("#game_id").selectpicker('val', game_id);
+        $("#promote_id").selectpicker('val', promote_id);
+        function check(){
+            var start_time = $("#start_time").val();
+            var end_time = $("#end_time").val();
+            if(start_time != '' && end_time != '' && start_time > end_time){
+                layer.msg('开始时间不能大于结束时间');
+                return false;
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,321 @@
+/*
+* @description: 资讯公告
+ *@author:王奉
+* @update: name(xxxx-xx-xx xx:xx)
+ */
+
+.fl {
+	float: left;
+}
+
+.fr {
+	float: right;
+}
+
+.clear {
+	clear: both;
+}
+
+.main {
+	background: #ffffff;
+	height: auto;
+	min-height:710px;
+	overflow: hidden;
+	padding: 21px 0 28px 0;
+
+}
+
+.inner {
+	width: 1200px;
+	margin: 0 auto;
+}
+
+.inner-left {
+	width: 863px;
+	height: auto;
+	background: #fff;
+	border: 1px solid #ddd;
+	float: left;
+	min-height:710px;
+}
+
+.noticetab-menu {
+	width: 780px;
+	height: 52px;
+	line-height: 52px;
+	border-bottom: 1px solid #E9E9E9;
+	margin: 0 auto;
+	font-size: 16px;
+	font-weight: bold;
+	color: #333;
+	margin-right: 48px;
+}
+
+.tab-menu-con {
+	width: 70px;
+	float: left;
+	margin-right: 25px;
+}
+.tab-menu-con>a{
+	position: relative;
+	top: 5px;
+}
+
+.noticetab-menu .active {
+	color: #2FC7DA;
+	border-bottom: 2px solid #2FC7DA;
+}
+.tab-con {
+	height: 750px;
+}
+.tab-con-con {
+	display: block;
+	width: 100%;
+}
+
+.tab-con-con:hover {
+	background: #F7F7F7;
+	cursor: pointer;
+}
+
+.title {
+	font-size: 16px;
+	color: #222;
+	font-weight: bold;
+	line-height: 24px;
+	width: 780px;
+	margin: 0 auto;
+	padding-top: 15px;
+	margin-right: 48px;
+}
+.title-text {
+	width: 700px;
+	font-style: normal;
+	-ms-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	display: block;
+}
+
+.time {
+	font-size: 12px;
+	color: #777;
+	font-weight: normal;
+	margin-top: 0px;
+}
+
+.describe {
+	width: 780px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	font-size: 12px;
+	color: #777;
+	border-bottom: 1px solid #E9E9E9;
+	padding-bottom: 15px;
+	margin: 0 auto;
+	margin-right: 48px;
+	padding-top: 2px;
+
+}
+.tgDesc {
+	margin-right: 42px;
+}
+
+/*分页*/
+
+.page {
+	text-align: center;
+}
+
+.page-item {
+	display: inline-block;
+	float: none;
+	height: 43px;
+	line-height: 43px;
+	color: #666;
+	font-size: 12px;
+}
+
+.page a,
+.page span {
+	padding: 0 5px;
+	color: #000;
+	color: #666;
+}
+.page .current,.page a:hover{
+	color: #27C6DB;
+}
+.inner-right {
+	width: 314px;
+	height: 449px;
+	height: 416px;
+	background: #fff;
+	border: 1px solid #dddd;
+	box-sizing: border-box;
+}
+
+.kf span,
+.kf-con span {
+	display: block;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	font-size: 12px;
+	color: #666;
+	height: 48px;
+	line-height: 48px;
+}
+
+.kf span {
+	height: auto;
+	line-height: 1;
+	margin-top: 23px;
+	margin-bottom: 2px;
+}
+.kf{
+	width: 280px;
+	height: auto;
+	margin: 0 auto;
+}
+.kf span{
+	margin-top: 20px;
+	font-size: 12px;
+	line-height: 14px;
+	height: auto;
+}
+
+.kf-con {
+	width: 280px;
+	height: auto;
+	overflow: hidden;
+	border-bottom: 1px solid #eee;
+	margin: 0 auto;
+}
+.kf-con:last-child{
+	border: none;
+}
+
+.kf-con span {
+	height: 34px;
+	line-height: 34px;
+}
+
+.name-game,
+.kf-game {
+	width: 83px;
+	margin: 0 21px 0 0;
+}
+
+.name-number,
+.kf-number {
+	width: 83px;
+	margin: 0 21px 0 0;
+}
+
+.kf-con .kf-game {
+	color: #222;
+	margin: 0 21px 0 0;
+}
+
+.kf-con .kf-number {
+	color: #25C3D8;
+}
+
+.kf-con .kf-time {
+	color: #222;
+}
+
+.slideBox {
+	width: 314px;
+	height: 390px;
+	overflow: hidden;
+	position: relative;
+	border-radius: 10px 10px 0 0;
+}
+
+.slideBox .bd {
+	overflow: hidden;
+	position: relative;
+	height: 100%;
+	z-index: 0;
+}
+
+.slideBox .hd {
+	position: absolute;
+	top: 350px;
+	width: 100%;
+	text-align: center;
+}
+
+.slideBox .hd ul {
+	display: inline-block;
+}
+
+.slideBox .hd li {
+	width: 8px;
+	height: 8px;
+	background: #D9D9D9;
+	border-radius: 50%;
+	float: left;
+	margin: 0 5px;
+	cursor: pointer;
+}
+
+.slideBox .hd ul .on {
+	background: #2FC7DA;
+}
+
+
+/*资讯详情*/
+
+.inner-left-con {
+	width: 746px;
+	/*margin: 0 auto;*/
+	padding-bottom: 20px;
+	margin-left: 36px;
+}
+
+.notice-title{
+	height: 67px;
+	line-height: 68px;
+	font-size: 20px;
+	color: #222;
+	font-weight: bold;
+	color: #222;
+	border-bottom: 1px solid #DDD;
+
+}
+.notice-title-text{
+	display: inline-block;
+	width: 80%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.inner-left-con img{
+	max-width: 744px;
+}
+.notice-details{
+	width:100%;
+	min-height: 340px;
+	word-break: break-all;
+	padding-top: 10px;
+	box-sizing: border-box;
+}
+.mine
+.notice-details img{
+	margin: 5px 0;
+}
+
+.page {
+	padding-bottom: 19px;
+	padding-top: 12px;
+}
+.page-item,.page .form-control {
+	height: auto;
+	line-height: 1;
+	color: #999;
+}
+

@@ -1,0 +1,54 @@
+<extend name="../mobilepublic/base" />
+
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/user_rebate.css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/feedback.css">
+</block>
+
+<block name="body">
+    <div class="user_rebate_page">
+        <div class="my_bag_page_header">
+            <a href="javascript:back();"><img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon"></a>
+            <p class="fl my_bag_page_item">选择游戏</p>
+        </div>
+        <div class="searchGameNameBox">
+            <form action="{:url('mobile/user/game_list')}" method="get" >
+                <div class="searchOuterContainer">
+                    <i class="searchIconImg"></i>
+                    <input class="inputGame-name" type="text" name="game_name" value="" placeholder="输入游戏名称">
+                    <span class="fr search-textFinal"><button style="color: #018FFF;border: none;outline: none;background: #F9F9F9">搜索</button></span>
+                </div>
+            </form>
+            <div class="gameName-list">
+                <ul>
+                    <volist name="game_list" id="vo">
+                        <li class="nameItem" data-game_id="{$vo.id}">{$vo.relation_game_name}</li>
+                    </volist>
+                </ul>
+            </div>
+            <empty name="game_list">
+                <div class="empty-text">~空空如也~</div>
+            </empty>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script>
+
+        $(function () {
+            $('.nameItem').click(function () {
+                var game_name = $(this).text();
+                var game_id = $(this).attr('data-game_id');
+                var jump_url = "{:url('mobile/user/feedback')}?game_id=" + game_id + "&game_name=" + game_name;
+                location.href = jump_url
+            });
+        });
+
+        function back(){
+            location.href = "{:url('mobile/user/feedback')}";
+        }
+    </script>
+
+
+</block>

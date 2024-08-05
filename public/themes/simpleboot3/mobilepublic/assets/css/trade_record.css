@@ -1,0 +1,1735 @@
+/* prefixed by https://autoprefixer.github.io (PostCSS: v7.0.26, autoprefixer: v9.7.3) */
+
+*{
+}
+body {
+    background-color: #ffffff!important;
+    position: relative;
+    overflow: auto;
+    -webkit-overflow-scrolling: auto;
+}
+label{
+    margin-bottom: 0;
+}
+.v-middle{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.v-top{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+.h-middle{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+.footer{
+    display: none;
+}
+.trade_record_header {
+    width: 100%;
+    height: 3.8rem;
+}
+.trade_record_header .back_icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0.74rem;
+    margin-top: 1.3rem;
+    margin-left: 1rem;
+    cursor: pointer;
+    display: block;
+}
+.trade-record-title {
+    width: 100%;
+    text-align: center;
+    font-size: 1.45rem;
+    line-height: 1.45rem;
+    padding-top: 1.2rem;
+    margin-bottom: 0.9rem;
+    font-weight: 500;
+    color: #222222;
+}
+
+.type_down__long_hx {
+    width: 100%;
+    height: 1px;
+    background-color: #EDEEEF;
+    position: relative;
+    top: -0.2rem;
+    z-index: 1;
+    margin-top: 0.3rem;
+}
+.menu-list {
+    width: 75%;
+    height: 3.13rem;
+    margin: 0 auto;
+    background: #ffffff;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.menu-list .menu-item {
+    font-size: 1.33rem;
+    color: #999999;
+    line-height: 3.13rem;
+    text-align: center;
+    width:33.33%!important;
+}
+.menu-list .menu-item:first-child{
+    margin-left: 0;
+}
+.menu-list .menu-item.active {
+    color: #018FFF;
+    font-weight: bold;
+    position: relative;
+}
+.menu-list .menu-item.active:after {
+    position: absolute;
+    bottom: 0.1rem;
+    left: 33%;
+    width: 34%;
+    height: 2px;
+    background: #018FFF;
+    content: '';
+}
+.buy-trumpet-tips{
+    width: 100%;
+    height: 2.58rem;
+    background: #F6F6F6;
+    padding: 0 0.93rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    font-size: 1.095rem;
+    color: #999999;
+}
+.buy-trumpet-tips .know-detail-btn{
+    width: 4.3rem;
+    height: 1.64rem;
+    border-radius: 0.33rem;
+    border: 1px solid #0092FF;
+    font-size: 0.86rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    color:  #0092FF;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    margin-left: auto;
+}
+.buy-trumpet-list .buy-trumpet-item{
+    width: 100%;
+    padding: 0.9rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border-bottom: 1px solid #EDEEEF;
+}
+.buy-trumpet-list .buy-trumpet-item:last-child{
+    border: none;
+}
+.buy-trumpet-item .trumpet-status-title{
+    font-size: 1.017rem;
+    color: #0092FF;
+}
+
+.buy-trumpet-item .trumpet-status-box.no-pay .trumpet-status-title{
+    font-size: 1.017rem;
+    color: #FF7E00;
+}
+.buy-trumpet-item .trumpet-status-box.invalid,.buy-trumpet-item .trumpet-status-box.invalid+ .trumpet-info-box>a,.buy-trumpet-item .trumpet-status-box.invalid+ .trumpet-info-box .trumpet-price{
+    opacity: 0.5;
+}
+.buy-trumpet-item .trumpet-status-box.invalid .trumpet-status-title{
+    font-size: 1.017rem;
+    color: #666666;
+}
+.buy-trumpet-item .trumpet-status-box.check-pending .trumpet-status-title{
+    font-size: 1.017rem;
+    color: #3BB03D;
+}
+.buy-trumpet-item .trumpet-status-box.in-sale .trumpet-status-title{
+    font-size: 1.017rem;
+    color: #FF8400;
+}
+.buy-trumpet-item .trumpet-status-box.finish-sale .trumpet-status-title{
+    font-size: 1.017rem;
+    color: #0092FF;
+}
+.buy-trumpet-item .trumpet-status-box.lower-shelf .trumpet-status-title{
+    font-size: 1.017rem;
+    color:#333333 ;
+}
+
+.buy-trumpet-item .trumpet-status-box.not-pass{
+    position: relative;
+    margin-bottom: 0;
+}
+.buy-trumpet-item .trumpet-status-box.not-pass .trumpet-status-title{
+    font-size: 1.017rem;
+    color: #FF0000;
+}
+.buy-trumpet-item  .not-pass-reason{
+    display: block;
+    font-size: 0.94rem;
+    color: #FF0000;
+    margin-bottom: 0.5rem;
+}
+
+
+
+
+.trumpet-status-box .trumpet-pay-date{
+    margin-left: 1rem;
+    font-size: 1.017rem;
+    color: #999999;
+}
+.trumpet-status-box .trumpet-pay-date .order-invalid-date{
+    color: #FF7E00;
+}
+.buy-trumpet-item .trumpet-date{
+    color: #999999;
+    font-size: 1.017rem;
+}
+.buy-trumpet-item .trumpet-status-box{
+    margin-bottom: 0.8rem;
+}
+.trumpet-info-box{
+
+}
+.trumpet-info-box .trumpet-game-icon{
+    width: 3.6rem;
+    height: 3.6rem;
+    border-radius: 0.62rem;
+}
+.trumpet-info-box .trumpet-game-info{
+    margin-left: 0.47rem;
+}
+.trumpet-info-box .trumpet-game-info .trumpet-game-title{
+    font-size: 1.25rem;
+    color: #333333;
+    width: 16.5rem;
+    overflow: hidden;
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+}
+
+
+.trumpet-info-box .trumpet-game-info .trumpet-game-server{
+    font-size: 0.94rem;
+    color: #666666;
+}
+.trumpet-price-box{
+    margin-left: auto;
+    text-align: right;
+}
+.trumpet-price-box .trumpet-price{
+    font-size: 1.4rem;
+    color: #F45D5D;
+    font-weight: bold;
+    margin-bottom: 0.4rem;
+}
+.buy-trumpet-item .trumpet-status-box.invalid+ .trumpet-info-box .trumpet-price{
+    color: #666666;
+}
+.buy-trumpet-item.invalid .trumpet-price-box .trumpet-price{
+
+}
+.trumpet-price-box .record-btn-box{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    font-size: 0.94rem;
+    color: #666666;
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+}
+.trumpet-price-box .record-btn-box>div:first-child,.trumpet-price-box .record-btn-box>a:first-child{
+    margin-left: 0;
+}
+.trumpet-price-box .record-btn-box .record-delete-btn,.trumpet-price-box .record-btn-box .record-edit-btn{
+    width: 3.91rem;
+    height: 1.64rem;
+    border: 1px solid #999999;
+    border-radius: 0.31rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin-left: 0.86rem;
+}
+.trumpet-price-box .record-btn-box .record-cancel-btn,.trumpet-price-box .record-btn-box .record-again-btn{
+    width: 4.77rem;
+    height: 1.64rem;
+    border-radius: 0.31rem;
+    border: 1px solid #999999;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin-left: 0.86rem;
+}
+.trumpet-price-box .record-btn-box .to-pay-btn{
+    width: 4.77rem;
+    height: 1.64rem;
+    border-radius: 0.31rem;
+    background: #0092FF;
+    color: #ffffff;
+    line-height: 1.64rem;
+    text-align: center;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin-left: 0.86rem;
+}
+.buy-trumpet-item.invalid{
+    opacity: 0.5;
+}
+
+.no-data{
+    padding-top: 5rem;
+    text-align: center;
+    font-size: 1.33rem;
+    color: #999999;
+}
+
+.user-income-box{
+    width: 100%;
+    padding: 0.4rem 0.94rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.user-income-box .user-total-box{
+    width: 100%;
+    height: 7.6rem;
+    background:url(../images/trade/recrod_income_bg.png)no-repeat ;
+    background-size: 100% 100%;
+    padding-left:1.64rem ;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    font-size: 0.94rem;
+    color: #ffffff;
+    padding-top: 0.9rem;
+    padding-bottom: 1rem;
+}
+.user-total-box .total-income{
+    font-size: 1.17rem;
+    font-weight: bold;
+}
+
+.user-total-box .income-num{
+    font-size: 0.94rem;
+    font-weight: bold;
+    margin: 0.7rem 0 0.2rem;
+    line-height: 1.878rem;
+}
+.user-total-box .income-num span{
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-right: 0.5rem;
+}
+.income-explain p{
+    font-size: 1.017rem;
+    color: #999999;
+    line-height: 1.8rem;
+}
+.income-explain p.title{
+    font-size: 1.095rem;
+    font-weight: bold;
+    color: #333333;
+    margin:  1rem 0 0.5rem;
+}
+.history-record-box .history-title{
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin: 0.8rem 0;
+}
+.history-record-list{
+    padding-left: 0.9rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+}
+.history-record-item{
+    position: relative;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    /*width: 100%;*/
+    /*border-left: 1px solid #BBE1FF;*/
+    padding-bottom: 1.3rem;
+}
+.history-record-item:before{
+    position: absolute;
+    left: 0;
+    top:0.5rem;
+    width: 1px;
+    height: 100px;
+    background: #BBE1FF;
+    content: '';
+}
+.history-record-item .spot{
+    position: absolute;
+    top:0.5rem;
+    left: -0.2rem;
+    width: 0.547rem;
+    height: 0.547rem;
+    background: #018FFF;
+    border-radius: 9.9rem;
+}
+.history-record-item:last-child:before{
+    position: absolute;
+    left: 0;
+    top:0.5rem;
+    width: 1px;
+    height: 0px;
+    background: #BBE1FF;
+    content: '';
+}
+.history-record-item .history-record-date{
+    font-size: 1.095rem;
+    color: #999999;
+    margin-left: 1rem;
+}
+.history-record-item .history-info-box{
+    margin-top: 0.4rem;
+    margin-left: 1rem;
+    width: 87vw;
+    height: 4.54rem;
+    background: #F4F4F4;
+    border-radius: 0.6rem;
+    padding: 0 1.09rem;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+.history-record-item .history-info-box .history-info{
+    width: 18rem;
+}
+.history-record-item .history-info-box .game-name{
+    font-size: 1.33rem;
+    width: 18rem;
+    overflow: hidden;
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+}
+.history-record-item .history-info-box .trumpet-account{
+    font-size: 1.095rem;
+    margin-top: 0.5rem;
+}
+.history-record-item .history-info-box .history-money{
+    margin-left: auto;
+    font-size: 0.94rem;
+    color: #333333;
+}
+.history-record-item .history-info-box .history-money span{
+    color: #018FFF;
+    font-size: 1.33rem;
+    display: inline-block;
+    vertical-align: top;
+}
+
+
+.pop-delete, .pop-cancel,.pop-price,.pop-tips {
+    display: none;
+    -webkit-overflow-scrolling: touch;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999;
+    background: rgba(0,0,0,.5);
+}
+.pop-table {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: table;
+}
+.pop-cell {
+    display: table-cell;
+    position: relative;
+    vertical-align: middle;
+}
+.del_box {
+    width: 21rem;
+    margin: 0 auto;
+    background: #FFF;
+    border-radius:0.6rem;
+    font-size: 1.25rem;
+
+}
+.del_box p {
+    padding: 1.8rem ;
+    text-align: center;
+    margin: 0;
+    color: #222222;
+    font-weight: bold;
+}
+.del_btn_box.z_clearfix {
+    padding: 0;
+
+}
+.del_btn_box a {
+    height: 3.6rem;
+    line-height: 3.6rem;
+    border-top: 1px solid #e7e7e9;
+    color: #222222;
+    width: 50%;
+    text-align: center;
+    font-size: 1.25rem;
+}
+.del_btn_box a:last-child {
+    border-left: 1px solid #e7e7e9;
+    border-bottom-left-radius: 0;
+}
+.z_clearfix:after {
+    display: block;
+    content: "";
+    height: 0;
+    line-height: 0;
+    visibility: hidden;
+    clear: both;
+}
+.cancel-box{
+    width: 21.6rem;
+    margin: 0 auto;
+    background: #FFF;
+    border-radius:0.6rem;
+    font-size: 1.25rem;
+
+    -webkit-box-sizing: border-box;
+
+    box-sizing: border-box;
+    margin-top: -2rem;
+}
+.cancel-box .cancel-content{
+    padding: 1.8rem 1.4rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.cancel-box .cancel-content.cancel-content_{
+    padding: 1.3rem 1.4rem;
+}
+.cancel-box .cancel-content p.title{
+    margin-bottom: 0.8rem;
+    font-size: 1.33rem;
+    font-weight: bold;
+}
+.cancel-box .cancel-content p{
+    text-align: center;
+    margin: 0;
+    color: #222222;
+
+}
+/*
+改价弹窗*/
+.edit-price-box{
+    width: 23.64rem;
+    margin: 0 auto;
+    background: #FFF;
+    border-radius:0.6rem;
+    font-size: 1.25rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    position: relative;
+    margin-top: -2rem;
+}
+.edit-price-box .cancel-img ,.tips-box .cancel-img{
+    position: absolute;
+    width: 1.25rem;
+    height: 1.25rem;
+    top:0.86rem;
+    right: 0.86rem;
+    z-index: 999;
+}
+.edit-price-box .edit-price-content{
+    padding: 1.8rem 1.8rem 1.48rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    text-align: center;
+    position: relative;
+}
+.edit-price-box .edit-price-content .tips{
+    position: absolute;
+    left: 0 ;
+    bottom: 1rem;
+    width: 100%;
+    text-align: center;
+    color: #C1C0C4;
+    font-size: 0.94rem;
+}
+.edit-price-box .edit-price-content .title{
+    font-weight: bold;
+    color: #333333;
+    font-size: 1.33rem;
+    margin-bottom: 1.4rem;
+}
+.edit-price-box .edit-price-content .edit-input{
+    width: 100%;
+    height: 3.44rem;
+    background: #F2F2F2;
+    border: none;
+    outline: none;
+    padding: 0;
+    padding-left: 1rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border-radius: 0.4rem;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+
+
+/*
+订单详情*/
+.record-info-contain{
+    padding-bottom: 5rem;
+    overflow: auto;
+}
+.record-info-contain .order-num-box{
+    width: 100%;
+    height: 2.42rem;
+    background: rgb(230, 242, 254);
+    padding: 0 0.93rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    font-size: 0.94rem;
+    color: #018EFE;
+
+}
+.order-num-box .copy-btn{
+    width: 4.7rem;
+    height: 1.64rem;
+    border-radius: 9.9rem;
+    border: 1px solid #018EFE;
+    font-size: 0.939rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    color:  #018EFE;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    margin-left: auto;
+}
+.order-content-box{
+    background: #f6f6f6;
+}
+.order-content-box .trumpet-base-info{
+    background: #ffffff;
+    padding: 0.62rem 0.86rem 1rem;
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.order-content-box .trumpet-detail-info{
+    margin-top: 0.45rem;
+    background: #ffffff;
+    padding:1.48rem 1rem;
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.order-content-box .game-info-box{
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin-bottom: 0.86rem;
+}
+.order-content-box .game-info-box .trumpet-game-icon{
+    width: 5rem;
+    height: 5rem;
+    display: block;
+    border-radius: 0.6rem;
+    margin-right: 0.7rem;
+    color: #333333;
+}
+.order-content-box .game-info-box .game-name {
+    font-size: 1.33rem;
+    font-weight: bold;
+    color: #333333;
+    margin: 0;
+    max-width: 25rem;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.order-content-box .game-info-box .game-account {
+    font-size: 0.94rem;
+    margin: 0.15rem 0;
+    color: #666666;
+}
+.order-content-box .game-info-box .account-price {
+    font-size:0.94rem;
+    color: #F45D5D;
+    font-weight: bold;
+}
+.order-content-box .game-info-box .account-price span{
+    font-size: 1.25rem;
+}
+.order-content-box .counter-offer-btn{
+    margin-left: auto;
+    width:5.24rem;
+    height: 2.19rem;
+    background: #FEB401;
+    color: #ffffff;
+    line-height: 2.19rem;
+    text-align: center;
+    font-size: 1.17rem;
+    border-radius: 9.9rem;
+}
+.order-content-box .trumpet-server,.order-content-box .trumpet-consume ,.order-content-box .trumpet-day ,.order-content-box .trumpet-password{
+    margin-bottom: 0.4rem;
+}
+
+.order-content-box .trumpet-server i,.order-content-box .trumpet-consume i,.order-content-box .trumpet-day i,.order-content-box .trumpet-password i{
+    width: 1.25rem;
+    height: 1.25rem;
+    background: #dddddd;
+    margin-right: 0.5rem;
+}
+.order-content-box .trumpet-server i{
+    background: url(../images/trade/details_ico_district@2x.png)no-repeat;
+    background-size: 100% 100%;
+}
+.order-content-box .trumpet-consume i{
+    background: url(../images/trade/details_ico_money@2x.png)no-repeat;
+    background-size: 100% 100%;
+}
+.order-content-box .trumpet-day i{
+    background: url(../images/trade/details_ico_time@2x.png)no-repeat;
+    background-size: 100% 100%;
+}
+.order-content-box .trumpet-password i{
+    background: url(../images/trade/details_ico_password@2x.png)no-repeat;
+    background-size: 100% 100%;
+}
+.order-content-box .trumpet-server p,.order-content-box .trumpet-consume p,.order-content-box .trumpet-day p,.order-content-box .trumpet-password p{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    color: #333;
+    font-size: 0.94rem;
+}
+.order-content-box .trumpet-server p span,.order-content-box .trumpet-consume p span,.order-content-box .trumpet-day p span,.order-content-box .trumpet-password p span{
+    width: 7rem;
+    text-align:left;
+    margin-right: 0.5rem;
+    color: #999999;
+}
+.layui-layer-msg {
+    max-width: 70%;
+}
+.order-content-box .official-img{
+    position: absolute;
+    right: 2.2rem;
+    bottom: 0;
+    width: 5.478rem;
+    height: 5.478rem;
+    background: url(../images/trade/details_img_attestation_@2x.png)no-repeat;
+    background-size: 100% 100%;
+}
+.order-content-box .trumpet-password+.official-img{
+    bottom: 0.45rem;
+}
+.order-content-box .official-img.checked{
+    background: url(../images/trade/details_img_attestation_@2x.png)no-repeat;
+    background-size: 100% 100%;
+}
+.order-content-box .official-img.no-check{
+    width: 6.478rem;
+    height: 5.478rem;
+    background: url(../images/trade/details_img_pendingreview@2x.png)no-repeat;
+    background-size: 100% 100%;
+}
+.order-content-box .official-img.no-pass{
+    width: 6.478rem;
+    height: 5.478rem;
+    background: url(../images/trade/details_img_refuse@2x.png)no-repeat;
+    background-size: 100% 100%;
+}
+
+.trumpet-detail-info .trumpet-detail-box{
+
+}
+.trumpet-detail-info .trumpet-detail-box .title{
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+.trumpet-detail-info .trumpet-detail-box .tips{
+    margin-left: 1rem;
+    font-size: 0.94rem;
+    width: 70%;
+    color: #999999;
+}
+.trumpet-detail-info .trumpet-detail-box .trumpet-detail-content{
+    /*padding:1rem 0rem 0;*/
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.trumpet-detail-info .trumpet-detail-box .trumpet-detail-text{
+    font-size: 1.17rem;
+    margin-top: 1rem;
+}
+.trumpet-detail-info .game-pic-list{
+    margin-top: 1rem;
+}
+.trumpet-detail-info .game-pic-list .game-pic-item{
+    width: 7.04rem;
+    /* height: 7.04rem; */
+    margin-top: 0.5rem;
+    margin-left: 0.6rem;
+}
+.trumpet-detail-info .game-pic-list .game-pic-item:nth-child(4n+1){
+    margin-left: 0;
+}
+.trumpet-detail-info .game-pic-list .game-pic-item img{
+    width: 100%;
+    height: 100%;
+    border-radius: 0.62rem;
+}
+.game-pic-list .no-game-pic{
+    text-align: center;
+    width: 100%;
+    height: 8rem;
+    line-height: 6rem;
+    font-size: 1.33rem;
+    color: #999999;
+}
+.trumpet-detail-info .publication-date{
+    font-size: 0.94rem;
+    color: #999999;
+    margin-top: 1rem;
+}
+.footer-fixed-box{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 4rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background: #ffffff;
+    -webkit-box-shadow:0px -1px 11px 0px rgba(174,185,190,0.5);
+    box-shadow:0px -1px 11px 0px rgba(174,185,190,0.5);
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    z-index: 9;
+}
+.trade_record_page{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+}
+.footer-fixed-box .download-btn,.footer-fixed-box .cancel-btn{
+    width: 12.91rem;
+    height: 3.13rem;
+    border: 1px solid #CFCFCF;
+    border-radius: 9.9rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    font-size: 1.17rem;
+    color: #333333;
+    margin-left: 1rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+.footer-fixed-box .download-btn.disabled{
+    background: #D6D6D6;
+    color: #FFFFFF;
+    border: none;
+}
+.footer-fixed-box .buy-btn{
+    width: 12.91rem;
+    height: 3.13rem;
+    border-radius: 9.9rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    line-height: 3.13rem;
+    text-align: center;
+    font-size: 1.17rem;
+    color: #ffffff;
+    margin-left: 1rem;
+    background: #018EFE;
+}
+.footer-fixed-box  .confirm-btn{
+    width: 30.44rem;
+    height: 3.13rem;
+    border-radius: 9.9rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    line-height: 3.13rem;
+    text-align: center;
+    font-size: 1.17rem;
+    color: #ffffff;
+    margin-left: 1rem;
+    background: #018EFE;
+}
+.game-other-trumpet{
+    margin-top: 0.45rem;
+    background: #ffffff;
+    padding: 1.48rem 0;
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.game-other-trumpet .game-other-title{
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-left: 1rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.game-other-trumpet .game-other-title .more-btn{
+    margin-left: auto;
+    font-size: 0.94rem;
+    color: #999999;
+    margin-right: 1rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.game-other-trumpet .game-other-title .more-btn span{
+    font-size: 0.94rem;
+    color: #999999;
+    margin-left: 0.2rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    height: 1.095rem;
+    margin-top: -0.12rem;
+}
+.game-other-trumpet .game-other-title span{
+    font-size: 0.94rem;
+    color: #999999;
+}
+.trumpet-other-item{
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    /*margin-bottom: 1rem;*/
+    padding: 1rem 1rem;
+    border-bottom: 1px solid #EDEEEF;
+}
+.trumpet-other-item:last-child{
+    border: none;
+}
+.trumpet-other-item .trumpet-game-icon {
+    width: 5rem;
+    height: 5rem;
+    display: block;
+    border-radius: 0.94rem;
+    margin-right: 0.5rem;
+    color: #333333;
+}
+.trumpet-other-item .game-info .trumpet-title {
+    font-size: 1.33rem;
+    font-weight: bold;
+    color: #333333;
+    margin: 0;
+    width: 16rem;
+    overflow: hidden;
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+}
+
+.trumpet-other-item .game-info .game-name-server{
+    font-size: 0.94rem;
+    color: #F45D5D;
+}
+.trumpet-other-item .trumpet-price{
+    font-size: 1.4rem;
+    color: #F45D5D;
+    font-weight: bold;
+    margin-left: auto;
+}
+.trumpet-other-item .game-info .game-day-consume{
+    font-size: 0.94rem;
+    color: #666666;
+}
+.trumpet-other-item .game-info .game-day-consume span{
+    color: #018FFF;
+}
+.occupy{
+    width: 100%;
+    height:4rem;
+    /*background: #ffffff;*/
+}
+
+/*
+图片点击查看样式*/
+.mui-preview-image.mui-fullscreen {
+    position: fixed;
+    z-index: 20;
+    background-color: #000;
+}
+.mui-preview-header,
+.mui-preview-footer {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    z-index: 10;
+}
+.mui-preview-header {
+    height: 44px;
+    top: 0;
+}
+.mui-preview-footer {
+    height: 50px;
+    bottom: 0px;
+}
+.mui-preview-header .mui-preview-indicator {
+    display: block;
+    line-height: 25px;
+    color: #fff;
+    text-align: center;
+    margin: 15px auto 4px;
+    width: 70px;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 12px;
+    font-size: 16px;
+}
+.mui-preview-image {
+    display: none;
+    -webkit-animation-duration: 0.5s;
+    animation-duration: 0.5s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+.mui-preview-image.mui-preview-in {
+    -webkit-animation-name: fadeIn;
+    animation-name: fadeIn;
+}
+.mui-preview-image.mui-preview-out {
+    background: none;
+    -webkit-animation-name: fadeOut;
+    animation-name: fadeOut;
+}
+.mui-preview-image.mui-preview-out .mui-preview-header,
+.mui-preview-image.mui-preview-out .mui-preview-footer {
+    display: none;
+}
+.mui-zoom-scroller {
+    position: absolute;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    -webkit-backface-visibility: hidden;
+}
+.mui-zoom {
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+}
+.mui-slider .mui-slider-group .mui-slider-item img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+}
+.mui-android-4-1 .mui-slider .mui-slider-group .mui-slider-item img {
+    width: 100%;
+}
+.mui-android-4-1 .mui-slider.mui-preview-image .mui-slider-group .mui-slider-item {
+    display: inline-table;
+}
+.mui-android-4-1 .mui-slider.mui-preview-image .mui-zoom-scroller img {
+    display: table-cell;
+    vertical-align: middle;
+}
+.mui-preview-loading {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: none;
+}
+.mui-preview-loading.mui-active {
+    display: block;
+}
+.mui-preview-loading .mui-spinner-white {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -25px;
+    margin-top: -25px;
+    height: 50px;
+    width: 50px;
+}
+.mui-preview-image img.mui-transitioning {
+    -webkit-transition: -webkit-transform 0.5s ease, opacity 0.5s ease;
+    -webkit-transition: opacity 0.5s ease, -webkit-transform 0.5s ease;
+    transition: opacity 0.5s ease, -webkit-transform 0.5s ease;
+    -o-transition: transform 0.5s ease, opacity 0.5s ease;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    transition: transform 0.5s ease, opacity 0.5s ease, -webkit-transform 0.5s ease;
+}
+@-webkit-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@-webkit-keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+p img {
+    max-width: 100%;
+    height: auto;
+}
+
+
+/*
+买家须知*/
+.saleRuleShade {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, .6);
+    z-index: 100;
+    display: none;
+}
+.saleRuleWrapper {
+    width: 100%;
+    height: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.saleRuleBox {
+    width: 27.78rem;
+    height: 37.84rem;
+    background: url(../images/trade/deal_window_bg@2x.png)no-repeat;
+    background-size: 100% 100%;
+}
+.saleRuleHeader {
+    font-size: 0.94rem;
+    color: #fff;
+    text-align: center;
+    /*height: 1.7rem;*/
+}
+.saleRuleHeaderTitle {
+    padding-top: .43rem;
+    font-size: 1.48rem;
+    color: #fff;
+    font-weight: 500;
+}
+.saleRuleHeaderDesc {
+    padding-top: 0.056rem;
+}
+.saleRuleProcess {
+    padding-top: .242rem;
+}
+.saleRuleTitle {
+    font-size: 1.33rem;
+    color: #333;
+    padding-left: 2.1rem;
+    margin: 1.5rem 0 0;
+    font-weight: bold;
+}
+.saleRuleShow {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 0.5rem 2.6rem;
+}
+.saleRuleShowItem {
+    font-size: .34rem;
+    color: #333;
+    text-align: center;
+    width: 2.8rem;
+}
+.saleRuleShowIcon {
+    display: block;
+    width: 2.8rem;
+    height: 2.73rem;
+    background: url(../images/trade/deal_window_ico_process@2x.png) center center no-repeat;
+    background-size: 100% 100%;
+}
+.saleRuleShowIcon.submitSaleRuleShowIcon{
+    background: url(../images/trade/deal_window_ico_choose@2x.png) center center no-repeat;
+    background-size: 100% 100%;
+}
+.saleRuleShowIcon.submitSaleRuleShowIcon_{
+    background: url(../images/trade/deal_window_ico_submit@2x.png) center center no-repeat;
+    background-size: 100% 100%;
+}
+
+.saleRuleShowIcon.checkSaleRuleShowIcon{
+    background: url(../images/trade/deal_window_ico_buy@2x.png) center center no-repeat;
+    background-size: 100% 100%;
+}
+.saleRuleShowIcon.checkSaleRuleShowIcon_{
+    background: url(../images/trade/deal_window_ico_audit@2x.png) center center no-repeat;
+    background-size: 100% 100%;
+}
+.saleRuleShowIcon.saleSaleRuleShowIcon{
+    background: url(../images/trade/deal_window_ico_game@2x.png) center center no-repeat;
+    background-size: 100% 100%;
+}
+.saleRuleShowIcon.saleSaleRuleShowIcon_{
+    background: url(../images/trade/deal_window_ico_buy@2x.png) center center no-repeat;
+    background-size: 100% 100%;
+}
+.saleRuleShowIcon.moneySaleRuleShowIcon{
+    background: url(../images/trade/deal_window_ico_role@2x.png) center center no-repeat;
+    background-size: 100% 100%;
+}
+.saleRuleShowIcon.moneySaleRuleShowIcon_{
+    background: url(../images/trade/deal_window_ico_money@2x.png) center center no-repeat;
+    background-size: 100% 100%;
+}
+
+.saleRuleShowTitle {
+    padding-top: .142rem;
+}
+.saleRuleShowIcon~.saleRuleShowTitle {
+    width: 4.42rem;
+    position: relative;
+    left: -.6rem;
+    font-size: 1.07rem;
+}
+.saleRuleRecord {
+    padding-top: .204rem;
+}
+.saleRuleList {
+    font-size: 1.017rem;
+    color: #666;
+    padding: 0 1.9rem 0 3rem;
+}
+.saleRuleList li {
+    position: relative;
+    line-height: 2rem;
+}
+.saleRuleList li:before {
+    content: '';
+    width: .4rem;
+    height: .4rem;
+    display: block;
+    position: absolute;
+    background: #6baff8;
+    border-radius: 50%;
+    left: -0.8rem;
+    top: .7rem;
+}
+.saleRuleCheck {
+    font-size: 1.09rem;
+    color: #999;
+    padding: 0.8rem 1.33rem 0.8rem;
+}
+.saleRuleCheck label {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.saleRuleCheckBtn {
+    opacity: 0;
+    position: absolute;
+}
+.saleRuleCheckIcon {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: .54rem;
+    display: inline-block;
+    background: url(../images/trade/deal_window_btn_more_n@2x.png)no-repeat;
+    background-size: 100% 100%;
+}
+.saleRuleCheckBtn:checked~.saleRuleCheckIcon {
+    background-image: url(../images/trade/deal_window_btn_more_s@2x.png);
+}
+.select-pay-icon{
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: .54rem;
+    display: inline-block;
+    background: url(../images/trade/deal_window_btn_more_n@2x.png)no-repeat;
+    background-size: 100% 100%;
+}
+.saleRuleCheckBtn:checked~.select-pay-icon {
+    background-image: url(../images/trade/deal_window_btn_more_s@2x.png);
+}
+.saleRuleClick {
+    font-size: 1.17rem;
+    color: #666;
+    padding: 0 1.33rem 0 ;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.saleRuleClickBtn {
+    height: 3.13rem;
+    border-radius: 9.9rem;
+}
+.saleRuleClickBtn.cancel {
+    width: 6.57rem;
+    background: #ECECEC;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    color: #666666;
+}
+.saleRuleClickBtn.confirm {
+    width: 17.92rem;
+    background: #018FFF;
+    color: #fff;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.pay-status-box{
+    margin-top: 0.4rem;
+    width: 100%;
+    /*height: 9.39rem;*/
+    background: #ffffff;
+}
+.pay-status-box .pay-money-box{
+    width: 100%;
+    /*height: 6.34rem;
+    border-bottom: 1px solid #F6F6F6;*/
+    padding: 0 1rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.pay-status-box .pay-money-box .ptb-num{
+    margin-left: auto;
+}
+.pay-status-box .need-pay{
+    margin-top: 0.5rem;
+}
+.pay-status-box .need-pay .need-pay-title{
+    font-size: 1.17rem;
+    color: #333333;
+    font-weight: bold;
+}
+.pay-status-box .select-pty-pay{
+    width: 100%;
+    padding: 1.3rem 0;
+    font-size: 1.17rem;
+}
+.pay-status-box .need-pay .pay-num{
+    font-size: 1.4rem;
+    color: #F45D5D;
+    margin-left: auto;
+    font-weight: bold;
+}
+.pay-status-box .need-pay .pay-num span{
+    font-size: 0.94rem;
+}
+.pay-status-box .pay-time{
+    font-size: 0.94rem;
+    color: #999999;
+    padding: 0.8rem 1rem;
+}
+.pay-status-box .remain-time{
+    color: #F45D5D;
+}
+.pay-way-box{
+    width: 100%;
+    height: auto;
+    margin-top: 0.4rem;
+    background: #ffffff;
+}
+.pay-way-box .select-pay-way .select-pay-item{
+    width: 100%;
+    padding: 0 1rem;
+    height: 3.6rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border-bottom: 1px solid #F6F6F6;
+    font-size: 1.33rem;
+}
+.pay-way-box .select-pay-way .select-pay-item label{
+    width: 100%;
+}
+.pay-way-box .select-pay-way .select-pay-item:last-child{
+    border: none;
+}
+.pay-way-box .select-pay-way .select-pay-item .zfb-icon{
+    width: 2.11rem;
+    height: 2.11rem;
+    background:url(../images/trade/order_pay_ico_alipay@2x.png)no-repeat ;
+    background-size: 100% 100%;
+    margin-right: 1rem;
+    margin-left: 0.5rem;
+}
+.pay-way-box .select-pay-way .select-pay-item .wx-icon{
+    width: 2.11rem;
+    height: 2.11rem;
+    background:url(../images/trade/order_pay_ico_wechat@2x.png)no-repeat ;
+    background-size: 100% 100%;
+    margin-right: 1rem;
+    margin-left: 0.5rem;
+}
+.pay-way-box .pay-tips {
+    margin-top: 1rem;
+    padding: 0 0.9rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.pay-way-box .pay-tips p{
+    color: #999999;
+    font-size: 1.017rem;
+    line-height: 1.8rem;
+}
+.pay-way-box .pay-tips p.title{
+    font-size: 1.17rem;
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 0.5rem;
+}
+.tips-box {
+    width: 23.87rem;
+    margin: 0 auto;
+    background: #FFF;
+    border-radius:0.6rem;
+    font-size: 1.25rem;
+    text-align: center;
+    padding-top: 1.4rem;
+    position: relative;
+}
+.tips-box p.title{
+    font-size: 1.33rem;
+    font-weight: bold;
+    margin-bottom: 1.1rem;
+    text-align: center;
+}
+.tips-box p{
+    text-align: left;
+    margin-bottom: 1rem;
+    padding: 0 1.4rem;
+}
+.tips-box .know-btn{
+    width: 100%;
+    height: 3.6rem;
+    border-top: 1px solid #DEE2E5;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    margin-top: 1.5rem;
+    color: #018EFE;
+}
+.footer-fixed-box .to-pay-btn,.footer-fixed-box .edit-btn,.footer-fixed-box .again-btn{
+    width: 26rem;
+    height: 3.13rem;
+    border-radius: 9.9rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    font-size: 1.17rem;
+    color: #ffffff;
+    margin-left: 1rem;
+    background: #018EFE;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+.footer-fixed-box .to-pay-btn{
+    background: #FF8C1B;
+}
+.footer-fixed-box .edit-btn{
+    width: 12.91rem;
+}
+.footer-fixed-box .buy-btn.disabled,.footer-fixed-box .edit-btn.disabled{
+    background: #D6D6D6;
+    color: #FFFFFF;
+}
+.trade_record_header.pa{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    background: #fff;
+}
+.record-instructions-contain{
+    width: 100%;
+    background: url(../images/trade/use_process_bg@2x.png)no-repeat;
+    background-size: 100% 100%;
+    height: 100vh ;
+    padding-top: 5.7rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.record-instructions-contain .instruction-title{
+    color: #ffffff;
+    font-size: 1.64rem;
+    font-weight: bold;
+    text-align: center;
+}
+.record-instructions-contain .instruction-step-box{
+    width: 28.8rem;
+    height: 32.8rem;
+    background: rgba(242,251,255,0.71);
+    border-radius: 0.62rem;
+    margin: 1.8rem auto;
+    padding: 1.64rem 2.034rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.record-instructions-contain .instruction-step-box .step-img{
+    width: 2.34rem;
+}
+.record-instructions-contain .instruction-step-box .steps-text{
+    font-size: 1.17rem;
+    margin-left: 0.4rem;
+}
+.record-instructions-contain .instruction-step-box .steps-text img{
+    width: 17.2rem;
+    margin: 1.33rem 0 2rem;
+}
+.trade-instructions-contain{
+    width: 100%;
+    background: url(../images/trade/kown_trupmt_bg@2x.png)no-repeat;
+    background-size: 100% 100%;
+    height: auto ;
+    padding: 5.24rem 1.4rem 4.3rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.trade-instructions-contain .instructions-part1{
+    width: 100%;
+    height: 8.217rem;
+    background: url(../images/trade/kown_trumpet_bg_content@2x.png)no-repeat;
+    background-size: 100% 100%;
+    font-size: 1.178rem;
+    color: #666666;
+    padding: 1.33rem 2.19rem 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.trade-instructions-contain .instructions-part1>a{
+    margin-top: 0.8rem;
+    color: #018FFF;
+    text-decoration: underline!important;
+    display: block;
+}
+.trade-instructions-contain .instructions-part2{
+    width: 100%;
+    height: 25.52rem;
+    background: #ffffff;
+    border-radius: 0.62rem;
+    margin-top:0.86rem;
+}
+.trade-instructions-contain .instructions-part3{
+    width: 100%;
+    height: 42.54rem;
+    background: #ffffff;
+    border-radius: 0.62rem;
+    margin-top:0.86rem;
+}
+.toSaleRuleShowIcon{
+    margin: -0.3rem auto 0;
+    width: 2.66rem;
+    height: 0.47rem;
+    background: url(../images/trade/deal_window_ico_process@2x.png) center center no-repeat;
+    -webkit-background-size: 100% 100%;
+}
+.trade-instructions-contain .saleRuleTitle{
+    margin-top: 1.1rem;
+}
+.trade-instructions-contain .saleRuleList li {
+    position: relative;
+    line-height: 1.9rem;
+}
+.apply-success-contain{
+    padding-top: 1.48rem;
+}
+.apply-success-contain .success-icon{
+    width: 11.66rem;
+    height: 9.78rem;
+    margin: 0 auto;
+    display: block;
+}
+.apply-success-contain .success-text{
+    margin: 1.8rem auto 1.2rem;
+    color: #333333;
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.4rem;
+}
+.apply-success-contain .success-tips{
+    margin: 0 auto;
+    width: 27.23rem;
+    color: #999999;
+    font-size: 1.17rem;
+    text-align: center;
+    line-height: 2rem;
+}
+.apply-success-contain .back-home-btn {
+    width: 8.2rem;
+    height: 2.66rem;
+    border: 1px solid #018FFF;
+    border-radius: 9.9rem;
+    text-align: center;
+    line-height: 2.66rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    font-size: 1.17rem;
+    color: #018FFF;
+    margin: 2rem auto;
+    display: block;
+}

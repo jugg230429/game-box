@@ -1,0 +1,402 @@
+body{
+    background-color: #f7f7f7;
+}
+.left_user_info{
+    width:242px;
+    min-height:570px;
+    background:rgba(255,255,255,1);
+    border:1px solid rgba(221,221,221,1);
+    margin-bottom: 20px;
+}
+.right_user_info{
+    width:935px;
+    min-height:603px;
+    background:rgba(255,255,255,1);
+    border:1px solid rgba(221,221,221,1);
+    margin-left: 14px
+}
+.userinfo_con{
+    min-height: 668px;
+    margin-bottom: 50px;
+    margin-top: 22px;
+}
+.right_user_info_title{
+    background-color: #F9F9F9;
+    height:48px;
+}
+.gae424g{
+    position: relative;
+    top: 40px
+}
+.gamelistpage{
+    /* width: 100%; */
+    height: 30px;
+    text-align: center;
+    margin: 20px 0;
+
+}
+.game_bill_list{
+    min-height: 405px;
+}
+.gamelistpage li{
+    display: inline;
+}
+.gamelistpage .active{
+    border:1px solid #018FFF;
+    background-color: #018FFF;
+    color: #ffffff
+}
+.page-item{
+    border:1px solid #e2e2e2;
+    color: #333;
+    margin-left: 5px;
+    text-align: center;
+    padding: 3px 2px;
+}
+.page-link{
+    padding: 4px 15px;
+}
+.no_mygame_con_item{
+    font-size:18px;
+    font-weight:400;
+    color:#999999;
+    text-align: center;
+    padding-top: 160px
+}
+.right_user_info_title_left{
+    margin-top: 15px;
+    margin-left: 30px;
+    font-size: 16px;
+    font-weight:400;
+    color:rgba(0,0,0,1);
+    cursor: pointer;
+    text-align: center;
+}
+.sort_fgx_fe{
+    width:68px;
+    height:2px;
+    /* background-color: #018FFF; */
+    position: relative;
+    top: 11px;
+    left: -10px;
+}
+.mygame_con{
+    position: relative;
+    left: 30px;
+}
+.mygame_con_item{
+    width: 88px;
+    height: 85px;
+    text-align: center;
+    margin-left: 10px;
+    margin-top: 14px;
+    float: left;
+    margin-bottom: 10px
+}
+.mygame_con_item_img{
+    width:58px;
+    height:58px;
+    border-radius:13px;
+    margin-left: 12px;
+    background-color: #e2e2e2
+}
+.mygame_con_item_img .game_icon{
+    width: 58px;
+    height: 58px;
+    border-radius: 13px;
+}
+.game_type_icon{
+    position: relative;
+    left: 20px;
+    top: -21px
+}
+.mygame_con_item_title{
+    font-size:14px;
+    color:rgba(34,34,34,1);
+    font-weight:400;
+    width: 88px;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    margin-top: 8px;
+}
+.right_user_info_title_left.active .sort_fgx_fe{
+    background-color: #018FFF;
+}
+.right_user_info_title_left.active{
+    color: #018FFF;
+    position: relative;
+}
+.right_user_info_title_left.active:after{
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width:100%;
+    height: 2px;
+    background:#018FFF ;
+    content: '';
+}
+.right_user_info_con{
+    width: 80%;
+    height: 350px;
+    margin-left: 10%;
+    font-size: 14px;
+}
+.right_user_info_title_right{
+    font-size: 12px;
+    margin-top: 15px;
+    margin-right: 30px;
+    color: #777777;
+}
+.right_user_info_title_right a{
+    color: #777777;
+}
+.right_user_info_title_right span{
+    color: #222222!important;
+}
+.right_user_info_title_right a:hover{
+    color: #018FFF
+}
+.right_user_info_item.first{
+    margin-top:50px!important
+}
+.right_user_info_item{
+    margin-top: 20px;
+    height: 30px;
+    /* background-color: #018FFF; */
+    color: #222222
+}
+.right_user_info_item.first .key{
+    width: 70px;
+    letter-spacing: 1px;
+}
+.right_user_info_item.first .keyword span,.right_user_info_item.second .keyword span{
+    margin-left: 10px
+}
+.right_user_info_item.second .key{
+    width: 70px;
+    letter-spacing: 9px;
+}
+.right_user_info_item.other .key{
+    letter-spacing:20px;
+}
+.right_user_info_item.other .keyword span{
+    position: relative;
+    top:-10px
+}
+.right_user_info_item.other .keyword input[type='text']{
+    width:301px;
+    height:36px;
+    background:rgba(255,255,255,1);
+    border:1px solid rgba(221, 221, 221, 1);
+    border-radius:4px;
+    text-indent: 15px;
+    position: relative;
+    top:-10px;
+    left: 10px;
+}
+.right_user_info_item.other .key span{
+    position: relative;
+    left: 10px;
+}
+.right_user_info_item.upload{
+    height: 60px!important;
+    padding-top: 25px;
+}
+.gfaef31{
+    top: 0px!important
+}
+.left_user_info_img{
+    width:79px;
+    height:79px;
+    border-radius:50%;
+    margin-left: 35%;
+    margin-top: 35px;
+    position: relative;
+}
+.checked_item_con{
+    margin-top: 28px;
+}
+.left_user_info_img img{
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+}
+.left_user_info_grade{
+    height: 10px;
+}
+.left_user_info_grade img{
+    position: relative;
+    left: 140px;
+    top: -20px;
+}
+.checked_item{
+    width:242px;
+    height:48px;
+    cursor: pointer;
+    /* background-color: #018FFF */
+}
+.checked_item:hover{
+    background-color: #E9E9E9
+}
+.checked_item img{
+    margin-top: 12px;
+    margin-left:30px;
+}
+.checked_item p{
+    font-size: 14px;
+    margin-top: 14px;
+    margin-left: 20px;
+    color: #222222;
+}
+.left_user_info_name{
+    font-size:14px;
+    text-align: center;
+    /* margin-top: 12px; */
+    color:rgba(0,0,0,1);
+}
+.checked_item.active{
+    background-color: #018FFF!important;
+
+}
+.checked_item.active p{
+    color: #ffffff!important;
+}
+.user_triangle:before, .user_triangle:after {
+    transform: rotate(360deg);
+    content: "";
+    display: block;
+    border-width: 8px;
+    z-index: 99;
+    position: absolute;
+    left: 238px;
+    top: 475px;
+    border-style: solid dashed dashed;
+    border-color: transparent #ffffff transparent transparent;
+    font-size: 0;
+    line-height: 0;
+    border-top: 8px solid transparent;
+    border-right: 12px solid ;
+}
+.user_triangle:after {
+    position: absolute;
+    left: 238px;
+    border-color: transparent #ffffff transparent transparent;
+}
+.error_texts{
+    letter-spacing: 1px;
+    font-size:12px;
+    font-weight:400;
+    color:rgba(255,0,0,1);
+    position: relative;
+    top: 7px;
+    left: 5px;
+}
+.game_bill_header{
+    width:885px;
+    height:35px;
+    background-color: #EFEFEF;
+    margin: 0 auto;
+    margin-top: 20px
+}
+.game_bill_header div p{
+    padding-top: 9px;
+    color: #222222;
+    font-size:12px;
+    font-weight:bold;
+}
+.game_title{
+    width: 20%;
+    text-align: center;
+}
+.game_title.half{
+    width:50%;
+}
+.game_money{
+    width: 35%;
+    text-align: center;
+}
+.integral_title{
+	width:35%;
+	text-align: center;
+}
+.integral_way{
+	width:35%;
+	text-align: center;
+}
+.game_money.half{
+    width:50%;
+}
+.game_time.half{
+    width:50%;
+}
+.game_time,.integral_time{
+    width: 23%;
+    text-align: center;
+}
+.game_type{
+    width: 14%;
+    text-align: center;
+}
+.game_title p,.game_money p,.game_time p,.game_type p{
+    width: 100%;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+}
+
+.game_bill_item{
+    width:885px;
+    height:20px;
+    margin:0 auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.game_bill_item:nth-child(2n-1){
+    background: #FCFCFC;
+}
+.game_bill_item .game_title{
+    color: #222222;
+    font-size:12px;
+    font-weight:400;
+}
+.game_bill_item .game_money{
+    font-size:14px;
+    font-weight:400;
+    color:#018FFF;
+}
+.recharge-total{
+    text-align: right;
+    width: 885px;
+    height: 35px;
+    margin: 0 auto;
+    background: #EFEFEF;
+    line-height: 35px;
+    font-size: 14px;
+    font-weight: bold;
+    padding-right: 30px;
+    box-sizing: border-box;
+}
+.game_bill_item .game_time{
+    font-size:12px;
+    font-weight:400;
+    color:rgba(34,34,34,1);
+}
+.game_bill_item .game_type{
+    font-size:12px;
+    font-weight:400;
+    color:rgba(34,34,34,1);
+}
+.levelIcon {
+    width: 26px;
+    height: 20px;
+    background-image: url('../images/icon_vip.png');
+    background-size:100% 100%;
+    position: absolute;
+    right: 11px;
+    bottom: 0;
+    text-align: center;
+    font-size: 8px;
+    font-weight: bold;
+    color: #fff;
+}

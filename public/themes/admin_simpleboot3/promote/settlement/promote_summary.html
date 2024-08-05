@@ -1,0 +1,69 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('settlement/promote_withdraw')}">结算汇总</a></li>
+            <span class="title_remark">说明：汇总展示每个渠道的结算详情，充值数据是指消费到游戏的所有订单记录</span>
+        </ul>
+        <form id="search_form" class="well form-inline fr" method="get" action="{:url('promote_summary')}">
+
+            <select name="promote_id" id="promote_id" class="selectpicker " promote_id="{:input('request.promote_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+                <option value="">渠道账号</option>
+                <php>$map = ['parent_id'=>['eq',0]];</php>
+                <volist name=":get_promote_list($map)" id="vo">
+                    <option value="{$vo.id}" >{$vo.account}</option>
+                </volist>
+            </select>
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('promote_summary')}">清空</a>
+        </form>
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>渠道账号</th>
+                    <th>总充值</th>
+                    <th>总注册</th>
+                    <th>分成佣金</th>
+                    <th>已结算佣金（收益提现/收益兑换）</th>
+                    <th>提现手续费</th>
+                </tr>
+            </thead>
+            <tbody>
+                <empty name="data_lists">
+                    <tr><td colspan="6" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <foreach name="data_lists" item="vo">
+                    <tr>
+                        <td>{$vo.parent_name}</td>
+                        <td>{:number_format($vo['totalamount'],2,'.','')}</td>
+                        <td>{$vo['totalreg']}</td>
+                        <td>{:number_format($vo['totalmoney'],2,'.','')}</td>
+                        <td>{:number_format($sum[$vo['parent_id'].'_1']['money']+$sum[$vo['parent_id'].'_2']['money'],2,'.','')}({:null_to_0($sum[$vo['parent_id'].'_1']['money'])}/{:null_to_0($sum[$vo['parent_id'].'_2']['money'])})</td>
+                        <td>{:number_format($sum[$vo['parent_id'].'_1']['fee']+$sum[$vo['parent_id'].'_2']['fee'],2,'.','')}</td>
+                    </tr>
+                    </foreach>
+                    <tr class="data_summary">
+                        <td><span style="margin-right: 10px;">汇总</span></td>
+                        <td class="data_summary_bold">{:null_to_0($all['totalamount'])}</td>
+                        <td class="data_summary_bold">{$all['totalreg']}</td>
+                        <td class="data_summary_bold">{:null_to_0($all['totalmoney'])}</td>
+                        <td class="data_summary_bold">{:null_to_0($all['withdraw']+$all['exchange'])}({:null_to_0($all['withdraw'])}/{:null_to_0($all['exchange'])})</td>
+                        <td class="data_summary_bold">{:null_to_0($all['totalfee'])}</td>
+                    </tr>
+                </empty>
+            </tbody>
+        </table>
+        <div class="pagination">
+            {$page}
+        </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script type="text/javascript">
+        promote_id = $("#promote_id").attr('promote_id');
+        $("#promote_id").selectpicker('val', promote_id);
+
+    </script>
+</body>
+</html>

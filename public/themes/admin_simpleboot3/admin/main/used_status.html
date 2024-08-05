@@ -1,0 +1,43 @@
+<include file="public@header"/>
+</head>
+
+<body>
+<div class="wrap js-check-wrap">
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('edit')}" method="post">
+    <fieldset>
+        <div class="tabbable">
+            <div class="tab-content">
+                <div class="tab-pane active" id="A">
+                    <div class="form-group">
+                        <label for="input-site_icp" class="col-sm-2 control-label">CPU：</label>
+                        <div class="col-md-4 col-sm-6">
+                           {$data.cpu_usage}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site_icp" class="col-sm-2 control-label">内存：</label>
+                        <div class="col-md-4 col-sm-6">
+                            {$data.mem_usage}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site_icp" class="col-sm-2 control-label">磁盘可用空间大小（G）：</label>
+                        <div class="col-md-4 col-sm-6">
+                            {$data.hd_avail}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site_icp" class="col-sm-2 control-label">检测时间：</label>
+                        <div class="col-md-4 col-sm-6">
+                            {$data.detection_time}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    </form>
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

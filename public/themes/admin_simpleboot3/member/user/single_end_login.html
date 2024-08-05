@@ -1,0 +1,110 @@
+<include file="public@header" />
+<style>
+    .user-input {
+    margin-top: 5px;
+}
+.f2{
+        float: left;
+    position: relative;
+    left: 285px;
+    top: -26px;
+    color: #999;
+    font-size: 12px;
+}
+.user-remarks {
+    margin-left: -113px !important;
+    }
+</style>
+</head>
+<body>
+
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li ><a href="{:url('user/safecenter')}">隐私模式</a></li>
+        <li class="active"><a href="{:url('user/single_end_login')}">单端登录</a></li>
+        <li ><a href="{:url('user/defense')}">防刷设置</a></li>
+        <span class="title_remark" style="color:rgb(231,76,60)"></span>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('single_end_login')}" method="post">
+        <div class="tabbable">
+            <div class="tab-content">
+                <div class="tab-pane active">
+
+                    <div class="form-group">
+                        <label for="input-html_cache_on" class="col-sm-2 control-label">单端登录：</label>
+                        <div class="col-md-6 col-sm-10">
+                            <div class="user-input fl">
+                                <input type="radio"  name="single_end_login_admin" <eq name="data.single_end_login_admin" value="0">checked</eq> value="0">关闭
+                                <label class="ml50"></label>
+                                <input type="radio"  name="single_end_login_admin" <eq name="data.single_end_login_admin" value="1">checked</eq> value="1">开启
+                            </div>
+                            <span class="fl user-remarks">开启时选中账号仅可在单一站点上登录，多端登录时自动下线</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input-html_cache_on" class="col-sm-2 control-label">管理员账号：</label>
+                        <div class="col-md-2 col-sm-10">
+                            <php>$map = ['parent_id'=>0];</php>
+                            <select name="admin_id[]" id="admin_id" class="selectpicker form-control " data-none-selected-text="全部" multiple data-actions-box="true" data-live-search="true" data-size="8" style="width: 300px;" title="选择账号">
+                                <volist name=":get_admin_list()" id="vo">
+                                    <option admin-id="{$vo.id}" value="{$vo.id}" <if condition="in_array($vo['id'], $admin_id)">selected</if>>{$vo.account}</option>
+                                </volist>
+                            </select>
+                            <span class="fl f2">可多选</span>
+                        </div>
+                    </div>
+                    <div style="width: 751px;height:1px;background-color: #ddd;margin-left: 35px;margin-bottom: 30px;"></div>
+
+
+                    <div class="form-group">
+                        <label for="input-html_cache_on" class="col-sm-2 control-label">单端登录：</label>
+                        <div class="col-md-6 col-sm-10">
+                            <div class="user-input fl">
+                                <input type="radio"  name="single_end_login_promote" <eq name="data.single_end_login_promote" value="0">checked</eq> value="0">关闭
+                                <label class="ml50"></label>
+                                <input type="radio"  name="single_end_login_promote" <eq name="data.single_end_login_promote" value="1">checked</eq> value="1">开启
+                            </div>
+                            <span class="fl user-remarks">手机号字段以***格式显示</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input-html_cache_on" class="col-sm-2 control-label">渠道账号：</label>
+                        <div class="col-md-2 col-sm-10">
+                            <php>$map = ['parent_id'=>0];</php>
+                            <select name="promote_id[]" id="promote_id" class="selectpicker form-control " data-none-selected-text="全部" multiple data-actions-box="true" data-live-search="true" data-size="8" style="width: 300px;" title="选择账号">
+                                <volist name=":get_promote_list($map)" id="vo">
+                                    <option promote-id="{$vo.id}" value="{$vo.id}" <if condition="in_array($vo['id'], $promote_id)">selected</if>>{$vo.account}</option>
+                                </volist>
+                            </select>
+                            <span class="fl f2"> 可多选（显示一级渠道，二三级默认跟随）</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-10">
+
+                            <button type="submit" class="btn btn-primary js-ajax-submit save-btn " data-refresh="1">
+                                {:lang('SAVE')}
+                            </button>
+                             <!-- <a class="btn btn-default return-btn" href="javascript:history.back(-1)">{:lang('BACK')}</a> -->
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+<script src="__STATIC__/js/admin.js"></script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+
+<script>
+
+</script>
+
+</body>
+</html>

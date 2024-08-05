@@ -1,0 +1,138 @@
+<extend name="../mediapublic/base"/>
+<!-- 主体内容 -->
+<block name="body">
+    <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/userinfos.css">
+    <!-- 用户信息 -->
+    <div class="userinfo_con">
+        <div class="layui-container">
+            <div class="fl left_user_info">
+                <div class="left_user_info_img">
+                    <img src="{:cmf_get_image_url($user['head_img'])}" alt=""
+                         onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                    <span class="levelIcon">V{$user['vip_level']}</span>
+                </div>
+
+                <p class="left_user_info_name">{$user.nickname}</p>
+                <div class="checked_item_con">
+                    <include file="mediapublic@left_menu"/>
+                </div>
+            </div>
+            <div class="fl right_user_info">
+                <div class="right_user_info_title">
+                    <p class="fl right_user_info_title_left">我的资料</p>
+                    <p class="fg right_user_info_title_right">您当前的位置：<a href="{:url('Index/index')}">平台首页</a>><a
+                            href="{:url('User/userinfo')}"> 用户中心</a>><span>我的资料</span></p>
+                </div>
+                <div class="right_user_info_con">
+                    <form class="js-ajax-form" action="{:url('User/userinfo')}" method="post">
+                        <div class="right_user_info_item first">
+                            <p class="fl key">登录账号</p>
+                            <p class="fl keyword">: <span>{$user.account}</span></p>
+                        </div>
+                        <div class="right_user_info_item second clear">
+                            <p class="fl key pingtaibi">平台币</p>
+                            <p class="fl keyword">: <span>{$user.balance}</span></p>
+                        </div>
+                        <notempty name="vipLevel">
+                        <div class="right_user_info_item three clear">
+                            <p class="fl key">会员等级</p>
+                            <p class="fl keyword">: <span>vip{$user['vip_level']}</span><a
+                                    class="btn_vip js-btn-vip" href="" onclick="return false;">查看等级</a></p>
+
+                        </div>
+                        </notempty>
+                        <div class="right_user_info_item other clear">
+                            <p class="fl key">昵<span>称</span></p>
+                            <p class="fl keyword"><span>: </span>
+                                <input type="text" maxlength="24" name="nickname" value="{$user.nickname}"
+                                       placeholder="昵称为1-24个字符"></p>
+                        </div>
+                        <div class="right_user_info_item other clear upload">
+                            <p class="fl key">头<span>像</span></p>
+                            <p class="fl keyword"><span class="gfaef31 fl">: </span>
+                            <div class="upload_btn fl">
+                                <input id="icon" type="hidden" name="head_img" value="{$user.head_img}">
+                                <img id="icon-preview" src="{:cmf_get_image_preview_url($user['head_img'])}"
+                                     onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+
+                            </div>
+                            <a class="fl upload_btn_imgname"
+                               href="javascript:uploadOneImage('图片上传','#icon','','user');">更换头像</a>
+                            <p class="fl upload_btn_tap">（仅支持{$imageext}文件格式，建议文件小于1M）</p>
+                            </p>
+                        </div>
+                        <div class="update_userinfos">
+                            <button type="submit" class="js-ajax-submit">确认</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="vip_modals" style="">
+        <span class="btn_close"><img src="__STATIC__/images/login_btn_close_n.png" alt=""></span>
+        <div class="vip_modals_title"><span class="">当前等级：</span><span class="vip_num">VIP{:session('member_auth.vip_level')}</span>
+            <if condition="$next_pay nheq false"><span class="vip_tip">（距离升级还差￥<span>{$next_pay}）</span></if>
+        </div>
+        <table class="vip_table">
+            <tbody>
+            <tr>
+                <th>等级</th>
+                <th>消费额</th>
+                <th>特权礼包</th>
+                <th>升级积分</th>
+                <th>兑换折扣</th>
+            </tr>
+            <volist name="data" id="vo">
+                <tr>
+                    <td>VIP {$key}</td>
+                    <td>{$vo}</td>
+                    <td><span <if condition="$key eq 0"> class="no"<else/>class="yes"</if>></span></td>
+                    <if condition="$vip_upgrade[$key] neq ''">
+                        <td><span class="">{$vip_upgrade[$key]['user_get_point']}</span></td>
+                        <else/>
+                        <td><span class="no"></span></td>
+                    </if>
+                    <td><span <if condition="$key eq 0"> class="no"<else/>class="yes"</if>></span></td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+        <div class="vip_title_tip">
+            会员等级由消费额决定，满足相应消费额即可升级。
+        </div>
+        <div class="vip_text_tip">
+            1、消费额指在游戏内使用支付宝、微信、平台币、绑币等方式进行支付的消费金额。
+        </div>
+        <div class="vip_text_tip">
+            2、消费额在支付成功后，实时增加，每日无上限。
+        </div>
+        <div class="vip_text_tip">
+            3、使用代金券、话费充值手游金额及充值平台增值服务金额不包含在内。
+        </div>
+    </div>
+    </div>
+    <script>
+
+        <!-- 查看等级弹窗 -->
+        $('.js-btn-vip').on('click', function () {
+            layer.closeAll();
+            var cons = $('.vip_modals');
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 0,
+                area: ['517px', 'auto'],
+                content: cons,
+                end: function () {
+                    $('html,body').removeClass('no-scroll');
+                }
+            });
+            return false;
+        });
+        $(".btn_close").click(function () {
+            layer.closeAll();
+            $(".vip_modals").hide();
+        })
+    </script>
+</block>

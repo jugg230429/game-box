@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+<body>
+<div class="wrap">
+    <section class="section">
+        <div class="install" id="log">
+            <ul id="install-msg-panel" class="unstyled"></ul>
+        </div>
+        <div class="bottom upgrade_info text-center">
+
+        </div>
+    </section>
+</div>
+<script src="__STATIC__/js/jquery.js"></script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script type="text/javascript">
+    function upgrade(step){
+
+        if(step==1){
+            message = get_message('开始下载更新包...');
+            $('.upgrade_info').html(message);
+        }else if(step == 2){
+            message = get_message('开始解压更新包...');
+            $('.upgrade_info').html(message);
+        }else if(step == 3){
+            message = get_message('开始解压更新sql...');
+            $('.upgrade_info').html(message);
+        }else if(step == 4){
+            message = get_message('开始执行更新sql...');
+            $('.upgrade_info').html(message);
+        }else if(step == 5){
+            message = get_message('开始执行覆盖更新文件...');
+            $('.upgrade_info').html(message);
+        }else{
+            alert('参数错误');return false
+        }
+        $.ajax({
+            url: "{:url('upgrade_option')}",
+            data: {step: step},
+            dataType: 'json',
+            type: 'post',
+            success: function (data) {
+                console.log(data)
+                message = get_message(data.msg);
+                $('.upgrade_info').html(message);
+                if(data.code==1){
+                    step = step+1;
+                    if(data.status!=1){
+                        upgrade(step);
+                    }else{
+                        message = get_message('更新完成');
+                        $('.upgrade_info').html(message);
+                        layer.alert('恭喜，本次更新完成',{title:'',closeBtn:false},function () {
+                            parent.window.location.reload();
+                        });
+                    }
+                }
+            }
+        });
+    }
+    function get_message(message){
+        html = $('.upgrade_info').html();
+        html=html+message+'<br>';
+        return html;
+    }
+    $(function () {
+        $.ajax({
+            url: "{:url('check_version')}",
+            data: {},
+            dataType: 'json',
+            type: 'post',
+            success: function (data) {
+                if(data['code']!='200'){
+                    alert(data.msg);
+                }else{
+                    upgrade(1);
+                }
+            }
+        });
+        $('body').on('click','.error_close',function () {
+            parent.window.location.reload();
+        })
+        $('body').on('click','.overviewfile',function () {
+            upgrade(5);//覆盖文件
+        })
+    });
+</script>
+</body>
+</html>

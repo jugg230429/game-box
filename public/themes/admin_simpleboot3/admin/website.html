@@ -1,0 +1,841 @@
+<iframe id="login_ifr" style="width:100%;height:100%;border:none;display: none"  src="" scrolling="no"></iframe>
+<style>
+    .useBtn_n {
+    display: block;
+    width: 160px;
+    height: 47px;
+    background: #ffffff;
+    border-radius: 5px;
+    line-height: 47px;
+    text-align: center;
+    color: #2C68FF;
+    box-shadow: 0px 4px 6px 0px rgb(56 113 233 / 80%);
+    font-size: 16px;
+    margin: auto;
+    margin-top: 32px;
+}
+.useBtn_n:hover{
+    color: #2C68FF;
+    text-decoration: none;
+}
+</style>
+<!-- 未购买旗舰版的提示 -->
+<div class="unPayBoxHome firstDefaultHome" style="display: none">
+    <div class="topTipBox">
+        <p class="titleTip">您的账号尚未授权<span class="nowVersion">手游联运旗舰版</span>，请授权后使用！</p>
+        <div class="tipDetail">
+            <p style="margin-top: 10px;">不同系统自由组合，任意扩展，打通多平台数据、</p>
+            <p>构建统一的用户ID体系，全盘释放运营威力</p>
+        </div>
+        <a href="https://www.vlsdk.com/" target="_blank" class="useBtn">申请授权使用</a>
+    </div>
+    <div class="con">
+        <p class="title-productUnique">产品特色</p>
+        <div class="showAllAdvantage">
+            <div class="avantageModal">
+                <img src="__TMPL__/public/assets/images/login/png_one.png" alt="">
+                <p class="itemAvantage">三合一系统</p>
+                <div class="itemDetailAvantage">
+                    <p>手游、H5游戏、页游 </p>
+                    <p>一套系统同时运营</p>
+                </div>
+            </div>
+            <div class="avantageModal">
+                <img src="__TMPL__/public/assets/images/login/png_two.png" alt="">
+                <p class="itemAvantage">一键切换</p>
+                <div class="itemDetailAvantage">
+                    <p>三套系统统一键切换 </p>
+                    <p>操作简单流畅</p>
+                </div>
+            </div>
+            <div class="avantageModal">
+                <img src="__TMPL__/public/assets/images/login/png_three.png" alt="">
+                <p class="itemAvantage">统一管理后台</p>
+                <div class="itemDetailAvantage">
+                    <p>实时查看游戏运营数据 </p>
+                    <p>用户行为一“网”打尽</p>
+                </div>
+            </div>
+            <div class="avantageModal">
+                <img src="__TMPL__/public/assets/images/login/png_four.png" alt="">
+                <p class="itemAvantage">推广系统</p>
+                <div class="itemDetailAvantage">
+                    <p>海量资源自由对接  </p>
+                    <p>分成比例自主拟定</p>
+                </div>
+            </div>
+            <div class="avantageModal">
+                <img src="__TMPL__/public/assets/images/login/png_five.png" alt="">
+                <p class="itemAvantage">游戏盒子APP</p>
+                <div class="itemDetailAvantage">
+                    <p>提升玩家活跃度及留存率 </p>
+                    <p>为平台带来更多价值</p>
+                </div>
+            </div>
+            <div class="avantageModal">
+                <img src="__TMPL__/public/assets/images/login/png_six.png" alt="">
+                <p class="itemAvantage">游戏免费对接</p>
+                <div class="itemDetailAvantage">
+                    <p>提供海量游戏资源 帮助 </p>
+                    <p>平台快速落地运营</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 未购买OA的提示 -->
+<div class="unPayBoxHome oaHome changeOAHome" style="display: none">
+    <div class="fl" style="padding-top: 10px;">
+        <img src="__TMPL__/public/assets/images/login/slider.png" alt="">
+    </div>
+    <div class="fl rightTipOA">
+        <div class="topTipBox">
+            <p class="titleTip">您的账号尚未授权<span class="nowVersion">工作室OA系统</span>，请授权后使用！</p>
+            <div class="tipDetail">
+                <p style="margin-top: 10px;">公会流水、成员业绩实时查询 </p>
+                <p>内部人员自愿信息共享，让公会管理更简单</p>
+            </div>
+            <a href="http://oa.vlsdk.com/"  target="_blank" class="useBtn">申请授权使用</a>
+        </div>
+        <div class="con">
+            <p class="title-productUnique">产品特色</p>
+            <div class="showAllAdvantage">
+                <div class="avantageModal">
+                    <img src="__TMPL__/public/assets/images/login/png_eleven.png" alt="">
+                    <p class="itemAvantage">无限制</p>
+                    <div class="itemDetailAvantage">
+                        <p>支持所有联运平台系统 </p>
+                        <p>对接即可使用，永久开源</p>
+                    </div>
+                </div>
+                <div class="avantageModal">
+                    <img src="__TMPL__/public/assets/images/login/png_twelve.png" alt="">
+                    <p class="itemAvantage">数据安全</p>
+                    <div class="itemDetailAvantage">
+                        <p>系统开源自由部署  </p>
+                        <p>避免出现员工数据泄露情况</p>
+                    </div>
+                </div>
+                <div class="avantageModal">
+                    <img src="__TMPL__/public/assets/images/login/png_thirteen.png" alt="">
+                    <p class="itemAvantage">数据分析</p>
+                    <div class="itemDetailAvantage">
+                        <p>整合所有平台数据</p>
+                        <p>不短优化推广方式</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 未购买商户客服管理的提示 -->
+<div class="unPayBoxHome kfBusinessHome changeKfBusinessHome" style="display: none;width: 100%;">
+    <div class="fl" style="position: relative;top: 0px;">
+        <img src="/themes/admin_simpleboot3/public/assets/images/login/shangwu.png" alt="">
+    </div>
+    <div class="fl rightTipOA" style="width:86.5%">
+        <div class="topTipBox" style="background-image: url(/themes/admin_simpleboot3/public/assets/images/login/bg-swkfxt.png);
+        background-size: 100% 100%;">
+            <p class="titleTip">您的账号尚未授权<span class="nowVersion">溪谷在线客服系统</span>，请授权后使用！</p>
+            <div class="tipDetail">
+                <p style="margin-top: 10px;">高可用，高好用的客服系统</p>
+                <p>  解决客户问题，提升客户满意度</p>
+            </div>
+            <a href="https://www.vlsdk.com/"  target="_blank" class="useBtn_n" >申请授权使用</a>
+        </div>
+        <div class="con">
+            <p class="title-productUnique">产品特色</p>
+            <div class="showAllAdvantage">
+                <div class="avantageModal">
+                    <img src="__TMPL__/public/assets/images/login/png_qqdjrkh.png" alt="">
+                    <p class="itemAvantage">全渠道接入客户</p>
+                    <div class="itemDetailAvantage">
+                        <p>移动APP、游戏SDK、网页</p>
+                        <p>咨询多样化沟通</p>
+                    </div>
+                </div>
+                <div class="avantageModal">
+                    <img src="__TMPL__/public/assets/images/login/png_wdaq.png" alt="">
+                    <p class="itemAvantage">稳定安全</p>
+                    <div class="itemDetailAvantage">
+                        <p>加密链接保证消息安全收发,</p>
+                        <p> 用户离开也可接收提醒</p>
+                    </div>
+                </div>
+                <div class="avantageModal">
+                    <img src="__TMPL__/public/assets/images/login/png_kfgxjd.png" alt="">
+                    <p class="itemAvantage">客服高效接待</p>
+                    <div class="itemDetailAvantage">
+                        <p>快速响应客户咨询，</p>
+                        <p>提升服务满意度</p>
+                    </div>
+                </div>
+                <div class="avantageModal">
+                    <img src="__TMPL__/public/assets/images/login/png_fwgcjk.png" alt="">
+                    <p class="itemAvantage">服务过程监控</p>
+                    <div class="itemDetailAvantage">
+                        <p>实时监控，数据报表细致全面，</p>
+                        <p>服务过程100%掌握</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 未购客服模块 -->
+<div class="unPayBoxHome kfWorkHome changeKfWorkHome" style="display: none;width:100%;">
+    <div class="fl" style="position: relative;top: 0px;">
+        <img src="/themes/admin_simpleboot3/public/assets/images/login/kefu.png" alt="">
+    </div>
+    <div class="fl rightTipOA" style="width:86.5%">
+        <div class="topTipBox" style="background-image: url(/themes/admin_simpleboot3/public/assets/images/login/bg-swkfxt.png);
+        background-size: 100% 100%;">
+            <p class="titleTip">您的账号尚未授权<span class="nowVersion">溪谷客服工作台</span>，请授权后使用！</p>
+            <div class="tipDetail">
+                <p style="margin-top: 10px;">高可用，高好用的客服系统</p>
+                <p>解决客户问题，提升客户满意度</p>
+            </div>
+            <a href="https://www.vlsdk.com/"  target="_blank" class="useBtn_n" >申请授权使用</a>
+        </div>
+        <div class="con">
+            <p class="title-productUnique">产品特色</p>
+            <div class="showAllAdvantage">
+                <div class="avantageModal">
+                    <img src="__TMPL__/public/assets/images/login/png_qqdjrkh.png" alt="">
+                    <p class="itemAvantage">全渠道接入客户</p>
+                    <div class="itemDetailAvantage">
+                        <p>移动APP、游戏SDK、网页</p>
+                        <p>咨询多样化沟通</p>
+                    </div>
+                </div>
+                <div class="avantageModal">
+                    <img src="__TMPL__/public/assets/images/login/png_wdaq.png" alt="">
+                    <p class="itemAvantage">稳定安全</p>
+                    <div class="itemDetailAvantage">
+                        <p>加密链接保证消息安全收发,</p>
+                        <p> 用户离开也可接收提醒</p>
+                    </div>
+                </div>
+                <div class="avantageModal">
+                    <img src="__TMPL__/public/assets/images/login/png_kfgxjd.png" alt="">
+                    <p class="itemAvantage">客服高效接待</p>
+                    <div class="itemDetailAvantage">
+                        <p>快速响应客户咨询，</p>
+                        <p>提升服务满意度</p>
+                    </div>
+                </div>
+                <div class="avantageModal">
+                    <img src="__TMPL__/public/assets/images/login/png_fwgcjk.png" alt="">
+                    <p class="itemAvantage">服务过程监控</p>
+                    <div class="itemDetailAvantage">
+                        <p>实时监控，数据报表细致全面，</p>
+                        <p>服务过程100%掌握</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 系统设置模块 -->
+<div class="systemModalInner" style="display: none;width: 100%;height: 100%;">
+    <div style="width: 100%;height: 100%;">
+        <div class="fl systemModalLeft" style="width: 220px;background: #162642;height: 100%;">
+            <ul class="nav-list one-menu" style="padding-left:10px">
+                <li>
+                    <a href="javascript:;" style="pointer-events: none;" class="dropdown-toggle one-menu-title one-drop-title js-one-drop-title customerOneMenu">
+                       <i class="fa fa-user-circle normal"></i><span class="menu-text normal"> 系统设置 </span>
+                    </a>
+                    <ul class="submenu two-menu twoSubMenuChange">
+                        <li class="havetreeMenuData">
+                            <a href="javascript:;" data-menu="系统设置" id="menuData" class="onlySystem two-menu-title two-no-drop-title js-two-menu-title ">
+                               <span class="menu-text onlytwoText">系统设置</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="fl rightMainContentIframe" style="width: 88%;height: 100%;padding-top: 18px;">
+            <iframe src="" frameborder="0" class="iframeContent" style="width: 100%;height: 100%;"></iframe>
+        </div>
+    </div>
+</div>
+<!-- 未购买广告分析后台的提示 -->
+<div class="unPayBoxHome advertisementHome" style="display: none">
+    <div class="topTipBox">
+        <p class="titleTip">您的账号尚未授权<span class="nowVersion">广告监测分析系统</span>，请授权后使用！</p>
+        <div class="tipDetail">
+            <p style="margin-top: 10px;">面向广告主推出的广告效果追踪和监测平台，</p>
+            <p>可获取真实准确的投放数据，为后续运营推广等提供数据支撑</p>
+        </div>
+        <a href="https://www.vlsdk.com/" target="_blank" class="useBtn">申请授权使用</a>
+    </div>
+    <div class="con">
+        <p class="title-productUnique">产品特色</p>
+        <div class="showAllAdvantage">
+            <div class="avantageModal">
+                <img src="__TMPL__/public/assets/images/login/png_seven.png" alt="">
+                <p class="itemAvantage">用户路径全触点归因</p>
+                <div class="itemDetailAvantage">
+                    <p>实时归因 </p>
+                    <p>清晰区分不同渠道数据</p>
+                </div>
+            </div>
+            <div class="avantageModal">
+                <img src="__TMPL__/public/assets/images/login/png_eight.png" alt="">
+                <p class="itemAvantage">实时分析推广活动</p>
+                <div class="itemDetailAvantage">
+                    <p>检测推广活动转化数据</p>
+                    <p>便于及时调整策略</p>
+                </div>
+            </div>
+            <div class="avantageModal">
+                <img src="__TMPL__/public/assets/images/login/png_nigt.png" alt="">
+                <p class="itemAvantage">保护广告预算</p>
+                <div class="itemDetailAvantage">
+                    <p>防作弊体系助您过滤无</p>
+                    <p>效广告数据</p>
+                </div>
+            </div>
+            <div class="avantageModal">
+                <img src="__TMPL__/public/assets/images/login/png_ten.png" alt="">
+                <p class="itemAvantage">全面分析受众</p>
+                <div class="itemDetailAvantage">
+                    <p>大规模、自定义、高度</p>
+                    <p>细分受众群体</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 发行系统模块 -->
+<div class="issueModalInner" style="display: none;width: 100%;height: 100%;">
+    <div style="width: 100%;height: 100%;">
+        <div class="fl issueModalLeft" style="width: 220px;background: #162642;height: 100%;">
+            <ul class="nav-list one-menu" style="padding-left:10px">
+                <li>
+                    <a href="javascript:;" style="pointer-events: none;"
+                       class="dropdown-toggle one-menu-title one-drop-title js-one-drop-title customerOneMenu">
+                        <i class="fa fa-arrows normal"></i><span class="menu-text normal">渠道大全 </span>
+                    </a>
+                    <ul class="submenu two-menu twoSubMenuChange">
+                        <li class="havetreeMenuData">
+                            <a href="javascript:openapp('{:url('issue/channel/lists')}','384issue','用户列表',true);"
+                               data-menu="渠道大全" id="menuData" data-url="{:url('issue/channel/lists')}"
+                               class="onlySystem two-menu-title two-no-drop-title js-two-menu-title js-issue-menu">
+                                <span class="menu-text onlytwoText">渠道大全</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:;" style="pointer-events: none;"
+                       class="dropdown-toggle one-menu-title one-drop-title js-one-drop-title customerOneMenu">
+                        <i class="fa fa-arrows normal"></i><span class="menu-text normal"> 联运分发 </span>
+                    </a>
+                    <ul class="submenu two-menu twoSubMenuChange">
+                        <li class="havetreeMenuData">
+                            <a href="javascript:openapp('{:url('issue/user/lists')}','384issue','用户列表',true);"
+                               data-menu="用户列表" data-id="384" id="menuData" data-url="{:url('issue/user/lists')}"
+                               class="two-menu-title two-no-drop-title js-two-menu-title js-issue-menu">
+                                <span class="menu-text onlytwoText">
+									用户列表								</span>
+                            </a>
+
+                        </li>
+
+                        <li class="havetreeMenuData">
+                            <a href="javascript:openapp('{:url('issue/platform/lists')}','388issue','平台列表',true);"
+                               data-menu="平台列表" data-id="388" id="menuData" data-url="{:url('issue/platform/lists')}"
+                               class="two-menu-title two-no-drop-title js-two-menu-title js-issue-menu">
+                                <!-- <b class="menu-dot"></b> -->
+                                <span class="menu-text onlytwoText">
+									平台列表								</span>
+                            </a>
+
+                        </li>
+
+                        <li class="havetreeMenuData">
+                            <a href="javascript:openapp('{:url('issue/apply/lists')}','392issue','联运申请',true);"
+                               data-menu="联运申请" data-id="392" id="menuData" data-url="{:url('issue/apply/lists')}"
+                               class="two-menu-title two-no-drop-title js-two-menu-title js-issue-menu">
+                                <!-- <b class="menu-dot"></b> -->
+                                <span class="menu-text onlytwoText">
+									联运申请								</span>
+                            </a>
+
+                        </li>
+
+                        <li class="havetreeMenuData">
+                            <a href="javascript:openapp('{:url('issue/game/lists')}','383issue','联运游戏',true);"
+                               data-menu="联运游戏" data-id="383" id="menuData" data-url="{:url('issue/game/lists')}"
+                               class="two-menu-title two-no-drop-title js-two-menu-title js-issue-menu">
+                                <!-- <b class="menu-dot"></b> -->
+                                <span class="menu-text onlytwoText">
+									联运游戏								</span>
+                            </a>
+
+                        </li>
+
+                        <li class="havetreeMenuData">
+                            <a href="javascript:openapp('{:url('issue/user_balance/lists')}','475issue','联运币充值',true);"
+                               data-menu="联运币充值" data-id="475" id="menuData" data-url="{:url('issue/user_balance/lists')}"
+                               class="two-menu-title two-no-drop-title js-two-menu-title js-issue-menu">
+                                <!-- <b class="menu-dot"></b> -->
+                                <span class="menu-text onlytwoText">
+									联运币
+                                </span>
+                            </a>
+
+                        </li>
+
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="javascript:;" style="cursor:default;"
+                       class=" one-menu-title one-drop-title js-one-drop-title customerOneMenu">
+                        <i class="fa fa-user-circle normal"></i><span class="menu-text normal"> 数据报表 </span>
+                    </a>
+                    <ul class="submenu two-menu twoSubMenuChange">
+                        <li class="havetreeMenuData">
+                            <a href="javascript:openapp('{:url('issue/user/register')}','394issue','注册明细',true);"
+                               data-menu="玩家注册" data-id="394" id="menuData" data-url="{:url('issue/user/register')}"
+                               class="two-menu-title two-no-drop-title js-two-menu-title js-issue-menu">
+                                <!-- <b class="menu-dot"></b> -->
+                                <span class="menu-text onlytwoText">注册明细</span>
+                            </a>
+                        </li>
+                        <li class="havetreeMenuData">
+                            <a href="javascript:openapp('{:url('issue/user/recharge')}','396issue','订单明细',true);"
+                               data-menu="游戏充值" data-id="396" id="menuData" data-url="{:url('issue/user/recharge')}"
+                               class="two-menu-title two-no-drop-title js-two-menu-title js-issue-menu">
+                                <!-- <b class="menu-dot"></b> -->
+                                <span class="menu-text onlytwoText">订单明细</span>
+                            </a>
+
+                        </li>
+
+                        <li class="havetreeMenuData">
+                            <a href="javascript:openapp('{:url('issue/data/overview')}','511issue','数据总览',true);"
+                               data-menu="数据总览" data-id="511" id="menuData" data-url="{:url('issue/data/overview')}"
+                               class="two-menu-title two-no-drop-title js-two-menu-title js-issue-menu">
+                                <span class="menu-text onlytwoText">数据总览</span>
+                            </a>
+                        </li>
+                        <li class="havetreeMenuData">
+                            <a href="javascript:openapp('{:url('issue/data/daily')}','512issue','日报数据',true);"
+                               data-menu="日报数据" data-id="512" id="menuData" data-url="{:url('issue/data/daily')}"
+                               class="two-menu-title two-no-drop-title js-two-menu-title js-issue-menu">
+                                <!-- <b class="menu-dot"></b> -->
+                                <span class="menu-text onlytwoText">日报数据</span>
+                            </a>
+                        </li>
+                        <li class="havetreeMenuData">
+                            <a href="javascript:openapp('{:url('issue/data/dailyhour')}','513issue','日报表(时)',true);"
+                               data-menu="日报表(时)" data-id="513" id="menuData" data-url="{:url('issue/data/dailyhour')}"
+                               class="two-menu-title two-no-drop-title js-two-menu-title js-issue-menu">
+                                <!-- <b class="menu-dot"></b> -->
+                                <span class="menu-text onlytwoText">日报表(时)</span>
+                            </a>
+
+                        </li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="javascript:;" style="cursor:default;"
+                       class=" one-menu-title one-drop-title js-one-drop-title customerOneMenu">
+                        <i class="fa fa-user-circle normal"></i><span class="menu-text normal"> 系统设置 </span>
+                    </a>
+                    <ul class="submenu two-menu twoSubMenuChange">
+
+                        <li class="havetreeMenuData">
+                            <a href="javascript:openapp('{:url('admin/user/index')}','111admin','管理员',true);"
+                               data-menu="管理员" data-id="111" id="menuData" data-url="{:url('admin/user/index')}"
+                               class="two-menu-title two-no-drop-title js-two-menu-title js-issue-menu">
+                                <!-- <b class="menu-dot"></b> -->
+                                <span class="menu-text onlytwoText">
+									管理员								</span>
+                            </a>
+
+                        </li>
+
+                        <li class="havetreeMenuData">
+                            <a href="javascript:openapp('{:url('admin/rbac/index')}','50admin','角色权限',true);"
+                               data-menu="角色权限" data-id="50" id="menuData" data-url="{:url('admin/rbac/index')}"
+                               class="two-menu-title two-no-drop-title js-two-menu-title twelve js-issue-menu">
+                                <!-- <b class="menu-dot"></b> -->
+                                <span class="menu-text onlytwoText">
+									角色权限								</span>
+                            </a>
+
+                        </li>
+
+                        <li class="havetreeMenuData">
+                            <a href="javascript:openapp('{:url('admin/actionlog/index')}','164admin','行为日志',true);"
+                               data-menu="行为日志" data-id="164" id="menuData" data-url="{:url('admin/actionlog/index')}"
+                               class="two-menu-title two-no-drop-title js-two-menu-title js-issue-menu">
+                                <!-- <b class="menu-dot"></b> -->
+                                <span class="menu-text onlytwoText">
+									行为日志								</span>
+                            </a>
+
+                        </li>
+
+                        <li class="havetreeMenuData">
+                            <a href="javascript:openapp('{:url('admin/setting/site')}','71admin','网站信息',true);"
+                               data-menu="网站信息" data-id="71" id="menuData" data-url="{:url('admin/setting/site')}"
+                               class="two-menu-title two-no-drop-title js-two-menu-title js-issue-menu">
+                                <!-- <b class="menu-dot"></b> -->
+                                <span class="menu-text onlytwoText">
+									网站信息								</span>
+                            </a>
+
+                        </li>
+
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <if condition="is_dir(APP_PATH.'issue')">
+            <div class="fl rightMainContentIframe" style="width:88%;height: 100%;padding-top: 18px;">
+                <iframe src="" frameborder="0" class="issueIframeContent" style="width: 100%;height: 100%;"></iframe>
+            </div>
+            <else/>
+              <!-- 未配置 -->
+              <div class="fl rightMainContentIframe" style="width:86.5%;padding-top: 18px;" >
+                <div class="topTipBox" style="background-image: url(/themes/admin_simpleboot3/public/assets/images/login/bg_fxxt.png);
+            background-size: 100% 100%;">
+                    <p class="titleTip">您的账号尚未授权<span class="nowVersion">溪谷发行系统</span>，请授权后使用！</p>
+                    <div class="tipDetail">
+                        <p style="margin-top: 10px;">渠道资源整合 海量游戏对接</p>
+                        <p>充值收益保障</p>
+                    </div>
+                    <a href="https://www.vlsdk.com/" target="_blank" class="useBtn_n">申请授权使用</a>
+                </div>
+                <div class="con">
+                    <p class="title-productUnique">产品特色</p>
+                    <div class="showAllAdvantage">
+                        <div class="avantageModal">
+                            <img src="__TMPL__/public/assets/images/login/ico_zyqdzh.png" alt="">
+                            <p class="itemAvantage">资源渠道整合</p>
+                            <div class="itemDetailAvantage">
+                                <p>全方位多段互通，游戏</p>
+                                <p>渠道资源共享</p>
+                            </div>
+                        </div>
+                        <div class="avantageModal">
+                            <img src="__TMPL__/public/assets/images/login/ico_pxzc.png" alt="">
+                            <p class="itemAvantage">培训支持</p>
+                            <div class="itemDetailAvantage">
+                                <p>不怕无经验，系统使用 </p>
+                                <p>全程指导</p>
+                            </div>
+                        </div>
+                        <div class="avantageModal">
+                            <img src="__TMPL__/public/assets/images/login/ico_shfw.png" alt="">
+                            <p class="itemAvantage">售后服务</p>
+                            <div class="itemDetailAvantage">
+                                <p>随时在线，全心全意</p>
+                                <p>答疑解惑</p>
+                            </div>
+                        </div>
+                        <div class="avantageModal">
+                            <img src="__TMPL__/public/assets/images/login/ico_jszc.png" alt="">
+                            <p class="itemAvantage">技术支持</p>
+                            <div class="itemDetailAvantage">
+                                <p>专业技术维护，细心 </p>
+                                <p>打造专属定制</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </if>
+
+
+    </div>
+
+</div>
+
+
+
+<script src="__TMPL__/public/assets/js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+    var oa_domain = "{:cmf_get_option('system_set')['oa_domain']}";
+    var kf_business_domain = "{:cmf_get_option('system_set')['kf_business_domain']}";
+    var kf_work_domain = "{:cmf_get_option('system_set')['kf_work_domain']}";
+    var fuwu_domain = "{:get_upgrade_domain()}";
+    var is_login = "{:cmf_get_current_admin_id()}";
+    $(function () {
+        // 点击左边侧边栏，右边出现相应的东西
+        $('#js-homeBack').click(function() {
+            if(!is_login) {
+
+            }else {
+                console.log(999,$('body').find('.issueModalInner'))
+                $('.kfBusinessHome').hide();
+                $('.kfWorkHome').hide();
+
+                var homeIframe = $('.appiframe')
+                if(homeIframe.length > 1) {
+                    var lastIframe = homeIframe[homeIframe.length - 1]
+                    lastIframe.remove()
+                    Array.prototype.pop.call(homeIframe)
+                    var finalNum = homeIframe[homeIframe.length - 1]
+                    console.log(888,finalNum)
+                    var lastSrc = $(finalNum).attr('src')
+                    console.log(5555,lastSrc)
+                    openapp('/admin/main/index', 0, '', true)
+                }
+
+            }
+            var height = 'calc(100% - 45px )'
+            $('.main-container').height(height)
+            $(this).addClass('activeSystem').siblings().removeClass('activeSystem')
+            $(".unPayBoxHome").hide();
+            $("#login_ifr").attr('src',"").hide();
+            $('.main-page').show();
+            $('.top-navbar').show();
+            $('.newListSilder ul').css('padding-top','0px')
+            $('.systemModalInner').hide()
+            $('.issueModalInner').hide()
+            if($('.navbar-default').hasClass('navbar-defaultActive')) {
+                $('#nav-wrapper').hide()
+                // $('.main-container .newListSilder').css('margin-top','-5px')
+            }else {
+                $('#nav-wrapper').show()
+            }
+            $('#task-content').show()
+            $('.headerNavLeft').show()
+            $('.headerNavRight').show()
+            $('.headerNavClose').show()
+            
+            if ($('#task-content-inner li').length > 1) {
+                var list = $('#task-content-inner li')
+                for(var i =0;i<list.length;i++) {
+                    if (i==0) {
+                    } else {
+                        list[i].remove()
+                    }
+                }
+            }
+            
+        });
+
+        // 点击工作室OA系统
+        $('#js-oa').click(function() {
+            //隐藏掉其他的
+            $('.kfBusinessHome').hide();
+            $('.kfWorkHome').hide();
+            $('#login_ifr').hide();
+
+            var height = '100%'
+            $('.main-container').height(height)
+            $(this).addClass('activeSystem').siblings().removeClass('activeSystem')
+            $('.main-page').hide();
+            $('.top-navbar').hide();
+            $('.systemModalInner').hide();
+            $('.issueModalInner').hide();
+            if($('.navbar-default').hasClass('navbar-defaultActive')) {
+                $('.newListSilder ul').css('padding-top','54px')
+            }else {
+                $('.newListSilder ul').css('padding-top','54px')
+            }
+
+            if(typeof(oa_domain)=="undefined" || oa_domain=='' || oa_domain==null){
+                //未配置
+                $(".unPayBoxHome").hide();
+                $('.oaHome').show().css('width','100%')
+            }else{
+                //已配置
+                $("#login_ifr").attr('src',oa_domain).show();
+            }
+        })
+
+        //点击SCRM系统
+        $('#js-scrm').click(function() {
+            //隐藏掉其他的
+            $('.kfBusinessHome').hide();
+            $('.kfWorkHome').hide();
+            $('.oaHome').hide();
+
+            var height = '100%'
+            $('.main-container').height(height)
+            $(this).addClass('activeSystem').siblings().removeClass('activeSystem')
+            $('.main-page').hide();
+            $('.top-navbar').hide();
+            $('.systemModalInner').hide();
+            $('.issueModalInner').hide();
+            if($('.navbar-default').hasClass('navbar-defaultActive')) {
+                $('.newListSilder ul').css('padding-top','54px')
+            }else {
+                $('.newListSilder ul').css('padding-top','54px')
+            }
+            $("#login_ifr").attr('src','https://www.vlscrm.com/').show();
+        })
+
+
+        // 点击商户客服管理
+        $('#js-kf_business').click(function() {
+            if(typeof(kf_business_domain)=="undefined" || kf_business_domain=='' || kf_business_domain==null){
+                //未配置
+                $(".unPayBoxHome").hide();
+                $('.kfBusinessHome').show().css('width','100%')
+                 // //隐藏掉其他的
+            $('.oaHome').hide();
+                $('.kfWorkHome').hide();
+                $("#login_ifr").css("display", "none");
+                
+                // $("#login_ifr3").css("display","none");
+                $(".changeKfBusinessHome").css("display", "block");
+
+                var height = 'calc(100% - 45px )'
+                $('.main-container').height(height)
+                $(this).addClass('activeSystem').siblings().removeClass('activeSystem')
+                $('.main-page').hide();
+                $('.top-navbar').hide();
+                $('.systemModalInner').hide()
+                $('.issueModalInner').hide()
+                if ($('.navbar-default').hasClass('navbar-defaultActive')) {
+                    $('.newListSilder ul').css('padding-top', '54px')
+                } else {
+                    $('.newListSilder ul').css('padding-top', '54px')
+                }
+            }else{
+                //已配置
+                window.open(kf_business_domain+"/seller");
+            }
+
+        })
+
+        // 点击商户客服管理
+        $('#js-kf_work').click(function() {
+
+            if(typeof(kf_work_domain)=="undefined" || kf_work_domain=='' || kf_work_domain==null){
+                //未配置
+                $(".unPayBoxHome").hide();
+                $('.kfWorkHome').show().css('width','100%')
+                  //隐藏掉其他的
+                $('.oaHome').hide();
+                $('.kfBusinessHome').hide();
+                $("#login_ifr").css("display", "none");
+                $(".changeKfWorkHome").css("display", "block");
+                var height = 'calc(100% - 45px )'
+                $('.main-container').height(height)
+                $(this).addClass('activeSystem').siblings().removeClass('activeSystem')
+                $('.top-navbar').hide();
+                $('.main-page').hide();
+                $('.systemModalInner').hide()
+                $('.issueModalInner').hide()
+                if ($('.navbar-default').hasClass('navbar-defaultActive')) {
+                    $('.newListSilder ul').css('padding-top', '54px')
+                } else {
+                    $('.newListSilder ul').css('padding-top', '54px')
+                }
+
+            }else{
+                //已配置
+                $("#login_ifr3").attr('src',kf_work_domain).show();
+                window.open(kf_work_domain);
+
+            }
+        })
+
+        // 点击系统设置
+        $("#system_setting").click(function () {
+            $('.kfBusinessHome').hide();
+            $('.kfWorkHome').hide();
+            $('.kfWorkHome').hide();
+            $('.issueModalInner').hide();
+
+            var height = 'calc(100% - 45px )'
+            $('.main-container').height(height)
+            $('.onlySystem').addClass('menu-active')
+            var url = "{:url('admin/setting/system')}"
+            $(this).addClass('activeSystem').siblings().removeClass('activeSystem')
+            $('.iframeContent').attr('src', url)
+            $('.main-page').hide();
+            $('.systemModalInner').css('display', 'block')
+            if ($('.navbar-default').hasClass('navbar-defaultActive')) {
+                $('#nav-wrapper').hide()
+                // $('.main-container .newListSilder').css('margin-top','-5px')
+            } else {
+                $('#nav-wrapper').show()
+            }
+            openapp(url, '', '系统设置', true)
+            $(".unPayBoxHome").hide();
+            $("#login_ifr").attr('src', "").hide();
+            // $('.main-page').show();
+            $('.top-navbar').show();
+            $('.newListSilder ul').css('padding-top', '0px')
+            $('#task-content').hide()
+            $('.headerNavLeft').hide()
+            $('.headerNavRight').hide()
+            $('.headerNavClose').hide()
+        })
+
+
+        // 发行系统
+        $("#issue_system").click(function () {
+
+            $(".js-issue-menu").removeClass('menu-active');
+
+
+            $('.kfBusinessHome').hide();
+            $('.kfWorkHome').hide();
+            $('.systemModalInner').hide();
+            $('.oaHome').hide();
+            $('.issueModalInner').hide();
+            // $('#login_ifr').hide();
+            
+            var height = 'calc(100% - 45px )'
+            $('.main-container').height(height)
+            $('.onlySystem').addClass('menu-active')
+            var url = "{:url('issue/channel/lists')}"
+            $(this).addClass('activeSystem').siblings().removeClass('activeSystem')
+            $('.issueIframeContent').attr('src', url)
+            $('.main-page').hide();
+            $('.issueModalInner').show();
+            if ($('.navbar-default').hasClass('navbar-defaultActive')) {
+                $('#nav-wrapper').hide()
+                // $('.main-container .newListSilder').css('margin-top','-5px')
+            } else {
+                $('#nav-wrapper').show()
+            }
+            openapp(url, '', '渠道大全', true)
+            $(".unPayBoxHome").hide();
+            $("#login_ifr").attr('src', "").hide();
+            $("#login_ifr").attr('src', "").hide();
+            $("#login_ifr").attr('src', "").hide();
+            $("#login_ifr").attr('src', "").hide();
+            $("#login_ifr").attr('src', "").hide();
+            // $('.main-page').show();
+            $('.top-navbar').show();
+            $('.newListSilder ul').css('padding-top', '0px')
+            $('#task-content').hide()
+            $('.headerNavLeft').hide()
+            $('.headerNavRight').hide()
+            $('.headerNavClose').hide()
+
+        })
+
+
+        $("#js-fuwu").click(function () {
+            window.open(fuwu_domain);
+        })
+
+        $(".js-issue-menu").click(function () {
+            var url = $(this).attr("data-url");
+            openapp(url, '', '', true)
+            $(".issueIframeContent").attr('src', url);
+        })
+
+        $(".login_ifr").height(window.innerHeight).css('overflow','auto')
+
+    })
+
+</script>

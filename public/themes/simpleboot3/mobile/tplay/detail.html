@@ -1,0 +1,178 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/trial_reward.css">
+    <style>
+        body{
+            background: #ffffff;
+        }
+    </style>
+</block>
+
+<block name="body">
+    <div class="trial_detail_page">
+        <div class="trial_reward_header">
+            <a href="javascript:history.back()"><img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon"></a>
+            <p class="fl trial_rules_title"></p>
+        </div>
+        <div class="type_down__long_hx clear"></div>
+        <div class="trial-detail-contain">
+            <div class="trial-game-info-box">
+                <div class="v-middle">
+                    <div class="trial-game-info-item v-middle">
+                        <p class="title">区服</p>
+                        <p class="text">{$detail.server_name}</p>
+                    </div>
+                    <div class="trial-game-info-item">
+                        <p class="title">剩余时限</p>
+                        <if condition="$record['status'] eq 1">
+                            <p class="title">已完成</p>
+                        <else/>
+                            <if condition="$record['remain_time']">
+                                <p class="text">{$record['remain_time']}内完成</p>
+                            <else/>
+                                <p class="text">{$detail['time_out']}小时内完成</p>
+                            </if>
+                        </if>
+                    </div>
+                </div>
+                <if condition="count($detail['level']) gt 1">
+                    <p class="trial-part-text">本任务分为{:count($detail['level'])}个阶段</p>
+                <else/>
+                    <p class="trial-part-text">本任务不分阶段</p>
+                </if>
+            </div>
+            <volist name="detail.level" id="vo" key="key">
+            <div class="trial-part-box">
+                <div class="trial-part-title v-middle h-middle">
+                    <i class="line"></i>
+                    <i class="trial-part-icon">{$key}</i>
+                    <i class="line"></i>
+                </div>
+                <div class="part-content">
+                    <p class="task-title">
+                        任务要求：
+                        <span class="task-text">
+                            等级达到{$vo}
+                        </span>
+                    </p>
+                    <p class="task-title">
+                        任务奖励：
+                        <span class="task-text">
+                            <if condition="$detail['award'][$key-1] gt 0">
+                                {$detail['award'][$key-1]}平台币
+                            </if>
+                             <if condition="$detail['cash'][$key-1] gt 0">
+                                {$detail['cash'][$key-1]}元
+                            </if>
+                        </span>
+                    </p>
+                    <p class="task-title">
+                        任务提示：
+                        <span class="task-text">
+                            为刷新角色数据，请达到任务要求的小伙伴退出重新登录游戏后再提交任务
+                        </span>
+                    </p>
+                    <if condition="$record['award'] gt 0 and $record['level'] egt $vo">
+                    <p class="trial-part-reward">任务完成<i class="b-icon"></i>+{$detail['award'][$key-1]}</p>
+                    </if>
+                </div>
+            </div>
+            </volist>
+        </div>
+        <div class="footer-fixed-box">
+            <!--代报名-->
+            <empty name="record">
+                <if condition="$detail['end_time'] lt time() and $detail['end_time'] gt 0"/>
+                    <a href="javascript:;" class="fill-btn">已结束</a>
+                <elseif condition="empty($record) and $detail['is_quota'] eq 1" />
+                    <a href="javascript:;" class="fill-btn">名额已满</a>
+                <else/>
+                    <if condition="$detail['sdk_version'] eq 3">
+                        <a  href="{:url('game/open_game')}?game_id={$detail['game_id']}" class="download-btn" >去玩</a>
+                    <elseif condition="$detail['down_status'] eq 0"/>
+                        <a  href="javascript:;" class="download-btn disabled" >下载游戏</a>
+                    <else/>
+                        <a  href="{$detail['down_url']}" class="download-btn " >下载游戏</a>
+                    </if>
+                    <a href="javascript:;" class="signUp-btn  js-signUp" data-id="{$detail.id}">立即报名</a>
+                </if>
+            <else/>
+                <if condition="$record['status'] eq 0">
+                    <if condition="$detail['sdk_version'] eq 3">
+                        <a  href="{:url('game/open_game')}?game_id={$detail['game_id']}" class="download-btn" >去玩</a>
+                    <elseif condition="$detail['down_status'] eq 0" />
+                        <a  href="javascript:;" class="download-btn disabled" >下载游戏</a>
+                    <else/>
+                        <a  href="{$detail['down_url']}" class="download-btn " >下载游戏</a>
+                    </if>
+                    <a href="javascript:;" class="submit-btn js-submit" data-id="{$detail.id}">提交任务</a>
+                <else/>
+                    <a href="javascript:;" class="fill-btn">任务已提交</a>
+                </if>
+            </empty>
+        </div>
+    </div>
+    <div class="pop"></div>
+</block>
+<block name="script">
+    <script src="__TMPL__/mobilepublic/assets/js/pop.lwx.min.js"></script>
+    <script>
+        $(function () {
+            //温馨提示
+            $('.js-signUp').click(function () {
+                var id = $(this).data('id');
+                var popwin =$(".pop").pop();
+                popwin.addClass('pop-tips').open(300,'<div class="tips-box"><div class="tips-content"><p class="title">温馨提示</p><p>您报名的区服为：{$detail.server_name}，任务时限{$detail.time_out}小时，您确定要继续报名吗？ </p></div><div class="del_btn_box z_clearfix v-middle"><a href="javascript:;" class="cancel_btn">取消</a><a href="javascript:;" class="confirm_btn">确定</a></div></div>');
+
+                popwin.find('.cancel_btn').click(function() {
+                    popwin.close();
+                    return false;
+                });
+                popwin.find('.confirm_btn').click(function() {
+                    $.ajax({
+                        type: 'post',
+                        dataType: 'json',
+                        url: "{:url('sign')}",
+                        data:{id:id},
+                        async:false,
+                        success: function (data) {
+                            layer.msg(data.msg);
+                            if (data.code == 1) {
+                                setTimeout(function () {
+                                   window.location.href = data.url;
+                                },1000)
+                            }
+                        },
+                        error: function () {
+                            layer.msg('服务器故障，请稍候再试');
+                        }
+                    });
+                    popwin.close();
+                    return false;
+                });
+            });
+
+            $(".js-submit").click(function () {
+                var id = $(this).data('id');
+                $.ajax({
+                    type: 'post',
+                    dataType: 'json',
+                    url: "{:url('complete')}",
+                    data:{id:id},
+                    async:false,
+                    success: function (data) {
+                        layer.msg(data.msg);
+                        if (data.code == 1) {
+                            setTimeout(function () {
+                                window.location.reload();
+                            },1000)
+                        }
+                    },
+                    error: function () {
+                        layer.msg('服务器故障，请稍候再试');
+                    }
+                });
+            })
+        })
+    </script>
+</block>

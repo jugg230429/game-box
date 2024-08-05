@@ -1,0 +1,18 @@
+@charset "utf-8";
+/**
+ * 用户协议
+ * @author 
+ */
+ .main{
+    min-height: 721px;
+    background: #fff;
+   
+}
+.main-con {
+    width: 80%;
+    overflow: hidden;
+    background: #fff;
+    margin: 0 auto;
+    padding-bottom: 45px;
+    padding: 10% 10%;
+}

@@ -1,0 +1,181 @@
+<include file="public@header" />
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="{:url('cash_out/lists')}">平台币提现</a></li>
+        <span class="title_remark">说明：玩家申请平台币提现到微信或支付宝数据记录,可手动操作打款。</span>
+    </ul>
+    <form id="search_form" class="well form-inline  fr" method="get" action="{:url('cash_out/lists')}" onsubmit="return check();">
+        <if condition="AUTH_PROMOTE eq 1">
+            <input type="text" class="form-control" name="user_account" style="width: 120px;" value="{:input('request.user_account/s','')}" placeholder="玩家账号">
+        </if>
+
+        <input type="text" class="form-control" name="order_no" style="width: 120px;" value="{:input('order_no/s','')}" placeholder="订单号">
+
+        <input type="text" class="form-control" name="create_ip" style="width: 120px;" value="{:input('request.create_ip/s','')}" placeholder="提现IP">
+
+        <input type="text" class="form-control js-bootstrap-date" id="start_time" name="start_time" placeholder="提现开始时间"
+               value="{:input('request.start_time/s','')}" style="width: 140px;" autocomplete="off">-
+        <input type="text" class="form-control js-bootstrap-date" id="end_time" name="end_time" placeholder="提现结束时间"
+               value="{:input('request.end_time/s','')}" style="width: 140px;" autocomplete="off"> &nbsp; &nbsp;
+
+        <select name="type" id="type" class="selectpicker" pay_way="{:input('request.type')}">
+            <option value="">提现方式</option>
+            <option value="3" <if condition="input('request.type/s') eq 3">selected</if>>支付宝</option>
+            <option value="4" <if condition="input('request.type/s') eq 4">selected</if>>微信</option>
+        </select>
+
+        <!--            <select name="status" id="status" class="selectpicker" status="{:input('request.status')}" style="width: 120px;">-->
+        <!--                <option >申请状态</option>-->
+        <!--                <option value="0" <if condition="input('request.status/s') heq '0'">selected</if>>未审核</option>-->
+        <!--                <option value="1" <if condition="input('request.status/s') eq '1'">selected</if>>已审核</option>-->
+        <!--                <option value="-1" <if condition="input('request.status/s') eq '-1'">selected</if>>已驳回</option>-->
+        <!--            </select>-->
+        <select name="status" id="status" class="selectpicker" status="{:input('request.status')}" style="width: 120px;">
+            <option value="">提现状态</option>
+            <option value="0" <if condition="input('request.status/s') heq '0'">selected</if>>未打款</option>
+            <option value="1" <if condition="input('request.status/s') eq '1'">selected</if>>成功</option>
+            <option value="-1" <if condition="input('request.status/s') eq '-1'">selected</if>>失败</option>
+            <option value="9" <if condition="input('request.status/s') eq '9'">selected</if>>已驳回</option>
+        </select>
+
+        <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+        <a class="btn btn-clear" href="{:url('cash_out/lists')}">清空</a>
+    </form>
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th>订单号</th>
+            <th>账号</th>
+            <th>提现金额</th>
+<!--            <th>手续费(%)</th>-->
+            <th>手续费</th>
+            <th>实际到账金额</th>
+            <th>提现方式</th>
+            <th>支付宝账号</th>
+            <th>支付宝姓名</th>
+            <th>提现时间</th>
+            <th>提现IP</th>
+            <!--                    <th>申请状态</th>-->
+            <th>提现状态</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <empty name="data_lists">
+            <tr><td colspan="18" style="text-align: center;">暂无数据</td></tr>
+            <else/>
+            <foreach name="data_lists" item="vo">
+                <tr>
+                    <td>{$vo['order_no']}</td>
+                    <td>{$vo['user_account']}</td>
+                    <!--                        <if condition="AUTH_PROMOTE eq 1">-->
+                    <!--                            <td>{:get_promote_name($vo['promote_id'])}</td>-->
+                    <!--                        <else/>-->
+                    <!--                            <td>请购买渠道权限</td>-->
+                    <!--                        </if>-->
+                    <td>{$vo['apply_amount']}</td>
+                    <td>{$vo['fee_amount']}</td>
+                    <td>{$vo['real_amount']}</td>
+                    <td>{:get_pay_way($vo['type'])}</td>
+                    <td>{$vo['ali_account']|default='-'}</td>
+                    <td>{$vo['account_name']|default='-'}</td>
+                    <td>{$vo['create_time']|date="Y-m-d H:i:s",###}</td>
+                    <td>{$vo['create_ip']}</td>
+                    <td>
+                        <if condition="$vo['status'] eq 0">
+                            <span >未打款</span>
+                            <elseif condition="$vo['status'] eq 1"/>
+                            <span style="color: green" >成功</span>
+                            <elseif condition="$vo['status'] eq 9"/>
+                            <span style="color: #815E02" >已驳回</span>
+                            <else/>
+                            <span style="color: red" >失败</span>
+                        </if>
+                    </td>
+                    <td>
+                        <if condition="$vo['status'] eq 0">
+                            <!--                                <a href="{:url('reject',['order_no'=>$vo['order_no']])}" class="js-ajax-dialog-btn">驳回</a>-->
+                            <a href="{:url('review',['order_no'=>$vo['order_no']])}" class="js-ajax-dialog-btn">打款</a>
+                        </if>
+                        <eq name="vo.status" value="-1">
+                            <a href="{:url('reissue',['order_no'=>$vo['order_no']])}" class="js-ajax-dialog-btn" data-msg="确认补发吗？">补发</a>
+                        </eq>
+                        <if condition="$vo['status'] neq 1 and $vo['status'] neq 9">
+                            <a href="{:url('reject',['order_no'=>$vo['order_no']])}" class="js-ajax-dialog-btn">驳回</a>
+                        </if>
+                    </td>
+
+                </tr>
+            </foreach>
+            <!--                     <tr class="data_summary">-->
+            <!--                        <td><span style="margin-right: 10px;">汇总（只汇总充值成功） </span></td>-->
+            <!--                        <td colspan="7"><span>今日充值：{:null_to_0($today['total'])} ； 昨日充值：{:null_to_0($yestoday['total'])} ； 当页充值：{:null_to_0($page_total)} ； 累计充值：{:null_to_0($total['total'])}</span></td>-->
+
+            <!--                    </tr>-->
+        </empty>
+        </tbody>
+    </table>
+    <div class="pagination">
+        {$page}
+
+    </div>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script type="text/javascript">
+    game_id = $("#game_id").attr('game_id');
+    server_id = $("#server_id").attr('server_id');
+    $("#game_id").selectpicker('val', game_id);
+    $("#pay_way").selectpicker('val', $('#pay_way').attr('pay_way'));
+    $("#pay_status").selectpicker('val', $('#pay_status').attr('pay_status'));
+    if(game_id){
+        get_game_server(game_id);
+    }
+    $('#game_id').change(function(){
+        gi = $("#game_id").val();
+        get_game_server(gi);
+    });
+    function check(){
+        var start_time = $("#start_time").val();
+        var end_time = $("#end_time").val();
+        if(start_time != '' && end_time != '' && start_time > end_time){
+            layer.msg('开始时间不能大于结束时间');
+            return false;
+        }
+        return true;
+    }
+    function get_game_server(game_id){
+        $('#server_id').empty();
+        $('#server_id').append("<option value=''>区服名称</option>");
+        $.ajax({
+            url:"{:url('game/server/get_game_server')}",
+            type:'post',
+            dataType:'json',
+            data:{game_id:game_id},
+            success:function(res){
+                if(res.code!=1){
+                    layer.msg(res.msg);
+                }else{
+                    option = '';
+                    $.each(res.data,function (key,value) {
+                        option+="<option value='";
+                        option+=value['id']+"'";
+                        if(value['id']==server_id){
+                            option+="selected";
+                        }
+                        option+=" >"+value['server_name'];
+                        option+="</option>";
+                    });
+                    $('#server_id').append(option);
+                    server_id = '';
+                }
+            },error(){
+                layer.msg('服务器错误');
+            }
+        })
+    }
+</script>
+</body>
+</html>

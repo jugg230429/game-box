@@ -1,0 +1,361 @@
+
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/mui.min.css">
+
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/trade_record.css">
+    <style>
+        body{
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .trade_record_page{
+            width: 100vw;
+            height: calc(100vh - 4rem);
+            overflow: auto;
+            /*-webkit-overflow-scrolling: touch;*/
+        }
+        .record-info-contain {
+            padding-bottom: 0;
+
+        }
+    </style>
+</block>
+
+<block name="body">
+    <div class="trade_record_page">
+        <div class="trade_record_header">
+            <a href="{:url('trade/index')}" ><img  src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon"></a>
+<!--            <a href="javascript:history.back()"><img  src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon"></a>-->
+            <p class="trade-record-title">小号详情</p>
+
+        </div>
+        <div class="type_down__long_hx clear"></div>
+        <div class="record-info-contain">
+            <div class="order-content-box">
+                <div class="trumpet-base-info">
+                    <div class="game-info-box v-middle">
+                        <img src="{:cmf_get_image_url($detail['icon'])}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null" class="trumpet-game-icon">
+                        <div class="game-info">
+                            <p class="game-name">{$detail.game_name}</p>
+                            <p class="game-account">小号：{$detail.small_account}</p>
+                            <p class="account-price">￥<span>{$detail.money}</span></p>
+                        </div>
+                        <!--<a href="javascript:;" class="counter-offer-btn js-counter-offer">还价</a>-->
+                    </div>
+                    <div style="position: relative">
+                        <div class="trumpet-server v-middle">
+                            <i class="server-icon"></i>
+                            <p ><span>区&nbsp;服</span>{$detail.server_name}</p>
+                        </div>
+                        <div class="trumpet-consume v-middle">
+                            <i class="consume-icon"></i>
+                            <p ><span>累计消费(元)</span>{$detail.cumulative}</p>
+                        </div>
+                        <div class="trumpet-day v-middle">
+                            <i class="day-icon"></i>
+                            <p ><span>创建天数</span>{$detail.days}天</p>
+                        </div>
+                        <if condition="$detail['password']">
+                        <div class="trumpet-password v-middle" style="margin-bottom: 0">
+                            <i class="pw-icon"></i>
+                            <p ><span>二级密码</span>购买商品可见</p>
+                        </div>
+                        </if>
+                        <i class="official-img"></i>
+                    </div>
+                </div>
+                <div class="trumpet-detail-info">
+                    <div class="trumpet-detail-box">
+                        <div class="v-middle">
+                            <p class="title">小号详情</p>
+                            <p class="tips">如描述与截图有出入，请以截图为准</p>
+                        </div>
+                        <div class="trumpet-detail-content">
+                            <p class="trumpet-detail-text">{$detail.title}</p>
+                            <p style="color: #999999;font-size: 1.09rem;margin-top: 0.5rem">{$detail.dec}</p>
+                            <div class="game-pic-list">
+                                <ul class="v-top ">
+                                    <volist name="detail.screenshot" id="vv">
+                                        <li class="game-pic-item">
+                                            <img src="{:cmf_get_image_url($vv)}" data-preview-src="" data-preview-group="1" />
+                                        </li>
+                                    </volist>
+                                </ul>
+                                <empty name="detail.screenshot">
+                                <div class="no-game-pic" >等待截图上传中~</div>
+                                </empty>
+                            </div>
+
+                            <div class="publication-date">
+                                发布日期：{$detail.create_time|date='m月d日 H:i',###}
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <notempty name="other_game">
+                <div class="game-other-trumpet">
+                    <div class="game-other-title">
+                        该游戏的其他小号
+                        <span>({$other_count})</span>
+                        <a href="{:url('index',['key'=>$detail['game_name']])}" class="more-btn">更多<span>></span></a>
+                    </div>
+                    <div class="trumpet-other-list">
+                        <ul>
+                            <volist name="other_game" id="vo">
+                                <a href="{:url('detail',['id'=>$vo['id']])}" class="trumpet-other-item v-middle">
+                                    <img src="{:cmf_get_image_url($vo['icon'])}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null" class="trumpet-game-icon">
+                                    <div class="game-info">
+                                        <p class="trumpet-title">{$vo.title}</p>
+                                        <p class="game-name-server"><span>{$vo.game_name}</span><span style="margin-left: 1rem">{$vo.server_name}</span></p>
+                                        <p class="game-day-consume">创建<span>{$vo.days}</span>天,累计消费<span>{$vo.cumulative}</span>元</p>
+                                    </div>
+                                    <span class="trumpet-price">{$vo.money}</span>
+                                </a>
+                            </volist>
+                        </ul>
+                    </div>
+                </div>
+                </notempty>
+
+            </div>
+        </div>
+
+    </div>
+    <div class="footer-fixed-box">
+        <a data-value="<empty name='union_set.qq'>{:cmf_get_option('kefu_set')['pc_set_server_qq']}<else />{$union_set['qq']}</empty>"  href="javascript:;" class="btn_qq jschatqq" > <img src="__TMPL__/mobilepublic/assets/images/trade/write_bar_btn_service@2x.png" alt="" style="width: 1.956rem;margin-left: 1.486rem"></a>
+        <if condition="get_down_status2($detail.relation_game_id,get_devices_type()) eq true">
+            <a <eq name="session.app_user_login" value="1">style="display:none;"</eq> class="download-btn <eq name="session.login_auth" value="0">login</eq>" <eq name="session.login_auth" value="1">href="{:url('Downfile/down',['game_id'=>$detail['relation_game_id'],'sdk_version'=>get_devices_type()])}"<else/>href="javascript:;"</eq> >下载</a>
+            <else/>
+            <div <eq name="session.app_user_login" value="1">style="display:none;"</eq> class="download-btn disabled">下载</div>
+        </if>
+        <div <eq name="session.app_user_login" value="1">style="width: 26.44rem;"</eq>  class="buy-btn <eq name="session.login_auth" value="0">login<else/>js-buy</eq>">立即购买</div>
+    </div>
+    <!--买家须知-->
+    <div class="saleRuleShade js-saleRule">
+        <div class="saleRuleWrapper">
+            <div class="saleRuleBox">
+                <div class="saleRuleHeader">
+                    <h3 class="saleRuleHeaderTitle">买家须知</h3>
+                    <p class="saleRuleHeaderDesc">为了您的消费权益，请仔细阅读</p>
+                </div>
+                <div class="saleRuleBody">
+                    <section class="saleRuleProcess">
+                        <div class="saleRuleTitle">购买流程</div>
+                        <div class="saleRuleShow">
+                            <div class="saleRuleShowItem">
+                                <i class="saleRuleShowIcon submitSaleRuleShowIcon"></i>
+                                <p class="saleRuleShowTitle">选择商品</p>
+                            </div>
+                            <div class="saleRuleShowItem">
+                                <i class="saleRuleShowIcon toSaleRuleShowIcon"></i>
+                                <p class="saleRuleShowTitle">&nbsp;</p>
+                            </div>
+                            <div class="saleRuleShowItem">
+                                <i class="saleRuleShowIcon checkSaleRuleShowIcon"></i>
+                                <p class="saleRuleShowTitle">购买商品</p>
+                            </div>
+                            <div class="saleRuleShowItem">
+                                <i class="saleRuleShowIcon toSaleRuleShowIcon"></i>
+                                <p class="saleRuleShowTitle">&nbsp;</p>
+                            </div>
+                            <div class="saleRuleShowItem">
+                                <i class="saleRuleShowIcon saleSaleRuleShowIcon"></i>
+                                <p class="saleRuleShowTitle">登录游戏</p>
+                            </div>
+                            <div class="saleRuleShowItem">
+                                <i class="saleRuleShowIcon toSaleRuleShowIcon"></i>
+                                <p class="saleRuleShowTitle">&nbsp;</p>
+                            </div>
+                            <div class="saleRuleShowItem">
+                                <i class="saleRuleShowIcon moneySaleRuleShowIcon"></i>
+                                <p class="saleRuleShowTitle">接收角色</p>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="saleRuleRecord">
+                        <div class="saleRuleTitle" style="margin: 0.5rem 0">买家须知</div>
+                        <ul class="saleRuleList">
+                            <li>
+                                商品信息已通过本平台审核，因时间造成的排行榜、
+                                称号、装备到期等变化，不视为信息失实；
+                            </li>
+                            <li>
+                                购买后，角色小号自动转入您的平台账号下，选择对
+                                应的小号登录游戏即可查看；
+                            </li>
+                            <li>
+                                交易过程仅变更小号的所有权，卖方将无法通过其他
+                                途径找回，请放心购买；
+                            </li>
+                            <li>购买后不支持退货。</li>
+                         </ul>
+                    </section>
+                    <section class="saleRuleBtn">
+                        <div class="saleRuleCheck">
+                            <label>
+                                <input type="checkbox" id="prompt" class="saleRuleCheckBtn">
+                                <i class="saleRuleCheckIcon"></i>
+                                <span>不再提示</span>
+                            </label>
+                        </div>
+                        <div class="saleRuleClick">
+                            <div class="saleRuleClickBtn center cancel js-saleRuleCancel">取消</div>
+                            <div class="saleRuleClickBtn center confirm js-saleRuleConfirm">我已阅读且同意</div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pop"></div>
+</block>
+<block name="script">
+    <script src="__STATIC__/js/layui/layui.js"></script>
+    <script src="__TMPL__/mobilepublic/assets/js/pop.lwx.min.js"></script>
+    <script src="__TMPL__/mobilepublic/assets/js/mui.min.js"></script>
+    <script src="__TMPL__/mobilepublic/assets/js/mui.zoom.js"></script>
+    <script src="__TMPL__/mobilepublic/assets/js/mui.previewimage.js"></script>
+    <script>
+        var tankuang = 0;
+        is_xgkf ="{:get_xgkf_info(0)}";
+        xgkf_url = "{:get_xgkf_info(1)}";
+        $(function () {
+            //复制订单编号
+            copy( $('.js-copy').attr('data-clipboard-text'),$('.js-copy'));
+            //图片查看
+            mui.previewImage();
+            //页面跳转
+            mui('body').on('click','a',function(){
+                window.top.location.href=this.href;
+            });
+            $('.jschatqq').click(function() {
+                var qq = $.trim($(this).attr('data-value'));
+                var u = navigator.userAgent;
+                $mt = "{:get_devices_type()}";
+                if(is_xgkf == 1){
+                    if($mt==2){
+                        try{
+                            window.webkit.messageHandlers.sy_app_xgkf_url.postMessage(xgkf_url);
+                        }catch (e) {
+                            // window.location.href = xgkf_url;
+                            window.open(xgkf_url);
+                            return false;
+                        }
+                    }else{
+                        // window.location.href = xgkf_url;
+                        window.open(xgkf_url);
+                    }
+                }else{
+                    try{
+                        if($mt==2){
+                            window.webkit.messageHandlers.sy_small_serviceQQ.postMessage(1);
+                        }else{
+                            window.mengchuang.sy_small_serviceQQ();
+                        }
+                    }catch (e) {
+                        var is_mobile = "{:cmf_is_mobile()}";
+                        if (is_mobile) {
+                            window.location.href="mqqwpa://im/chat?chat_type=wpa&uin="+qq+"&version=1&src_type=web";
+                        }else
+                            window.location.href="http://wpa.qq.com/msgrd?v=3&uin="+qq+"&site=qq&menu=yes";
+                        return false;
+                    }
+                }
+            });
+            $('.js-buy').click(function() {
+                var user_id = {:UID};
+                var sell_id = {$detail.user_id};
+                if(user_id == sell_id){
+                    layer.msg('出售小号为您所有，不可购买');
+                    return false;
+                }
+                if(tankuang == 1){
+                    window.location.href = "{:url('order',['transaction_id'=>input('id')])}";
+                    return false;
+                }
+                var is_prompt = "{$user.is_prompt}";
+                if(is_prompt == 1){
+                    window.location.href = "{:url('order',['transaction_id'=>input('id')])}";
+                }else{
+                    $('.js-saleRule').fadeIn(800);
+                }
+            });
+
+            $('.js-saleRuleCancel').click(function(){
+                var prompt = $('#prompt').is(':checked');
+                if(prompt){
+                    prompt = 1;
+                    $.ajax({
+                        type: 'post',
+                        dataType: 'json',
+                        url: "{:url('is_popup')}",
+                        async:false,
+                        data:{field:'is_prompt'},
+                        success: function (data) {
+                            if (data.code == 1) {
+                                tankuang = 1;
+                            }
+                        },
+                        error: function () {
+                            layer.msg('服务器故障，请稍候再试');
+                        }
+                    });
+                }
+                $(this).closest('.js-saleRule').fadeOut(400);
+
+            });
+            $('.js-saleRuleConfirm').click(function(){
+
+                var prompt = $('#prompt').is(':checked');
+                if(prompt){
+                    prompt = 1;
+                }else{
+                    prompt = 0;
+                }
+                $(this).closest('.js-saleRule').fadeOut(400);
+                window.location.href = "/mobile/trade/order/transaction_id/{:input('id')}/prompt/"+prompt;
+
+                return false;
+            })
+
+            //还价
+            $('.js-counter-offer').click(function () {
+                var popwin=$(".pop").pop();
+                popwin.addClass('pop-price').open(300,'<div class="edit-price-box"><a href="javascript:;" class="js-cancel "><img src="__TMPL__/mobilepublic/assets/images/trade/common_btn_close_n.png" class="cancel-img"></a><div class="edit-price-content"><p class="title">还价</p><input class="edit-input" type="text"   placeholder="输入您期望的价格(元)"><span class="tips">卖家同意后会通知您，请到【还价】页查看</span></div><div class="del_btn_box z_clearfix v-middle"><a href="javascript:;" class="cancel_btn js-cancel">取消</a><a href="javascript:;" class="confirm_btn" style="color: #018FFF">确认修改</a></div></div>');
+                popwin.find('input').keyup(function() {
+                    var val=$(this).val();
+                    val2=val.replace(/^\D*(\d*(?:\.\d{0,6})?).*$/g, '$1');
+                    $(this).val(val2);
+                });
+                popwin.find('.js-cancel').click(function() {
+                    popwin.close();
+                    return false;
+                });
+                popwin.find('.confirm_btn').click(function() {
+
+                    return false;
+                });
+            })
+        });
+        function copy(str,that){
+            text = str;
+            var clipboard = new Clipboard('.js-copy',{
+                text: function() {
+                    return text;
+                }
+            });
+            clipboard.on('success', function(e) {
+                layer.msg('<p>已复制</p>');
+                e.clearSelection();
+                clipboard.destroy();
+            });
+            clipboard.on('error', function(e) {
+                layer.msg('此浏览器不支持此操作，请长按礼包码复制');
+            })
+        }
+    </script>
+</block>

@@ -1,0 +1,39 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+
+</block>
+<block name="body">
+    <div class="user_zhuce_info_page">
+        <div class="user_zhuce_info_page_header" <if condition="cmf_is_ios() and input('issdk')">style="height:3.4rem;"</if>>
+            <if condition="empty(input('issdk'))">
+            <p class="fl close_user_zhuce_info" id="close_modal">关闭</p>
+            </if>
+
+            <if condition="cmf_is_ios() and input('issdk')">
+<!--                <p class="fl user_zhuce_info_page_item">{$data.post_title}</p>-->
+            <else/>
+<!--                <p class="fl user_zhuce_info_page_item">{$data.post_title}</p>-->
+            </if>
+
+            <!-- <a href="{:url('Game/search')}"><img src="__TMPL__/mobilepublic/assets/images/common_btn_search.png" alt="" class="sears_btn"></a> -->
+        </div>
+        <div class="type_down__long_hx clear"></div>
+
+        <div class="user_zhuce_info_con">
+            {$data.post_content}
+        </div>
+    </div>
+    <script>
+            $(function () {
+                $('.user_zhuce_info_error_btn').click(function () {
+                    window.location.reload();
+                });
+                $('#close_modal').click(function () {
+                    var index = parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(index);
+                })
+            })
+
+            $('body').css('background','#F7F7F7')
+        </script>
+</block>

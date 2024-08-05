@@ -1,0 +1,175 @@
+.v-middle{
+    display: flex;
+    align-items: center;
+}
+.type_down__long_hx{
+    width: 100%;
+    height: 1px;
+    background-color: #EDEEEF;
+    position: relative;
+    top: -0.2rem;
+    z-index: 1;
+    margin-top: 0.3rem;
+}
+.my_bag_page_header{
+    width: 100%;
+    height: 3.5rem;
+}
+.my_bag_page_header .back_icon{
+    width: 0.74rem;
+    margin-top: 1.25rem;
+    margin-left: 1rem;
+}
+.my_bag_page_item{
+    margin-left: 36%;
+    font-size: 1.45rem;
+    line-height: 1.5rem;
+    padding-top: 1.1rem;
+    margin-bottom: 0.9rem;
+    font-weight: 500;
+    color: #222222;
+}
+
+.user-trumpet-list{
+    width:100%;
+    padding: 1rem 1rem 2rem ;
+    box-sizing: border-box;
+}
+.user-trumpet-item .game-info{
+    display: flex;
+    align-items: center;
+    font-size: 1.09rem;
+    font-weight: bold;
+}
+.user-trumpet-item .game-info .game-icon{
+    width:3rem;
+    height:3rem;
+    background: #e2e2e2;
+    border-radius: 0.5rem;
+    margin-right: 1rem;
+}
+.game-trumpet-list{
+    padding: 1rem 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+.game-trumpet-list .game-trumpet-item{
+    width:100%;
+    height: auto;
+	overflow: hidden;
+}
+.game-trumpet-item{
+	margin-bottom: 0.2rem;
+}
+.game-trumpet-list .game-trumpet-item .trumpet-name{
+    font-size: 1.14rem;
+    max-width: 13rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.game-trumpet-list .game-trumpet-item .trumpet-charge{
+    margin-left: 0.5rem;
+    font-size: 0.94rem;
+    color: #999999;
+}
+.game-trumpet-item .edit-btn{
+    margin-left: auto;
+    width: 1.8rem;
+    height: 1.8rem;
+    background: url(../images/sdk_trumpet_btn_write2.png)no-repeat;
+    background-size: 100% 100%;
+}
+.game-trumpet-item .delete-btn{
+    margin-left: 0.8rem;
+    width: 1.8rem;
+    height: 1.8rem;
+    background: url(../images/trumpet_del.png)no-repeat;
+    background-size: 100% 100%;
+}
+.layui-layer-title{
+    text-align: center;
+    padding: 0!important;
+}
+.layui-layer-prompt .layui-layer-input {
+    display: block;
+    width: 230px;
+    height: 36px;
+    margin: 0 auto;
+    line-height: 30px;
+    padding-left: 10px;
+    border: 1px solid #e6e6e6;
+    color: #333;
+}
+.trumpet-status{
+    font-size: 0.94rem;
+    color:#FFA229;
+    margin-left: auto;
+
+}
+
+.trumpetTitle {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-right: .6rem;
+	position: relative;
+}
+.trumpetName {
+    font-size: .94rem;
+    color: #000;
+    font-weight: bold;
+    max-width: 20rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.trumpetCharge {
+    font-size: 0.94rem;
+    color: #999999;
+}
+.trumpetEdit {
+    width: 1.29rem;
+    height: 1.29rem;
+    background: url("../images/xhgl_btn_edit.png") no-repeat center center / 100% 100%;
+	position: absolute;
+    right: 0;
+}
+.trumpetStatus {
+    font-weight: 500;
+    color: #F45D5D;
+	font-size: 0.94rem;
+	position: absolute;
+    right: 0;
+}
+.trumpetList {
+    font-size:0.94rem;
+    color: #333;
+    padding-top: .4rem;
+}
+.trumpetItem {
+    line-height: 2.4;
+    display: flex;
+    justify-content: space-between;
+}
+.trumpetServer,
+.trumpetRole,
+.trumpetTime {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.trumpetServer {
+    width: 16%;
+}
+.trumpetRole {
+    width: 48%;
+}
+.trumpetTime {
+    width: 28%;
+}
+.trumpetTime,
+.trumpetConsume,
+.trumpetNone {
+    color: #999;
+}

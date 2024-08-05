@@ -1,0 +1,219 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('transaction/lists')}">小号商品</a></li>
+            <span class="title_remark">说明：用户发布小号商品的记录。</span>
+        </ul>
+        <form id="search_form" class="well form-inline  fr" method="get" action="{:url('Transaction/lists')}" onsubmit="return check();" style="margin-right: 0px;">
+            <if condition="AUTH_PROMOTE eq 1">
+                <input type="text" class="form-control" name="user_account" style="width: 120px;" value="{:input('request.user_account/s','')}" placeholder="账号">
+            </if>
+            <input type="text" class="form-control js-bootstrap-date" id="start_time" name="start_time" placeholder="开始时间"
+                   value="{:input('request.start_time/s','')}" style="width: 140px;" autocomplete="off">-
+            <input type="text" class="form-control js-bootstrap-date" id="end_time" name="end_time" placeholder="结束时间"
+                   value="{:input('request.end_time/s','')}" style="width: 140px;" autocomplete="off">
+            <if condition="AUTH_GAME eq 1">
+                <select name="game_id" id="game_id" class="selectpicker " game_id="{:input('request.game_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+                    <option value="">游戏名称</option>
+                    <volist name=":get_game_list('id,game_name')" id="vo">
+                        <option game-id="{$vo.id}" value="{$vo.id}" >{$vo.game_name}</option>
+                    </volist>
+                </select>
+            </if>
+            <select name="status" id="status" class="selectpicker" status="{:input('request.status')}" style="width: 120px;">
+                <option value="">状态</option>
+                <option value="0" <if condition="input('status') eq '0'">selected</if>>待审核</option>
+                <option value="1" <if condition="input('status') eq 1">selected</if>>出售中</option>
+                <option value="2" <if condition="input('status') eq 2">selected</if>>已驳回</option>
+                <option value="3" <if condition="input('status') eq 3">selected</if>>已出售</option>
+                <option value="4" <if condition="input('status') eq 4">selected</if>>已下架</option>
+            </select>
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('Transaction/lists')}">清空</a>
+        </form>
+
+        <form class="js-ajax-form" action="" method="post" style="margin-left: -10px;">
+
+            <div class="table-actions position">
+                <button class="btn btn-primary  js-ajax-submit  mtb17 ml20" type="submit"
+                        data-action="{:url('member/transaction/setstatus',['status'=>1])}" data-subcheck="true" data-msg="您确定通过吗？">
+                    通过
+                </button>
+                <button class="btn btn-danger  js-ajax-submit  mtb17 ml20" type="submit"
+                        data-action="{:url('member/transaction/setStatus',['status'=>2,'field'=>'reject'])}" data-subcheck="true" data-msg="您确定批量驳回吗？">
+                    驳回
+                </button>
+                <button class="btn btn-primary  js-ajax-submit  mtb17 ml20" type="submit"
+                        data-action="{:url('member/transaction/setstatus',['status'=>4,'field'=>'lower_shelf'])}" data-subcheck="true" data-msg="您确定批量下架吗？">
+                    下架
+                </button>
+
+            </div>
+
+            <div class="scroll-table-wrapper">
+                <table class="table table-hover table-bordered scroll-table" style="margin-left:0px;">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="all-checkbox" class="table-item-checkbox js-check-all" data-direction="x" data-checklist="js-check-x"><label for="all-checkbox" class=""></label></th>
+                        <th>ID</th>
+                        <th>订单号</th>
+                        <th>商品信息</th>
+                        <th>卖家账号</th>
+                        <th>创建天数</th>
+                        <th>累计消费</th>
+                        <th>售价</th>
+                        <th>状态</th>
+                        <th>发布时间</th>
+                        <th>{:lang('ACTIONS')}</th>
+                    </tr>
+                </thead>
+                <tbody style="background: #ffffff">
+                    <empty name="data_lists">
+                        <tr><td colspan="10" style="text-align: center;">暂无数据</td></tr>
+                    <else/>
+                        <foreach name="data_lists" item="vo">
+                        <tr>
+                            <td>
+                                <input type="checkbox" id="ids-checkbox{$vo.id}" class="table-item-checkbox js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
+                                       value="{$vo.id}" >
+                                <label for="ids-checkbox{$vo.id}" class=""></label>
+                            </td>
+                            <td>{$vo.id}</td>
+                            <td>{$vo['order_number']}</td>
+                            <td><p style="font-weight: bold">{$vo['title']}</p><span style="color: #666666">{$vo.game_name}/{$vo.server_name}/{:get_user_entity($vo['small_id'],false,'nickname')['nickname']}</span></td>
+                            <td>{$vo['user_account']}</td>
+                            <php>
+                                $date1 = date_create();
+                                $date2 = date_create(date('Y-m-d',$vo['create_time']));
+                                $diff=date_diff($date1,$date2);
+                                $days = $diff->days;
+                            </php>
+                            <td>{$days}</td>
+                            <td>{$vo['cumulative']}</td>
+                            <td>{:$vo['money']}</td>
+                            <td>
+                                <switch name="vo.status">
+                                    <case value="-1">出售中</case>
+                                    <case value="0"><span>待审核</span></case>
+                                    <case value="1">出售中</case>
+                                    <case value="2">已驳回</case>
+                                    <case value="3">已出售</case>
+                                    <case value="4">已下架</case>
+                                </switch>
+                            </td>
+                            <td>{$vo['create_time']|date='Y-m-d H:i:s',###}</td>
+                            <td>
+                                <a href="{:url('detail',['id'=>$vo['id']])}">
+                                   查看
+                                </a>
+                                <switch name="vo.status">
+                                    <case value="0">
+                                        <a href="{:url('setStatus',['id'=>$vo['id'],'status'=>1])}" class="js-ajax-dialog-btn">通过</a>
+                                        <a href="javascript:;" url="{:url('setStatus',['id'=>$vo['id'],'status'=>2,'field'=>'reject'])}" class="reject">驳回</a>
+                                    </case>
+                                    <case value="1">
+                                        <a href="javascript:;" url="{:url('setStatus',['id'=>$vo['id'],'status'=>4,'field'=>'lower_shelf'])}" class="lower_shelf">下架</a>
+                                    </case>
+                                    <case value="2">
+<!--                                        <a href="{:url('setStatus',['id'=>$vo['id'],'status'=>1])}" class="js-ajax-dialog-btn">通过</a>-->
+                                    </case>
+                                    <case value="4">
+<!--                                        <a href="{:url('setStatus',['id'=>$vo['id'],'status'=>1])}" class="js-ajax-dialog-btn">通过</a>-->
+                                    </case>
+                                </switch>
+                            </td>
+                        </tr>
+                        </foreach>
+                    </empty>
+                </tbody>
+            </table>
+            </div>
+            <div class="pagination">
+                {$page}
+            </div>
+        </form>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script type="text/javascript">
+        $("#game_id").selectpicker('val', $("#game_id").attr('game_id'));
+        $("#status").selectpicker('val', $('#status').attr('status'));
+        $(function () {
+            $(".reject").click(function () {
+                var url = $(this).attr('url');
+                layer.prompt({
+                    formType: 2,
+                    title: "商品驳回",
+                    value: '',
+                    success:function (layero, index) {
+                        layero.find('textarea').attr('placeholder','请输入驳回原因');
+                    }
+                }, function (msg) {
+                    $.ajax({
+                        url: url,
+                        type: 'post',
+                        dataType: 'json',
+                        data: {msg:msg},
+                        success: function (data) {
+                            if (data.code > 0) {
+                                layer.msg(data.msg);
+                                setTimeout(function(){
+                                    self.location.reload(true);
+                                },1000);
+                            } else {
+                                layer.msg(data.msg)
+                            }
+                        },
+                        error: function () {
+                            layer.msg("服务器故障！");
+                        }
+                    });
+                });
+            });
+            $(".lower_shelf").click(function () {
+                var url = $(this).attr('url');
+                layer.prompt({
+                    formType: 2,
+                    title: "商品下架",
+                    value: '',
+                    success:function (layero, index) {
+                        layero.find('textarea').attr('placeholder','请输入下架原因');
+                    }
+                }, function (msg) {
+                    $.ajax({
+                        url: url,
+                        type: 'post',
+                        dataType: 'json',
+                        data: {msg:msg},
+                        success: function (data) {
+                            if (data.code > 0) {
+                                layer.msg(data.msg);
+                                setTimeout(function(){
+                                    self.location.reload(true);
+                                },1000);
+                            } else {
+                                layer.msg(data.msg)
+                            }
+                        },
+                        error: function () {
+                            layer.msg("服务器故障！");
+                        }
+                    });
+                });
+            });
+        })
+        function check(){
+            var start_time = $("#start_time").val();
+            var end_time = $("#end_time").val();
+            if(start_time != '' && end_time != '' && start_time > end_time){
+                layer.msg('开始时间不能大于结束时间');
+                return false;
+            }
+            return true;
+        }
+
+    </script>
+</body>
+</html>

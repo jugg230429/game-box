@@ -1,0 +1,188 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('mcard/lists')}">购买记录</a></li>
+            <li><a href="{:url('mcard/set')}">尊享卡设置</a></li>
+        </ul>
+        <form id="search_form" class="well form-inline  fr" method="get" action="{:url('mcard/lists')}" onsubmit="return check();" style="margin-right: 0px;">
+            <input type="text" class="form-control" name="user_account" style="width: 120px;" value="{:input('request.user_account/s','')}" placeholder="账号">
+
+            <input type="text" class="form-control js-bootstrap-date" id="start_time" name="start_time" placeholder="购买开始时间"
+                   value="{:input('request.start_time/s','')}" style="width: 140px;" autocomplete="off">-
+            <input type="text" class="form-control js-bootstrap-date" id="end_time" name="end_time" placeholder="购买结束时间"
+                   value="{:input('request.end_time/s','')}" style="width: 140px;" autocomplete="off">
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('mcard/lists')}">清空</a>
+        </form>
+        <div class="scroll-table-wrapper">
+        <table class="table table-hover table-bordered scroll-table" style="margin-left:0px;">
+            <thead>
+                <tr>
+                    <th>订单号</th>
+                    <th>账号</th>
+                    <th>所属渠道</th>
+                    <th>尊享卡类型</th>
+                    <th>订单金额</th>
+                    <th>支付方式</th>
+                    <th>购买时间</th>
+                    <th>购买IP</th>
+                    <th>截止日期</th>
+                </tr>
+            </thead>
+            <tbody style="background: #ffffff">
+                <empty name="data_lists">
+                    <tr><td colspan="9" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <foreach name="data_lists" item="vo">
+                    <tr>
+                        <td>{$vo['pay_order_number']}</td>
+                        <td>{$vo['user_account']}</td>
+                        <td>{$vo.promote_account|default='官方渠道'}</td>
+                        <td><{$vo['member_name']}>{$vo.days}天<gt name="vo.free_days" value="0">({$vo.free_days}天)</gt></td>
+                        <td>{$vo['pay_amount']}</td>
+                        <td>{:get_pay_way($vo['pay_way'])}</td>
+                        <td>{$vo['create_time']|date="Y-m-d H:i:s",###}</td>
+                        <td>{$vo['spend_ip']}</td>
+                        <td>{$vo['end_time']|date="Y-m-d H:i:s",###}</td>
+                    </tr>
+                    </foreach>
+                     <tr class="data_summary">
+                        <td><span style="margin-right: 10px;">汇总</span></td>
+                         <td></td>
+                         <td></td>
+                         <td></td>
+                         <td>{$total}</td>
+                         <td></td>
+                         <td></td>
+                         <td></td>
+                         <td></td>
+                    </tr>
+                </empty>
+            </tbody>
+        </table>
+        </div>
+        <div class="pagination">
+            {$page}
+        </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script type="text/javascript">
+        game_id = $("#game_id").attr('game_id');
+        account = $("#promote_account").attr('promote_account');
+        top_promote = $('#top_promote').attr('top_promote');
+        server_id = $("#server_id").attr('server_id');
+        $("#game_id").selectpicker('val', game_id);
+        $("#promote_account").selectpicker('val', account);
+        $("#top_promote").selectpicker('val', top_promote);
+        $("#pay_way").selectpicker('val', $('#pay_way').attr('pay_way'));
+        $("#pay_status").selectpicker('val', $('#pay_status').attr('pay_status'));
+        $("#pay_game_status").selectpicker('val', $('#pay_game_status').attr('pay_game_status'));
+        if(game_id){
+            get_game_server(game_id);
+        }
+        $('#game_id').change(function(){
+            gi = $("#game_id").val();
+            get_game_server(gi);
+        });
+        $("#server_id").click(function () {
+            if($('#game_id').val()==0 ){
+                layer.msg('请先选择游戏');
+                return false;
+            }
+            if($('#game_id').val()=='' ){
+                layer.msg('请先选择游戏');
+                return false;
+            }
+        })
+
+        $(".show_order_no").click(function () {
+            var order = $(this).data('order');
+            layer.open({
+                type: 1,
+                title:"CP订单号",
+                skin: 'layui-layer-rim', //加上边框
+                area: ['400px', '200px'], //宽高
+                content: order
+            });
+        })
+        function check(){
+            var start_time = $("#start_time").val();
+            var end_time = $("#end_time").val();
+            if(start_time != '' && end_time != '' && start_time > end_time){
+                layer.msg('开始时间不能大于结束时间');
+                return false;
+            }
+            return true;
+        }
+        function get_game_server(game_id){
+            $('#server_id').empty();
+            $('#server_id').append("<option value=''>区服名称</option>");
+            $.ajax({
+               url:"{:url('game/server/get_game_server')}",
+               type:'post',
+               dataType:'json',
+               data:{game_id:game_id},
+               success:function(res){
+                if(res.code!=1){
+                    layer.msg(res.msg);
+                }else{
+                    option = '';
+                    $.each(res.data,function (key,value) {
+                       option+="<option value='";
+                       option+=value['id']+"'";
+                       if(value['id']==server_id){
+                        option+="selected";
+                       }
+                       option+=" >"+value['server_name'];
+                       option+="</option>";
+                    });
+                    $('#server_id').append(option).selectpicker('refresh');
+                    server_id = '';
+                }
+               },error(){
+                layer.msg('服务器错误');
+               }
+            })
+        }
+        $('.budan').click(function(){
+            var orderno = $(this).attr('data-orderno');
+            $.ajax({
+                url:"{:url('repair')}",
+                type:'post',
+                dataType:'json',
+                data:{orderno:orderno},
+                success:function(res){
+                    layer.msg(res.msg);
+                    if(res.code == 1){
+                        setTimeout(function () {
+                            window.location.reload();
+                        },1000)
+                    }
+                },error(){
+                    layer.msg('服务器错误');
+                }
+            })
+        });
+        function changesort(type){
+            var sort_type = $("#sort_type").val();
+            if(sort_type != type){
+                var sort = 1;
+            }else{
+                var sort = $("#sort").val();
+            }
+            $("#sort_type").val(type);
+            if(sort == 1){
+                $("#sort").val(2);
+            }else if(sort == 2){
+                $("#sort").val(3);
+            }else{
+                $("#sort").val(1);
+            }
+            $("#search_btn").click();
+        }
+    </script>
+</body>
+</html>

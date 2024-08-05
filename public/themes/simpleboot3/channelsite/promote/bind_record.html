@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" media="all" href="__STATIC__/js/datejs/daterangepicker.css"/>
+		<include file="public@head"/>
+	</head>
+	<style>
+		.daterangepicker .ranges li.active {
+			color: #fff!important;
+		}
+	</style>
+	<body>
+		<include file="public@nav"/>
+		<include file="public@header"/>
+		<div class="trunk">
+			<div class="trunk-con">
+				<div class="right-container">
+					<div class="normal-list">
+						<div class="trunk">
+							<ul class="tab">
+								<li class="tab-menu "><a href="{:url('bind_balance')}">给玩家代充</a></li>
+								<li class="tab-menu tab-menu-active"><a href="{:url('bind_record')}">代充记录</a></li>
+							</ul>
+
+							<div class="tabpan">
+								<div class="tabpan-con tabpan-show">
+									<form action="{:url('bind_record')}">
+										<div class="trunk-search clearfix fr" style="margin-top: 60px">
+											<input type="text" class="tabpan-input normal-space" name="user_account" placeholder="玩家账号" value="{:input('user_account')}">
+											<select id="pay_way" name="pay_way" class="tab-input js-select-gallery normal-space trunk-search-smallselect fl">
+												<option value="" data="0">支付方式</option>
+												<option value="2" <if condition="input('request.pay_way') eq 2">selected</if>>平台币</option>
+												<option value="3" <if condition="input('request.pay_way') eq 3">selected</if>>支付宝</option>
+												<option value="4" <if condition="input('request.pay_way') eq 4">selected</if>>微信</option>
+											</select>
+											<select id="game_id" name="game_id" class="tab-input js-select-gallery normal-space trunk-search-smallselect fl" >
+												<option value="" data="0">游戏名称</option>
+												<volist name="$gdata" id="vv">
+													<option <if condition="$vv['id'] eq input('game_id')"> selected</if> data="{$vv['game_name']}" value="{$vv['id']}">{$vv['game_name']}</option>
+												</volist>
+											</select>
+											<input type="text" readonly style="width: 160px;outline: none;" class="tabpan-input normal-space"
+												   autocomplete="off" name="rangepickdate" id="rangepickdate" placeholder="代充时间" value="{:input('rangepickdate')}">
+
+											<input type="submit" class="submit fr normal-space" id="submit" value="查询">
+											<input type="hidden" id="page" name="row" value="{:input('row',10)}">
+										</div>
+									</form>
+									<div class="clear"></div>
+									<table class="table normal-table" id="promotecoin_table">
+										<tbody>
+											<tr>
+												<th>游戏名称</th>
+												<th>订单号</th>
+												<th>玩家账号</th>
+												<th>代充金额</th>
+												<th>折扣比例/折</th>
+												<th>实付金额</th>
+												<th>代充时间</th>
+												<th>支付方式</th>
+											</tr>
+											<if condition="(AUTH_PAY eq 1) and (AUTH_GAME eq 1)">
+											<notempty name="data_lists">
+												<volist name="data_lists" id='vo'>
+												<tr>
+													<td>{$vo.game_name}</td>
+													<td>{$vo.pay_order_number}</td>
+													<td>{$vo.user_account}</td>
+													<td>{$vo.cost}</td>
+													<td><span style="color: #FF6600;">{$vo.discount}</span></td>
+													<td>{$vo.pay_amount}</td>
+													<td>{:date('Y-m-d H:i:s',$vo['pay_time'])}</td>
+													<td>{:get_pay_way($vo['pay_way'])}</td>
+												</tr>
+												</volist>
+												<tr style="background:#f0eff5">
+													<td></td>
+													<td></td>
+													<td></td>
+													<td class="red">￥{:null_to_0($total['scost'])}</td>
+													<td></td>
+													<td class="red">￥{:null_to_0($total['spay_amount'])}</td>
+													<td></td>
+													<td></td>
+												</tr>
+											<else/>
+												<!--暂无数据-->
+												<tr>
+													<td colspan="10" >
+													<div class="no-data">
+														<img src="__TMPL__/public/assets/images/icon_wushujv2.png"  alt="" class="no-data-img"/>
+														<p class="no-data-text">暂无数据</p>
+													</div>
+													</td>
+												</tr>
+											</notempty>
+											<else/>
+												<tr>
+													<td colspan="10" >
+														<div class="no-data">
+															<img src="__TMPL__/public/assets/images/icon_wushujv2.png"  alt="" class="no-data-img"/>
+															<p class="no-data-text">请购买充值权限和游戏权限</p>
+														</div>
+													</td>
+												</tr>
+											</if>
+										</tbody>
+									</table>
+									<if condition="(AUTH_PAY eq 1) and (AUTH_GAME eq 1)">
+									<notempty name="data_lists">
+										<!-- <div class="total">
+											<span class="fr total-con"><span  class="total-name">应付总计：</span>￥{:null_to_0($total['scost'])}</span>
+											<span class="fr total-con"><span class="total-name">实付总计：</span>￥{:null_to_0($total['spay_amount'])}</span>
+										</div> -->
+										<div class="pagenation clearfix">
+											{$page}
+										</div>
+									</notempty>
+									</if>
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+					
+				</div>
+			</div>
+		</div>
+
+		<include file="public@scripts"/>
+		<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+		<script src="__STATIC__/js/layer/layer.js"></script>
+		<script type="text/javascript" src="__STATIC__/js/datejs/moment.min.js"></script>
+		<script type="text/javascript" src="__STATIC__/js/datejs/momentfunction.js"></script>
+		<script type="text/javascript" src="__STATIC__/js/datejs/daterangepicker.js"></script>
+		<include file="public@date_config_scripts"/>
+		<script>
+            var maxDate = moment().startOf('day');
+            var date_autoUpdateInput = false;
+            var start = '{$start}',end  = '{$end}';
+            $(function() {
+				$(".js-select-gallery").select2();
+			})
+			//			日历
+			var date = "{$setdate}";
+		</script>
+		<style type="text/css">
+			.red{color: #26C7DB !important;font-weight:bold;}
+		</style>
+	</body>
+
+</html>

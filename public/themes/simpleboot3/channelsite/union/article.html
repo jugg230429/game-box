@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+    <link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+    <link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+    <link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" />
+    <link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+    <link href="__TMPL__/public/assets/css/promote/mychlid.css" rel="stylesheet" />
+    <include file="public@head"/>
+</head>
+
+<body>
+<include file="public@nav"/>
+<include file="public@header"/>
+<div class="trunk">
+    <div class="trunk-con">
+        <div class="right-container">
+            <div class="normal-list">
+                <div class="trunk">
+                    <div class="trunk-title">
+                        <div class="location ">
+                            <div class="location-container fr">当前位置：<span class="location-container-text">推广联盟&gt;</span><span class="location-container-text">文档管理</span></div>
+                        </div>
+                        <img src="__TMPL__/public/assets/images/icon_normal_game.png" class="fl trunk-icon">
+                        <span class="title-main fl ">文档列表</span>
+
+                    </div>
+
+                    <div class="tabpan">
+
+                        <div class="tabpan-con tabpan-show mychlid-tabcon">
+                            <a href="{:url('articleAdd')}" class="add-btn  fl"><i class="add-qudao"></i><span>添加文档</span></a>
+                            <div class="clear"></div>
+                            <div class="minh-table">
+                                <table class="table normal-table" id="promotecoin_table">
+                                    <tbody>
+                                    <tr>
+                                        <th>标题</th>
+                                        <th>最后更新时间</th>
+                                        <th>操作</th>
+                                    </tr>
+
+                                    <notempty name="data_lists">
+                                        <volist name="data_lists" id="vo">
+                                            <tr>
+                                                <td>{$vo.title}</td>
+                                                <td>{:date("Y-m-d H:i:s",$vo['update_time'])}</td>
+                                                <td>
+                                                    <p>
+                                                        <a href="{:url('articleEdit',['id'=>$vo['id']])}" style="color: rgb(38,199,219)">编辑</a> |
+                                                        <a href="javascript:;" class="editbtn jseditbtn" data-id="{$vo['id']}" style="color: rgb(38,199,219)" >删除</a>
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </volist>
+                                        <else/>
+                                        <!--暂无数据-->
+                                        <tr>
+                                            <td colspan="9">
+                                                <div class="no-data">
+                                                    <img src="__TMPL__/public/assets/images/icon_wushujv2.png" alt="" class="no-data-img">
+                                                    <p class="no-data-text">暂无数据</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </notempty>
+                                    </tbody>
+                                </table>
+                                <notempty name="data_lists">
+                                    <div class="pagenation clearfix">
+                                        {$page}
+                                    </div>
+                                </notempty>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<include file="public@scripts"/>
+<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.js"></script>
+<script src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+
+<script>
+    $(function() {
+        $(".js-select-gallery").select2();
+    })
+    //			日历
+    var date = "{$setdate}";
+    $('#sdate').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language: "zh-CN",
+        minView: 2,
+        autoclose: true,
+        scrollMonth: false,
+        scrollTime: false,
+        scrollInput: false,
+        endDate: date
+    });
+    $('#edate').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language: "zh-CN",
+        minView: 2,
+        autoclose: true,
+        pickerPosition: 'bottom-left',
+        scrollMonth: false,
+        scrollTime: false,
+        scrollInput: false,
+        endDate: date
+    });
+
+    $('#submit').click(function() {
+        var sdate = $('#sdate').val();
+        var edate = $('#edate').val();
+        var pid = $('#promote_id').val();
+        var pac = $('#promote_account').val();
+
+        if(Date.parse(sdate) > Date.parse(edate)) {
+            layer.msg('开始时间必须小于等于结束时间');
+            return false;
+        }
+//				var url = $(this).attr('url');
+//				console.log(url);
+//				var query = $('.jssearch').find('input').serialize();
+//				query += "&" + $('.jssearch').find('select').serialize();
+//				query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+//				query = query.replace(/^&/g, '');
+//				if(url.indexOf('?') > 0) {
+//					url += '&' + query;
+//				} else {
+//					url += '?' + query;
+//				}
+//				window.location.href = url;
+
+    });
+
+
+    $(".applybtn").click(function () {
+
+        var id = $(this).data('id');
+        var status = $(this).data('status');
+
+        if(status=='-1'){
+
+            layer.prompt(
+                {
+                    formType: 2,
+                    title: "请输入驳回原因",
+                    area: ['300px', '50px'],
+                    placeholder: '请输入驳回原因',
+                    value: ''
+                }
+                , function (val) {
+                    $.ajax({
+                        url: '{:url("changeStatus")}',
+                        type: 'post',
+                        dataType: 'json',
+                        data: {'remark': val, 'id': id, 'status': status},
+                        success: function (data) {
+                            if (data.code > 0) {
+                                layer.msg(data.msg);
+                                setTimeout(function () {
+                                    window.location.reload();
+                                }, 1000)
+                            } else {
+                                layer.msg(data.msg)
+                            }
+                        },
+                        error: function () {
+                            layer.msg('服务器错误');
+                        }
+                    });
+                });
+
+        }else{
+            $.ajax({
+                type: 'post',
+                url: '{:url("changeStatus")}',
+                data: {id: id, status: status},
+                success: function (res) {
+                    layer.msg(res.msg, {time: 1000}, function () {
+                        location.href = location.href;
+                    });
+                }, error: function () {
+                    layer.msg('服务器错误，请稍后再试');
+                }
+            });
+        }
+
+    })
+
+
+    $(".jseditbtn").click(function () {
+        that = $(this);
+        $.ajax({
+            type: 'POST',
+            url: "{:url('articleDel')}",
+            data: {"id": that.data('id')},
+            async: false,
+            dataType: 'json',
+            success: function (data) {
+                if (data.code > 0) {
+                    layer.msg(data.msg, {time: 1000}, function () {
+                        location.href = location.href;
+                    })
+                } else {
+                    layer.msg(data.msg, {time: 1000});
+                }
+            }
+        })
+    })
+
+
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,136 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li <if condition="input('type') neq 2"> class="active"</if>><a href="{:url('ptbdeduct/lists')}">玩家收回</a></li>
+            <li <if condition="input('type') eq 2"> class="active"</if>><a href="{:url('ptbdeduct/lists',['type'=>2])}">渠道收回</a></li>
+            <li><a href="{:url('ptbdeduct/deduct')}">收回平台币</a></li>
+            <if condition="input('type') neq 2">
+                <span class="title_remark">说明：显示收回玩家平台币的记录列表</span>
+            <else/>
+                <span class="title_remark">说明：显示收回渠道平台币的记录列表</span>
+            </if>
+        </ul>
+        <form id="search_form" class="well form-inline  fr" method="get" action="{:url('ptbdeduct/lists')}" onsubmit="return check();">
+            <if condition="input('type') eq 2">
+                <select name="promote_id" id="promote_id" class="selectpicker " promote_id="{:input('request.promote_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+                    <option value="">渠道账号</option>
+                    <volist name=":get_promote_list()" id="vo">
+                        <option game-id="{$vo.id}" value="{$vo.id}" >{$vo.account}</option>
+                    </volist>
+                </select>
+            <else/>
+                <input type="text" class="form-control" name="user_account" style="width: 120px;" value="{:input('request.user_account/s','')}" placeholder="玩家账号">
+            </if>
+            <input type="hidden" name="type" value="{:input('type')}">
+            <input type="text" class="form-control js-bootstrap-date" id="start_time" name="start_time" placeholder="收回开始时间"
+                   value="{:input('request.start_time/s','')}" style="width: 140px;" autocomplete="off">-
+            <input type="text" class="form-control js-bootstrap-date" id="end_time" name="end_time" placeholder="收回结束时间"
+                   value="{:input('request.end_time/s','')}" style="width: 140px;" autocomplete="off">
+            <if condition="input('type') eq 2">
+                <select name="level" id="status" class="form-control" style="width: 120px;">
+                    <option value="">等级</option>
+                    <option value="1" <if condition="input('request.level') eq '1'">selected</if>>一级渠道</option>
+                    <option value="2" <if condition="input('request.level') eq '2'">selected</if>>二级渠道</option>
+                    <option value="3" <if condition="input('request.level') eq '3'">selected</if>>三级渠道</option>
+                </select>
+            </if>
+
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('ptbdeduct/lists',['type'=>input('type')])}">清空</a>
+            <if condition="input('type') != 2">
+                <a class="btn btn-export js-ajax-dialog-btn-xz" data-msg="确定导出吗？" href="{:url('Export/expUser',array_merge(['id'=>6,'xlsname'=>'玩家收回'],input()))}">导出</a>
+                <else/>
+                <a class="btn btn-export js-ajax-dialog-btn-xz" data-msg="确定导出吗？" href="{:url('Export/expUser',array_merge(['id'=>6,'xlsname'=>'渠道收回'],input()))}">导出</a>
+            </if>
+        </form>
+    <form class="js-ajax-form" action="" method="post">
+        <if condition="input('type') neq 2">
+            <table class="table table-hover table-bordered">
+                <thead >
+                    <tr>
+                        <th>玩家账号</th>
+                        <th>收回类型</th>
+                        <th>收回数量</th>
+                        <th>收回时间</th>
+                        <th>操作人员</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <empty name="data_lists">
+                        <tr><td colspan="6" style="text-align: center;">暂无数据</td></tr>
+                    <else/>
+                        <foreach name="data_lists" item="vo">
+                        <tr>
+                            <php>$page_total +=$vo['amount'];</php>
+                            <td>{$vo['user_account']}</td>
+                            <td>平台币</td>
+                            <td>{$vo['amount']}</td>
+                            <td>{:date('Y-m-d H:i:s',$vo['create_time'])}</td>
+                            <td>{:get_admin_name($vo['op_id'])}</td>
+                        </tr>
+                        </foreach>
+                         <tr class="data_summary">
+                            <td colspan="1"><span style="margin-right: 10px;">汇总</span></td>
+                            <td colspan="6"><span>今日收回：{:null_to_0($today['total'])} ； 昨日收回：{:null_to_0($yestoday['total'])} ；当页收回：{:null_to_0($page_total)} ； 累计收回：{:null_to_0($total['total'])}</span></td>
+                        </tr>
+                    </empty>
+                </tbody>
+            </table>
+        <else/>
+            <table class="table table-hover table-bordered">
+                <thead >
+                    <tr>
+
+                        <th>渠道账号</th>
+                        <th>渠道等级</th>
+                        <th>收回数量</th>
+                        <th>收回时间</th>
+                        <th>操作人员</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <empty name="data_lists">
+                        <tr><td colspan="6" style="text-align: center;">暂无数据</td></tr>
+                    <else/>
+                        <foreach name="data_lists" item="vo">
+                        <tr>
+                            <php>$page_total +=$vo['num'];</php>
+                            <td>{:get_promote_name($vo['promote_id'])}</td>
+                            <td>{:$vo['promote_type'] == 1?'一级':($vo['promote_type'] == 2?'二级':'三级');}</td>
+                            <td>{$vo['num']}</td>
+                            <td>{:date('Y-m-d H:i:s',$vo['create_time'])}</td>
+                            <td>{:get_admin_name($vo['op_id'])}</td>
+                        </tr>
+                        </foreach>
+                         <tr class="data_summary">
+                            <td colspan="1"><span style="margin-right: 10px;">汇总 </span></td>
+                            <td colspan="7"><span>今日收回：{:null_to_0($today['total'])} ； 昨日收回：{:null_to_0($yestoday['total'])} ；当页收回：{:null_to_0($page_total)}； 累计收回：{:null_to_0($total['total'])}</span></td>
+                        </tr>
+                    </empty>
+                </tbody>
+            </table>
+        </if>
+    </form>
+        <div class="pagination">{$page}
+
+        </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script type="text/javascript">
+        promote_id = $("#promote_id").attr('promote_id');
+        $("#promote_id").selectpicker('val', promote_id);
+        function check(){
+            var start_time = $("#start_time").val();
+            var end_time = $("#end_time").val();
+            if(start_time != '' && end_time != '' && start_time > end_time){
+                layer.msg('开始时间不能大于结束时间');
+                return false;
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/my_collect_game.css">
+</block>
+
+<block name="body">
+    <div class="my_game_page">
+        <div class="my_game_page_header">
+            <a href="javascript:history.back(-1);"><img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon"></a>
+            <p class="fl my_game_page_item"><a href="{:url('user/game')}">最近在玩</a></p>
+            <p class="fl my_game_page_item active_my_game_page_type" style="margin-left: 4rem"><a href="{:url('user/mycollect')}">我的收藏</a></p>
+            <div class="type_down_hx1 clear fl"></div>
+            <div class="type_down_hx2 clear fl active_type_down_hx"></div>
+            <notempty name="list">
+            <p class="end_delete">完成</p>
+            <img src="__TMPL__/mobilepublic/assets/images/common_btn_delate.png" alt="" class="delete_btn">
+            </notempty>
+        </div>
+        <div class="type_down__long_hx clear"></div>
+        <div class="mygame_download">
+            <notempty name="list">
+                <volist name="list" id="data">
+                <div class="game-time">{$key}</div>
+                <div style="margin:0.9rem 0">
+                    <volist name="data" id="vo">
+                        <a class="mygame_item" href="{:url('Game/detail',array('game_id'=>$vo['game_id']))}">
+                            <div class="mygame_item_img">
+                                <notempty name="vo.icon">
+                                <img src="{:cmf_get_image_url($vo['icon'])}" alt="" class="fl" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                                </notempty>
+                            </div>
+                            <p class="mygame_item_con_title">{$vo.game_name}</p>
+                            <div class="check_con">
+                                <input id="game_check_{$vo.id}" type="checkbox" name="ids[]" value="{$vo.id}" class="one_checked_check" />
+                                <label for="game_check_{$vo.id}" class="fl"><img src="__TMPL__/mobilepublic/assets/images/no_checked.png" alt=""
+                                        class="one_checked_img fl"></label>
+                            </div>
+
+							<!-- <div class="clear"></div>
+                            <div class="mygame_item_con">
+                                <p class="mygame_item_con_title">{$vo.game_name}</p>
+                            </div> -->
+                        </a>
+                    </volist>
+                    <div class="clear"></div>
+                </div>
+                </volist>
+            <else />
+                <div class="empty-box">~空空如也~</div>
+            </notempty>
+        </div>
+    </div>
+    <div class="my_game_footer">
+        <input id="my_all_checked" type="checkbox" name="my_all_checked" />
+        <label for="my_all_checked" class="fl"><img src="__TMPL__/mobilepublic/assets/images/all_checked.png" alt=""
+                class="all_checked_check"></label>
+        <p class="fl my_all_checked_text">全选</p>
+        <p class="fl delete_text">删除</p>
+    </div>
+</block>
+<block name="script">
+<script>
+    var checked_num = 0
+    // 全选
+    $('#my_all_checked').change(function () {
+        if ($('#my_all_checked').prop('checked') === true) {
+            checked_num = $('.one_checked_check').length
+            $('.all_checked_check').prop('src', '__TMPL__/mobilepublic/assets/images/mygame_btn_choose1.png')
+            for (var i = 0; i < $('.one_checked_check').length; i++) {
+                $($('.one_checked_check')[i]).prop('checked', true).closest('.mygame_item').addClass('js-delete-item');
+                $('.one_checked_check').next().children('.one_checked_img').prop('src', '__TMPL__/mobilepublic/assets/images/downlaod_btn_selected.png')
+            }
+        }
+        if ($('#my_all_checked').prop('checked') === false) {
+            checked_num = 0
+            $('.all_checked_check').prop('src', '__TMPL__/mobilepublic/assets/images/all_checked.png')
+            for (var i = 0; i < $('.one_checked_check').length; i++) {
+                $($('.one_checked_check')[i]).prop('checked', false).closest('.mygame_item').removeClass('js-delete-item');
+                $('.one_checked_check').next().children('.one_checked_img').prop('src', '__TMPL__/mobilepublic/assets/images/no_checked.png')
+            }
+        }
+    })
+    // 单选
+    $('.one_checked_check').change(function () {
+        if ($(this).prop('checked') === true) {
+            checked_num++
+            $(this).closest('.mygame_item').addClass('js-delete-item');
+            $(this).next().children('.one_checked_img').prop('src', '__TMPL__/mobilepublic/assets/images/downlaod_btn_selected.png')
+            if (checked_num === $('.one_checked_check').length) {
+                $('.all_checked_check').prop('src', '__TMPL__/mobilepublic/assets/images/mygame_btn_choose1.png')
+                $('#my_all_checked').prop('checked', true)
+            }
+        }
+        if ($(this).prop('checked') === false) {
+            checked_num--
+            $(this).closest('.mygame_item').removeClass('js-delete-item');
+            $(this).next().children('.one_checked_img').prop('src', '__TMPL__/mobilepublic/assets/images/no_checked.png')
+            if (checked_num !== $('.one_checked_check').length) {
+                $('.all_checked_check').prop('src', '__TMPL__/mobilepublic/assets/images/all_checked.png')
+                $('#my_all_checked').prop('checked', false)
+            }
+        }
+    })
+    // 删除
+    $('.delete_btn').click(function () {
+        $(this).hide()
+        $('.end_delete').show()
+        $('.my_game_footer').show()
+        $('.one_checked_img').show()
+    })
+    // 完成
+    $('.end_delete').click(function () {
+        $(this).hide()
+        $('.delete_btn').show()
+        $('.my_game_footer').hide()
+        for (var i = 0; i < $('.one_checked_check').length; i++) {
+            $($('.one_checked_check')[i]).prop('checked', false)
+            $('.one_checked_check').next().children('.one_checked_img').prop('src', '__TMPL__/mobilepublic/assets/images/no_checked.png')
+        }
+        $('.all_checked_check').prop('src', '__TMPL__/mobilepublic/assets/images/all_checked.png')
+        $('#my_all_checked').prop('checked', false)
+        $('.one_checked_img').hide()
+    })
+    $('.delete_text').click(function(){
+        var that = $(this);
+        if(that.hasClass('no_delete')) {return false;}
+        that.addClass('no_delete');
+        var ids = $('input[name="ids[]"]:checked').serialize();
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            url: '{:url("User/deleteCollect")}',
+            data: ids,
+            success: function (data) {
+                that.removeClass('no_delete');
+                layer.msg('<div style="font-size:12px">删除成功</div>');
+                if(data.code == 1) {
+                    $('.js-delete-item').remove();
+                    setTimeout(function () {
+                      window.location.reload();
+                    },1000)
+                }
+            },
+            error: function () {
+                layer.msg('服务器故障，请稍候再试');
+                that.removeClass('no_delete');
+            }
+        });
+    })
+</script>
+</block>

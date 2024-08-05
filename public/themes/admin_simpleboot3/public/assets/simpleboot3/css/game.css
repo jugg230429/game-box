@@ -1,0 +1,450 @@
+/*渠道列表弹窗*/
+
+.pro_promot {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(39, 49, 69, 0.3);
+    z-index: 19891015;
+}
+
+.pro_promot_main {
+    width: 698px;
+    /*margin:0 auto 25%;*/
+    border-radius: 5px;
+    height: auto;
+    overflow: hidden;
+    position: absolute;
+    left: 50%;
+    top: 25%;
+    margin-left:-349px;
+}
+
+.pro_promot_title {
+    width: 100%;
+    height: 54px;
+    line-height: 54px;
+    background: #e6e6e6;
+    border-bottom: 1px solid #dddddd;
+
+}
+
+
+.pro_promot_title_text {
+    font-size: 12px;
+    color: #6d6d6d;
+}
+
+.pro_promot_title_bigtext {
+    font-size: 16px;
+    color: #000;
+    font-weight:bold;
+    margin: 0 0 0 20px;
+}
+
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+    margin-right: 10px;
+}
+.clear{
+    clear: both;
+}
+
+.pro_promot_close {
+    margin-right: 20px;
+}
+
+.pro_promot_con {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    background: #ffffff;
+    padding: 20px 0;
+
+}
+
+.pro_promot_account {
+    font-size: 13px;
+    color: #393b6b;
+
+}
+
+.pro_promot_number {
+    color: #393b6b;
+    padding-left: 8px;
+    font-weight:bold;
+    line-height: 29px;
+}
+.pro_game_name{
+    color: #393b6b;
+    padding-left: 12px;
+    line-height: 29px;
+}
+.pro_game_name_link{
+	color:#393b6b;
+	text-decoration:none;
+}
+.pro_game_name_link_active{
+	color:#006fc4;
+}
+
+.pro_promot_select_title {
+    font-size: 14px;
+    margin:0 2px 0 20px;
+    display: block;
+    line-height: 29px;
+    color: #393b6b;
+    width: 70px;
+}
+.pro_promot_select_title.mt20{
+
+}
+.pro_promot_select_list {
+    margin: 10px 0px 0 8px;
+    height: 20px;
+}
+
+.pro_promot_select_list_con {
+    display: inline-block;
+    color: #393b6b;
+    font-size: 12px;
+    margin: 5px 0 10px 4px;
+    border-radius: 5px;
+
+    cursor: pointer;
+}
+.pro_promot_all{
+    padding:2px 5px;
+    border-radius: 15px;
+}
+.pro_promot_mr20{
+    margin-right:20px;
+}
+.pro_promot_mt20{
+    margin-top: 20px;
+}
+.pro_promot_select_list .active,
+.pro_promot_select_list_con:hover {
+    background: #24bbf4;
+    color: #ffffff;
+}
+.allcheck{
+    width: 80%;
+    height: auto;
+    margin: 10px 0 15px 119px;
+    overflow: hidden;
+}
+.pro_promot_game{
+    width:100%;
+    height: 200px;
+    margin: 0 0 0 -20px;
+    color: #393b6b;
+    font-size: 13px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.pro_promot_game_con{
+    margin-bottom: 10px;
+    position: relative;
+    width: 140px;
+    list-style: none;
+}
+.pro_promot_game_check{
+    display: none;
+}
+/*88889999*/
+.pro_promot_game_name {
+    margin: 0px 0px 0 5px;
+    line-height: 16px;
+	width: 100px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.omission{
+    max-width: 100px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+/**/
+.pro_promot_game_check+ label{
+    background-color: white;
+
+    border:1px solid #6a7082;
+    width:15px;
+    height:15px;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 12px;
+    border-radius: 3px;
+}
+
+.pro_promot_game_check:checked+ label{
+    background-color: #8895f3;
+    border:1px solid #8895f3;
+}
+.pro_promot_game_check:checked + label:after{
+    content:"";
+    width: 13px;
+    height: 9px;
+    display: block;
+    background: url('../../images/icon_check.png');
+    margin-top: 2px;
+
+}
+.pro_promot_btn{
+    width: 180px;
+    margin: 20px auto 10px;
+    overflow: hidden;
+}
+.pro_promot_btn_confirm,.pro_promot_btn_cancel{
+    width: 76px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    border-radius: 3px;
+    cursor: pointer;
+    background: #006fc4;
+    color: #ffffff;
+}
+
+.game_list{
+    margin-left: 119px;
+    list-style: none;
+    width: 640px;
+}
+
+
+/* 美化复选按钮 begin */
+.custom-label input[type="checkbox"]{
+    position: absolute;
+    clip:rect(0,0,0,0);
+}
+.custom-label{
+    float: left;
+    margin-left: 90px;
+    font-size: 0;
+    line-height: 17px;
+    cursor: pointer;
+    color: #666;
+    margin-top: 20px;
+}
+.label_icon{
+    float: left;
+    width: 17px;
+    height: 17px;
+    margin-right: 4px;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+.label_text{
+    overflow: hidden;
+    display: block;
+    font-size: 14px;
+}
+.custom-label input[type="checkbox"] + .label_icon{
+    background-image:url('../../images/label_icon.png');
+}
+.custom-label input[type="checkbox"]:checked + .label_icon{
+    background-image:url('../../images/btn_selected_xuanzhong.png');
+}
+/*end 美化复选按钮 */
+.layui-layer-demo .layui-layer-content{
+    padding: 0;
+}
+.layui-layer-demo table {
+    margin: 0;
+}
+/* 新的渠道弹窗 */
+.promoteModal {
+    display: none;
+    width: 1096px;
+    border-radius: 5px;
+    height: auto;
+    overflow: hidden;
+    position: absolute;
+    left: 13%;
+    top: 7%;
+}
+.promoteModal-header{
+    height: 49px;
+    line-height: 49px;
+    background: #D9D9D9;
+    padding: 0 23px 0 20px;
+}
+.headerTitleName{
+    font-size: 16px;
+    font-weight: bold;
+}
+.promoteModal-body {
+    width: 100%;
+    min-height: 469px;
+    background-color: #fff;
+    height: 573px;
+    padding: 20px 23px 0 21px;
+    overflow: auto;
+}
+.mainTextSame{
+    color:#393B6B;
+    font-size: 14px;
+}
+.gameNameShowText{
+    font-size: 16px;
+    color:#333;
+    font-weight: bold;
+}
+.promoteChooseAllInfo{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+.defferentTextColor{
+    color:#006FC4;
+}
+.inputSearchContent{
+    width: 163px;
+    height: 30px;
+    background: #F2F2F2;
+    border: 1px solid #E6E6E6;
+    border-radius: 3px;
+    outline: none;
+    color: #999;
+    padding-left: 12px;
+}
+.searchButtonPromote{
+    display: inline-block;
+    width: 58px;
+    height: 30px;
+    background: #006FC4;
+    border-radius: 3px;
+    color: #fff;
+    border: none;
+    text-align: center;
+}
+.firstChooseNum{
+    color:#393B6B;
+    font-size: 14px;
+    margin-right: 15px;
+}
+.firstChooseNum:hover {
+    text-decoration: none;
+}
+.promoteGameSelect {
+    margin: 20px 0 0 101px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.checkBoxIcon{
+    vertical-align: middle;
+}
+.promoteSelectLabel{
+    width: 12.5%;
+    position: relative;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+.promoteSelectLabel input[type="checkbox"]{
+    opacity: 0;
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    z-index: 100;
+}
+.checkBoxIcon {
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    background-image: url('../../images/btn_choose_n.png') ;
+    background-size: 100% 100%;
+    vertical-align: middle;
+    margin-bottom: 5px;
+    margin-right: 2px;
+}
+.promoteSelectLabel input[type="checkbox"]:checked+.checkBoxIcon {
+    background-image: url('../../images/btn_choose_s.png');
+}
+.cancelModalBtn{
+    width: 76px;
+    height: 32px;
+    background: #B3B3B3;
+    border-radius: 3px;
+    color: #fff;
+    border: none;
+    outline: none;
+    margin-left: 274px;
+    margin-right: 27px;
+}
+.confirmModalBtn{
+    width: 76px;
+    height: 32px;
+    background: #006FC4;
+    color: #fff;
+    border-radius: 3px;
+    border: none;
+    outline: none;
+}
+.promoteModal-footer{
+    height: 52px;
+    background: #D9D9D9;
+    border-radius: 0px 0px 3px 3px;
+    padding: 10px 0 0 11%;
+}
+.footerAllCheckBtn{
+    position: relative;
+    margin-top: 5px;
+    cursor: pointer;
+}
+.footerAllCheckBtn input[type="checkbox"]{
+    opacity: 0;
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    z-index: 100;
+}
+.footerAllCheckBtn input[type="checkbox"]:checked+.checkBoxIcon {
+    background-image: url('../../images/btn_choose_s.png');
+}
+.overTextStyle{
+    display:inline-block;
+    height: 36px;
+    background-image: url('../../images/bg_xf_tips.png');
+    background-size: 100% 100%;
+    position: absolute;
+    left: 15px;
+    top: 21px;
+    z-index: 999;
+    font-size: 14px;
+    line-height: 36px;
+    text-align: center;
+    font-style: normal;
+    padding: 0 9px;
+    display: none;
+}
+.limitTextStyle {
+    display: inline-block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 90px;
+    line-height: 13px;
+    font-weight: normal;
+}
+.promoteSelectLabel:hover .overTextStyle{
+    display: block;
+}
+.firstNumCurrent {
+    color: #8895f3 !important;
+}

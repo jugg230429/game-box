@@ -1,0 +1,1308 @@
+<include file="public@header" />
+<script type="text/javascript" src="__STATIC__/js/datejs/momentfunction.js"></script>
+</head>
+<body>
+<style>
+    body{background-color: #fff !important;
+    }
+    .bootstrap-select:not([class*="col-"]):not([class*="form-control"]):not(.input-group-btn) {
+        width: 120px;
+    }
+    .layui-equipment-num .layui-layer-content{
+        padding: 20px;
+    }
+    #search_form{
+        width:86% !important;
+    }
+    .layui-layer-iframe{
+        border-radius: 2px;
+        overflow: hidden;
+    }
+    .circle_class{
+        border-radius: 20%;
+        border:1px dotted gainsboro;
+    }
+    .circle_class2{
+        border-radius: 25px;
+        border:1px dotted gainsboro;
+        text-align: center;
+        background:floralwhite;
+    }
+
+    .my_div{
+        border:1px dotted red;
+        border-radius: 10px;
+        width:380px;
+        height:220px;
+        float:left;
+        margin-left: 5px;
+    }
+    input{
+        border-radius: 5px;
+    }
+    .layui-layer-prompt{
+        border-radius: 2px;
+        overflow: hidden;
+    }
+    .disabled{
+        border: 1px solid #DDDDDD !important;
+    }
+    .user-head{
+        max-width: 35px;
+         max-height: 35px;
+
+    }
+
+</style>
+    <div class="portrait">
+        <p>玩家画像</p>
+    </div>
+    <div class="wrap js-check-wrap h-box">
+        <div class="portrait-jiben"> 
+            <div class="j-title-box">
+                <p class="j-title"> 基本信息</p>
+            </div>
+            <div class="j-cont">
+              <div class="cont-box">
+                <div class="box-left">
+                    <p>玩家账号</p>
+                    <p>登录密码</p>
+                    <p>绑定手机</p>
+                    <p>APP单端登录</p>
+                    <p>游戏登录记录</p>
+                </div>
+                <div class="box-right">
+                    <p> {$data.account}</p>
+                    <p> <input type="password" id="password" class="" name="" value="" placeholder="6-15位字母或数字组合"></p>
+                    <p> 
+                        <input type="text" class="h-phone" name="" value="{$data.phone|default=''}" placeholder="暂无手机号码" >
+                        <span id="phone" class="table_click"><span class="table_click_text success_copy">点击修改</span></span>
+
+                        <!-- <input type="password" id="password" class="" name="" value="1234"> 
+                        <span id="phone" class="table_click"><span class="success_copy">点击修改</span></span> -->
+                    </p>
+                    <p> 
+                        <input type="radio"  name="sso" <eq name="data.sso" value="0">checked</eq> value="0">关闭
+                        <input type="radio"  name="sso" style="margin-left: 40px;" <eq name="data.sso" value="1">checked</eq> value="1">开启
+                    </p>
+                    <p> 
+                        <span <if condition="AUTH_GAME eq 1">id="denglu"</if> class="table_click table_btn">
+                            <span class="table_click_text"> <if condition="AUTH_GAME eq 1">{$login_count|default=0}<else/>请开通游戏权限</if>
+                            </span>
+                        </span>
+                    </p>
+                </div>
+              </div>
+              <div class="cont-box">
+                <div class="box-left">
+                    <p>头像</p>
+                    <p>VIP等级</p>
+                    <p>绑定邮箱</p>
+                    <p>注册时间</p>
+                    <p>最后登录时间</p>
+                </div>
+                <div class="box-right">
+                    <p>  <img src="{$data.head_img}" class="user-head"/></p>
+                    <p> VIP {$data.vip_level}</p>
+                    <p>
+                        <input type="text" class="h-phone" name="" value="{$data.email|default=''}" placeholder="暂无邮箱" >
+                        <span id="email" class="table_click"><span class="table_click_text success_copy">点击修改</span></span>
+                        <!-- {$data.email} -->
+                    </p>
+                    <p>{$data['register_time']|date=' Y-m-d H:i:s',###}</p>
+                    <p>{$data['login_time']|date=' Y-m-d H:i:s',###}</p>
+                </div>
+              </div>
+              <div class="cont-box">
+                <div class="box-left">
+                    <p>昵称</p>
+                    <p>实名信息</p>
+                    <p>收货地址</p>
+                    <p>注册IP</p>
+                    <p>最后登录IP</p>
+                </div>
+                <div class="box-right">
+                    <p style="font-weight: 400;"> {$data.nickname}</p>
+                    <p> 
+                        <switch name="data.age_status">
+                        <case value="0">未认证</case>
+                        <case value="1">未通过</case>
+                        <case value="2">已成年</case>
+                        <case value="3">未成年</case>
+                        <case value="4">审核中</case>
+                        <default />意外数据
+                    </switch>
+                    <if condition="$data['age_status'] gt 0">
+                        {$data.real_name|default=''}
+                        <!-- <input type="text" readonly class="form-control user-input no-bg" value="{$data.real_name|default=''}"> -->
+                    </if>
+                    <if condition="$data['age_status'] gt 0">
+                        {$data['idcard']|default=''}
+                        <!-- <input  type="text" readonly class="form-control user-input no-bg" value="{$data['idcard']|default=''}"> -->
+                    </if></p>
+                    <p> {$data.receive_address|default=''}</p>
+                    <p>  {$data['register_ip']}</p>
+                    <p> {$data['login_ip']}</p>
+                   
+                </div>
+              </div>
+               
+            </div>
+        </div>
+        
+        <div class="portrait-jiben fufei"> 
+            <div class="j-title-box">
+                <p class="j-title"> 付费信息</p>
+            </div>
+            <div class="j-cont">
+              <div class="cont-box">
+                <div class="box-left">
+                    <p>平台币余额</p>
+                    <p>绑币余额</p>
+                    <p>游戏付费记录</p>
+                    <p>累计消费</p>
+                    <p>上次消费</p>
+                    <p>间隔天数</p>
+                </div>
+                <div class="box-right">
+                    <p>
+                        <input  type="text" class="disabled" readonly name="balance" value="{$data['balance']|default='空'}" placeholder="0.00">
+                        <span id="balance" class="">
+                            <span class="table_click_text xiugai">
+                                <span class="success_copy " style="margin-right: 10px;">点击修改</span></span>
+                        </span>
+                    </p>
+                   <p>
+                    <span id="bind_balance" class="table_click table_btn">
+                        <span class="table_click_text">{$data.bind_balance}</span>
+                    </span>
+                   </p>
+                    <p> 
+                        <if condition="AUTH_PAY eq 1 && AUTH_GAME eq 1">
+                            <span id="chongzhi" class="table_click table_btn">
+                                <span class="table_click_text">{$count|default=0}</span>
+                            </span>
+                        <else/>请购买充值权限和游戏权限
+                        </if>
+                    </p>
+                    <p> 
+                        <if condition="AUTH_PAY eq 1">￥{$data['cumulative']|default='0.00'}<else/>请购买充值权限</if>
+                    </p>
+                   <p>
+                    <if condition="AUTH_PAY eq 1">
+                        <notempty name="last_pay_time">
+                            {$last_pay_time|date='Y-m-d H:i:s',###}<else/>&nbsp;
+                        </notempty>
+                    <else/>请购买充值权限
+                    </if>
+                   </p>
+                   <p>
+                    <if condition="AUTH_PAY eq 1">{$count_day|default=0}<else/>请购买充值权限</if>
+                   </p>
+                </div>
+              </div>
+               
+            </div>
+        </div>
+        <input type="hidden" name="id" id="id" value="{:input('id',0)}" />
+
+        <div class="portrait-jiben leida"> 
+            <div class="j-title-box">
+                <p class="j-title">玩家属性雷达图</p>
+            </div>
+          <div id="leidaImg" class="leid-box"></div>
+        </div>
+        <div class="portrait-jiben fenxi"> 
+            <div class="j-title-box">
+                <p class="j-title"> 付费分析</p>
+                <input type="text" class="form-control form-control-date " name="rangepickdate" id="rangepickdate" style="width: 240px;float: right;" value="" readonly placeholder="请选择日期">
+            </div>
+            <div class="tubiao">
+                <span>
+                <img src="/themes/admin_simpleboot3/public/assets/images/dataScreen/ico_liebiao_s.png" class="img1 th1 act">
+                <img src="/themes/admin_simpleboot3/public/assets/images/dataScreen/ico_liebiao_n.png" class="img1  th2">
+            </span>
+            <span>
+                <img src="/themes/admin_simpleboot3/public/assets/images/dataScreen/ico_zhuzhuang_s.png" class="img2 th3">
+                <img src="/themes/admin_simpleboot3/public/assets/images/dataScreen/ico_zhuzhuang_n.png" class="img2  th4 act" >
+            </span>
+            <span>
+                <img src="/themes/admin_simpleboot3/public/assets/images/dataScreen/ico_xiazai2.png" class="img3 th3 exp_histogram_table">
+              
+            </span>
+            </div>
+            <div class="tubiao2">
+                <span>
+                <img src="/themes/admin_simpleboot3/public/assets/images/dataScreen/ico_liebiao_s.png" class="img1 th1 act">
+                <img src="/themes/admin_simpleboot3/public/assets/images/dataScreen/ico_liebiao_n.png" class="img1  th2">
+            </span>
+            <span>
+                <img src="/themes/admin_simpleboot3/public/assets/images/dataScreen/ico_zhuzhuang_s.png" class="img2 th3">
+                <img src="/themes/admin_simpleboot3/public/assets/images/dataScreen/ico_zhuzhuang_n.png" class="img2  th4 act" >
+            </span>
+            <span>
+                <img src="/themes/admin_simpleboot3/public/assets/images/dataScreen/ico_xiazai2.png" class="img3 th3 exp_line_chart_table">
+              
+            </span>
+            </div>
+           <div class="left-spuer">
+               <div class="spuer" id="spuer" >
+                   
+               </div>
+               <div class="spuer-table">
+                   <div class="ss-title"><span>充值时段</span></div>
+                   <form >
+                       <table class="s-table">
+                           <thead>
+                        <tr>
+                            <th>时段</th>
+                            <th>次数</th>
+                            <th>占比</th>
+                          </tr>
+                        </thead>
+                        <tbody class="histogram_table">
+
+                        </tbody>
+                       </table>
+                   </form>
+               </div>
+               <div class="zheLine" id="zheLine"></div>
+               <div class="zheLine-table">
+                <div class="ss-title"><span>充值档位</span></div>
+                <form >
+                    <table class="s-table">
+                        <thead>
+                     <tr>
+                         <th>金额</th>
+                         <th>次数</th>
+                         <th>占比</th>
+                       </tr>
+                     </thead>
+                     <tbody class="line_chart_table">
+
+                     
+                     </tbody>
+                    </table>
+                </form>
+            </div>
+           </div>
+           
+        </div>
+
+
+
+    </div>
+    
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/echarts-all.js"></script>
+    
+	<script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
+    <script>
+        //时间插件 默认时间
+        var start = '{$start}',end  = '{$end}';
+        var jsdate = $("#rangepickdate").val();
+        datearr=jsdate.split('至');
+        var start_time = datearr[0];
+        var end_time = datearr[1];
+
+        function check_time(){
+            layer.load(1);
+            var jsdate = $("#rangepickdate").val();
+            datearr=jsdate.split('至');
+            var start_time = datearr[0];
+            var end_time = datearr[1];
+            if(start_time != '' && end_time != '' && start_time > end_time){
+                layer.msg('开始时间不能大于结束时间');
+                return false;
+            }
+            return true;
+        }
+
+        // 雷达图
+        var radar_line_value = [0, 0, 0, 0, 0, 0];
+        // 柱状图
+        var period_times = [0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0]; // 充值时段
+        var period_times_max = 50;
+
+        // 折线图
+        var pay_times = [0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0]; // 充值档位
+        var total_pay_times = 50; // 总充值次数
+        // when the page loaded
+        // window.onload=function(){
+
+        // }
+        $(function () {
+            // 修改密码
+            $("#password").blur(function(){
+                var password = $("#password").val();
+
+                if(password.length == 0){
+                    return false;
+                }
+                var warning_msg = "您确定将密码修改为 "+password+" 吗?";
+                layer.confirm(warning_msg, {
+                    btn: ['确认','取消'] //按钮
+                    }, function(){
+                        var id = $('#id').val();
+                        var option = "password";
+                        $.ajax({
+                            url: '{:url("change_user_info")}',
+                            type: 'post',
+                            dataType: 'json',
+                            data: {password:password,id:id,option:option},
+                            success: function (data) {
+                                if (data.code > 0) {
+                                    // layer.msg(data.msg);
+                                    layer.msg(data.msg, {icon: 1});
+                                } else {
+                                    layer.msg(data.msg)
+                                }
+                            },
+                            error: function () {
+                                layer.msg("系统繁忙,请稍后再试！");
+                            }
+                        });
+
+                    }, function(){
+                        layer.msg('已取消', {
+                            time: 20000,
+                    });
+                });
+            });
+
+            // 修改手机号
+            $("#phone").click(function () {
+                layer.prompt({
+                    formType: 0,
+                    title: "请输入手机号码",
+                    value: '',
+                    success:function (layero, index) {
+                        layero.find('input').attr('placeholder','');
+                    }
+                }, function (phone) {
+                    var jsid = $('#id').val();
+                    if(phone.length != 11){
+                        layer.msg("请输入11位手机号");
+                        return false;
+                    }
+                    preg = /^[1]([3-9])[0-9]{9}$/;
+                    if (!preg.test(phone)) {
+                        layer.msg("请输入正确手机号");
+                        return false;
+                    }
+
+                    $.ajax({
+                        url: '{:url("changephone")}',
+                        type: 'post',
+                        dataType: 'json',
+                        data: {phone:phone,id:jsid},
+                        success: function (data) {
+                            if (data.code > 0) {
+                                layer.msg(data.msg);
+                                setTimeout(function(){
+                                    self.location.reload(true);
+                                },1000);
+                            } else {
+                                layer.msg(data.msg)
+                            }
+                        },
+                        error: function () {
+                            layer.msg("服务器故障！");
+                        },
+                        complete:function(){
+
+                        }
+                    });
+                });
+            });
+            // 修改邮箱
+            $("#email").click(function () {
+                layer.prompt({
+                    formType: 0,
+                    title: "请输入邮箱",
+                    value: '',
+                    success:function (layero, index) {
+                        layero.find('input').attr('placeholder','');
+                    }
+                }, function (email) {
+                    var jsid = $('#id').val();
+                    var preg = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
+                    if (!preg.test(email)) {
+                        layer.msg("请输入正确邮箱");
+                        return false;
+                    }
+
+                    $.ajax({
+                        url: '{:url("changeemail")}',
+                        type: 'post',
+                        dataType: 'json',
+                        data: {email:email,id:jsid},
+                        success: function (data) {
+                            if (data.code > 0) {
+                                layer.msg(data.msg);
+                                setTimeout(function(){
+                                    self.location.reload(true);
+                                },1000);
+                            } else {
+                                layer.msg(data.msg)
+                            }
+                        },
+                        error: function () {
+                            layer.msg("服务器故障！");
+                        },
+                        complete:function(){
+
+                        }
+                    });
+                });
+            });
+
+            // APP单端登录修改
+            $('input[type=radio][name=sso]').change(function() {
+                var sso_value = this.value;
+                var id = $('#id').val();
+                // console.log(sso_value);
+                // return false;
+                var option = "sso";
+                $.ajax({
+                    url: '{:url("change_user_info")}',
+                    type: 'post',
+                    dataType: 'json',
+                    data: {id:id, sso_value:sso_value, option:option},
+                    success: function (data) {
+                        if (data.code > 0) {
+                            // layer.msg(data.msg);
+                            layer.msg(data.msg, {icon: 1});
+                        } else {
+                            layer.msg(data.msg)
+                        }
+                    },
+                    error: function () {
+                        layer.msg("系统繁忙,请稍后再试！");
+                    }
+                });
+                
+            });
+
+            // 游戏登录记录
+            $("#denglu").click(function () {
+                var user_id = $("#id").val();
+                layer.open({
+                    type: 2,
+                    title: "游戏登录记录",
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['70%', '80%'],
+                    content: "{:url('denglu')}?user_id="+user_id //iframe的url
+                });
+            });
+        
+            // 修改平台币
+            $("#balance").click(function () {
+                layer.prompt(
+                    {
+                        formType: 1,
+                        title: "请输入二级密码(如果没有请设置)",
+                        value: '',
+                        success:function (layero, index) {
+                            layero.find('input').attr('placeholder','');
+                        }
+                    }
+                    , function (val) {
+                        $.ajax({
+                            url: '{:url("checkpwd")}',
+                            type: 'post',
+                            dataType: 'json',
+                            data: {'second_pwd': val},
+                            success: function (data) {
+                                if (data.code > 0) {
+                                    sub_from(val);
+                                } else {
+                                    layer.msg(data.msg)
+                                }
+                            },
+                            error: function () {
+                                alert("错误");
+                            }
+                        });
+                    });
+            });
+
+            // 綁币余额
+            $("#bind_balance").click(function () {
+                var user_id = $("#id").val();
+                layer.open({
+                    type: 2,
+                    title: "绑币余额",
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['1062px', '80%'],
+                    content: "{:url('user_bind_balance')}?user_id="+user_id //iframe的url
+                });
+            });
+            
+            // 游戏付费记录
+            $("#chongzhi").click(function () {
+                var user_id = $("#id").val();
+                layer.open({
+                    type: 2,
+                    title: "游戏付费记录",
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['1062px', '80%'],
+                    content: "{:url('spendrecord')}?user_id="+user_id//iframe的url
+                });
+            });
+            
+            // 付费分析 选择时间
+            $("#rangepickdate").change(function(){
+                // layer.load(1);
+                var jsdate = $("#rangepickdate").val();
+                datearr=jsdate.split('至');
+                var start_time = datearr[0];
+                var end_time = datearr[1];
+                // console.log(jsdate);
+                // console.log(start_time);
+                // console.log(end_time);
+
+                if(start_time != '' && end_time != '' && start_time > end_time){
+                    layer.msg('开始时间不能大于结束时间');
+                    return false;
+                }
+                // 请求查询数据
+                // layer.msg('ok');
+                // return false;
+
+                var id = $('#id').val();
+                $.ajax({
+                    url: '{:url("d_user_data_analyze")}',
+                    type: 'post',
+                    dataType: 'json',
+                    data: {'id':id,'start_time':start_time, 'end_time':end_time},
+                    success: function (data) {
+                        if (data.code > 0) {
+                            // 拼装表格--------------------------------  START
+                            // 柱状图表格
+                            var i = 0;
+                            var html = '';
+                            $('.histogram_table').html(html);
+                            
+                            $.each(data.data.period_times,function (index,value) {
+                                tmp_percent = 0;
+                                if(data.data.total_times == 0){
+                                    tmp_percent = 0
+                                }else{
+                                    tmp_percent = value/data.data.total_times;
+                                }
+                                
+                                html=html+'<tr><td>'+eval(i*2)+'-'+eval(i*2+2)+'</td><td>'+value+'</td><td>'+tmp_percent+' %</td></tr>';
+                                i += 1;
+                            })
+                            $('.histogram_table').html(html);
+
+                            // 折线图表格
+                            var j = 0;
+                            var html_line = '';
+                            $('.line_chart_table').html(html_line);
+                            // data: ['6', '10', '50', '100', '200', '300', '500', '800', '1000', '3000', '5000', '10000', '10000及以上']
+                            if(data.data.total_times == 0){
+                                tmp_percent = 0
+                                html_line=html_line+'<tr><td>0-6</td><td>'+data.data.pay_times[0]+'</td><td>'+tmp_percent+' %</td></tr>';
+                                html_line=html_line+'<tr><td>6-10</td><td>'+data.data.pay_times[1]+'</td><td>'+tmp_percent+' %</td></tr>';
+                                html_line=html_line+'<tr><td>10-50</td><td>'+data.data.pay_times[2]+'</td><td>'+tmp_percent+' %</td></tr>';
+                                html_line=html_line+'<tr><td>50-100</td><td>'+data.data.pay_times[3]+'</td><td>'+tmp_percent+' %</td></tr>';
+                                html_line=html_line+'<tr><td>100-200</td><td>'+data.data.pay_times[4]+'</td><td>'+tmp_percent+' %</td></tr>';
+                                html_line=html_line+'<tr><td>200-300</td><td>'+data.data.pay_times[5]+'</td><td>'+tmp_percent+' %</td></tr>';
+                                html_line=html_line+'<tr><td>300-500</td><td>'+data.data.pay_times[6]+'</td><td>'+tmp_percent+' %</td></tr>';
+                                html_line=html_line+'<tr><td>500-800</td><td>'+data.data.pay_times[7]+'</td><td>'+tmp_percent+' %</td></tr>';
+                                html_line=html_line+'<tr><td>800-1000</td><td>'+data.data.pay_times[8]+'</td><td>'+tmp_percent+' %</td></tr>';
+                                html_line=html_line+'<tr><td>1000-3000</td><td>'+data.data.pay_times[9]+'</td><td>'+tmp_percent+' %</td></tr>';
+                                html_line=html_line+'<tr><td>3000-5000</td><td>'+data.data.pay_times[10]+'</td><td>'+tmp_percent+' %</td></tr>';
+                                html_line=html_line+'<tr><td>5000-10000</td><td>'+data.data.pay_times[11]+'</td><td>'+tmp_percent+' %</td></tr>';
+                                html_line=html_line+'<tr><td>10000以上</td><td>'+data.data.pay_times[12]+'</td><td>'+tmp_percent+' %</td></tr>';
+                            }else{
+                        
+                                html_line=html_line+'<tr><td>0-6</td><td>'+data.data.pay_times[0]+'</td><td>'+eval(data.data.pay_times[0]/data.data.total_times)+' %</td></tr>';
+                                html_line=html_line+'<tr><td>6-10</td><td>'+data.data.pay_times[1]+'</td><td>'+eval(data.data.pay_times[1]/data.data.total_times)+' %</td></tr>';
+                                html_line=html_line+'<tr><td>10-50</td><td>'+data.data.pay_times[2]+'</td><td>'+eval(data.data.pay_times[2]/data.data.total_times)+' %</td></tr>';
+                                html_line=html_line+'<tr><td>50-100</td><td>'+data.data.pay_times[3]+'</td><td>'+eval(data.data.pay_times[3]/data.data.total_times)+' %</td></tr>';
+                                html_line=html_line+'<tr><td>100-200</td><td>'+data.data.pay_times[4]+'</td><td>'+eval(data.data.pay_times[4]/data.data.total_times)+' %</td></tr>';
+                                html_line=html_line+'<tr><td>200-300</td><td>'+data.data.pay_times[5]+'</td><td>'+eval(data.data.pay_times[5]/data.data.total_times)+' %</td></tr>';
+                                html_line=html_line+'<tr><td>300-500</td><td>'+data.data.pay_times[6]+'</td><td>'+eval(data.data.pay_times[6]/data.data.total_times)+' %</td></tr>';
+                                html_line=html_line+'<tr><td>500-800</td><td>'+data.data.pay_times[7]+'</td><td>'+eval(data.data.pay_times[7]/data.data.total_times)+' %</td></tr>';
+                                html_line=html_line+'<tr><td>800-1000</td><td>'+data.data.pay_times[8]+'</td><td>'+eval(data.data.pay_times[8]/data.data.total_times)+' %</td></tr>';
+                                html_line=html_line+'<tr><td>1000-3000</td><td>'+data.data.pay_times[9]+'</td><td>'+eval(data.data.pay_times[9]/data.data.total_times)+' %</td></tr>';
+                                html_line=html_line+'<tr><td>3000-5000</td><td>'+data.data.pay_times[10]+'</td><td>'+eval(data.data.pay_times[10]/data.data.total_times)+' %</td></tr>';
+                                html_line=html_line+'<tr><td>5000-10000</td><td>'+data.data.pay_times[11]+'</td><td>'+eval(data.data.pay_times[11]/data.data.total_times)+' %</td></tr>';
+                                html_line=html_line+'<tr><td>10000以上</td><td>'+data.data.pay_times[12]+'</td><td>'+eval(data.data.pay_times[12]/data.data.total_times)+' %</td></tr>';
+                            }
+                            $('.line_chart_table').html(html_line);
+                            
+                        
+                            // 拼装表格--------------------------------  END
+
+                            period_times = data.data.period_times; // 分时段充值次数(柱状图)
+                            period_times_max = data.data.total_times // 总次数
+
+                            pay_times = data.data.pay_times; // 充值档位(折线图)
+                            total_pay_times = data.data.total_pay_times; // 充值档位(折线图)
+                            // 柱状图刷新
+                            // myChart3.clear;
+                            // myChart2.clear;
+                            myChart2.setOption({
+                                yAxis: {
+                                    max:period_times_max, //y轴最大值 
+                                },
+                                series: [  
+                                        {
+                                        // data: [10, 30, 50, 20, 10, 20, 13,10, 30, 50, 20, 10],
+                                        data: period_times,
+                                    }
+                                ],
+                                
+
+                                // tooltip: {
+                                //     trigger: 'axis',
+                                //     formatter: function(a){
+                                //         if(period_times_max == 0){
+                                //             $tmp_ = ''+a[0].axisValue+'<br />\
+                                //             <span style="font-weight: 400;font-size:12px;color:#fff">次数：</span><span style="color:#F7F88D">'+a[0].value+'</span><br />\
+                                //             <span style="font-weight: 400;font-size:12px;color:#fff">占比：</span><span style="color:#F7F88D">0 %</span><br />';
+
+                                //         }else{
+                                //             var b = eval(a[0].value / period_times_max).toFixed(2);
+                                //             $tmp_ = '<br />\
+                                //             <span style="font-weight: 400;font-size:12px;color:#fff">次数：</span><span style="color:#F7F88D">'+a[0].value+'</span><br />\
+                                //             <span style="font-weight: 400;font-size:12px;color:#fff">占比：</span><span style="color:#F7F88D">'+b+' %</span><br />';
+                                //         }
+                                //         return  $tmp_;
+                                //     }
+                                // },
+
+                            });
+
+                            myChart3.setOption({
+                                yAxis: {
+                                    max:total_pay_times, //y轴最大值 
+                                },
+                                series: [
+                                    {
+                                        data: pay_times,
+                                    },
+                                ]
+                            });
+
+
+                            // console.log(period_times);
+
+                            // 请求成功提示
+                            // layer.msg(data.msg,function(){
+                            //     // self.location.reload(true);
+                                
+                            // })
+    
+                        } else {
+                            layer.msg(data.msg);
+                        }
+                    },
+                    error: function () {
+                        layer.msg("服务繁忙, 请稍后再试~~")
+                    }
+                });
+                
+            });
+    
+        })
+
+        // other
+        function sub_from(val) {
+            var second_pwd_ = val;
+            layer.prompt(
+                {
+                    formType: 0,
+                    title: "修改平台币金额",
+                    value: '',
+                    success:function (layero, index) {
+                        layero.find('input').attr('placeholder','');
+                    }
+                }
+                , function (val) {
+                    var id = $('#id').val();
+                    $.ajax({
+                        url: '{:url("balance_edit")}',
+                        type: 'post',
+                        dataType: 'json',
+                        data: {'balance': val, 'id': id, 'second_pwd': second_pwd_},
+                        success: function (data) {
+                            if (data.code > 0) {
+                                layer.msg(data.msg,function(){
+                                    self.location.reload(true);
+                                })
+        
+                            } else {
+                                layer.msg(data.msg)
+                            }
+                        },
+                        error: function () {
+                            alert("服务器故障！");
+                        }
+                    });
+                });
+        }
+
+        // 指定图表的配置项和数据
+        var myChart5 = echarts.init(document.getElementById('leidaImg'));
+        //雷达图
+        // 指定图表的配置项和数据
+        var option5 = {
+
+            title: {
+                text: ''
+            },
+
+            tooltip: {
+                trigger: 'items',
+                extraCssText: 'text-align:left;',
+                // formatter:function(b){
+                //     // seriesName=NaN;
+                //     console.log(b);
+                // }
+            },
+            legend: {
+                left: 'center',
+                // enabled: false,
+                show:false,
+            },
+            radar: [
+                {
+                    indicator: [
+                        {text: '付费排名', max: 100},
+                        {text: 'VIP ', max: 100},
+                        {text: '游戏活跃 ', max: 100},
+                        {text: '玩家评分 ', max: 100},
+                        {text: '高价值付费玩家 ', max: 100},
+                        // {text: '性别', max: 100},
+                        {text: '夜猫子', max: 100},
+                    ],
+                    center: ['50%', '50%'],
+                    radius: 80,
+                    splitLine: {     //配置雷达图的每一圈的网格线颜色
+                                    lineStyle: {
+                                        color: '#5D82ED',
+                                    },
+                                    splitArea: {     //配置雷达图的网格线背景
+                                    show: false,
+                                    },
+                                },
+                },
+            ],
+            series: [
+                {
+                    name:'玩家数据 : ',
+                    type: 'radar',
+                    tooltip: {
+                        trigger: 'item'
+                    },
+                    
+                    itemStyle: {     //此属性的颜色和下面areaStyle属性的颜色都设置成相同色即可实现
+                                    color: '#3C61CC',
+                                    borderColor: '#5D82ED',
+                                },
+
+                    areaStyle: {},
+                    label: {
+                        normal: {
+                            show: true,
+                            textStyle: {
+                                color: '#5D82ED'
+                                
+                            }
+                            
+                        }
+                    },
+                    data: [
+                        {
+                            value: radar_line_value,
+                            label:{
+                                normal: {
+                                    show: false,
+                                    // formatter: (params: any) => {
+                                    //     return params.value
+                                    // },
+                                },
+                            },
+                        }
+                        
+                    ]
+                },
+            ]
+        };
+        myChart5.setOption(option5);
+        //柱形图
+        var myChart2 = echarts.init(document.getElementById('spuer'));
+        var myChart3 = echarts.init(document.getElementById('zheLine'));
+        option2 = {
+            title: {
+            text: '充值时段',
+            subtext: '',
+            x: 'left',
+            padding:[11,0,0,12],
+            textStyle: {
+                top:'6%',
+                fontWeight: "bold",
+                color: "#333", 
+                fontSize: 14
+                },
+            },
+            tooltip: {
+                trigger: 'axis',
+            
+                // 里面的{a}（系列名称），{b}（类目值），{c}（数值）
+                // formatter:'{b}<br />\
+                // 	<span style="font-weight: 400;font-size:12px;color:#fff">次数：</span><span style="color:#F7F88D">{c}</span><br />\
+                // 	<span style="font-weight: 400;font-size:12px;color:#fff">占比：</span><span style="color:#F7F88D">20%</span><br />'
+                formatter: function(a){
+                    if(period_times_max == 0){
+                        $tmp_ = ''+a[0].axisValue+'<br />\
+                        <span style="font-weight: 400;font-size:12px;color:#fff">次数：</span><span style="color:#F7F88D">'+a[0].value+'</span><br />\
+                        <span style="font-weight: 400;font-size:12px;color:#fff">占比：</span><span style="color:#F7F88D">0 %</span><br />';
+
+                    }else{
+                        var b = eval((a[0].value / period_times_max)*100).toFixed(2);
+                        $tmp_ = ''+a[0].axisValue+'<br />\
+                        <span style="font-weight: 400;font-size:12px;color:#fff">次数：</span><span style="color:#F7F88D">'+a[0].value+'</span><br />\
+                        <span style="font-weight: 400;font-size:12px;color:#fff">占比：</span><span style="color:#F7F88D">'+b+' %</span><br />';
+                    }
+                    return  $tmp_;
+                }
+            },
+            toolbox:{
+            show:true,
+            feature:{
+        
+                // magicType: {
+                //         type: ['line', 'bar']
+                //     },  //切换为折线图，切换为柱状图
+                saveAsImage: {
+                     icon:"image:///themes/admin_simpleboot3/public/assets/images/dataScreen/ico_xiazai2.png" ,
+                    
+                    title:' '
+                },
+            }
+        },
+      
+        xAxis: {
+            type: 'category',
+            data: ['0-2', '2-4', '4-6', '6-8', '8-10', '10-12', '12-14','14-16','16-18','18-20','20-22','22-24']
+        },
+        yAxis: {
+            type: 'value',
+            min:0, //y轴的最小值
+            max:period_times_max, //y轴最大值 
+            interval:10, //值之间的间隔
+        },
+        
+        series: [  
+            {
+                // name:'次数',
+            // data: [10, 30, 50, 20, 10, 20, 13,10, 30, 50, 20, 10],
+            data: period_times,
+            type: 'bar',
+            smooth:true,
+            barWidth : 14,//柱图宽度
+            itemStyle: {
+                normal: {
+                    //渐变色
+                    barBorderRadius:[10, 10, 10, 10],
+                    color: new echarts.graphic.LinearGradient(
+                        0, 0, 0, 1,
+                        [
+                            {offset: 0, color: '#6D8FFE'},                   //柱图渐变色
+                            {offset: 0.5, color: '#6D8FFE'},                 //柱图渐变色
+                            {offset: 1, color: '#9ABAFF'},                   //柱图渐变色
+                        ]
+                    ),
+                
+                },
+                },
+            }
+        ],
+        
+};
+    myChart2.setOption(option2);
+       
+    //折线图
+    option3 = {
+        title: {
+        text: '充值档位',
+        padding:[11,0,0,12],
+        subtext: '',
+        x: 'left',
+        textStyle: {
+            top:'3',
+            fontWeight: "bold",
+            color: "#333", 
+            fontSize: 14
+        },
+        
+      },
+            tooltip: {
+                trigger: 'axis',
+                // formatter:'{b}<br />\
+                // 	<span style="font-weight: 400;font-size:12px;color:#fff">次数：</span><span style="color:#F7F88D">{c}</span><br />\
+                // 	<span style="font-weight: 400;font-size:12px;color:#fff">占比：</span><span style="color:#F7F88D">20%</span><br />'
+                formatter: function(a){
+                    if(total_pay_times == 0){
+                        $tmp_ = ''+a[0].axisValue+'<br />\
+                        <span style="font-weight: 400;font-size:12px;color:#fff">次数：</span><span style="color:#F7F88D">'+a[0].value+'</span><br />\
+                        <span style="font-weight: 400;font-size:12px;color:#fff">占比：</span><span style="color:#F7F88D">0 %</span><br />';
+
+                    }else{
+                        var b = eval((a[0].value / total_pay_times)*100).toFixed(2);
+                        $tmp_ = ''+a[0].axisValue+'<br />\
+                        <span style="font-weight: 400;font-size:12px;color:#fff">次数：</span><span style="color:#F7F88D">'+a[0].value+'</span><br />\
+                        <span style="font-weight: 400;font-size:12px;color:#fff">占比：</span><span style="color:#F7F88D">'+b+' %</span><br />';
+                    }
+                    return  $tmp_;
+                }
+            },
+          
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                // boundaryGap: false,
+                data: ['0-6', '6-10', '10-50', '50-100', '100-200', '200-300', '300-500', '500-800', '800-1000', '1000-3000', '3000-5000', '5000-10000', '10000及以上']
+            },
+            yAxis: {
+                type: 'value',
+                min:0, //y轴的最小值
+                max:total_pay_times, //y轴最大值 
+                interval:10, //值之间的间隔
+            },
+            toolbox:{
+        feature:{
+            // magicType: {
+            //         type: ['line', 'bar']
+            //     },  //切换为折线图，切换为柱状图
+            itemSize: 20,  
+            itemGap: 30,  
+            right: 50,  
+            saveAsImage: {
+                 icon:"image:///themes/admin_simpleboot3/public/assets/images/dataScreen/ico_xiazai2.png" ,
+                 right: 50,
+                title:' '
+            }
+        }
+      },
+            series: [
+                {
+                    name: '次数',
+                    type: 'line',
+                    stack: '总量',
+                    smooth:true,
+                    data: pay_times,
+                    itemStyle: {
+                    normal: {
+                        color:' #5D82ED'
+                    },
+                    },
+                },
+               
+               
+
+            ]
+};
+        myChart3.setOption(option3);          
+  
+        //图标上面按钮
+        $(".tubiao .th2").click(function(){
+            $(".tubiao .th2").addClass("act");
+            $(".tubiao .th1").removeClass("act");
+            $(".tubiao .th3").addClass("act");
+            $(".tubiao .th4").removeClass("act");
+            // $(this).addClass("act").siblings().removeClass("act")
+            $(".spuer").css("display","none")
+            $(".spuer-table").css("display","block")
+            $(".tubiao .img3").css("display","block")
+        
+        })
+        $(".tubiao .th4").click(function(){
+            $(".tubiao .th4").addClass("act");
+            $(".tubiao .th3").removeClass("act");
+            $(".tubiao .th1").addClass("act");
+            $(".tubiao .th2").removeClass("act");
+            // $(this).addClass("act").siblings().removeClass("act")
+            $(".spuer").css("display","block")
+            $(".spuer-table").css("display","none")
+            $(".tubiao .img3").css("display","none")
+            // $(".th2").addClass("act").siblings().removeClass("act")
+        })
+        //图标上面按钮
+        $(".tubiao2 .th2").click(function(){
+            $(".tubiao2 .th2").addClass("act");
+            $(".tubiao2 .th1").removeClass("act");
+            $(".tubiao2 .th3").addClass("act");
+            $(".tubiao2 .th4").removeClass("act");
+            $(".zheLine").css("display","none")
+            $(".zheLine-table").css("display","block")
+            $(".tubiao2 .img3").css("display","block")
+        })
+        $(".tubiao2 .th4").click(function(){
+            $(".tubiao2 .th4").addClass("act");
+            $(".tubiao2 .th3").removeClass("act");
+            $(".tubiao2 .th1").addClass("act");
+            $(".tubiao2 .th2").removeClass("act");
+            // $(this).addClass("act").siblings().removeClass("act")
+            $(".zheLine").css("display","block")
+            $(".zheLine-table").css("display","none")
+            $(".tubiao2 .img3").css("display","none")
+            // $(".th2").addClass("act").siblings().removeClass("act")
+        })
+
+        $(function(){
+            // 在页面第一次加载完成时动态请求一次柱状图/折线图
+            var id = $('#id').val();
+            var jsdate = $("#rangepickdate").val();
+            datearr=jsdate.split('至');
+            var start_time = datearr[0];
+            var end_time = datearr[1];
+            $.ajax({
+                url: '{:url("d_user_data_analyze")}',
+                type: 'post',
+                // async:false,
+                // cache: true,
+                // processData: false,
+                dataType: 'json',
+                data: {'id':id,'start_time':start_time, 'end_time':end_time},
+                success: function (data) {
+                    if (data.code > 0) {
+                        // 拼装表格--------------------------------  START
+                        // 柱状图表
+                        var i = 0;
+                        var html = '';
+                        $('.histogram_table').html(html);
+
+						$.each(data.data.period_times,function (index,value) {
+                            tmp_percent = 0;
+                            if(data.data.total_times == 0){
+                                tmp_percent = 0
+                            }else{
+                                tmp_percent = value/data.data.total_times;
+                            }
+							html=html+'<tr><td>'+eval(i*2)+'-'+eval(i*2+2)+'</td><td>'+value+'</td><td>'+tmp_percent+' %</td></tr>';
+                            i += 1;
+						})
+						$('.histogram_table').html(html);
+                        // 折线图表格
+                        var j = 0;
+                            var html_line = '';
+                            $('.line_chart_table').html(html_line);
+                            // data: ['6', '10', '50', '100', '200', '300', '500', '800', '1000', '3000', '5000', '10000', '10000及以上']
+                            if(data.data.total_times == 0){
+                                tmp_percent = 0
+                                html_line=html_line+'<tr><td>0-6</td><td>'+data.data.pay_times[0]+'</td><td>'+tmp_percent+' %</td></tr>';
+                                html_line=html_line+'<tr><td>6-10</td><td>'+data.data.pay_times[1]+'</td><td>'+tmp_percent+' %</td></tr>';
+                                html_line=html_line+'<tr><td>10-50</td><td>'+data.data.pay_times[2]+'</td><td>'+tmp_percent+' %</td></tr>';
+                                html_line=html_line+'<tr><td>50-100</td><td>'+data.data.pay_times[3]+'</td><td>'+tmp_percent+' %</td></tr>';
+                                html_line=html_line+'<tr><td>100-200</td><td>'+data.data.pay_times[4]+'</td><td>'+tmp_percent+' %</td></tr>';
+                                html_line=html_line+'<tr><td>200-300</td><td>'+data.data.pay_times[5]+'</td><td>'+tmp_percent+' %</td></tr>';
+                                html_line=html_line+'<tr><td>300-500</td><td>'+data.data.pay_times[6]+'</td><td>'+tmp_percent+' %</td></tr>';
+                                html_line=html_line+'<tr><td>500-800</td><td>'+data.data.pay_times[7]+'</td><td>'+tmp_percent+' %</td></tr>';
+                                html_line=html_line+'<tr><td>800-1000</td><td>'+data.data.pay_times[8]+'</td><td>'+tmp_percent+' %</td></tr>';
+                                html_line=html_line+'<tr><td>1000-3000</td><td>'+data.data.pay_times[9]+'</td><td>'+tmp_percent+' %</td></tr>';
+                                html_line=html_line+'<tr><td>3000-5000</td><td>'+data.data.pay_times[10]+'</td><td>'+tmp_percent+' %</td></tr>';
+                                html_line=html_line+'<tr><td>5000-10000</td><td>'+data.data.pay_times[11]+'</td><td>'+tmp_percent+' %</td></tr>';
+                                html_line=html_line+'<tr><td>10000以上</td><td>'+data.data.pay_times[12]+'</td><td>'+tmp_percent+' %</td></tr>';
+                            }else{
+                        
+                                html_line=html_line+'<tr><td>0-6</td><td>'+data.data.pay_times[0]+'</td><td>'+eval(data.data.pay_times[0]/data.data.total_times)+' %</td></tr>';
+                                html_line=html_line+'<tr><td>6-10</td><td>'+data.data.pay_times[1]+'</td><td>'+eval(data.data.pay_times[1]/data.data.total_times)+' %</td></tr>';
+                                html_line=html_line+'<tr><td>10-50</td><td>'+data.data.pay_times[2]+'</td><td>'+eval(data.data.pay_times[2]/data.data.total_times)+' %</td></tr>';
+                                html_line=html_line+'<tr><td>50-100</td><td>'+data.data.pay_times[3]+'</td><td>'+eval(data.data.pay_times[3]/data.data.total_times)+' %</td></tr>';
+                                html_line=html_line+'<tr><td>100-200</td><td>'+data.data.pay_times[4]+'</td><td>'+eval(data.data.pay_times[4]/data.data.total_times)+' %</td></tr>';
+                                html_line=html_line+'<tr><td>200-300</td><td>'+data.data.pay_times[5]+'</td><td>'+eval(data.data.pay_times[5]/data.data.total_times)+' %</td></tr>';
+                                html_line=html_line+'<tr><td>300-500</td><td>'+data.data.pay_times[6]+'</td><td>'+eval(data.data.pay_times[6]/data.data.total_times)+' %</td></tr>';
+                                html_line=html_line+'<tr><td>500-800</td><td>'+data.data.pay_times[7]+'</td><td>'+eval(data.data.pay_times[7]/data.data.total_times)+' %</td></tr>';
+                                html_line=html_line+'<tr><td>800-1000</td><td>'+data.data.pay_times[8]+'</td><td>'+eval(data.data.pay_times[8]/data.data.total_times)+' %</td></tr>';
+                                html_line=html_line+'<tr><td>1000-3000</td><td>'+data.data.pay_times[9]+'</td><td>'+eval(data.data.pay_times[9]/data.data.total_times)+' %</td></tr>';
+                                html_line=html_line+'<tr><td>3000-5000</td><td>'+data.data.pay_times[10]+'</td><td>'+eval(data.data.pay_times[10]/data.data.total_times)+' %</td></tr>';
+                                html_line=html_line+'<tr><td>5000-10000</td><td>'+data.data.pay_times[11]+'</td><td>'+eval(data.data.pay_times[11]/data.data.total_times)+' %</td></tr>';
+                                html_line=html_line+'<tr><td>10000以上</td><td>'+data.data.pay_times[12]+'</td><td>'+eval(data.data.pay_times[12]/data.data.total_times)+' %</td></tr>';
+                            }
+                            $('.line_chart_table').html(html_line);
+                        // 拼装表格--------------------------------  END
+                        period_times = data.data.period_times; // 分时段充值次数(柱状图)
+                        period_times_max = data.data.total_times // 总次数
+
+                        pay_times = data.data.pay_times; // 充值档位(折线图)
+                        total_pay_times = data.data.total_pay_times; // 充值档位(折线图)
+                        // 柱状图刷新
+                        // myChart3.clear;
+                        // myChart2.clear;
+                        myChart2.setOption({
+                            yAxis: {
+                                max:period_times_max, //y轴最大值 
+                            },
+                            series: [  
+                                    {
+                                    // data: [10, 30, 50, 20, 10, 20, 13,10, 30, 50, 20, 10],
+                                    data: period_times,
+                                }
+                            ],
+                            // tooltip: {
+                            //     trigger: 'axis',
+                            //     formatter: function(a){
+                            //         if(period_times_max == 0){
+                            //             $tmp_ = ''+a[0].axisValue+'<br />\
+                            //             <span style="font-weight: 400;font-size:12px;color:#fff">次数：</span><span style="color:#F7F88D">'+a[0].value+'</span><br />\
+                            //             <span style="font-weight: 400;font-size:12px;color:#fff">占比：</span><span style="color:#F7F88D">0 %</span><br />';
+
+                            //         }else{
+                            //             var b = eval(a[0].value / period_times_max).toFixed(2);
+                            //             $tmp_ = '<br />\
+                            //             <span style="font-weight: 400;font-size:12px;color:#fff">次数：</span><span style="color:#F7F88D">'+a[0].value+'</span><br />\
+                            //             <span style="font-weight: 400;font-size:12px;color:#fff">占比：</span><span style="color:#F7F88D">'+b+' %</span><br />';
+                            //         }
+                            //         return  $tmp_;
+                            //     }
+                            // },
+                        });
+
+                        myChart3.setOption({
+                            yAxis: {
+                                max:total_pay_times, //y轴最大值 
+                            },
+                            series: [
+                                {
+                                    data: pay_times,
+                                },
+                            ]
+                        });
+                        // layer.msg(data.msg,function(){
+                        //     // self.location.reload(true);
+                        // })
+
+                    } else {
+                        // layer.msg(data.msg);
+                    }
+                },
+                error: function () {
+                    // layer.msg("服务繁忙, 请稍后再试~~")
+                }
+            });
+
+            // 在页面第一次加载完成时动态请求雷达折线图
+            var id = $('#id').val();
+            $.ajax({
+                url: '{:url("radarChart")}',
+                type: 'post',
+                dataType: 'json',
+                data: {'id':id},
+                success: function (data) {
+                    if (data.code > 0) {
+                        // 雷达折线图更新数据
+                        // myChart5.clear;
+                        // console.log(data);
+                        radar_line_value[0] = eval((data.data.pay_ * 100).toFixed(2));
+                        radar_line_value[1] = eval((data.data.vip_ * 100).toFixed(2));
+                        radar_line_value[2] = eval((data.data.game_active_ * 100).toFixed(2));
+                        radar_line_value[3] = eval((data.data.user_score_ * 100).toFixed(2));
+                        radar_line_value[4] = eval((data.data.user_stage_ * 100).toFixed(2)); // 玩家阶段 高价值付费玩家
+                        // radar_line_value[5] = eval((data.data.sex_ * 100).toFixed(2));
+                        radar_line_value[5] = eval((data.data.game_login_times_ * 100).toFixed(2)); // 夜间玩家登陆次数 夜猫子
+                        var vipN = 'VIP '+data.data.d_user_vip_level+'';
+
+                        // console.log(radar_line_value);
+                        myChart5.setOption({
+                            radar: [
+                                    {
+                                        indicator: [
+                                            {text: '付费排名', max: 100},
+                                            {text: vipN, max: 100},
+                                            {text: '游戏活跃 ', max: 100},
+                                            {text: '玩家评分 ', max: 100},
+                                            {text: '高价值付费玩家 ', max: 100},
+                                            // {text: '性别 : 男, ', max: 100},
+                                            {text: '夜猫子', max: 100},
+                                        ],
+                                        center: ['50%', '50%'],
+                                        radius: 80,
+                                        splitLine: {     //配置雷达图的每一圈的网格线颜色
+                                                        lineStyle: {
+                                                            color: '#5D82ED',
+                                                        },
+                                                        splitArea: {     //配置雷达图的网格线背景
+                                                        show: false,
+                                                        },
+                                                    },
+                                    },
+                                ],
+
+                            series: [
+                                {
+                                    data: [
+                                        {
+                                            value: radar_line_value,
+                                            label:{
+                                                normal: {
+                                                    show: false,
+                                                    // formatter: (params: any) => {
+                                                    //     return params.value
+                                                    // },
+                                                },
+                                            },
+                                        },
+                                        
+
+                                        
+                                    ]
+                                },
+                            ]
+                        });
+
+                    } else {
+                        // layer.msg(data.msg);
+                    }
+                },
+                error: function () {
+                    // layer.msg("服务繁忙, 请稍后再试~~")
+                }
+            });
+        });
+        
+        // 导出柱状图表, 
+        $(".exp_histogram_table").click(function(){
+            var id = $('#id').val();
+            var jsdate = $("#rangepickdate").val();
+            datearr=jsdate.split('至');
+            var start_time = datearr[0];
+            var end_time = datearr[1];
+            var url = '{:url("expHistogramTable")}';
+            window.location.href=''+url+'?id='+id+'&start_time='+start_time+'&end_time='+end_time+'';
+
+        });
+        // 导出折线图表
+        $(".exp_line_chart_table").click(function(){
+            var id = $('#id').val();
+            var jsdate = $("#rangepickdate").val();
+            datearr=jsdate.split('至');
+            var start_time = datearr[0];
+            var end_time = datearr[1];
+
+            var url = '{:url("expLineChartTable")}';
+            window.location.href=''+url+'?id='+id+'&start_time='+start_time+'&end_time='+end_time+'';
+
+        });
+    </script>
+</body>
+</html>

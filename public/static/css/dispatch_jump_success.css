@@ -1,0 +1,34 @@
+/*
+* @description: 操作成功跳转页面样式
+ *@author:王奉
+* @update: name(xxxx-xx-xx xx:xx)
+ */
+.con {
+	text-align: center;
+}
+
+.con-message {
+	display: inline-block;
+	margin-top: 20%;
+}
+
+.fl {
+	float: left;
+}
+
+.title {
+	font-weight: bold;
+	color: #333;
+	margin: 22px 0 0 20px;
+}
+
+.text {
+	font-size: 14px;
+	color: #333;
+	margin: 16px 0 0 20px;
+	text-align: left;
+}
+
+.jump {
+	color: #8693f3;
+}

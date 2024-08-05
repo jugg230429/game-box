@@ -1,0 +1,79 @@
+<include file="public@header" />
+<link href="__TMPL__/public/assets/simpleboot3/css/pro_promote.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="{:url('studio/lists')}">工作室列表</a></li>
+        <li><a href="{:url('studio/add')}">添加工作室</a></li>
+    </ul>
+    <div class="fl" style="margin-left: -10px;">
+        <a href="http://oa.vlsdk.com/" class="oabtn" target="_blank"></a>
+        <span class="oaDescImg"></span>
+    </div>
+    <form id="search_form" class="well form-inline fr" method="get" action="{:url('lists')}">
+    
+        <input type="text" class="form-control notempty" name="studio_name" style="width: 120px;" value="{:input('request.studio_name','')}" placeholder="工作室名称">
+
+        <select name="status" id="status"  class="selectpicker"  style="width: 120px;">
+            <option value="">状态</option>
+            <option value="1" <if condition="input('request.status') eq 1">selected</if>>正常</option>
+            <option value="0" <if condition="input('request.status') heq '0'">selected</if>>禁用</option>
+        </select>
+
+        <input type="submit" class="btn btn-search" id="search_btn" value="搜索" />
+        <a class="btn btn-clear" href="{:url('lists')}">清空</a>
+    </form>
+    <form class="js-ajax-form" action="" method="post">
+
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+
+                <th>ID</th>
+                <th>工作室名称</th>
+                <th>APPID</th>
+                <th>域名</th>
+                <th>APIKEY</th>
+                <th>添加类型</th>
+                <th>状态</th>
+                <th>创建时间</th>
+                <th width="130">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <empty name="lists">
+                <tr><td colspan="18" style="text-align: center;">暂无数据</td></tr>
+            <else/>
+                <foreach name="lists" item="vo">
+
+                    <tr>
+                        <td>{$vo['id']}</td>
+                        <td>{$vo['studio_name']}</td>
+                        <td>{$vo['appid']}</td>
+                        <td>{$vo['domain']}</td>
+                        <td>{$vo['api_key']}</td>
+                        <td>{$vo['create_type']=='1'?'自主添加':'后台申请'}</td>
+                        <td>{$vo['status']=='1'?'正常':'禁用'}</td>
+                        <td>{:date("Y-m-d H:i:s",$vo['create_time'])}</td>
+                        <td>
+                            <a href="{:url('edit',['id'=>$vo['id']])}">编辑</a>
+                            <a href="{:url('del',['id'=>$vo['id']])}" class=" js-ajax-delete">删除</a>
+                        </td>
+                    </tr>
+                </foreach>
+            </empty>
+            </tbody>
+        </table>
+    </form>
+    <div class="pagination">{$page}</div>
+</div>
+
+<script src="__STATIC__/js/admin.js"></script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script type="text/javascript">
+
+</script>
+</body>
+</html>

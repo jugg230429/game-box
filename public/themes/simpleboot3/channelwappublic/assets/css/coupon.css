@@ -1,0 +1,315 @@
+@charset "utf-8";
+html,body{
+    color: #333333;
+    width: 100%;
+    height: 100%;
+}
+p{
+    margin: 0;
+}
+a {
+    text-decoration: none!important;
+}
+footer{
+    display: none!important;
+}
+.add-child-icon{
+    position: absolute;
+    right: 0.77rem;
+    top:0.35rem;
+    color: #26C7DB;
+    font-size: 0.36rem;
+}
+.add-child-icon img {
+    width: 0.5rem;
+    height: 0.5rem;
+}
+
+.form{
+    width: 100%;
+    padding: 0 0.827rem;
+    box-sizing: border-box;
+}
+.form .form-item{
+    width: 100%;
+    height: 1rem;
+    margin-top: 0.69rem;
+    /*border-bottom: 0.0267rem solid #EDEEEF;*/
+    display: flex;
+    align-items: center;
+    position: relative;
+
+}
+.form-item .form-item-title{
+    width: 2.3333rem;
+    height: 100%;
+    text-align: right;
+    font-size: 0.373rem;
+    color: #333333;
+    line-height: 1rem;
+
+}
+.form-item .form-item-text{
+    width:calc(100% - 2.1333rem) ;
+    height: 100%;
+    box-sizing: border-box;
+    font-size: 0.34666rem;
+    line-height: 1rem;
+    position: relative;
+}
+.form-item  .form-item-input{
+    width: 100%;
+    border: 0.0267rem solid #E0E0E0;
+    outline: none;
+    height: 100%;
+    padding-left: 0.32rem;
+    box-sizing: border-box;
+}
+.form-item  .form-item-input:read-only{
+    border: none;
+    padding-left: 0;
+}
+.form-item-tips{
+    color: #999999;
+    font-size: 0.32rem;
+    position: absolute;
+    bottom: -0.4rem;
+    left: 0;
+    line-height: 1.2;
+}
+.form-item .submit-btn{
+    width: 100%;
+    height: 1.093rem;
+    background: #374760;
+    color: #ffffff;
+    font-size: 0.4rem;
+    line-height: 1.093rem;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+
+.child-channel-list{
+    width: 100%;
+}
+.child-channel-list .child-channel-item{
+    width: 100%;
+    padding: 0 0.4rem;
+    box-sizing: border-box;
+    height: 1.4rem;
+    margin-bottom: 0.16rem;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+}
+.child-channel-item .channel-name{
+    font-size: 0.35rem;
+}
+.child-channel-item .channel-date{
+    font-size: 0.38rem;
+    color: #999999;
+}
+.child-channel-item .channel-id{
+    font-size: 0.3467rem;
+}
+.child-channel-item .channel-status{
+    font-size: 0.3467rem;
+    color: #333333;
+}
+.child-channel-item .edit-btn{
+    margin-left: auto;
+    width: 1.333rem;
+    height: 0.64rem;
+    background: #28243D;
+    font-size: 0.3467rem;
+    line-height: 0.64rem;
+    text-align: center;
+    color: #ffffff;
+}
+.no-channel-data{
+    width: 100%;
+    padding-top: 3rem;
+    text-align: center;
+    font-size: 0.4rem;
+    color: #999999;
+}
+.tips-pop-btn{
+    position: absolute;
+    right: 1rem;
+    top:0.35rem;
+    color: #26C7DB;
+}
+.tips-pop-btn img {
+    width: 0.5rem;
+    height: 0.5rem;
+}
+.tips-prop-pop{
+    display: none;
+    -webkit-overflow-scrolling: touch;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999;
+    background: rgba(0,0,0,.5);
+}
+.pop-table {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: table;
+}
+.pop-cell {
+    display: table-cell;
+    position: relative;
+    vertical-align: middle;
+}
+
+.tips-prop-pop .pop-box{
+    width: 7.56rem;
+    height: 4rem;
+    background: #FFFFFF;
+    border-radius: 0.08rem;
+    margin: -1rem auto 0;
+    padding-top: 0.8rem;
+    box-sizing: border-box;
+    text-align: center;
+    font-size: 0.36rem;
+}
+.pop-box .pop-title{
+    font-size: 0.4rem;
+    color: #333333;
+    font-weight: bold;
+    line-height: 1.1;
+    text-align: center;
+}
+.pop-box .pop-content{
+    margin-top: 0.32rem;
+    font-size: 0.32rem;
+    text-align: center;
+}
+.pop-box .pop-content p{
+    margin: 0.16rem 0;
+}
+.pop-box .pop-btn-box{
+    width: 100%;
+    margin-top: 0.56rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.pop-box .pop-btn-box .pop-btn{
+    width: 2.1333rem;
+    height: 0.74667rem;
+    border-radius: 0.08rem;
+    background: #FFB22B;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+}
+.titleText {
+    font-size: 0.44rem!important;
+}
+.select2-container .select2-selection--single .select2-selection__rendered {
+    padding-left: 0.41rem!important;
+}
+.editButton {
+    margin-left: 3rem;
+    font-size: 0.36rem;
+}
+.search-box .search-item .input-date {
+    padding-left: 0.4rem!important;
+}
+.buttonConfirm {
+    width: 2.1333rem;
+    height: 0.74667rem;
+    border-radius: 0.08rem;
+    background: #FFB22B;
+    color: #fff;
+    line-height: 0.74667rem;
+    margin-right: 0.5rem;
+}
+.buttonCancel {
+    width: 2.1333rem;
+    height: 0.74667rem;
+    border-radius: 0.08rem;
+    background: #ccc;
+    color: #fff;
+    line-height: 0.74667rem;
+}
+.descriptionBox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999;
+    background: rgba(0,0,0,.5);
+    display: none;
+}
+.shadowBox {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: table;
+}
+.shadow-cell {
+    display: table-cell;
+    position: relative;
+    vertical-align: middle
+}
+.descriptionContent {
+    width: 6.56rem;
+    background: #FFFFFF;
+    border-radius: 0.08rem;
+    margin: -1rem auto 0;
+    padding-top: 0.48rem;
+    box-sizing: border-box;
+}
+.content-title {
+    font-size: 0.44rem;
+    color: #222222;
+    font-weight: bold;
+    line-height: 1.1;
+    text-align: center
+}
+.content-item {
+    margin-top: 0.32rem;
+    font-size: 0.42rem;
+    line-height: 0.6rem;
+    color: #222222;
+    text-align: center;
+}
+.konwBtn {
+    width: 100%;
+    margin-top: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 0.5rem;
+    margin-left: 0.2rem
+}
+.footerButton {
+    width: 2.1333rem;
+    height: 0.74667rem;
+    border-radius: 0.08rem;
+    background: #FFB22B;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    margin-right: 0.5rem;
+}
+.cancelFooterButton {
+    background: #cccccc;
+}
+.descriptionContent .content-item p {
+    margin: 0.16rem 0.9rem
+}

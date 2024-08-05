@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+		<link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+		<link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+		<include file="public@head" />
+	</head>
+
+	<body>
+		<include file="public@nav" />
+		<include file="public@header" />
+		<link href="__TMPL__/public/assets/css/rank.css" rel="stylesheet" />
+		<div class="trunk">
+			<div class="trunk-con">
+				<div class="right-container">
+<!--					(缓存处理)-->
+					<div class="normal-list">
+
+						<div class="rank-form clearfix">
+
+							<div class="rank-list-table fl">
+
+							<div class="rank-form-headline">今日排行</div>
+							<table>
+								<tr>
+									<th class="th1">排名</th>
+									<th class="th2">渠道名称</th>
+									<th class="th3">总付费</th>
+								</tr>
+								<notempty name="data1">
+									<volist name="data1" id="vo">
+										<tr>
+											<if condition="$key eq 0">
+												<td class="td1"><span class="rank-goldmedal-first"></span></td>
+											<elseif condition="$key eq 1" />
+												<td class="td1"><span class="rank-goldmedal-second"></span></td>
+											<elseif condition="$key eq 2" />
+												<td class="td1"><span class="rank-goldmedal-third"></span></td>
+											<else/>
+												<td class="td1">{$key+1}</td>
+											</if>
+											<lt name="key" value="3">
+												<td class="td2 weight">{$vo.promote_account}</td>
+												<td class="td3 weight">{$vo.total_pay}</td>
+												<else />
+												<td class="td2">{$vo.promote_account}</td>
+												<td class="td3">{$vo.total_pay}</td>
+											</lt>
+										</tr>
+									</volist>
+								<else/>
+									<tr><td colspan="3">
+									<!--无数据-->
+									<div class="rank-nodata">暂无排行</div>
+									</td><tr>
+								</notempty>
+							</table>
+
+							</div>
+
+							<div class="rank-list-table fl">
+
+								<div class="rank-form-headline">近7天排行</div>
+								<table>
+									<tr>
+										<th class="th1">排名</th>
+										<th class="th2">渠道名称</th>
+										<th class="th3">总付费</th>
+									</tr>
+									<notempty name="data7">
+										<volist name="data7" id="vo">
+											<tr>
+												<if condition="$key eq 0">
+													<td class="td1"><span class="rank-goldmedal-first"></span></td>
+													<elseif condition="$key eq 1" />
+													<td class="td1"><span class="rank-goldmedal-second"></span></td>
+													<elseif condition="$key eq 2" />
+													<td class="td1"><span class="rank-goldmedal-third"></span></td>
+													<else/>
+													<td class="td1">{$key+1}</td>
+												</if>
+												<lt name="key" value="3">
+													<td class="td2 weight">{$vo.promote_account}</td>
+													<td class="td3 weight">{$vo.total_pay}</td>
+													<else />
+													<td class="td2">{$vo.promote_account}</td>
+													<td class="td3">{$vo.total_pay}</td>
+												</lt>
+											</tr>
+										</volist>
+										<else/>
+										<tr><td colspan="3">
+											<!--无数据-->
+											<div class="rank-nodata">暂无排行</div>
+										</td><tr>
+									</notempty>
+								</table>
+
+							</div>
+
+
+
+							<div class="rank-list-table fl">
+
+								<div class="rank-form-headline">近30天排行</div>
+								<table>
+									<tr>
+										<th class="th1">排名</th>
+										<th class="th2">渠道名称</th>
+										<th class="th3">总付费</th>
+									</tr>
+									<notempty name="data30">
+										<volist name="data30" id="vo">
+											<tr>
+												<if condition="$key eq 0">
+													<td class="td1"><span class="rank-goldmedal-first"></span></td>
+													<elseif condition="$key eq 1" />
+													<td class="td1"><span class="rank-goldmedal-second"></span></td>
+													<elseif condition="$key eq 2" />
+													<td class="td1"><span class="rank-goldmedal-third"></span></td>
+													<else/>
+													<td class="td1">{$key+1}</td>
+												</if>
+												<lt name="key" value="3">
+													<td class="td2 weight">{$vo.promote_account}</td>
+													<td class="td3 weight">{$vo.total_pay}</td>
+													<else />
+													<td class="td2">{$vo.promote_account}</td>
+													<td class="td3">{$vo.total_pay}</td>
+												</lt>
+											</tr>
+										</volist>
+										<else/>
+										<tr><td colspan="3">
+											<!--无数据-->
+											<div class="rank-nodata">暂无排行</div>
+										</td><tr>
+									</notempty>
+								</table>
+
+							</div>
+
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<include file="public@scripts" />
+		<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+		<script src="__STATIC__/js/layer/layer.js"></script>
+		<script src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.js"></script>
+		<script src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+		<script>
+			$(function() {
+				$(".js-select-gallery").select2();
+			})
+			//日历
+			var date = "{$setdate}";
+			$('#sdate').datetimepicker({
+				format: 'yyyy-mm-dd',
+				language: "zh-CN",
+				minView: 2,
+				autoclose: true,
+				scrollMonth: false,
+				scrollTime: false,
+				scrollInput: false,
+				endDate: date
+			});
+			$('#edate').datetimepicker({
+				format: 'yyyy-mm-dd',
+				language: "zh-CN",
+				minView: 2,
+				autoclose: true,
+				pickerPosition: 'bottom-left',
+				scrollMonth: false,
+				scrollTime: false,
+				scrollInput: false,
+				endDate: date
+			});
+			$("#resdate").datetimepicker({
+				format: 'yyyy-mm-dd',
+				language: "zh-CN",
+				minView: 2,
+				autoclose: true,
+				scrollMonth: false,
+				scrollTime: false,
+				scrollInput: false,
+				endDate: date
+			});
+			$('#reedate').datetimepicker({
+				format: 'yyyy-mm-dd',
+				language: "zh-CN",
+				minView: 2,
+				autoclose: true,
+				pickerPosition: 'bottom-left',
+				scrollMonth: false,
+				scrollTime: false,
+				scrollInput: false,
+				endDate: date
+			});
+
+			$('.chakan').click(function() {
+				var that = $(this),
+					settlement_number = that.data('settlement_number'),
+					pid = that.data('pid');
+				if(!settlement_number) {
+					layer.msg('数据错误');
+					return false;
+				}
+				layer.closeAll();
+				layer.open({
+					type: 2,
+					title: "结算详情",
+					shadeClose: true,
+					shade: 0.8,
+					area: ['70%', '80%'],
+					content: ["{:url('son_settlement_detail')}?settlement_number=" + settlement_number + "&promote_id=" + pid, 'no'] //iframe的url
+				});
+			});
+			$('#submit').click(function() {
+				var sdate = $('#sdate').val();
+				var edate = $('#edate').val();
+				if(Date.parse(sdate) > Date.parse(edate)) {
+					layer.msg('结算周期：开始时间必须小于等于结束时间');
+					return false;
+				}
+			});
+
+			$('.js_change').click(function() {
+				var that = $(this),
+					settlement_number = that.data('settlement_number'),
+					status = that.data('status');
+				if(!settlement_number) {
+					layer.msg('数据错误');
+					return false;
+				}
+				$.ajax({
+					type: 'post',
+					url: '{:url("changeStatus")}',
+					data: {
+						settlement_number: settlement_number,
+						status: status
+					},
+					success: function(res) {
+						layer.msg(res.msg, {
+							time: 1000
+						}, function() {
+							location.href = location.href;
+						});
+					},
+					error: function() {
+						layer.msg('服务器错误，请稍后再试');
+					}
+				});
+			});
+		</script>
+	</body>
+
+</html>

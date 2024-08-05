@@ -1,0 +1,49 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('promote_set')}" >站点配置</a></li>
+        <li class="active"><a href="#A" data-toggle="tab">提现设置</a></li>
+        <span class="title_remark">说明：针对推广渠道的提现操作进行设置</span>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('sitePost')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">最低提现金额：</label>
+                            <div class="col-md-3 col-sm-5 pr">
+                                <input type="text" class="form-control"  name="limit_money"
+                                       value="{$data.limit_money|default='1.00'}"><span class="input-sup">元</span>
+                            </div>
+                            <p class="help-block">默认1.00元</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">提现手续费：</label>
+                            <div class="col-md-3 col-sm-5 pr">
+                                <input type="text" class="form-control" value="{$data.payment_fee}" name="payment_fee"><span class="input-sup">%</span>
+                            </div>
+                            <p class="help-block">默认为空</p>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <input type="hidden" name="set_type" value="{$name}">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

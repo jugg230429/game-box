@@ -1,0 +1,75 @@
+/*
+* @description: 子渠道
+ *@author:王奉
+* @update: name(xxxx-xx-xx xx:xx)
+ */
+
+.add-btn {
+	display: inline-block;
+	width: 90px;
+	height: 36px;
+	line-height: 36px;
+	text-align: center;
+	background: #26C7DB;
+	color: #fff;
+	border-radius: 4px;
+	/*margin: 0 0 20px 0;*/
+	margin-right: 10px;
+}
+
+.add-qudao {
+	width: 20px;
+	height: 20px;
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 5px;
+	background: url(../../images/promote/icon_normal_tianjia.png) no-repeat;
+}
+
+.desccontent {
+	padding-bottom: 54px;
+	margin: 20px 2% 0;
+	border-top: 1px dashed #E3E3E3;
+	line-height: 54px;
+	color: #ADAEC2;
+}
+
+.desccontent-title {
+	color: #6a7082;
+	text-align: right;
+}
+
+
+/*end 美化复选按钮 */
+/* 添加文档 */
+.edui-default{
+	width: 800px;
+    float: left;
+}
+.edui-default .edui-editor {
+    line-height: 24px;
+}
+.select2-container--default .select2-selection--single{
+	border: 1px solid #E5E5E5;
+    border-radius: 4px;
+
+}
+.add-coupon-btn{
+	margin-left:140px;
+}
+.orangeTipBox {
+	margin: 1% 2% 0;
+    color: #FF6803;
+    background: #F2F2F2;
+    padding: 5px;
+}
+.modalTip{
+	position: absolute;
+    bottom: 0px;
+	left: 8%;
+    font-size: 14px;
+	color: #FF6803;
+}
+/* .layui-layer-content {
+	height: 295px!important;
+} */

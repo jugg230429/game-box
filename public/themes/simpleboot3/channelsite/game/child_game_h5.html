@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+		<link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+		<link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+		<include file="public@head"/>
+	</head>
+
+	<body>
+		<include file="public@nav"/>
+		<include file="public@header"/>
+		<div class="trunk">
+			<div class="trunk-con">
+				<div class="right-container">
+					<div class="normal-list">
+						<div class="trunk">
+							<div class="trunk-title">
+								<div class="location ">
+									<div class="location-container fr">当前位置：<span class="location-container-text">游戏管理&gt;</span><span class="location-container-text">子渠道游戏</span></div>
+								</div>
+								<img src="__TMPL__/public/assets/images/icon_normal_game.png" class="fl trunk-icon">
+								<span class="title-main fl ">游戏列表  </span>
+
+							</div>
+
+							<div class="tabpan">
+								<div class="tabpan-con-type-btn">
+									<if condition="PERMI eq 1 or PERMI eq 3">
+										<a class="btn-examine fl" href="{:url('game/child_game')}">手游</a>
+									</if>
+									<if condition="PERMI eq 2 or PERMI eq 3">
+										<a class="btn-examine btn-examine-active fl" href="javascript:;">H5</a>
+									</if>
+									<if condition="YPERMI gt 0">
+										<a class="btn-examine fl" href="{:url('game/child_game_pc')}">页游</a>
+									</if>
+								</div>
+								<div class="tabpan-con tabpan-show">
+									<input type="button" class="btn-calc fl batch" data-pattern="{$baseinfo.pattern}" value="批量设置" >
+									<form action="{:url('child_game')}">
+										<div class="trunk-search clearfix fr">
+											<php>$pmap['parent_id'] = PID</php>
+											<select id="promote_id" name="promote_id" class="tab-input js-select-gallery normal-space  fl select2-hidden-accessible trunk-search-select">
+												<option value="" data="0">子渠道账号</option>
+												<volist name=":get_promote_list($pmap)" id="p">
+													<option data="" <if condition="$p['id'] eq input('promote_id')"> selected</if> value="{$p.id}">{$p.account}</option>
+												</volist>
+											</select>
+											<php>
+												$gmap['game_status'] = 1;
+												$gmap['test_game_status'] = 0;  // 测试游戏不显示,但可以正常进入
+											</php>
+											<select id="game_name" name="game_name" class="tab-input js-select-gallery normal-space  fl select2-hidden-accessible trunk-search-select">
+												<option value="" data="0">选择游戏</option>
+												<volist name=":get_game_list('id,game_name,relation_game_id,relation_game_name',$gmap,'relation_game_name','sort desc ,id desc')" id="vv">
+													<option <if condition="$vv['relation_game_name'] eq input('game_name')"> selected</if> data="{$vv['relation_game_name']}" value="{$vv['relation_game_name']}">{$vv['relation_game_name']}</option>
+												</volist>
+
+											</select>
+											<input type="text" id="sdate" class="tabpan-input normal-space" autocomplete="off" name="start_time" placeholder="开始时间" value="{:input('start_time')}">
+											<label class="line-color">&nbsp;-&nbsp;</label>
+											<input type="text" id="edate" class="tabpan-input " name="end_time" autocomplete="off" placeholder="结束时间" value="{:input('end_time')}">
+											<input type="submit" class="submit fr normal-space" id="submit" value="查询">
+										</div>
+									</form>
+									<div class="clear"></div>
+									<div class="minh-table">
+									<table class="table normal-table" id="promotecoin_table">
+										<tbody>
+											<tr>
+												<th><label class="checked"><input class="check-all" type="checkbox"><i class="check-icon"></i></label></th>
+												<th>子渠道账号</th>
+												<th>ICON</th>
+												<th>游戏名称</th>
+												<th>平台</th>
+												<th>类型</th>
+												<!--<th>包的大小</th>-->
+												<th>申请时间</th>
+												<notempty name="baseinfo.pattern">
+												<th>注册单价</th>
+													<else/>
+												<th>分成比例(%)</th>
+												</notempty>
+												<if condition="PID_LEVEL lt 3">
+													<th>显示状态</th>
+												</if>
+											</tr>
+
+											<notempty name="data_lists">
+												<volist name="data_lists" id="vo">
+
+												<tr>
+													<td>
+														<volist name="vo.apply_id" id="vv">
+															<label class="checked" style="display:block"><input class="ids" type="checkbox" value="{$vv}"><i class="check-icon"></i></label>
+														</volist>
+													</td>
+													<td>{:get_promote_name($vo['promote_id'])}</td>
+													<td><img src="{:cmf_get_image_preview_url($vo['icon'])}" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null" class="graphic-icon"></td>
+													<td>{$vo['relation_game_name']}</td>
+													<php>$gamesource1 = [];</php>
+													<php>$gamesource2 = [];</php>
+													<php>$gamesource3 = [];</php>
+													<td>
+														<if condition="array_search(1,$vo['sdk_version']) nheq false">
+															<!-- 游戏原包信息 -->
+															<php>$gamesource1 = get_game_source_info($vo['id'][array_search(1,$vo['sdk_version'])]);</php>
+															<p class="p_icon"><img src="__TMPL__/public/assets/images/andriod.png" width="20" height="20"></p>
+														</if>
+														<if condition="array_search(2,$vo['sdk_version']) nheq false">
+															<!-- 游戏原包信息 -->
+															<php>$gamesource2 = get_game_source_info($vo['id'][array_search(2,$vo['sdk_version'])]);</php>
+															<p class="p_icon"><img src="__TMPL__/public/assets/images/IOS.png" width="20" height="20"></p>
+														</if>
+														<if condition="array_search(3,$vo['sdk_version']) nheq false">
+															<!-- 游戏原包信息 -->
+															<php>$gamesource3 = get_game_source_info($vo['id'][array_search(3,$vo['sdk_version'])]);</php>
+															<p class="p_icon"><img src="__TMPL__/public/assets/images/H5.png" width="20" height="20"></p>
+														</if>
+													</td>
+													<!-- 游戏原包信息 -->
+													<td>
+														{$vo['game_type_name']}
+													</td>
+													<!--<td>-->
+														<!--<if condition="array_search(1,$vo['sdk_version']) nheq false">-->
+															<!--<p>{$vo['game_size'][array_search(1,$vo['sdk_version'])]}</p>-->
+														<!--</if>-->
+														<!--<if condition="array_search(2,$vo['sdk_version']) nheq false">-->
+															<!--<p>{$vo['game_size'][array_search(2,$vo['sdk_version'])]}</p>-->
+														<!--</if>-->
+													<!--</td>-->
+													<td>
+														<if condition="array_search(1,$vo['sdk_version']) nheq false">
+															<p>{:date('Y-m-d',$vo['apply_time'][array_search(1,$vo['sdk_version'])])}</p>
+														</if>
+														<if condition="array_search(2,$vo['sdk_version']) nheq false">
+															<p>{:date('Y-m-d',$vo['apply_time'][array_search(2,$vo['sdk_version'])])}</p>
+														</if>
+														<if condition="array_search(3,$vo['sdk_version']) nheq false">
+															<p>{:date('Y-m-d',$vo['apply_time'][array_search(3,$vo['sdk_version'])])}</p>
+														</if>
+													</td>
+													<notempty name="baseinfo.pattern">
+													<!-- 单价 -->
+													<td class="jschange jsmoney">
+														<if condition="array_search(1,$vo['sdk_version']) nheq false">
+															<if condition="$vo['promote_money'][array_search(1,$vo['sdk_version'])] eq $vo['money'][array_search(1,$vo['sdk_version'])]">
+																<p><input type="text" class="input-box " placeholder="填写" style=" " maxlength="6" data-gid="{$vo['id'][array_search(1,$vo['sdk_version'])]}" data-pid="{$vo['promote_id']}" value="{$vo['promote_money'][array_search(1,$vo['sdk_version'])]}"></p>
+															<else/>
+																<p><input type="text" class="input-box color-red" placeholder="填写" style=" " maxlength="6" data-gid="{$vo['id'][array_search(1,$vo['sdk_version'])]}" data-pid="{$vo['promote_id']}" value="{$vo['promote_money'][array_search(1,$vo['sdk_version'])]}"></p>
+															</if>
+														</if>
+														<if condition="array_search(2,$vo['sdk_version']) nheq false">
+															<if condition="$vo['promote_money'][array_search(2,$vo['sdk_version'])] eq $vo['money'][array_search(2,$vo['sdk_version'])]">
+																<p><input type="text" class="input-box" placeholder="填写" style=" " maxlength="6" data-gid="{$vo['id'][array_search(2,$vo['sdk_version'])]}" data-pid="{$vo['promote_id']}" value="{$vo['promote_money'][array_search(2,$vo['sdk_version'])]}"></p>
+																<else/>
+																<p><input type="text" class="input-box color-red" placeholder="填写" style=" " maxlength="6" data-gid="{$vo['id'][array_search(2,$vo['sdk_version'])]}" data-pid="{$vo['promote_id']}" value="{$vo['promote_money'][array_search(2,$vo['sdk_version'])]}"></p>
+															</if>
+														</if>
+														<if condition="array_search(3,$vo['sdk_version']) nheq false">
+															<if condition="$vo['promote_money'][array_search(3,$vo['sdk_version'])] eq $vo['money'][array_search(3,$vo['sdk_version'])]">
+																<p><input type="text" class="input-box" placeholder="填写" style=" " maxlength="6" data-gid="{$vo['id'][array_search(3,$vo['sdk_version'])]}" data-pid="{$vo['promote_id']}" value="{$vo['promote_money'][array_search(3,$vo['sdk_version'])]}"></p>
+																<else/>
+																<p><input type="text" class="input-box color-red" placeholder="填写" style=" " maxlength="6" data-gid="{$vo['id'][array_search(3,$vo['sdk_version'])]}" data-pid="{$vo['promote_id']}" value="{$vo['promote_money'][array_search(3,$vo['sdk_version'])]}"></p>
+															</if>
+														</if>
+													</td>
+														<else/>
+													<!-- 比例 -->
+													<td class="jschange jsratio">
+														<if condition="array_search(1,$vo['sdk_version']) nheq false">
+															<if condition="$vo['promote_ratio'][array_search(1,$vo['sdk_version'])] eq $vo['ratio'][array_search(1,$vo['sdk_version'])]">
+																<p><input type="text" class="input-box " placeholder="填写" style=" " maxlength="6" data-gid="{$vo['id'][array_search(1,$vo['sdk_version'])]}" data-pid="{$vo['promote_id']}" value="{$vo['promote_ratio'][array_search(1,$vo['sdk_version'])]}"></p>
+																<else/>
+																<p><input type="text" class="input-box color-red" placeholder="填写" style=" " maxlength="6" data-gid="{$vo['id'][array_search(1,$vo['sdk_version'])]}" data-pid="{$vo['promote_id']}" value="{$vo['promote_ratio'][array_search(1,$vo['sdk_version'])]}"></p>
+															</if>
+														</if>
+														<if condition="array_search(2,$vo['sdk_version']) nheq false">
+															<if condition="$vo['promote_ratio'][array_search(2,$vo['sdk_version'])] eq $vo['ratio'][array_search(2,$vo['sdk_version'])]">
+																<p><input type="text" class="input-box " placeholder="填写" style=" " maxlength="6" data-gid="{$vo['id'][array_search(2,$vo['sdk_version'])]}" data-pid="{$vo['promote_id']}" value="{$vo['promote_ratio'][array_search(2,$vo['sdk_version'])]}"></p>
+																<else/>
+																<p><input type="text" class="input-box color-red" placeholder="填写" style=" " maxlength="6" data-gid="{$vo['id'][array_search(2,$vo['sdk_version'])]}" data-pid="{$vo['promote_id']}" value="{$vo['promote_ratio'][array_search(2,$vo['sdk_version'])]}"></p>
+															</if>
+														</if>
+														<if condition="array_search(3,$vo['sdk_version']) nheq false">
+															<if condition="$vo['promote_ratio'][array_search(3,$vo['sdk_version'])] eq $vo['ratio'][array_search(3,$vo['sdk_version'])]">
+																<p><input type="text" class="input-box " placeholder="填写" style=" " maxlength="6" data-gid="{$vo['id'][array_search(3,$vo['sdk_version'])]}" data-pid="{$vo['promote_id']}" value="{$vo['promote_ratio'][array_search(3,$vo['sdk_version'])]}"></p>
+																<else/>
+																<p><input type="text" class="input-box color-red" placeholder="填写" style=" " maxlength="6" data-gid="{$vo['id'][array_search(3,$vo['sdk_version'])]}" data-pid="{$vo['promote_id']}" value="{$vo['promote_ratio'][array_search(3,$vo['sdk_version'])]}"></p>
+															</if>
+														</if>
+													</td>
+													</notempty>
+													<if condition="PID_LEVEL lt 3">
+														<td>
+															<if condition="$vo['game_is_open'] eq 1">
+																<volist name="vo.apply_id" id="vv">
+																	<a href="javascript:;"  class="editbtn jseditbtn" data-id="{$vv}" data-open_status="{$vo['game_is_open']}">开启</a>
+																</volist>
+																<else/>
+																<volist name="vo.apply_id" id="vv">
+																	<a href="javascript:;"  class="editbtn jseditbtn" data-id="{$vv}" data-open_status="{$vo['game_is_open']}">关闭</a>
+																</volist>
+															</if>
+														</td>
+													</if>
+												</tr>
+												</volist>
+											<else/>
+												<!--暂无数据-->
+												<tr>
+													<td colspan="9">
+														<div class="no-data">
+															<img src="__TMPL__/public/assets/images/icon_wushujv2.png" alt="" class="no-data-img">
+															<p class="no-data-text">暂无数据</p>
+														</div>
+													</td>
+												</tr>
+											</notempty>
+										</tbody>
+									</table>
+									<notempty name="data_lists">
+										<div class="pagenation clearfix">
+											{$page}
+										</div>
+									</notempty>
+									</div>
+
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<include file="public@scripts"/>
+		<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+		<script src="__STATIC__/js/layer/layer.js"></script>
+		<script src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.js"></script>
+		<script src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+
+		<script>
+			$(function() {
+				$(".js-select-gallery").select2();
+			})
+			//			日历
+			var date = "{$setdate}";
+			$('#sdate').datetimepicker({
+				format: 'yyyy-mm-dd',
+				language: "zh-CN",
+				minView: 2,
+				autoclose: true,
+				scrollMonth: false,
+				scrollTime: false,
+				scrollInput: false,
+				endDate: date
+			});
+			$('#edate').datetimepicker({
+				format: 'yyyy-mm-dd',
+				language: "zh-CN",
+				minView: 2,
+				autoclose: true,
+				pickerPosition: 'bottom-left',
+				scrollMonth: false,
+				scrollTime: false,
+				scrollInput: false,
+				endDate: date
+			});
+
+            $(".check-all").click(function() {
+                $('.ids').prop("checked", this.checked);
+            });
+            $(".ids").click(function() {
+                var option = $(".ids");
+                option.each(function(i) {
+                    if(!this.checked) {
+                        $(".check-all").prop("checked", false);
+                        return false;
+                    } else {
+                        $(".check-all").prop("checked", true);
+                    }
+                });
+            });
+
+			$('#submit').click(function() {
+				var sdate = $('#sdate').val();
+				var edate = $('#edate').val();
+				var pid = $('#promote_id').val();
+				var pac = $('#promote_account').val();
+
+				if(Date.parse(sdate) > Date.parse(edate)) {
+					layer.msg('开始时间必须小于等于结束时间');
+					return false;
+				}
+//				var url = $(this).attr('url');
+//				console.log(url);
+//				var query = $('.jssearch').find('input').serialize();
+//				query += "&" + $('.jssearch').find('select').serialize();
+//				query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+//				query = query.replace(/^&/g, '');
+//				if(url.indexOf('?') > 0) {
+//					url += '&' + query;
+//				} else {
+//					url += '?' + query;
+//				}
+//				window.location.href = url;
+
+			});
+			$('.jschange .input-box').change(function(){
+				that = $(this);
+				td = that.parents('.jschange');
+				gid = that.data('gid');
+				pid = that.data('pid');
+				if(td.hasClass('jsmoney')){
+					msg = '注册单价';
+					field = 'promote_money';
+				}else{
+					msg = '分成比例';
+					field = 'promote_ratio';
+				}
+				value = that.val();
+				if (!/^(((\d|[1-9]\d)(\.\d{1,2})?)|100|100.0|100.00)$/.test(value)) {
+                    layer.msg('输入错误，0-100之间的两位小数',{time:2000});
+                    return false;
+                }
+				$.ajax({
+					type:'post',
+					url:'{:url("setRatioMoney")}',
+					data:{game_id:gid,promote_id:pid,field:field,value:value},
+					success:function(res){
+						layer.msg(msg+res.msg,{time:1000},function(){
+							location.href = location.href;
+						});
+						// console.log(res);
+					},error:function(){
+						layer.msg('服务器错误，请稍后再试');
+					}
+				});
+
+			});
+
+            $(".batch").click(function(){
+                var that = $(this);
+                var ids = $('.ids');
+                var apply_id = '0';
+				var pattern = that.attr('data-pattern');
+                ids.each(function(index,element){
+                    if($(this).prop('checked')){
+                        apply_id = apply_id+','+$(this).val();
+                    }
+                });
+                var title = '批量设置';
+				var patternPrefix = '分成比例比本渠道减少';
+				var patternSuffix = '%';
+				if (pattern=='1') {
+					patternPrefix = '注册单价比本渠道减少';
+					patternSuffix = '元';
+				}
+                layer.prompt({
+                    formType:0,
+                    title:title,
+                    value:0.00,
+                    success:function (layero, index) {
+                        layero.find('input').attr('placeholder','').css({'width': '80px','float':'left','padding-right':'30px'})
+								.before('<span style="float:left;margin-right: 10px;line-height: 30px;">'+patternPrefix+'</span>')
+								.after('<span style="position: absolute;right: 30px;line-height: 30px;">'+patternSuffix+'</span>')
+                    }
+                }, function(value,index) {
+                    if (!/^(((\d|[1-9]\d)(\.\d{1,2})?)|100|100.0|100.00)$/.test(value)) {
+                        layer.msg('输入错误，0-100之间的两位小数',{time:2000});
+                        return false;
+                    }
+                    $.ajax({
+                        async: false,
+                        url:"{:url('setprofit')}",
+                        type:"POST",
+                        dataType:'JSON',
+                        data:{apply_id:apply_id,value:value},
+                        success:function(result){
+                            layer.msg(result.msg,{time:1000},function(){
+                                !result.code || location.reload();
+                            });
+                        },
+                        error:function(){
+                            layer.msg('服务器异常',{time:2000});
+                        }
+                    })
+                });
+            })
+
+		</script>
+		<script>
+
+			$(function(){
+				$(".js-select-gallery").select2();
+				$(".jseditbtn").click(function(){
+					that = $(this);
+					$.ajax({
+						type: 'POST',
+						url: "{:url('change_game_is_open')}" ,
+						data:{"zid":that.data('id'),'open_status':that.data('open_status')},
+						async:false,
+						dataType:'json',
+						success:function(data){
+							if (data.code > 0){
+								layer.msg(data.msg,{time:1000},function(){
+									location.href= location.href;
+								})
+							}
+							else{
+								layer.msg(data.msg,{time:1000});
+							}
+						}
+					})
+				})
+			})
+		</script>
+
+	</body>
+
+</html>

@@ -1,0 +1,186 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/open_game.css">
+</block>
+
+
+<block name="body">
+    <include file="mobilepublic@header_menu" />
+    <div class="clear"></div>
+    <div class="type_down__long_hx clear"></div>
+    <div class="open_game_header">
+        <p class=" open_type_item active_open_game_type">今日开服</p>
+        <p class=" open_type_item">即将开服</p>
+        <p class=" open_type_item">已开服</p>
+
+    </div>
+    <div class="clear"></div>
+    <div class="open_game_con_today">
+        <volist name="$data['today']" id="today">
+        <div class="open_game_item">
+            <a href="{:url('Game/detail',['game_id'=>$today['game_id']])}">
+            <div class="open_game_item_img fl"><img src="{:cmf_get_image_url($today.icon)}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null"></div>
+            <div class="fl open_game_item_cons">
+                <p class="open_game_item_title">{$today.relation_game_name}</p>
+                <p class="open_game_item_infos"><span>{$today.game_type_name}</span><span class="hot_game_fgx">|</span><span class="hot_game_download_num">{:get_simple_number($today['dow_num'])}</span><span><eq name="today.sdk_version" value="3">人在玩<else/>人下载</eq></span></p>
+                <div class="open_game_item_time"><p class="tm">今日{:date('H:i',$today.start_time)}</p><p class="fw">{$today.server_name}</p></div>
+            </div>
+            </a>
+            <eq name="today.sdk_version" value="3">
+                <a <eq name="session.login_auth" value="1">href="{:url('Game/open_game',[],false)}?game_id={$today['relation_game_id']}"</eq> >
+                <div data-href="{:url('Game/open_game',[],false)}?game_id={$today['relation_game_id']}" class='fg hot_game_download <eq name="session.login_auth" value="0">login</eq> '>
+                    <p>去玩</p>
+                </div>
+                </a>
+            <else/>
+                <if condition="get_down_status2($today.relation_game_id,get_devices_type()) eq true">
+                    <a  <eq name="session.login_auth" value="1">href="{:url('Downfile/down',['game_id'=>$today['relation_game_id'],'sdk_version'=>get_devices_type()])}"</eq> >
+                        <div class='fg hot_game_download  <eq name="session.login_auth" value="0">login</eq> '>
+                            <p>下载</p>
+                        </div>
+                    </a>
+                    <else/>
+                    <div class="fg hot_game_download hot_game_downloaded">
+                        <p>下载</p>
+                    </div>
+                </if>
+            </eq>
+        </div>
+        <div class="type_down__long_hx clear"></div>
+        </volist>
+        <empty name="$data['today']">
+            <div class="no_open_game_text">
+                <p>~空空如也~</p>
+            </div>
+        </empty>
+
+    </div>
+    <div class="open_game_con_soon">
+        <volist name="$data['last']" id="last">
+        <div class="open_game_item">
+            <a href="{:url('Game/detail',['game_id'=>$last['game_id']])}">
+            <div class="open_game_item_img fl"><img src="{:cmf_get_image_url($last.icon)}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null"></div>
+            <div class="fl open_game_item_cons">
+                <p class="open_game_item_title">{$last.relation_game_name}</p>
+                <p class="open_game_item_infos"><span>{$last.game_type_name}</span><span class="hot_game_fgx">|</span><span class="hot_game_download_num">{:get_simple_number($last['dow_num'])}</span><span><eq name="last.sdk_version" value="3">人在玩<else/>人下载</eq></span></p>
+                <div class="open_game_item_time"><p class="tm"><if condition="date('m-d',$last.start_time) eq date('m-d',strtotime('+1 day'))">明日{:date('H:i',$last.start_time)}<else/>{:date('m-d H:i',$last.start_time)}</if></p><p class="fw">{$last.server_name}</p></div>
+            </div>
+            </a>
+            <a href="javascript:;" data-server_id="{$last.server_id}" class="hot_game_appointment <eq name='session.login_auth' value='1'>js-hot_game_appointment<else/>login</eq>"><empty name="last.notice_status">提醒<else/>取消</empty></a>
+            <!--<eq name="last.sdk_version" value="3">
+                <a <eq name="session.login_auth" value="1">href="{:url('Game/open_game',[],false)}?game_id={$last['relation_game_id']}"</eq> >
+                <div data-href="{:url('Game/open_game',[],false)}?game_id={$last['relation_game_id']}" class='fg hot_game_download <eq name="session.login_auth" value="0">login</eq> '>
+                    <p>去玩</p>
+                </div>
+                </a>
+                <else/>
+                <if condition="get_down_status($last.relation_game_id,get_devices_type()) eq true">
+                    <a href="{:url('Downfile/down',['game_id'=>$last['relation_game_id'],'sdk_version'=>get_devices_type()])}">
+                        <div class="fg hot_game_download">
+                            <p>下载</p>
+                        </div>
+                    </a>
+                    <else/>
+                    <div class="fg hot_game_download hot_game_downloaded">
+                        <p>下载</p>
+                    </div>
+                </if>
+            </eq>-->
+        </div>
+        <div class="type_down__long_hx clear"></div>
+        </volist>
+        <empty name="$data['last']">
+            <div class="no_open_game_text">
+                <p>~空空如也~</p>
+            </div>
+        </empty>
+
+    </div>
+    <div class="open_game_con_already">
+        <volist name="$data['before']" id="before">
+            <div class="open_game_item">
+                <a href="{:url('Game/detail',['game_id'=>$before['game_id']])}">
+                <div class="open_game_item_img fl"><img src="{:cmf_get_image_url($before.icon)}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null"></div>
+                <div class="fl open_game_item_cons">
+                    <p class="open_game_item_title">{$before.relation_game_name}</p>
+                    <p class="open_game_item_infos"><span>{$before.game_type_name}</span><span class="hot_game_fgx">|</span><span class="hot_game_download_num">{:get_simple_number($before['dow_num'])}</span><span><eq name="before.sdk_version" value="3">人在玩<else/>人下载</eq></span></p>
+                    <div class="open_game_item_time"><p class="tm">{:date('m-d H:i',$before.start_time)}</p><p class="fw">{$before.server_name}</p></div>
+                </div>
+                </a>
+                <eq name="before.sdk_version" value="3">
+                    <a <eq name="session.login_auth" value="1">href="{:url('Game/open_game',[],false)}?game_id={$before['relation_game_id']}"</eq> >
+                    <div data-href="{:url('Game/open_game',[],false)}?game_id={$before['relation_game_id']}" class='fg hot_game_download <eq name="session.login_auth" value="0">login</eq> '>
+                        <p>去玩</p>
+                    </div>
+                    </a>
+                <else/>
+                    <if condition="get_down_status2($before.relation_game_id,get_devices_type()) eq true">
+                        <a href="{:url('Downfile/down',['game_id'=>$before['relation_game_id'],'sdk_version'=>get_devices_type()])}">
+                            <div class="fg hot_game_download">
+                                <p>下载</p>
+                            </div>
+                        </a>
+                        <else/>
+                        <div class="fg hot_game_download hot_game_downloaded">
+                            <p>下载</p>
+                        </div>
+                    </if>
+                </eq>
+            </div>
+            <div class="type_down__long_hx clear"></div>
+        </volist>
+        <empty name="$data['before']">
+            <div class="no_open_game_text">
+                <p>~空空如也~</p>
+            </div>
+        </empty>
+    </div>
+</block>
+<block name="script">
+<script>
+    $('.open_type_item').click(function(){
+        $('.open_type_item').removeClass('active_open_game_type')
+        $(this).addClass('active_open_game_type')
+
+        $(this).next().next().next().addClass('active_type_down_hx')
+        if($(this).text().indexOf('今日开服')!==-1){
+            $('.open_game_con_today').show()
+            $('.open_game_con_soon').hide()
+            $('.open_game_con_already').hide()
+        }
+        if($(this).text().indexOf('即将开服')!==-1){
+            $('.open_game_con_today').hide()
+            $('.open_game_con_soon').show()
+            $('.open_game_con_already').hide()
+
+        }
+        if($(this).text().indexOf('已开服')!==-1){
+            $('.open_game_con_today').hide()
+            $('.open_game_con_soon').hide()
+            $('.open_game_con_already').show()
+
+        }
+    })
+    $('body').on('click', '.js-hot_game_appointment', function () {
+        var that = $(this);
+        var server_id = that.data('server_id');
+        var text = that.text();
+        $.ajax({
+            url:"{:url('server_notice')}",
+            type:'post',
+            data:{server_id:server_id},
+            success:function (res) {
+                layer.msg(res.msg,{time:1000});
+                if(res.code==1){
+                    if(text == '提醒'){
+                        that.text('取消');
+                    }else{
+                        that.text('提醒');
+                    }
+                }
+            }
+        })
+        return false;
+    });
+</script>
+</block>

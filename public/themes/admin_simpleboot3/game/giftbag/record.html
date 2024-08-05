@@ -1,0 +1,85 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li><a href="{:url('lists')}">礼包列表</a></li>
+            <li class="active"><a href="{:url('record')}">领取记录</a></li>
+
+			 <span class="title_remark">说明：查看玩家领取礼包的记录</span>
+        </ul>
+        <form id="search_form" class="well form-inline  fr" method="get" action="{:url('record')}" onsubmit="return check();">
+            <input type="text" class="form-control" name="user_account" style="width: 120px;" value="{:input('request.user_account/s','')}" placeholder="玩家账号">
+            <select name="game_id" id="game_id" class="selectpicker " game_id="{:input('request.game_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+                <option value="">游戏名称</option>
+                <volist name=":get_game_list('id,relation_game_name',[],'relation_game_id')" id="vo">
+                    <option value="{$vo.id}" >{$vo.relation_game_name}</option>
+                </volist>
+            </select>
+            <neq name="PERMI" value="2">
+            <select name="gift_version" id="gift_version" class="selectpicker" gift_version="{:input('request.gift_version')}" style="width: 120px;">
+                <option value="">运营平台</option>
+                <option value="1">安卓</option>
+                <option value="2">苹果</option>
+                <eq name="PERMI" value="3"><option value="3">H5</option></eq>
+                <eq name="YPERMI" value="1"><option value="4">PC</option></eq>
+            </select>
+            </neq>
+            <input type="text" class="form-control js-bootstrap-date" name="start_time" id="start_time" placeholder="领取开始时间"
+                   value="{:input('request.start_time/s','')}" style="width: 140px;" autocomplete="off">-
+            <input type="text" class="form-control js-bootstrap-date" name="end_time" id="end_time" placeholder="领取结束时间"
+                   value="{:input('request.end_time/s','')}" style="width: 140px;" autocomplete="off"> &nbsp; &nbsp;
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('record')}">清空</a>
+            <a class="btn btn-export js-ajax-dialog-btn-xz" data-msg="确定导出吗？" href="{:url('Export/expUser',array_merge(['id'=>3,'xlsname'=>'游戏_礼包领取记录'],input()))}">导出</a>
+        </form>
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>玩家账号</th>
+                    <th>游戏名称</th>
+                    <th>礼包名称</th>
+                    <th>运营平台</th>
+                    <th>礼包激活码</th>
+                    <th>领取时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                <empty name="data_lists">
+                    <tr><td colspan="6" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <foreach name="data_lists" item="vo">
+                    <tr>
+                        <td>{$vo.user_account}</td>
+                        <td>{$vo.game_name}</td>
+                        <td>{$vo['gift_name']}</td>
+                        <td>{:get_info_status($vo['gift_version'],5)}</td>
+                        <td>{$vo.novice}</td>
+                        <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+                    </tr>
+                    </foreach>
+                </empty>
+            </tbody>
+        </table>
+        <div class="pagination">
+            {$page}
+        </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script type="text/javascript">
+        game_id = $("#game_id").attr('game_id');
+        $("#game_id").selectpicker('val', game_id);
+        $("#gift_version").selectpicker('val', $('#gift_version').attr('gift_version'));
+        function check(){
+            var start_time = $("#start_time").val();
+            var end_time = $("#end_time").val();
+            if(start_time != '' && end_time != '' && start_time > end_time){
+                layer.msg('开始时间不能大于结束时间');
+                return false;
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>

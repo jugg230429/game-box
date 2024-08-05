@@ -1,0 +1,429 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link href="{:cmf_get_image_url(cmf_get_option('issue_set')['ico'])}" type="image/x-icon" rel="shortcut icon">
+    <meta name="keywords" content="{:cmf_get_option('issue_set')['keywords']}" />
+    <meta name="description" content="{:cmf_get_option('issue_set')['description']}" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=1200,user-scalable=no">
+
+    <title>{:cmf_get_option('issue_set')['title']}</title>
+    <link href="__TMPL__/issuepublic/assets/css/toastr.min.css" rel="stylesheet">
+    <link href="__TMPL__/issuepublic/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__TMPL__/issuepublic/assets/css/public.css" rel="stylesheet">
+
+    <link href="__TMPL__/issuepublic/assets/css/swiper.min.css" rel="stylesheet">
+
+    <script src="__TMPL__/issuepublic/assets/js/jquery.min.js"></script>
+    <script src="__TMPL__/issuepublic/assets/js/bootstrap.min.js"></script>
+    <script src="__TMPL__/issuepublic/assets/js/jquery.form.js"></script>
+    <script src="__TMPL__/issuepublic/assets/js/jquery.validate.min.js"></script>
+    <script src="__TMPL__/issuepublic/assets/js/jquery.md5.js"></script>
+    <script src="__TMPL__/issuepublic/assets/js/toastr.min.js"></script>
+    <script src="__STATIC__/js/gt.js"></script>
+    <style type="text/css">
+        .geetest_logo,.geetest_feedback,.geetest_copyright,.geetest_success_logo{
+            display: none!important;
+        }
+        .issueAccount {
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .btn-exit{
+            color: #666!important;
+        }
+    </style>
+
+    <block name="css">
+
+    </block>
+
+</head>
+
+<body>
+
+<div id="section1" class="index-header">
+    <div class="index-head_inner clearfix">
+        <div class="logo">
+            <a href="{:url('/issue/index/index')}">
+                <img src="{:cmf_get_image_url(cmf_get_option('issue_set')['weblogo'])}" alt="">
+            </a>
+        </div>
+        <if condition="session('issue_open_user_info')">
+            <ul class="unlrwrap logined clearfix jsunlr">
+                <li class="unlr">
+                    <a style="background-color:unset;" class="issueAccount" href="{:url('issue/management/index')}">{:session('issue_open_user_info.account')}</a>
+                </li>
+                <li class="unlr">
+                    <a href="#" onclick="logout();" class="btn-exit">退出</a>
+                </li>
+            </ul>
+        <else/>
+            <ul class="unlr jssunlr clearfix">
+                <div class="">
+                    <li>
+                        <div class="login">
+                            <a href="#" data-toggle="modal" data-target="#loginBox">登录</a>
+                        </div>
+                    </li>
+                </div>
+            </ul>
+        </if>
+
+        <ul class="index-nav clearfix">
+            <php>
+                $action = request()->action();
+            </php>
+
+            <li>
+                <a href="{:url('issue/index/index')}" <?php if($action=='index') echo 'class="active"'; ?>><span>首页</span></a>
+            </li>
+            <li>
+                <a href="{:url('issue/index/introduce')}" <?php if($action=='introduce') echo 'class="active"'; ?>><span>联运模式</span></a>
+            </li>
+
+            <li>
+                <a href="{:url('issue/index/library')}" <?php if($action=='library') echo 'class="active"'; ?>><span>游戏库</span></a>
+            </li>
+            <li>
+                <a href="{:url('issue/index/contact')}" <?php if($action=='contact') echo 'class="active"'; ?>><span>联系我们</span></a>
+            </li>
+
+            <if condition="session('issue_open_user_info')">
+                <li>
+                    <a href="{:url('issue/management/index')}"><span>管理中心</span> </a>
+                </li>
+            <else/>
+                <li>
+                    <a href="javascript:;" class="jsbtninsert "><span>管理中心</span> </a>
+                </li>
+            </if>
+        </ul>
+    </div>
+</div>
+<script>
+    var UURL = '/index.php/Unlr',
+        SURL = '/index.php/User';
+    var logoutUrl = "{:url('issue/public/logout')}";
+</script>
+<div class="modal fade formreset" id="loginBox" tabindex="-1" role="dialog" aria-labelledby="loginTtitle" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="loginTtitle">登录</h4>
+            </div>
+            <form id="loginForm" class="form-horizontal" method="post" action="{:url('issue/public/login')}" novalidate="novalidate">
+                <div class="modal-body">
+                    <div class="col-md-8 col-md-offset-2">
+                        <br>
+                        <div class="form-group clearfix">
+                            <div class="input-group input-format">
+                                <span class="input-group-addon"><i class="iconfont icon-user" ></i></span>
+                                <input type="text" name="account" class="form-control" placeholder="账号(6~30位字母或数字)" aria-describedby="basic-addon1">
+                            </div>
+                            <div class="input-status"></div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <div class="input-group input-format " style="float:left;">
+                                <span class="input-group-addon"><i class="iconfont icon-lock"></i></span>
+                                <input type="password" id="loginPassword" name="password" class="form-control" placeholder="密码(6~30位字母或数字)" aria-describedby="basic-addon1">
+                                <input type="password" id="loginTruePassword" name="truePassword" class="hidden">
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="input-status"></div>
+                        </div>
+
+                        <div class="form-group clearfix js-geet">
+                            <!-- <div class="l-captcha" data-site-key="{$config.auto_verify_index}" data-width="100%"></div> -->
+                            <div class="btn_delphil textc"  id="embed-captcha"></div>
+                            <p id="wait" style="display: block;">正在加载验证码......</p>
+                            <p id="notice" style="display: none;">请先完成验证</p>
+                        </div>
+<!--                        <div class="form-group clearfix">-->
+<!--                            <div class="col-sm-4 input-format">-->
+<!--                                <input class="form-control" id="loginCaptcha" name="captcha" placeholder="验证码" autocomplete="off">-->
+<!--                            </div>-->
+<!--                            <div class="f-wsn">-->
+<!--                                <img name="changeCaptcha" src="{:captcha_src('ff')}" style="margin: auto 10px;cursor:pointer"> 看不清楚，点击图片换一张</div>-->
+<!--                            <div class="input-status"></div>-->
+<!--                        </div>-->
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal_footer">
+                    <input type="hidden" name="action" value="login">
+                    <input id="loginButton" type="submit" class="btn btn_primary" value="立即登录">&nbsp;&nbsp;
+                    <span class="to-contact-customer">
+                                没有账号？
+							<a href="https://wpa.qq.com/msgrd?v=3&uin={:cmf_get_option('issue_set')['service_qq']}&site=qq&menu=yes">联系客服</a>
+                            </span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<block name="body">
+
+</block>
+
+
+
+<footer>
+    <div class="footer-box">
+        <div class="footer-part-1">
+            <div class="footer-logo-box">
+                <img src="{:cmf_get_image_url(cmf_get_option('issue_set')['logo2'])}" class="footer-logo">
+            </div>
+
+<!--            <div class="link-box">-->
+<!--                <div class="link-item">-->
+<!--                    <a href="{:url('issue/index/introduce')}" class="">联运模式</a>-->
+<!--                    <a href="http://{:cmf_get_option('admin_set')['web_site']}" target="_blank" class="">H5游戏联运平台</a>-->
+<!--                </div>-->
+<!--                <div class="link-item">-->
+<!--                    <a href="{:url('issue/index/introduce')}" class="">代理模式</a>-->
+<!--                    <a href="http://{:cmf_get_option('admin_set')['web_site']}" class="" target="_blank">手游联运平台</a>-->
+<!--                </div>-->
+<!--                <div class="link-item">-->
+<!--                    <a href="{:url('issue/index/library')}" class="">游戏库</a>-->
+<!--                    <a href="http://tjj.kengwan.com" target="_blank" class="">天剑决</a>-->
+<!--                </div>-->
+<!--                <div class="link-item">-->
+<!--                    <if condition="session('issue_open_user_info')">-->
+<!--                        <a href="{:url('issue/management/index')}">管理中心</a>-->
+<!--                    <else/>-->
+<!--                        <a href="javascript:;" class="jsbtninsert">管理中心</a>-->
+<!--                    </if>-->
+<!--                </div>-->
+<!--            </div>-->
+        </div>
+        <div class="footer-part-2">
+            <p>{:cmf_get_option('issue_set')['copyright']}</p>
+            <p>
+                <if condition="cmf_get_option('issue_set')['icp']">
+                    <span>网站备案号：<a href="http://www.beian.miit.gov.cn" target="_blank" style="color:#636F79;">{:cmf_get_option('issue_set')['icp']}</a></span>
+                </if>
+                <if condition="cmf_get_option('issue_set')['license']">
+                    <span> 网络文化经营许可证：{:cmf_get_option('issue_set')['license']}</span>
+                </if>
+            </p>
+            <p>
+                <if condition="cmf_get_option('issue_set')['czxkz']">
+                    <span>增值电信业务经营许可证：{:cmf_get_option('issue_set')['czxkz']} </span>
+                </if>
+                <if condition="cmf_get_option('issue_set')['address']">
+                    <span>公司地址：{:cmf_get_option('issue_set')['address']}</span>
+                </if>
+            </p>
+
+        </div>
+    </div>
+</footer>
+
+<div class="suspension-box">
+    <a class="suspension-item" stat-url="" stat-title="右下角悬浮-客服QQ">
+        <div>
+            <i class="qq-icon"></i>
+            <span>商务接待</span>
+        </div>
+
+    </a>
+    <a href="javascript:scroll(0,0)" class="suspension-item " stat-url="" stat-title="右下角悬浮-返回顶部" style="display: inline-block;">
+        <i class="back-icon"></i>
+        <span>返回顶部</span>
+    </a>
+
+    <div class="activation-modal" style="display: none">
+        <a class="modal-close js-close-modal-qq"><img src="__TMPL__/issuepublic/assets/images/login_btn_close_n.png"></a>
+        <div class="title">商务接待QQ </div>
+        <ul class="kftc">
+            <if condition="cmf_get_option('issue_set')['service_qq']">
+                <li>
+                    <a href="https://wpa.qq.com/msgrd?v=3&uin={:cmf_get_option('issue_set')['service_qq']}&site=qq&menu=yes" target="_blank" class="qq-a stat-click">
+                        <div class="qq-hover-c"><img class="img-qq" src="__TMPL__/issuepublic/assets/images/qq2_icon.png" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null"></div><span>{:cmf_get_option('issue_set')['service_name']}</span>
+                    </a>
+                </li>
+            </if>
+            <if condition="cmf_get_option('issue_set')['service2_qq']">
+                <li>
+                    <a href="https://wpa.qq.com/msgrd?v=3&uin={:cmf_get_option('issue_set')['service2_qq']}&site=qq&menu=yes" target="_blank" class="qq-a stat-click">
+                        <div class="qq-hover-c"><img class="img-qq" src="__TMPL__/issuepublic/assets/images/qq2_icon.png" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null"></div><span>{:cmf_get_option('issue_set')['service2_name']}</span>
+                    </a>
+                </li>
+            </if>
+
+        </ul>
+        <if condition="cmf_get_option('issue_set')['work_time']">
+            <p class="work-time">工作时间：{:cmf_get_option('issue_set')['work_time']}</p>
+        <else/>
+            <p class="work-time"></p>
+        </if>
+    </div>
+</div>
+
+<script src="__TMPL__/issuepublic/assets/js/common.js"></script>
+<script>
+    function modalqq() {
+        $('.activation-modal').toggle();
+    }
+	$(".suspension-item").mouseover(function(){
+	    $('.activation-modal').show();
+	})
+	
+	$(".js-close-modal-qq").click(function(){
+	   $('.activation-modal').hide();
+	})
+    var $ii = "";
+    $(".jsbtninsert").click(function() {
+        if($ii < 0 || $ii == '') {
+            $('#loginBox').modal('show');
+            return false;
+        }
+    });
+    $(function() {
+        /**
+         * 新增验证方法
+         */
+        $.validator.addMethod("numOrLetter", function(value, element) {
+            return this.optional(element) || /^[a-zA-Z0-9_\.]+$/.test(value);
+        }, '只能是字母或数字');
+        $.validator.addMethod("isMobile", function(value, element) {
+            return this.optional(element) || /^1[345789][0-9]{9}$/.test(value);
+        }, '手机号码必须是11位数字组成');
+        var loginflag = false,
+            regflag = false;
+        // 登录验证
+        $("#loginForm").validate({
+            //定义规则
+            rules: {
+                account: {
+                    required: true,
+                },
+                password: {
+                    required: true,
+                    minlength: 6
+                },
+                captcha: {
+                    required: true,
+                }
+            },
+            //定义错误消息
+            messages: {
+                account: {
+                    required: "请输入登录账号",
+                },
+                password: {
+                    required: "请输入登录密码",
+                    minlength: '登录密码必须大于6位',
+                },
+                captcha: {
+                    required: "请输入验证码",
+                }
+            },
+            submitHandler: function(form) {
+                var md5 = $.md5($("#loginPassword").val());
+                $("#loginTruePassword").val(md5);
+                if(loginflag) {
+                    return false;
+                }
+                loginflag = true;
+                toastr.options.positionClass = 'toast-center-center';
+                $(form).ajaxSubmit({
+                    dataType: 'json',
+                    success: function(data) {
+                        toastr.options.timeOut = 1500;
+                        if(parseInt(data.code) == 1) {
+                            toastr.success(data.msg);
+                            setTimeout(function() {
+                                if(data.url) {
+                                    window.location.href = data.url;
+                                } else {
+                                    window.location.reload();
+                                }
+                            }, 1600);
+                        } else {
+                            loginflag = false;
+                            toastr.error(data.msg);
+                            setTimeout(function () {
+                                location.reload();
+                            },1500)
+                            // $(form).find("img[name='changeCaptcha']").click();
+                        }
+                    },
+                    error: function(XmlHttpRequest, textStatus, errorThrown) {
+                        loginflag = false;
+                        toastr.error("服务器故障，稍候再试...");
+                        setTimeout(function () {
+                            location.reload();
+                        },1500)
+                        // $(form).find("img[name='changeCaptcha']").click();
+                    }
+                });
+                return false;
+            }
+        });
+    })
+</script>
+
+<script src="__TMPL__/issuepublic/assets/js/swiper-3.4.2.jquery.min.js"></script>
+
+<script type="text/javascript">
+    $('.geetest_logo').css('display','none');
+    var handlerEmbed = function (captchaObj) {
+
+        var validate = captchaObj.getValidate();
+        captchaObj.onSuccess(function () {
+            validate = captchaObj.getValidate();
+            if (validate) {
+                $("#loginButton").click();
+                $("#loginButton").attr("disabled", "disabled");
+            }
+        });
+        // 将验证码加到id为captcha的元素里，同时会有三个input的值：geetest_challenge, geetest_validate, geetest_seccode
+        captchaObj.appendTo("#embed-captcha");
+        captchaObj.onReady(function () {
+            $("#wait").css('display','none');
+            setTimeout(function () {
+                $(".geetest_holder").attr('style','width:380px');
+            },200);
+        });
+        // 更多接口参考：http://www.geetest.com/install/sections/idx-client-sdk.html
+    };
+    $.ajax({
+        // 获取id，challenge，success（是否启用failback）
+        url: "{:url('checkGeetest')}?t=" + (new Date()).getTime(), // 加随机数防止缓存
+        type: "get",
+        dataType: "json",
+        success: function (data) {
+            // 使用initGeetest接口
+            // 参数1：配置参数
+            // 参数2：回调，回调的第一个参数验证码对象，之后可以使用它做appendTo之类的事件
+            initGeetest({
+                gt: data.gt,
+                challenge: data.challenge,
+                new_captcha: data.new_captcha,
+                product: "embed", // 产品形式，包括：float，embed，popup。注意只对PC版验证码有效
+                offline: !data.success // 表示用户后台检测极验服务器是否宕机，一般不需要关注
+                // 更多配置参数请参见：http://www.geetest.com/install/sections/idx-client-sdk.html#config
+            }, handlerEmbed);
+        }
+    });
+	$("img").error(function() {
+        $(this).attr("src", "");
+    });
+</script>
+
+<block name="script"></block>
+
+</body>
+
+</html>

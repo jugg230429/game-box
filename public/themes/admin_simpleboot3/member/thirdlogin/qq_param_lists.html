@@ -1,0 +1,88 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('user/age')}">实名认证</a></li>
+        <li><a href="{:url('user/age',['type'=>1])}">防沉迷</a></li>
+        <li><a href="{:url('wechat/index')}">公众号设置</a></li>
+        <li class="active"><a href="{:url('thirdlogin/qq_thirdparty')}">QQ登录</a></li>
+        <li><a href="{:url('thirdlogin/wx_thirdparty')}">微信登录</a></li>
+        <li><a href="{:url('user/vip_set')}">VIP设置</a></li>
+        <li><a href="{:url('thirdlogin/fb_param_lists')}">脸书登录</a></li>
+		<span class="title_remark"> 说明：用来配置相关SDK在QQ登录时所需要的参数</span>
+    </ul>
+    <div class="describe">
+        <div>QQ第三方登录在本系统有3处需使用，PC官网、WAP站和手游SDK；PC官网、WAP站需申请网页应用，手游SDK需申请移动应用。</div>
+        <div>申请地址：http://open.qq.com/ （QQ互联）</div>
+        <div>如有多个QQ应用参数可申请账号互通。QQ 互联UnionID打通业务自助处理指引：https://wiki.connect.qq.com/qq-%E4%BA%92%E8%81%94unionid%E6%89%93%E9%80%9A%E4%B8%9A%E5%8A%A1%E8%87%AA%E5%8A%A9%E5%A4%84%E7%90%86%E6%8C%87%E5%BC%95。</div>
+    </div>
+    <ul class="nav nav-tabs nav-mt">
+        <li><a href="{:url('qq_thirdparty')}">PC官网</a></li>
+        <li><a href="{:url('app_qq_thirdparty')}">游戏盒子APP</a></li>
+        <li class="active"><a href="{:url('qq_param_lists')}">SDK</a></li>
+    </ul>
+
+    <form id="search_form" class="well form-inline  fr" method="get" action="{:url('qq_param_lists')}">
+        <if condition="AUTH_GAME eq 1">
+            <select name="game_id" id="game_id" class="selectpicker " game_id="{:input('request.game_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+                <option value="">游戏名称</option>
+                <volist name=":get_game_list('id,game_name')" id="vo">
+                    <option game-id="{$vo.id}" value="{$vo.id}" >{$vo.game_name}</option>
+                </volist>
+            </select>
+        </if>
+        <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+    </form>
+    <form class="js-ajax-form" action="" method="post">
+        <div class="table-actions position">
+            <a href="{:url('add_qq')}" class="btn btn-danger btn-sm mtb17" >新增</a>
+            <button class="btn btn-danger btn-sm js-ajax-submit mtb17" type="submit"
+                    data-action="{:url('del')}" data-subcheck="true" data-msg="您确定删除吗？">
+                删除
+            </button>
+        </div>
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th><input type="checkbox" class="js-check-all" data-direction="x" data-checklist="js-check-x"></th>
+                <th>游戏ID</th>
+                <th>游戏名称</th>
+                <th>APP ID</th>
+                <th>启用状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <empty name="data_lists">
+                <tr><td colspan="6" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                <foreach name="data_lists" item="vo">
+                    <tr>
+                        <th><input type="checkbox" class="js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
+                                   value="{$vo.id}" title="ID:{$vo.id}"></th>
+                        <td>{$vo['game_id']}</td>
+                        <td>{:get_game_name($vo['game_id'])}</td>
+                        <td>{$vo['openid']}</td>
+                        <td><span <if condition="$vo['status'] eq 1"> class="label label-success"<else/>class="label label-danger"</if>>{$vo['status_name']}</span></td>
+                        <td>
+                            <a href="{:url('edit_qq',['id'=>$vo['id']])}" >编辑</a>
+                            <a href="{:url('del',['ids'=>$vo['id']])}" class="js-ajax-delete" data-msg="您确定删除吗？">删除</a>
+                        </td>
+                    </tr>
+                </foreach>
+            </empty>
+            </tbody>
+        </table>
+        <div class="pagination">
+            {$page}
+        </div>
+    </form>
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script>
+    game_id = $("#game_id").attr('game_id');
+    $("#game_id").selectpicker('val', game_id);
+</script>
+</body>
+</html>

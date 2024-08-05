@@ -1,0 +1,43 @@
+<extend name="../mediapublic/base" />
+<!-- 主体内容 -->
+<block name="body">
+    <iframe id="game_ifr" src="{$login_url}" frameborder="0"  <if condition="$load_cover">style="background-image:url({:cmf_get_image_url($load_cover)}); background-size:100% 100%;width:100%;height:100vh;display:block" </if>></iframe>
+    <if condition="$session['login_auth'] eq 1">
+    <include file="sdkh5@play" />
+    </if>
+</block>
+<block name="script">
+    <style>
+        .realnamepop-con {
+            width: 30rem;
+            margin-left: -16rem;
+        }
+        /* .realnamepop .realnamepop-con {
+            margin-left: -15rem;
+        } */
+    </style>
+    <script>
+        var loginstatus = "{$session['login_auth']|default=0}";
+        if(loginstatus != 1){
+            var conss = $('.login_modals');
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: false,
+                area: ['305px', '320px'],
+			    skin:'loginclass',
+                offset: 'auto',
+                content: conss,
+                btnAlign: 'c',
+                shadeClose: true,
+                end: function () {
+                    $('.login_modals').hide()
+                }
+            })
+        }
+		
+		$(".js-btn-return").click(function(){
+			$(".newsdetailpop").find('.news-main').html("");
+		})
+    </script>
+</block>

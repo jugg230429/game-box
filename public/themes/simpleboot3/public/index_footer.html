@@ -1,0 +1,48 @@
+<!--footer-->
+<div class="footer">
+	<div class="inner">
+		<if condition="$flag eq 1">
+			<p class="footer-con"><span class="footer-con-text">客服电话：{$promote_union_set['tel']}</span><span class="footer-con-text">客服邮箱：{$promote_union_set['mailbox']}</span><span class="footer-con-text">服务时间：{:cmf_get_option('kefu_set')['pc_work_time']}</span></p>
+			<p class="footer-text"><span class="footer-text1">网络备案：{$promote_union_set['pc_set_for_the_record']} </span><span class="footer-text2">网络文化经营许可证编号：{$promote_union_set['pc_set_license']}</span><span class="footer-text3">{$promote_union_set['pc_set_copyright']}</span></p>
+		</if>
+		<if condition="$flag eq 0">
+			<p class="footer-con"><span class="footer-con-text">客服电话：{:cmf_get_option('kefu_set')['pc_set_server_tel']}</span><span class="footer-con-text">客服邮箱：{:cmf_get_option('kefu_set')['pc_set_server_emai']}</span><span class="footer-con-text">服务时间：{:cmf_get_option('kefu_set')['pc_work_time']}</span></p>
+			<p class="footer-text"><span class="footer-text1">网络备案：{$promote_set['ch_set_for_the_record']} </span><span class="footer-text2">网络文化经营许可证编号：{$promote_set['ch_set_license']}</span><span class="footer-text3">{$promote_set['ch_set_copyright']}</span></p>
+		</if>
+		
+	</div>
+</div>
+<!-- 右悬浮 -->
+<div class="sider">
+   <div class="sider-con sider-qq">
+	<if condition="$flag eq 1">
+		<a class="sider-qq-con" href="tencent://message/?uin={$promote_union_set['qq']}&amp;menu=yes"><img src="__TMPL__/public/assets/images/btn_qq_s.png">{$promote_union_set['qq']}</a>
+	</if>
+	<if condition="$flag eq 0">
+		<a class="sider-qq-con" href="tencent://message/?uin={:cmf_get_option('kefu_set')['pc_set_server_qq']}&amp;menu=yes"><img src="__TMPL__/public/assets/images/btn_qq_s.png">{:cmf_get_option('kefu_set')['pc_set_server_qq']}</a>
+	</if>
+     
+   </div>
+   <div class="sider-con sider-tel">
+	<if condition="$flag eq 1">
+		<a class="sider-tel-con"><img src="__TMPL__/public/assets/images/btn_tele_s.png">{$promote_union_set['tel']}</a>
+	</if>
+	<if condition="$flag eq 0">
+		<a class="sider-tel-con"><img src="__TMPL__/public/assets/images/btn_tele_s.png">{:cmf_get_option('kefu_set')['pc_set_server_tel']}</a>
+	</if>
+   
+   </div>
+   <a class="sider-con sider-back" href="javascript:scroll(0,0)"></a>
+</div>
+<script src="__TMPL__/public/assets/js/jquery-1.10.2.min.js"></script>
+<script>
+     $(window).scroll(function (){
+	     var height = $(this).scrollTop();
+		 if(height>300){
+		     $(".sider-back").css("display", "block");
+		 }
+		 else{
+		     $(".sider-back").css("display", "none");
+		 }
+	 })
+</script>

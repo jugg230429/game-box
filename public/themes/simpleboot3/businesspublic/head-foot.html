@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<title>商务专员管理系统</title></title>
+	<link href="{:cmf_get_image_url(cmf_get_option('admin_set')['web_set_ico'])}" type="image/x-icon"  rel="shortcut icon">
+	<link rel="stylesheet" type="text/css" href="__TMPL__/businesspublic/assets/css/iconfont.css">
+	<!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+	<link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+	<link rel="stylesheet" href="__TMPL__/businesspublic/assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href="__TMPL__/businesspublic/assets/css/select2.min.css" type="text/css" />
+	<link rel="stylesheet" type="text/css" href="__TMPL__/businesspublic/assets/css/common.css">
+	<script src="__JS__/jquery-1.11.1.min.js"></script>
+
+</head>
+
+<body>
+	<!--左侧导航start-->
+	<div class="search-nav">
+		<div class="container-login">
+      <a href="javascript:" class="headerLogo">
+		  <img src="{:cmf_get_image_url(cmf_get_option('business_set')['pc_set_logo_foot'])}"
+				  alt="" onerror="">
+      </a>
+	   </div>
+	   <div class="clear"></div>
+	   <div class="nav-container jssearch">
+			<a href="{:url(data_summary)}" class="subNav current"><i class="prev_icon icon_shujv"></i><span>数据汇总</span>
+				<!-- <i class="arrow_icon"></i> -->
+			</a>
+			<a href="{:url(data_summary)}" class="shujv active"><span class="shujv1">数据汇总</span>
+				<!-- <i class="arrow_icon"></i> -->
+			</a>
+		</div>
+	</div>
+	<!--左侧导航end-->
+	<div class="nav-login">
+				<!--<span>今天是：</span>
+				<span id="Clock">{:date('Y年m月d日')}</span>-->
+				<span>&nbsp;&nbsp;你好,</span>
+				<span>{:session('BNAME')}</span>
+				<a href="javascript:;" class="loginout">
+					<i class="iconfont icon-logout" style="color:#26C7DB;"></i>
+
+				</a>
+			</div>
+
+    <block name="body"> </block>
+
+	<!--底部start-->
+	<div class="footer">
+		<ul class="footer_nav">
+			<li>
+<!--				<span>网络备案：3333&nbsp;&nbsp;网络文化经营许可证编号：11111&nbsp;&nbsp;版权所有：22222</span>-->
+			</li>
+		</ul>
+	</div>
+<!--底部end-->
+
+	<script src="__JS__/layer/layer.js" type="text/javascript"></script>
+	<script type="text/javascript" src="__TMPL__/businesspublic/assets/js/select2.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="__TMPL__/businesspublic/assets/css/p_jquery.datetimepicker.css">
+	<script type="text/javascript" src="__TMPL__/businesspublic/assets/js/jquery.datetimepicker.js"></script>
+
+	<script>
+		var logoutUrl = "{:url('Index/logout')}";
+		var indexUrl = "{:url('Index/index')}";
+	</script>
+
+	<script src="__TMPL__/businesspublic/assets/js/common.js"></script>
+	<script>
+	
+	</script>
+
+<block name="script"></block>
+
+</body>
+</html>

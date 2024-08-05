@@ -1,0 +1,179 @@
+
+body {
+    width: 100%;
+    height: 100%;
+    background: url('../images/img_bg.png') no-repeat;
+    background-size: 100% 120%;
+}
+.serviceIndex-page {
+    width: 100%;
+    height: 100%;
+}
+.serviceContainer{
+    width: 1200px!important;
+    height: auto;
+    min-height: 706px;
+    background: #fff;
+    margin-bottom: 17px;
+    padding: 0;
+}
+.service-title {
+    width: 100%;
+    height: 99px;
+    background-image: url('../images/ke_bg.png');
+    background-size: 100% 100%;
+    text-align: center;
+}
+.title-text {
+    width: 214px;
+    height: 18px;
+    margin: auto;
+}
+.title-text img {
+    width: 100%;
+    height: 100%;
+}
+.serviceTitle-content {
+    font-size: 30px;
+    font-family: 'Source Han Sans SC';
+    font-weight: bold;
+    color: #FFFFFF;
+    text-shadow: 1px 1px 3px rgba(51, 51, 51, 0.14);
+    padding: 19px 0 4px 0;
+}
+.leftTabMenu {
+    width: 199px;
+    min-height: 607px;
+    background: #fff;
+    border-right: 1px solid #E6E6E6;
+}
+.leftTabMenu ul {
+    padding-top:20px;
+    min-height: 575px;
+}
+.rightTabContent{
+    width: 999px;
+    min-height: 603px;
+    height: auto;
+    background: #fff;
+    margin-bottom: 17px;
+}
+.tabMenuItem{
+    width: 100%;
+    height: 45px;
+    font-size: 15px;
+    color: #404040;
+    text-align: center;
+    line-height: 45px;
+    cursor: pointer;
+}
+.tabMenuItem:hover {
+    color: #018FFF;
+}
+.active {
+    background: #018FFF;
+    color: #fff;
+}
+.active:hover {
+    color: #fff;
+}
+.rightTitle {
+    font-size: 16px;
+    font-weight: 400;
+    color: #222222;
+    margin: 22px 0 20px 43px;
+}
+.detailSolutionBox {
+    margin-left: 24px;
+}
+.dotIconBlue{
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    background: #DDDDDD;
+    border-radius: 50%;
+    margin-left: 25px;
+    margin-right: 9px;
+    vertical-align: top;
+    margin-top: 8px;
+}
+.descriptionDetail {
+    display: inline-block;
+    font-size: 15px;
+    font-family: 'Microsoft YaHei';
+    font-weight: 400;
+    color: #404040;
+    margin-bottom: 15px;
+    width: 93%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.rightItemProblem {
+    width: 945px;
+    cursor: pointer;
+}
+.descriptionList {
+    display: none;
+    margin-left: 35px;
+    width: 905px;
+    margin-top: 15px;
+    font-size: 13px;
+    color: #666666;
+    padding-bottom: 15px;
+}
+.choose {
+    background: #FAFAFA;
+    /* padding-top: 10px; */
+    margin-left: 5px;
+    margin-bottom: 10px;
+}
+.choose .descriptionDetail {
+    color: #018FFF;
+    margin-bottom:0;
+    font-size:15px
+}
+.choose .dotIconBlue {
+    background:#018FFF ;
+    margin-left: 20px;
+}
+.menuItem-name {
+    display: inline-block;
+    height: 100%;
+    width: 90%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/**
+ * 修改浏览器的滚动条
+ */
+ ::-webkit-scrollbar-track-piece {
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-track-piece:hover {
+    background-color: rgba(120, 130, 140, 0.33);
+    border-left: 1px solid rgba(120, 130, 140, 0.33);
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar {
+    width: 7px;
+    height: 8px;
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(120, 130, 140, 0.23);
+    background-clip: padding-box;
+    border: 1px solid rgba(120, 130, 140, 0.23);
+    min-height: 28px;
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    border: 1px solid rgba(120, 130, 140, 0.23);
+    background-color: rgba(120, 130, 140, 0.23);
+  }

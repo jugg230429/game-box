@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<include file="public@head"/>
+		<link href="__TMPL__/public/assets/css/common.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/help.css" rel="stylesheet" />
+	</head>
+	<body>
+		<div class="banner"></div>
+		<header>
+			<include file="public@indexheader"/>
+		</header>
+		<div class="clear"></div>
+		<div class="inner  help-con">
+			<ul class="fl menu">
+				<volist name="data" id="vo" key="k">
+					<li class="menu-con <if condition='$k eq 1'>menu-con-active</if>"><span class="menu-con-text">{$key}</span></li>
+				</volist>
+			</ul>
+			<ol class="fl main">
+				<volist name="data" id="vo" key="k">
+			    <li class="main-con <if condition='$k eq 1'>main-show</if>">
+				   <div class="main-title">{$key}</div>
+					<if condition="$vo">
+							<volist name="vo" id="v" key="kkk">
+						<div class="ask">
+								<div class="ask-title">{$v.title}</div>
+								<div class="ask-con" style="white-space:pre-wrap">{$v.content}</div>
+						</div>
+							</volist>
+						<else/>
+						<div class="nodata">
+							暂无内容
+						</div>
+					</if>
+
+				</li>
+				</volist>
+				<!--<li class="main-con">
+				   <div class="main-title">账号修复结果查询</div>
+
+				</li>
+				<li class="main-con">
+				   <div class="main-title">被盗申诉</div>
+				   <div class="ask">
+				      <div class="ask-title">问题一</div>
+					  <div class="ask-con">问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内</div>
+				   </div>
+				</li>
+				<li class="main-con">
+				   <div class="main-title">官方验证</div>
+				   <div class="ask">
+				      <div class="ask-title">问题一</div>
+					  <div class="ask-con">问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内</div>
+				   </div>
+				</li>
+				<li class="main-con">
+				   <div class="main-title">外挂举报</div>
+				   <div class="ask">
+				      <div class="ask-title">问题一</div>
+					  <div class="ask-con">问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内</div>
+				   </div>
+				</li>
+				<li class="main-con">
+				   <div class="main-title">账号查询</div>
+				   <div class="ask">
+				      <div class="ask-title">问题一</div>
+					  <div class="ask-con">问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内</div>
+				   </div>
+				</li>
+				<li class="main-con">
+				   <div class="main-title">角色恢复</div>
+				   <div class="ask">
+				      <div class="ask-title">问题一</div>
+					  <div class="ask-con">问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内</div>
+				   </div>
+				</li>
+				<li class="main-con">
+				   <div class="main-title">清空游戏二级密码</div>
+				   <div class="ask">
+				      <div class="ask-title">问题一</div>
+					  <div class="ask-con">问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内</div>
+				   </div>
+				</li>
+				<li class="main-con">
+				   <div class="main-title">投诉</div>
+				   <div class="ask">
+				      <div class="ask-title">问题一</div>
+					  <div class="ask-con">问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内</div>
+				   </div>
+				</li>
+				<li class="main-con">
+				   <div class="main-title">注销账号</div>
+				   <div class="ask">
+				      <div class="ask-title">问题一</div>
+					  <div class="ask-con">问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内容问题内</div>
+				   </div>
+				</li>-->
+			</ol>
+		</div>
+		<div class="clear"></div>
+		<script src="__TMPL__/public/assets/js/jquery-1.11.1.min.js"></script>
+		<script>
+		     $(".menu-con").click(function(){
+			     var index=$(this).index();
+				 $(this).addClass('menu-con-active').siblings().removeClass('menu-con-active');
+				 $(".main-con").eq(index).addClass('main-show').siblings().removeClass('main-show');
+			 })
+		</script>
+		<!--footer-->
+		<include file="public@index_footer"/>
+
+	</body>
+</html>

@@ -1,0 +1,250 @@
+.rec_hot_new_header{
+    width: 100%;
+    height: 3.8rem;
+}
+.rec_hot_new_header .back_icon{
+    width: 1rem;
+    margin-top: 1.1rem;
+    margin-left: 1rem;
+}
+.rec_hot_new_item{
+    margin-left: 4.4rem;
+    font-size: 1.45rem;
+    line-height: 1.5rem;
+    color: #999999;
+    padding-top: 1.3rem;
+}
+.active_rec_hot_new_type{
+    color: #018FFF!important;
+    font-weight:bold;
+	
+}
+.layui-flow-more{
+    font-size: 12px;
+}
+.type_down_hx1,.type_down_hx2,.type_down_hx3{
+    width: 5.7rem;
+    height: 2px;
+    position: relative;
+    top: -0.2rem;
+    z-index: 2;
+}
+.type_down__long_hx {
+    width: 100%;
+    height: 1px;
+    background-color: #EDEEEF;
+    position: relative;
+    top: -0.2rem;
+    z-index: 1;
+    margin-top: 0.3rem;
+}
+@media screen and (min-width:414px) and (max-width:431px) and (orientation:portrait){
+    .type_down_hx3{
+        margin-left: 2.1rem!important;
+    }
+}
+.type_down_hx1{
+    margin-left: 4.9rem;
+}
+.active_type_down_hx{
+    background-color: #018FFF;
+}
+.type_down_hx2{
+    margin-left: 1.7rem;
+}
+.type_down_hx3{
+    margin-left: 2.3rem;
+}
+
+.rec_hot_new_cons_item{
+    margin-left: 1rem;
+    margin-top: 0.84rem;
+    height: 6.84rem;
+}
+.rec_hot_new_cons_item_img{
+    width: 5.8rem;
+    height: 5.8rem;
+    background-color: #E2E2E2;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.rec_hot_new_item {
+    height: 3rem;;
+}
+.rec_hot_new_cons_item_img img{
+    width: 5.8rem;
+    height: 5.8rem;
+    border-radius: 1rem;
+}
+.rec_hot_new_info{
+    width: 18rem;
+    margin-left: 0.8rem;
+    margin-top: 0.2rem;
+}
+.rec_hot_new_info_one{
+    font-weight:bold;
+    color: #222222;
+    font-size: 1.2rem;
+    margin-bottom: 0.3rem;
+	text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.rec_hot_new_info_two{
+    font-size: 1rem;
+    margin-bottom: 0.4rem;
+    color: #999;
+}
+.rec_hot_new_info_type{
+	display: inline-block;
+    max-width: 40%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+	float: left;
+}
+.rec_hot_new_download_num{
+    color: #018FFF!important;
+    margin-right: 0.2rem
+}
+.rec_hot_new_fgx{
+    margin-left: 0.4rem;
+    margin-right: 0.4rem;
+    position: relative;
+    top: -0.05rem
+}
+.rec_hot_new_info_three div{
+    margin-top: 0.2rem;
+	margin-right: 0.34rem;
+    max-width: 4.6rem;
+    border-radius: 0.25rem;
+    color: #fff;
+    font-size:0.8rem;
+    padding-left: 0.3rem;
+    padding-right: 0.3rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 1.4rem;
+    vertical-align:middle;
+}
+.rec_hot_new_info_three div p{
+    max-width: 4.8rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.8rem;
+    display: inline-block;
+  vertical-align:middle;
+}
+.bq_one{
+    background-color: #72B9F0;
+}
+.bq_two{
+    background-color: #FDC36A;
+}
+.bq_three{
+    background-color: #EF918E;
+}
+.rec_hot_new_download{
+    border-radius: 50%;
+    border: 1px solid #018FFF;
+    width: 3.6rem;
+    height: 3.6rem;
+    color: #018FFF;
+    text-align: center;
+    font-size: 14px;
+    margin-top: 1rem;
+    margin-right: 1.2rem;
+	display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.rec_hot_new_downloaded{
+    background-color: #E2E2E2!important;
+    border-color: #E2E2E2!important;
+    color: #B2B2B2!important;
+}
+
+.rec_hot_new_cons_rec,.rec_hot_new_cons_hot,.rec_hot_new_cons_new{
+    margin-top: 1rem;
+}
+.rec_hot_new_cons_hot,.rec_hot_new_cons_new{
+    display: none
+}
+.no_rec_hot_new_text{
+    font-size: 1.2rem;
+    width: 100%;
+    text-align: center;
+    color: #999999;
+    position: absolute;
+    top: 42%
+}
+.no_rec_hot_new_text p{
+    width: 100%;
+    text-align: center;
+}
+.no_rec_hot_new_text img{
+    width: 20%
+}
+.searchs_btn{
+    width: 5%;
+    position: absolute;
+    top: 1.1rem;
+    right: 1rem;;
+}
+@media screen and (max-width:320px) and (orientation:portrait){
+    .rec_hot_new_header .back_icon{
+        margin-top: 1.4rem;
+    }
+    .rec_hot_new_item{
+        margin-left: 3.8rem;
+        font-size: 1.4rem;
+        padding-top: 1.5rem;
+    }
+    .searchs_btn{
+        position: absolute;
+        top: 1.5rem;
+    }
+    .type_down_hx{
+        width: 4.2rem;
+        margin-left: 2.4rem;
+    }
+    .type_down_hx1{
+        margin-left: 3.8rem!important;
+        top: -0.3rem!important
+    }
+    .type_down_hx2{
+        margin-left: 0.6rem!important;
+        top: -0.3rem!important
+    }
+    .type_down_hx3{
+        margin-left: 0.8rem!important;
+        top: -0.3rem!important
+       
+    }
+    .type_down__long_hx{
+        top: -0.3rem!important;
+        height: 1px!important;
+    }
+    .rec_hot_new_cons_item{
+        margin-left: 1rem!important;
+        height: 7.1rem!important;
+    }
+    .rec_hot_new_info{
+        width: 13.8rem!important;
+    }
+    .rec_hot_new_info_three div{
+        max-width: 3.8rem!important;
+        /* padding-left: 0.2rem!important;
+        padding-right: 0.2rem!important; */
+    }
+}
+@media screen and (min-width:360px) and (max-width:374px) and (orientation:portrait) {
+    .rec_hot_new_info{
+        width: 16rem!important;
+    }
+}

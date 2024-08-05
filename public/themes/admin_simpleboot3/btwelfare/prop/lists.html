@@ -1,0 +1,100 @@
+<include file="public@header" />
+</head>
+<body>
+<style>
+    table,td,tr,th{
+        text-align: center;
+        /* border: 1px solid red;
+        margin: auto; */
+    }
+</style>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="{:url('lists')}">道具列表</a></li>
+        <span class="title_remark"></span>
+    </ul>
+
+    <form id="search_form" class="well form-inline  fr" method="get" action="{:url('lists')}">
+        <select name="game_id" id="game_id" class="selectpicker " game_id="{:input('request.game_id')}"
+                data-live-search="true" data-size="7" style="width: 100px;">
+            <option value="">游戏名称</option>
+            <volist name=":get_game_list('id,game_name',$map)" id="vo">
+                <option value="{$vo.id}">{$vo.game_name}</option>
+            </volist>
+        </select>
+
+        <input type="text" class="form-control" name="prop_name" style="width: 120px;" value="{:input('prop_name/s','')}" placeholder="道具名称">
+
+        <select name="status" id="status" class="selectpicker" status="{:input('request.status')}" style="width: 120px;">
+            <option value="">显示状态</option>
+            <option value="1">正常</option>
+            <option value="0">关闭</option>
+        </select>
+
+        <input type="submit" class="btn btn-search" id="search_btn" value="搜索" />
+        <a class="btn btn-clear" href="{:url('lists')}">清空</a>
+    </form>
+
+    <form class="js-ajax-form" action="" method="post">
+
+        <div class="table-actions position" style="margin-left: -10px;">
+            <a class="btn btn-success  mtb17" href="{:url('add')}">新增</a>
+        </div>
+
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>游戏名称</th>
+                <th>道具名称</th>
+                <th>道具数量</th>
+                <th>道具标识</th>
+                <th>状态</th>
+                <th width="200">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <empty name="lists">
+                <tr>
+                    <td colspan="6" style="text-align: center;">暂无数据</td>
+                </tr>
+            </empty>
+            <foreach name="lists" item="vo">
+                <tr>
+                    <td>{$vo['id']}</td>
+                    <td>{:get_game_name($vo['game_id'])}</td>
+                    <td>{$vo['prop_name']}</td>
+                    <td>{$vo['number']}</td>
+                    <td>{$vo['prop_tag']}</td>
+                    <td>{:$vo['status']?'正常':'已关闭'}</td>
+                    <td>
+                        <a href="{:url('edit',['id'=>$vo['id']])}">编辑</a>
+                        <a class="js-ajax-dialog-btn"  href="{:url('del',['id'=>$vo['id']])}">删除</a>
+                        <if condition="$vo['status'] eq 1">
+                            <a class="js-ajax-dialog-btn"  href="{:url('changeStatus',['id'=>$vo['id'],'status'=>'0'])}">关闭</a>
+                        <else/>
+                            <a class="js-ajax-dialog-btn"  href="{:url('changeStatus',['id'=>$vo['id'],'status'=>'1'])}">开启</a>
+                        </if>
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+
+    </form>
+    <div class="pagination">{$page}
+
+    </div>
+</div>
+
+<script src="__STATIC__/js/admin.js"></script>
+
+<script type="text/javascript">
+
+    $("#game_id").selectpicker('val', $('#game_id').attr('game_id'));
+    $("#status").selectpicker('val', $('#status').attr('status'));
+
+</script>
+
+</body>
+</html>

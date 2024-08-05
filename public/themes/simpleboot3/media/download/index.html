@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <title>APP客户端下载</title>
+    <meta name="keywords" content="">
+    <link href="" type="image/x-icon" rel="shortcut icon">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="baidu-site-verification" content="uGvVG91URw">
+    <link rel="stylesheet" href="/themes/simpleboot3/mediapublic/assets/css/reset.css">
+    <link rel="stylesheet" href="/themes/simpleboot3/mediapublic/assets/css/download.css">
+</head>
+<body>
+   <div class="contain">
+       <div class="down-content-box">
+           <div class="mobile-img-box">
+               <i class="mobile-img"></i>
+               <i class="mobile-icon"></i>
+           </div>
+           <div class="right-content">
+               <div class="game-box-img">
+                   {:$union_set['app_name_ico']?:(cmf_get_option('app_set')['app_name']?:'游戏盒子APP')}
+               </div>
+               <!--<img src="/themes/simpleboot3/mediapublic/assets/images/download/download_title.png" class="game-box-img">-->
+               <div class="function-list">
+                   <div >
+                       <i class="hot-game-icon"></i>
+                       <p>热门游戏</p>
+                   </div>
+                   <div >
+                       <i class="gift-icon"></i>
+                       <p>超多礼包</p>
+                   </div>
+                   <div >
+                       <i class="money-icon"></i>
+                       <p>免费赚金</p>
+                   </div>
+               </div>
+               <div class="sweep-code-box">
+                   <div class="download-code">
+                       <img src="{:url('index/qrcode', ['url' => base64_encode(base64_encode(cmf_get_domain().url('mobile/downfile/download_app',input())))])}" id="code">
+                   </div>
+                   <div class="android-ios-download">
+                       <div>
+                            <notempty name="app_data['and']['app_data']">
+                                <a href="{:url('mobile/Downfile/downapp',['device'=>1])}" class="android-btn  js-android">安卓端下载</a>
+                            </notempty>
+                            <notempty name="app_data['ios']['app_data']">
+                                <a href="{:url('mobile/Downfile/downapp',['device'=>2])}" class="ios-btn  js-ios">IOS端下载</a>
+                            </notempty>
+                       </div>
+
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
+   <script src="/static/js//jquery-1.11.1.min.js"></script>
+   <script>
+   </script>
+</body>
+</html>

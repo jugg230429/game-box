@@ -1,0 +1,364 @@
+<!--
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>盗墓笔记之重归天下重归天下</title>
+		<link href="__TMPL__/mobilepublic/assets/css/down.css" rel="stylesheet" />
+
+	</head>
+
+	<body>
+		<div class="mobile_bag_img">
+		</div>
+		<div class="mobile_footer">
+			<div class="mobile_footer_img">
+				<img src="__TMPL__/mobilepublic/assets/images/mobile_icon.png" alt="">
+
+			</div>
+			<div class="mobile_footer_info">
+				<p class="title">盗墓笔记之重归天下重归天下</p>
+				<p class="summny">一句话描述游戏内容</p>
+			</div>
+			<button>下载游戏</button>
+		</div>
+		<div>
+
+		</div>
+
+	</body>
+
+
+</html>-->
+<extend name="../mobilepublic/base_download" />
+<block name="css">
+	<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+	<title>新倩女幽魂</title>
+	<meta content="" name="keywords">
+	<meta content="" name="description">
+	<meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+		  name="viewport">
+	<link href="__TMPL__/mobilepublic/download/css/mobiledown.css" rel="stylesheet">
+	<link href="__TMPL__/mobilepublic/download/css/mobilereset.css" rel="stylesheet">
+	<link href="__TMPL__/mobilepublic/download/css/swiper-3.4.2.min.css" rel="stylesheet">
+	<link href="__TMPL__/mobilepublic/download/css/style.css" rel="stylesheet">
+	<script src="__TMPL__/mobilepublic/download/js/flexible.js"></script>
+	<script src="__TMPL__/mobilepublic/download/js/jquery-1.10.1.min.js"></script>
+	<script src="__JS__/bootstrap/bootstrap.min.js"></script>
+	<script src="__TMPL__/mobilepublic/download/js/swiper-3.4.2.jquery.min.js"></script>
+	<script src="__STATIC__/js/layer/layer.js"></script>
+	<script src="__TMPL__/mobilepublic/download/js/main_3.0.js"></script>
+</block>
+
+<block name="body">
+	<script src="__TMPL__/mobilepublic/download/js/jweixin-1.0.0.js"></script>
+	<div class="main">
+		<div class="share_tip">
+			<div class="share_tip_in">可以使用浏览器分享按钮分享给好友哦</div>
+		</div>
+		<div class="down_tip" style="display:none">
+			<div class="share_tip_in">请用{$system}手机下载</div>
+		</div>
+		<div class="cover">
+			<div class="user_center">
+				<div class="logo">
+					<img alt="" src="__TMPL__/mobilepublic/download/img/logo.png">
+				</div>
+				<div class="close">
+					<a href="javascript:;" onclick="closeBtn()">✕</a>
+				</div>
+
+
+			</div>
+			<div class="guide">
+				<div class="guide_hed">
+					<span>安装引导</span>
+				</div>
+				<div class="close">
+					<a href="javascript:;" onclick="closeBtn()">✕</a>
+				</div>
+				<div class="guide_banner">
+					<div class="swiper-container swiper-container-horizontal" id="swiper-container2">
+						<div class="swiper-wrapper" style="transition-duration: 0ms;">
+							<div class="swiper-slide swiper-slide-active"><a href="javascript:;"><img
+									alt="" src="__TMPL__/mobilepublic/download/img/guide_1_v2.png"></a></div>
+							<div class="swiper-slide swiper-slide-next"><a href="javascript:;"><img
+									alt="" src="__TMPL__/mobilepublic/download/img/guide_2.png"></a></div>
+							<div class="swiper-slide"><a href="javascript:;"><img alt="" src="__TMPL__/mobilepublic/download/img/guide_3.png"></a>
+							</div>
+							<div class="swiper-slide"><a href="javascript:;"><img alt="" src="__TMPL__/mobilepublic/download/img/guide_4.png"></a>
+							</div>
+							<div class="swiper-slide"><a href="javascript:;"><img alt="" src="__TMPL__/mobilepublic/download/img/guide_5.png"></a>
+							</div>
+							<div class="swiper-slide"><a href="javascript:;"><img alt="" src="__TMPL__/mobilepublic/download/img/guide_6.png"></a>
+							</div>
+						</div>
+						<div class="swiper-pagination swiper-pagination-bullets"></div>
+						<script>
+                            var index;
+                            var mySwiper2 = new Swiper('#swiper-container2', {
+                                pagination: '.swiper-pagination',
+                                autoplay: false,
+                                loop: false,
+                                observer: true,
+                                observeParents: true,
+                                autoplayDisableOnInteraction: false,
+                                onSlideChangeEnd: function (swiper) {
+                                    if (swiper.activeIndex == 0 || swiper.activeIndex == 5) {
+                                        index = 5
+                                    } else if (swiper.activeIndex == 1 || swiper.activeIndex == 6) {
+                                        index = 1
+                                    } else {
+                                        index = swiper.activeIndex
+                                    }
+                                }
+                            })
+						</script>
+					</div>
+				</div>
+			</div>
+			<div class="img_tishi">
+				<img alt="" src="__TMPL__/mobilepublic/download/img/weixin_zd01.png">
+			</div>
+		</div>
+
+		<div class="img_bg">
+			<img alt="" src="__TMPL__/mobilepublic/assets/images/em_img1.jpg">
+		</div>
+
+		<div class="content">
+			<div class="game_details">
+				<div class="game_details_top clearfix">
+					<p class="fl">新倩女幽魂</p>
+					<a class="share fr" href="javascript:;">点击分享</a>
+				</div>
+				<div class="game_details_middle clearfix">
+					<div class="game_det_icon fl">
+						<img alt="" src="__TMPL__/mobilepublic/assets/images/em_icon.png">
+					</div>
+					<div class="game_det_xinxi fl">
+						<div class="game_det_xinxi_t">
+							<span>仙侠</span></div>
+						<div class="game_down_count">
+							<p><span style="color:blue">{:get_simple_number($game_info['dow_num'])}</span>人在玩</p>
+						</div>
+					</div>
+					<div class="game_anzhuang fr">
+						<if condition="cmf_is_mobile() eq false">
+							<a class="down_btn" href="javascript:;">下载</a>
+							<elseif condition="UID or $freelogin eq 1" />
+							<a class="down_btn down_pack" href="javascript:;">下载</a>
+							<else />
+							<a class="down_btn zhuce dis_btn" href="javascript:;">下载</a>
+						</if>
+					</div>
+				</div>
+				<div class="game_jianjie">
+					<div class="game_jianjie_til">游戏简介</div>
+					<div class="game_jianjie_content">
+						<p>
+							远古，无天，无地，唯混沌而已。一万八千年后，始有盘古。盘古有斧，开天辟地，力竭而亡。清气升，为天；浊气降，为地；元气衍生出万物，催发生机；魔气衍生出死亡堕落，迷乱毁灭。宇宙万物，有正，则必有反。盘古亡后，清阳继续上升，形成天界；浊元继续下降，形成阴间和地狱；中为人间，共称三界。世界万物轮回，形成六道。但世人不知，世间另有一个大轮回，一旦大轮回发生，一切都将重新排列组合。彼时，天界可成阴间，地狱可成天界，火亦可冷，冰亦可热，做善事亦可受罚，一切都可颠倒。只有寻得盘古元神，方可阻止这场大轮回。据说世界上知道盘古元神秘密的神只有三位——玉皇大帝、酆都大帝和如来佛祖，他们分别掌管了天界、阴间和西方极乐世界。
+						</p>
+					</div>
+					<div class="see">
+						<a href="javascript:;">显示全部</a>
+					</div>
+				</div>
+			</div>
+			<php>
+				$screenshot = explode(',',$game_info['screenshot']);
+			</php>
+			<div class="banner">
+				<div class="game_jietu swiper-container swiper-container-horizontal" id="swiper-container3">
+					<div class="swiper-wrapper">
+						<div class="swiper-slide" >
+							<img alt="" src="__TMPL__/mobilepublic/assets/images/em_game_pic1.jpg">
+						</div>
+						<div class="swiper-slide">
+							<img alt="" src="__TMPL__/mobilepublic/assets/images/em_game_pic2.jpg">
+						</div>
+						<div class="swiper-slide">
+							<img alt="" src="__TMPL__/mobilepublic/assets/images/em_game_pic3.jpg">
+						</div>
+					</div>
+					<script>
+                        var mySwiper3 = new Swiper('#swiper-container3', {
+                            autoplay: 2000,
+                            loop: true,
+                            observer: true,
+                            observeParents: true,
+                            slidesPerView: 2,
+                            spaceBetween: 5,
+                            autoplayDisableOnInteraction: false,
+                            onTransitionEnd: function (swiper) {
+                                if (swiper.progress == 1) {
+                                    swiper.activeIndex = swiper.slides.length - 1
+                                }
+                            }
+                        })
+					</script>
+
+				</div>
+			</div>
+			<notempty name="wjsq">
+				<div class="game_community">
+					<div class="game_community_til">玩家社区</div>
+					<div class="game_community_content">
+						<div class="game_community_content_sao"><strong>[</strong> 扫码关注 <strong>]</strong></div>
+						<div class="game_community_content_title">{$wjsq.qrcode_name}</div>
+						<div class="game_community_content_qrcode">
+							<div class="game_community_content_qrcode_inner">
+								<img alt="" src="{:cmf_get_image_url($wjsq['qrcode'])}">
+							</div>
+						</div>
+						<div class="game_community_content_tishi">
+							<p>长按保存图片，微信/QQ中</p>
+							<p>识别二维码</p>
+						</div>
+					</div>
+				</div>
+			</notempty>
+		</div>
+
+
+		<div class="footer_fix">
+			<div class="game_icon fl">
+				<img alt="" src="__TMPL__/mobilepublic/assets/images/em_icon.png">
+			</div>
+			<div class="game_name fl">
+				<p class="game_title">新倩女幽魂</p>
+				<p class="game_des">游戏以聂小倩和宁采臣之间的爱情故事为主线，玩家可以通过剧情任务一步步感受这段恋情，也能够以过客的身份</p>
+			</div>
+			<div class="game_down fr">
+
+				<if condition="cmf_is_mobile() eq false">
+					<a class="down_btn" href="javascript:;">下载游戏</a>
+					<php>$url = 'http://' . $_SERVER['HTTP_HOST']  . url('Downfile/show');</php>
+					<div class="game-down-qrcode">
+						<div class="game-down-qrcode-wrap">
+							<img class="game-down-qrcode-image" height="100px" onerror="this.src='__TMPL__/mobilepublic/download/img/empty.jpg';this.onerror=null" src="{:url('qrcode',['url'=>base64_encode(base64_encode($url))])}" width="100px">
+							<p class="game-down-qrcode-text">手机扫码下载</p>
+						</div>
+					</div>
+					<elseif condition="UID or $freelogin eq 1" />
+					<a class="down_btn down_pack" href="javascript:;">下载游戏</a>
+					<else />
+					<a class="down_btn zhuce dis_btn" href="javascript:;">下载游戏</a>
+				</if>
+
+			</div>
+		</div>
+	</div>
+	<audio controls="controls" style="display: none;"></audio>
+	<div class="timeTravel"
+		 style="width:90%; height: 90vh; position: absolute; top: 0; left: 0; z-index: 99; display: none"></div>
+
+	<div class="download_notice js-down-notice" style="display: none;">
+		<div class="download_notice-content">
+			<div class="download_notice-cell">
+				<p><span class="download_time js-download_time">3</span>秒后自动下载游戏</p>
+				<div class="download_notice_text">可点击"取消"进行自行下载</div>
+			</div>
+		</div>
+		<div class="download_notice-butn">
+			<div class="download_notice-cell">
+				<a class="download_cancel js-download-cancel" href="#">取消</a>
+			</div>
+		</div>
+	</div>
+
+</block>
+<block name="script">
+
+	<script type="text/javascript">
+        $(function () {
+            if(isWeixin()){
+                $('.cover').css('display','block');
+                $('.img_tishi').css('display','block');
+            }
+            var down_status = "{:get_down_status2($game_info['relation_game_id'],get_devices_type())}";
+            if(!down_status){
+                $('.down_btn.down_pack').addClass('dis_btn')
+                $('.down_pack').attr('disabled', true).addClass('disabled');
+            }
+            var pack_type = "{$pack_type}";
+            //下载游戏
+            $(".down_pack").on('click', function () {
+                if (down_status) {
+                    var url = "{:url('down',['game_id'=>$game_info['relation_game_id'],'sdk_version'=>get_devices_type(),promote_id=>$game_info['promote_id']])}";
+                    download_notice(url);
+                } else {
+                    $('.down_btn.down_pack').addClass('dis_btn')
+                    $('.down_pack').attr('disabled', true).addClass('disabled');
+                }
+            });
+
+        });
+        var a=null;
+        //弹出下载确认框
+        function download_notice(url) {
+            layer.close();
+            var obj = $('.js-down-notice');
+            if (obj) {
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: false,
+                    area: ['7rem', '3rem'],
+                    offset: 'auto',
+                    content: obj,
+                    btnAlign: 'c',
+                    shadeClose: true,
+                    success: function (layero, index) {
+                        // download_clock(layero.find('.js-download_time'), function() {
+                        layer.close(index);
+                        var el = document.createElement("a");
+                        document.body.appendChild(el);
+                        el.href = url;
+                        el.click();
+                        document.body.removeChild(el);
+                        //window.location.href=url;
+                        //});
+                        //layero.find('.js-download-cancel').click(function () {
+                        //    layero.find('.js-download_time').text(3)
+                        //    clearInterval(a);
+                        //    layer.close(index);
+                        //    return false;
+                        // });
+                    },
+                    end: function () {
+                        obj.hide();
+                        clearInterval(a);
+                    }
+                });
+            }
+        }
+        //倒计时
+        function download_clock(that, callback) {
+            var t = 3;
+            a = setInterval(function () {
+                t--;
+                that.text(t);
+                if(t<=0){
+                    clearInterval(a)
+                    if(callback) callback();
+                }else{
+                    that.text(t);
+                }
+            }, 1000);
+        }
+
+        function isIOS() {
+            var u = navigator.userAgent;
+            var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+            if (isIOS) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+	</script>
+</block>

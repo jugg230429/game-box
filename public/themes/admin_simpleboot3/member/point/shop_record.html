@@ -1,0 +1,105 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li><a href="{:url('Point/task')}">积分任务</a></li>
+            <li><a href="{:url('Point/shop')}">积分商品</a></li>
+            <li class="active"><a href="{:url('Point/shop_record')}">兑换记录</a></li>
+            <li><a href="{:url('Award/lists')}">抽奖奖品</a></li>
+            <li><a href="{:url('Award/record')}">中奖记录</a></li>
+            <li><a href="{:url('Award/award_set')}">抽奖设置</a></li>
+            <span class="title_remark">说明：任务逻辑不可修改。</span>
+        </ul>
+        <form id="search_form" class="well form-inline  fr" method="get" action="{:url('Point/shop_record')}">
+            <input type="text" class="form-control notempty" name="user_account" style="width: 120px;" value="{:input('request.user_account/s','')}" placeholder="玩家账号">
+            <input type="text" class="form-control notempty" name="good_name" style="width: 120px;" value="{:input('request.good_name/s','')}" placeholder="商品名称">
+            <input type="text" class="form-control js-bootstrap-date" name="start_time" id="start_time" placeholder="兑换开始时间"
+                   value="{:input('request.start_time/s','')}" style="width: 120px;" autocomplete="off">-
+            <input type="text" class="form-control js-bootstrap-date" name="end_time" id="end_time" placeholder="兑换结束时间"
+                   value="{:input('request.end_time/s','')}" style="width: 120px;" autocomplete="off">
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('Point/shop_record')}">清空</a>
+        </form>
+        <form class="js-ajax-form" action="" method="post">
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>账号</th>
+                        <th width="400px">兑换商品</th>
+                        <th>兑换数量</th>
+                        <th>使用积分</th>
+                        <th width="400px">收货地址</th>
+                        <th>时间</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <empty name="data_lists">
+                        <tr><td colspan="8" style="text-align: center;">暂无数据</td></tr>
+                    <else/>
+                        <foreach name="data_lists" item="vo">
+                        <tr>
+                            <td>{$vo.user_account}</td>
+                            <td>{$vo['good_name']}</td>
+                            <td>{$vo.number}</td>
+                            <td>{$vo['pay_amount']}</td>
+                            <td>
+                               <eq name="vo.good_type" value="1">{$vo.receive_address}<else/>{$vo.remark}</eq>
+                            </td>
+                            <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+                            <td>{:get_info_status($vo['status'],24)}</td>
+                            <td>
+                                <if condition="$vo['status'] eq 0">
+                                    <a href="javascript:;" class="send" data-id="{$vo.id}">发货</a>
+                                <else/>
+                                    --
+                                </if>
+
+                            </td>
+                        </tr>
+                        </foreach>
+                    </empty>
+                </tbody>
+            </table>
+        </form>
+        <div class="pagination">
+            {$page}
+
+        </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script>
+        $(function () {
+            $(".send").click(function () {
+                var id = $(this).data('id');
+                layer.prompt({
+                        formType: 2,
+                        title: "发货说明",
+                        area: ['300px', '200px'],
+                        placeholder:'可输入兑换码、快递单号等（非必填）',
+                        value: ''
+                    }, function(value, index, elem){
+                        $.ajax({
+                            url: '{:url("setremark")}',
+                            type: 'post',
+                            dataType: 'json',
+                            data: {'remark': value,id:id},
+                            success: function (data) {
+                                layer.msg(data.msg);
+                                setTimeout(function () {
+                                     window.location.reload();
+                                },1000)
+                            },
+                            error: function () {
+                                layer.msg("错误");
+                            }
+                        });
+                });
+            });
+        })
+    </script>
+</body>
+</html>

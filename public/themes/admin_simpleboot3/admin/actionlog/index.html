@@ -1,0 +1,61 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="javascript:;">行为日志</a></li>
+        <span class="title_remark">说明：管理账号后台操作的记录列表</span>
+    </ul>
+    <form id="search_form" class="well form-inline  fr" method="get" action="{:url('index')}">
+        <input type="submit"  class="btn btn-primary hidden" id="search_btn" value="搜索" />
+    </form>
+    <form method="post" class="js-ajax-form " action="{:url('Link/listOrder')}">
+<!--        <div class="table-actions position">-->
+<!--            <button class="btn btn-clear js-ajax-submit mtb17" type="submit" style="margin-left: -10px;"-->
+<!--                    data-action="{:url('Actionlog/clear')}" data-subcheck="false" data-msg="确认执行清空操作吗？">清空-->
+<!--            </button>-->
+<!--            <button class="btn btn-danger  js-ajax-submit mtb17" type="submit"-->
+<!--                    data-action="{:url('Actionlog/delete')}" data-subcheck="true" data-msg="确认执行删除操作吗？">删除-->
+<!--            </button>-->
+<!--        </div>-->
+        <php>$status=array("1"=>lang('DISPLAY'),"0"=>lang('HIDDEN'));</php>
+        <table class="table table-hover table-bordered table-list">
+            <thead>
+            <tr>
+<!--                <th width="16"><label><input type="checkbox" class="js-check-all" data-direction="x"-->
+<!--                                             data-checklist="js-check-x"></label></th>-->
+                <th width="50">编号</th>
+                <th>行为名称</th>
+                <th>执行者</th>
+                <th>执行时间</th>
+                <th>行为IP</th>
+<!--                <th width="120">{:lang('ACTIONS')}</th>-->
+            </tr>
+            </thead>
+            <tbody>
+                <volist name="lists" id="vo">
+                    <tr>
+<!--                        <td><input type="checkbox" class="js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]"-->
+<!--                                   value="{$vo.id}"></td>-->
+                        <td>{$vo.id}</td>
+                        <td>{$vo.action_name}</td>
+                        <td>{$vo.admin_name}</td>
+                        <td>{$vo['action_time']|date="Y-m-d H:i:s",###}</td>
+                        <td>{$vo.client_ip}</td>
+<!--                        <td>-->
+<!--                            <a href="{:url('Actionlog/delete',array('ids'=>$vo['id']))}" class="js-ajax-delete">-->
+<!--                                {:lang('DELETE')}-->
+<!--                            </a>-->
+<!--                        </td>-->
+                    </tr>
+                </volist>
+            </tbody>
+        </table>
+        <div class="pagination">{$page}</div>
+    </form>
+
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+</body>
+</html>

@@ -1,0 +1,1998 @@
+<script src="__JS__/clipboard.min.js"></script><if condition="AUTH_USER eq 1">
+    <link rel="stylesheet" href="__STATIC__/verify/css/verify.css">
+
+    <style>
+    .layui-layer-shade {
+        opacity: 0.6!important;
+    }
+    .no-border-radius{
+        border-radius: 0!important
+    }
+        .geetest-refresh {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 2.8rem;
+            height: 2.8rem;
+        }
+    .geetest-refresh img {
+        transform: scale(.6);
+        width: 100%;
+        height: 100%;
+    }
+    .login_modal input[type='text'],
+    .login_modal input[type='password']{
+        padding-left: 2rem!important;
+    }
+        .get_back_pwd_modal_one  input.get_back_pwd_modal_account[type='text'] {
+            height: 2.4rem;margin-bottom: 0.1rem!important
+        }
+    .get_back_pwd_modal_two  input.get_back_pwd_modal_phone[type='number'],
+    .get_back_pwd_modal_email  input.get_back_pwd_modal_email_input[type='text'],
+    .get_back_pwd_modal_three input.get_back_pwd_modal_three_repassword[type='password'] {
+        height: 2.4rem;
+        margin-bottom: 0;
+    }
+    .get_back_pwd_modal_two  input.get_back_pwd_modal_phone_code[type='number'] {
+        height: 2.4rem;padding-right:3rem;
+    }
+    .get_back_pwd_modal_email  input.get_back_pwd_modal_email_code[type='text']{
+        height: 3rem;width: 36%!important
+    }
+    .get_back_pwd_modal_two_btn {
+        margin-top:0.8rem;
+    }
+        .get_back_pwd_modal_three input.get_back_pwd_modal_three_password[type='password'] {
+            height: 2.4rem;
+            margin-bottom: 0.2rem!important;
+        }
+        .get_back_pwd_modal_three_line {
+            top: -0.1rem;
+        }
+        .login_icon_register_code {
+            top: 5.7rem;
+        }
+        .footer_text_register {
+            margin-top: 2.4rem!important
+        }
+        .registered_modal_pub_account_box,
+        .registered_modal_real_name_box,
+        .real_name_auth_modal_name_box {
+            margin-top:0.6rem;
+        }
+        .registered_modal_pub_to_phone {
+            margin-top: 2.6rem!important
+        }
+        .registered_modal_real_register_btn {
+            margin-top: 1.1rem
+        }
+    .newModalBox-login{
+        display: flex;
+        flex-flow: column;
+        justify-content: space-around;
+        height: 90%;
+        padding-top: 1.5rem;
+    }
+    .login_modal_password_box{
+        position: relative;
+    }
+    </style>
+        <!-- 登录弹窗 -->
+        <div class="login_modal" style="height: 100%;">
+
+            <php>
+                // 增加账号注册开关
+                $sdk_set = cmf_get_option('wap_set');
+                $account_register_switch = $sdk_set['account_register_switch'] ?? 1; // 0 关闭 1 开启
+                $phonenum_register_switch = $sdk_set['phonenum_register_switch'] ?? 1; // 0 关闭 1 开启
+            </php>
+
+          <div class="newModalBox-login">
+            <div>
+                <img src="__TMPL__/mobilepublic/assets/images/common_btn_close_n.png" alt="" class="close_login_modal">
+                <div style="position:relative;" class="js_logininput">
+                    <img src="__TMPL__/mobilepublic/assets/images/login_icon_phone.png" alt="" class="fl login_icon_phone">
+                    <input type="text" id="lblTagIdUserName" name="account" autocomplete="off" class="fl modal_username" value="" placeholder="手机号/用户名/邮箱">
+                    <span class="pulldown "></span>
+                    <div class="account" ></div>
+                </div>
+                <div class="modal_fengexian clear"></div>
+                <div class="clear login_modal_password_box">
+                    <img src="__TMPL__/mobilepublic/assets/images/login_icon_Password.png" alt="" class="fl login_icon_password">
+                    <input type="password" id="lblTagIdUserPwd" name="password" class="fl" value="" placeholder="密码">
+                    <img src="__TMPL__/mobilepublic/assets/images/common_btn_delet.png" alt="" class="clear_texts">
+                </div>
+                <div class="modal_fengexian clear"></div>
+                <p style="width: 100%;text-align: center">
+                    <button class="modal_login_btn">登录</button>
+                </p>
+
+                <div>
+
+
+                    <if condition="$phonenum_register_switch eq 1 ">
+                        <p class="fl new_user">注册新账号</p>
+                    </if>
+                    <if condition="$phonenum_register_switch eq 0 and  $account_register_switch eq 1">
+                        <p class="fl new_user">注册新账号</p>
+                    </if>
+
+                    <p class="fg fogget_pwd">忘记密码？</p>
+                    <p class="clear"></p>
+                </div>
+            </div>
+            <if condition=" $qq_login eq 1 or ($weixin_login eq 1) ">
+                <div class="hideModal" >
+                    <div class="clear">
+                        <div class="duan_fengexian fl ml40"></div>
+                        <p class="fl other_login_type">其他登录方式</p>
+                        <div class="duan_fengexian fl"></div>
+                    </div>
+                    <div class="clear login_type">
+                        <div class="login_grounp">
+                            <eq name="qq_login" value="1">
+                                <a class="js-third-qq" data-href="{:url('User/thirdLogin',array('type'=>'qq','gid'=>input('game_id'),'pid'=>input('pid')))}">
+                                    <div class="qq">
+                                        <img src="__TMPL__/mobilepublic/assets/images/login_icon_qq.png" alt="">
+                                        <p>QQ</p>
+                                    </div>
+                                </a>
+                            </eq>
+                            <if condition="$weixin_login eq 1 ">
+                                <if condition="cmf_is_wechat()">
+                                    <a href="{:url('User/thirdLogin',array('type'=>'weixin','gid'=>input('game_id'),'pid'=>input('pid')))}">
+                                        <div class="wx">
+                                            <img src="__TMPL__/mobilepublic/assets/images/login_icon_wechat.png" alt="">
+                                            <p>微信</p>
+                                        </div>
+                                    </a>
+                                <else/>
+                                    <a href="javascript:;" class="js-third-wx">
+                                        <div class="wx">
+                                            <img src="__TMPL__/mobilepublic/assets/images/login_icon_wechat.png" alt="">
+                                            <p>微信</p>
+                                        </div>
+                                    </a>
+                                </if>
+
+                            </if>
+<!--                            <a class="js-third-youke" data-href="" onclick="youke_pop()">-->
+<!--                                <div class="youke">-->
+<!--                                    <img src="__TMPL__/mobilepublic/assets/images/common_btn_youke.png" alt="">-->
+<!--                                    <p>游客</p>-->
+<!--                                </div>-->
+<!--                            </a>-->
+                        </div>
+                    </div>
+                </div>
+            </if>
+          </div>
+        </div>
+        <!-- 注册弹窗-普通 -->
+        <div data-value="registered_modal_pub" class="jsclear registered_modal_pub">
+            <img src="__TMPL__/mobilepublic/assets/images/common_btn_close_n.png" alt="" class="close_login_modal">
+            <div class="registered_modal_pub_account_box">
+                <img src="__TMPL__/mobilepublic/assets/images/login_icon_me.png" alt="" class="fl login_icon_me">
+                <input type="text" class="fl modal_user_name" name="account" autocomplete="off" placeholder="账号(6-15位字母或数字)">
+				<img src="__TMPL__/mobilepublic/assets/images/common_btn_delet.png" alt="" class="clear_texts fristclear_texts">
+            </div>
+            <div class="modal_fengexian clear"></div>
+            <div class="registered_modal_mob_password_box">
+                <img src="__TMPL__/mobilepublic/assets/images/login_icon_Password.png" alt="" class="fl login_icon_passworda">
+                <input type="password" class="fl modal_pass_word" name="password" placeholder="密码(6-15位字母或数字)">
+				<img src="__TMPL__/mobilepublic/assets/images/common_btn_delet.png" alt="" class="clear_texts">
+            </div>
+            <div class="modal_fengexian clear"></div>
+            <div class="registered_modal_mob_password_box">
+                <img src="__TMPL__/mobilepublic/assets/images/login_icon_Password.png" alt="" class="fl login_icon_passworde">
+                <input type="password" class="fl modal_pass_word" name="repassword" placeholder="确认密码">
+				<img src="__TMPL__/mobilepublic/assets/images/common_btn_delet.png" alt="" class="clear_texts">
+            </div>
+            <div class="modal_fengexian clear"></div>
+            <div>
+                <div class="geetest_box">
+                    <div class="geetest-heart"><span></span></div>
+                    <a href="javascript:;" id="verify_pop1">点击按钮进行验证</a>
+                    <a href="javascript:;" id="verify_refresh1" class="geetest-refresh">
+                        <img src="__TMPL__/mobilepublic/assets/images/refresh.png" >
+                    </a>
+                    <input type="hidden" name="verify_pop1_tag">
+                    <input type="hidden" name="verify_pop1_token">
+                </div>
+            </div>
+            <php>$if_next = get_user_config_info('age')['real_register_status'];</php>
+            <if condition="$if_next gt 0">
+                <button class="registered_modal_next_btn" >
+                    下一步
+                </button>
+            <else/>
+                <button class="registered_modal_pub_btn" >
+                    注册
+                </button>
+            </if>
+
+            <div class="can_jieshou">
+                <input id="agree_con" type="checkbox" name="agreement" value="1" checked="checked" class="agree_con_check" />
+                <label for="agree_con" class="fl">
+                    <img src="__TMPL__/mobilepublic/assets/images/login_btn_s.png" alt="" class="agree_con_img fl">
+                </label>
+                <p>我已阅读并同意 <span class="user_zhuce_info">《{$portal['post_title']}》</span><span class="user_zhuce_yinsi">《{$portal['post_title_yinsi']}》</span></p>
+            </div>
+            <if condition="$controller_name eq 'Downfile'">
+
+                <if condition="$phonenum_register_switch eq 1 ">
+                    <p class="footer_text to_mob" style="margin-top: 0.5rem!important">手机号注册</p>
+                </if>
+
+                <p class="footer_text to_login" style="margin-top: 0.7rem">去登录</p>
+            <else/>
+
+                <if condition="$phonenum_register_switch eq 1 ">
+                    <p class="footer_text to_mob registered_modal_pub_to_phone">手机号注册</p>
+                </if>
+
+            </if>
+        </div>
+        <!-- 注册弹窗-手机 -->
+        <div data-value="registered_modal_mob" class="jsclear registered_modal_mob">
+            <img src="__TMPL__/mobilepublic/assets/images/common_btn_close_n.png" alt="" class="close_login_modal">
+            <div>
+                <img src="__TMPL__/mobilepublic/assets/images/login_icon_phone.png" alt="" class="fl login_icon_me">
+                <input type="text" class="fl modal_user_name" name="account" autocomplete="off" placeholder="手机号">
+				<img src="__TMPL__/mobilepublic/assets/images/common_btn_delet.png" alt="" class="clear_texts fristclear_texts">
+            </div>
+            <div class="modal_fengexian clear"></div>
+            <div>
+                <img src="__TMPL__/mobilepublic/assets/images/login_icon_yanzhengma.png" alt="" class="fl login_icon_yanzhengma2 login_icon_register_code">
+                <input type="number" class="fl modal_yanzhengma" name="code" placeholder="短信验证码" maxlength="6">
+                <button class="get_yanzhengma fl">
+                    <p>获取验证码</p>
+                </button>
+            </div>
+            <div class="modal_fengexian_href clear"></div>
+
+            <div class="registered_modal_mob_password_box">
+                <img src="__TMPL__/mobilepublic/assets/images/login_icon_Password.png" alt="" class="fl login_icon_passwordb">
+                <input type="password" class="fl modal_pass_word" name="password" placeholder="密码">
+				<img src="__TMPL__/mobilepublic/assets/images/common_btn_delet.png" alt="" class="clear_texts registeredclear_texts">
+            </div>
+            <div class="modal_fengexian clear"></div>
+            <div class="registered_modal_mob_password_box">
+                <img src="__TMPL__/mobilepublic/assets/images/login_icon_Password.png" alt="" class="fl login_icon_passwordc">
+                <input type="password" class="fl modal_pass_word" name="repassword" placeholder="确认密码">
+				<img src="__TMPL__/mobilepublic/assets/images/common_btn_delet.png" alt="" class="clear_texts registeredclear_texts">
+            </div>
+            <div class="modal_fengexian clear"></div>
+            <div>
+                <div class="geetest_box">
+                    <div class="geetest-heart"><span></span></div>
+                    <a href="javascript:;" id="verify_pop2">点击按钮进行验证</a>
+                    <a href="javascript:;" id="verify_refresh2" class="geetest-refresh">
+                        <img src="__TMPL__/mobilepublic/assets/images/refresh.png" >
+                    </a>
+                    <input type="hidden" name="verify_pop2_tag">
+                    <input type="hidden" name="verify_pop2_token">
+                </div>
+            </div>
+            <php>$if_next = get_user_config_info('age')['real_register_status'];</php>
+            <if condition="$if_next gt 0">
+                <button class="registered_modal_next_btn">
+                    下一步
+                </button>
+                <else/>
+                <button class="registered_modal_pub_btn registered_modal_mob_btn">
+                    注册
+                </button>
+            </if>
+            <div class="can_jieshou_two">
+                <input id="agree_con_two" type="checkbox" name="agreement" value="1" checked="checked" class="agree_con_two_check" />
+                <label for="agree_con_two" class="fl">
+                    <img src="__TMPL__/mobilepublic/assets/images/login_btn_s.png" alt="" class="agree_con_two_img fl">
+                </label>
+                <p>我已阅读并同意<span class="user_zhuce_info">《{$portal['post_title']}》</span><span class="user_zhuce_yinsi">《{$portal['post_title_yinsi']}》</span></p>
+            </div>
+
+            <if condition="$account_register_switch eq 1 ">
+                <p class="footer_text to_pub footer_text_register">普通账号注册</p>
+            </if>
+
+            <if condition="$controller_name eq 'Downfile'"> <p class="footer_text to_login">去登录</p></if>
+        </div>
+
+        <!--实名注册弹窗-->
+        <div class="real_name_auth_modal">
+            <img src="__TMPL__/mobilepublic/assets/images/common_btn_close_n.png" alt="" class="close_login_modal">
+            <div class="real_name_auth_modal_name_box">
+                <img src="__TMPL__/mobilepublic/assets/images/login_icon_me.png" alt="" class="fl login_icon_me">
+                <input type="text" class="fl modal_user_name" name="real_name" autocomplete="off" placeholder="姓名">
+                <img src="__TMPL__/mobilepublic/assets/images/common_btn_delet.png" alt="" class="clear_texts fristclear_texts">
+            </div>
+            <div class="modal_fengexian clear"></div>
+            <div>
+                <img src="__TMPL__/mobilepublic/assets/images/name_card.png" alt="" class="fl login_icon_passworda">
+                <input type="text" class="fl modal_pass_word" name="identity_card" placeholder="身份证" maxlength="18">
+                <img src="__TMPL__/mobilepublic/assets/images/common_btn_delet.png" alt="" class="clear_texts">
+            </div>
+            <div class="modal_fengexian clear"></div>
+            <button class="registered_modal_pub_btn" style="margin-top: 1.5rem">
+                注册
+            </button>
+            <p class="footer_text to_pre" style="margin-top: 13.5rem!important">上一步</p>
+        </div>
+        <!-- 注册结果弹窗 -->
+        <div class="registered_result_modal">
+            <img src="__TMPL__/mobilepublic/assets/images/common_btn_close_n.png" alt="" class="close_login_modal">
+            <p class="registered_result_text">注册结果</p>
+            <img src="__TMPL__/mobilepublic/assets/images/pic_registered.png" alt="" class="result_img">
+            <p class="result_text">注册成功</p>
+            <div class="result_btn">
+                <p>返回登录</p>
+            </div>
+            <p class="result_tap">使用手机号注册，默认绑定注册账号可用于找回密码</p>
+        </div>
+        <!-- 找回密码弹窗-1 -->
+        <div class="get_back_pwd_modal_one">
+            <img src="__TMPL__/mobilepublic/assets/images/common_btn_close_n.png" alt="" class="close_get_back_pwd_modal_one">
+            <p class="get_back_pwd_modal_one_title">输入账号</p>
+            <div>
+                <img src="__TMPL__/mobilepublic/assets/images/login_icon_me.png" alt="" class="fl login_icon_mes">
+                <input type="text" class="fl modal_user_names get_back_pwd_modal_account" name="account" value="" placeholder="账号">
+                <img src="__TMPL__/mobilepublic/assets/images/common_btn_delet.png" alt="" class="clear_texts findclear_texts">
+                <div class="clear"></div>
+            </div>
+            <div class="modal_fengexian clear"></div>
+            <p style="width: 100%;text-align: center">
+                <button class="get_back_pwd_modal_one_btn">确定</button>
+            </p>
+            <p class="get_back_pwd_modal_one_text">去登录 ></p>
+        </div>
+        <!-- 找回密码弹窗-2 (电话)-->
+        <div class="get_back_pwd_modal_two">
+            <img src="__TMPL__/mobilepublic/assets/images/common_btn_close_n.png" alt="" class="close_login_modal">
+            <p class="get_back_pwd_modal_one_title">短信验证</p>
+            <div>
+                <img src="__TMPL__/mobilepublic/assets/images/login_icon_phone.png" alt="" class="fl login_icon_mes_two">
+                <input type="number" class="fl modal_user_namea get_back_pwd_modal_phone" name="phone" placeholder="绑定手机号">
+				  <img src="__TMPL__/mobilepublic/assets/images/common_btn_delet.png" alt="" class="clear_texts findclear_texts">
+            </div>
+            <div class="modal_fengexian clear"></div>
+            <div style="width:100%">
+                <img src="__TMPL__/mobilepublic/assets/images/login_icon_yanzhengma.png" alt="" class="fl login_icon_yanzhengmas">
+                <input type="number" class="fl modal_yanzhengmas get_back_pwd_modal_phone_code" name="code" placeholder="验证码" maxlength="6">
+                <button class="get_yanzhengma fl">
+                    <p>获取验证码</p>
+                </button>
+            </div>
+            <div class="modal_fengexian_href clear"></div>
+            <div>
+                <div class="geetest_box">
+                    <div class="geetest-heart"><span></span></div>
+                    <a href="javascript:;" id="verify_pop3">点击按钮进行验证</a>
+                    <a href="javascript:;" id="verify_refresh3" class="geetest-refresh">
+                        <img src="__TMPL__/mobilepublic/assets/images/refresh.png" >
+                    </a>
+                    <input type="hidden" name="verify_pop3_tag">
+                    <input type="hidden" name="verify_pop3_token">
+                </div>
+            </div>
+            <p style="width: 100%;text-align: center">
+                <button class="get_back_pwd_modal_two_btn">
+                    下一步
+                </button>
+            </p>
+
+            <p class="get_back_pwd_modal_two_intoemail">短信用不了？<span>邮箱找回></span></p>
+        </div>
+        <!-- 找回密码弹窗-2 (邮箱) -->
+        <div class="get_back_pwd_modal_email">
+            <img src="__TMPL__/mobilepublic/assets/images/common_btn_close_n.png" alt="" class="close_login_modal">
+            <p class="get_back_pwd_modal_one_title">邮箱验证</p>
+            <div>
+                <img src="__TMPL__/mobilepublic/assets/images/login_icon_phone.png" alt="" class="fl login_icon_mes_two">
+                <input type="text" class="fl modal_user_namea get_back_pwd_modal_email_input" name="email" placeholder="绑定邮箱">
+				<img src="__TMPL__/mobilepublic/assets/images/common_btn_delet.png" alt="" class="clear_texts ">
+            </div>
+            <div class="modal_fengexian clear"></div>
+            <div style="width:100%">
+                <img src="__TMPL__/mobilepublic/assets/images/login_icon_yanzhengma.png" alt="" class="fl login_icon_yanzhengmas">
+                <input type="text" class="fl modal_yanzhengmas get_back_pwd_modal_email_code" name="code" placeholder="验证码" maxlength="6">
+				<!--<img src="__TMPL__/mobilepublic/assets/images/common_btn_delet.png" alt="" class="clear_texts">-->
+                <button class="get_yanzhengma fl">
+                    <p>获取验证码</p>
+                </button>
+            </div>
+            <div class="modal_fengexian_href clear"></div>
+            <p style="width: 100%;text-align: center">
+                <button class="get_back_pwd_modal_two_btn">
+                    下一步
+                </button>
+            </p>
+            <p class="get_back_pwd_modal_two_intotell">邮箱用不了？<span>手机找回></span></p>
+        </div>
+        <!-- 找回密码弹窗-3 -->
+        <div class="get_back_pwd_modal_three">
+            <img src="__TMPL__/mobilepublic/assets/images/common_btn_close_n.png" alt="" class="close_login_modal">
+            <p class="get_back_pwd_modal_one_title">设置密码</p>
+            <div>
+                <img src="__TMPL__/mobilepublic/assets/images/login_icon_Password.png" alt="" class="fl login_icon_password_three">
+                <input type="password" class="fl modal_pass_word_three get_back_pwd_modal_three_password" name="password" placeholder="新密码(6-15位字母或数字)">
+                <img src="__TMPL__/mobilepublic/assets/images/common_btn_delet.png" alt="" class="clear_texts findclear_texts">
+			</div>
+            <div class="modal_fengexian clear"></div>
+            <div class="get_back_pwd_modal_three_repassword_box">
+                <img src="__TMPL__/mobilepublic/assets/images/login_icon_Password.png" alt="" class="fl login_icon_password_threes" >
+                <input type="password" class="fl modal_pass_word get_back_pwd_modal_three_repassword" name="repassword" placeholder="确认密码">
+				<img src="__TMPL__/mobilepublic/assets/images/common_btn_delet.png" alt="" class="clear_texts">
+            </div>
+            <div class="modal_fengexian get_back_pwd_modal_three_line clear"></div>
+            <div class="get_back_pwd_modal_three_btn">
+                <p>确认</p>
+            </div>
+        </div>
+        <!-- 找回密码弹窗-4 -->
+        <div class="get_back_pwd_modal_four">
+            <img src="__TMPL__/mobilepublic/assets/images/common_btn_close_n.png" alt="" class="close_login_modal">
+            <p class="get_back_pwd_modal_one_title">处理结果</p>
+            <img src="__TMPL__/mobilepublic/assets/images/pic_Password.png" alt="" class="result_img">
+            <p class="result_text">重置密码成功！</p>
+            <div class="result_btn">
+                <p>返回登录</p>
+            </div>
+        </div>
+        <!--非微信浏览器，关注公众号弹窗-->
+        <div class="public-modal">
+            <img src="__TMPL__/mobilepublic/assets/images/common_btn_close_n.png" alt="" class="close_login_modal">
+            <div class="public-content">
+                <p class="public-tips">微信登录不支持微信以外的浏览器打开，您可以通过关注“{:cmf_get_option('media_set')['pc_set_qrcode_name']}”公众号进入游戏。</p>
+                <div class="method-one">
+                    <span class="wx-con-label">方法一</span>
+                    在微信搜索内 <span style="color: #018FFF">"{:cmf_get_option('media_set')['pc_set_qrcode_name']}"</span>
+                </div>
+                <div class="copy-btn bag_open_modals_btn copy" id="js-public-copy"  data-clipboard-text="{:cmf_get_option('media_set')['pc_set_qrcode_name']}">
+                    <p>复制公众号名称</p>
+                </div>
+                <div class="method-two">
+                    <span class="wx-con-label">方法二</span>
+                    截图保存到相册，微信内识别二<br/>维码
+                </div>
+                <div class="public-img-box">
+                    <img src="{:cmf_get_image_url(cmf_get_option('media_set')['pc_set_qrcode'])}" class="ewm-img">
+                </div>
+            </div>
+        </div>
+        <!-- 游客登录弹窗 -->
+<!--        <div class="youke-modal" style="display: none;">-->
+<!--            &lt;!&ndash; <img src="__TMPL__/mobilepublic/assets/images/common_btn_close_n.png" alt="" class="close_login_modal"> &ndash;&gt;-->
+<!--            <div class="youke-content">-->
+<!--              <p class="youke-title">设置登录密码</p>-->
+<!--              <div class="pwd-input">-->
+<!--                <div class="youke-input">-->
+<!--                    <p class="nei-text">账号：</p>-->
+<!--                    <input type="text" id="zhanghao" class="zhanghao" value="11111111">-->
+<!--                    <img src="/themes/simpleboot3/mobilepublic/assets/images/common_btn_delet.png" alt="" class="clear_texts fristclear_texts" style="display: none;">-->
+<!--                </div>-->
+<!--                <div class="youke-input">-->
+<!--                  <p class="nei-text">密码：</p>-->
+<!--                  <input type="text" id="mimma" class="mima" value="11111111" placeholder="6-15位字母或数字">-->
+<!--                  <img src="/themes/simpleboot3/mobilepublic/assets/images/common_btn_delet.png" alt="" class="clear_texts fristclear_texts" style="display: none;">-->
+<!--               </div>-->
+<!--               <p style="width: 100%;text-align: center">-->
+<!--                <button class="modal_zhuce_btn">注册</button>-->
+<!--            </p>-->
+<!--              </div>-->
+<!--                &lt;!&ndash; <div class="copy-btn bag_open_modals_btn copy" id="js-public-copy"  data-clipboard-text="{:cmf_get_option('media_set')['pc_set_qrcode_name']}">-->
+<!--                    <p>复制公众号名称</p>-->
+<!--                </div> &ndash;&gt;-->
+<!--              -->
+<!--            </div>-->
+<!--        </div>-->
+
+    <!-- 实名认证弹窗 -->
+    <div data-value="registered_modal_real" class="jsclear registered_modal_real hide">
+        <img src="__TMPL__/mobilepublic/assets/images/common_btn_close_n.png" alt="" class="close_login_modal">
+        <div class="registered_modal_real_name_box">
+            <img src="__TMPL__/mobilepublic/assets/images/login_icon_me.png" alt="" class="fl login_icon_me">
+            <input type="text" class="fl modal_user_name" name="real_name" maxlength="25" minlength="2" autocomplete="off" placeholder="真实姓名">
+            <img src="__TMPL__/mobilepublic/assets/images/common_btn_delet.png" alt="" class="clear_texts fristclear_texts">
+        </div>
+        <div class="modal_fengexian clear"></div>
+        <div>
+            <img src="__TMPL__/mobilepublic/assets/images/login_icon_idcard.png" alt="" class="fl login_icon_card">
+            <input type="text" class="fl modal_user_name" name="idcard" maxlength="18" autocomplete="off" style="margin-top: 0!important;" placeholder="身份证号">
+            <img src="__TMPL__/mobilepublic/assets/images/common_btn_delet.png" alt="" class="clear_texts id-card fristclear_texts">
+        </div>
+        <div class="modal_fengexian clear"></div>
+        <if condition="get_user_config_info('age')['real_register_status'] eq 2">
+            <button class="registered_modal_pub_btn registered_modal_real_register_btn can_click">
+                注册
+            </button>
+        <else/>
+            <button class="registered_modal_pub_btn registered_modal_real_register_btn">
+                注册
+            </button>
+        </if>
+
+        <a href="javascript:;" style="cursor: pointer;" class="registered_modal_real_prev footer_text">上一步</a>
+    </div>
+
+</if>
+<if condition="AUTH_USER eq 1">
+    <script src="__JS__/clipboard.min.js"></script>
+    <script src="__STATIC__/js/gt.js"></script>
+    <script>
+       if( $('.login_modal').find('.hideModal')){
+        console.log(4444)
+       }else {
+           console.log(9999)
+       }
+
+
+
+
+        var redirect_url ='';
+        window.wxWidth =  window.wxWidth || '25.487rem';
+        window.copyWidth =  window.copyWidth || '19.7rem';
+        $(function () {
+            //qq第三方登录
+            $('.js-third-qq').click(function () {
+                var qq_url = $(this).attr('data-href');
+                if(isH5App()){
+                    try{
+                        h5shell.thirdlogin(0);
+                    }catch(e){
+                        try{
+                            window.webkit.messageHandlers.h5shellthirdlogin.postMessage(2);
+                        }catch(e){
+                           window.location.href = qq_url;
+                        }
+                    }
+                }else{
+                    window.location.href = qq_url;
+                }
+            })
+            //微信第三方登录
+            $('.js-third-wx').click(function () {
+                if(!isWeiXin()){
+                    if(isH5App()){
+                        try{
+                            h5shell.thirdlogin(1);
+                        }catch(e){
+                            try{
+                                window.webkit.messageHandlers.h5shellthirdlogin.postMessage(1);
+                            }catch(e){
+                                wx_third_login()
+                            }
+                        }
+                    }else{
+                        wx_third_login()
+                    }
+                    return false
+                }
+            });
+            $('#js-public-copy').click(function () {
+                Copy( $('#js-public-copy').attr('data-clipboard-text'),$('#js-public-copy'));
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: false,
+                    area: [window.copyWidth, 'auto'],
+                    content: '<div class="open-weixin-modal"><img src="__TMPL__/mobilepublic/assets/images/common_btn_close_n.png" alt="" class="close_login_modal">' +
+                    '<div class="copy-box"></i>复制成功</div><a href="weixin://" class="open-weixin-btn">打开微信</a></div>',
+                    shadeClose: true,
+                    success: function (layero, index) {
+                        layero.find('.close_login_modal').click(function () {
+                            layer.close(index);
+                            return false;
+                        });
+                    },
+                });
+            })
+
+            function Copy(str,that){
+                text = str;
+                var clipboard = new Clipboard('.copy',{
+                    text: function() {
+                        return text;
+                    }
+                });
+                clipboard.on('success', function(e) {
+                   /* layer.msg('<p>已复制</p>');*/
+                    e.clearSelection();
+                    clipboard.destroy();
+                });
+                clipboard.on('error', function(e) {
+                    layer.msg('此浏览器不支持此操作，请长按礼包码复制');
+                });
+            }
+            //判断是否是微信浏览器的函数
+            function isWeiXin(){
+                var ua = window.navigator.userAgent.toLowerCase();
+                if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        });
+        window.getUserStatusUrl = window.getUserStatusUrl || '{:url("get_user_status")}';
+        $.ajax({
+            type:'get',
+            url:window.getUserStatusUrl,
+            success:function (res) {
+                if(res.status!=0){
+                    $('.js_logined').removeClass('hide');
+                    $('.js_username').text(res.data.login_account);
+                    if(res.data.login_head_img!=''){
+                        $('.js_login_info').find('.user_img img').attr('src',res.data.login_head_img);
+                    }
+                    $('.js_nologin').addClass('hide');
+                }else{
+                    cookie_account = $.parseJSON(res.data.cookie_account);
+                    $('#lblTagIdUserName').val(cookie_account[0].account);
+                    $(".modal_user_names").val(cookie_account[0].account);
+                    if(cookie_account.length<2){
+                        $('.login_modal .pulldown').remove();
+                        $('.login_modal .js_logininput').append(' <img src="/themes/simpleboot3/mobilepublic/assets/images/common_btn_delet.png" alt="" class="clear_texts fristclear_texts">');
+
+					}
+					else{
+					    $('.login_modal .js_logininput').append(' <img src="/themes/simpleboot3/mobilepublic/assets/images/common_btn_delet.png" alt="" class="clear_texts fristclear_texts topclear_texts">');
+
+					}
+                    html = '';
+                    $.each(cookie_account,function (key,item) {
+                            html += '<div data-index="';
+                            html += key;
+                            html += '" class="accountnum"><span class="js-accout-num accountnum-con">';
+                            html += item.account;
+                            html += '</span><img src="__TMPL__/mobilepublic/assets/images/common_btn_delet.png" alt="" class="btn-clear"></div>';
+                    })
+                    $('.login_modal .js_logininput .account').append(html);
+                }
+                $('.js_user_img').click(function(){
+                    if(res.status==0){
+                        loginFun();
+                    }else{
+                        location.href = "{:url('user/index')}";
+                    }
+                });
+                return false;
+            }
+        });
+
+
+        function wx_third_login() {
+            var content = $('.public-modal');
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: false,
+                area: [window.wxWidth, 'auto'],
+                offset: 'auto',
+                content: content,
+                shadeClose: true,
+                success: function (layero, index) {
+                    layero.find('.close_login_modal').click(function () {
+                        layer.close(index);
+                        return false;
+                    });
+                },
+                end: function () {
+                    $('.public-modal').hide();
+                }
+            });
+        }
+        function youke_pop() {
+            $(".youke-modal").css("display","none")
+            var content = $('.youke-modal');
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: false,
+                area: [window.wxWidth, '19.54rem'],
+                offset: 'auto',
+                content: content,
+                shadeClose: true,
+                success: function (layero, index) {
+                    layero.find('.close_login_modal').click(function () {
+                        layer.close(index);
+                        return false;
+                    });
+                },
+                end: function () {
+                    $('.youke-modal').hide();
+                }
+            });
+        }
+        function isH5App(){
+            var ua = window.navigator.userAgent.toLowerCase();
+            if(ua.match(/app\/h5shell/i) == 'app/h5shell'){
+                return true;
+            }else{
+                return false;
+            }
+        }
+    </script>
+    <script>
+        //人机验证
+        $('#verify_pop1').on('click',function(){
+            if($('body').find('.pop-caption-box').length>0) {return false;}
+            change_but = "{$if_next}">0?'registered_modal_next_btn':'registered_modal_pub_btn';
+            //回调函数
+            window.caption_callback_function = function(tag,token){
+                $('#verify_pop1').off('click').text('验证成功');
+                $('input[name=verify_pop1_tag]').val(tag);
+                $('input[name=verify_pop1_token]').val(token);
+                is_chorse=true
+                change_submit_btn($('.registered_modal_pub'),$('.registered_modal_pub').find('.'+change_but))
+            }
+            url = "{:url('user/caption/verify_pop')}"
+            $.get(url, function (html) {
+                $('body').append(html);
+            });
+            return false;
+        })
+        $('#verify_refresh1').click(function () {
+            $('input[name=verify_pop1_tag]').val('');
+            $('input[name=verify_pop1_token]').val('');
+            $('#verify_pop1').off('click').on('click',function(){
+                if($('body').find('.pop-caption-box').length>0) {return false;}
+                change_but = "{$if_next}">0?'registered_modal_next_btn':'registered_modal_pub_btn';
+                //回调函数
+                window.caption_callback_function = function(tag,token){
+                    $('#verify_pop1').off('click').text('验证成功');
+                    $('input[name=verify_pop1_tag]').val(tag);
+                    $('input[name=verify_pop1_token]').val(token);
+                    is_chorse=true
+                    change_submit_btn($('.registered_modal_pub'),$('.registered_modal_pub').find('.'+change_but))
+                }
+                url = "{:url('user/caption/verify_pop')}"
+                $.get(url, function (html) {
+                    $('body').append(html);
+                });
+                return false;
+            }).text('点击按钮进行验证');
+
+            return false;
+        });
+        $('#verify_pop2').on('click',function(){
+            if($('body').find('.pop-caption-box').length>0) {return false;}
+            change_but = "{$if_next}">0?'registered_modal_next_btn':'registered_modal_pub_btn';
+            //回调函数
+            window.caption_callback_function = function(tag,token){
+                $('#verify_pop2').off('click').text('验证成功');
+                $('input[name=verify_pop2_tag]').val(tag);
+                $('input[name=verify_pop2_token]').val(token);
+                is_mob_chorse=true
+                change_submit_btn($('.registered_modal_mob'),$('.registered_modal_mob').find('.'+change_but))
+            }
+            url = "{:url('user/caption/verify_pop')}"
+            $.getJSON(url, function (html) {
+                $('body').append(html);
+            });
+            return false;
+        })
+        $('#verify_refresh2').click(function () {
+            $('input[name=verify_pop2_tag]').val('');
+            $('input[name=verify_pop2_token]').val('');
+            $('#verify_pop2').off('click').on('click',function(){
+                if($('body').find('.pop-caption-box').length>0) {return false;}
+                change_but = "{$if_next}">0?'registered_modal_next_btn':'registered_modal_pub_btn';
+                //回调函数
+                window.caption_callback_function = function(tag,token){
+                    $('#verify_pop2').off('click').text('验证成功');
+                    $('input[name=verify_pop2_tag]').val(tag);
+                    $('input[name=verify_pop2_token]').val(token);
+                    is_mob_chorse=true
+                    change_submit_btn($('.registered_modal_mob'),$('.registered_modal_mob').find('.'+change_but))
+                }
+                url = "{:url('user/caption/verify_pop')}"
+                $.get(url, function (html) {
+                    $('body').append(html);
+                });
+                return false;
+            }).text('点击按钮进行验证');
+            return false;
+        });
+        $('#verify_pop3').on('click',function(){
+            if($('body').find('.pop-caption-box').length>0) {return false;}
+            //回调函数
+            window.caption_callback_function = function(tag,token){
+                $('#verify_pop3').off('click').text('验证成功');
+                $('input[name=verify_pop3_tag]').val(tag);
+                $('input[name=verify_pop3_token]').val(token);
+            }
+            url = "{:url('user/caption/verify_pop')}"
+            $.get(url, function (html) {
+                $('body').append(html);
+            });
+            return false;
+        })
+        $('#verify_refresh3').click(function () {
+            $('input[name=verify_pop3_tag]').val('');
+            $('input[name=verify_pop3_token]').val('');
+            $('#verify_pop3').off('click').on('click',function(){
+                if($('body').find('.pop-caption-box').length>0) {return false;}
+                //回调函数
+                window.caption_callback_function = function(tag,token){
+                    $('#verify_pop3').off('click').text('验证成功');
+                    $('input[name=verify_pop3_tag]').val(tag);
+                    $('input[name=verify_pop3_token]').val(token);
+                }
+                url = "{:url('user/caption/verify_pop')}"
+                $.get(url, function (html) {
+                    $('body').append(html);
+                });
+                return false;
+            }).text('点击按钮进行验证');
+            return false;
+        });
+    </script>
+</if>
+
+<script>
+    var is_real_auth = "{:get_user_config_info('age')['real_register_status']}";
+    $('body').on('click', '.js-accout-num', function() {
+        var $this = $(this);
+        var index = $this.parent('.accountnum').attr('data-index');
+        $.each(window.cookie_account,function(key,item) {
+            if(index == key){
+                $("#lblTagIdUserName").val(item.account);
+            }
+        })
+        $(".pulldown").click();
+    })
+    //清除数据
+    $('body').on('click', '.btn-clear', function() {
+        var $this = $(this);
+        var index = $this.parent('.accountnum').attr('data-index');
+        $.ajax({
+            type: 'post',
+            url: "{:url('User/clearaccount')}",
+            data: {index: index},
+            success: function (data) {
+                if (data.code == 1) {
+                    $this.parent('.accountnum').remove();
+                } else {
+                    layer.msg(data.msg);
+                }
+            }, error: function () {
+                layer.msg('服务器忙，请稍后再试');
+            }
+        })
+
+    })
+    //验证码刷新
+    $("#getcaptcha").click(function(event) {
+        this.src = "{:url('User/set_captcha')}?"+Math.random();
+    });
+    //下拉显示多账号
+    $(".pulldown").click(function(){
+        $(this).toggleClass("pulldown-active");
+        $(".account").toggle();
+    })
+    var is_chorse=false;//
+    var is_mob_chorse=false;
+    var gid = GetQueryString('gid')||GetQueryString('game_id');
+    var pid = GetQueryString('pid');
+
+    window.loginHeight =  window.loginHeight || '23rem';
+    window.forgetHeight =  window.forgetHeight || '23.6rem';
+    window.forgetHeightTwo =  window.forgetHeightTwo || '23.6rem';
+    window.forgetHeightThree =  window.forgetHeightThree || '23.6rem';
+    window.registerHeight =  window.registerHeight || '30rem';
+    window.registerHeightPhone =  window.registerHeightPhone || '33.5rem';
+    window.RealHeight =  window.RealHeight || '31rem';
+
+    // 更改
+    function change_submit_btn(consa, registe_btn) {
+        // 手机注册
+        if(consa.text().indexOf('普通账号')>-1&&is_mob_chorse){
+            registe_btn.addClass('can_click')
+        }
+        //普通注册
+        if(consa.text().indexOf('普通账号')<0&&is_chorse){
+            registe_btn.addClass('can_click')
+        }
+        //实名认证页面 （下一步）
+        if(consa.text().indexOf('上一步')>-1){
+            registe_btn.addClass('can_click')
+        }
+        consa.find('input').each(function (i,n) {
+            if(!$(this).attr('name') == 'real_name' && !$(this).attr('name') == 'idcard' ){
+                switch (n.type) {
+                    case 'text':
+                        if (!n.value) {registe_btn.removeClass('can_click');return false;}break;
+                    case 'password':
+                        if (!n.value) {registe_btn.removeClass('can_click');return false;}break;
+                    case 'number':
+                        if (!n.value) {registe_btn.removeClass('can_click');return false;}break;
+                    case 'checkbox':
+                        if (!n.checked) {registe_btn.removeClass('can_click');return false;}break;
+                }
+            }
+        });
+    }
+    // 登录
+    function loginFun() {
+        layer.closeAll();
+        var consa = $('.login_modal');
+        var auth_user="{:AUTH_USER}";
+        if(auth_user!=1){
+            layer.msg('请购买用户权限');
+            return false;
+        }
+        if(consa){
+            var parent = $(this);
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: false,
+                area: ['78.8%', window.loginHeight],
+                offset: 'auto',
+                content: consa,
+                btnAlign: 'c',
+                shadeClose: false,
+                success: function (layero, index) {
+                    layero.find('.modal_login_btn').click(function () {
+                        var that=$(this);
+                        if (that.hasClass('no_send')) {return false;}
+                        that.addClass('no_send');
+                        var account = consa.find('input[name=account]').val();
+                        var password = consa.find('input[name=password]').val();
+                        $.ajax({
+                            type: 'post',
+                            dataType: 'json',
+                            url: '{:url("User/login")}',
+                            data: {account:account,password:password},
+                            success: function (data) {
+                                that.removeClass('no_send');
+                                layer.msg(data.msg);
+                                if (data.code == 1) {
+                                    setTimeout(function () {
+                                        if(redirect_url !=''){
+                                            window.location.href = redirect_url;
+                                        }else if(parent.data('url')) {
+                                            window.location.href = htmlspecialchars_decode(parent.data('url'));
+                                        } else if (data.url) {
+                                            window.location.href = htmlspecialchars_decode(data.url);
+                                        } else {
+                                            window.location.reload();
+                                        }
+                                    },data.wait*1000);
+                                }
+                            },
+                            error: function () {
+                                layer.msg('服务器故障，请稍候再试');
+                                that.removeClass('no_send');
+                            }
+                        });
+
+                        return false;
+                    });
+
+                    layero.find('.close_login_modal').click(function () {
+
+                        // $('.login_modal input').val('');
+                        layer.close(index);
+
+                        return false;
+                    });
+                },
+                end: function () {
+                    $('.login_modal').hide();
+                }
+            })
+        }
+    };
+
+    // 普通注册
+    function registerFun() {
+        $('#agree_con').val(1);
+        layer.closeAll();
+        var consa = $('.registered_modal_pub');
+        if (consa) {
+            registered_modal_pub_layer = layer.open({
+                type: 1,
+                title: false,
+                closeBtn: false,
+                area: ['86%', window.registerHeight],
+                offset: 'auto',
+                content: consa,
+                btnAlign: 'c',
+                shadeClose: false,
+                success: function (layero, index) {
+                    var registe_btn = consa.find('.registered_modal_pub_btn');
+                    consa.find('input').on('input propertychange',function(){
+                        change_submit_btn(consa,registe_btn);
+                    });
+                    var next_btn = consa.find('.registered_modal_next_btn');
+                    consa.find('input').on('input propertychange',function(){
+                        change_submit_btn(consa,next_btn);
+                    });
+                    //注册逻辑
+                    $('body').on('click','.registered_modal_pub_btn.can_click',function () {
+                        var that=$(this);
+                        if(that.hasClass('registered_modal_mob_btn')){
+                            return false;//手机注册在下方
+                        }
+                        if (that.hasClass('no_send')) {return false;}
+                        that.addClass('no_send');
+                        var account = consa.find('input[name=account]').val();
+                        var password = consa.find('input[name=password]').val();
+                        var repassword = consa.find('input[name=repassword]').val();
+                        var verify_tag = consa.find('input[name=verify_pop1_tag]').val();
+                        var verify_token = consa.find('input[name=verify_pop1_token]').val();
+                        var agreement = consa.find('input[name=agreement]:checked').val();
+                        var real_name = $('.registered_modal_real').find('input[name=real_name]').val();
+                        var idcard = $('.registered_modal_real').find('input[name=idcard]').val();
+                        var prev_data = {account:account,password:password,repassword:repassword,agreement:agreement,verify_token,verify_token, verify_tag:verify_tag};
+                        $.ajax({
+                            type: 'post',
+                            dataType: 'json',
+                            url: '{:url("User/register",["gid"=>input("game_id"),"pid"=>input("pid")])}',
+                            data: {account:account,password:password,repassword:repassword,agreement:agreement, verify_tag:verify_tag,verify_token,verify_token,real_name:real_name,idcard:idcard,game_id:gid,promote_id:pid},
+                            success: function (data) {
+                                that.removeClass('no_send');
+                                if (data.code == 1) {
+                                    window.location.reload();
+                                    //register_success(consa,account);
+                                } else {
+                                    layer.msg(data.msg);
+                                }
+                            },
+                            error: function () {
+                                layer.confirm('请检查后重试', {
+                                    title:'提交失败',
+                                    btn: ['取消','重试']
+                                }, function(index){
+                                    layer.close(index);
+                                }, function () {
+                                    consa.find('.can_click').click();
+                                });
+                                that.removeClass('no_send');
+                            }
+                        });
+                        return false;
+                    });
+                    //下一步逻辑
+                    layero.on('click','.registered_modal_next_btn.can_click',function () {
+                        var account = consa.find('input[name=account]').val();
+                        var password = consa.find('input[name=password]').val();
+                        var repassword = consa.find('input[name=repassword]').val();
+                        var verify_tag = consa.find('input[name=verify_pop1_tag]').val();
+                        var verify_token = consa.find('input[name=verify_pop1_token]').val();
+                        var agreement = consa.find('input[name=agreement]:checked').val();
+                        var prev_data = {register_type:1,account:account,password:password,repassword:repassword,agreement:agreement, verify_tag:verify_tag,verify_token,verify_token};
+                        if(is_real_auth > 0) {
+                            real(prev_data,consa,next_btn);
+                        }
+                        return false;
+                    });
+
+                    layero.find('.close_login_modal').click(function () {
+                        if($('.registered_modal_pub').hasClass('from_login')) {
+                            $('.registered_modal_pub').removeClass('from_login');
+                            loginFun();
+                        } else {
+                            layer.close(index);
+                        }
+                        return false;
+                    });
+                },
+                end: function () {
+                    $('.registered_modal_pub').hide();
+                }
+            });
+        }
+    }
+
+    // 手机注册
+    function registerMobileFun() {
+        layer.closeAll()
+        var consa = $('.registered_modal_mob');
+        if (consa) {
+            if ($('.registered_modal_pub').hasClass('from_login')) {
+                $('.registered_modal_pub').removeClass('from_login');
+                consa.addClass('from_login');
+            }
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: false,
+                area: ['86%', window.registerHeightPhone],
+                offset: 'auto',
+                content: consa,
+                btnAlign: 'c',
+                shadeClose: false,
+                success: function (layero, index) {
+                    var registe_btn = consa.find('.registered_modal_pub_btn');
+                    consa.find('input').on('input propertychange',function(){
+                        change_submit_btn(consa,registe_btn);
+                    });
+                    consa.find('input').change(function () {
+                        change_submit_btn(consa,registe_btn);
+                    });
+
+                    var next_btn = consa.find('.registered_modal_next_btn');
+                    consa.find('input').on('input propertychange',function(){
+                        change_submit_btn(consa,next_btn);
+                    });
+                    consa.find('input').change(function () {
+                        change_submit_btn(consa,next_btn);
+                    });
+                    //发送验证码
+                    layero.find('.get_yanzhengma ').click(function () {
+                        var account = consa.find('input[name=account]').val();
+                        if (account) {
+                            verify_pop2_tag = $('input[name=verify_pop2_tag]').val();
+                            verify_pop2_token = $('input[name=verify_pop2_token]').val();
+                            if(verify_pop2_tag==''||verify_pop2_token==''){
+                                layer.msg('请先进行验证');
+                                return false;
+                            }
+                            var that = $(this);
+                            if (that.hasClass('no_send')) {return false;}
+                            $.ajax({
+                                type: 'post',
+                                dataType: 'json',
+                                url:'{:url("User/sendSms")}',
+                                data:{phone:account,verify_token:verify_pop2_token,verify_tag:verify_pop2_tag,reg:1},
+                                success:function (data) {
+                                    if(data.code==1){
+                                        // that.addClass('no_send');
+                                        clock(that);
+                                        layer.msg(data.msg);
+                                    }else{
+                                        layer.msg(data.msg);
+                                        $("#getcaptcha").click();
+                                    }
+
+                                },
+                                error:function () {
+                                    layer.msg('服务器故障，请稍候再试');
+                                }
+                            });
+                        } else {
+                            layer.msg('请输入手机号');
+                            return false;
+                        }
+                        return false;
+                    });
+                    //注册逻辑
+                    $('body').on('click','.registered_modal_pub_btn.registered_modal_mob_btn.can_click',function () {
+                        var that=$(this);
+                        if (that.hasClass('no_send')) {return false;}
+                        that.addClass('no_send');
+                        var account = consa.find('input[name=account]').val();
+                        var password = consa.find('input[name=password]').val();
+                        var repassword = consa.find('input[name=repassword]').val();
+                        var agreement = consa.find('input[name=agreement]:checked').val();
+                        var code = consa.find('input[name=code]').val();
+                        var verify_tag = consa.find('input[name=verify_pop2_tag]').val();
+                        var verify_token = consa.find('input[name=verify_pop2_token]').val();
+                        var real_name = $('.registered_modal_real').find('input[name=real_name]').val();
+                        var idcard = $('.registered_modal_real').find('input[name=idcard]').val();
+                        var data = {type: 1, account: account, password: password, repassword: repassword, agreement: agreement, verify_tag:verify_tag,verify_token,verify_token,code: code, real_name:real_name,idcard:idcard,game_id: gid, promote_id: pid}
+                        $.ajax({
+                            type: 'post',
+                            dataType: 'json',
+                            url: '{:url("User/register",["gid"=>input("game_id"),"pid"=>input("pid")])}',
+                            data: data,
+                            success: function (data) {
+                                that.removeClass('no_send');
+                                if (data.code == 1) {
+                                    //register_success(consa, account);
+                                    window.location.reload();
+                                } else {
+                                    layer.msg(data.msg);
+                                }
+                            },
+                            error: function () {
+                                layer.confirm('请检查后重试', {
+                                    title: '提交失败',
+                                    btn: ['取消', '重试']
+                                }, function (index) {
+                                    layer.close(index);
+                                }, function () {
+                                    consa.find('.can_click').click();
+                                });
+                                that.removeClass('no_send');
+                            }
+                        });
+                        return false;
+                    });
+
+                    //下一步逻辑
+                    layero.on('click','.registered_modal_next_btn.can_click',function () {
+                        var account = consa.find('input[name=account]').val();
+                        var password = consa.find('input[name=password]').val();
+                        var repassword = consa.find('input[name=repassword]').val();
+                        var verify_tag = consa.find('input[name=verify_pop1_tag]').val();
+                        var verify_token = consa.find('input[name=verify_pop1_token]').val();
+                        var code = consa.find('input[name=code]').val();
+                        var agreement = consa.find('input[name=agreement]:checked').val();
+                        var prev_data = {register_type:2,account:account,password:password,repassword:repassword,agreement:agreement, verify_tag:verify_tag,verify_token,verify_token,code:code};
+                        if(is_real_auth > 0 ) {
+                            real(prev_data,consa,next_btn);
+                        }
+                        return false;
+                    });
+
+                    layero.find('.close_login_modal').click(function () {
+                        if($('.registered_modal_mob').hasClass('from_login')) {
+                            $('.registered_modal_mob').removeClass('from_login');
+                            loginFun();
+                        } else {
+                            layer.close(index);
+                        }
+                        return false;
+                    });
+                },
+                end: function () {
+                    $('.registered_modal_mob').hide()
+                }
+            });
+
+        }
+    }
+    // 实名认证
+    function real(prev_data,prev,next_btn) {
+        $.ajax({
+            url:"{:url('user/nextBtnCheck')}",
+            type:'post',
+            data:prev_data,
+            success:function(data){
+                if(data.code==1){
+                    var consa = $('.registered_modal_real');
+                    consa.removeClass('hide');
+                    registe_btn = $('.registered_modal_pub_btn');//实名认证的注册按钮
+                    if(prev_data.register_type==2){
+                        consa.find('.registered_modal_pub_btn').addClass('registered_modal_mob_btn');
+                        registe_btn = $('.registered_modal_mob_btn');//实名认证的注册按钮
+                    }
+                    if (consa) {
+                        real_layer = layer.open({
+                            type: 1,
+                            title: false,
+                            closeBtn: false,
+                            area: ['86%', window.RealHeight],
+                            offset: 'auto',
+                            content: consa,
+                            btnAlign: 'c',
+                            shadeClose: false,
+                            success: function (layero, index) {
+                                consa.find('.registered_modal_real_prev').click(function(){
+                                    change_submit_btn(prev,next_btn);
+                                    layer.close(real_layer);
+                                });
+                                consa.find('input').on('input propertychange',function(){
+                                    change_submit_btn(consa,registe_btn);
+                                });
+                                consa.find('.close_login_modal').click(function(){
+                                    layer.closeAll();
+                                })
+                            },
+                            end: function() {
+                                consa.hide();
+                            }
+                        });
+                    }
+                }else{
+                    layer.msg(data.msg);
+                    return false;
+                }
+            }
+        })
+        return false;
+    }
+    // 注册成功弹窗
+    function register_success(pop_window, account) {
+        layer.closeAll()
+        var consa = $('.registered_result_modal');
+        $('.login_modal input[name=account]').val(account);
+        if (consa) {
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: false,
+                area: ['86%', '23rem'],
+                offset: 'auto',
+                content: consa,
+                btnAlign: 'c',
+                shadeClose: false,
+                success: function (layero, index) {
+                    layero.find('.close_login_modal').click(function () {
+                        layer.close(index);
+                        return false;
+                    });
+                },
+                end: function () {
+                    $('.registered_result_modal').hide();
+                    pop_window.find('input').val('');
+                    window.location.reload()
+                }
+            })
+        }
+    };
+    $('.modal_username').blur(function(){
+        $('.clear_text').hide()
+    })
+    // 倒计时
+    function clock(that) {
+        var t = 60;
+        var p = that.addClass('no_send').find('p');
+        p.text('正在发送(' + t + ')');
+        var a = setInterval(function () {
+            t--;
+            p.text('正在发送(' + t + ')');
+            t>0 || (p.text('获取验证码'),that.removeClass('no_send'), clearInterval(a))
+        }, 1000);
+        return a;
+    }
+
+    function htmlspecialchars_decode(str){
+        str = str.replace(/&amp;/g, '&');
+        str = str.replace(/&lt;/g, '<');
+        str = str.replace(/&gt;/g, '>');
+        str = str.replace(/&quot;/g, "''");
+        str = str.replace(/&#039;/g, "'");
+        return str;
+    }
+
+
+    //获取url中参数
+    function GetQueryString(name)
+    {
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    }
+
+    $(function () {
+        var user_info = {
+            account: '',
+            phone: '',
+            email: '',
+        };
+        $('.close_get_back_pwd_modal_one').click(function () {
+            loginFun();return false;
+        });
+        $('.get_back_pwd_modal_one_text').click(function () {
+            loginFun();return false;
+        });
+        $('.to_login').click(function () {
+            loginFun();return false;
+        });
+        $('.get_back_pwd_modal_two_intoemail').click(function(){
+            var that = $(this);
+            if (that.hasClass('no_click')) {return false;}
+            that.addClass('no_click');
+            setTimeout(function () {
+                var account = user_info.account || $(this).data('account');
+                if(!account) {account = $('.get_back_pwd_modal_one input[name=account]').val();}
+                if(account) {
+                    if (user_info.email) {
+                        that.removeClass('no_click');
+                        forget_email(account);
+                    } else {
+                        $.ajax({
+                            type: 'post',
+                            dataType: 'json',
+                            url: '{:url("User/forgetOnCheckUserInfo")}',
+                            data: {account: account, type: 'email'},
+                            success: function (data) {
+                                if (data.code == 1) {
+                                    user_info.account = account;
+                                    user_info.phone = data.data.phone;
+                                    user_info.email = data.data.email;
+                                    that.removeClass('no_click');
+                                    forget_email(account);
+                                } else {
+                                    layer.msg('当前账号未绑定邮箱，无法找回密码');that.removeClass('no_click');
+                                }
+                            },
+                            error: function () {
+                                layer.msg('服务器故障码，请稍候再试');that.removeClass('no_click');
+                            }
+                        });
+                    }
+                } else {
+                    layer.msg('帐号不存在，请重新输入');that.removeClass('no_click');
+                }
+            },200);
+            return false;
+        })
+        $('.get_back_pwd_modal_two_intotell').click(function(){
+            var that = $(this);
+            if(that.hasClass('no_click')) {return false;}
+            that.addClass('no_click');
+            setTimeout(function () {
+                var account = $(this).data('account');
+                if(!account) {account = $('.get_back_pwd_modal_one input[name=account]').val();}
+                if(account) {
+                    if (user_info.email) {
+                        that.removeClass('no_click');
+                        forget_sms(account);
+                    } else {
+                        $.ajax({
+                            type: 'post',
+                            dataType: 'json',
+                            url: '{:url("User/forgetOnCheckUserInfo")}',
+                            data: {account: account, type: 'phone'},
+                            success: function (data) {
+                                if (data.code == 1) {
+                                    user_info.account = account;
+                                    user_info.phone = data.data.phone;
+                                    user_info.email = data.data.email;
+                                    that.removeClass('no_click');
+                                    forget_sms(account);
+                                } else {
+                                    layer.msg('当前账号未绑定手机号，无法找回密码');that.removeClass('no_click');
+                                }
+                            },
+                            error: function () {
+                                layer.msg('服务器故障码，请稍候再试');that.removeClass('no_click');
+                            }
+                        });
+                    }
+                } else {
+                    layer.msg('帐号不存在，请重新输入');that.removeClass('no_click');
+                }
+            },200);
+
+            return false;
+        });
+        $('.user_zhuce_info').click(function(){
+            var userinfo_modal=layer.open({
+                skin:'no-border-radius',
+                type: 2,
+                title: false,
+                shadeClose: false,
+                closeBtn: 0,
+                shade: 0.1,
+                area: ['100%', '100%'],
+                content: "{:url('User/protocol')}"
+            });
+        })
+
+        $('.user_zhuce_yinsi').click(function(){
+            var userinfo_modal=layer.open({
+                skin:'no-border-radius',
+                type: 2,
+                title: false,
+                shadeClose: false,
+                closeBtn: 0,
+                shade: 0.1,
+                area: ['100%', '100%'],
+                content: "{:url('User/privacy')}"
+            });
+        })
+        // 登录
+        $('.login').click(function () {
+            redirect_url = $(this).data('href');
+            if(typeof(redirect_url) == "undefined"){
+                redirect_url = '';
+            }
+            loginFun(redirect_url);
+        });
+
+        var account_register_switch = "{$account_register_switch}";  // 0 关闭 1 开启
+        var phonenum_register_switch = "{$phonenum_register_switch}";  // 0 关闭 1 开启
+        // 普通注册
+        $('.zhuce').click(function () {
+            registerMobileFun();
+
+            if(phonenum_register_switch == 0){
+                if ($('.registered_modal_mob').hasClass('from_login')) {
+                    $('.registered_modal_mob').removeClass('from_login');
+                    $('.registered_modal_pub').addClass('from_login');
+                }
+                registerFun();
+            }
+
+        })
+        // 切换手机注册
+        $('.footer_text.to_mob').click(function () {
+            registerMobileFun();
+        });
+
+        // 切换普通注册
+        $('.footer_text.to_pub').click(function () {
+            if ($('.registered_modal_mob').hasClass('from_login')) {
+                $('.registered_modal_mob').removeClass('from_login');
+                $('.registered_modal_pub').addClass('from_login');
+            }
+            registerFun();
+        })
+        // 登录弹窗点击注册
+        $('.new_user').click(function () {
+
+            if(phonenum_register_switch == 0){
+                if ($('.registered_modal_mob').hasClass('from_login')) {
+                    $('.registered_modal_mob').removeClass('from_login');
+                    $('.registered_modal_pub').addClass('from_login');
+                }
+                registerFun();
+            }else{
+                $('.registered_modal_pub').addClass('from_login');
+                registerMobileFun();
+            }
+
+        })
+
+        //上一步
+        $('.footer_text.to_pre').click(function () {
+            if($(this).hasClass('account-pre')){
+                registerFun();
+                return false
+            }
+            if($(this).hasClass('mobile-pre')){
+                registerMobileFun();
+                return false
+            }
+
+        });
+
+        // 成功弹窗登录按钮
+        $('.result_btn').click(function () {
+            loginFun();
+            return false;
+        });
+
+        // 找回密码弹窗 -1
+        $('.fogget_pwd').click(function () {
+            layer.closeAll()
+            var consa = $('.get_back_pwd_modal_one');
+            if (consa) {
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: false,
+                    area: ['79%', window.forgetHeight],
+                    offset: 'auto',
+                    content: consa,
+                    btnAlign: 'c',
+                    shadeClose: true,
+                    success: function (layero) {
+
+                        layero.find('.get_back_pwd_modal_one_btn').click(function () {
+                            var that = $(this),account = consa.find('input[name=account]').val();
+                            if (account) {
+                                if (that.hasClass('no_send')) {return false;}
+                                that.addClass('no_send');
+                                $.ajax({
+                                    type: 'post',
+                                    dataType: 'json',
+                                    url: '{:url("User/forgetOnCheckAccount")}',
+                                    data: {account:account},
+                                    success: function (data) {
+                                        that.removeClass('no_send');
+                                        layer.msg(data.msg,{time:1000});
+                                        if(data.code == 1) {
+                                            user_info.account = account;
+                                            user_info.phone = data.data.phone;
+                                            user_info.email = data.data.email;
+                                            if(user_info.phone){
+                                                forget_sms(account);
+                                                if(user_info.email == ''){
+                                                    $('.get_back_pwd_modal_two_intoemail').hide();
+                                                    $('.get_back_pwd_modal_two_intotell').hide();
+                                                }
+                                            }else if(user_info.email){
+                                                forget_email(account);
+                                                $('.get_back_pwd_modal_two_intoemail').hide();
+                                                $('.get_back_pwd_modal_two_intotell').hide();
+                                            }
+                                        }
+                                    },
+                                    error:function () {
+                                        layer.msg('服务器故障，请稍候再试');
+                                        that.removeClass('no_send');
+                                    }
+                                });
+                            } else {
+                                layer.msg('账号不能为空');
+                            }
+                            return false;
+                        });
+
+                    },
+                    end: function () {
+                        $('.get_back_pwd_modal_one').hide()
+                    }
+                })
+            }
+        })
+        // 找回密码弹窗 -2
+        function forget_sms(account) {
+            layer.closeAll()
+            var consa = $('.get_back_pwd_modal_two');
+            if (consa) {
+                consa.find('.get_back_pwd_modal_two_intoemail').data('account',account);
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: false,
+                    area: ['79%', window.forgetHeightTwo],
+                    offset: 'auto',
+                    content: consa,
+                    btnAlign: 'c',
+                    shadeClose: true,
+                    success: function(layero, index) {
+                        var a;
+                        layero.find('.get_yanzhengma').click(function () {
+                            var phone = consa.find('input[name=phone]').val();
+                            if (phone) {
+                                verify_pop3_tag = $('input[name=verify_pop3_tag]').val();
+                                verify_pop3_token = $('input[name=verify_pop3_token]').val();
+                                if(verify_pop3_tag==''||verify_pop3_token==''){
+                                    layer.msg('请先进行验证');
+                                    return false;
+                                }
+                                var that = $(this);
+                                if (that.hasClass('no_send')) {return false;}
+                                that.addClass('no_send');
+                                a = clock($(this));
+                                $.ajax({
+                                    type: 'post',
+                                    dataType: 'json',
+                                    url:'{:url("User/sendSms")}',
+                                    data:{phone:phone,account:account,reg:2},
+                                    success:function (data) {
+                                        if(data.code==0){
+                                            clearInterval(a);
+                                            that.removeClass('no_send').find('p').text('获取验证码');
+                                        }
+                                        layer.msg(data.msg);
+                                    },
+                                    error:function () {
+                                        layer.msg('服务器故障，请稍候再试');
+                                        clearInterval(a);
+                                        that.removeClass('no_send').find('p').text('获取验证码');
+                                    }
+                                });
+                            } else {
+                                layer.msg('绑定手机号不能为空');
+                            }
+                            return false;
+                        });
+
+                        layero.on('click','.get_back_pwd_modal_two_btn',function () {
+                            var that=$(this);
+                            if (that.hasClass('no_send')) {return false;}
+                            that.addClass('no_send');
+                            var phone = consa.find('input[name=phone]').val();
+                            var code = consa.find('input[name=code]').val();
+                            $.ajax({
+                                type: 'post',
+                                dataType: 'json',
+                                url: '{:url("User/forgetOnCheckSms")}',
+                                data: {phone:phone, account:account, code:code},
+                                success: function (data) {
+                                    that.removeClass('no_send');
+                                    if (data.code == 1) {
+                                        clearInterval(a);
+                                        consa.find('.get_yanzhengma').removeClass('no_send').find('p').text('获取验证码');
+                                        consa.find('input').val('');
+                                        if (account == data.data.account) {
+                                            forget_pwd(account);
+                                        } else {
+                                            layer.msg('服务器故障，请稍候再试');
+                                        }
+                                    } else {
+                                        layer.msg(data.msg);
+                                    }
+                                },
+                                error: function () {
+                                    layer.msg('服务器故障，请稍候再试');
+                                    that.removeClass('no_send');
+                                }
+                            });
+
+                            return false;
+                        });
+
+                        layero.find('.close_login_modal').click(function () {
+                            layer.close(index);
+                            return false;
+                        });
+                    },
+                    end: function () {
+                        $('.get_back_pwd_modal_two').hide()
+                    }
+                })
+            }
+        };
+        // 找回密码
+        function forget_email(account) {
+            layer.closeAll()
+            var consa = $('.get_back_pwd_modal_email');
+            if (consa) {
+                consa.find('.get_back_pwd_modal_two_intotell').data('account',account);
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: false,
+                    area: ['79%', window.forgetHeightTwo],
+                    offset: 'auto',
+                    content: consa,
+                    btnAlign: 'c',
+                    shadeClose: true,
+                    success: function (layero, index) {
+                        var a;
+                        layero.find('.get_yanzhengma').click(function () {
+                            var email = consa.find('input[name=email]').val();
+                            if (email) {
+                                var that = $(this);
+                                if (that.hasClass('no_send')) {return false;}
+                                that.addClass('no_send');
+                                a = clock($(this));
+                                $.ajax({
+                                    type: 'post',
+                                    dataType: 'json',
+                                    url:'{:url("User/sendEmailCodeSend")}',
+                                    data:{email:email,account:account, reg: 2},
+                                    success:function (data) {
+                                        if(data.code==0){
+                                            clearInterval(a);
+                                            that.removeClass('no_send').find('p').text('获取验证码');
+                                        }
+                                        layer.msg(data.msg);
+                                    },
+                                    error:function () {
+                                        layer.msg('服务器故障，请稍候再试');
+                                        clearInterval(a);
+                                        that.removeClass('no_send').find('p').text('获取验证码');
+                                    }
+                                });
+                            } else {
+                                layer.msg('绑定邮箱不能为空');
+                            }
+                            return false;
+                        });
+
+                        layero.on('click','.get_back_pwd_modal_two_btn',function () {
+                            var that=$(this);
+                            if (that.hasClass('no_send')) {return false;}
+                            that.addClass('no_send');
+                            var email = consa.find('input[name=email]').val();
+                            var code = consa.find('input[name=code]').val();
+                            $.ajax({
+                                type: 'post',
+                                dataType: 'json',
+                                url: '{:url("User/forgetOnCheckEmailCode")}',
+                                data: {email:email, account:account, code:code},
+                                success: function (data) {
+                                    that.removeClass('no_send');
+                                    if (data.code == 1) {
+                                        clearInterval(a);
+                                        consa.find('.get_yanzhengma').removeClass('no_send').find('p').text('获取验证码');
+                                        consa.find('input').val('');
+                                        if (account == data.data.account) {
+                                            forget_pwd(account);
+                                        } else {
+                                            layer.msg('服务器故障，请稍候再试');
+                                        }
+                                    } else {
+                                        layer.msg(data.msg);
+                                    }
+                                },
+                                error: function () {
+                                    layer.msg('服务器故障，请稍候再试');
+                                    that.removeClass('no_send');
+                                }
+                            });
+
+                            return false;
+                        });
+
+                        layero.find('.close_login_modal').click(function () {
+                            layer.close(index);
+                            return false;
+                        });
+                    },
+                    end: function () {
+                        $('.get_back_pwd_modal_email').hide()
+                    }
+                })
+            }
+        }
+        // 找回密码弹窗 -3
+        function forget_pwd(account) {
+            layer.closeAll()
+            var consa = $('.get_back_pwd_modal_three');
+            if (consa) {
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: false,
+                    area: ['79%', window.forgetHeightThree],
+                    offset: 'auto',
+                    content: consa,
+                    btnAlign: 'c',
+                    shadeClose: true,
+                    success: function (layero, index) {
+                        var registe_btn = consa.find('.get_back_pwd_modal_three_btn');
+                        registe_btn.addClass('can_click');
+                        // consa.find('input').keyup(function () {
+                        //     change_submit_btn(consa,registe_btn);
+                        //     return false;
+                        // });
+
+                        layero.on('click','.can_click',function () {
+                            var that=$(this);
+                            if (that.hasClass('no_send')) {return false;}
+                            that.addClass('no_send');
+                            var password = consa.find('input[name=password]').val();
+                            var repassword = consa.find('input[name=repassword]').val();
+                            $.ajax({
+                                type: 'post',
+                                dataType: 'json',
+                                url: '{:url("User/forgetOnChangePassword")}',
+                                data: {account:account, password:password, repassword:repassword},
+                                success: function (data) {
+                                    that.removeClass('no_send');
+                                    if (data.code == 1) {
+                                        consa.find('input').val('');
+                                        forget_success(account);
+                                    } else {
+                                        layer.msg(data.msg);
+                                    }
+                                },
+                                error: function () {
+                                    layer.msg('服务器故障，请稍候再试');
+                                    that.removeClass('no_send');
+                                }
+                            });
+
+                            return false;
+                        });
+
+                        layero.find('.close_login_modal').click(function () {
+                            layer.close(index);
+                            return false;
+                        });
+                    },
+                    end: function () {
+                        $('.get_back_pwd_modal_three').hide()
+                    }
+                });
+            }
+        };
+        // 找回密码弹窗 -3
+        function forget_success(account) {
+            layer.closeAll()
+            var consa = $('.get_back_pwd_modal_four');
+            if (consa) {
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: false,
+                    area: ['79%', window.forgetHeightThree],
+                    offset: 'auto',
+                    content: consa,
+                    btnAlign: 'c',
+                    shadeClose: true,
+                    success: function (layero, index) {
+                        layero.find('.close_login_modal').click(function () {
+                            layer.close(index);
+                            return false;
+                        });
+                    },
+                    end: function () {
+                        $('.get_back_pwd_modal_four').hide()
+                    }
+                });
+            }
+        };
+
+		 // input 右侧x号 点击清除
+		$('body').on('focus', 'input[type=text],input[type=password],input[type=number]', function() {
+
+			$(this).siblings('.clear_texts').show()
+
+			return false;
+		});
+		$('body').on('blur', 'input[type=text],input[type=password],input[type=number]', function() {
+			$(this).siblings('.clear_texts').hide()
+			return false;
+		});
+		$('body').on('mousedown', '.clear_texts', function() {
+			$(this).hide().siblings('input').val('').focus();
+			parent = $(this).closest('.jsclear').data('value');
+			if(parent!=undefined){
+                change_but = "{$if_next}">0?'registered_modal_next_btn':'registered_modal_pub_btn';
+                if(parent='registered_modal_real'){
+                    change_but = 'registered_modal_pub_btn';
+                }
+                change_submit_btn($('.'+parent),$('.'+parent).find('.'+change_but))
+            }
+			return false;
+		});
+
+
+
+        // 点击同意
+        $('#agree_con').change(function () {
+            var registe_btn = $('.registered_modal_pub  .registered_modal_pub_btn');
+            if ($('#agree_con').prop('checked') === true) {
+                change_submit_btn($('.registered_modal_pub'),registe_btn);
+                $('.agree_con_img').prop('src', '__TMPL__/mobilepublic/assets/images/login_btn_s.png');
+            }
+            if ($('#agree_con').prop('checked') === false) {
+                registe_btn.removeClass('can_click');
+                $('.agree_con_img').prop('src', '__TMPL__/mobilepublic/assets/images/before_check.png');
+            }
+        })
+        $('#agree_con_two').change(function () {
+            var registe_btn = $('.registered_modal_mob  .registered_modal_pub_btn');
+            if ($('#agree_con_two').prop('checked') === true) {
+                change_submit_btn($('.registered_modal_mob'),registe_btn);
+                $('.agree_con_two_img').prop('src', '__TMPL__/mobilepublic/assets/images/login_btn_s.png')
+            }
+            if ($('#agree_con_two').prop('checked') === false) {
+                registe_btn.removeClass('can_click');
+                $('.agree_con_two_img').prop('src', '__TMPL__/mobilepublic/assets/images/before_check.png')
+            }
+        })
+    });
+
+
+//     var clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
+// $(window).on('resize', function () {
+//     var nowClientHeight = document.documentElement.clientHeight || document.body.clientHeight;
+//     if (clientHeight > nowClientHeight) {
+//         //键盘弹出的事件处理
+//         clientHeight.css("z-index","99999")
+//         $(".hj").attr("style","z-index:-11111111111");
+//         document.documentElement.addEventListener('touchstart', function (event) {
+//   if (event.touches.length > 1) {
+//     event.preventDefault();
+//     alert(111)
+//   }
+// }, false);
+//     }
+//     else {
+//         //键盘收起的事件处理
+//         $(".hj").attr("style","");
+//         alert("收起来")
+//     }
+// });
+$(function(){
+    // var u = navigator.userAgent;
+    // var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+    // var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    var bodywidth = $('body').width();
+    var bodyheight = $('body').height();
+   if(bodywidth >= bodyheight){
+      $('.ch_content').find(".list_xiaohao").css("font-size","1rem")
+      $('.ch_content').find(".last_login").css("font-size","0.83rem")
+      $('.ch_title').find(" .ch_choose").css("font-size","1rem",)
+      $('.chooseNum .ch_head a ').css("font-size","0.83rem")
+      $('.ch_title').css("margin-top","0.5rem")
+      $('.list_xiaohao').css("max-width","5.5rem")
+      $('.ch_shuoming').css({"width":"5.41rem","height":"2.3rem","font-size":"0.83rem"})
+      $('.ch_add').css({"width":"5.41rem","height":"2.3rem","font-size":"0.83rem"})
+      $('.ch_content ul').css({"max-height":"11rem","min-height":"11rem"})
+//添加小号 横屏
+      $('.servicepop-con2').css({"width":"10.945rem","margin":"0 0 0 -4.6rem"})
+      $('.ch_head p').css({"padding-top":"0.3rem","font-size":"0.645rem"});
+      $('.add_content').css({"margin-top":"0.85rem","padding":"0px 0px 0.3rem 0"});
+      $('.add_content .ch_input').css({"width":"9.515rem","height":"1.455rem"});
+      $('.add_bottom button').css({"height":"1.73rem","font-size":"0.57rem","line-height":"1.73rem"});
+      $('.ch_head').css({"height":"1.56rem"});
+//小号说明 横屏
+      $('.servicepop-con1').css({"width":"13.5rem","margin":"0 0 0 -6.1rem"})
+      $('.sh_content').css({"margin-top":"0.45rem","font-size":"0.57rem","line-height":"0.855rem","padding":"0 0.715rem 0 0.715rem"});
+      $('.sh_head p').css({"font-size":"0.6rem","line-height":"1.03rem"});
+      $('.sh_head').css({"padding":"0.325rem 0.425rem 0 0.425rem"});
+      $('.sh_line').css({"margin-bottom":"0.7rem "});
+      $('.sh_bottom').css({"font-size":"0.6rem","line-height":"0.27rem","padding":"0.63rem 0 0.615rem 0","border-top":"0.03rem solid rgba(153,153,153,0.6)"});
+
+   }
+
+})
+
+
+</script>

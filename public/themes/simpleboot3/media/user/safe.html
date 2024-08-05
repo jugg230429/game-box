@@ -1,0 +1,103 @@
+<extend name="../mediapublic/base" />
+<!-- 主体内容 -->
+<block name="body">
+    <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/account_gl.css">
+    <!-- 用户信息 -->
+    <div class="userinfo_con">
+        <div class="layui-container">
+            <div class="fl left_user_info">
+                <div class="left_user_info_img">
+                    <img src="{:cmf_get_image_url($user['head_img'])}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                    <span class="levelIcon">V{$user['vip_level']}</span>
+                </div>
+                <!-- <div class="left_user_info_grade">
+                    <if condition="$user['vip_level'] gt 0">
+                        <img src="__STATIC__/images/my_ico_grade{$user['vip_level']}.png" alt="" >
+                    </if>
+
+                </div> -->
+                <p class="left_user_info_name">{$user.nickname}</p>
+                <div class="checked_item_con">
+                    <include file="mediapublic@left_menu" />
+                </div>
+            </div>
+            <div class="fl right_user_info">
+                    <div class="right_user_info_title">
+                        <p class="fl right_user_info_title_left">账号管理</p>
+                        <p class="fg right_user_info_title_right">您当前的位置：<a href="{:url('Index/index')}">平台首页</a>><a href="{:url('User/userinfo')}"> 用户中心</a>><span>账号管理</span></p>
+                    </div>
+                    <div class="update_pwd_con update_pwd_con_">
+                        <div class="update_pwd_con_item">
+                            <div class="update_pwd_con_item_img fl">
+                                <img src="__STATIC__/images/account_ico_password.png" alt="">
+                            </div>
+                            <div class="update_pwd_con_item_info fl">
+                                <p class="one">登录密码</p>
+                                <p class="two">互联网账号存在被盗风险，建议您定期更改密码以保护账号安全。</p>
+                            </div>
+                            <if condition="in_array($user['register_type'],[0,1,2,7])">
+                            <a href="{:url('User/password')}">
+                                <div class="update_pwd_con_item_btn fg">
+                                    <p>修改</p>
+                                </div>
+                            </a>
+                            </if>
+                        </div>
+                        <div class="update_pwd_con_item">
+                            <div class="update_pwd_con_item_img fl">
+                                <img src="__STATIC__/images/account_ico_verification.png" alt="">
+                            </div>
+                            <div class="update_pwd_con_item_info fl">
+                                <p class="one">手机验证<notempty name="user.phone">：</notempty>{:hideStar($user['phone'])}</p>
+                                <p class="two">可用于找回密码。</p>
+                            </div>
+
+                            <a href="phone.html">
+                                <div class="update_pwd_con_item_btn fg">
+                                    <p><empty name="user.phone">去验证<else/>修改</empty></p>
+                                </div>
+                            </a>
+
+                        </div>
+                        <div class="update_pwd_con_item">
+                            <div class="update_pwd_con_item_img fl">
+                                <img src="__STATIC__/images/account_ico_mail.png" alt="">
+                            </div>
+                            <div class="update_pwd_con_item_info fl">
+                                <p class="one">邮箱验证<notempty name="user.email">：</notempty>{:hideStar($user['email'])}</p>
+                                <p class="two">可用于找回密码。</p>
+                            </div>
+
+                            <a href="email.html">
+                                <div class="update_pwd_con_item_btn fg">
+                                    <p><empty name="user.email">去验证<else/>修改</empty></p>
+                                </div>
+                            </a>
+
+                        </div>
+
+                        <div class="update_pwd_con_item">
+                            <div class="update_pwd_con_item_img fl">
+                                <img src="__STATIC__/images/account_ico_mail.png" alt="">
+                            </div>
+                            <div class="update_pwd_con_item_info fl">
+                                <p class="one">支付密码</p>
+                                <p class="two">可用于平台币/绑币充值到游戏时使用。</p>
+                            </div>
+                            <a href="second_password.html">
+                                <div class="update_pwd_con_item_btn fg">
+                                    <p>去设置</p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="update_pwd_con_tap clear">
+                            <p class="one">温馨提示</p>
+                            <p class="two">1、请填写真实有效的手机号/邮箱，是用户找回密码的唯一途径。</p>
+                            <p class="three">2、本平台会对用户的所有资料进行严格保密。</p>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</block>

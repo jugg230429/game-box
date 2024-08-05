@@ -1,0 +1,120 @@
+<include file="public@header"/>
+<style type="text/css">
+    .pic-list li {
+        margin-bottom: 5px;
+    }
+</style>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <!-- <div class="margin-top-20">
+            <a href="javascript:;" class="btn  btn-success">溪谷短信</a>
+    </div> -->
+    <ul class="nav nav-tabs">
+        <li class="active"><a>阿里云短信</a></li>
+		<span class="title_remark">说明：用于配置短信通知功能相关参数的功能</span>
+        <!-- <li><a href="">other</a></li> -->
+    </ul>
+	<div class="describe">
+		<div>阿里云短信为第三方短信平台，如需使用可至阿里云官网进行购买。<br>阿里云地址：<a href="https://www.aliyun.com" target="_blank">https://www.aliyun.com</a></div>
+	</div>
+    <form action="{:url('AdminMsg/doSave')}" method="post" class="form-horizontal js-ajax-form margin-top-20">
+        <div class="form-group">
+            <label for="input-name" class="col-sm-1 control-label">accessKeyId</label>
+            <div class="col-md-6 col-sm-10">
+                <input type="text" class="form-control user-input" name="appid" value="{$data.appid}" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input-name" class="col-sm-1 control-label">accessSecret</label>
+            <div class="col-md-6 col-sm-10">
+                <input type="text" class="form-control user-input" name="secret" value="{$data.secret}" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input-name" class="col-sm-1 control-label">签名名称</label>
+            <div class="col-md-6 col-sm-10">
+                <input type="text" class="form-control user-input" name="public_tid" value="{$data.public_tid}" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input-name" class="col-sm-1 control-label">验证码模板CODE</label>
+            <div class="col-md-6 col-sm-10">
+                <input type="text" class="form-control user-input" name="captcha_tid" value="{$data.captcha_tid}" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input-name" class="col-sm-1 control-label">出售小号模板CODE</label>
+            <div class="col-md-6 col-sm-10">
+                <input type="text" class="form-control user-input" name="sell_tid" value="{$data.sell_tid}" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input-name" class="col-sm-1 control-label">注销通知模板CODE</label>
+            <div class="col-md-6 col-sm-10">
+                <input type="text" class="form-control user-input" name="unsubscribe_tid" value="{$data.unsubscribe_tid}" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input-name" class="col-sm-1 control-label">注销验证模板CODE</label>
+            <div class="col-md-6 col-sm-10">
+                <input type="text" class="form-control user-input fl" name="unsub_verify_tid" value="{$data.unsub_verify_tid}" />
+                <span class="fl user-remarks" style="width:550px">例：【XX科技】您的的账号即将注销，验证码为#CODE，十分钟内有效，请确认后点击验证。</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input-name" class="col-sm-1 control-label">每日通知模板CODE</label>
+            <div class="col-md-6 col-sm-10">
+                <input type="text" class="form-control user-input" name="everyday_notice_tid" value="{$data.everyday_notice_tid}" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="input-name" class="col-sm-1 control-label">玩家阶段提醒通知</label>
+            <div class="col-md-6 col-sm-10">
+                <php>
+                    $data['user_stage_tid'] = isset($data['user_stage_tid']) ? $data['user_stage_tid'] : '';
+                </php>
+                <input type="text" class="form-control user-input" name="user_stage_tid" value="{$data.user_stage_tid}" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="input-name" class="col-sm-1 control-label">每日IP发放数量</label>
+            <div class="col-md-6 col-sm-10">
+                <input type="text" class="form-control user-input fl" name="client_send_max" value="{$data.client_send_max}" />
+				<span class="fl user-remarks">0或空则不限制</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input-name" class="col-sm-1 control-label">状态</label>
+            <div class="col-md-6 col-sm-10">
+                <span class="select-wrapper">
+                <label class="radio-inline fl  mr100">
+                    <input type="radio" <if condition="$data['status'] eq 1">checked</if> name="status" value="1"> 开启
+                </label>
+                <label class="radio-inline fl">
+                    <input type="radio" <if condition="$data['status'] eq 0">checked</if> name="status" value="0"> 锁定
+                </label>
+                </span>
+				<span class="fl user-remarks user-remarks-msg" style="width: 600px">短信接口启用状态，选择关闭时，用户在PC / WAP / APP / SDK / 推广平台上则无法进行获取验证码操作</span>
+            </div>
+        </div>
+
+        <input type="hidden" name="id" value="{$data.id}" />
+        <div class="form-group">
+            <div class="col-sm-offset-1 col-sm-10">
+                <button type="submit" class="btn btn-primary js-ajax-submit save-btn">{:lang('SAVE')}</button>
+                <a class="btn btn-default return-btn" href="javascript:history.back(-1)">{:lang('BACK')}</a>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript">
+    $(function () {
+
+    });
+</script>
+</body>
+</html>

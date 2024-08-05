@@ -1,0 +1,89 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/newCoupon.css">
+</block>
+
+<block name="body">
+    <div class="coupon_lists_page">
+        <div class="coupon_lists_header couponHeader">
+            <a href="javascript:;" onclick="back()"><img src="__TMPL__/mobilepublic/assets/images/tab_btn_banck.png" alt="" class="fl back_icon"></a>
+            <p class="coupon-list-title">领劵中心</p>
+            <eq name="session.login_auth" value="0">
+                <a href="javascript:;" class="question_btn login">我的代金券</a>
+            <else/>
+                <a href="{:url('mobile/coupon/index')}" class="question_btn">我的代金券</a>
+            </eq>
+            <div class="couponSearchbox">
+                <input type="text" class="search-title" name="game_name" id="game_name" value="{:input('game_name','')}" placeholder="输入要搜索的游戏">
+                <i class="searchIconImg"></i>
+            </div>
+        </div>
+        <!-- 内容为空时 -->
+        <empty name="game_lists">
+            <div class="emptyCouponBox">
+                <img src="__TMPL__/mobilepublic/assets/images/coupon/img-zwyhq.png" alt="">
+            </div>
+        </empty>
+        <div class="coupon-game-tab">
+           <div>
+               <ul>
+                   <volist name="game_lists" id="vo">
+                        <li class="couponList-item">
+                            <a href="{:url('mobile/game/detail',['game_id'=>$vo['game_id']])}">
+                            <div class="leftMoney">
+                                    <div class="itemPic">
+                                        <img src="{:cmf_get_image_url($vo['icon'])}" alt="">
+                                    </div>
+                                    <div class="centerContent-detail">
+                                        <p class="center-title">{$vo['game_name']}</p>
+                                        <p class="center-limiter">
+                                            <span>{$vo['game_type_name']}</span>
+                                            <span>{$vo['game_size']}</span>
+                                        </p>
+                                        <php>
+                                            $tag_name = explode(',',$vo['tag_name']);
+                                        </php>
+                                        <p class="center-bottomContent">
+                                            <volist name="tag_name" id="vos">
+                                                <span class="center-bottom">{$vos}</span>
+                                            </volist>
+                                        </p>
+                                    </div>
+                            </div>
+                            </a>
+                            <div class="rightMoney">
+                               <p class="redCountNum"><span>￥</span><span class="numberCount">{$vo['coupon_money']}</span></p>
+                               <p class="totalCoupon">共<span>{$vo['coupon_num']}</span>张券</p>
+                                <eq name="session.login_auth" value="0">
+                                    <a href="javascript:;" class="getCouponBtn login">领取</a>
+                                <else/>
+                                    <if condition="$vo['is_can_receive'] eq 1">
+                                        <a href="{:url('mobile/game/game_detail_coupon',['relation_game_id'=>$vo['relation_game_id']])}" class="getCouponBtn">领取</a>
+                                    <else/>
+                                        <a href="javascript:;" class="getCouponBtn" style="background:#929292">已领完</a>
+                                    </if>
+                                </eq>
+                            </div>
+                        </li>
+                   </volist>
+
+               </ul>
+           </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+        function back() {
+            location.href = "{:url('mobile/index/index')}";
+        }
+
+         $(function () {
+             $(".searchIconImg").click(function () {
+                 var game_name = $("#game_name").val();
+                 location.href = "{:url('mobile/game/coupon')}?game_name=" + game_name
+             })
+         })
+
+    </script>
+</block>

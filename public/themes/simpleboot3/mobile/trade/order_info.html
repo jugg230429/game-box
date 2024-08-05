@@ -1,0 +1,272 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/mui.min.css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/trade_record.css">
+    <style>
+        body{
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .trade_record_page{
+            width: 100vw;
+            height: calc(100vh - 4rem);
+            overflow: auto;
+            /*-webkit-overflow-scrolling: touch;*/
+        }
+        .record-info-contain {
+            padding-bottom: 0;
+
+        }
+    </style>
+</block>
+
+<block name="body">
+    <div class="trade_record_page">
+        <div class="trade_record_header">
+            <a href="{:url('trade/record')}">
+<!--            <a href="javascript:history.back()">-->
+                <img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon"></a>
+            <p class="trade-record-title">订单详情</p>
+
+        </div>
+        <div class="record-info-contain">
+            <div class="order-num-box v-middle">
+                <span>订单编号：{$data.pay_order_number}</span>
+                <a href="javascript:;" class="copy-btn js-copy" data-clipboard-text="{$data.pay_order_number}">复制编号</a>
+            </div>
+            <div class="order-content-box">
+                <div class="trumpet-base-info">
+                    <div class="game-info-box v-middle">
+                        <img src="{:cmf_get_image_url($data['icon'])}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null" class="trumpet-game-icon">
+                        <div class="game-info">
+                            <p class="game-name">{$data.game_name}</p>
+                            <p class="game-account">小号：{$data.small_account}</p>
+                            <p class="account-price">￥<span>{$data.pay_amount}</span></p>
+                        </div>
+                    </div>
+                    <div style="position: relative">
+                    <div class="trumpet-server v-middle">
+                        <i class="server-icon"></i>
+                        <p ><span>区服</span>{$data.server_name}</p>
+                    </div>
+                    <div class="trumpet-consume v-middle">
+                        <i class="consume-icon"></i>
+                        <p ><span>累计消费(元)</span>{$data.cumulative}</p>
+                    </div>
+                    <if condition="$data['password'] && $data['pay_status'] eq 1">
+                        <div class="trumpet-password v-middle">
+                            <i class="pw-icon"></i>
+                            <p ><span>二级密码</span>{$data['password']}</p>
+                        </div>
+                    </if>
+                    <i class="official-img checked"></i>
+                    </div>
+                </div>
+                <div class="trumpet-detail-info">
+                    <div class="trumpet-detail-box">
+                        <div class="v-middle">
+                            <p class="title">小号详情</p>
+                            <p class="tips">如描述与截图有出入，请以截图为准</p>
+                        </div>
+                        <div class="trumpet-detail-content">
+                            <p class="trumpet-detail-text">{$data.title}</p>
+                            <p style="color: #999999;font-size: 1.09rem;margin-top: 0.5rem">{$data.dec}</p>
+                            <div class="game-pic-list">
+                                <ul class="v-top ">
+                                    <volist name="data.screenshot" id="vo">
+                                        <li class="game-pic-item">
+                                            <img src="{:cmf_get_image_url($vo)}" data-preview-src="" data-preview-group="1" />
+                                        </li>
+                                    </volist>
+                                </ul>
+                                <empty name="data.screenshot">
+                                    <div class="no-game-pic" >等待截图上传中~</div>
+                                </empty>
+                            </div>
+
+                            <div class="publication-date">
+                                发布日期：{:get_user_transaction($data.transaction_id,'create_time')['create_time']}
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <div class="footer-fixed-box">
+
+        <!--买号-立即支付-->
+        <a data-value="<empty name='union_set.qq'>{:cmf_get_option('kefu_set')['pc_set_server_qq']}<else />{$union_set['qq']}</empty>" href="javascript:;" class="btn_qq jschatqq" > <img src="__TMPL__/mobilepublic/assets/images/trade/write_bar_btn_service@2x.png" alt="" style="width: 1.956rem;margin-left: 1.486rem"></a>
+        <if condition="$data['pay_status'] eq 2">
+            <if condition="get_down_status2($data.relation_game_id,get_devices_type()) eq true">
+                <a <eq name="session.app_user_login" value="1">style="display:none;"</eq> class="download-btn" href="{:url('Downfile/down',['game_id'=>$data['relation_game_id'],'sdk_version'=>get_devices_type()])}">下载</a>
+                <else/>
+                <a <eq name="session.app_user_login" value="1">style="display:none;"</eq> class="download-btn disabled">下载</a>
+            </if>
+            <a href="{:url('index',['key'=>$detail['game_name']])}" class="buy-btn" <eq name="session.app_user_login" value="1">style="width: 26.44rem;"</eq>>查看该游戏其他商品</a>
+            <elseif condition="$data['pay_status'] eq 1"/>
+            <if condition="get_down_status2($data.relation_game_id,get_devices_type()) eq true">
+                <a <eq name="session.app_user_login" value="1">style="display:none;"</eq> class="download-btn" href="{:url('Downfile/down',['game_id'=>$data['relation_game_id'],'sdk_version'=>get_devices_type()])}">下载</a>
+                <else/>
+                <a <eq name="session.app_user_login" value="1">style="display:none;"</eq> class="download-btn disabled">下载</a>
+            </if>
+            <a href="javascript:;" class="buy-btn disabled" <eq name="session.app_user_login" value="1">style="width: 26.44rem;"</eq>>已购买</a>
+            <elseif condition="$data['pay_status'] eq 0 && (time()-$data['pay_time']) gt 300"/>
+            <if condition="get_down_status2($data.relation_game_id,get_devices_type()) eq true">
+                <a <eq name="session.app_user_login" value="1">style="display:none;"</eq> class="download-btn" href="{:url('Downfile/down',['game_id'=>$data['relation_game_id'],'sdk_version'=>get_devices_type()])}">下载</a>
+                <else/>
+                <a <eq name="session.app_user_login" value="1">style="display:none;"</eq> class="download-btn disabled">下载</a>
+            </if>
+            <a href="{:url('index',['key'=>$data['game_name']])}" class="buy-btn" <eq name="session.app_user_login" value="1">style="width: 26.44rem;"</eq>>查看该游戏其他商品</a>
+            <else/>
+            <a href="javascript:;" class="to-pay-btn js-buy" data-id="{$data['id']}" data-url1="{:url('api/Pay/get_wx_code')}" data-url="{:url('pay',['id'=>$data['id']])}">立即前往支付<span id="pay-time"></span></a>
+        </if>
+    </div>
+    <div class="pop"></div>
+</block>
+<block name="script">
+    <script src="__STATIC__/js/layui/layui.js"></script>
+    <script src="__TMPL__/mobilepublic/assets/js/pop.lwx.min.js"></script>
+    <script src="__TMPL__/mobilepublic/assets/js/mui.min.js"></script>
+    <script src="__TMPL__/mobilepublic/assets/js/mui.zoom.js"></script>
+    <script src="__TMPL__/mobilepublic/assets/js/mui.previewimage.js"></script>
+    <script>
+        is_xgkf ="{:get_xgkf_info(0)}";
+        xgkf_url = "{:get_xgkf_info(1)}";
+        $(function () {
+            //复制订单编号
+            copy( $('.js-copy').attr('data-clipboard-text'),$('.js-copy'));
+            //图片查看
+            mui.previewImage();
+            mui('body').on('click','a',function(){
+                window.top.location.href=this.href;
+            });
+            $('.jschatqq').click(function() {
+                var qq = $.trim($(this).attr('data-value'));
+                var u = navigator.userAgent;
+                $mt = "{:get_devices_type()}";
+                if(is_xgkf == 1){
+                    try{
+                        if($mt==2){
+                            window.webkit.messageHandlers.sy_app_xgkf_url.postMessage(xgkf_url);
+                        }else{
+                            // window.location.href = xgkf_url;
+                            window.open(xgkf_url);
+                        }
+                    }catch (e) {
+                        // window.location.href = xgkf_url;
+                        window.open(xgkf_url);
+                        return false;
+                    }
+                }else{
+                    try{
+                        if($mt==2){
+                            window.webkit.messageHandlers.sy_small_serviceQQ.postMessage(1);
+                        }else{
+                            window.mengchuang.sy_small_serviceQQ();
+                        }
+                    }catch (e) {
+                        var is_mobile = "{:cmf_is_mobile()}";
+                        if (is_mobile) {
+                            window.location.href="mqqwpa://im/chat?chat_type=wpa&uin="+qq+"&version=1&src_type=web";
+                        }else
+                            window.location.href="http://wpa.qq.com/msgrd?v=3&uin="+qq+"&site=qq&menu=yes";
+                        return false;
+                    }
+                }
+            });
+            //5分钟倒计时
+            const countDown = (second) => {
+                const s = second % 60;
+                const m = Math.floor(second / 60);
+                return `${`00${m}`.slice(-2)}:${`00${s}`.slice(-2)}`;
+
+            };
+            let time = Math.abs(300-{:abs($data['pay_time']-time())});
+            if(time <300){
+                const timer = setInterval(() => {
+                    const show = countDown(time--);
+                    $('#pay-time').html(`(${show})`);
+                    if(time < 0) {
+                        clearInterval(timer);
+                    }
+
+                }, 1000);
+            }
+            //去支付
+            $(".js-buy").click(function () {
+                var url = $(this).data('url');
+                var url1 = $(this).data('url1');
+                var id = $(this).data('id');
+                var is_wechat = "{:cmf_is_wechat()}";
+                var is_company_weixin = "{:cmf_is_company_wechat()}";
+                if(is_wechat == 1 && !is_company_weixin){
+                    var generateHideElement = function (name, value) {
+                        var tempInput = document.createElement("input");
+                        tempInput.type = "hidden";
+                        tempInput.name = name;
+                        tempInput.value = value;
+                        return tempInput;
+                    }
+                    var form = document.createElement("form");
+                    document.body.appendChild(form);
+                    var  weixin_pay_type = generateHideElement("weixin_pay_type", 3),
+                    trade_id = generateHideElement("id", id);
+                    form.appendChild(weixin_pay_type);
+                    form.appendChild(trade_id);
+                    form.method = "post";
+                    form.action = url1;
+                    form.submit();
+                }else{
+                    $.ajax({
+                        type: 'post',
+                        dataType: 'json',
+                        url: url,
+                        async:false,
+                        success: function (data) {
+                            if (data.code == 1) {
+                                //支付返回信息统一跳转,如是支付宝支付,再行判断wap和APP(只有安卓)
+                                if(data.data.ali_app == 1){
+                                    //支付宝APP支付-通知安卓
+                                    window.mengchuang.appaliapppay(data.data.arg);//安卓
+                                    return false;
+                                }
+                                //其他URL跳转的
+                                window.location.href = data.url;
+                            }else{
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.msg('服务器故障，请稍候再试');
+                            that.removeClass('no_send');
+                        }
+                    });
+                }
+                return false;
+            })
+        });
+
+        function copy(str,that){
+            text = str;
+            var clipboard = new Clipboard('.js-copy',{
+                text: function() {
+                    return text;
+                }
+            });
+            clipboard.on('success', function(e) {
+                 layer.msg('<p>已复制</p>');
+                e.clearSelection();
+                clipboard.destroy();
+            });
+            clipboard.on('error', function(e) {
+                layer.msg('此浏览器不支持此操作，请长按礼包码复制');
+            })
+        }
+    </script>
+</block>

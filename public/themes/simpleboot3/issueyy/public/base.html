@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="frontend" content="Robin">
+  <meta content="yes" name="apple-mobile-web-app-capable">
+  <meta content="black" name="apple-mobile-web-app-status-bar-style">
+   <meta content="telephone=no" name="format-detection">
+  <link href="" type="image/x-icon" rel="shortcut icon">
+
+  <link rel="stylesheet" href="__JS__/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="__JS__/swiper/swiper.min.css">
+  <link rel="stylesheet" href="__JS__/layui/css/layui.css">
+  <style>
+    .show {
+      display: block;
+      text-align: center!important;
+      width: 100%!important
+    }
+
+    .hide {
+      display: none;
+      text-align: center!important;
+      width: 100%!important
+    }
+
+    #embed-captcha {
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .geetest_copyright,
+    .geetest_feedback {
+      display: none !important;
+    }
+    .geetest_box {
+      margin:1rem 8.6%
+    }
+    .to_login {
+      left: -7.2rem;
+    }
+    .geetest_holder.geetest_wind {
+      width: 100% !important;
+      min-width: 100px !important;
+    }
+    .geetest_holder.geetest_wind .geetest_btn {
+      width: 100% !important;
+    }
+    .geetest_goto_wrap {
+      display: none;
+    }
+  </style>
+  <block name="css"></block>
+  <script src="__JS__/jquery-1.11.1.min.js"></script>
+  <script src="__STATIC__/js/layui/layui.js"></script>
+  <script>
+
+     $(function () {
+	      let val = document.body.clientWidth/10.8/3;
+	      $('html').css('fontSize',val+'px');
+	 })
+    //全局变量
+    var GV = {
+      ROOT: "/",
+      WEB_ROOT: "/",
+      JS_ROOT: "static/js/"
+    };
+
+  </script>
+</head>
+<body>
+
+<block name="body"></block>
+
+<script src="__JS__/layer/mobile/layer.js"></script>
+<script src="__JS__/layui/layui.all.js"></script>
+<script src="__JS__/swiper/swiper.min.js"></script>
+<script src="__JS__/bootstrap/bootstrap.min.js"></script>
+<block name='script'></block>
+</body>
+</html>

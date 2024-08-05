@@ -1,0 +1,215 @@
+<a href="{:url('User/userinfo')}">
+    <div class="checked_item <if condition='$action_name eq userinfo'>active</if>">
+        <div class="fl">
+
+            <if condition='$action_name eq userinfo'>
+                <img src="__STATIC__/images/user_ico_name_s.png" alt="">
+                <else/>
+                <img src="__STATIC__/images/user_ico_about_n.png" alt="">
+            </if>
+			
+        </div>
+        <div class="fl">
+            <p>我的资料</p>
+        </div>
+       
+    </div>
+</a>
+<a href="{:url('User/realauth')}">
+    <div class="checked_item <if condition='$action_name eq realauth'>active</if>">
+        <div class="fl">
+            <if condition='$action_name eq realauth'>
+                <img src="__STATIC__/images/user_ico_authentication_s.png" alt="">
+                <else/>
+                <img src="__STATIC__/images/user_ico_authentication_n.png" alt="">
+            </if>
+
+        </div>
+        <div class="fl">
+            <p>实名认证</p>
+        </div>
+    </div>
+</a>
+
+<a href="{:url('User/safe')}">
+    <div class="checked_item <if condition='($action_name eq safe) or ($action_name eq password) or ($action_name eq phone) or ($action_name eq email) or ($action_name eq phone_check) or ($action_name eq email_check) or ($action_name eq second_password)'>active</if>">
+        <div class="fl">
+            <if condition='$action_name eq safe or $action_name eq password or $action_name eq phone or $action_name eq email or $action_name eq phone_check or $action_name eq email_check'>
+                <img src="__STATIC__/images/user_ico_number_s.png" alt="">
+                <else/>
+                <img src="__STATIC__/images/user_ico_number_n.png" alt="">
+            </if>
+        </div>
+        <div class="fl">
+            <p>账号管理</p>
+        </div>
+    </div>
+</a>
+
+<if condition="AUTH_GAME eq 1 and AUTH_PAY eq 1">
+<a href="{:url('User/rebate')}">
+    <div class="checked_item <if condition='$action_name eq rebate or $action_name eq coupon'>active</if>">
+        <div class="fl">
+            <if condition='$action_name eq rebate or $action_name eq coupon'>
+                <img src="__STATIC__/images/user_bar_ico_benefits_s.png" alt="">
+                <else/>
+                <img src="__STATIC__/images/user_bar_ico_benefits_n.png" alt="">
+            </if>
+        </div>
+        <div class="fl">
+            <p>我的福利</p>
+        </div>
+    </div>
+</a>
+</if>
+
+<if condition="AUTH_GAME eq 1">
+    <a href="{:url('User/mygame')}">
+        <div class="checked_item <if condition='$action_name eq mygame or $action_name eq mycollect'>active</if>">
+            <div class="fl">
+                <if condition='$action_name eq mygame or $action_name eq mycollect'>
+                    <img src="__STATIC__/images/user_ico_game_s.png" alt="">
+                    <else/>
+                    <img src="__STATIC__/images/user_ico_game_n.png" alt="">
+                </if>
+            </div>
+            <div class="fl">
+                <p>我的游戏</p>
+            </div>
+        </div>
+    </a>
+    <a href="{:url('User/mygift')}">
+        <div class="checked_item <if condition='$action_name eq mygift or $action_name eq myoverduegift'>active</if>">
+            <div class="fl">
+                <if condition='$action_name eq mygift or $action_name eq myoverduegift'>
+                    <img src="__STATIC__/images/user_ico_giftl_s.png" alt="">
+                    <else/>
+                    <img src="__STATIC__/images/user_ico_giftl_n.png" alt="">
+                </if>
+            </div>
+            <div class="fl">
+                <p>我的礼包</p>
+            </div>
+        </div>
+    </a>
+</if>
+<if condition="AUTH_PAY eq 1 and AUTH_GAME eq 1 and AUTH_USER eq 1">
+    <a href="{:url('User/myorder')}">
+        <div class="checked_item <if condition='$action_name eq myorder'>active</if>">
+            <div class="fl">
+                <if condition='$action_name eq myorder'>
+                    <img src="__STATIC__/images/user_ico_bill_s.png" alt="">
+                    <else/>
+                    <img src="__STATIC__/images/user_ico_bill_n.png" alt="">
+                </if>
+            </div>
+            <div class="fl">
+                <p>游戏账单</p>
+            </div>
+        </div>
+    </a>
+</if>
+<if condition="AUTH_PAY eq 1 and AUTH_GAME eq 1 and AUTH_USER eq 1">
+    <a href="{:url('User/integral')}">
+        <div class="checked_item <if condition='$action_name eq integral or $action_name eq integral_pay'>active</if>">
+            <div class="fl">
+                <if condition='$action_name eq integral or $action_name eq integral_pay'>
+                    <img src="__STATIC__/images/user_ico_integral_s.png" alt="">
+                    <else/>
+                    <img src="__STATIC__/images/user_ico_integral_n.png" alt="">
+                </if>
+            </div>
+            <div class="fl">
+                <p>积分明细</p>
+            </div>
+        </div>
+    </a>
+</if>
+<if condition="AUTH_PAY eq 1 and AUTH_USER eq 1">
+    <a href="{:url('User/pay_record')}">
+        <div class="checked_item <if condition='$action_name eq pay_record or $action_name eq bind_record'>active</if>">
+            <div class="fl">
+                <if condition='$action_name eq pay_record or $action_name eq bind_record'>
+                    <img src="__STATIC__/images/user_ico_seach_s.png" alt="">
+                    <else/>
+                    <img src="__STATIC__/images/user_ico_seach_n.png" alt="">
+                </if>
+            </div>
+            <div class="fl">
+                <p>充值记录</p>
+            </div>
+        </div>
+    </a>
+</if>
+<if condition="AUTH_GAME eq 1 and AUTH_USER eq 1">
+    <a href="{:url('User/bind_lists')}">
+        <div class="checked_item <if condition='$action_name eq bind_lists'>active</if>">
+            <div class="fl">
+                <if condition='$action_name eq bind_lists'>
+                    <img src="__STATIC__/images/pay_icon_tape_s.png" alt="">
+                <else/>
+                    <img src="__STATIC__/images/pay_icon_tape.png" alt="">
+                </if>
+            </div>
+            <div class="fl">
+                <p>绑币余额</p>
+            </div>
+        </div>
+    </a>
+</if>
+<if condition="AUTH_GAME eq 1 and AUTH_USER eq 1">
+    <a href="{:url('User/my_tips')}">
+        <div class="checked_item myNotice <if condition='$action_name eq my_tips or $action_name eq reward or $action_name eq demo_task or $action_name eq open_service_remind or $action_name eq comment_back or $action_name eq rebate_remind'>active</if>">
+            <div class="fl">
+                <if condition='$action_name eq my_tips'>
+                    <img src="__STATIC__/images/icon-info-s.png" alt="">
+                <else/>
+                    <img src="__STATIC__/images/icon-info.png" alt="">
+                </if>
+            </div>
+            <div class="fl">
+                <php>
+                    $unread_num = get_unread_msg(session('member_auth.user_id'));
+                </php>
+
+                <if condition="$unread_num gt 0">
+                    <p>
+                        我的消息
+                    </p>
+                    <i class="noticeUnchecked"></i>
+                <else/>
+                    <p>
+                        我的消息
+                    </p>
+                </if>
+            </div>
+        </div>
+    </a>
+</if>
+<style>
+
+    body,.indexpage {
+        background: #f7f7f7;
+    }
+    .userinfo_con {
+        height: auto;
+        min-height: 605px;
+        margin-bottom: 30px;
+        margin-top: 22px;
+    }
+    .left_user_info_grade{
+        display: none!important;
+    }
+    .myNotice {
+        position: relative;
+    }
+    .noticeUnchecked {
+        position: absolute;
+        right: 44%;
+        top: 22px;
+        background: red;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%
+    }
+</style>

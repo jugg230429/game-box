@@ -1,0 +1,27 @@
+<IfModule mod_rewrite.c>
+  Options +FollowSymlinks -Multiviews
+  RewriteEngine On
+
+  #重写推广应用名
+  RewriteCond %{REQUEST_METHOD} ^(GET) [NC]
+  RewriteRule ^channelsite$ /tg [R=301,L]
+  RewriteCond %{REQUEST_METHOD} ^(GET) [NC]
+  RewriteRule ^tg$ /index.php/channelsite [L]
+  RewriteCond %{REQUEST_METHOD} ^(GET) [NC]
+  RewriteRule ^tg(.*?)$ /index.php/channelsite$1 [L]
+  RewriteCond %{REQUEST_METHOD} ^(GET) [NC]
+  RewriteRule ^channelsite(.*?)$ /tg$1 [R=301,L]
+  #重写商户应用名
+  RewriteCond %{REQUEST_METHOD} ^(GET) [NC]
+  RewriteRule ^business$ /sw [R=301,L]
+  RewriteCond %{REQUEST_METHOD} ^(GET) [NC]
+  RewriteRule ^sw$ /index.php/business [L]
+  RewriteCond %{REQUEST_METHOD} ^(GET) [NC]
+  RewriteRule ^sw(.*?)$ /index.php/business$1 [L]
+  RewriteCond %{REQUEST_METHOD} ^(GET) [NC]
+  RewriteRule ^business(.*?)$ /sw$1 [R=301,L]
+  #隐藏index.php
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^(.*)$ index.php?s=$1 [QSA,PT,L]
+</IfModule>

@@ -1,0 +1,110 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('lists')}">区服列表</a></li>
+            <!-- <li><a href="{:url('batch')}">添加区服</a></li> -->
+        </ul>
+        <form id="search_form" class="well form-inline fr" method="get" action="{:url('lists')}" onsubmit="return check();">
+            <select name="game_id" id="game_id" class="selectpicker " game_id="{:input('request.game_id')}" data-live-search="true"  data-size="8">
+                <option value="">游戏名称</option>
+                <volist name=":get_game_list('id,game_name,sdk_version')" id="vo">
+                    <option value="{$vo.id}" >{$vo.game_name}<eq name="vo.sdk_version" value="3">（H5）</eq></option>
+                </volist>
+            </select>
+            <neq name="PERMI" value="2">
+            <select name="sdk_version" id="sdk_version" class="selectpicker" sdk_version="{:input('request.sdk_version')}">
+                <option value="">运营平台</option>
+                <option value="1" <if condition="input('request.sdk_version') eq 1">selected</if>>安卓</option>
+                <option value="2" <if condition="input('request.sdk_version') eq 2">selected</if>>苹果</option>
+                <eq name="PERMI" value="3"><option value="3" <if condition="input('request.sdk_version') eq 3">selected</if>>H5</option></eq>
+                <eq name="YPERMI" value="1"><option value="4" <if condition="input('request.sdk_version') eq 4">selected</if>>PC</option></eq>
+            </select>
+            </neq>
+            <select name="status" id="status" class="selectpicker" status="{:input('request.status')}">
+                <option value="">显示状态</option>
+                <option value="0" <if condition="input('request.status') eq '0'">selected</if>>关闭</option>
+                <option value="1" <if condition="input('request.status') eq '1'">selected</if>>开启</option>
+            </select>
+            <input type="text" class="form-control js-bootstrap-date" name="start_time" id="start_time" placeholder="开服开始时间"
+                   value="{:input('request.start_time/s','')}" style="width: 140px;" autocomplete="off">-
+            <input type="text" class="form-control js-bootstrap-date" name="end_time" id="end_time" placeholder="开服结束时间"
+                   value="{:input('request.end_time/s','')}" style="width: 140px;" autocomplete="off">
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('lists')}">清空</a>
+            <a class="btn btn-export js-ajax-dialog-btn-xz" data-msg="确定导出吗？" href="{:url('Export/expUser',array_merge(['id'=>1,'xlsname'=>'游戏_区服列表'],input()))}">导出</a>
+        </form>
+        <form class="js-ajax-form" action="" method="post">
+            <div class="table-actions position" style="margin-left: -10px;">
+                <a href="{:url('batch')}" class="btn btn-success js-ajax-submit mtb17">添加区服</a>
+                <button class="btn btn-danger  js-ajax-submit mtb17" type="submit"
+                        data-action="{:url('del')}" data-subcheck="true" data-msg="您确定删除吗？">
+                    删除
+                </button>
+            </div>
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" id="all-checkbox" class="table-item-checkbox js-check-all" data-direction="x" data-checklist="js-check-x">
+                            <label for="all-checkbox" class=""></label>
+                        </th>
+                        <th>ID</th>
+                        <th>游戏名称</th>
+                        <th>区服名称</th>
+                        <th>运营平台</th>
+                        <th>显示状态</th>
+                        <th>开服时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <empty name="data_lists">
+                        <tr><td colspan="7" style="text-align: center;">暂无数据</td></tr>
+                    <else/>
+                        <foreach name="data_lists" item="vo">
+                        <tr>
+                            <td><input type="checkbox" id="ids-checkbox{$vo.id}" class="table-item-checkbox js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
+                                       value="{$vo.id}" title="ID:{$vo.id}">
+                                <label for="ids-checkbox{$vo.id}" class=""></label>
+                            </td>
+                            <td>{$vo.id}</td>
+                            <td>{:get_game_name($vo['game_id'])}</td>
+                            <td>{$vo['server_name']}</td>
+                            <td>{:get_info_status($vo['sdk_version'],5)}</td>
+                            <td><a href="{:url('setstatus',['id'=>$vo['id'],'status'=>$vo['status']])}" class="js-ajax-dialog-btn" data-msg="确定要操作吗？"><span <if condition="$vo['status'] eq 1"> class="label label-success"<else/>class="label label-danger"</if>>{$vo['status_name']}</span></a></td>
+                            <td>{$vo['start_time']|date='Y-m-d H:i:s',###}</td>
+                            <td>
+                                <a href="{:url('edit',['id'=>$vo['id']])}">编辑</a>
+                                <a href="{:url('del',['ids'=>$vo['id']])}" class="js-ajax-delete" data-msg="确定要删除吗？">删除</a>
+                            </td>
+                        </tr>
+                        </foreach>
+                    </empty>
+                </tbody>
+            </table>
+            <div class="pagination">
+                {$page}
+            </div>
+        </form>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script type="text/javascript">
+        game_id = $("#game_id").attr('game_id');
+        $("#game_id").selectpicker('val', game_id);
+        $("#sdk_version").selectpicker('val', $('#sdk_version').attr('sdk_version'));
+        $("#status").selectpicker('val', $('#status').attr('status'));
+        function check(){
+            var start_time = $("#start_time").val();
+            var end_time = $("#end_time").val();
+            if(start_time != '' && end_time != '' && start_time > end_time){
+                layer.msg('开始时间不能大于结束时间');
+                return false;
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>

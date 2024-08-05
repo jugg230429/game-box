@@ -1,0 +1,1021 @@
+<extend name="../mediapublic/base" />
+<!-- 主体内容 -->
+<block name="body">
+    <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/invest_money.css">
+    <link href="__TMPL__/public/assets/css/select2.min.css" rel="stylesheet" />
+    <div class="zhanweidiv">&nbsp;</div>
+    <div class="layui-container invest_mon_con">
+        <div class="fl mon_left">
+            <div class="invest_type">
+                <div class="invest_type_first">
+                    <p>选择充值方式</p>
+                </div>
+                <if condition="pay_type_status('zfb') eq 1" >
+                    <div class="other_invest_type" data-paytype="zfb">
+                        <div class="invest_type_sx fl"></div>
+                        <p class="fl"><img src="__STATIC__/images/Rechargemode_ico_Alipay.png" class="fl"><span class="fl">支付宝支付</span>
+                        </p>
+                    </div>
+                </if>
+                <if condition="pay_type_status('wxscan') eq 1">
+                    <div class="other_invest_type" data-paytype="weixin">
+                        <div class="invest_type_sx fl"></div>
+                        <p class="fl"><img src="__STATIC__/images/Rechargemode_ico_WeChat.png" class="fl"><span class="fl">微信支付</span> </p>
+                    </div>
+                </if>
+                <if condition="pay_type_status('ptb_pay') eq 1">
+                    <div class="other_invest_type" data-paytype="ptb">
+                        <div class="invest_type_sx fl"></div>
+                        <p class="fl"><img src="__STATIC__/images/Recharge mode_ico_ptb.png" class="fl"><span class="fl">平台币</span> </p>
+                    </div>
+                </if>
+                <if condition="pay_type_status('bind_pay') eq 1 and YPERMI eq 1">
+                    <div class="other_invest_type" data-paytype="bind">
+                        <div class="invest_type_sx fl"></div>
+                        <p class="fl"><img src="__STATIC__/images/Recharge mode_ico_bb.png" class="fl"><span class="fl">绑币</span> </p>
+                    </div>
+                </if>
+            </div>
+        </div>
+        <div class="fl mon_mid">
+            <div class="clear mon_mid_first">
+                <p class="mon_mid_first_title">您好，您当前选择的是<span id="invest_type">支付宝支付</span>的充值方式<span class="pay-record"><a href="javascript:void(0);" class="pay_record">充值记录</a></span></p>
+                <div class="mon_mid_first_hx"></div>
+                <div class="mon_mid_first_con">
+                    <form class="jsform">
+                        <p class="mid_con_firstline">
+                            <label>充值到 ：</label>
+                            <span class="coin-type-wrapper js-coin-type">
+                            <if condition="get_ptb_bind_recharge_status('ptb_pay') eq 1">
+                                <label class="ml10 coin-type-platform coin-platform">
+                                    <input type="radio" id="coin_type_platform" name="coin_type" value="0" checked hidden>
+                                    <i class="radio-icon"></i>
+                                    <span>充值到平台币</span>
+                                </label>
+                            </if>
+
+                            <if condition="get_ptb_bind_recharge_status('ptb_pay') eq 0 and get_ptb_bind_recharge_status('bind_pay') eq 1">
+                                <label class="ml10 coin-type-platform coin-bind">
+                                    <input type="radio" id="coin_type_bind" name="coin_type" value="-1" checked hidden>
+                                    <i class="radio-icon"></i>
+                                    <span>充值到绑币</span>
+                                </label>
+                            <elseif condition="get_ptb_bind_recharge_status('ptb_pay') eq 1 and get_ptb_bind_recharge_status('bind_pay') eq 1">
+                                <label class="ml10 coin-type-platform coin-bind">
+                                    <input type="radio" id="coin_type_bind" name="coin_type" value="-1" hidden>
+                                    <i class="radio-icon"></i>
+                                    <span>充值到绑币</span>
+                                </label>
+                            </if>
+
+                            <if condition="YPERMI eq 1">
+                            <if condition="get_ptb_bind_recharge_status('ptb_pay') eq 0 and get_ptb_bind_recharge_status('bind_pay') eq 0">
+                            <label class="ml10 coin-type-bind coin-game">
+                                <input type="radio" id="coin_type_game" name="coin_type" value="1" checked hidden>
+                                <i class="radio-icon"></i>
+                                <span>充值到游戏</span>
+                            </label>
+                            <else/>
+                            <label class="ml10 coin-type-bind coin-game">
+                                <input type="radio" id="coin_type_game" name="coin_type" value="1" hidden>
+                                <i class="radio-icon"></i>
+                                <span>充值到游戏</span>
+                            </label>
+                            </if>
+                            </if>
+                            </span>
+                        </p>
+
+                        <if condition="get_ptb_bind_recharge_status('ptb_pay') eq 1">
+                        <div class="platform-coin mid_con_second_tap"><img src="__STATIC__/images/common_ico_attion.png" alt=""
+                                class="fl">
+                            <p class="fl">平台币是手游平台统一的虚拟货币，玩家可使用平台币在游戏内购买道具等。</p>
+                        </div>
+                        </if>
+                        <p class="bind-coin mid_con_towline">
+                            <label for="account">选择游戏 ：</label>
+                            <select id="game_id" name="game_is" class="tab-input js-select-gallery subchannel-select-gallery">
+                                <option data-discount="10" value="">请选择游戏</option>
+                                <volist name=":get_game_list('id,game_name,sdk_version',$map)" id="vo">
+                                    <option value="{$vo.id}" data-discount="10">{$vo.game_name}<if condition="$vo['sdk_version'] eq 3">（H5）</if></option>
+                                </volist>
+                            </select>
+                        </p>
+                        <p class="game-coin mid_con_towline">
+                            <label for="account">选择游戏 ：</label>
+                            <php>
+                                $map['g.sdk_version'] = 4;
+                                $map['a.sue_pay_type'] = 1;
+                            </php>
+                            <select id="ygame_id" name="ygame_id" class="tab-input js-select-gallery subchannel-select-gallery">
+                                <option value="">请选择游戏</option>
+                                <volist name=":get_game_list('g.id,g.game_name,g.currency_ratio,g.currency_name',$map,null,'g.id desc',true)" id="vo">
+                                    <option data-percent="{$vo.currency_ratio}" data-currency_name="{$vo.currency_name}" value="{$vo.id}">{$vo.game_name}</option>
+                                </volist>
+                            </select>
+                        </p>
+                        <p class="game-coin mid_con_towline mid_con_towline_fw" >
+                            <label for="account">选择服务器 ：</label>
+                            <select id="server_id" name="server_id" class="tab-input js-select-gallery subchannel-select-gallery">
+                                <option value="">请选择服务器</option>
+                            </select>
+                        </p>
+                        <p class="mid_con_thirdline"><label for="account">充值账号 ：</label><input type="text" id="account" value="{$session['login_account']}"></p>
+                        <p class="mid_con_fouistyline"><label for="reaccount">确认充值账号 ：</label><input type="text" id="reaccount" value="{$session['login_account']}"></p>
+                        <div class="mid_con_fivistyline">
+                            <p class="fl">充值金额 ：</p>
+                            <div class="fl invest_mon_info">
+                                <div class=" invest_mon_num">
+                                    <label for="mon_10">
+                                    <input type="radio" name="invest_money" id="mon_10" checked value="10" hidden>
+                                    <i class="radio-icon"></i>
+                                    <span>10元</span></label>
+                                </div>
+                                <div class=" invest_mon_num">
+                                    <label for="mon_30">
+                                    <input type="radio" name="invest_money" id="mon_30" value="30" hidden>
+                                        <i class="radio-icon"></i>
+                                        <span>30元</span>
+                                    </label>
+                                </div>
+                                <div class=" invest_mon_num">
+                                    <label for="mon_50">
+                                    <input type="radio" name="invest_money" id="mon_50" value="50" hidden>
+                                        <i class="radio-icon"></i>
+                                        <span>50元</span>
+                                    </label>
+                                </div>
+                                <div class=" invest_mon_num">
+                                    <label for="mon_100">
+                                    <input type="radio" name="invest_money" id="mon_100" value="100" hidden>
+                                        <i class="radio-icon"></i>
+                                        <span>100元</span>
+                                    </label>
+                                </div>
+                                <div class=" invest_mon_num">
+                                    <label for="mon_200">
+                                    <input type="radio" name="invest_money" id="mon_200" value="200" hidden>
+                                        <i class="radio-icon"></i>
+                                        <span>200元</span>
+                                    </label>
+                                </div>
+                                <div class=" invest_mon_num">
+                                    <label for="mon_300">
+                                    <input type="radio" name="invest_money" id="mon_300" value="300" hidden>
+                                        <i class="radio-icon"></i>
+                                        <span>300元</span>
+                                    </label>
+                                </div>
+                                <div class=" invest_mon_num">
+                                    <label for="mon_500">
+                                    <input type="radio" name="invest_money" id="mon_500" value="500" hidden>
+                                        <i class="radio-icon"></i>
+                                        <span>500元</span>
+                                    </label>
+                                </div>
+                                <div class=" invest_mon_num">
+                                    <label for="mon_1000">
+                                    <input type="radio" name="invest_money" id="mon_1000" value="1000" hidden>
+                                        <i class="radio-icon"></i>
+                                        <span>1000元</span>
+                                    </label>
+                                </div>
+                                <div class=" invest_mon_num">
+                                    <label for="mon_5000">
+                                    <input type="radio" name="invest_money" id="mon_5000" value="5000" hidden>
+                                        <i class="radio-icon"></i>
+                                        <span>5000元</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="clear other_invest_mon">
+                                <label for="other_mon">
+                                <input type="radio" name="invest_money" id="other_mon" min="1" max="50000" hidden>
+                                    <i class="radio-icon"></i>
+                                    <span>其它金额</span>
+                                </label>
+                                <!-- <input type="text" id="other_mon_num" onkeyup="this.value = this.value.replace(/\D|^0/g, '0');" maxlength="5"> -->
+                                <input type="text" id="other_mon_num" onkeyup="this.value = this.value.replace(/\D|^0/g, '');" maxlength="5">
+                                <span>元</span>
+                                <span style="color: rgba(153, 153, 153, 1)">（请输入1-50000之间的整数）</span>
+                            </div>
+                            <if condition="get_ptb_bind_recharge_status('ptb_pay') eq 1">
+                            <div class="platform-coin invest_col">
+                                <p class="fl invest_col_one">您将获得：<span class="ml6"><span id="invest_mon_connum">10</span>平台币</span>
+                                </p>
+                                <p class="fl invest_col_two">（兑换比例：1元=1平台币）</p>
+                            </div>
+                            </if>
+
+                        </div>
+
+
+                        <div class="bind-coin game-coin mid-con-six-line">
+                            <label>折扣比例 ：</label>
+                            <span class="pay-discount-ratio"><i class="discount">10</i> 折</span>
+                        </div>
+
+                        <div class="bind-coin game-coin mid-con-six-line">
+                            <label>实付金额 ：</label>
+                            <span class="pay-real-money js-pay-real-money">10</span>
+                        </div>
+
+                        <div class="bind-coin game-coin mid-con-six-line">
+                            <label>获得<span class="game-coin-name">绑币</span> ：</label>
+                            <span class="pay-bind-coin js-pay-bind-coin">10</span>
+                        </div>
+                        <div class=" game-coin mid-con-six-line js-scale">
+                            <label>充值比例 ：</label>
+                            <span class="">1元=<span class="js-percent"></span>游戏币</span>
+                        </div>
+                        <div class="invest_btn clear" style="margin-left: 86px;">
+                            <span>立即充值</span>
+                        </div>
+
+
+                    </form>
+
+                </div>
+            </div>
+            <div class="clear mon_mid_second">
+                <p class="mon_mid_second_p">温馨提示</p>
+                <div class="zhifubao_tap">
+                    <p>支付宝支付说明</p>
+                    <p>1.支付宝余额支付：只要您的支付宝账户中存有余额，即可进行充值。</p>
+                    <p>2.银行卡支付：只要您拥有与支付宝公司合作银行中的任意一张银行卡，即可进行充值</p>
+                </div>
+                <div class="weixin_tap">
+                    <p>微信支付说明</p>
+                    <p>1.您的微信账号须绑定银行卡并设置支付密码</p>
+                    <p>2.您所绑定的银行卡中须存有余额</p>
+                    <p>3.如有疑问,请联系我们在线客服或拨打客服电话</p>
+                </div>
+				<div class="pingtai_tap">
+				    <p>平台币充游戏说明</p>
+                    <p>1.必须设置支付密码以后才可以用平台币充值游戏</p>
+                    <p>2.平台币可以通过活动或其他充值渠道获取</p>
+                    <p>3.平台币充游戏可以充1-50000任意金额</p>
+                    <p>4.平台币充游戏更为快捷</p>
+				</div>
+				<div class="bangbi_tap">
+				    <p>绑币充游戏说明</p>
+                    <p>1.必须设置支付密码以后才可以用绑币充值游戏</p>
+                    <p>2.绑币可以通过活动或其他充值渠道获取</p>
+                    <p>3.绑币充游戏可以充1-50000任意金额</p>
+                    <p>4.绑币充游戏更为快捷</p>
+				</div>
+            </div>
+        </div>
+        <div class="fl mon_right">
+            <div class="clear mon_right_first">
+                <p class="mon_right_first_title">客服中心</p>
+                <div class="service_con">
+                    <p><img src="__STATIC__/images/common_ico_service.png" alt=""></p>
+                    <div class="online_ser">
+                        <a
+                        <if condition="get_xgkf_info(0) eq 1"> href="{:get_xgkf_info(1)}"  <else/>
+                                href="http://wpa.qq.com/msgrd?v=3&amp;uin=<if condition='$union_set[qq]'>{$union_set['qq']}<else/>{:cmf_get_option('kefu_set')['pc_set_server_qq']}</if>&amp;site=qq&amp;menu=yes"
+                        </if>
+                                target="_blank">
+                            <span>在线客服</span>
+                        </a>
+                    </div>
+                    <p class="mt23">客服电话：<span class="kf-number"><if condition="$union_set['tel']">{$union_set['tel']}</span>
+                        <else /><span class="kf-number">{:cmf_get_option('kefu_set')['pc_set_server_tel']}</span></if></p>
+                    <p class="mt8">E-mail：<span class="kf-number"><if condition="$union_set['mailbox']">{$union_set['mailbox']}</span>
+                        <else /><span class="kf-number">{:cmf_get_option('kefu_set')['pc_set_server_emai']}</span></if></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 确认充值弹窗 -->
+    <div id="invest_mon_money" class="invest_mon_money">
+        <form id="submit_form" action="" method="post" target="_blank">
+            <img src="__STATIC__/images/login_btn_close_n.png" alt="">
+            <p class="invest_modal_firstline">确认充值信息</p>
+            <p class="invest_modal_type">您的充值方式 : <span class="pay_type"></span></p>
+            <p class="invest_modal_name">您的充值账号 : <span class="pay_account"></span></p>
+            <p class="invest_modal_game" hidden>充值游戏 : <span class="pay_game_name"></span></p>
+            <p class="invest_modal_num">您的金额 : <span class="pay_money"></span>元</p>
+            <p class="invest_ptmodal_num">充值所得 : <span class="deposit"></span><span class="money_type">平台币</span></p>
+            <input type="hidden" name="pay_type" id="pay_type">
+            <input type="hidden" name="account" id="pay_account">
+            <input type="hidden" name="game_id" id="c_game_id">
+            <input type="hidden" name="ygame_id" id="c_ygame_id">
+            <input type="hidden" name="pay_password" id="pay_password">
+            <input type="hidden" name="server_id" id="c_server_id">
+            <input type="hidden" name="coin_type" id="c_coin_type" value="0">
+            <input type="hidden" name="money" id="money">
+            <input type="hidden" name="order_no" id="orderno">
+            <input type="hidden" name="is_pc" value="1">
+            <input type="hidden" name="other" value="{:input('other','')}">
+            <button class="submit_btn" type="button">立即充值</button>
+        </form>
+    </div>
+    <!-- 充值结果弹窗 -->
+    <div id="invest_mon_end" class="invest_mon_end">
+        <img src="__STATIC__/images/delete_icon.png" alt="">
+        <p class="invest_mon_end_firstline">请在新打开的支付页面上完成付款充值</p>
+        <p class="invest_mon_end_secondline">付款前请不要关闭或刷新此窗口</p>
+        <div class="invest_mon_end_thirdline">
+            <div class="lookinvest" onclick="checkResult();">
+                <p>查看充值结果</p>
+            </div>
+            <div class="investproblem">
+                <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin={:cmf_get_option('kefu_set')['pc_set_server_qq']}&amp;site=qq&amp;menu=yes"><p>付款遇到问题</p></a>
+            </div>
+            <div class="comeback">
+                <p>返回</p>
+            </div>
+        </div>
+    </div>
+    <script src="__TMPL__/public/assets/js/bootstrap.min.js"></script>
+    <script src="__TMPL__/public/assets/js/select2.min.js"></script>
+<script>
+    cp_gameid = "{$game_id}";
+    cp_serverid = "{$server_id}";
+    orderno='';
+    coin_type=0;
+    alipay_url = "{:url('Pay/alipay')}";
+    weixinpay_url = "{:url('Pay/weixinpay')}";
+    ptb_url = "{:url('Pay/platformpay')}";
+    bind_url = "{:url('Pay/bindpay')}";
+	set_password_url = "{:url('User/second_password')}";
+    var pay_discount = 10;
+    var money_percent = 1;
+    var pay_money = 10;
+    $(document).ready(function () {
+        $(".js-select-gallery").select2();
+        $("#game_id").change(function () {
+            var game_id = $("#game_id").find("option:selected").val();
+            //根据游戏id和玩家查询折扣
+            pay_discount = $("#game_id").find("option:selected").attr('data-discount');
+            money_percent= 1;
+            // update_money();
+            $("#c_game_id").val(game_id);
+            $(".pay_game_name").text($("#game_id").find("option:selected").text());
+            var account = $("#account").val();
+            if(account != '' && game_id > 0){
+                $.ajax({
+                    type: 'post',
+                    url: '{:url("Pay/checkuserplay")}',
+                    async: false,
+                    data: {account: account,game_id:$("#game_id").find("option:selected").val()},
+                    dataType: 'json',
+                    success: function(data) {
+                        if(data.code == 0) {
+                            layer.msg(data.msg);
+                        }
+                    },
+                });
+                //查询账号在当前游戏的折扣,仅用于显示
+                $.ajax({
+                    type: 'post',
+                    url: '{:url("Pay/get_account_game_bind_discount")}',
+                    async: false,
+                    data: {account: account,game_id:$("#game_id").find("option:selected").val()},
+                    dataType: 'json',
+                    success: function(data) {
+                        pay_discount = data.discount;
+                        $(".discount").html(pay_discount)
+                        update_money()
+                    },
+                });
+
+            }
+        })
+        $("#ygame_id").change(function () {
+            $("#server_id").select2("val", "");
+            $("#server_id").empty();
+            var game_id = $("#ygame_id").find("option:selected").val();
+
+            if(game_id == ''){
+                pay_discount = 10;
+                money_percent = 1;
+                update_money();
+                $('#server_id').append("<option game_discount='' value=''>请选择服务器</option>");
+                $("#server_id").select2("val", "");
+                return false;
+            }
+
+            money_percent = $("#ygame_id").find("option:selected").attr('data-percent');
+				$(".js-percent").text(money_percent);
+            var pay_type = $(".other_invest_type_active").attr('data-paytype');
+            var account = $("#account").val();
+            $.ajax({
+                type: 'post',
+                url: '{:url("Pay/get_server_list")}',
+                async: false,
+                data: {game_id: game_id,pay_type:pay_type,account:account},
+                dataType: 'json',
+                success: function(data) {
+                    if(data.data){
+                        $('#server_id').append("<option value=''>请选择服务器</option>");
+                        var option = '';
+                        $.each(data.data,function (key,value) {
+                            option+="<option value='";
+                            option+=value['id']+"'";
+                            option+=" >"+value['server_name'];
+                            option+="</option>";
+                        });
+                        $('#server_id').append(option);
+                        $("#server_id").select2("val", "");
+                    }
+                    pay_discount = data.discount;
+                    $("#c_ygame_id").val($("#ygame_id").find("option:selected").val());
+                    $(".pay_game_name").text($("#ygame_id").find("option:selected").text());
+                },
+            });
+            update_money();
+        })
+        $("#account").blur(function () {
+            var account = $("#account").val();
+            var game_id = $("#game_id").val();
+            var ygame_id = $("#ygame_id").val();
+            var server_id = $("#server_id").val();
+            var coin_type = $("input[name='coin_type']:checked").val();
+            if(account == ''){
+                layer.msg('请输入用户名');
+                return false;
+            }
+            if(game_id > 0){
+                $.ajax({
+                    type: 'post',
+                    url: '{:url("Pay/checkuserplay")}',
+                    async: false,
+                    data: {account: account,game_id:$("#game_id").find("option:selected").val()},
+                    dataType: 'json',
+                    success: function(data) {
+                        if(data.code == 0) {
+                            layer.msg(data.msg);
+                        }
+                    },
+                });
+
+                //查询账号在当前游戏的折扣,仅用于显示
+                $.ajax({
+                    type: 'post',
+                    url: '{:url("Pay/get_account_game_bind_discount")}',
+                    async: false,
+                    data: {account: account,game_id:$("#game_id").find("option:selected").val()},
+                    dataType: 'json',
+                    success: function(data) {
+                        pay_discount = data.discount;
+                        $(".discount").html(pay_discount)
+                        update_money()
+                    },
+                });
+            }else if (ygame_id > 0 && server_id > 0){
+                $.ajax({
+                    type: 'post',
+                    url: '{:url("Pay/checkyyuserplay")}',
+                    async: false,
+                    data: {account: account,game_id:ygame_id,server_id:server_id},
+                    dataType: 'json',
+                    success: function(data) {
+                        if(data.code == 0) {
+                            layer.msg(data.msg);
+                        }
+                    },
+                });
+            }
+        });
+        $("#server_id").change(function () {
+            var account = $("#account").val();
+            var ygame_id = $("#ygame_id").val();
+            var server_id = $("#server_id").val();
+            if(server_id>0 && account != ''){
+                $.ajax({
+                    type: 'post',
+                    url: '{:url("Pay/checkyyuserplay")}',
+                    async: false,
+                    data: {account: account,game_id:ygame_id,server_id:server_id},
+                    dataType: 'json',
+                    success: function(data) {
+                        if(data.code == 0) {
+                            layer.msg(data.msg);
+                        }
+                    },
+                });
+            }
+            $("#c_server_id").val(server_id);
+        })
+        $('.js-coin-type input').change(function () {
+            coin_type_change();
+        });
+
+        $('.jsform input').click(function(){
+            that = $(this);
+            var login_auth = "{$session['login_auth']}";
+            if(login_auth!=1){
+                login_tip();
+            }
+        })
+        $('#other_mon_num').on('keyup',function(){
+            if(parseInt($(this).val())>50000){
+                $(this).val(50000)
+            }
+        })
+        $('.other_invest_type').click(function () {
+            $('.other_invest_type').removeClass('other_invest_type_active')
+            $('.other_invest_type').children('.invest_type_sx').removeClass('active_invest_type')
+            $(this).addClass('other_invest_type_active')
+            $(this).children('.invest_type_sx').addClass('active_invest_type')
+            if ($(this).text().indexOf('支付宝') !== -1) {
+                $('#invest_type').text('支付宝支付')
+                $('.zhifubao_tap').show()
+                $('.weixin_tap').hide()
+				$('.bangbi_tap').hide()
+				$('.pingtai_tap').hide();
+                $("#submit_form").attr('action',alipay_url)
+                $("#coin_type_platform").attr("disabled",false);
+                $("#coin_type_bind").attr("disabled",false);
+                if(cp_gameid > 0){
+                    $("input[name='coin_type'][value='1']").prop("checked",true);
+                }else{
+                    $("input[name='coin_type'][value='0']").prop("checked",true);
+                }
+            }else if ($(this).text().indexOf('微信') !== -1) {
+                $('#invest_type').text('微信支付')
+                $('.zhifubao_tap').hide()
+				$('.bangbi_tap').hide()
+				$('.pingtai_tap').hide()
+                $('.weixin_tap').show()
+                $("#submit_form").attr('action',weixinpay_url)
+                $("#coin_type_platform").attr("disabled",false);
+                $("#coin_type_bind").attr("disabled",false);
+                if(cp_gameid > 0){
+                    $("input[name='coin_type'][value='1']").prop("checked",true);
+                }else{
+                    $("input[name='coin_type'][value='0']").prop("checked",true);
+                }
+            }else if($(this).text().indexOf('平台币') !== -1){
+			    $(".js-scale").hide();
+                $('#invest_type').text('平台币支付')
+				$('.pingtai_tap').show()
+                $('.zhifubao_tap').hide()
+                $('.weixin_tap').hide()
+				$('.bangbi_tap').hide()
+                $("#submit_form").attr('action',ptb_url)
+                $(".coin-platform").prop('disabled',true);
+                $("#coin_type_platform").attr("disabled",true);
+                $("#coin_type_bind").attr("disabled",false);
+                if(cp_gameid > 0){
+                    $("input[name='coin_type'][value='1']").prop("checked",true);
+                }else{
+                    $("input[name='coin_type'][value='-1']").prop("checked",true);
+                }
+            }else{
+			    $(".js-scale").show();
+                $('#invest_type').text('绑币支付');
+				$('.bangbi_tap').show()
+                $('.zhifubao_tap').hide()
+                $('.weixin_tap').hide()
+				$('.pingtai_tap').hide()
+                $("#submit_form").attr('action',bind_url)
+                $("#coin_type_platform").attr("disabled",true);
+                $("#coin_type_bind").attr("disabled",true);
+                $("input[name='coin_type'][value='1']").prop("checked",true);
+            }
+            coin_type_change();
+        })
+        $(".other_invest_type").eq(0).click();
+        $('.invest_mon_num input').click(function () {
+            if ($(this).prop('checked')) {
+                $('#other_mon_num').val("");
+                pay_money = $(this).val();
+                update_money();
+            }
+        })
+
+        $('#other_mon_num').keyup(function () {
+            if ($('#other_mon').prop('checked')) {
+                pay_money = $('#other_mon_num').val();
+                update_money();
+            }
+        })
+        $('#other_mon_num').focus(function () {
+            $('#other_mon').prop('checked','checked')
+        })
+        var is_submit = true;
+        $('.submit_btn').click(function () {
+            if(is_submit == false){
+                return false;
+            }
+            is_submit = false
+            layer.closeAll();
+            $('#invest_mon_money').hide();
+            var pay_type = $("#pay_type").val();
+            if(pay_type != 'bind' && pay_type != 'ptb'){
+                is_submit = true;
+                $("#submit_form").submit();
+                var con = $('#invest_mon_end');
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: false,
+                    area: ['426px', '215px'],
+                    offset: 'auto',
+                    content: con,
+                    btnAlign: 'c',
+                    shadeClose: true,
+                    // 点击确认充值的回调
+                    yes: function () {
+                        window.open("")
+                        layer.closeAll()
+                        var con2 = $('#invest_mon_end')
+                        layer.open({
+                            type: 1,
+                            title: false,
+                            closeBtn: false,
+                            area: ['425px', '213px'],
+                            offset: 'auto',
+                            content: con2,
+                            end: function () {
+                                $('#invest_mon_end').hide()
+                            }
+                        })
+                    },
+                    end: function () {
+                        $('#invest_mon_end').hide()
+                    }
+                })
+            }else{
+                $.ajax({
+                    type: 'post',
+                    url: "{:url('check_pay_password')}",
+                    async: false,
+                    dataType: 'json',
+                    success: function(data) {
+                        if(data.code == 1){
+                            layer.prompt({
+                                    formType: 0,
+                                    title: "输入支付密码",
+                                    value: '',
+                                    success:function (layero, index) {
+                                        layero.find('input').attr('placeholder','');
+                                        is_submit = true;
+                                    },
+                                },
+                                function(pwd){
+                                    layer.closeAll();
+                                    $("#pay_password").val(pwd);
+                                    $.ajax({
+                                        type: 'post',
+                                        url: $("#submit_form").attr('action'),
+                                        async: true,
+                                        data: $("#submit_form").serialize(),
+                                        dataType: 'json',
+                                        success: function(data) {
+                                            layer.msg(data.msg);
+                                        },
+                                    });
+
+                                })
+                        }else{
+                            var paycon="<div class='pay-layer-con'>您还没有设置支付密码，请前往<a style='color:red;' href='{:url('User/second_password')}' target='_blank'>个人中心</a>设置</div>";
+                            layer.open({
+                                type: 1,
+                                title: "支付",
+                                closeBtn: 0,
+                                content:paycon,
+                                skin:'layer-pay',
+                                area:["352px","160px"],
+                                btn: ['确定','取消'],
+                                yes: function(){
+
+                                    window.open(set_password_url);
+                                },
+
+                            })
+
+                        }
+                    },
+                });
+            }
+        })
+        $(".pay_record").click(function () {
+            var login_auth = "{$session['login_auth']}";
+            if(login_auth == 1) {
+                var url = "{:url('user/pay_record')}";
+                window.location.href = url;
+            }else{
+                var conss = $('.login_modals');
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: false,
+                    area: ['305px', '320px'],
+			        skin:'loginclass',
+                    offset: 'auto',
+                    content: conss,
+                    btnAlign: 'c',
+                    shadeClose: true,
+                    end: function () {
+                        $('.login_modals').hide()
+                    }
+                })
+            }
+        })
+        $('.invest_btn').click(function () {
+            var login_auth = "{$session['login_auth']}";
+            if(login_auth == 1) {
+                var coin_type = $('.js-coin-type [name="coin_type"]:checked').val();
+                if(coin_type<0) {
+                    var game_id = $('#game_id').val();
+                    if(game_id<=0) {
+                        layer.msg('请选择游戏',{skin: 'demo-red'});
+                        return false;
+                    }
+                }else if(coin_type == 1){
+                    var ygame_id = $("#ygame_id").val();
+                    var server_id = $("#server_id").val();
+                    if(ygame_id<1 ){
+                        layer.msg('请选择游戏');
+                        return false;
+                    }
+                    if(server_id <1){
+                        layer.msg('请选择服务器');
+                        return false;
+                    }
+                }
+                var account = $("#account").val();
+                var reaccount = $("#reaccount").val();
+                if(account == ''){
+                    layer.msg('请输入充值账号',{skin: 'demo-red'});
+                    return false;
+                }
+                if(reaccount == ''){
+                    layer.msg('请重复账号',{skin: 'demo-red'});
+                    return false;
+                }
+                if(account != reaccount){
+                    layer.msg('两次输入不一致',{skin: 'demo-red'});
+                    return false;
+                }
+                if(coin_type < 1){
+                    var check_res = checkAccount(account);
+                    if (check_res == 'custom') {
+                        layer.msg('该账号暂不支持平台币/绑币，请在游戏中支付', {skin: 'demo-red'});
+                        return false;
+                    }
+                    if(!check_res){
+                        if(coin_type == 0){
+                            layer.msg('账号不存在',{skin: 'demo-red'});
+                        }else{
+                            layer.msg('游戏角色不存在',{skin: 'demo-red'});
+                        }
+                        return false;
+                    }
+                }else{
+                    if(!checkYyAccount(account)){
+                        layer.msg('游戏角色不存在',{skin: 'demo-red'});
+                        return false;
+                    }
+
+                    var ageRes = checkUserAge();
+                    if (ageRes != '1') {
+                        layer.msg(ageRes, {skin: 'demo-red'});
+                        return false;
+                    }
+
+                }
+
+                var money = 0;
+                if($('#other_mon').is(':checked')) {
+                    money = parseInt($("#other_mon_num").val());
+                }else{
+                    money = parseInt($('input:radio[name="invest_money"]:checked').val());
+                }
+                if(isNaN(money)){
+                    layer.msg('请输入金额',{skin: 'demo-red'});
+                    return false;
+                }
+                if(money <1){
+                    layer.msg('金额只能输入1-50000之间的整数',{skin: 'demo-red'});
+                    return false;
+                }
+                var pay_type = $(".other_invest_type_active").attr('data-paytype');
+                $(".pay_type").text($("#invest_type").text());
+                $("#pay_type").val(pay_type);
+                $(".pay_account").text(account);
+                $("#pay_account").val(account);
+                var real_money = money*pay_discount/10;
+                $(".pay_money").text(real_money.toFixed(2));
+                $(".deposit").text(money*money_percent);
+                $("#money").val(money);
+                $("#orderno").val(orderno);
+                var con = $('#invest_mon_money');
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: false,
+                    area: ['276px', 'auto'],
+                    offset: 'auto',
+                    content: con,
+                    btnAlign: 'c',
+                    shadeClose: true,
+                    // 点击确认充值的回调
+                    yes: function () {
+                        window.open("")
+                        layer.closeAll()
+                        var con2 = $('#invest_mon_end')
+                        layer.open({
+                            type: 1,
+                            title: false,
+                            closeBtn: false,
+                            area: ['425px', '213px'],
+                            offset: 'auto',
+                            content: con2,
+                            end: function () {
+                                $('#invest_mon_end').hide()
+                            }
+                        })
+                    },
+                    end: function () {
+                        $('#invest_mon_money').hide()
+                    }
+                })
+            }else{
+                login_tip();
+            }
+        })
+        $('.invest_mon_money img').click(function () {
+            layer.closeAll()
+        })
+        $('.invest_mon_end img').click(function () {
+            layer.closeAll()
+        })
+        $('.comeback').click(function () {
+            layer.closeAll()
+        });
+        if(cp_gameid > 0){
+            $("#ygame_id").select2('val',cp_gameid);
+            $("#server_id").select2('val',cp_serverid);
+        }
+    });
+    function login_tip(){
+        layer.msg("您还未登录，无法进行充值",{skin:'demo-red',time:2000,shade:0.3},function(){
+            layer.closeAll();
+            var conss = $('.login_modals')
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: false,
+                area: ['305px', '320px'],
+			    skin:'loginclass',
+                offset: 'auto',
+                content: conss,
+                btnAlign: 'c',
+                shadeClose: true,
+                end: function () {
+                    $('.login_modals').hide()
+                }
+            })
+        });
+    }
+    function checkAccount(account) {
+        var coin_type = $('.js-coin-type [name="coin_type"]:checked').val();
+        var game_id = $("#game_id").val();
+        var is_ok = true;
+        $.ajax({
+            type: 'post',
+            url: '{:url("Pay/checkAccount")}',
+            async: false,
+            data: {account: account,coin_type:coin_type,game_id:game_id},
+            dataType: 'json',
+            success: function(data) {
+                if(data.code == 0) {
+                    is_ok =  false;
+                }else if(data.code==2){
+                    is_ok = 'custom'
+                }else{
+                    orderno = data.orderno;
+                }
+            },
+            error: function(xhr, type) {
+                is_ok =  false;
+            }
+        });
+        return is_ok;
+    }
+
+    function checkYyAccount() {
+        var account = $("#account").val();
+        var ygame_id = $("#ygame_id").val();
+        var server_id = $("#server_id").val();
+        var is_ok = true;
+        $.ajax({
+            type: 'post',
+            url: '{:url("Pay/checkyyuserplay")}',
+            async: false,
+            data: {account: account,game_id:ygame_id,server_id:server_id},
+            dataType: 'json',
+            success: function(data) {
+                if(data.code == 0) {
+                    is_ok = false;
+                }else{
+                    orderno = data.orderno;
+                }
+            },
+        });
+        return is_ok;
+    }
+    function checkResult(){
+        window.location.href = "{:url('Pay/payresult')}?order_no="+orderno;
+    }
+
+    function coin_type_change() {
+        if(cp_gameid<1){
+            $("#game_id").select2('val','');
+            $("#ygame_id").select2('val','');
+            $("#server_id").empty();
+        }
+        var val = $("input[name='coin_type']:checked").val();
+        coin_type = val;
+        if(val<0) {
+            $('.platform-coin').hide();
+			$(".js-scale").hide();
+            $('.game-coin').hide();
+            $('.bind-coin').show();
+            $('.mid_con_thirdline').addClass('mid_con_thirdline_modify')
+            $('.invest_btn').addClass('bind-invest-btn');
+            $(".money_type,.game-coin-name").text('绑币');
+        } else if (val == 0) {
+		    $(".js-scale").hide();
+            $('.bind-coin').hide();
+            $('.game-coin').hide();
+            $('.platform-coin').show();
+            $('.mid_con_thirdline').removeClass('mid_con_thirdline_modify');
+            $('.invest_btn').removeClass('bind-invest-btn');
+            $(".money_type").text('平台币');
+        }else{
+            $('.platform-coin').hide();
+            $('.bind-coin').hide();
+            $('.game-coin').show();
+			$(".js-scale").show();
+			$(".js-percent").text(money_percent);
+            $('.mid_con_thirdline').addClass('mid_con_thirdline_modify')
+            $('.invest_btn').addClass('bind-invest-btn');
+			<!-- {$vo.currency_name} -->
+            $(".money_type,.game-coin-name").text('游戏币');
+        }
+        $("#c_coin_type").val(val);
+        $(".invest_modal_game").toggle();
+        return false;
+    }
+
+    function update_money() {
+        $(".discount").text(pay_discount);
+        pay_discount = parseFloat(pay_discount);
+        pay_money = parseFloat(pay_money).toFixed(2);
+        var real_money = parseFloat(pay_money)*pay_discount/10;
+        // console.log(pay_discount,pay_money,real_money);
+
+        if(isNaN(real_money)){
+            real_money = 0;
+        }
+        // alert(real_money);
+
+        $(".js-pay-real-money").text(real_money.toFixed(2));
+        $(".js-pay-bind-coin").text(pay_money*money_percent);
+        // invest_mon_connum
+        $("#invest_mon_connum").text(real_money.toFixed(2));
+    }
+
+    $('#other_mon').click(function(){
+        $('#other_mon_num').val(0);
+        $('#invest_mon_connum').text(0);
+    });
+    function onkeyupfunc(){
+        // alert(parseInt($('#other_mon_num').val()));
+        // if($('#other_mon_num').val()){
+
+        // }
+    }
+
+    function checkUserAge() {
+        var account = $("#account").val();
+        var resMsg = '';
+        $.ajax({
+            type: 'post',
+            url: '{:url("Pay/checkUserAge")}',
+            async: false,
+            data: {account: account, pay_money: pay_money},
+            dataType: 'json',
+            success: function (res) {
+                if (res.code == 0) {
+                    resMsg = res.msg;
+                }
+                if (res.code == 1) {
+                    resMsg = 1;
+                }
+            },
+        });
+
+        return resMsg;
+    }
+
+</script>
+</block>

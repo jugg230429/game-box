@@ -1,0 +1,60 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('Point/point_record')}">积分获取</a></li>
+            <li><a href="{:url('Point/point_use')}">积分使用</a></li>
+        </ul>
+        <form id="search_form" class="well form-inline  fr" method="get" action="{:url('Point/point_record')}">
+            <input type="text" class="form-control notempty" name="user_account" style="width: 120px;" value="{:input('request.user_account/s','')}" placeholder="玩家账号">
+            <select name="type_id" id="type_id"  class="selectpicker" style="width: 120px;">
+                <option value="">获取方式</option>
+                <volist name =":get_point_type()" id="vo">
+                    <option value="{$vo.id}" <if condition="input('request.type_id') eq $vo['id']">selected</if>>{$vo.name}</option>
+                </volist>
+                <option value="13" <if condition="input('request.type_id') eq 13">selected</if>>积分抽奖</option>
+            </select>
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('Point/point_record')}">清空</a>
+        </form>
+        <form class="js-ajax-form" action="" method="post">
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>账号</th>
+                        <th>积分</th>
+                        <th>获取方式</th>
+                        <th>时间</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <empty name="data_lists">
+                        <tr><td colspan="4" style="text-align: center;">暂无数据</td></tr>
+                    <else/>
+                        <foreach name="data_lists" item="vo">
+                        <tr>
+                            <td>{$vo.user_account}</td>
+                            <td>{$vo['point']}</td>
+                            <td>{$vo.type_name}</td>
+                            <td>{$vo['create_time']|date='Y-m-d H:i:s',###}</td>
+                        </tr>
+                        </foreach>
+                        <tr class="total">
+                            <td>汇总</td>
+                            <td>{$total}</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </empty>
+                </tbody>
+            </table>
+        </form>
+        <div class="pagination">
+            {$page}
+        </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+</body>
+</html>

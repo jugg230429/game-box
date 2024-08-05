@@ -1,0 +1,411 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/select2.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/new_select2.css" type="text/css" />
+    <link href="__TMPL__/channelwappublic/assets/css/game.css" type="text/css" rel="stylesheet" />
+</block>
+<block name="body">
+    <div class="page-container my-game-container">
+        <div class="addTopHeader">
+            <a href="/channelwap/Simulator/white_list" class="whiteCard ">模拟器白名单</a>
+            <a href="javascript:;" class="chooseActive">游戏管理</a>
+         </div>
+        <header>
+            <div style="width: 100%;" class="v-middle h-middle">
+                <p class="header-title " data-url="{:url('game/index')}">我的游戏</p>
+                <p class="header-title active" data-url="{:url('game/child')}">子渠道游戏</p>
+                <p class="header-title" data-url="{:url('game/apply_game')}">申请游戏</p>
+            </div>
+
+        </header>
+        <div class="page-content">
+            <div class="game-menu-box">
+                <if condition="PERMI gt 0">
+                    <a href="{:url('child')}" class="active">手游+H5</a>
+                </if>
+                <if condition="YPERMI gt 0">
+                    <a id="game_h5_url" href="{:url('child_pc')}">页游</a>
+                </if>
+            </div>
+            <div class="search-box">
+                <div class="search-item col-6">
+                    <php>
+                        $gmap['game_status'] = 1;
+                        $gmap['test_game_status'] = 0;  // 测试游戏不显示,但可以正常进入
+                    </php>
+                    <select id="game_name" class="select_gallery search-select" data-placeholder="游戏名称">
+                        <option value="0">全部游戏</option>
+                        <volist name=":get_game_list('id,game_name,relation_game_id,relation_game_name',$gmap,'relation_game_name','sort desc ,id desc')" id="vv">
+                            <option <if condition="$vv['relation_game_name'] eq input('game_name')"> selected</if> data="{$vv['relation_game_name']}" value="{$vv['relation_game_name']}">{$vv['relation_game_name']}</option>
+                        </volist>
+                    </select>
+                </div>
+                <div class="search-item col-6">
+                    <select id="promote_id" class="select_gallery search-select" data-placeholder="渠道账号">
+                        <php>
+                            $pmap['parent_id'] = PID;
+                            $gmap['test_game_status'] = 0;  // 测试游戏不显示,但可以正常进入
+                        </php>
+                        <option value="0">子渠道账号</option>
+                        <volist name=":get_promote_list($pmap)" id="p">
+                            <option data="" <if condition="$p['id'] eq input('promote_id')"> selected</if> value="{$p.id}">{$p.account}</option>
+                        </volist>
+                    </select>
+                </div>
+            </div>
+            <div class="table-box js-choose">
+                <table>
+                    <tbody>
+                    <tr class="table-title">
+                        <th><label class="checked"><input class="check-all" type="checkbox"><i class="check-icon"></i></label></th>
+                        <th>渠道</th>
+                        <th>名称</th>
+                        <th>平台</th>
+                        <if condition="$baseinfo['pattern'] eq 0">
+                            <th>分成比例/%</th>
+                            <else/>
+                            <th>注册单价/元</th>
+                        </if>
+                    </tr>
+                    </tbody>
+                    <tbody id="childload">
+                    </tbody>
+                </table>
+            <input type="button" class="btn-calc fl batch" value="批量设置" >
+            </div>
+        </div>
+    </div>
+    <div class="pop"></div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/select2.min.js"></script>
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/pop.lwx.min.js"></script>
+    <script>
+        var pattern = "{$baseinfo['pattern']}";
+        var selectHeight = 0
+        $(function () {
+            // selectHeight = $(window).outerHeight() - $('.js-choose').offset().top;
+            //点击tap
+            $('.header-title').click(function () {
+                location.href=$(this).data("url");
+            });
+            $(".select_gallery").select2({
+                minimumResultsForSearch: -1,
+                escapeMarkup: function(m) {
+                    selectHeight = $(window).outerHeight() - $('.js-choose').offset().top;
+                   return m;
+                }
+            });
+
+            $(".select_gallery").on('select2:open', function() {
+               $('.select2-container:not(.select2)').css({
+                   'height': selectHeight,
+                   'background-color':'rgba(0,0,0,.5)',
+                   'z-index': 9
+               })
+                return false;
+            });
+            //			全选
+            $(".check-all").click(function() {
+                $('.ids').prop("checked", this.checked);
+            });
+            $(".ids").click(function() {
+                var option = $(".ids");
+                option.each(function(i) {
+                    if(!this.checked) {
+                        $(".check-all").prop("checked", false);
+                        return false;
+                    } else {
+                        $(".check-all").prop("checked", true);
+                    }
+                });
+            });
+            $('body').on('click','.js-edit-prop',function () {
+                var edit_prop = $(".pop").pop();
+                var that = $(this);
+                edit_prop.addClass("edit-prop-pop").open(300,'<div class="pop-title">修改分成比例</div><div class="pop-input"><input type="text" placeholder="输入数值"><span class="input-suffix">%</span></div><div class="pop-btn-box"><a href="javascript:;" class="pop-btn cancel-btn">取消</a><a href="javascript:;" class="pop-btn sure-btn">保存</a></div>')
+                edit_prop.find('.cancel-btn').click(function() {
+                    edit_prop.close();
+                    return false;
+                });
+                edit_prop.find('input').keyup(function() {
+                    var val=$(this).val();
+                    val2=val.replace(/^\D*(\d*(?:\.\d{0,6})?).*$/g, '$1');
+                    $(this).val(val2);
+                });
+                edit_prop.find('.sure-btn').click(function() {
+                    var gid = that.data('game');
+                    var pid = that.data('promote');
+                    var field = 'promote_ratio';
+                    var value = edit_prop.find('input').val();
+                    if (!/^(((\d|[1-9]\d)(\.\d{1,2})?)|100|100.0|100.00)$/.test(value)) {
+                        layer.msg('输入错误，0-100之间的两位小数',{time:2000});
+                        return false;
+                    }
+                    $.ajax({
+                        type:'post',
+                        url:'{:url("setRatioMoney")}',
+                        data:{game_id:gid,promote_id:pid,field:field,value:value},
+                        success:function(res){
+                            layer.msg(res.msg,{time:1000},function(){
+                                location.href = location.href;
+                            });
+                        },error:function(){
+                            layer.msg('服务器错误，请稍后再试');
+                        }
+                    });
+                    return false;
+                });
+            })
+            $('body').on('click','.js-edit-price',function () {
+                var edit_prop = $(".pop").pop();
+                var that = $(this);
+                edit_prop.addClass("edit-prop-pop").open(300,'<div class="pop-title">修改注册单价</div><div class="pop-input"><input type="text" placeholder="输入单价"><span class="input-suffix">元</span></div><div class="pop-btn-box"><a href="javascript:;" class="pop-btn cancel-btn">取消</a><a href="javascript:;" class="pop-btn sure-btn">保存</a></div>')
+                edit_prop.find('.cancel-btn').click(function() {
+                    edit_prop.close();
+                    return false;
+                });
+                edit_prop.find('input').keyup(function() {
+                    var val=$(this).val();
+                    val2=val.replace(/^\D*(\d*(?:\.\d{0,6})?).*$/g, '$1');
+                    $(this).val(val2);
+                });
+                edit_prop.find('.sure-btn').click(function() {
+                    var gid = that.data('game');
+                    var pid = that.data('promote');
+                    var field = 'promote_money';
+                    var value = edit_prop.find('input').val();
+                    if (!/^(((\d|[1-9]\d)(\.\d{1,2})?)|100|100.0|100.00)$/.test(value)) {
+                        layer.msg('输入错误，0-100之间的两位小数',{time:2000});
+                        return false;
+                    }
+                    $.ajax({
+                        type:'post',
+                        url:'{:url("setRatioMoney")}',
+                        data:{game_id:gid,promote_id:pid,field:field,value:value},
+                        success:function(res){
+                            layer.msg(res.msg,{time:1000},function(){
+                                location.href = location.href;
+                            });
+                        },error:function(){
+                            layer.msg('服务器错误，请稍后再试');
+                        }
+                    });
+                    return false;
+                });
+            })
+        })
+
+    </script>
+    <script>
+        var pattern = {$baseinfo['pattern']};
+        var itemIndex = 0;
+        var relation_game_name = '';
+        var promote_id = 0;
+        var lwx = window.lwx || {};
+        lwx.ready = true;
+        lwx.width = $(window).width();
+        lwx.height = $(window).height();
+        lwx.number = {apply:1,napply:1};
+        lwx.row = {apply:15,napply:15};
+        lwx.http = {
+            getJSON:function(url,callback){
+                $.getJSON(url + '&v=' + Date.now(),function(data){
+                    callback(data);
+                });
+            },
+            postJSON:function(url,args,callback) {
+                $.post(url + '&v=' + Date.now(), args, function(data) {
+                    callback(data);
+                },"json")
+            },
+        };
+        lwx.url ={
+            apply:'{:url("Game/get_child_game",[],false)}',
+        };
+        lwx.page = {
+            apply:function(){
+                if(lwx.number.apply) {
+                    lwx.http.getJSON(lwx.url.apply+'?row='+lwx.row.apply+'&page='+lwx.number.apply+'&game_name='+relation_game_name+'&promote_id='+promote_id,function(data) {
+                        var hotload = $('#childload');
+                        var data = data.data;
+                        if(data && data.length) {
+                            var html = '';
+                            for (var i in data) {
+                                html += '<tr><td>';
+                                for(var s in data[i]['apply_id']){
+                                    html += ' <label class="checked" style="display:block;"><input class="ids" type="checkbox" value="'+data[i]['apply_id'][s]+'"><i class="check-icon"></i></label>';
+                                }
+								html+='</td>';
+                                html += '<td>'+data[i].promote_account+'</td>'
+                                html += '<td>'+data[i].relation_game_name+'</td>';
+                                if(data[i].sdk_version.length == 3){
+                                    html += '<td><span class="box-span">'+get_version(data[i]['sdk_version'][0])+'</span><span class="box-span">'+get_version(data[i]['sdk_version'][1])+'</span><span class="box-span">'+get_version(data[i]['sdk_version'][2])+'</span></td>';
+                                    if(pattern == 0){
+                                        html += '<td><a href="javascript:;" class="js-edit-prop" data-promote="'+data[i].promote_id+'" data-game="'+data[i]['id'][0]+'">'+data[i]['promote_ratio'][0]+'</a><a href="javascript:;" class="js-edit-prop" data-promote="'+data[i].promote_id+'" data-game="'+data[i]['id'][1]+'">'+data[i]['promote_ratio'][1]+'</a><a href="javascript:;" class="js-edit-prop" data-promote="'+data[i].promote_id+'" data-game="'+data[i]['id'][2]+'">'+data[i]['promote_ratio'][2]+'</a></td>';
+                                    }else{
+                                        html += '<td><a href="javascript:;" class="js-edit-price" data-promote="'+data[i].promote_id+'" data-game="'+data[i]['id'][0]+'">'+data[i]['promote_money'][0]+'</a><a href="javascript:;" class="js-edit-price" data-promote="'+data[i].promote_id+'" data-game="'+data[i]['id'][1]+'">'+data[i]['promote_money'][1]+'</a><a href="javascript:;" class="js-edit-price" data-promote="'+data[i].promote_id+'" data-game="'+data[i]['id'][2]+'">'+data[i]['promote_money'][2]+'</a></td>';
+                                    }
+                                }else if(data[i].sdk_version.length == 2){
+                                    html += '<td><span class="box-span">'+get_version(data[i]['sdk_version'][0])+'</span><span class="box-span">'+get_version(data[i]['sdk_version'][1])+'</span></td>';
+                                    if(pattern == 0){
+                                        html += '<td><a href="javascript:;" class="js-edit-prop" data-promote="'+data[i].promote_id+'" data-game="'+data[i]['id'][0]+'">'+data[i]['promote_ratio'][0]+'</a><a href="javascript:;" class="js-edit-prop" data-promote="'+data[i].promote_id+'" data-game="'+data[i]['id'][1]+'">'+data[i]['promote_ratio'][1]+'</a></td>';
+                                    }else{
+                                        html += '<td><a href="javascript:;" class="js-edit-price" data-promote="'+data[i].promote_id+'" data-game="'+data[i]['id'][0]+'">'+data[i]['promote_money'][0]+'</a><a href="javascript:;" class="js-edit-price" data-promote="'+data[i].promote_id+'" data-game="'+data[i]['id'][1]+'">'+data[i]['promote_money'][1]+'</a></td>';
+                                    }
+                                }else{
+                                    html += '<td><span class="box-span">'+get_version(data[i]['sdk_version'][0])+'</span></td>';
+                                    if(pattern == 0){
+                                        html += '<td><a href="javascript:;" class="js-edit-prop" data-promote="'+data[i].promote_id+'" data-game="'+data[i]['id'][0]+'">'+data[i]['promote_ratio'][0]+'</a></td>';
+                                    }else{
+                                        html += '<td><a href="javascript:;" class="js-edit-price" data-promote="'+data[i].promote_id+'" data-game="'+data[i]['id'][0]+'">'+data[i]['promote_money'][0]+'</a></td>';
+                                    }
+                                }
+                                html += '</tr>';
+                            }
+                            hotload.append(html);
+                            hotload.find('.jsdropload').remove();
+                            if(data.length >= lwx.row.apply) {
+                                lwx.number.apply++;
+                                lwx.ready = true;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.apply = false;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                        } else {
+                            if(lwx.number.apply==1){
+                                hotload.html('').append('<p class="no_invest_info nodata jsdropload">~空空如也~</p>');
+                            } else{
+                                hotload.find('.jsdropload').remove();
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                            lwx.number.apply = false;
+                        }
+                    });
+                }
+            }
+        };
+        pageChange();
+        function pageChange() {
+            lwx.page.apply();
+        }
+        function pageScroll(scrollTop, boxHeight, maxScrollHeight) {
+            if (scrollTop + boxHeight >= maxScrollHeight - 50) {
+                if (lwx.ready) {
+                    lwx.ready = false;
+                    lwx.page.apply();
+                }
+            }
+        }
+        window.onscroll = function() {
+            var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+            pageScroll(scrollTop, lwx.height, $(document).height())
+        }
+        $(function () {
+            $('.game-menu-box a').click(function () {
+                $(this).addClass("active").siblings().removeClass("active");
+                var index = $(this).index();
+                $('.menu-tab').eq(index).show().siblings(".menu-tab").hide();
+                itemIndex = index;
+                location.hash = index;
+            });
+            $("#game_name").change(function () {
+                relation_game_name = $("#game_name").val();
+                $("#childload").empty();
+                lwx.number.apply = 1;
+                pageChange();
+            })
+            $("#promote_id").change(function () {
+                promote_id = $("#promote_id").val();
+                $("#childload").empty();
+                lwx.number.apply = 1;
+                pageChange();
+            })
+            $('body').on('click','.js_apply',function () {
+                var game_id = $(this).data('id');
+                $.ajax({
+                    type:'post',
+                    url:'{:url("apply")}',
+                    data:{game_id:game_id},
+                    success:function(res){
+                        layer.msg(res.msg,{time:1000},function(){
+                            location.href = location.href;
+                        });
+                    },error:function(){
+                        layer.msg('服务器错误，请稍后再试');
+                    }
+                });
+            })
+            $(".batch").click(function(){
+                var that = $(this);
+                var ids = $('.ids');
+                var apply_id = '0';
+                ids.each(function(index,element){
+                    if($(this).prop('checked')){
+                        apply_id = apply_id+','+$(this).val();
+                    }
+                });
+                var title = '批量设置';
+                layer.prompt({
+                    formType:0,
+                    title:title,
+                    value:0.00,
+					area: ['60%', '250px'],
+                    success:function (layero, index) {
+                        if(pattern == 0){
+                            var ti_msg = "分成比例";
+                            var patternSuffix = '%';
+                            var con="<div style='position:absolute;top:52px;font-size:14px;left:20px;'>"+ti_msg+"比本渠道减少</div>";
+						    layero.append(con);
+                            // layero.find('input').attr('placeholder','');
+                            layero.find('input').attr('placeholder','').css('float','left')
+								.after('<span style="position:absolute;top:43px;right:28px">'+patternSuffix+'</span>')
+                        }else{
+                            var ti_msg = "注册单价";
+                            var patternSuffix = '元';
+                            var con="<div style='position:absolute;top:52px;font-size:14px;left:20px;'>"+ti_msg+"比本渠道减少</div>";
+						    layero.append(con);
+                            // layero.find('input').attr('placeholder','');
+                            layero.find('input').attr('placeholder','').css('float','left')
+								.after('<span style="position:absolute;top:43px;right:28px">'+patternSuffix+'</span>')
+                        }
+                    }
+                }, function(value,index) {
+                    if (!/^(((\d|[1-9]\d)(\.\d{1,2})?)|100|100.0|100.00)$/.test(value)) {
+                        layer.msg('输入错误，0-100之间的两位小数',{time:2000});
+                        return false;
+                    }
+                    $.ajax({
+                        async: false,
+                        url:"{:url('setprofit')}",
+                        type:"POST",
+                        dataType:'JSON',
+                        data:{apply_id:apply_id,value:value},
+                        success:function(result){
+                            layer.msg(result.msg,{time:1000},function(){
+                                !result.code || location.reload();
+                            });
+                        },
+                        error:function(){
+                            layer.msg('服务器异常',{time:2000});
+                        }
+                    })
+                });
+            })
+        })
+        $(window).on("hashchange", function() {
+            pageChange();
+        });
+        function get_version(version) {
+            if(version == 1){
+                return '安卓';
+            }else if(version == 2){
+                return '苹果';
+            }else{
+                return 'H5';
+            }
+        }
+    </script>
+</block>

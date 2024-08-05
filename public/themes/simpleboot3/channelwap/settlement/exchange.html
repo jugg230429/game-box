@@ -1,0 +1,154 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link href="__TMPL__/channelwappublic/assets/css/profit.css" type="text/css" rel="stylesheet" />
+</block>
+<block name="body">
+    <div class="page-container profit-exchange-container">
+        <header>
+            <a href="{:url('Promote/index')}" class="back-btn"></a>
+            <div style="width: 100%;" class="v-middle h-middle">
+                <p class="header-title <if condition='empty(input(type))'>active</if>">收益兑换</p>
+                <p class="header-title <if condition='!empty(input(type))'>active</if>" style="margin-left: 1.5rem">收益提现</p>
+            </div>
+
+        </header>
+        <div class="page-content">
+            <div class="profit-exchange-content">
+                <div class="exchange-tab" <if condition="!empty(input('type'))">style="display: none"</if>>
+                <form action="{:url('doexchange')}" id="ajaxForm1" method="post">
+                    <div class="form">
+                        <div class="form-item" style="margin-top: 0.3rem">
+                            <div class="form-item-title">可兑换余额：</div>
+                            <div class="form-item-text">
+                                <input type="text" placeholder="" readonly value="{$baseinfo.balance_profit}元" class="form-item-input">
+                            </div>
+                        </div>
+                        <div class="form-item" style="margin-top: 0">
+                            <div class="form-item-title">兑换类型：</div>
+                            <div class="form-item-text">
+                                <span>兑换平台币</span>
+                            </div>
+                        </div>
+                        <div class="form-item" style="margin-top: 0.3rem">
+                            <div class="form-item-title">兑换金额：</div>
+                            <div class="form-item-text">
+                                <input type="text" placeholder="请输入兑换金额" onkeyup="this.value=this.value.replace(/\D/, '');" name="amount" class="form-item-input">
+                            </div>
+                        </div>
+                        <div class="form-item">
+                            <div class="form-item-title">二级密码：</div>
+                            <div class="form-item-text">
+                                <input name="password" type="password" placeholder="请输入二级密码" class="form-item-input">
+                            </div>
+                        </div>
+                        <div class="form-item">
+						    <div class="form-item-title"></div>
+                            <div class="submit-btn js_exchange">确认</div>
+                        </div>
+                    </div>
+                </form>
+                </div>
+                <div class="exchange-tab" <if condition="empty(input('type'))">style="display: none"</if>>
+                    <form action="{:url('dowithdrawal')}" id="ajaxForm2" method="post">
+                    <div class="form">
+                        <div class="form-item" style="margin-top: 0.3rem">
+                            <div class="form-item-title">可提现余额：</div>
+                            <div class="form-item-text">
+                                <input type="text"  placeholder="" readonly value="{$baseinfo.balance_profit}元" class="form-item-input">
+                            </div>
+                        </div>
+                        <div class="form-item" style="margin-top: 0.3rem">
+                            <div class="form-item-title">提现金额：</div>
+                            <div class="form-item-text">
+                                <input type="text" onkeyup="this.value=this.value.replace(/\D/, '');" name="amount" placeholder="请输入提现金额" class="form-item-input">
+                            </div>
+                        </div>
+                        <div class="form-item">
+                            <div class="form-item-title">二级密码：</div>
+                            <div class="form-item-text">
+                                <input type="password" name="password" placeholder="请输入二级密码" class="form-item-input">
+                                <if condition="PID_LEVEL eq 1">
+                                <div class="form-item-tips">(最低提现金额{:cmf_get_option('cash_set')['limit_money']|1}元，提现手续费{:cmf_get_option('cash_set')['payment_fee']|0}%)</div>
+                                </if>
+                            </div>
+                        </div>
+                        <div class="form-item">
+						    <div class="form-item-title"></div>
+                            <div class="submit-btn js_withdrawal withdraw-submit-btn">确认</div>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script>
+        $(function () {
+            //加载页面判断
+            var path = location.pathname;
+            var path_index = path.indexOf('type');
+            var type = path.substring(path_index+5,path_index+6);
+            $('.header-title').eq(type).addClass("active").siblings(".header-title").removeClass("active");
+            $('.exchange-tab').eq(type).show().siblings().hide();
+            //点击tap
+            $('.header-title').click(function () {
+                var that = $(this);
+                that.addClass("active").siblings(".header-title").removeClass("active");
+                var index = that.index();
+                $('.exchange-tab').eq(index).show().siblings().hide()
+            })
+        })
+        $(".js_exchange").click(function () {
+            $(".js_exchange").attr('disabled',true);
+            $.ajax({
+                type: 'post',
+                url: '{:url("doexchange")}',
+                data: $("#ajaxForm1").serialize(),
+                async: false,
+                success: function (res) {
+                    if(res.code == 1){
+                        layer.msg(res.msg);
+                        setTimeout(function () {
+                            window.location.reload();
+                        },1000)
+                    }else{
+                        $(".js_exchange").attr('disabled',false);
+                        layer.msg(res.msg);
+                    }
+                },
+                error: function () {
+                    $(".js_exchange").attr('disabled',false);
+                    layer.msg('服务器错误，请稍后再试');
+                }
+            });
+        })
+        $(".js_withdrawal").click(function () {
+            $(".js_withdrawal").attr('disabled',true);
+            $.ajax({
+                type: 'post',
+                url: '{:url("dowithdrawal")}',
+                data: $("#ajaxForm2").serialize(),
+                async: false,
+                success: function (res) {
+                    if(res.code == 1){
+                        layer.msg(res.msg);
+                        setTimeout(function () {
+                            window.location.reload();
+                        },1000)
+                    }else{
+                        $(".js_withdrawal").attr('disabled',false);
+                        layer.msg(res.msg);
+                    }
+                },
+                error: function () {
+                    $(".js_withdrawal").attr('disabled',false);
+                    layer.msg('服务器错误，请稍后再试');
+                }
+            });
+        })
+
+    </script>
+</block>

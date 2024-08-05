@@ -1,0 +1,321 @@
+<include file="public@header"/>
+<style>
+    .btn.disabled, .btn[disabled], fieldset[disabled] .btn {
+        background-color: inherit;
+        border-color: #ddd;
+        opacity: 1;
+    }
+    .btn.disabled:hover, .btn[disabled]:hover, fieldset[disabled] .btn:hover{
+        background-color: inherit;
+        border-color: #ddd;
+    }
+    .recomendStatus input[type="checkbox"] {
+        opacity: 0;
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        z-index: 100;
+    }
+    .checkedIcon {
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        background-image: url('__TMPL__/public/assets/images/ico-duoxuan-n.png') ;
+        background-size: 100% 100%;
+        vertical-align: middle;
+        margin-bottom: 1px;
+        margin-right: 2px;
+    }
+    .recomendStatus input[type="checkbox"]:checked+.checkedIcon {
+        background-image: url('__TMPL__/public/assets/images/ico-duoxuan-s.png');
+    }
+</style>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+   
+	<div class="nav-tabs mb20">
+        <span class=" pb10">编辑礼包</span>
+		
+    </div>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('edit')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>游戏名称：
+                            </label>
+                            <div class="col-md-3 col-sm-6">
+                                <select  disabled class="selectpicker form-control" >
+                                    <option  value="">{:str_replace(['(安卓版)','(苹果版)'],'',$data['game_name'])}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group recomendStatus">
+                            <label for="input-site_icp" class="col-sm-2 control-label"> <span class="form-required">*</span>运营平台：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <notin name="PERMI" value="0,2">
+                                    <label for="radio7" class="status-width changeWidth">
+                                        <input type="checkbox" id="radio7" class="inp_radio" value="1" name="giftbag_version[]" <?php if(in_array(1,explode(',',$data['giftbag_version']))) echo 'checked'; ?> >
+                                        <i class="checkedIcon"></i>
+                                        <span>安卓</span>
+                                    </label>
+
+                                    <label for="radio8" class="status-width changeWidth">
+                                        <input type="checkbox" id="radio8" class="inp_radio" value="2" name="giftbag_version[]" <?php if(in_array(2,explode(',',$data['giftbag_version']))) echo 'checked'; ?> >
+                                        <i class="checkedIcon"></i>
+                                        <span>苹果</span>
+                                    </label>
+                                </notin>
+                                <notin name="PERMI" value="0,1">
+                                    <label for="radio9" class="status-width changeWidth">
+                                        <input type="checkbox" id="radio9" class="inp_radio" value="3" name="giftbag_version[]" <?php if(in_array(3,explode(',',$data['giftbag_version']))) echo 'checked'; ?> >
+                                        <i class="checkedIcon"></i>
+                                        <span>H5</span>
+                                    </label>
+                                </notin>
+                                <eq name="YPERMI" value="1">
+                                    <label for="radio10" class="status-width changeWidth">
+                                        <input type="checkbox" id="radio10" class="inp_radio" value="4" name="giftbag_version[]" <?php if(in_array(4,explode(',',$data['giftbag_version']))) echo 'checked'; ?> >
+                                        <i class="checkedIcon"></i>
+                                        <span>PC</span>
+                                    </label>
+                                </eq>
+                            </div>
+                            <p class="help-block"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>礼包名称：
+                            </label>
+                            <div class="col-md-3 col-sm-6">
+                                <input  name="giftbag_name" class="form-control" value="{$data.giftbag_name}" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_icp" class="col-sm-2 control-label">显示状态：</label>
+                            <div class="col-md-3 col-sm-6">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="status" <eq name="data.status" value="0">checked="checked"</eq>> 关闭
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="status" <eq name="data.status" value="1">checked="checked"</eq>> 开启
+                                </label>
+                            </div>
+                        </div>
+<!--                        <div class="form-group">-->
+<!--                            <label for="input-site-name" class="col-sm-2 control-label">礼包区服：</label>-->
+<!--                            <div class="col-md-3 col-sm-5">-->
+<!--                                <select name="server_id" id="server_id" class="form-control">-->
+<!--                                    <option value="">选择游戏区服</option>-->
+<!--                                </select>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>有效期限：
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" class="form-control js-bootstrap-datetime fl" name="start_time" id="start_time" style="width:34.6%;" value="<notempty name='data.start_time'>{$data.start_time|date='Y-m-d H:i:s',###}</notempty>" autocomplete="off">
+                                <span class="fl to-span">至</span>
+                                <input type="text" class="form-control js-bootstrap-datetime fl" name="end_time" id="end_time" style="width:34.6%;" value="<notempty name='data.end_time'>{$data.end_time|date='Y-m-d H:i:s',###}</notempty>" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">兑换资格：</label>
+                            <div class="col-md-3 col-sm-6">
+                                <input  name="competence" value="{$data.competence}" class="form-control" placeholder=" 不填默认不做限制，全部玩家可用" >
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required"></span>会员等级：
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                VIP<select name="vip" id="vip" vip="{$data.vip}" class="selectpicker form-control form-vip" data-live-search="true">
+                                <option value="">选择等级</option>
+                                <volist name=":get_vip_level()" id="vo" key="key">
+                                    <option value="{$key}" >{$key}</option>
+                                </volist>
+                            </select>
+                                及以上
+                            </div>
+                            <p class="help-block" style="position:relative;left: -125px;">玩家需VIP等级达标才可领取</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">累充限制：</label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" name="accumulate_recharge_limit" value="{$data['accumulate_recharge_limit']}" oninput="value=value.toString().match(/^\d+(?:\.\d{0,2})?/)" class="form-control" style="width: 380px;">
+
+                            </div>
+                            <p class="help-block" style="position: absolute;left: 642px;">玩家在游戏内的累充金额达到该值后才可领取</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">激活码类型：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" value="1"  name="type" data-input="type2" <eq name="data.type" value="1">checked="checked"</eq>>普通码
+                                </label>
+                                <label>
+                                    <input type="radio" value="2"  name="type" data-input="type1" <eq name="data.type" value="2">checked="checked"</eq> >统一码
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group type1" <eq name="data.type" value="2">hidden</eq>>
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>激活码：
+                            </label>
+                            <div class="col-md-3 col-sm-6">
+                                <textarea name="novice" class="form-control jsnovice novicetype1" placeholder=" 输入激活码，1行1个">{:str_replace(',',"\\r\\n",$data['novice'])}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group type2" <eq name="data.type" value="1">hidden</eq>>
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>统一码：
+                            </label>
+                            <div class="col-md-3 col-sm-6">
+                                <input  name="novice" class="form-control jsnovice novicetype2" <eq name="data.type" value="1">disabled</eq> value="{$data['novice']}" >
+                            </div>
+                        </div>
+                        <div class="form-group type2" <eq name="data.type" value="1">hidden</eq>>
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>剩余数量：
+                            </label>
+                            <div class="col-md-3 col-sm-6">
+                                <input  name="remain_num" class="form-control" value="{$data['remain_num']}" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                礼包内容：
+                            </label>
+                            <div class="col-md-3 col-sm-6">
+                                <textarea maxlength="300" name="digest" class="form-control">{$data.digest}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                使用说明：
+                            </label>
+                            <div class="col-md-3 col-sm-6">
+                                <textarea maxlength="300" name="desribe" class="form-control">{$data.desribe}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                注意事项：
+                            </label>
+                            <div class="col-md-3 col-sm-6">
+                                <textarea maxlength="300" name="notice" class="form-control">{$data.notice}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">优先级：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input  name="sort" class="form-control" value="{$data.sort}" >
+
+                            </div>
+                        </div>
+            <if condition="AUTH_WEB_PLATFORM EQ 1">
+                <div class="form-group">
+                    <label for="input-site-name" class="col-sm-2 control-label">
+                        简化版平台专属：
+                    </label>
+                    <div class="col-md-4 col-sm-6" style="width: 395px;padding-right: 0;margin-right: 25px;">
+                        <select disabled name="platform_id" id="platform_id" class="selectpicker form-control" data-live-search="true">
+                            <option value="0" <if condition="$data['platform_id'] eq 0">selected</if> >平台自用</option>
+                            <volist name=":get_webplatform_lists()" id="vo">
+                                <option value="{$vo.id}" <if condition="$data['platform_id'] eq $vo['id']">selected</if>>{$vo.platform_name}</option>
+                            </volist>
+                        </select>
+                    </div>
+                    <p class="help-block" >简化版平台专属礼包，选择后在本平台不显示，简化版平台可导入。</p>
+                </div>
+            </if>
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <input name="id" type="hidden" value="{$data.id}">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn " data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                                <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script>
+    game_id = $('#game_id').attr('game_id');
+    $("#game_id").selectpicker('val', game_id);
+    var vip_val =$('#vip').attr('vip');
+     vip_val && vip_val !=="0" ?  $("#vip").selectpicker('val',vip_val ):'';
+
+    $(function () {
+        var url = "{:url('Giftbag/get_ajax_area_list')}";
+        $.ajax({
+            type:"post",
+            url:url,
+            dataType:"json",
+            data:{game_id:$("#game_id option:selected").val()},
+            success:function(data){
+                fun_html(data);
+            },
+            error:function(){
+                layer.msg('服务器异常',{icon:2});
+            }
+        })
+        $('input[type=radio][name=type]').change(function() {
+            that = $(this);
+            novice = that.attr('data-input');
+            $(".type1").toggle();
+            $(".type2").toggle();
+            $('.jsnovice').removeAttr('disabled');
+            console.log(".novice"+novice);
+            $(".novice"+novice).prop('disabled',true);
+        });
+        $("#radio7,#radio8,#radio9").click(function(){
+            if(!$(this).attr('checked')){
+                $("#radio10").attr("checked",false);
+            }
+        });
+        $("#radio10").click(function(){
+            if(!$(this).attr('checked')){
+                $("#radio7,#radio8,#radio9").attr("checked",false);
+            }
+        });
+    })
+    function fun_html(data){
+        var area='';
+        var server_id = "{$data.server_id}";
+        if(data == null){
+            $("#server_id").html('<option value="">请选择游戏区服</option>');
+        }else{
+            area+="<option value=''>请选择游戏区服</option>";
+            for (var i = 0; i<data.length; i++){
+                if(data[i]['id'] == server_id){
+                    area+='<option selected value="'+data[i]['id']+'">'+data[i]['server_name']+'</option>';
+                }else{
+                    area+='<option value="'+data[i]['id']+'">'+data[i]['server_name']+'</option>';
+                }
+
+            }
+            $("#server_id").html(area);
+        }
+    }
+</script>
+</body>
+</html>

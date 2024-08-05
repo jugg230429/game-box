@@ -1,0 +1,213 @@
+
+<include file="public@header"/>
+</head>
+
+<style>
+      #promote_info {
+        width: 100%;
+        margin-top: 8px;
+    }
+    .my_div{
+        width:34%;
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+    .inputCheckBox {
+        margin-right: 3px!important;
+    }
+    .recomendStatus input[type="checkbox"] {
+        opacity: 0;
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        z-index: 100;
+    }
+    .checkedIcon {
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        background-image: url('__TMPL__/public/assets/images/ico-duoxuan-n.png') ;
+        background-size: 100% 100%;
+        vertical-align: middle;
+        margin-bottom: 1px;
+        margin-right: 2px;
+    }
+    .recomendStatus input[type="checkbox"]:checked+.checkedIcon {
+        background-image: url('__TMPL__/public/assets/images/ico-duoxuan-s.png');
+    }
+    
+    .chose_all:hover{
+        color:blue;
+        font-size: larger;
+    }
+    .chose_none:hover{
+        color:blue;
+        font-size: larger;
+    }
+
+    .chose_all{
+        cursor: pointer;
+    }
+    
+    .chose_none{
+        cursor: pointer;
+        margin-left: 30px;
+    }
+</style>
+<body>
+<div class="wrap js-check-wrap">
+   
+	<div class="nav-tabs mb20">
+        <span class="pb10">新增设置</span>
+        <span class="title_remark">说明：已经设置过的直接覆盖</span>
+    </div>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('add')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+
+                        <div class="form-group game cpNew">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>游戏名称：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <php>
+                                    // $map['sdk_version']=['in',[1,2]];
+                                    $map['down_port'] = 1;
+                                    $map['game_status'] = 1;
+                                </php>
+                                <select name="game_id" id="game_id"  class="selectpicker user-input" data-live-search="true" >
+                                    <option value="">选择游戏</option>
+                                    <volist name=":get_game_list('id,game_name',$map)" id="vo">
+                                        <option value="{$vo.id}" >{$vo.game_name}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">统一分成比例:</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="hidden" class="form-control game_ratio" disabled="disabled">
+                            </div>
+                            <p></p>
+                            <div class="col-md-3 col-sm-5">
+                                <span class="game_ratio22">0.00</span> %
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>渠道分成比例:
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" name="single_ratio" class="form-control" placeholder="请输入分成比例0-100">
+                            </div>
+                            
+                        </div>
+
+                        <div class="form-group recomendStatus">
+                            <label for="input-site-name" class="col-sm-5 control-label">
+                                <span class="form-required">*</span>渠道账号:
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <div id="promote_info">
+                                    <!-- <input type="checkbox" name="item"><label>选项1</label>
+                                    <input type="checkbox" name="item"><label>选项2</label>
+                                    <input type="checkbox" name="item"><label>选项3</label> -->
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        <br>
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9 btn-tijiao-load-img" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                                <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script>
+    // 选择游戏狂变化时出发事件
+    $("#game_id").change(function(){
+        //要触发的事件
+        var game_id = $("#game_id").val();
+        $(".game_ratio").val('');
+        $("#promote_info").empty();
+        // console.log(game_id);
+        if(game_id > 0){
+            $.ajax({
+                url: '{:url("get_game_ratio")}',
+                type: 'post',
+                dataType: 'json',
+                data: {game_id:game_id},
+                success: function (data) {
+                    // 获取此游戏的 统一分成比例
+                    // console.log(data.sql);
+                    $(".game_ratio").val(data.ratio);
+                    $(".game_ratio22").text(parseFloat(data.ratio).toFixed(2)); // 统一分成比例显示
+                    // 获取申请此游戏的渠道
+                    var j=1;
+                    $.each(data.list,function(i,val){
+                        $("#promote_info").append('<span class="my_div"><label style="margin-right:10px;font-weight:normal"><input type="checkbox" class="inputCheckBox" name="promote_id[]" value="'+val.promote_id+'"><i class="checkedIcon"></i>'+val.account+' </label> </span>')
+
+                        if(j % 4 == 0){
+                            $("#promote_info").append("<br>");
+                        }
+                        j++;
+                    });
+                    $("#promote_info").append("<br/>");
+                    if(j > 1){
+                        $("#promote_info").append('<span class="chose_all">全选</span> <span class="chose_none">不选</span> ');
+
+                        $(".chose_all").click(function(){
+                            console.log('选中');
+                            $("#promote_info").find("input[type='checkbox']").prop("checked",true);
+                        });
+                        $(".chose_none").click(function(){
+                            console.log('不选');
+                            $("#promote_info").find("input[type='checkbox']").prop("checked",false);
+                        });
+                    }
+
+                },
+                error: function () {
+                    // 不做操作
+                }
+            });
+        } 
+
+    });
+
+    
+
+    var type ="{:cmf_get_option('storage')['type']}";
+    $('.btn-tijiao-load-img').on('click', function(){
+        if(type != 'Local'){
+            btn_tijiao_load_img_id=layer.msg('上传服务器中，请耐心等待', {
+                icon: 16,
+                shade: 0.4,
+                time:false //取消自动关闭
+            });
+        }
+    });
+	$(".js-upload").click(function(){
+	      console.log($("#file_url").val());
+	})
+	
+	
+</script>
+</body>
+</html>

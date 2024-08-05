@@ -1,0 +1,212 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#A" data-toggle="tab">站点配置</a></li>
+<!--        <li><a href="{:url('notice/lists')}">系统公告</a></li>-->
+        <li><a href="{:url('guess/lists')}">猜你喜欢</a></li>
+        <span class="title_remark">说明：针对SDK的显示进行基本配置</span>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('sitePost')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">悬浮球图标：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="suspend_icon" type="hidden" name="suspend_icon" value="{$data.suspend_icon}" >
+                                <img id="suspend_icon-preview" class="upload-img" <if condition="$data['suspend_icon']">src="{:cmf_get_image_preview_url($data['suspend_icon'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#suspend_icon');">上传</a>
+                                <a href="javascript:(function(){$('#suspend_icon-preview').attr('src','');$('#suspend_icon').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">148px*148px</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">悬浮球显示状态：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="suspend_show_status" <eq name='data.suspend_show_status' value='1'>checked="checked"</eq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="suspend_show_status" <eq name='data.suspend_show_status' value='0'>checked="checked"</eq>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制在进入游戏后是否显示悬浮球</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">切换账号：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="loginout_status" <eq name='data.loginout_status' value='1'>checked="checked"</eq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="loginout_status" <eq name='data.loginout_status' value='0'>checked="checked"</eq>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制SDK上是否显示“切换账号”按钮</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">游客登录：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="yk_login_status" <eq name='data.yk_login_status' value='1'>checked="checked"</eq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="yk_login_status" <eq name='data.yk_login_status' value='0'>checked="checked"</eq>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制SDK版上是否显示“游客登录”按钮</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">账号注册：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="account_register_switch" <eq name='data.account_register_switch' value='1'>checked="checked"</eq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="account_register_switch" <eq name='data.account_register_switch' value='0'>checked="checked"</eq>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制SDK内是否显示“账号注册”入口</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">手机/邮箱注册：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="phonenum_register_switch" <eq name='data.phonenum_register_switch' value='1'>checked="checked"</eq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="phonenum_register_switch" <eq name='data.phonenum_register_switch' value='0'>checked="checked"</eq>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制SDK内是否显示“手机号/邮箱注册”入口</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">选择小号：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="need_choose_smallaccount_switch" <eq name='data.need_choose_smallaccount_switch' value='1'>checked="checked"</eq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="need_choose_smallaccount_switch" <eq name='data.need_choose_smallaccount_switch' value='0'>checked="checked"</eq>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制SDK内是否显示“选择小号”页面，关闭时则无需选择小号直接进入游戏，开启时需选择</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">VIP等级：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="vip_level_show_switch" <eq name='data.vip_level_show_switch' value='1'>checked="checked"</eq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="vip_level_show_switch" <eq name='data.vip_level_show_switch' value='0'>checked="checked"</eq>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制SDK内是否显示账号VIP等级，关闭时不显示，开启时显示账号最新等级</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">网络延迟：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="network_speed_show_switch" <eq name='data.network_speed_show_switch' value='1'>checked="checked"</eq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="network_speed_show_switch" <eq name='data.network_speed_show_switch' value='0'>checked="checked"</eq>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制SDK悬浮球上是否显示网速，关闭时不显示</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">游戏分享：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="share_entrance_switch" <eq name='data.share_entrance_switch' value='1'>checked="checked"</eq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="share_entrance_switch" <eq name='data.share_entrance_switch' value='0'>checked="checked"</eq>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制SDK一级页面是否显示“分享”入口，关闭时不显示，开启时玩家可进行游戏分享</p>
+                        </div>
+
+<!--                        <div class="form-group">-->
+<!--                            <label for="input-site_adminstyle" class="col-sm-2 control-label">禁止模拟器安装(安卓)：</label>-->
+<!--                            <div class="col-md-3 col-sm-5">-->
+<!--                                <label  class="label-width">-->
+<!--                                    <input type="radio" class="inp_radio" value="1" name="forbid_simulator_install_switch" <eq name='data.forbid_simulator_install_switch' value='1'>checked="checked"</eq>> 开启-->
+<!--                                </label>-->
+<!--                                <label  class="label-width">-->
+<!--                                    <input type="radio" class="inp_radio" value="0" name="forbid_simulator_install_switch" <eq name='data.forbid_simulator_install_switch' value='0'>checked="checked"</eq>> 关闭-->
+<!--                                </label>-->
+<!--                            </div>-->
+<!--                            <p class="help-block">控制安卓SDK是否可在模拟器内安装，关闭时不可安装</p>-->
+<!--                        </div>-->
+
+                        <div class="form-group" hidden>
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">官网按钮：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="sdk_site_status" <eq name='data.sdk_site_status' value='1'>checked="checked"</eq>> 开启
+                                </label  class="label-width">
+                                <label>
+                                    <input type="radio" class="inp_radio" value="0" name="sdk_site_status" <eq name='data.sdk_site_status' value='0'>checked="checked"</eq>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制SDK选择小号页面上是否显示“官网”入口</p>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">LOGO图标：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="sdk_login_logo" type="hidden" name="sdk_login_logo" value="{$data.sdk_login_logo}">
+                                <img id="sdk_login_logo-preview" class="upload-img imgShow"  <if condition="$data['sdk_login_logo']">src="{:cmf_get_image_preview_url($data['sdk_login_logo'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#sdk_login_logo');" class="btn btn-sm btn-default">上传图片</a>
+                                <a href="javascript:(function(){$('#sdk_login_logo-preview').attr('src','');$('#sdk_login_logo').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">用于SDK登录框内显示，尺寸276px * 80px</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">易盾一键登录：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="yidun_login_switch" <eq name='data.yidun_login_switch' value='1'>checked="checked"</eq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="yidun_login_switch" <eq name='data.yidun_login_switch' value='0'>checked="checked"</eq>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制苹果SDK内是否启用易盾的本机号码一键登录功能</p>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <input type="hidden" name="set_type" value="{$name}">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

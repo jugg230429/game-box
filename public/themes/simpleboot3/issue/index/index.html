@@ -1,0 +1,139 @@
+<extend name="../issuepublic/base" />
+
+<block name="css">
+    <link href="__TMPL__/issuepublic/assets/css/index.css" rel="stylesheet">
+</block>
+
+<block name="body">
+
+    <div class="trunk">
+
+        <div class="page-container">
+            <div class="banner-box">
+                <div class="swiper-container">
+                    <ul class="swiper-wrapper">
+                        <li class="swiper-slide">
+                            <img src="__TMPL__/issuepublic/assets/images/hailaing.png" class="banner-img">
+                        </li>
+                        <li class="swiper-slide">
+                            <img src="__TMPL__/issuepublic/assets/images/jiameng.png" class="banner-img">
+                        </li>
+                       
+                    </ul>
+                    <!-- Add Pagination -->
+                    <div class="swiper-pagination swiper-pagination-white"></div>
+                    <!-- Add Navigation -->
+                    <div class="swiper-button-prev swiper-button-white"></div>
+                    <div class="swiper-button-next swiper-button-white"></div>
+                </div>
+            </div>
+            <div class="page-part-1">
+                <div class="page-part-box">
+                    <div class="page-title-box">
+                        <p class="title">选择我们，您将拥有</p>
+                        <div class="title-line"></div>
+                    </div>
+                    <img src="__TMPL__/issuepublic/assets/images/jinzita.png" class="part1-img">
+                </div>
+            </div>
+            <div class="page-part-2">
+                <div class="page-part-box">
+                    <div class="page-title-box">
+                        <p class="title">您想要的，我们都有</p>
+                        <div class="title-line"></div>
+                    </div>
+                    <div class="game-list-box">
+                        <div class="game-list-part1">
+                            <volist name="syList" id="vo">
+                                <a href="javascript:;" class="page-game-item">
+                                    <div class="game-icon-box">
+                                        <img src="{:cmf_get_image_url($vo['icon'])}" class="game-icon">
+                                    </div>
+                                    <p class="game-name">{$vo['game_name']}</p>
+                                </a>
+                            </volist>
+
+                        </div>
+                        <div class="game-list-part2">
+                            <volist name="h5List" id="vo">
+                                <a href="javascript:;" class="page-game-item">
+                                <div class="game-icon-box">
+                                    <img src="{:cmf_get_image_url($vo['icon'])}" class="game-icon">
+                                </div>
+                                <p class="game-name">{$vo['game_name']}</p>
+                            </a>
+                            </volist>
+                        </div>
+                    </div>
+                    <a href="{:url('issue/index/library')}" class="more-btn">更多游戏 >></a>
+                </div>
+            </div>
+            <div class="page-part-3">
+                <div class="platform-box">
+                    <div class="title">平台接入</div>
+                    <div class="divide-line"></div>
+                    <div class="content-text">
+                        提供海量优质游戏和素材，帮助平台快速搭建游戏中心。 游戏管理、数据统计、订单结算等基础服务，一应俱全。 帮您快速实现流量变现！
+                    </div>
+                    <div class="step-box">
+                        获取账号<span> > </span>SDK接入<span> > </span>自主配置<span> > </span>打包成功
+                    </div>
+                    <if condition="session('issue_open_user_info')">
+                        <div class="access-btn-box">
+                            <a href="{:url('issue/management/index')}" class="access-btn">立即接入</a>
+                            <a href="{:url('issue/management/index')}" class="">接入文档</a>
+                        </div>
+                    <else/>
+                        <div class="access-btn-box">
+                            <a href="javascript:;" class="access-btn jsbtninsert">立即接入</a>
+                            <a href="javascript:;" class="jsbtninsert">接入文档</a>
+                        </div>
+                    </if>
+                </div>
+<!--                <div class="agent-box">-->
+<!--                    <div class="title">代理接入</div>-->
+<!--                    <div class="divide-line"></div>-->
+<!--                    <div class="content-text">-->
+<!--                        海量优质游戏，提供给您免费推广。 实时的数据统计，为您检测推广效果。 免费的代理制度，帮你发展大量下级渠道！-->
+<!--                    </div>-->
+<!--                    <div class="step-box">-->
+<!--                        获取账号<span> > </span>选择游戏<span> > </span>申请分包<span> > </span>推广分成-->
+<!--                    </div>-->
+<!--                    <div class="access-btn-box">-->
+<!--                        <a href="http://www.1n.cn/index.php" target="_blank" class="access-btn">立即接入</a>-->
+<!--                        <a href="/index.php/Down/down/cateid/73.html" class="">接入文档</a>-->
+<!--                    </div>-->
+<!--                </div>-->
+            </div>
+        </div>
+
+    </div>
+</block>
+
+<block name="script">
+    <script>
+        $(function() {
+            new Swiper('.swiper-container', {
+                slidesPerView: 'auto',
+                spaceBetween: 0,
+                centeredSlides: true,
+                loop: true,
+                autoplay: 3000,
+                nextButton: '.swiper-button-next',
+                prevButton: '.swiper-button-prev',
+                pagination: '.swiper-pagination',
+                paginationClickable: true
+
+            });
+			 var imgArr = $(".game-icon");
+            for(var i=0;i<imgArr.length;i++){
+                var src=imgArr.eq(i).attr("src")
+                if (src ==""||src==null){
+
+                imgArr.eq(i).attr("src", "/static/images/empty.jpg");
+            }
+        }
+        })
+		
+    </script>
+</block>

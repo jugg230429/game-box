@@ -1,0 +1,170 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#A" data-toggle="tab">站点配置</a></li>
+        <li><a href="{:url('protocol/lists')}">用户注册协议</a></li>
+        <span class="title_remark">说明：针对海外SDK的显示进行基本配置</span>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('sitePost')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Apple ID登录：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="login_apple_status" <eq name='data.login_apple_status' value='1'>checked="checked"</eq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="login_apple_status" <neq name='data.login_apple_status' value='1'>checked="checked"</neq>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block"></p>
+                        </div>
+
+<!--                        <div class="form-group">-->
+<!--                            <label class="col-sm-2 control-label">脸书登录：</label>-->
+<!--                            <div class="col-md-3 col-sm-5">-->
+<!--                                <label class="label-width">-->
+<!--                                    <input type="radio" class="inp_radio" value="1" name="login_fb_status" <eq name='data.login_fb_status' value='1'>checked="checked"</eq>> 开启-->
+<!--                                </label>-->
+<!--                                <label  class="label-width">-->
+<!--                                    <input type="radio" class="inp_radio" value="0" name="login_fb_status" <neq name='data.login_fb_status' value='1'>checked="checked"</neq>> 关闭-->
+<!--                                </label>-->
+<!--                            </div>-->
+<!--                            <p class="help-block"></p>-->
+<!--                        </div>-->
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">游客登录：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="login_visitor_status" <eq name='data.login_visitor_status' value='1'>checked="checked"</eq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="login_visitor_status" <neq name='data.login_visitor_status' value='1'>checked="checked"</neq>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">账密注册：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="register_account_status" <eq name='data.register_account_status' value='1'>checked="checked"</eq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="register_account_status" <neq name='data.register_account_status' value='1'>checked="checked"</neq>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">手机注册：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="register_mobile_status" <eq name='data.register_mobile_status' value='1'>checked="checked"</eq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="register_mobile_status" <neq name='data.register_mobile_status' value='1'>checked="checked"</neq>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">邮箱注册：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="register_email_status" <eq name='data.register_email_status' value='1'>checked="checked"</eq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="register_email_status" <neq name='data.register_email_status' value='1'>checked="checked"</neq>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">客服QQ：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control"  name="qq"
+                                       value="{$data.qq|default=''}">
+                            </div>
+                            <p class="help-block"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">悬浮球图标</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="suspend_icon" type="hidden" name="suspend_icon" value="{$data.suspend_icon}" >
+                                <img id="suspend_icon-preview" class="upload-img" <if condition="$data['suspend_icon']">src="{:cmf_get_image_preview_url($data['suspend_icon'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#suspend_icon');">上传</a>
+                                <a href="javascript:(function(){$('#suspend_icon-preview').attr('src','');$('#suspend_icon').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">148px*148px</p>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">悬浮球显示状态：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="suspend_show_status" <eq name='data.suspend_show_status' value='1'>checked="checked"</eq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="suspend_show_status" <neq name='data.suspend_show_status' value='1'>checked="checked"</neq>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制在进入游戏后是否显示悬浮球</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">退出按钮：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="loginout_status" <eq name='data.loginout_status' value='1'>checked="checked"</eq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="loginout_status" <neq name='data.loginout_status' value='1'>checked="checked"</neq>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制SDK上是否显示“注销”按钮</p>
+                        </div>
+
+                        <!--<div class="form-group" hidden>
+                            <label class="col-sm-2 control-label">官网按钮：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="sdk_site_status" <eq name='data.sdk_site_status' value='1'>checked="checked"</eq>> 开启
+                                </label  class="label-width">
+                                <label>
+                                    <input type="radio" class="inp_radio" value="0" name="sdk_site_status" <neq name='data.sdk_site_status' value='1'>checked="checked"</neq>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制SDK选择小号页面上是否显示“官网”入口</p>
+                        </div>-->
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <input type="hidden" name="set_type" value="{$name}">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

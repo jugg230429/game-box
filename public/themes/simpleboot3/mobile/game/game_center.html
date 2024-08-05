@@ -1,0 +1,123 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/classify_page.css">
+</block>
+
+
+<block name="body">
+    <div class="classify_page">
+        <include file="mobilepublic@header_menu" />
+        <div class="type_down__long_hx clear"></div>
+        <div class="classify_page_type">
+            <div class="swiper-container gamepage_type">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide gamepage_type_all_s">
+                        <a href="{:url('game/game_center')}">  <div id="all" class="gamepage_type_item gamepage_type_all <if condition="input('type_id') eq 0 or input('type_id') eq ''">active_gamepage_type_item</if>"><p>全部游戏</p></div></a>
+                </div>
+                    <volist name=":get_game_type_all()" id="type" key='key'>
+                        <div class="swiper-slide">
+                            <a href="{:url('game/game_center',['type_id'=>$type['id']])}"><div id='{$key}' class='gamepage_type_item <eq name=":input('type_id')" value="$type['id']">active_gamepage_type_item</eq> '><p>{$type.type_name}</p></div></a>
+                        </div>
+                    </volist>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="type_down__long_hx clear"></div>
+        <notempty name="$data">
+        <volist name="$data" id="vo">
+            <div class="gamepage_type_con_item">
+                <a href="{:url('game/detail',['game_id'=>$vo.id])}">
+                <div class="gamepage_type_con_item_img fl"><img src="{$vo.icon}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null"></div>
+                <div class="fl gamepage_type_con_item_cons">
+                    <p class="gamepage_type_con_item_title">{$vo.relation_game_name}</p>
+                    <p class="gamepage_type_con_item_infos"><span class="gamepage_type_con_item_type">{$vo.game_type_name}</span><span class="hot_game_fgx">|</span>
+                       <eq name="vo.sdk_version" value="3">
+                           <span>{:get_simple_number($vo['dow_num'])}人在玩</span>
+                       <else/>
+                           <span>{:get_simple_number($vo['dow_num'])}下载</span>
+                           <span class="hot_game_fgx">|</span>{$vo.game_size}
+                       </eq>
+
+                    </p>
+                    <p class="gamepage_type_con_item_summny">{$vo.features}</p>
+                </div>
+                </a>
+                <eq name="vo.sdk_version" value="3">
+                      <a  <eq name="session.login_auth" value="1">href="{:url('Game/open_game',[],false)}?game_id={$vo['relation_game_id']}"</eq> >
+                        <div data-href="{:url('Game/open_game',[],false)}?game_id={$vo['relation_game_id']}" class='fg hot_game_download <eq name="session.login_auth" value="0">login</eq> ' >
+                            <p>去玩</p>
+                        </div>
+                    </a>
+                <else/>
+                    <if condition="get_down_status2($vo.relation_game_id,get_devices_type()) eq true">
+                        <a  class="down_game" href="javascript:;" down-id="{$vo['relation_game_id']}" down-version="{:get_devices_type()}" down-url="{:url('Downfile/down',['game_id'=>$vo['relation_game_id'],'sdk_version'=>get_devices_type()])}">
+                        <div class='fg hot_game_download ' >
+                            <p>下载</p>
+                        </div>
+                        </a>
+                        <else/>
+                        <div class="fg hot_game_download hot_game_downloaded">
+                            <p>下载</p>
+                        </div>
+                    </if>
+                </eq>
+            </div>
+			<div class="type_down__long_hx clear"></div>
+        </volist>
+            <else/>
+            <div class="no_open_game_text">
+                <p>~空空如也~</p>
+            </div>
+        </notempty>
+
+
+    </div>
+</block>
+<block name="script">
+
+    <script>
+        $(function () {
+            $(".down_game").click(function () {
+                var down_url = $(this).attr('down-url');
+                var down_id = $(this).attr('down-id');
+                var down_version = $(this).attr('down-version');
+                //请求
+                $.ajax({
+                    url: "{:url('Downfile/get_ban_status')}",
+                    type: 'post',
+                    dataType: 'json',
+                    data: {game_id: down_id,type:4,sdk_version:down_version},
+                    success: function (res) {
+                        if (res.code != 1) {
+                            layer.msg(res.msg);
+                        } else {
+
+                            location.href = down_url;
+                        }
+                    }, error() {
+                        layer.msg('服务器错误');
+                    }
+                })
+            })
+        })
+    </script>
+<script>
+    var myswiper = new Swiper('.gamepage_type', {
+        slidesPerView: 'auto',
+        spaceBetween: 12,
+    });
+    $('.gamepage_type_item').click(function () {
+        $('.gamepage_type_item').removeClass('active_gamepage_type_item')
+        $(this).addClass('active_gamepage_type_item')
+    })
+    $(document).ready(function () {
+        var check_num
+        if($(".gamepage_type_item").filter('.active_gamepage_type_item').prop('id')!=='all'){
+            check_num=parseInt($(".gamepage_type_item").filter('.active_gamepage_type_item').prop('id'))
+        }
+        myswiper.slideTo(check_num)
+    })
+</script>
+</block>

@@ -1,0 +1,340 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#A" data-toggle="tab">站点配置</a></li>
+        <span class="title_remark">说明：针对WAP站的显示进行基本配置，在PC端打开时跳转至PC官网</span>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('sitePost')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">网站标题：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control"  name="wap_set_title"
+                                       value="{$data.wap_set_title|default=''}">
+                            </div>
+                            <p class="help-block">网站各页面默认统一显示该标题，在SEO设置页对每页面进行单独设置后，则显示SEO设置内容</p>
+                        </div>
+                        <div class="form-group" hidden>
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">小号交易：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="is_open_samll_account" <eq name='data.is_open_samll_account' value='1'>checked="checked"</eq>> 开启
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="is_open_samll_account" <eq name='data.is_open_samll_account' value='0'>checked="checked"</eq>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制WAP站、SDK上是否显示交易相关入口，默认不显示，选择开启则显示（预留功能）</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">APP图标：</label>
+                            <div class="col-md-3 col-sm-5 mt3">
+                                <input id="wap_app_icon" type="hidden" name="wap_app_icon" value="{$data.wap_app_icon}" >
+                                <img id="wap_app_icon-preview" class="upload-img" <if condition="$data['wap_app_icon']">src="{:cmf_get_image_preview_url($data['wap_app_icon'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#wap_app_icon');">上传</a>
+                                <a href="javascript:(function(){$('#wap_app_icon-preview').attr('src','');$('#wap_app_icon').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">用于浏览器添加至主屏幕上展示，尺寸240*240px</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">APP名称：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" value="{$data.screen_app_name}" name="screen_app_name">
+                            </div>
+                            <p class="help-block">用于浏览器添加至主屏幕上展示，如：溪谷手游</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">分享图标：</label>
+                            <div class="col-md-3 col-sm-5 mt3">
+                                <input id="share_icon" type="hidden" name="share_icon" value="{$data.share_icon}" >
+                                <img id="share_icon-preview" class="upload-img"  <if condition="$data['share_icon']">src="{:cmf_get_image_preview_url($data['share_icon'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#share_icon');">上传</a>
+                                <a href="javascript:(function(){$('#share_icon-preview').attr('src','');$('#share_icon').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">在微信/QQ等应用内打开站点进行分享至其它应用内时展示，尺寸240*240px。未上传时显示占位图
+                                （分享资讯文章页链接时图文调取对应文章的分享图文）</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">分享标题：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" value="{$data.share_title}" name="share_title">
+                            </div>
+                            <p class="help-block">默认显示：手游联运-发现更多好游戏</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">分享描述：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" value="{$data.share_describe}" name="share_describe">
+                            </div>
+                            <p class="help-block">默认显示：该平台是一个高质量的手游联运平台，最热门游戏都在这里。</p>
+                        </div>
+                        <if condition="PERMI eq 3">
+                            <div class="form-group">
+                                <label for="input-site_adminstyle" class="col-sm-2 control-label">首页一级标签：</label>
+                                <div class="col-md-3 col-sm-5">
+                                    <label  class="label-width">
+                                        <input type="radio" class="inp_radio" value="0" name="model_wap" <empty name='data.model_wap'>checked="checked"</empty>> 全部
+                                    </label>
+                                    <label  class="label-width">
+                                        <input type="radio" class="inp_radio" value="1" name="model_wap" <eq name='data.model_wap' value='1'>checked="checked"</eq>> 手游
+                                    </label>
+                                    <label  class="label-width">
+                                        <input type="radio" class="inp_radio" value="2" name="model_wap" <eq name='data.model_wap' value='2'>checked="checked"</eq>> H5
+                                    </label>
+                                </div>
+                                <p class="help-block">控制WAP站首页是否显示手游/H5标签</p>
+                            </div>
+                        </if>
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">首页默认选中:</label>
+                            <div class="col-md-3 col-sm-5">
+                                <!-- <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="default_show_sy_h5" <eq name='data.default_show_sy_h5' value='0'>checked="checked"</eq>> 不做设置
+                                </label> -->
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="default_show_sy_h5" <eq name='data.default_show_sy_h5' value='1'>checked="checked"</eq>> 手游
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="2" name="default_show_sy_h5" <eq name='data.default_show_sy_h5' value='2'>checked="checked"</eq>> H5
+                                </label>
+                            </div>
+                            <p class="help-block">控制WAP站默认首先显示手游或H5(优先级小于WAP站首页一级标签)</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">折扣标签：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="discount_show" <neq name='data.discount_show' value='0'>checked="checked"</neq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="discount_show" <if condition="$data['discount_show'] heq '0'">checked="checked"</if>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制WAP首页是否显示折扣标签</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">开服标签：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="server_show" <neq name='data.server_show' value='0'>checked="checked"</neq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="server_show" <if condition="$data['server_show'] heq '0'">checked="checked"</if>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制WAP首页是否显示开服标签</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">排行标签：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="rank_show" <neq name='data.rank_show' value='0'>checked="checked"</neq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="rank_show" <if condition="$data['rank_show'] heq '0'">checked="checked"</if>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制WAP首页是否显示排行标签</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">分类标签：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="category_show" <neq name='data.category_show' value='0'>checked="checked"</neq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="category_show" <if condition="$data['category_show'] heq '0'">checked="checked"</if>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制WAP首页是否显示分类标签</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">小号交易：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="trade_show" <neq name='data.trade_show' value='0'>checked="checked"</neq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="trade_show" <if condition="$data['trade_show'] heq '0'">checked="checked"</if>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制WAP,APP上是否显示小号交易入口</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">领券中心：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="coupon_center" <?php if($data['coupon_center']=='1') echo 'checked'; ?>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="coupon_center" <?php if($data['coupon_center']!='1') echo 'checked'; ?>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制WAP站、APP上是否显示领券中心入口</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">APP下载入口：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="app_show" <neq name='data.app_show' value='0'>checked="checked"</neq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="app_show" <if condition="$data['app_show'] heq '0'">checked="checked"</if>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制WAP首页是否显示盒子APP下载入口</p>
+                        </div>
+
+                        <if condition="PERMI neq 1">
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">H5游戏悬浮球显示：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="ball" <neq name="data.ball" value="0">checked="checked"</neq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="ball" <if condition="$data['ball'] heq '0'">checked="checked"</if>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制H5游戏内是否显示悬浮球</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">H5游戏悬浮球图标：</label>
+                            <div class="col-md-3 col-sm-5 mt3">
+                                <input id="xfq" type="hidden" name="xfq" value="{$data.xfq}" >
+                                <img id="xfq-preview" class="upload-img"  <if condition="$data['xfq']">src="{:cmf_get_image_preview_url($data['xfq'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#xfq');">上传</a>
+                                <a href="javascript:(function(){$('#xfq-preview').attr('src','');$('#xfq').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">148*148px</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">选择小号：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="is_open_sub_account" <neq name="data.is_open_sub_account" value="0">checked="checked"</neq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="is_open_sub_account" <if condition="$data['is_open_sub_account'] heq '0'">checked="checked"</if>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制H5游戏内是否显示“选择小号”页面，关闭时则无需选择小号直接进入游戏，开启时需选择</p>
+                        </div>
+
+                        </if>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">折扣返利：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="discount_entry" <neq name="data.discount_entry" value="0">checked="checked"</neq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="discount_entry" <if condition="$data['discount_entry'] heq '0'">checked="checked"</if>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制WAP站/APP/PC官网的游戏详情页内是否显示折扣返利入口及内容</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">代金券领取：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="coupon_entry" <neq name="data.coupon_entry" value="0">checked="checked"</neq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="coupon_entry" <if condition="$data['coupon_entry'] heq '0'">checked="checked"</if>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制WAP站/APP/PC官网的游戏详情页内是否显示优惠券入口及内容</p>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">赚金：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="zhuanjin" <?php if($data['zhuanjin']!='0') echo 'checked'; ?>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="zhuanjin" <?php if($data['zhuanjin']==='0') echo 'checked'; ?>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制WAP站、APP上是否显示【赚金】入口</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">猜你喜欢：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="guess_you_like_switch" <?php if($data['guess_you_like_switch']!='0') echo 'checked'; ?>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="guess_you_like_switch" <?php if($data['guess_you_like_switch']==='0') echo 'checked'; ?>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制H5游戏悬浮球内猜你喜欢板块是否展示</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">账号注册：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="account_register_switch" <?php if($data['account_register_switch']!='0') echo 'checked'; ?>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="account_register_switch" <?php if($data['account_register_switch']==='0') echo 'checked'; ?>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制WAP站内是否显示“账号注册”入口</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">手机注册：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="phonenum_register_switch" <?php if($data['phonenum_register_switch']!='0') echo 'checked'; ?>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="phonenum_register_switch" <?php if($data['phonenum_register_switch']==='0') echo 'checked'; ?>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制WAP站内是否显示“手机号注册”入口</p>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <input type="hidden" name="set_type" value="{$name}">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+        <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/mall_detail.css">
+</block>
+
+<block name="body">
+    <div class="update_nickname_page">
+        <div class="update_nickname_header">
+            <a href="javascript:history.go(-1);" class="fl">
+                <img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon">
+            </a>
+            <p >商品详情</p>
+        </div>
+        <div class="game_bag_down_hx"></div>
+        <div class="mall_box">
+		   <img src="{$data.thumbnail}" class="icon_box fl" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+           <div class="fl textbox">
+		      <div class="title">{$data.good_name}</div>
+			   <div class="">积分{$data.price}<notempty name="data.vip_level">（最大折扣 <span class="col_orange">{$data.max_vip_discount_price}</span>）</notempty></div>
+			  <div  class="numbox">
+			      <span class="fl">数量：</span>
+				     <div class="num fl">
+					     <a href="javascript:;" class="operation minus fl" data-operation="-"><img src="__TMPL__/mobilepublic/assets/images/mall/xq_ico_jian.png"></a>
+						 <input type="text" name="" class="number fl" id="number" readonly="" value="1">
+						 <a href="javascript:;" class="operation plus fl" data-operation="+"><img src="__TMPL__/mobilepublic/assets/images/mall/xq_ico_jia.png"></a>
+
+                    </div>
+			  </div>
+		   </div>
+		</div>
+		<div class="space"></div>
+		<div class="info">
+			<notempty name="data['good_info']">
+		    <div class="cntitle">商品介绍</div>
+			<div class="infocon">
+				{:htmlspecialchars_decode($data.good_info)}
+             </div>
+			</notempty>
+			<notempty name="data['instructions']">
+			<div class="cntitle">使用说明</div>
+			<div class="infocon">
+				{:nl2br($data.instructions)}
+		 	</div>
+			</notempty>
+			<notempty name="data['exchange_statement']">
+		 	<div class="cntitle">兑换声明</div>
+			<div class="infocon">
+               {:nl2br($data['exchange_statement'])}
+		 	</div>
+			</notempty>
+		 	<div class="cntitle">免责声明</div>
+			<div class="infocon">
+                1. 请在兑换前仔细参照商品简介及兑换说明<br>
+                2. 除商品异常导致不能正常兑换外，一经兑换，一律不退还积分<br>
+                3. 抢购商品需先扣积分，如抢购失败，将会原路退回<br>
+                4. 活动规则解释权本平台所有，如有疑问请联系在线客服
+             </div>
+		</div>
+		<div class="down_load_frame"><div class="start_exchange exchange_btn js_start_exchange  <eq name=':UID'> login<else/>js_exchange_disabled</eq>">立即兑换</div></div>
+    </div>
+	<div class="exchange_pop">
+	   <div class="exchange_box">
+	       <a href="javascript:;" class="exchange_close js_exchange_close"><img src="__TMPL__/mobilepublic/assets/images/sc_xq_ico_close.png"></a>
+		   <div class="exchange_title">确认兑换</div>
+		   <eq name="data['type']" value='1'>
+			   <div class="exchange_item"><a href="{:url('user/user_address')}"><span class="fl">收货信息</span><img src="__TMPL__/mobilepublic/assets/images/sc_xq_ico_more.png" alt="" class="into_icon fg"><span class="fg receive_address">暂无收货地址</span></a></div>
+		   </eq>
+		   <div class="exchange_item"><span class="fl">兑换商品</span><span class="fg color_333 good_name"></span></div>
+		   <div class="exchange_item"><span class="fl">所需积分</span><span class="fg col_orange price"></span></div>
+		   <span class="good_type" style="display: none;"></span>
+		   <button class="exchange_btn js_exchange_btn " disabled>立即兑换</button>
+	   </div>
+	</div>
+</block>
+<block name="script">
+<script>
+	var plus = true;
+	check_exchange();
+    //数量加减
+    $(".minus").click(function(){
+	     var input = $('#number'),val=input.val();
+		 val--;
+		 if(val<1){
+		    val=1;
+            input.val(val);
+		 }
+		 else{
+		    input.val(val)
+		 }
+		check_exchange();
+	})
+	$(".plus").click(function(){
+	    if(plus == false){
+	        return false;
+		}
+		var number = "{$data['number']}";
+		var input = $('#number'),val=input.val();
+		val++;
+		if(val>number){
+			return false;
+		}
+		input.val(val)
+		check_exchange();
+	})
+	function check_exchange()
+	{
+		var id = "{:input('id')}";
+		var num = $('#number').val();
+		var that = $('.js_start_exchange')
+		if(num<1){
+			that.addClass('js_exchange_disabled');
+			return false;
+		}
+		$.ajax({
+			url:"{:url('mall_exchange_detail')}",
+			type:'post',
+			data:{id:id,num:num},
+			success:function (res) {
+				if(res.code==200){
+					that.removeClass('js_exchange_disabled');
+					var receive_address = res.data.receive_address?res.data.receive_address:'暂无收货地址';
+					// if(res.data.receive_address==''){
+					// 	that.addClass('js_exchange_disabled');
+					// }
+					$('.exchange_box .receive_address').text(receive_address);
+					$('.exchange_box .good_name').text(res.data.good_name+'*'+num);
+					$('.exchange_box .price').text(res.data.vip_discount_price);
+					$('.exchange_box .good_type').text(res.data.type);
+                    plus = true;
+				}else{
+					that.addClass('js_exchange_disabled');
+                    plus = false;
+				}
+			}
+		})
+	}
+	//兑换弹窗
+	$(".js_start_exchange").click(function(){
+		check_exchange();
+		if(!$('.js_start_exchange').hasClass('js_exchange_disabled')){
+			if($('.exchange_box .good_type').text()==1&&$('.exchange_box .receive_address').text()=='暂无收货地址'){
+				$(".exchange_pop").find('.js_exchange_btn').prop('disabled',true);
+			}else{
+				$(".exchange_pop").find('.js_exchange_btn').prop('disabled',false);
+			}
+			$(".exchange_pop").show();
+		}else{
+			return false;
+		}
+	})
+	$('.js_exchange_btn').click(function () {
+		if($(this).prop('disabled')){
+			return false;
+		}
+		var id = "{:input('id')}";
+		var num = $('#number').val();
+		$.ajax({
+			url:"{:url('mall_exchange')}",
+			type:'post',
+			data:{id:id,num:num},
+			success:function (res) {
+				if(res.code==1){
+					layer.msg(res.msg,{time:500},function () {
+						location.href="{:url('point/index')}"
+					});
+				}else{
+					layer.msg(res.msg,{time:500},function () {
+						location.href=location.href;
+					});
+				}
+			}
+		})
+	})
+	$(".js_exchange_close").click(function(){
+	    $(".exchange_pop").hide();
+	})
+</script>
+</block>

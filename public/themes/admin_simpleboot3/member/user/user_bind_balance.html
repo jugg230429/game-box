@@ -1,0 +1,36 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <form id="search_form" class="well form-inline fr" method="get" action="{:url('User/user_bind_balance',['user_id'=>input('user_id')])}" >
+            <input type="submit" class="btn btn-primary hidden" id="search_btn" value="搜索" />
+        </form>
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr><th colspan="8" style="background: #ffffff">玩家账号：{$user.account}</th></tr>
+                <tr>
+                    <th>游戏名称</th>
+                    <th>绑币余额</th>
+                </tr>
+            </thead>
+            <tbody>
+                <empty name="data_lists">
+                    <tr><td colspan="8" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <foreach name="data_lists" item="vo">
+                        <tr>
+                            <td>{$vo.game_name}</td>
+                            <td>{$vo.bind_balance}</td>
+                        </tr>
+                    </foreach>
+                </empty>
+            </tbody>
+        </table>
+        <notempty name="data_lists">
+        <div class="pagination">
+            {$page}
+        </div>
+        </notempty>
+    </div>
+</body>
+</html>

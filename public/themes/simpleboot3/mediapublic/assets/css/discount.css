@@ -1,0 +1,302 @@
+body{
+
+}
+.v-middle{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.h-middle{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+.discount-mun-box{
+    width:100%;
+    height: 82px;
+    background: rgb(250, 250, 250);
+}
+.discount-mun-box .discount-menu {
+    width:1200px;
+    margin: 0 auto;
+}
+.discount-menu .menu-item{
+    margin-left: 70px;
+    width:146px;
+    height:82px ;
+    font-size: 18px;
+    color: #333333;
+    box-sizing: border-box;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    flex-wrap: wrap;
+}
+.discount-menu .menu-item.active{
+    background: rgba(1,143,255,0.15);
+    color: #018FFF;
+}
+.discount-menu .menu-item .tab-icon{
+    width: 26px;
+    height: 26px;
+    display: block;
+    margin: 5px auto;
+}
+.discount-menu .menu-item .tab-icon.all-icon{
+    background: url(../images/discount/ico_all_n.png);
+    background-size: 100% 100%;
+}
+.discount-menu .menu-item.active .tab-icon.all-icon{
+    background: url(../images/discount/ico_all_s.png);
+    background-size: 100% 100%;
+}
+.discount-menu .menu-item .tab-icon.rebate-icon{
+    background: url(../images/discount/ico_back_n.png);
+    background-size: 100% 100%;
+}
+.discount-menu .menu-item.active .tab-icon.rebate-icon{
+    background: url(../images/discount/ico_back_s.png);
+    background-size: 100% 100%;
+}
+.discount-menu .menu-item .tab-icon.first-icon{
+    background: url(../images/discount/ico_pay_n.png);
+    background-size: 100% 100%;
+}
+.discount-menu .menu-item.active .tab-icon.first-icon{
+    background: url(../images/discount/ico_pay_s.png);
+    background-size: 100% 100%;
+}
+.discount-menu .menu-item .tab-icon.continue-icon{
+    background: url(../images/discount/ico_contiune_n.png);
+    background-size: 100% 100%;
+}
+.discount-menu .menu-item.active .tab-icon.continue-icon{
+    background: url(../images/discount/ico_contiune_s.png);
+    background-size: 100% 100%;
+}
+.discount-menu .menu-item .tab-icon.bind-icon{
+    background: url(../images/discount/ico_bangdings_n.png);
+    background-size: 100% 100%;
+}
+.discount-menu .menu-item.active .tab-icon.bind-icon{
+    background: url(../images/discount/btn_bangdings_s.png);
+    background-size: 100% 100%;
+}
+.discount-menu .menu-item .discount-type{
+    display: block;
+    width: 146px;
+    height: 28px;
+    text-align: center;
+    margin: 0 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.discount-content{
+    min-width: 1200px;
+    margin: 0 auto;
+    min-height: 700px;
+    box-sizing: border-box;
+    background: url(../images/discount/bg_money.png)no-repeat;
+    background-size: 100% 100%;
+    background-color: rgb(245, 245, 245);
+}
+.discount-container{
+    width: 1200px;
+    min-height: 640px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding: 19px 0;
+}
+.discount-container .discount-game-item{
+    width:100%;
+    height: 95px;
+    background: #ffffff;
+}
+.discount-container .discount-game-item:not(:first-child){
+    margin-top: 18px;
+}
+.discount-container .discount-game-box{
+    width:100%;
+    height: auto;
+    box-sizing: border-box;
+}
+.discount-container .discount-game-box .game-info-box{
+    width:100%;
+    height: 100%;
+}
+.game-info-box .game-icon{
+    margin-left: 21px;
+    width: 62px;
+    height: 62px;
+    background: rgba(226,226,226,1);
+    border-radius: 13px;
+    overflow: hidden;
+}
+.game-info-box .game-icon>img{
+    display: block;
+    width:100%;
+    height: 100%;
+    border-radius: 14px;
+}
+.game-info-box .game-info{
+    margin-left: 15px;
+}
+.game-info-box .game-info .game-name{
+
+}
+.game-info-box .game-info .game-name span{
+    font-size: 16px;
+    color: #222222;
+    max-width:550px ;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.game-info-box .game-info .game-name .android-icon{
+    width: 17px;
+    height: 17px;
+    display: block;
+    background: url(../images/discount/ico_android.png)no-repeat;
+    background-size: 100% 100%;
+    margin-left: 5px;
+}
+.game-info-box .game-info .game-name .ios-icon{
+    width: 17px;
+    height: 17px;
+    display: block;
+    background: url(../images/discount/ico_ios.png)no-repeat;
+    background-size: 100% 100%;
+    margin-left: 5px;
+}
+.game-info-box .discount-btn-box{
+    margin-left: auto;
+    margin-right: 28px;
+}
+.game-info-box .discount-btn-box .discount-btn{
+    margin-left: 22px;
+    width: 99px;
+    height: 44px;
+    font-size: 12px;
+    color: #ffffff;
+}
+.game-info-box .discount-btn-box .discount-btn.rebate{
+    background: #72B9F0;
+}
+.game-info-box .discount-btn-box .discount-btn.first{
+    background: #FDC36A;
+}
+.game-info-box .discount-btn-box .discount-btn.continue{
+    background:#EF918E;
+}
+.game-info-box .discount-btn-box .discount-btn.binding{
+    background: #8FCE8F;
+}
+.game-info-box  .game-download{
+    margin-left: auto;
+    width: 80px;
+    height: 30px;
+    background: #3498db;
+    color: #ffffff;
+    text-align: center;
+    line-height: 30px;
+}
+.game-info-box  .game-download.disabled{
+    background-color: #EDEDED;
+    border-color: #E2E2E2;
+    color: #B2B2B2;
+}
+.game-info-box span{
+    color: #333333;
+}
+.game-info-box .game-other{
+    margin-top: 3px;
+}
+.game-info-box .game-other span{
+    color: #B1B0B0;
+    font-size: 12px;
+}
+.game-info-box .game-other .game-type{
+    width: 108px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+}
+.game-info-box .game-introduce{
+    width: 580px;
+    font-size: 12px;
+    color: #333333;
+    margin-top: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+}
+.game-info-box .discount-btn-box .discount-btn .type{
+    color: #ffffff;
+    font-size: 12px;
+    height: 100%;
+    width:31px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    text-align: center;
+}
+.game-info-box .discount-btn-box .discount-btn .proportion{
+    width: 66px;
+    height: 40px;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    font-weight: bold;
+}
+.game-info-box .discount-btn-box .discount-btn.rebate .proportion{
+    color: #0196FF;
+}
+.game-info-box .discount-btn-box .discount-btn.rebate .proportion span{
+    color: #72B9F0;
+}
+.game-info-box .discount-btn-box .discount-btn.first .proportion{
+    color: #FF9C04;
+}
+.game-info-box .discount-btn-box .discount-btn.first .proportion span{
+    color: #FDC36A;
+}
+.game-info-box .discount-btn-box .discount-btn.continue .proportion{
+    color: #FF433D;
+}
+.game-info-box .discount-btn-box .discount-btn.continue .proportion span{
+    color: #EF918E;
+}
+.game-info-box .discount-btn-box .discount-btn.binding .proportion{
+    color: #479E25;
+}
+.game-info-box .discount-btn-box .discount-btn.binding .proportion span{
+    color: #8FCE8F;
+}
+.fz-12{
+    margin-top: 5px;
+    font-size: 12px;
+}
+
+.no_game_text {
+    font-size: 14px;
+    text-align: center;
+    padding-top: 160px;
+    color: rgba(153, 153, 153, 1);
+}
+.no_game_text p {
+    margin-top: 15px;
+    font-size: 18px;
+    color: #999999;
+}

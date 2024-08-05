@@ -1,0 +1,63 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+<!--            <li><a href="{:url('site/sdk_set')}">站点设置</a></li>-->
+            <li class="active"><a href="{:url('lists')}">系统公告</a></li>
+<!--            <li><a href="{:url('guess/lists')}">猜你喜欢</a></li>-->
+            <span class="title_remark">说明：用于游戏SDK内展示，公告资讯及时推送</span>
+        </ul>
+
+            <a href="{:url('add')}" class="btn btn-success mtb17" style="margin-left: -10px;">添加公告</a>
+
+        <form id="search_form" class="well form-inline  fr" method="get" action="{:url('lists')}">
+            <select name="game_id" id="game_id" class="selectpicker " game_id="{:input('request.game_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+                <option value="">游戏名称</option>
+                <volist name=":get_game_list('id,game_name')" id="vo">
+                    <option value="{$vo.id}" >{$vo.game_name}</option>
+                </volist>
+            </select>
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('lists')}">清空</a>
+        </form>
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>游戏</th>
+                    <th>标题</th>
+                    <th>展示日期</th>
+                    <th>优先级</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <empty name="data_lists">
+                    <tr><td colspan="6" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <foreach name="data_lists" item="vo">
+                    <tr>
+                        <td>{$vo['id']}</td>
+                        <td>{$vo.game_name}</td>
+                        <td>{$vo.title}</td>
+                        <td><empty name="vo.start_time">永久<else/>{$vo['start_time']|date='Y-m-d',###}</empty>~<empty name="vo.end_time">永久<else/>{$vo['end_time']|date='Y-m-d',###}</empty></td>
+                        <td>{$vo['level']}</td>
+                        <td>
+                            <a href="{:url('edit',['id'=>$vo['id']])}">编辑</a>
+                            <a href="{:url('del',['id'=>$vo['id']])}" class="js-ajax-delete" data-msg="确定要删除吗？">删除</a>
+                        </td>
+                    </tr>
+                    </foreach>
+                </empty>
+            </tbody>
+        </table>
+        <div class="pagination">{$page}</div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+<script>
+    game_id = $("#game_id").attr('game_id');
+    $("#game_id").selectpicker('val', game_id);
+</script>
+</body>
+</html>

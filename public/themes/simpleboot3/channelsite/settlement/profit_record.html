@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+    <link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+    <link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" />
+    <link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" media="all" href="__STATIC__/js/datejs/daterangepicker.css"/>
+    <include file="public@head" /></head>
+
+  <body>
+    <include file="public@nav" />
+    <include file="public@header" />
+    <link href="__TMPL__/public/assets/css/finance.css" rel="stylesheet" />
+  <div class="trunk">
+      <div class="trunk-con">
+        <div class="right-container">
+          <div class="normal-list">
+            <div class="top-con">
+              <img src="__TMPL__/public/assets/images/ico_money.png" class="top-con-icon fl">
+              <div class="fl">
+                <div class="top-con-num">{:null_to_0($baseinfo['balance_profit'])}</div>
+                <div class="top-con-text">可提现佣金(元)</div></div>
+              <img src="__TMPL__/public/assets/images/ico_money2.png" class="top-con-icon-terrace fl">
+              <div class="fl">
+                <div class="top-con-num color-blue">{:null_to_0($baseinfo['balance_coin'])}</div>
+                <div class="top-con-text">平台币</div></div>
+              <a class="fl btn-exchange">兑换</a>
+              <a class="fl btn-withdraw">提现</a></div>
+            <div class="record">
+              <ul class="nav-tabs">
+                <li class="nav-tabs-con fl ">
+                  <a href="{:url('settlement/profit')}" class="nav-link">收益记录</a></li>
+                <li class="nav-tabs-con fl nav-tabs-active">
+                  <a href="{:url('settlement/profit_record')}" class="nav-link">支出记录</a></li>
+              </ul>
+              <form action="">
+                <div class="trunk-search clearfix fr">
+                  <input type="text" class="tabpan-input normal-space" autocomplete="off" name="rangepickdate" id="rangepickdate" placeholder="时间" value="{:input('rangepickdate')}">
+                  <select id="type" name="type" class="tab-input js-select-gallery normal-space  fl select2-hidden-accessible trunk-search-select">
+                    <option <if condition="input('type') eq ''">selected</if> value="">支出类型</option>
+					<option <if condition="input('type') eq 1">selected</if> value="1">提现</option>
+					<option <if condition="input('type') eq 2">selected</if> value="2">兑换</option>
+				  </select>
+                  <select id="status" name="status" class="tab-input js-select-gallery normal-space  fl select2-hidden-accessible trunk-search-select">
+					  <option value="">兑换状态</option>
+					  <option value="0" <if condition="input('status') eq '0'">selected</if>>待审核</option>
+					  <option value="1" <if condition="input('status') eq '1'">selected</if>>已通过</option>
+					  <option value="2" <if condition="input('status') eq '2'">selected</if>>已驳回</option>
+					  <option value="3" <if condition="input('status') eq '3'">selected</if>>已打款</option>
+				  </select>
+					<input type="button" url="{:url('profit_record')}" class="submit fr normal-space btn-clear" value="清空">
+                  <input type="submit" class="submit fr normal-space" id="submit" value="搜索">
+				</div>
+              </form>
+			  <div class="clear"></div>
+			  <div class="minh-table">
+				<table class="table normal-table" id="promotecoin_table">
+					<tbody>
+						<tr>
+							<th>日期</th>
+							<th>类型</th>
+							<th>支出金额</th>
+							<th>付款金额</th>
+							<th>扣税金额</th>
+							<th>状态</th>
+							<th>操作</th>
+						</tr>
+
+						<notempty name="data_lists">
+							<volist name="data_lists" id="vo">
+							 <tr>
+								 <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+								 <td><eq name="vo.type" value="1">提现<else/>兑换</eq></td>
+								 <td>{:null_to_0($vo.sum_money)}</td>
+								 <td>{:null_to_0($vo['sum_money']-$vo['fee'])}</td>
+								 <td>{:null_to_0($vo.fee)}</td>
+								 <td>
+
+										 <if condition="$vo['status'] eq 0">
+											 待审核
+											 <elseif condition="$vo['status'] eq 1"/>
+											 已通过
+											 <elseif condition="$vo['status'] eq 2"/>
+											 <span style="color: #ffb22b">已驳回</span>
+											 <else />
+											 已打款
+										 </if>
+								 </td>
+								 <td>
+									 <if condition="$vo['status'] eq 2">
+										 <a style="color: #26C7DB;" class="reapply" href="javascript:;" data-id="{$vo['id']}" data-url="{:url('reapply')}">申请</a>
+										 <else/>
+										 --
+									 </if>
+
+								 </td>
+							 </tr>
+							</volist>
+							<tr class="data_summary">
+								<td>汇总</td>
+								<td>--</td>
+								<td class="bold">{:null_to_0($total.totalmoney)}</td>
+								<td class="bold">{:null_to_0($total['totalmoney']-$total['totalfee'])}</td>
+								<td class="bold">{:null_to_0($total.totalfee)}</td>
+								<td></td>
+								<td></td>
+							</tr>
+						<else/>
+							<!--暂无数据-->
+							<tr>
+								<td colspan="7">
+									<div class="no-data">
+										<img src="__TMPL__/public/assets/images/icon_wushujv2.png" alt="" class="no-data-img">
+										<p class="no-data-text">暂无数据</p>
+									</div>
+								</td>
+							</tr>
+						</notempty>
+					</tbody>
+				</table>
+				<notempty name="data_lists">
+					<div class="pagenation clearfix">
+					<a download class="sch-btn" href="{:url('Export/expUser',array_merge(['id'=>6],input()))}">导出</a>
+						{$page}
+					</div>
+				</notempty>
+				</div>
+
+            </div>
+          </div>
+			<div class="exchange">
+				<div class="exchange-con">
+					<div class="exchange-title">
+
+						<div class="fl ">收益兑换</div>
+						<div class="exchange-close fr"><img src="__TMPL__/public/assets/images/close.png" width="20">
+						</div>
+					</div>
+					<form action="{:url('exchange')}" id="ajaxForm" method="post"/>
+					<div class="tabpan-con-con">
+						<label class="fl label-name">可兑换金额：</label>
+						<span class="formtxt fl"><strong class="color-ffb">{:null_to_0($baseinfo['balance_profit'])}</strong><strong>元</strong></span>
+					</div>
+
+					<div class="tabpan-con-con">
+						<label class="fl label-name">兑&nbsp换&nbsp类&nbsp型：</label>
+						<span class="formtxt fl">兑换平台币</span>
+					</div>
+					<div class="tabpan-con-con">
+						<label class="fl label-name">兑&nbsp换&nbsp金&nbsp额：</label>
+						<input type="text" onkeyup="this.value=this.value.replace(/\D/, '');" name="amount" class="tabpan-input">
+					</div>
+					<div class="tabpan-con-con postionr">
+						<label class="fl label-name">二&nbsp级&nbsp密&nbsp码：</label>
+						<input type="password" class="tabpan-input" name="password" type="password">
+					</div>
+					<div class="tabpan-con-con">
+						<input type="hidden" name="type" value="2">
+						<button type="button" class="button exchange_submit js-ajax-submit" >提交</button>
+					</div>
+					</form>
+				</div>
+
+			</div>
+			<div class="withdraw">
+				<div class="exchange-con">
+					<div class="exchange-title">
+
+						<div class="fl ">收益提现</div>
+						<div class="withdraw-close fr"><img src="__TMPL__/public/assets/images/close.png" width="20">
+						</div>
+					</div>
+					<form action="{:url('withdrawal')}" id="ajaxForm1" method="post"/>
+					<div class="tabpan-con-con">
+						<label class="fl label-name">可提现余额：</label>
+						<span class="formtxt fl"><strong class="color-ffb">{:null_to_0($baseinfo['balance_profit'])}</strong><strong>元</strong></span>
+						<div class="clear"></div>
+
+					</div>
+					<if condition="PID_LEVEL eq 1">
+					<div class="withdraw-describe"> （最低提现金额：{:cmf_get_option('cash_set')['limit_money']?:1}元，提现手续费：{:cmf_get_option('cash_set')['payment_fee']?:0}%）</div>
+					</if>
+					<div class="tabpan-con-con">
+						<label class="fl label-name">提&nbsp现&nbsp金&nbsp额：</label>
+						<input type="text" onkeyup="this.value=this.value.replace(/\D/, '');" name="amount" class="tabpan-input">
+					</div>
+
+					<div class="tabpan-con-con postionr">
+						<label class="fl label-name">二&nbsp级&nbsp密&nbsp码：</label>
+						<input type="password" class="tabpan-input" name="password" type="password">
+					</div>
+					<div class="tabpan-con-con">
+						<input type="hidden" name="type" value="1">
+						<button type="button" class="button js-ajax-submit withdrawal_submit" >提交</button>
+					</div>
+					</form>
+				</div>
+			</div>
+		 </div>
+		  <include file="public@scripts" />
+          <script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+          <script src="__STATIC__/js/layer/layer.js"></script>
+          <script type="text/javascript" src="__STATIC__/js/datejs/moment.min.js"></script>
+          <script type="text/javascript" src="__STATIC__/js/datejs/daterangepicker.js"></script>
+		  <script type="text/javascript" src="__STATIC__/js/datejs/momentfunction.js"></script>
+          <script>
+		    var maxDate = moment().startOf('day');
+		    var date_autoUpdateInput = false;
+		    $(function() {
+              $(".js-select-gallery").select2();
+            })
+			$(".btn-exchange").click(function(){
+			   $(".exchange").show();
+			})
+			$(".exchange-close").click(function(){
+			   $(".exchange").hide();
+			})
+			$(".btn-withdraw").click(function(){
+			   $(".withdraw").show();
+			})
+			$(".withdraw-close").click(function(){
+			   $(".withdraw").hide();
+			})
+			  $(".btn-clear").click(function () {
+				  var url = $(this).attr('url');
+				  location.href = url;
+			  })
+
+			//时间插件 默认时间
+        var start = '{$start}',end  = '{$end}';
+        function check(){
+            layer.load(1);
+            var jsdate = $("#rangepickdate").val();
+            datearr=jsdate.split('至');
+            var start_time = datearr[0];
+            var end_time = datearr[1];
+            if(start_time != '' && end_time != '' && start_time > end_time){
+                layer.msg('开始时间不能大于结束时间');
+                return false;
+            }
+            return true;
+        }
+            //			日历
+
+
+          $(".exchange_submit").click(function () {
+              $(".exchange_submit").attr('disabled',true);
+              $.ajax({
+                  type: 'post',
+                  url: '{:url("exchange")}',
+                  data: $("#ajaxForm").serialize(),
+                  success: function (res) {
+                      if(res.code == 1){
+                          layer.msg(res.msg);
+                          setTimeout(function () {
+                              window.location.reload();
+                          },1000)
+                      }else{
+                          $(".exchange_submit").attr('disabled',false);
+                          layer.msg(res.msg);
+                      }
+                  },
+                  error: function () {
+                      $(".exchange_submit").attr('disabled',false);
+                      layer.msg('服务器错误，请稍后再试');
+                  }
+              });
+          })
+          $(".withdrawal_submit").click(function () {
+              $(".withdrawal_submit").attr('disabled',true);
+              $.ajax({
+                  type: 'post',
+                  url: '{:url("withdrawal")}',
+                  data: $("#ajaxForm1").serialize(),
+                  success: function (res) {
+                      if(res.code == 1){
+                          layer.msg(res.msg);
+                          setTimeout(function () {
+                             window.location.reload();
+                          },1000)
+                      }else{
+                          $(".withdrawal_submit").attr('disabled',false);
+                          layer.msg(res.msg);
+                      }
+                  },
+                  error: function () {
+                      $(".withdrawal_submit").attr('disabled',false);
+                      layer.msg('服务器错误，请稍后再试');
+                  }
+              });
+          })
+            $('.chakan').click(function() {
+              var that = $(this),
+              settlement_number = that.data('settlement_number');
+              if (!settlement_number) {
+                layer.msg('数据错误');
+                return false;
+              }
+              layer.closeAll();
+              layer.open({
+                type: 2,
+                title: "结算详情",
+                shadeClose: true,
+                shade: 0.8,
+                area: ['70%', '80%'],
+                content: ["{:url('settlement_detail')}?settlement_number=" + settlement_number, 'no'] //iframe的url
+              });
+            });
+            $('.appy_earn').click(function() {
+              var that = $(this),
+              settlement_number = that.data('settlement_number'),
+              ti_status = that.data('ti_status');
+              if (!settlement_number) {
+                layer.msg('数据错误');
+                return false;
+              }
+              $.ajax({
+                type: 'post',
+                url: '{:url("apply")}',
+                data: {
+                  settlement_number: settlement_number,
+                  ti_status: ti_status
+                },
+                success: function(res) {
+                  layer.msg(res.msg, {
+                    time: 1000
+                  },
+                  function() {
+                    location.href = location.href;
+                  });
+                },
+                error: function() {
+                  layer.msg('服务器错误，请稍后再试');
+                }
+              });
+            });
+	  </script>
+	  </div>
+  </div>
+	<script>
+		$('.reapply').click(function(){
+			that = $(this);
+			url = that.data('url');
+			id = that.data('id');
+			$.post(url,{id:id},function(res){
+				layer.msg(res.msg, {
+					time: 500
+				},function () {
+					location.href=location.href;
+				});
+			});
+		})
+	</script>
+	<style>
+		.bold{font-weight:bold;}
+	</style>
+  </body>
+
+</html>

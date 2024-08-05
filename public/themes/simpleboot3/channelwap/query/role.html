@@ -1,0 +1,288 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/LCalendar.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/select2.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/new_select2.css" type="text/css" />
+    <link href="__TMPL__/channelwappublic/assets/css/query.css" type="text/css" rel="stylesheet" />
+</block>
+<block name="body">
+    <div class="page-container profit-exchange-container">
+        <header>
+            <div style="width: 100%;height: 100%" class="v-middle h-middle">
+                <p class="header-title " data-url="{:url('query/summary')}">数据汇总</p>
+                <empty name="baseinfo.pattern">
+                    <p class="header-title " data-url="{:url('query/recharge')}">充值明细</p>
+                    <else/>
+                    <p class="header-title" data-url="{:url('query/register')}">注册明细</p>
+                </empty>
+                <p class="header-title active" data-url="{:url('query/role')}">角色查询</p>
+                <p class="header-title" data-url="{:url('query/arpu')}">ARPU</p>
+                <p class="header-title" data-url="{:url('query/rank')}">排行榜</p>
+
+            </div>
+        </header>
+        <div class="page-content">
+            <div class="search-box">
+                <div class="search-item col-4">
+                    <input type="text" class="input-date"  id="user_account" placeholder="玩家账号" value="{:input(user_account)}" autocomplete="off">
+                </div>
+                <div class="search-item  col-4">
+                    <input type="text" class="input-date btn-date" readonly name="start_time" id="start_time" placeholder="开始时间" value="" autocomplete="off">
+                </div>
+                <div class="search-item  col-4">
+                    <input type="text" class="input-date btn-date" readonly name="end_time" id="end_time" placeholder="结束时间" value="" autocomplete="off">
+                </div>
+                <div class="search-item col-4">
+                    <select id="game_id" class="select_gallery" data-placeholder="来源游戏">
+                        <option value="0" >游戏名称</option>
+                        <php>$gmap['game_status'] = 1;</php>
+                        <volist name=":get_game_list('id,game_name,relation_game_id,relation_game_name',$gmap,null,'sort desc ,id desc')" id="vv">
+                            <option <if condition="$vv['id'] eq input('game_id')"> selected</if> data="{$vv['game_name']}" value="{$vv['id']}">{$vv['game_name']}</option>
+                        </volist>
+                    </select>
+                </div>
+                <div class="search-item col-4">
+                    <select id="server_name" class="select_gallery" data-placeholder="游戏区服">
+                        <option value="0">区服名称</option>
+                    </select>
+                </div>
+                <div class="search-item col-4">
+                    <input type="text" class="input-date" id="role_name" name="role_name" placeholder="角色名称" value="{:input('role_name')}">
+                </div>
+            </div>
+            <div class="table-box">
+                <table>
+                    <tbody>
+                    <tr class="table-title">
+                        <th>玩家账号</th>
+                        <th>游戏名称</th>
+                        <th>区服角色</th>
+                        <th>游戏等级<br/>战力值</th>
+                    </tr>
+                    </tbody>
+                    <tbody id="roleload">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/select2.min.js"></script>
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/LCalendar.min.js"></script>
+    <script>
+        game_id = "{:input('game_id')}";
+        server_name = "{:input('request.server_name')}";
+        $(function () {
+            //点击tab
+            $('.header-title').click(function () {
+                location.href=$(this).data("url");
+            });
+            $(".select_gallery").select2({
+                minimumResultsForSearch: -1
+            });
+            $('.summary-date-menu a').click(function () {
+                $(this).addClass("active").siblings().removeClass("active");
+                var index = $(this).index();
+                $('.summary-date-tab').eq(index).show().siblings(".summary-date-tab").hide();
+            });
+            if(game_id){
+                get_game_server(game_id);
+            }
+            $("#server_name").click(function () {
+                if($('#game_id').val()==0 ){
+                    layer.msg('请先选择游戏');
+                    return false;
+                }
+                if($('#game_id').val()=='' ){
+                    layer.msg('请先选择游戏');
+                    return false;
+                }
+            })
+            //时间插件
+            var start_calendar = new LCalendar();
+            start_calendar.init({
+                'trigger': '#start_time', //标签id
+                'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+                'minDate': (new Date().getFullYear() - 3) + '-' + 1 + '-' + 1, //最小日期
+                'maxDate': new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDate() //最大日期
+            });
+            var end_calendar = new LCalendar();
+            end_calendar.init({
+                'trigger': '#end_time', //标签id
+                'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+                'minDate': (new Date().getFullYear() - 3) + '-' + 1 + '-' + 1, //最小日期
+                'maxDate': new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDate() //最大日期
+            })
+        })
+        function get_game_server(game_id){
+            $('#server_name').empty();
+            $('#server_name').append("<option value='0'>区服名称</option>");
+            $.ajax({
+                url:"{:url('query/get_role_server')}",
+                type:'post',
+                dataType:'json',
+                data:{game_id:game_id},
+                success:function(res){
+                    if(res.code!=1){
+                        layer.msg(res.msg);
+                    }else{
+                        option = '';
+                        $.each(res.data,function (key,value) {
+                            option+="<option value='";
+                            option+=value['server_name']+"'";
+                            if(value['server_name']==server_name){
+                                option+="selected";
+                            }
+                            option+=" >"+value['server_name'];
+                            option+="</option>";
+                        });
+                        $('#server_name').append(option).select2();
+                    }
+                },error(){
+                    layer.msg('服务器错误');
+                }
+            })
+        }
+    </script>
+    <script>
+        var itemIndex = 0;
+        var user_account = '';
+        var start_time = '';
+        var end_time = '';
+        var role_name = '';
+        var lwx = window.lwx || {};
+        var pid_level = {:PID_LEVEL};
+        lwx.ready = true;
+        lwx.width = $(window).width();
+        lwx.height = $(window).height();
+        lwx.number = {role:1};
+        lwx.row = {role:15};
+        lwx.http = {
+            getJSON:function(url,callback){
+                $.getJSON(url + '&v=' + Date.now(),function(data){
+                    callback(data);
+                });
+            },
+            postJSON:function(url,args,callback) {
+                $.post(url + '&v=' + Date.now(), args, function(data) {
+                    callback(data);
+                },"json")
+            },
+        };
+        lwx.url ={
+            role:'{:url("Query/get_role")}',
+        };
+        lwx.page = {
+            role:function(){
+                if(lwx.number.role) {
+                    lwx.http.getJSON(lwx.url.role+'?row='+lwx.row.role+'&page='+lwx.number.role+'&game_id='+game_id+'&server_name='+server_name+'&user_account='+user_account+'&start_time='+start_time+'&end_time='+end_time+'&role_name='+role_name,function(data) {
+                        var hotload = $('#roleload');
+                        var data = data.data;
+                        if(data && data.length) {
+                            var html = '';
+                            for (var i in data) {
+                                html += '<tr>';
+                                html += '<td>'+data[i].user_account+'('+data[i].nickname+')</td>'
+                                html += '<td>'+data[i].game_name+'</td>';
+                                html += '<td>'+data[i].server_name+'<br/>'+data[i].role_name+'</td>';
+                                html += '<td>'+data[i].role_level+'<br/>'+data[i].combat_number+'</td>';
+                                html += '</tr>';
+                            }
+                            hotload.append(html);
+                            hotload.find('.jsdropload').remove();
+                            if(data.length >= lwx.row.role) {
+                                lwx.number.role++;
+                                lwx.ready = true;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.role = false;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                        } else {
+                            if(lwx.number.role==1){
+                                hotload.html('').append('<p class="no_invest_info jsdropload">~空空如也~</p>');
+                            } else{
+                                hotload.find('.jsdropload').remove();
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                            lwx.number.role = false;
+                        }
+                    });
+                }
+            }
+        };
+        pageChange();
+        function pageChange() {
+            lwx.page.role();
+        }
+        function pageScroll(scrollTop, boxHeight, maxScrollHeight) {
+            if (scrollTop + boxHeight >= maxScrollHeight - 50) {
+                if (lwx.ready) {
+                    lwx.ready = false;
+                    lwx.page.role();
+                }
+            }
+        }
+        window.onscroll = function() {
+            var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+            pageScroll(scrollTop, lwx.height, $(document).height())
+        }
+        $(function () {
+            $('.game-menu-box a').click(function () {
+                $(this).addClass("active").siblings().removeClass("active");
+                var index = $(this).index();
+                $('.menu-tab').eq(index).show().siblings(".menu-tab").hide();
+                itemIndex = index;
+                location.hash = index;
+            });
+            $("#game_id").change(function () {
+                game_id = $("#game_id").val();
+                get_game_server(game_id);
+                $("#roleload").empty();
+                lwx.number.role = 1;
+                pageChange();
+            })
+            $("#server_name").change(function () {
+                server_name = $("#server_name").val();
+                $("#roleload").empty();
+                lwx.number.role = 1;
+                pageChange();
+            })
+            $("#user_account").bind('input porpertychange',function(){
+                user_account = $("#user_account").val();
+                $("#roleload").empty();
+                lwx.number.role = 1;
+                pageChange();
+            });
+            $("#role_name").bind('input porpertychange',function(){
+                role_name = $("#role_name").val();
+                $("#roleload").empty();
+                lwx.number.role = 1;
+                pageChange();
+            });
+            $("#start_time").bind('input porpertychange',function(){
+                start_time = $("#start_time").val();
+                if(start_time && end_time && start_time > end_time){
+                    layer.msg('开始时间大于结束时间');
+                }
+                $("#roleload").empty();
+                lwx.number.role = 1;
+                pageChange();
+            });
+            $("#end_time").bind('input porpertychange',function(){
+                end_time = $("#end_time").val();
+                if(start_time && end_time && start_time > end_time){
+                    layer.msg('开始时间大于结束时间');
+                }
+                $("#roleload").empty();
+                lwx.number.role = 1;
+                pageChange();
+            });
+        })
+        $(window).on("hashchange", function() {
+            pageChange();
+        });
+    </script>
+</block>

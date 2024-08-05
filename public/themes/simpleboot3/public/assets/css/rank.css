@@ -1,0 +1,106 @@
+.normal-list {
+	border: none;
+	padding-bottom: 40px;
+}
+
+.normal-list,.right-container {
+	background: 0 0;
+}
+
+
+.nav-tabs-active .nav-link {
+	background-color: #f5f6fa;
+
+}
+
+
+
+.rank-form {
+	width: 100%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	border: 1px solid #e3e8ec;
+	margin: 8px 0 0;
+	border-radius: 5px;
+	background: #fff;
+	padding-bottom: 40px;
+}
+
+.rank-form-headline {
+	width: 100%;
+	line-height: 53px;
+	height: 53px;
+	color: #26c7db;
+	font-size: 1pc;
+	font-weight: 700;
+	/*border-bottom: 2px solid #e3e8ec;*/
+	text-indent: 2em;
+}
+
+.rank-form table {
+	width: 90%;
+	margin: 2px auto 0;
+	text-align: center;
+	color: #6a7082;
+	font-size: 14px;
+}
+.rank-list-table {
+	width: 33.333%;
+	min-width: 300px;
+}
+.rank-list-table .th1, .rank-list-table .td1{
+	width: 29%;
+	min-width: 87px;
+}
+.rank-list-table .th2, .rank-list-table .td2{
+	width: 35%;
+	min-width: 105px;
+}
+.rank-list-table .th3, .rank-list-table .td3{
+	width: 36%;
+	min-width: 108px;
+}
+.rank-form tr {
+	height: 49px;
+}
+.rank-list-table table {
+	table-layout: fixed;
+}
+.rank-list-table td {
+	-ms-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.rank-form th {
+	background: #f0eff5;
+	border-top: 1px solid #f3f5f9;
+	color: #6a7082;
+	font-weight: 700;
+}
+
+.rank-form table,.rank-form td,.rank-form th {
+	border: 1px solid #e0e7f1;
+}
+
+.rank-goldmedal-first,.rank-goldmedal-second,.rank-goldmedal-third {
+	display: block;
+	width: 29px;
+	height: 34px;
+	background: url(../images/ranking_ico_numb1.png) no-repeat;
+	margin: 0 auto
+}
+
+.rank-goldmedal-second {
+	background: url(../images/ranking_ico_numb2.png) no-repeat;
+}
+
+.rank-goldmedal-third {
+	background: url(../images/ranking_ico_numb3.png) no-repeat;
+}
+
+.weight {
+	font-weight: 700;
+}

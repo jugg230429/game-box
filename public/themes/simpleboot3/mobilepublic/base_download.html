@@ -1,0 +1,2358 @@
+﻿<!DOCTYPE html>
+<html data-dpr="1">
+<head lang="en">
+    <meta itemprop="name" content="{$game_info['relation_game_name']}"/>
+    <if condition="$game_info['icon']">
+        <meta itemprop="image" content="{:cmf_get_image_url($game_info['icon'])}" />
+    <else/>
+        <meta itemprop="image" content="__TMPL__/mobilepublic/download/img/empty.jpg" />
+    </if>
+    <meta itemprop="description"  content="{$game_info['features']}" />
+  <script>
+      url="{:url('Index/get_auth')}";
+      send_sms_url="{:url('User/send_sms')}";
+      forget_url = "{:url('User/checkForgetName')}";
+      forget_sms_url = "{:url('User/checkForgetPhone')}";
+      //全局变量
+      var GV = {
+          ROOT: "/",
+          WEB_ROOT: "/",
+          JS_ROOT: "static/js/"
+      };
+  </script>
+    <style>
+
+        .index_fg_hx{
+            width: 100%;
+            height:1px;
+            background:rgba(237,238,239,1);
+            margin-bottom: 0.8rem;
+        }
+        .fl{
+            float: left;
+        }
+        .fg{
+            float: right;
+        }
+        .clear{
+            clear: both;
+        }
+        .layui-layer {
+            border-radius: 8px!important;
+        }
+
+        @media screen and (max-width:320px) and (orientation:portrait){
+            .login_icon_phone{
+                position: absolute;
+                top: 2.1rem!important;
+            }
+            .login_icon_password{
+                position: absolute;
+                top: 6.3rem!important;
+            }
+        }
+        a,a:hover{
+            text-decoration: none!important;
+        }
+        .active_type{
+            color: #018FFF!important;
+        }
+        .first_type{
+            margin-left: 3%!important;
+        }
+        .login_modal{
+            display: none;
+        }
+        .close_login_modal,.close_get_back_pwd_modal_one{
+            position: absolute;
+            right: .35rem;
+            top: .35rem;
+        }
+        .login_icon_phone{
+            width: 7%;
+            position: absolute;
+            left: 11%;
+            top: .8rem;
+            top: .77rem;
+        }
+        .login_icon_password{
+            width: 7%;
+            position: absolute;
+            left:11%;
+            top: 2.3rem;
+            top: .3rem;
+        }
+        .registered_modal_mob{
+            display: none;
+        }
+        /* input空白样式在index.css */
+        .get_back_pwd_modal_email input[type='text'],.get_back_pwd_modal_two input[type='text'],.get_back_pwd_modal_two input[type='number'],.get_back_pwd_modal_one input[type='text'],.login_modal input[type='text'],.registered_modal_pub input[type='text'],.registered_modal_mob input[type='text'],.registered_modal_mob input[type='number']{
+            width: 73%;
+            font-size: 0.373rem;
+            margin-top: 1.4rem;
+            margin-left: .7rem;
+            margin-bottom: 0.1rem;
+            height: 1.09rem;
+			line-height:0.826rem;
+            padding-left: 1.1rem;
+            padding-right: .6rem;
+            border: none !important;
+            box-shadow: none !important;
+        }
+        .get_back_pwd_modal_three input[type='password'],.login_modal input[type='password'],.registered_modal_pub input[type='password'],.registered_modal_mob input[type='password']{
+            margin-top: 0.1rem;
+            padding-right: .6rem;
+            font-size: 0.373rem;
+            width: 73%;
+            margin-left: .7rem;
+            height: 1.09rem;
+            line-height:0.826rem;
+            margin-bottom: 0.2rem;
+            padding-left: 1.1rem;
+            border: none !important;
+            box-shadow: none !important;
+        }
+        .modal_fengexian{
+            width:82%;
+            height:1px;
+            background:rgba(230,228,228,1);
+            margin-left: 8%;
+            clear: both;
+        }
+        .modal_fengexian_href{
+            width:41%;
+            height:1px;
+            background:rgba(230,228,228,1);
+            margin-left: 8%;
+        }
+        /* .geetest_box .geetest_btn{
+            width: 93%!important;
+        } */
+        .geetest_success_radar_tip{
+            width:100%!important;
+        }
+        .geetest_logo,.geetest_success_logo{
+            display: none!important;
+        }
+        .get_back_pwd_modal_one_btn{
+            width: 80%;
+            margin-left: 10%;
+            height: 1rem;
+            background-color: #018FFF;
+            border:1px solid #018FFF;
+            color: #ffffff;
+            text-align: center;
+            border-radius: 5px;
+            margin-top: .4rem;
+        }
+        .get_back_pwd_modal_two_btn{
+            width: 80%;
+            margin-left: 10%;
+            height: 1rem;
+            background-color: #018FFF;
+            border: 1px solid #018FFF;
+            box-shadow: none;
+            color: #ffffff;
+            text-align: center;
+            border-radius: 5px;
+            margin-top: .4rem;
+        }
+        .get_back_pwd_modal_one_text{
+            padding: 0.2rem 0rem;
+            font-size: 13px;
+            text-align: center;
+            color: #018FFF;
+        }
+        .modal_username{
+            margin-top: .55rem!important
+        }
+        .get_back_pwd_modal_two .login_icon_yanzhengmas{
+            position: absolute;
+            top: 3.1rem!important;
+        }
+        .get_back_pwd_modal_email .login_icon_yanzhengmas{
+            position: absolute;
+            top: 9rem!important;
+        }
+        .get_back_pwd_modal_two_intoemail{
+
+            width: 100%;
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 12px;
+            color: #999999;
+        }
+        .get_back_pwd_modal_two .get_yanzhengma{
+            margin-top: 0.25rem!important;
+        }
+        .get_back_pwd_modal_two_intoemail span{
+            color: #018FFF!important;
+        }
+        .get_back_pwd_modal_two_intotell{
+            position: absolute;
+            bottom: 1rem;
+            left: 25%;
+            font-size: 12px;
+            color: #999999;
+        }
+        .get_back_pwd_modal_two_intotell span{
+            color: #018FFF!important;
+        }
+        .get_back_pwd_modal_one_title{
+            text-align: center;
+            font-size:15px;
+            font-weight:500;
+            color:rgba(34,34,34,1);
+            position: absolute;
+            top: .4rem;
+            left: 40%;
+        }
+        .clear_text{
+            width: 5%;
+            position: relative;
+            top: .9rem;
+            left: 0.4rem;
+            display: none
+        }
+        .geetest_radar_tip_content{
+            font-size: 12px;
+        }
+        @media screen and (max-width:320px) and (orientation:portrait){
+            .modal_yanzhengmas{
+                width: 26%!important;
+            }
+            .get_back_pwd_modal_two .get_yanzhengma{
+                position: relative;
+                left: -1rem;
+                top: 0.2rem;
+            }
+            .clear_text{
+                position: relative;
+                left:-0.4rem!important;
+            }
+            .clear_texts{
+                position: relative;
+                left: -0.4rem!important;
+            }
+            .clear_textss{
+                position: relative;
+                left: -2.4rem!important;
+            }
+            .login_icon_passworde{
+                position: absolute;
+                left: .85rem!important;
+                margin-top: 0.15rem
+            }
+            .get_back_pwd_modal_email input[type='text'],.get_back_pwd_modal_two input[type='text'],.get_back_pwd_modal_two input[type='number'],.get_back_pwd_modal_one input[type='text'],.login_modal input[type='text'],.registered_modal_pub input[type='text'],.registered_modal_mob input[type='text'],.registered_modal_mob input[type='number']{
+                font-size: 13px;
+                padding-left: 1.4rem!important;
+            }
+            .get_back_pwd_modal_three input[type='password'],.login_modal input[type='password'],.registered_modal_pub input[type='password'],.registered_modal_mob input[type='password']{
+                font-size: 13px;
+                padding-left: 1.4rem!important;
+            }
+        }
+        .modal_yanzhengmas{
+            width: 54%!important;
+            margin-top:0.2rem!important;
+            margin-left:.3rem!important;
+        }
+        .clear_texts{
+            width: 5%;
+            position: relative;
+            top: 0.4rem;
+            left: 0.4rem;
+            display: none
+        }
+        .clear_textss{
+            width: 5%;
+            position: relative;
+            top: 1.7rem;
+            left: -.5rem;
+            display: none
+        }
+        .modal_login_btn{
+            background-color: #018FFF;
+            color: #ffffff;
+            width: 80%;
+            font-size: 14px;
+            height: 1rem;
+            border: 1px solid #018FFF;
+            line-height: 1rem;
+            margin-left: 10%;
+            margin-top: .3rem;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .new_user{
+            font-size:13px;
+            font-weight:500;
+            color:rgba(33,177,235,1);
+            margin-left: 10%;
+            margin-top: .25rem;
+        }
+        .registered_result_modal{
+            display: none;
+            text-align: center;
+        }
+        .get_back_pwd_modal_email,.get_back_pwd_modal_one,.get_back_pwd_modal_two,.get_back_pwd_modal_three,.get_back_pwd_modal_four{
+            display: none
+        }
+        .get_back_pwd_modal_four{
+            text-align: center
+        }
+        .result_btn{
+            width: 80%;
+            margin-left: 10%;
+            height: 1rem;
+            font-size: 13px;
+            background-color: #018FFF;
+            color: #ffffff;
+            margin-top: .3rem;
+            cursor: pointer;
+            border-radius: 5px
+        }
+        .result_tap{
+            margin-left: 11%;
+            margin-top: 0.2rem;
+            width: 78%;
+            font-size:13px;
+            font-weight:500;
+            color:#999999;
+            line-height: .8rem
+        }
+        .result_btn p{
+            padding-top: 0.25rem;
+            letter-spacing: 3px;
+        }
+        .result_img{
+            width: 30%;
+            margin-top: 0.2rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .result_text{
+            font-size:15px;
+            font-weight:500;
+            color:rgba(1,143,255,1);
+            margin-top: .3rem;
+        }
+        .mt1{
+            margin-top: 0.2rem
+        }
+        .fogget_pwd{
+            font-size:13px;
+            font-weight:500;
+            color:rgba(153,153,153,1);
+            margin-right: 8%;
+            margin-top: .25rem;
+        }
+        .duan_fengexian{
+            width: 24%;
+            height:1px;
+            background:rgba(221,221,221,1);
+            margin-top:.4rem;
+        }
+        .ml40{
+            margin-left: 8%;
+        }
+        .ml20{
+            margin-left: 2rem
+        }
+        .other_login_type{
+            font-size:12px;
+            width: 36%;
+            text-align: center;
+            font-weight:500;
+            color:rgba(192,192,196,1);
+            margin-top: .18rem;
+        }
+        .login_grounp{
+            width: 50%;
+            margin-top: 1rem;
+            /* background-color: #999999; */
+            height:1.6rem;
+            margin: 0px auto;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            vertical-align: middle;
+        }
+        .login_type{
+            position: relative;
+            top: 0rem;
+            vertical-align: middle;
+        }
+        .login_type a{
+            width: 50%;
+            height: 1.35rem;
+            margin: 0px auto;
+        }
+        .login_type .qq{
+            width: 100%;
+            height: 100%;
+            padding-top: 0.1rem;
+            /* margin-left: 25% */
+        }
+        .login_type .wx{
+            width: 100%;
+            height: 100%;
+            padding-top: 0.1rem;
+            /* margin-right: 25% */
+        }
+        .login_type img{
+            width: 35%;
+            margin: 0 auto;
+        }
+        .login_type div p{
+            height: .75rem;
+            line-height: .75rem;
+            font-size:12px;
+            font-weight:500;
+            color:rgba(192,192,196,1);
+            margin-top: 0.1rem;
+        }
+        .registered_modal_pub{
+            display: none
+        }
+        .login_icon_username{
+            width: 7%;
+        }
+        .modal_user_name{
+            margin-top:.5rem!important;
+            margin-left:.3rem!important;
+            margin-bottom: 0.05rem!important;
+            width: 88%!important;
+        }
+        .modal_user_namea{
+            margin-top:1.4rem!important;
+            margin-left:.3rem!important;
+            margin-bottom: 0.1rem!important;
+            width: 88%!important;
+        }
+        .modal_user_names{
+            margin-top:1.4rem!important;
+            margin-left:.3rem!important;
+            margin-bottom: 0.1rem!important;
+            width: 88%!important;
+        }
+        .modal_pass_word{
+            margin-top:0.1rem!important;
+            margin-left:.3rem!important;
+            width: 88%!important;
+            margin-bottom: 0rem!important;
+        }
+        .registered_modal_mob .modal_pass_word{
+            margin-top:0.1rem!important;
+            margin-left:.3rem!important;
+            width: 65%!important;
+            margin-bottom: 0.08rem!important;
+        }
+        .modal_pass_word_three{
+            margin-top:4.5rem!important;
+            margin-left:1rem!important;
+            width: 65%!important;
+            margin-bottom: 0.5rem!important;
+        }
+        .modal_yanzhengma{
+            width: 53%!important;
+            margin-top:0.1rem!important;
+            margin-left:.3rem!important;
+            margin-bottom: 0.08rem!important;
+        }
+        .get_yanzhengma{
+            background-color: #018FFF;
+            color: #ffffff;
+            margin-top:0.2rem;
+            font-size: 0.34rem;
+            width: 34%;
+            height: 1rem;
+            line-height: 1rem;
+            border: 1px solid #018fff;
+            border-radius: 5px;
+            text-align: center;
+            font-weight:500;
+        }
+        .get_yanzhengma.no_send {
+            background-color:#CCCCCC;
+            border-color: #CCCCCC;
+            cursor:not-allowed;
+        }
+        .login_icon_me{
+            width:7%;
+            position: absolute;
+            top: .9rem;
+            top: .7rem;
+            left: .62rem;
+        }
+        .registered_modal_mob .login_icon_me{
+            width:7%;
+            position: absolute;
+            top: .75rem;
+            top: .71rem;
+            left: .62rem;
+        }
+        .login_icon_mea{
+            width:7%;
+            position: absolute;
+            top: 3.6rem;
+            left: .62rem;
+        }
+        .login_icon_mes{
+            width:7%;
+            position: absolute;
+            top: 1.6rem;
+            left: .62rem;
+        }
+        .login_icon_passworda{
+            width:7.5%;
+            position: absolute;
+            top: 2.05rem;
+            top: .25rem;
+            left: .62rem;
+        }
+        @media screen and (min-width:414px) and (max-width:431px) and (orientation:portrait){
+
+
+        }
+        .login_icon_password_three{
+            width:7.5%;
+            position: absolute;
+            top: 5.1rem;
+            left: .62rem;
+        }
+        .login_icon_password_threes{
+            width:7.5%;
+            position: absolute;
+            top: 9.2rem;
+            left: .62rem;
+        }
+        .login_icon_passwordc{
+            width:7.5%;
+            position: absolute;
+            top: 4.5rem;
+            top: .25rem;
+            left: .62rem;
+        }
+        .login_icon_yanzhengma{
+            width:7.5%;
+            position: absolute;
+            top: 2rem;
+            top: .3rem;
+            left: .62rem;
+        }
+        .login_icon_yanzhengmas{
+            width:7.5%;
+            position: absolute;
+            top: 8.5rem;
+            left: .62rem;
+        }
+        .login_icon_passwordb{
+            width:7.5%;
+            position: absolute;
+            top: .25rem;
+            left: .62rem;
+        }
+        .login_icon_passworde{
+            width:7.5%;
+            position: absolute;
+            top: .25rem;
+            left: .62rem;
+        }
+        .registered_modal_pub_btn{
+            width: 82%;
+            height: 1rem;
+            font-size: 0.373rem;
+            background-color: #D6D6D6;
+            border-radius: 5px;
+            text-align: center;
+            border: 1px solid #D6D6D6;
+            color: #FFFFFF;
+            margin-left: 9%;
+            margin-top: 0rem;
+        }
+        .get_back_pwd_modal_three_btn{
+            width: 80%;
+            height: 3rem;
+            background-color: #D6D6D6;
+            border-radius: 5px;
+            text-align: center;
+            color: #FFFFFF;
+            margin-left: 10%;
+            margin-top: 1rem;
+        }
+        .get_back_pwd_modal_three_btn p{
+            padding-top: 0.7rem;
+        }
+        .agree_con_img,.agree_con_two_img{
+            width:.467rem;
+            height: .467rem;
+            position: relative;
+            left: .85rem;
+            top: 0.25rem;
+        }
+        .registered_modal_mob .can_jieshou_two p{
+            width: 82%;
+            position: relative;
+            left: 1rem;
+            top:0.25rem;
+        }
+        .registered_modal_mob .registered_modal_pub_btn{
+            margin-top: .2rem;
+        }
+        .agree_con_check,.agree_con_two_check{
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            left: -10%;
+        }
+        .can_click{
+            background-color: #018FFF!important;
+            border-color: #018FFF!important;
+        }
+        input::-webkit-input-placeholder{ /*WebKit browsers*/
+            color: #C1C0C4;
+            font-size: 14px;
+        }
+        input::-moz-input-placeholder{ /*Mozilla Firefox*/
+            color: #C1C0C4;
+            font-size: 14px;
+        }
+        input::-ms-input-placeholder{ /*Internet Explorer*/
+            color: #C1C0C4;
+            font-size: 14px;
+        }
+        .geetest_holder.geetest_wind,.geetest_holder.geetest_wind .geetest_radar_tip, .geetest_holder.geetest_wind .geetest_success_radar_tip{
+            width: 76%!important;
+        }
+        .btn_delphil.textc{
+            border:1px solid rgba(230,228,228,1);
+        }
+        .geetest_holder.geetest_wind .geetest_radar_btn, .geetest_holder.geetest_wind .geetest_success_btn{
+            /* width: 92%!important; */
+            border:none!important
+        }
+        .can_jieshou{
+            height: 1rem;;
+        }
+        .can_jieshou_two{
+            height: 1rem;;
+        }
+        .can_jieshou p{
+            font-size:0.343rem;
+            width: 82%;
+            font-weight: 500;
+            color: #999999;
+            position: relative;
+            left: 1rem;
+            top:0.25rem;
+            text-align: left
+        }
+        .can_jieshou_two p{
+            font-size:0.343rem;
+            font-weight: 500;
+            color: #999999;
+            position: absolute;
+            left: 4.5rem;
+            top:21rem;
+            text-align: left
+        }
+        .can_jieshou span,.can_jieshou_two span{
+            color: #018FFF;
+        }
+        .footer_text{
+            width: 100%;
+            margin-top: 0.1rem;
+            margin-top: .2rem;
+            text-align: center;
+            font-size:0.346rem;
+            font-weight:500;
+            color:rgba(1,143,255,1);
+        }
+        .user_zhuce_info_page_header{
+            width: 100%;
+            height: 3.8rem;
+            /* background-color: aqua */
+        }
+        .user_zhuce_info_page_header .close_user_zhuce_info{
+            margin-left: 1rem;
+            font-size: 12px;
+            line-height: 3.8rem;
+            color: #018FFF!important
+        }
+        .sears_btn{
+            width: 5%;
+            margin-top: 1.2rem;
+            float: right;
+            margin-right: 1.2rem;
+        }
+        .registered_result_text{
+            width: 100%;
+            font-size: 16px;
+            text-align: center;
+            margin-top: .8rem
+        }
+        .user_zhuce_info_page_item {
+            font-size: 14px;
+            width: 30%;
+            line-height: 3.8rem;
+            font-weight: 550;
+            vertical-align: middle;
+            text-align: center;
+            position: absolute;
+            top: 0rem;
+            left: 35%;
+            margin: 0px auto;
+        }
+        .type_down__long_hx{
+            width: 100%;
+            height: 1px;
+            background-color: #EDEEEF;
+            position: relative;
+            z-index: 1;
+        }
+        .user_zhuce_info_con_error_text{
+            font-size:12px;
+            color: #999999;
+            margin-top: 10rem;
+            text-align: center
+        }
+        .user_zhuce_info_error_btn{
+            width:5.5rem;
+            height:2.6rem;
+            background:rgba(254,254,254,1);
+            border:1px solid rgba(1, 143, 255, 1);
+            border-radius:4px;
+            color: #018FFF;
+            margin-top: 1rem;
+            margin-left: 40%
+        }
+        .user_zhuce_info_error_btn p{
+            padding-top: 0.6rem;
+        }
+        .user_zhuce_info_con{
+            margin-left: 8%;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+        .user_zhuce_info_con p{
+            width: 89%;
+            font-size:12px;
+            font-family:PingFang-SC-Medium;
+            font-weight:500;
+            color:rgba(102,102,102,1);
+            line-height:1.7rem;
+        }
+        .empty-box {
+            width: 100%;
+            color:#999;
+            text-align: center;
+            position: absolute;
+            top: 48%;
+        }
+        @media screen and (max-width:320px) and (orientation:portrait){
+            .can_jieshou p{
+                font-size: 12px!important
+            }
+            input::-webkit-input-placeholder{ /*WebKit browsers*/
+                color: #C1C0C4;
+                font-size: 12px!important;
+            }
+            input::-moz-input-placeholder{ /*Mozilla Firefox*/
+                color: #C1C0C4;
+                font-size: 12px!important;
+            }
+            input::-ms-input-placeholder{ /*Internet Explorer*/
+                color: #C1C0C4;
+                font-size: 12px!important;
+            }
+            .login_icon_me{
+                position: absolute;
+                left: 0.9rem;
+            }
+            .registered_modal_mob .login_icon_me{
+                position: absolute;
+                top: 2rem!important;
+            }
+            .login_icon_yanzhengma{
+                position: absolute;
+                top: 5.7rem;
+            }
+            .login_icon_passworda{
+                position: absolute;
+                left: 0.9rem;
+                margin-top: 0.1rem
+            }
+
+        }
+        .show {
+            display: block;
+            text-align: center!important;
+            width: 100%!important
+        }
+
+        .hide {
+            display: none;
+            text-align: center!important;
+            width: 100%!important
+        }
+
+        #embed-captcha {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .geetest_copyright,
+        .geetest_feedback {
+            display: none !important;
+        }
+        .geetest_box {
+            margin:.35rem 8.6%
+        }
+        .to_login {
+            left: -7.2rem;
+        }
+        .geetest_holder.geetest_wind {
+            width: 100% !important;
+            min-width: 100px !important;
+        }
+        .geetest_holder.geetest_wind .geetest_btn {
+            width: 100% !important;
+        }
+        .clear_float {
+            clear: both;
+        }
+    </style>
+    <style>
+        .pop-caption-box {
+            position: fixed!important;
+        }
+        .pop-caption-close {
+            display:flex;
+        }
+        .pop-caption-close img {
+            padding: 0!important;
+            display: inline-block!important;
+            margin: auto!important;
+        }
+        .geetest_root {
+            overflow: hidden;
+        }
+        .geetest_box {
+            background:linear-gradient(180deg, #ffffff 0%,#f3f3f3 100%);
+            height:1rem;
+            line-height: 1rem;
+            border-radius: 5px;
+            color: #666;
+            border:1px solid #ccc;
+            position: relative;
+        }
+        .geetest_box a {
+            color: inherit;
+            display: block;
+            text-align: center;
+            font-size: 0.374rem;
+        }
+        .geetest_box:hover {
+            background:linear-gradient(0deg, #ffffff 0%,#f3f3f3 100%);
+        }
+
+        .geetest_box .geetest-heart  {
+            position: absolute;
+            height: 1rem;
+            line-height: 1rem;
+            width:1rem;
+            display:flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .geetest_box .geetest-heart span{
+            display:inline-block;
+            width: .5rem;height:.5rem;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+        }
+
+        .geetest_box .geetest-heart span{
+            -moz-transform: scale(1);
+            -ms-transform: scale(1);
+            -webkit-transform: scale(1);
+            transform: scale(1);
+            -moz-animation: geetest_wait_compute 0.8s linear infinite both;
+            -webkit-animation: geetest_wait_compute 0.8s linear infinite both;
+            animation: geetest_wait_compute 0.8s linear infinite both
+        }
+
+        @keyframes geetest_wait_compute {
+            60% {
+                -moz-transform: scale(0.75);
+                -ms-transform: scale(0.75);
+                -webkit-transform: scale(0.75);
+                transform: scale(0.75)
+            }
+        }
+
+        @-webkit-keyframes geetest_wait_compute {
+            60% {
+                -moz-transform: scale(0.75);
+                -ms-transform: scale(0.75);
+                -webkit-transform: scale(0.75);
+                transform: scale(0.75)
+            }
+        }
+
+        .geetest_box .geetest-heart span{
+            background: #3873ff
+        }
+        .geetest-refresh {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 1rem;
+            height: 1rem;
+        }
+        .geetest-refresh img {
+            transform: scale(.6);
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <block name="css"></block>
+</head>
+<body style="font-size: 12px;position: relative;width:10rem;margin: 0 auto;" cz-shortcut-listen="true">
+<block name="body"></block>
+
+
+   <if condition="AUTH_USER eq 1">
+       <eq name="session.login_auth"  value="0">
+    <!-- 登录弹窗 -->
+    <div class="login_modal">
+        <img src="__TMPL__/mobilepublic/assets/images/delete_icon.png" alt="" class="close_login_modal">
+        <div style="position: relative">
+            <img src="__TMPL__/mobilepublic/assets/images/login_icon_phone.png" alt="" class="fl login_icon_phone">
+            <input type="text" name="account" class="fl modal_username" value="{$Think.cookie.login_account}" placeholder="手机号/用户名">
+            <img src="__TMPL__/mobilepublic/assets/images/common_btn_delet.png" alt="" class="clear_text">
+        </div>
+        <div class="modal_fengexian"></div>
+        <div class="clear_float mt1" style="position: relative">
+            <img src="__TMPL__/mobilepublic/assets/images/login_icon_Password.png" alt="" class="fl login_icon_password">
+            <input type="password" name="password" class="fl" placeholder="密码">
+            <img src="__TMPL__/mobilepublic/assets/images/common_btn_delet.png" alt="" class="clear_texts">
+        </div>
+        <div class="modal_fengexian"></div>
+        <button class="modal_login_btn">
+            登录
+        </button>
+        <div>
+            <p class="fl new_user">注册新账号</p>
+            <p class="clear_float"></p>
+        </div>
+
+        <if condition=" $qq_login eq 1 or $weixin_login eq 1 ">
+        <div class="clear_float">
+            <div class="duan_fengexian fl ml40"></div>
+            <p class="fl other_login_type">其他登录方式</p>
+            <div class="duan_fengexian fl"></div>
+        </div>
+        <div class="clear_float login_type">
+            <div class="login_grounp">
+                <eq name="qq_login" value="1">
+                    <a href="{:url('User/thirdLogin',array('type'=>'qq'))}">
+                        <div class="qq">
+                            <img src="__TMPL__/mobilepublic/assets/images/login_icon_qq.png" alt="">
+                            <p>QQ</p>
+                        </div>
+                    </a>
+                </eq>
+                <if condition="$weixin_login eq 1 && is_weixin() ">
+                    <a href="{:url('User/thirdLogin',array('type'=>'weixin'))}">
+                        <div class="wx">
+                            <img src="__TMPL__/mobilepublic/assets/images/login_icon_wechat.png" alt="">
+                            <p>微信</p>
+                        </div>
+                    </a>
+                </if>
+            </div>
+        </div>
+        </if>
+    </div>
+
+    <!-- 注册弹窗-普通 -->
+    <div class="registered_modal_pub">
+        <img src="__TMPL__/mobilepublic/assets/images/delete_icon.png" alt="" class="close_login_modal">
+        <div style="margin-top:0.2rem;position: relative">
+            <img src="__TMPL__/mobilepublic/assets/images/login_icon_me.png" alt="" class="fl login_icon_me">
+            <input type="text" class="fl modal_user_name" name="account" placeholder="账号（6-15位字母或数字组合）">
+        </div>
+        <div class="modal_fengexian"></div>
+        <div style="position: relative">
+            <img src="__TMPL__/mobilepublic/assets/images/login_icon_Password.png" alt="" class="fl login_icon_passworda">
+            <input type="password" class="fl modal_pass_word" name="password" placeholder="密码（6-15位字母或数字组合）">
+        </div>
+        <div class="modal_fengexian"></div>
+        <div style="position: relative">
+            <img src="__TMPL__/mobilepublic/assets/images/login_icon_Password.png" alt="" class="fl login_icon_passworde">
+            <input type="password" class="fl modal_pass_word" name="repassword" placeholder="确认密码">
+        </div>
+        <div class="modal_fengexian"></div>
+        <div>
+            <div class="geetest_box">
+                <div class="geetest-heart"><span></span></div>
+                <a href="javascript:;" id="verify_pop1">点击按钮进行验证</a>
+                <a href="javascript:;" id="verify_refresh1" class="geetest-refresh">
+                    <img src="__TMPL__/mobilepublic/assets/images/refresh.png" >
+                </a>
+                <input type="hidden" name="verify_pop1_tag">
+                <input type="hidden" name="verify_pop1_token">
+            </div>
+        </div>
+        <button class="registered_modal_pub_btn">
+            注册
+        </button>
+        <div class="can_jieshou">
+            <input id="agree_con" type="checkbox" name="agreement" value="1" checked="checked" class="agree_con_check" />
+            <label for="agree_con" class="fl">
+                <img src="__TMPL__/mobilepublic/assets/images/login_btn_s.png" alt="" class="agree_con_img fl">
+            </label>
+            <p>我已阅读并同意 <span class="user_zhuce_info">《用户注册协议》</span><span class="user_zhuce_yinsi">《{$portal['post_title_yinsi']}》</span></p>
+        </div>
+        <p class="footer_text to_mob">手机号注册</p>
+        <if condition="$controller_name eq 'Downfile'"> <p class="footer_text to_login" style="margin-top: 0.4rem">去登录</p></if>
+    </div>
+    <!-- 注册弹窗-手机 -->
+    <div class="registered_modal_mob">
+        <img src="__TMPL__/mobilepublic/assets/images/delete_icon.png" alt="" class="close_login_modal">
+        <div style="position: relative">
+            <img src="__TMPL__/mobilepublic/assets/images/login_icon_phone.png" alt="" class="fl login_icon_me">
+            <input type="text" class="fl modal_user_name" name="account" placeholder="手机号">
+        </div>
+        <div class="modal_fengexian"></div>
+        <div style="position: relative">
+            <img src="__TMPL__/mobilepublic/assets/images/login_icon_yanzhengma.png" alt="" class="fl login_icon_yanzhengma">
+            <input type="number" class="fl modal_yanzhengma" name="code" placeholder="验证码" maxlength="6">
+            <button class="get_yanzhengma fl">
+                <p>获取验证码</p>
+            </button>
+        </div>
+        <div class="modal_fengexian_href clear_float"></div>
+        <div style="position: relative">
+            <img src="__TMPL__/mobilepublic/assets/images/login_icon_Password.png" alt="" class="fl login_icon_passwordb">
+            <input type="password" class="fl modal_pass_word" name="password" placeholder="密码">
+        </div>
+        <div class="modal_fengexian"></div>
+        <div style="position: relative">
+            <img src="__TMPL__/mobilepublic/assets/images/login_icon_Password.png" alt="" class="fl login_icon_passwordc">
+            <input type="password" class="fl modal_pass_word" name="repassword" placeholder="确认密码">
+        </div>
+        <div class="modal_fengexian"></div>
+        <div>
+            <div class="geetest_box">
+                <div class="geetest-heart"><span></span></div>
+                <a href="javascript:;" id="verify_pop2">点击按钮进行验证</a>
+                <a href="javascript:;" id="verify_refresh2" class="geetest-refresh">
+                    <img src="__TMPL__/mobilepublic/assets/images/refresh.png" >
+                </a>
+                <input type="hidden" name="verify_pop2_tag">
+                <input type="hidden" name="verify_pop2_token">
+            </div>
+        </div>
+        <button class="registered_modal_pub_btn">
+            注册
+        </button>
+        <div class="can_jieshou_two">
+            <input id="agree_con_two" type="checkbox" name="agreement" value="1" checked="checked" class="agree_con_two_check" />
+            <label for="agree_con_two" class="fl">
+                <img src="__TMPL__/mobilepublic/assets/images/login_btn_s.png" alt="" class="agree_con_two_img fl">
+            </label>
+            <p>我已阅读并同意<span class="user_zhuce_info">《用户注册协议》</span><span class="user_zhuce_yinsi">《{$portal['post_title_yinsi']}》</span></p>
+        </div>
+        <p class="footer_text to_pub">普通账号注册</p>
+        <if condition="$controller_name eq 'Downfile'"> <p class="footer_text to_login">去登录</p></if>
+    </div>
+    <!-- 注册结果弹窗 -->
+    <div class="registered_result_modal">
+        <img src="__TMPL__/mobilepublic/assets/images/delete_icon.png" alt="" class="close_login_modal">
+        <p class="registered_result_text">注册结果</p>
+        <img src="__TMPL__/mobilepublic/assets/images/pic_registered.png" alt="" class="result_img">
+        <p class="result_text">注册成功</p>
+        <div class="result_btn">
+            <p>返回登录</p>
+        </div>
+        <p class="result_tap">使用手机号注册，默认绑定注册账号可用于找回密码</p>
+    </div>
+    <!-- 找回密码弹窗-1 -->
+    <div class="get_back_pwd_modal_one">
+        <img src="__TMPL__/mobilepublic/assets/images/delete_icon.png" alt="" class="close_get_back_pwd_modal_one">
+        <p class="get_back_pwd_modal_one_title">输入账号</p>
+        <div>
+            <img src="__TMPL__/mobilepublic/assets/images/login_icon_me.png" alt="" class="fl login_icon_mes">
+            <input type="text" class="fl modal_user_names" name="account" value="{$Think.cookie.login_account}" placeholder="账号">
+            <img src="__TMPL__/mobilepublic/assets/images/common_btn_delet.png" alt="" class="clear_textss">
+            <div class="clear_float"></div>
+        </div>
+        <div class="modal_fengexian "></div>
+        <button class="get_back_pwd_modal_one_btn">
+            确定
+        </button>
+        <p class="get_back_pwd_modal_one_text">去登录 ></p>
+    </div>
+    <!-- 找回密码弹窗-2 (电话)-->
+    <div class="get_back_pwd_modal_two">
+        <img src="__TMPL__/mobilepublic/assets/images/delete_icon.png" alt="" class="close_login_modal">
+        <p class="get_back_pwd_modal_one_title">短信验证</p>
+        <div>
+            <img src="__TMPL__/mobilepublic/assets/images/login_icon_phone.png" alt="" class="fl login_icon_mes">
+            <input type="number" class="fl modal_user_namea" name="phone" placeholder="绑定手机号">
+        </div>
+        <div class="modal_fengexian clear_float"></div>
+        <div style="width:100%">
+            <img src="__TMPL__/mobilepublic/assets/images/login_icon_yanzhengma.png" alt="" class="fl login_icon_yanzhengmas">
+            <input type="number" class="fl modal_yanzhengmas" name="code" placeholder="验证码" maxlength="6">
+            <button class="get_yanzhengma fl">
+                <p>获取验证码</p>
+            </button>
+        </div>
+        <div class="modal_fengexian_href clear_float"></div>
+        <button class="get_back_pwd_modal_two_btn">
+            下一步
+        </button>
+        <p class="get_back_pwd_modal_two_intoemail">短信用不了？<span>邮箱找回></span></p>
+    </div>
+    <!-- 找回密码弹窗-2 (邮箱) -->
+    <div class="get_back_pwd_modal_email">
+        <img src="__TMPL__/mobilepublic/assets/images/delete_icon.png" alt="" class="close_login_modal">
+        <p class="get_back_pwd_modal_one_title">邮箱验证</p>
+        <div>
+            <img src="__TMPL__/mobilepublic/assets/images/login_icon_phone.png" alt="" class="fl login_icon_mes">
+            <input type="text" class="fl modal_user_namea" name="email" placeholder="绑定邮箱">
+        </div>
+        <div class="modal_fengexian clear_float"></div>
+        <div>
+            <img src="__TMPL__/mobilepublic/assets/images/login_icon_yanzhengma.png" alt="" class="fl login_icon_yanzhengmas">
+            <input type="text" class="fl modal_yanzhengmas" name="code" placeholder="验证码" maxlength="6">
+            <button class="get_yanzhengma fl">
+                <p>获取验证码</p>
+            </button>
+        </div>
+        <div class="modal_fengexian_href clear_float"></div>
+        <button class="get_back_pwd_modal_two_btn">
+            下一步
+        </button>
+        <p class="get_back_pwd_modal_two_intotell">邮箱用不了？<span>手机找回></span></p>
+    </div>
+    <!-- 找回密码弹窗-3 -->
+    <div class="get_back_pwd_modal_three">
+        <img src="__TMPL__/mobilepublic/assets/images/delete_icon.png" alt="" class="close_login_modal">
+        <p class="get_back_pwd_modal_one_title">设置密码</p>
+        <div>
+            <img src="__TMPL__/mobilepublic/assets/images/login_icon_Password.png" alt="" class="fl login_icon_password_three">
+            <input type="password" class="fl modal_pass_word_three" name="password" placeholder=" 新密码（6-15位字母或数字组合）">
+        </div>
+        <div class="modal_fengexian clear_float"></div>
+        <div>
+            <img src="__TMPL__/mobilepublic/assets/images/login_icon_Password.png" alt="" class="fl login_icon_password_threes">
+            <input type="password" class="fl modal_pass_word" name="repassword" placeholder="确认密码">
+        </div>
+        <div class="modal_fengexian clear_float"></div>
+        <div class="get_back_pwd_modal_three_btn">
+            <p>确认</p>
+        </div>
+    </div>
+    <!-- 找回密码弹窗-4 -->
+    <div class="get_back_pwd_modal_four">
+        <img src="__TMPL__/mobilepublic/assets/images/delete_icon.png" alt="" class="close_login_modal">
+        <p class="get_back_pwd_modal_one_title">处理结果</p>
+        <img src="__TMPL__/mobilepublic/assets/images/pic_Password.png" alt="" class="result_img">
+        <p class="result_text">重置密码成功！</p>
+        <div class="result_btn">
+            <p>返回登录</p>
+        </div>
+    </div>
+   </eq>
+
+   </if>
+
+
+
+
+  <if condition="AUTH_USER eq 1 and $session['login_auth'] eq 0">
+
+      <script>
+          //人机验证
+          $('#verify_pop1').on('click',function(){
+              if($('body').find('.pop-caption-box').length>0) {return false;}
+              change_but = "{$if_next}"==1?'registered_modal_next_btn':'registered_modal_pub_btn';
+              //回调函数
+              window.caption_callback_function = function(tag,token){
+                  $('#verify_pop1').off('click').text('验证成功');
+                  $('input[name=verify_pop1_tag]').val(tag);
+                  $('input[name=verify_pop1_token]').val(token);
+                  is_chorse=true
+                  change_submit_btn($('.registered_modal_pub'),$('.registered_modal_pub').find('.'+change_but))
+              }
+              url = "{:url('user/caption/verify_pop')}"
+              $.get(url, function (html) {
+                  $('body').append(html);
+              });
+              return false;
+          })
+          $('#verify_refresh1').click(function () {
+              $('input[name=verify_pop1_tag]').val('');
+              $('input[name=verify_pop1_token]').val('');
+              $('#verify_pop1').off('click').on('click',function(){
+                  if($('body').find('.pop-caption-box').length>0) {return false;}
+                  change_but = "{$if_next}"==1?'registered_modal_next_btn':'registered_modal_pub_btn';
+                  //回调函数
+                  window.caption_callback_function = function(tag,token){
+                      $('#verify_pop1').off('click').text('验证成功');
+                      $('input[name=verify_pop1_tag]').val(tag);
+                      $('input[name=verify_pop1_token]').val(token);
+                      is_chorse=true
+                      change_submit_btn($('.registered_modal_pub'),$('.registered_modal_pub').find('.'+change_but))
+                  }
+                  url = "{:url('user/caption/verify_pop')}"
+                  $.get(url, function (html) {
+                      $('body').append(html);
+                  });
+                  return false;
+              }).text('点击按钮进行验证');
+
+              return false;
+          });
+          $('#verify_pop2').on('click',function(){
+              if($('body').find('.pop-caption-box').length>0) {return false;}
+              change_but = "{$if_next}"==1?'registered_modal_next_btn':'registered_modal_pub_btn';
+              //回调函数
+              window.caption_callback_function = function(tag,token){
+                  $('#verify_pop2').off('click').text('验证成功');
+                  $('input[name=verify_pop2_tag]').val(tag);
+                  $('input[name=verify_pop2_token]').val(token);
+                  is_mob_chorse=true
+                  change_submit_btn($('.registered_modal_mob'),$('.registered_modal_mob').find('.'+change_but))
+              }
+              url = "{:url('user/caption/verify_pop')}"
+              $.get(url, function (html) {
+                  $('body').append(html);
+              });
+              return false;
+          })
+          $('#verify_refresh2').click(function () {
+              $('input[name=verify_pop2_tag]').val('');
+              $('input[name=verify_pop2_token]').val('');
+              $('#verify_pop2').off('click').on('click',function(){
+                  if($('body').find('.pop-caption-box').length>0) {return false;}
+                  change_but = "{$if_next}"==1?'registered_modal_next_btn':'registered_modal_pub_btn';
+                  //回调函数
+                  window.caption_callback_function = function(tag,token){
+                      $('#verify_pop2').off('click').text('验证成功');
+                      $('input[name=verify_pop2_tag]').val(tag);
+                      $('input[name=verify_pop2_token]').val(token);
+                      is_mob_chorse=true
+                      change_submit_btn($('.registered_modal_mob'),$('.registered_modal_mob').find('.'+change_but))
+                  }
+                  url = "{:url('user/caption/verify_pop')}"
+                  $.get(url, function (html) {
+                      $('body').append(html);
+                  });
+                  return false;
+              }).text('点击按钮进行验证');
+              return false;
+          });
+          $('#verify_pop3').on('click',function(){
+              if($('body').find('.pop-caption-box').length>0) {return false;}
+              //回调函数
+              window.caption_callback_function = function(tag,token){
+                  $('#verify_pop3').off('click').text('验证成功');
+                  $('input[name=verify_pop3_tag]').val(tag);
+                  $('input[name=verify_pop3_token]').val(token);
+              }
+              url = "{:url('user/caption/verify_pop')}"
+              $.get(url, function (html) {
+                  $('body').append(html);
+              });
+              return false;
+          })
+          $('#verify_refresh3').click(function () {
+              $('input[name=verify_pop3_tag]').val('');
+              $('input[name=verify_pop3_token]').val('');
+              $('#verify_pop3').off('click').on('click',function(){
+                  if($('body').find('.pop-caption-box').length>0) {return false;}
+                  //回调函数
+                  window.caption_callback_function = function(tag,token){
+                      $('#verify_pop3').off('click').text('验证成功');
+                      $('input[name=verify_pop3_tag]').val(tag);
+                      $('input[name=verify_pop3_token]').val(token);
+                  }
+                  url = "{:url('user/caption/verify_pop')}"
+                  $.get(url, function (html) {
+                      $('body').append(html);
+                  });
+                  return false;
+              }).text('点击按钮进行验证');
+              return false;
+          });
+      </script>
+
+
+  </if>
+<script>
+    var is_chorse=false
+    var gid = GetQueryString('gid');
+    $.ajaxSettings.async = false;
+    $.post("{:url('get_gid')}",{gid:gid},function(res){
+        console.log(res);
+        if(res.code==1){
+            gid = res.gid;
+        }
+    });
+    var pid = GetQueryString('pid');
+    //验证码刷新
+    $("#getcaptcha").click(function(event) {
+        this.src = "{:url('User/set_captcha')}?"+Math.random();
+    });
+
+    // 更改
+    function change_submit_btn(consa, registe_btn) {
+        console.log(consa.text().indexOf('普通账号'),$('.registered_modal_pub').text().indexOf('普通账号'),consa[0]===$('.registered_modal_pub'))
+        // 手机注册
+        if(consa.text().indexOf('普通账号')>-1){
+            registe_btn.addClass('can_click')
+        }
+        if(consa.text().indexOf('普通账号')<0&&is_chorse){
+            registe_btn.addClass('can_click')
+        }
+        consa.find('input').each(function (i,n) {
+            switch (n.type) {
+                case 'text':
+                    if (!n.value) {registe_btn.removeClass('can_click');return false;}break;
+                case 'password':
+                    if (!n.value) {registe_btn.removeClass('can_click');return false;}break;
+                case 'checkbox':
+                    if (!n.checked) {registe_btn.removeClass('can_click');return false;}break;
+                default:
+                    if(is_chorse===true){registe_btn.addClass('can_click');}
+            }
+        });
+    }
+    // 登录
+    function loginFun() {
+        layer.closeAll();
+        var consa = $('.login_modal');
+        var auth_user="{:AUTH_USER}";
+        if(auth_user!=1){
+            layer.msg('请购买用户权限');
+            return false;
+        }
+        if(consa){
+            var parent = $(this);
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: false,
+                area: ['8.6rem', '8.167rem'],
+                offset: 'auto',
+                content: consa,
+                btnAlign: 'c',
+                shadeClose: true,
+                success: function (layero, index) {
+
+                    layero.find('.modal_login_btn').click(function () {
+                        var that=$(this);
+                        if (that.hasClass('no_send')) {return false;}
+                        that.addClass('no_send');
+                        var account = consa.find('input[name=account]').val();
+                        var password = consa.find('input[name=password]').val();
+                        $.ajax({
+                            type: 'post',
+                            dataType: 'json',
+                            url: '{:url("User/login")}',
+                            data: {account:account,password:password},
+                            success: function (data) {
+                                that.removeClass('no_send');
+                                layer.msg(data.msg);
+                                if (data.code == 1) {
+                                    setTimeout(function () {
+                                        if(parent.data('url')) {
+                                            window.location.href = htmlspecialchars_decode(parent.data('url'));
+                                        } else if (data.url) {
+                                            window.location.href = htmlspecialchars_decode(data.url);
+                                        } else {
+                                            window.location.reload();
+                                        }
+                                    },data.wait*1000);
+                                }
+                            },
+                            error: function () {
+                                layer.msg('服务器故障，请稍候再试');
+                                that.removeClass('no_send');
+                            }
+                        });
+
+                        return false;
+                    });
+
+                    layero.find('.close_login_modal').click(function () {
+
+                        $('.login_modal input').val('');
+
+                        layer.close(index);
+
+                        return false;
+                    });
+                },
+                end: function () {
+                    $('.login_modal').hide();
+                }
+            })
+        }
+    };
+
+    // 普通注册
+    function registerFun() {
+        $('#agree_con').val(1);
+        layer.closeAll();
+        var consa = $('.registered_modal_pub');
+        if (consa) {
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: false,
+                area: ['8.4rem', '10rem'],
+                offset: 'auto',
+                content: consa,
+                btnAlign: 'c',
+                shadeClose: true,
+                success: function (layero, index) {
+                    var registe_btn = consa.find('.registered_modal_pub_btn');
+                    consa.find('input').keyup(function () {
+                        change_submit_btn(consa,registe_btn);
+                    });
+
+                    layero.on('click','.can_click',function () {
+                        var that=$(this);
+                        if (that.hasClass('no_send')) {return false;}
+                        that.addClass('no_send');
+                        var account = consa.find('input[name=account]').val();
+                        var password = consa.find('input[name=password]').val();
+                        var repassword = consa.find('input[name=repassword]').val();
+                        /*var geetest_challenge = consa.find('input[name=geetest_challenge]').val();
+                        var geetest_validate = consa.find('input[name=geetest_validate]').val();
+                        var geetest_seccode = consa.find('input[name=geetest_seccode]').val();*/
+                        var verify_tag = consa.find('input[name=verify_pop1_tag]').val();
+                        var verify_token = consa.find('input[name=verify_pop1_token]').val();
+                        var agreement = consa.find('input[name=agreement]:checked').val();
+                        $.ajax({
+                            type: 'post',
+                            dataType: 'json',
+                            url: '{:url("User/register")}',
+                            data: {account:account,password:password,repassword:repassword,agreement:agreement,verify_token:verify_token, verify_tag:verify_tag, game_id:gid,promote_id:pid,promote_type:1},
+                            success: function (data) {
+                                that.removeClass('no_send');
+                                if (data.code == 1) {
+                                    layer.msg(data.msg, {time:1000}, function () {
+
+                                    window.location.reload();
+                                    });
+                                    //register_success(consa,account);
+                                } else {
+                                    layer.msg(data.msg);
+                                }
+                            },
+                            error: function () {
+                                layer.confirm('请检查后重试', {
+                                    title:'提交失败',
+                                    btn: ['取消','重试']
+                                }, function(index){
+                                    layer.close(index);
+                                }, function () {
+                                    consa.find('.can_click').click();
+                                });
+                                that.removeClass('no_send');
+                            }
+                        });
+
+                        return false;
+                    });
+
+                    layero.find('.close_login_modal').click(function () {
+                        if($('.registered_modal_pub').hasClass('from_login')) {
+                            $('.registered_modal_pub').removeClass('from_login');
+                            loginFun();
+                        } else {
+                            layer.close(index);
+                        }
+                        return false;
+                    });
+                },
+                end: function () {
+                    $('.registered_modal_pub').hide();
+                }
+            });
+        }
+    }
+
+    // 手机注册
+    function registerMobileFun() {
+        layer.closeAll()
+        var consa = $('.registered_modal_mob');
+        if (consa) {
+
+            if ($('.registered_modal_pub').hasClass('from_login')) {
+                $('.registered_modal_pub').removeClass('from_login');
+                consa.addClass('from_login');
+            }
+
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: false,
+                area: ['8.4rem', '11.4rem'],
+                offset: 'auto',
+                content: consa,
+                btnAlign: 'c',
+                shadeClose: true,
+                success: function (layero, index) {
+                    var registe_btn = consa.find('.registered_modal_pub_btn');
+                    consa.find('input').keyup(function () {
+                        change_submit_btn(consa,registe_btn);
+                    });
+                    consa.find('input').change(function () {
+                        change_submit_btn(consa,registe_btn);
+                    });
+
+                    layero.find('.get_yanzhengma ').click(function () {
+                        var account = consa.find('input[name=account]').val();
+                        /*var code = $("#verfy_code").val();
+                        if(code==''){
+                            layer.msg('请输入验证码');
+                            return false;
+                        }*/
+                        if (account) {
+                            verify_pop2_tag = $('input[name=verify_pop2_tag]').val();
+                            verify_pop2_token = $('input[name=verify_pop2_token]').val();
+                            if(verify_pop2_tag==''||verify_pop2_token==''){
+                                layer.msg('请先进行验证');
+                                return false;
+                            }
+                            var that = $(this);
+                            if (that.hasClass('no_send')) {return false;}
+                            $.ajax({
+                                type: 'post',
+                                dataType: 'json',
+                                url:'{:url("User/sendSms")}',
+                                data:{phone:account,verify_token:verify_pop2_token,verify_tag:verify_pop2_tag,reg:1,promote_type:1},
+                                success:function (data) {
+                                    if(data.code==1){
+                                        // that.addClass('no_send');
+                                        clock(that);
+                                        layer.msg(data.msg);
+                                    }else{
+                                        layer.msg(data.msg);
+                                        $("#getcaptcha").click();
+                                    }
+                                },
+                                error:function () {
+                                    layer.msg('服务器故障，请稍候再试');
+                                }
+                            });
+                        } else {
+                            layer.msg('请输入手机号');
+                        }
+                        return false;
+                    });
+
+                    layero.on('click','.can_click',function () {
+                        var that=$(this);
+                        if (that.hasClass('no_send')) {return false;}
+                        that.addClass('no_send');
+                        var account = consa.find('input[name=account]').val();
+                        var password = consa.find('input[name=password]').val();
+                        var repassword = consa.find('input[name=repassword]').val();
+                        var agreement = consa.find('input[name=agreement]:checked').val();
+                        var code = consa.find('input[name=code]').val();
+                        var verify_tag = consa.find('input[name=verify_pop2_tag]').val();
+                        var verify_token = consa.find('input[name=verify_pop2_token]').val();
+                        $.ajax({
+                            type: 'post',
+                            dataType: 'json',
+                            url: '{:url("User/register")}',
+                            data: {type:1,account:account,password:password,repassword:repassword,agreement:agreement,verify_tag:verify_tag,verify_token,verify_token,code:code,game_id:gid,promote_id:pid,promote_type:1},
+                            success: function (data) {
+                                that.removeClass('no_send');
+                                if (data.code == 1) {
+                                    //register_success(consa, account);
+                                    layer.msg(data.msg, {time:1000}, function () {
+                                        window.location.reload();
+                                    });
+                                } else {
+                                    layer.msg(data.msg);
+                                }
+                            },
+                            error: function () {
+                                layer.confirm('请检查后重试', {
+                                    title:'提交失败',
+                                    btn: ['取消','重试']
+                                }, function(index){
+                                    layer.close(index);
+                                }, function () {
+                                    consa.find('.can_click').click();
+                                });
+                                that.removeClass('no_send');
+                            }
+                        });
+
+                        return false;
+                    });
+
+
+                    layero.find('.close_login_modal').click(function () {
+                        if($('.registered_modal_mob').hasClass('from_login')) {
+                            $('.registered_modal_mob').removeClass('from_login');
+                            loginFun();
+                        } else {
+                            layer.close(index);
+                        }
+                        return false;
+                    });
+                },
+                end: function () {
+                    $('.registered_modal_mob').hide()
+                }
+            });
+
+        }
+    }
+
+    // 注册成功弹窗
+    function register_success(pop_window, account) {
+        layer.closeAll()
+        var consa = $('.registered_result_modal');
+        $('.login_modal input[name=account]').val(account);
+        if (consa) {
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: false,
+                area: ['80%', '8rem'],
+                offset: 'auto',
+                content: consa,
+                btnAlign: 'c',
+                shadeClose: true,
+                success: function (layero, index) {
+                    layero.find('.close_login_modal').click(function () {
+                        layer.close(index);
+                        return false;
+                    });
+                },
+                end: function () {
+                    $('.registered_result_modal').hide();
+                    pop_window.find('input').val('');
+                    window.location.reload()
+                }
+            })
+        }
+    };
+    $('.modal_username').blur(function(){
+        $('.clear_text').hide()
+    })
+    // 倒计时
+    function clock(that) {
+        var t = 60;
+        var p = that.addClass('no_send').find('p');
+        p.text('正在发送(' + t + ')');
+        var a = setInterval(function () {
+            t--;
+            p.text('正在发送(' + t + ')');
+            t>0 || (p.text('获取验证码'),that.removeClass('no_send'), clearInterval(a))
+        }, 1000);
+        return a;
+    }
+
+    function htmlspecialchars_decode(str){
+        str = str.replace(/&amp;/g, '&');
+        str = str.replace(/&lt;/g, '<');
+        str = str.replace(/&gt;/g, '>');
+        str = str.replace(/&quot;/g, "''");
+        str = str.replace(/&#039;/g, "'");
+        return str;
+    }
+
+
+    //获取url中参数
+    function GetQueryString(name)
+    {
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    }
+
+   $(function () {
+       var user_info = {
+           account: '',
+           phone: '',
+           email: '',
+       };
+       $('.close_get_back_pwd_modal_one').click(function () {
+           loginFun();return false;
+       });
+       $('.get_back_pwd_modal_one_text').click(function () {
+           loginFun();return false;
+       });
+       $('.to_login').click(function () {
+           loginFun();return false;
+       });
+       $('.get_back_pwd_modal_two_intoemail').click(function(){
+           var that = $(this);
+           if (that.hasClass('no_click')) {return false;}
+           that.addClass('no_click');
+           setTimeout(function () {
+               var account = user_info.account || $(this).data('account');
+               if(!account) {account = $('.get_back_pwd_modal_one input[name=account]').val();}
+               if(account) {
+                   if (user_info.email) {
+                       that.removeClass('no_click');
+                       forget_email(account);
+                   } else {
+                       $.ajax({
+                           type: 'post',
+                           dataType: 'json',
+                           url: '{:url("User/forgetOnCheckUserInfo")}',
+                           data: {account: account, type: 'email'},
+                           success: function (data) {
+                               if (data.code == 1) {
+                                   user_info.account = account;
+                                   user_info.phone = data.data.phone;
+                                   user_info.email = data.data.email;
+                                   that.removeClass('no_click');
+                                   forget_email(account);
+                               } else {
+                                   layer.msg('当前账号未绑定邮箱，无法找回密码');that.removeClass('no_click');
+                               }
+                           },
+                           error: function () {
+                               layer.msg('服务器故障码，请稍候再试');that.removeClass('no_click');
+                           }
+                       });
+                   }
+               } else {
+                   layer.msg('帐号不存在，请重新输入');that.removeClass('no_click');
+               }
+           },200);
+           return false;
+       })
+       $('.get_back_pwd_modal_two_intotell').click(function(){
+           var that = $(this);
+           if(that.hasClass('no_click')) {return false;}
+           that.addClass('no_click');
+           setTimeout(function () {
+               var account = $(this).data('account');
+               if(!account) {account = $('.get_back_pwd_modal_one input[name=account]').val();}
+               if(account) {
+                   if (user_info.email) {
+                       that.removeClass('no_click');
+                       forget_sms(account);
+                   } else {
+                       $.ajax({
+                           type: 'post',
+                           dataType: 'json',
+                           url: '{:url("User/forgetOnCheckUserInfo")}',
+                           data: {account: account, type: 'phone'},
+                           success: function (data) {
+                               if (data.code == 1) {
+                                   user_info.account = account;
+                                   user_info.phone = data.data.phone;
+                                   user_info.email = data.data.email;
+                                   that.removeClass('no_click');
+                                   forget_sms(account);
+                               } else {
+                                   layer.msg('当前账号未绑定手机号，无法找回密码');that.removeClass('no_click');
+                               }
+                           },
+                           error: function () {
+                               layer.msg('服务器故障码，请稍候再试');that.removeClass('no_click');
+                           }
+                       });
+                   }
+               } else {
+                   layer.msg('帐号不存在，请重新输入');that.removeClass('no_click');
+               }
+           },200);
+
+           return false;
+       });
+       $('.user_zhuce_info').click(function(){
+            var userinfo_modal=layer.open({
+                type: 2,
+                title: false,
+                shadeClose: false,
+                closeBtn: 0,
+                shade: 0.3,
+                area: ['8.6rem', '60%'],
+                content: "{:url('User/protocol')}"
+            });
+        })
+       $('.user_zhuce_yinsi').click(function(){
+           var userinfo_modal=layer.open({
+               skin:'no-border-radius',
+               type: 2,
+               title: false,
+               shadeClose: false,
+               closeBtn: 0,
+               shade: 0.1,
+               area: ['100%', '100%'],
+               content: "{:url('User/privacy')}"
+           });
+       })
+       // 登录
+       $('.login').click(function () {
+           loginFun();
+       });
+
+       // 普通注册
+       $('.zhuce').click(function () {
+           if(!isWeixin()){
+               registerFun();
+           }
+       })
+
+       // 切换手机注册
+       $('.footer_text.to_mob').click(function () {
+           registerMobileFun();
+       });
+       // 切换普通注册
+       $('.footer_text.to_pub').click(function () {
+           if ($('.registered_modal_mob').hasClass('from_login')) {
+               $('.registered_modal_mob').removeClass('from_login');
+               $('.registered_modal_pub').addClass('from_login');
+           }
+           registerFun();
+       })
+       // 登录弹窗点击注册
+       $('.new_user').click(function () {
+           $('.registered_modal_pub').addClass('from_login');
+           registerFun();
+       })
+
+       // 成功弹窗登录按钮
+       $('.result_btn').click(function () {
+           loginFun();
+           return false;
+       });
+
+       // 找回密码弹窗 -1
+       $('.fogget_pwd').click(function () {
+           layer.closeAll()
+           var consa = $('.get_back_pwd_modal_one');
+           if (consa) {
+               layer.open({
+                   type: 1,
+                   title: false,
+                   closeBtn: false,
+                   area: ['8.4rem', '5.2rem'],
+                   offset: 'auto',
+                   content: consa,
+                   btnAlign: 'c',
+                   shadeClose: true,
+                   success: function (layero) {
+
+                        layero.find('.get_back_pwd_modal_one_btn').click(function () {
+                            var that = $(this),account = consa.find('input[name=account]').val();
+                            if (account) {
+                                if (that.hasClass('no_send')) {return false;}
+                                that.addClass('no_send');
+                                $.ajax({
+                                    type: 'post',
+                                    dataType: 'json',
+                                    url: '{:url("User/forgetOnCheckAccount")}',
+                                    data: {account:account},
+                                    success: function (data) {
+                                        that.removeClass('no_send');
+                                        layer.msg(data.msg);
+                                        if(data.code == 1) {
+                                            user_info.account = account;
+                                            user_info.phone = data.data.phone;
+                                            user_info.email = data.data.email;
+                                            if(user_info.phone){
+                                                forget_sms(account);
+                                                if(user_info.email == ''){
+                                                    $('.get_back_pwd_modal_two_intoemail').hide();
+                                                    $('.get_back_pwd_modal_two_intotell').hide();
+                                                }
+                                            }else if(user_info.email){
+                                                forget_email(account);
+                                                $('.get_back_pwd_modal_two_intoemail').hide();
+                                                $('.get_back_pwd_modal_two_intotell').hide();
+                                            }
+                                        }
+                                    },
+                                    error:function () {
+                                        layer.msg('服务器故障，请稍候再试');
+                                        that.removeClass('no_send');
+                                    }
+                                });
+                            } else {
+                                layer.msg('账号不能为空');
+                            }
+                            return false;
+                        });
+
+                   },
+                   end: function () {
+                       $('.get_back_pwd_modal_one').hide()
+                   }
+               })
+           }
+       })
+       // 找回密码弹窗 -2
+       function forget_sms(account) {
+           layer.closeAll()
+           var consa = $('.get_back_pwd_modal_two');
+           if (consa) {
+               consa.find('.get_back_pwd_modal_two_intoemail').data('account',account);
+               layer.open({
+                   type: 1,
+                   title: false,
+                   closeBtn: false,
+                   area: ['80%', '7.35rem'],
+                   offset: 'auto',
+                   content: consa,
+                   btnAlign: 'c',
+                   shadeClose: true,
+                   success: function(layero, index) {
+                       var a;
+                       layero.find('.get_yanzhengma').click(function () {
+                           var phone = consa.find('input[name=phone]').val();
+                           if (phone) {
+                               var that = $(this);
+                               if (that.hasClass('no_send')) {return false;}
+                               that.addClass('no_send');
+                               a = clock($(this));
+                               $.ajax({
+                                   type: 'post',
+                                   dataType: 'json',
+                                   url:'{:url("User/sendSms")}',
+                                   data:{phone:phone,account:account,reg:2},
+                                   success:function (data) {
+                                       layer.msg(data.msg);
+                                   },
+                                   error:function () {
+                                       layer.msg('服务器故障，请稍候再试');
+                                       clearInterval(a);
+                                       that.removeClass('no_send').find('p').text('获取验证码');
+                                   }
+                               });
+                           } else {
+                               layer.msg('绑定手机号不能为空');
+                           }
+                           return false;
+                       });
+
+                       layero.on('click','.get_back_pwd_modal_two_btn',function () {
+                           var that=$(this);
+                           if (that.hasClass('no_send')) {return false;}
+                           that.addClass('no_send');
+                           var phone = consa.find('input[name=phone]').val();
+                           var code = consa.find('input[name=code]').val();
+                           $.ajax({
+                               type: 'post',
+                               dataType: 'json',
+                               url: '{:url("User/forgetOnCheckSms")}',
+                               data: {phone:phone, account:account, code:code},
+                               success: function (data) {
+                                   that.removeClass('no_send');
+                                   if (data.code == 1) {
+                                       clearInterval(a);
+                                       consa.find('.get_yanzhengma').removeClass('no_send').find('p').text('获取验证码');
+                                       consa.find('input').val('');
+                                       if (account == data.data.account) {
+                                           forget_pwd(account);
+                                       } else {
+                                           layer.msg('服务器故障，请稍候再试');
+                                       }
+                                   } else {
+                                       layer.msg(data.msg);
+                                   }
+                               },
+                               error: function () {
+                                   layer.msg('服务器故障，请稍候再试');
+                                   that.removeClass('no_send');
+                               }
+                           });
+
+                           return false;
+                       });
+
+                       layero.find('.close_login_modal').click(function () {
+                           layer.close(index);
+                           return false;
+                       });
+                   },
+                   end: function () {
+                       $('.get_back_pwd_modal_two').hide()
+                   }
+               })
+           }
+       };
+       // 找回密码
+       function forget_email(account) {
+           layer.closeAll()
+           var consa = $('.get_back_pwd_modal_email');
+           if (consa) {
+               consa.find('.get_back_pwd_modal_two_intotell').data('account',account);
+               layer.open({
+                   type: 1,
+                   title: false,
+                   closeBtn: false,
+                   area: ['80%', '7.35rem'],
+                   offset: 'auto',
+                   content: consa,
+                   btnAlign: 'c',
+                   shadeClose: true,
+                   success: function (layero, index) {
+                       var a;
+                       layero.find('.get_yanzhengma').click(function () {
+                           var email = consa.find('input[name=email]').val();
+                           if (email) {
+                               var that = $(this);
+                               if (that.hasClass('no_send')) {return false;}
+                               that.addClass('no_send');
+                               a = clock($(this));
+                               $.ajax({
+                                   type: 'post',
+                                   dataType: 'json',
+                                   url:'{:url("User/sendEmailCodeSend")}',
+                                   data:{email:email,account:account, reg: 2},
+                                   success:function (data) {
+                                       layer.msg(data.msg);
+                                   },
+                                   error:function () {
+                                       layer.msg('服务器故障，请稍候再试');
+                                       clearInterval(a);
+                                       that.removeClass('no_send').find('p').text('获取验证码');
+                                   }
+                               });
+                           } else {
+                               layer.msg('请输入手机号');
+                           }
+                           return false;
+                       });
+
+                       layero.on('click','.get_back_pwd_modal_two_btn',function () {
+                           var that=$(this);
+                           if (that.hasClass('no_send')) {return false;}
+                           that.addClass('no_send');
+                           var email = consa.find('input[name=email]').val();
+                           var code = consa.find('input[name=code]').val();
+                           $.ajax({
+                               type: 'post',
+                               dataType: 'json',
+                               url: '{:url("User/forgetOnCheckEmailCode")}',
+                               data: {email:email, account:account, code:code},
+                               success: function (data) {
+                                   that.removeClass('no_send');
+                                   if (data.code == 1) {
+                                       clearInterval(a);
+                                       consa.find('.get_yanzhengma').removeClass('no_send').find('p').text('获取验证码');
+                                       consa.find('input').val('');
+                                       if (account == data.data.account) {
+                                           forget_pwd(account);
+                                       } else {
+                                           layer.msg('服务器故障，请稍候再试');
+                                       }
+                                   } else {
+                                       layer.msg(data.msg);
+                                   }
+                               },
+                               error: function () {
+                                   layer.msg('服务器故障，请稍候再试');
+                                   that.removeClass('no_send');
+                               }
+                           });
+
+                           return false;
+                       });
+
+                       layero.find('.close_login_modal').click(function () {
+                           layer.close(index);
+                           return false;
+                       });
+                   },
+                   end: function () {
+                       $('.get_back_pwd_modal_email').hide()
+                   }
+               })
+           }
+       }
+       // 找回密码弹窗 -3
+       function forget_pwd(account) {
+           layer.closeAll()
+           var consa = $('.get_back_pwd_modal_three');
+           if (consa) {
+               layer.open({
+                   type: 1,
+                   title: false,
+                   closeBtn: false,
+                   area: ['80%', '7rem'],
+                   offset: 'auto',
+                   content: consa,
+                   btnAlign: 'c',
+                   shadeClose: true,
+                   success: function (layero, index) {
+                       var registe_btn = consa.find('.get_back_pwd_modal_three_btn');
+                       consa.find('input').keyup(function () {
+                           change_submit_btn(consa,registe_btn);
+                           return false;
+                       });
+
+                       layero.on('click','.can_click',function () {
+                           var that=$(this);
+                           if (that.hasClass('no_send')) {return false;}
+                           that.addClass('no_send');
+                           var password = consa.find('input[name=password]').val();
+                           var repassword = consa.find('input[name=repassword]').val();
+                           $.ajax({
+                               type: 'post',
+                               dataType: 'json',
+                               url: '{:url("User/forgetOnChangePassword")}',
+                               data: {account:account, password:password, repassword:repassword},
+                               success: function (data) {
+                                   that.removeClass('no_send');
+                                   if (data.code == 1) {
+                                       consa.find('input').val('');
+                                       forget_success(account);
+                                   } else {
+                                       layer.msg(data.msg);
+                                   }
+                               },
+                               error: function () {
+                                   layer.msg('服务器故障，请稍候再试');
+                                   that.removeClass('no_send');
+                               }
+                           });
+
+                           return false;
+                       });
+
+                       layero.find('.close_login_modal').click(function () {
+                           layer.close(index);
+                           return false;
+                       });
+                   },
+                   end: function () {
+                       $('.get_back_pwd_modal_three').hide()
+                   }
+               });
+           }
+       };
+       // 找回密码弹窗 -3
+       function forget_success(account) {
+           layer.closeAll()
+           var consa = $('.get_back_pwd_modal_four');
+           if (consa) {
+               layer.open({
+                   type: 1,
+                   title: false,
+                   closeBtn: false,
+                   area: ['23rem', '20rem'],
+                   offset: 'auto',
+                   content: consa,
+                   btnAlign: 'c',
+                   shadeClose: true,
+                   success: function (layero, index) {
+                       layero.find('.close_login_modal').click(function () {
+                           layer.close(index);
+                           return false;
+                       });
+                   },
+                   end: function () {
+                       $('.get_back_pwd_modal_four').hide()
+                   }
+               });
+           }
+       };
+       // input 右侧x号 点击清除
+       $('.login_modal input[type="text"]').focus(function () {
+           $('.clear_text').show()
+       })
+       $('.login_modal input[type="text"]').blur(function () {
+           // setTimeout(() => {
+           // $('.clear_text').hide()
+           // }, 10);
+       })
+       $('.get_back_pwd_modal_one input[type="text"]').focus(function () {
+           $('.clear_textss').show()
+       })
+       $('.get_back_pwd_modal_one input[type="text"]').blur(function () {
+           // setTimeout(() => {
+           $('.clear_textss').hide()
+           // }, 10);
+       })
+       $('.login_modal input[type="password"]').focus(function () {
+           $('.clear_texts').show()
+       })
+       $('.login_modal input[type="password"]').blur(function () {
+           // setTimeout(() => {
+           $('.clear_texts').hide()
+           // }, 10);
+       })
+       $('.login_modal .clear_text').mousedown(function () {
+           $('.login_modal input[type="text"]').val('')
+           $('.login_modal .clear_text').hide()
+       })
+       $('.get_back_pwd_modal_one .clear_textss').mousedown(function () {
+           $('.get_back_pwd_modal_one input[type="text"]').val('')
+           $('.get_back_pwd_modal_one .clear_textss').hide()
+       })
+       $('.clear_texts').mousedown(function () {
+           $('.login_modal input[type="password"]').val('')
+           $('.clear_texts').hide()
+       })
+       // 点击同意
+       $('#agree_con').change(function () {
+           var registe_btn = $('.registered_modal_pub  .registered_modal_pub_btn');
+           if ($('#agree_con').prop('checked') === true) {
+               change_submit_btn($('.registered_modal_pub'),registe_btn);
+               $('.agree_con_img').prop('src', '__TMPL__/mobilepublic/assets/images/login_btn_s.png');
+           }
+           if ($('#agree_con').prop('checked') === false) {
+               registe_btn.removeClass('can_click');
+               $('.agree_con_img').prop('src', '__TMPL__/mobilepublic/assets/images/before_check.png');
+           }
+       })
+       $('#agree_con_two').change(function () {
+           var registe_btn = $('.registered_modal_mob  .registered_modal_pub_btn');
+           if ($('#agree_con_two').prop('checked') === true) {
+               change_submit_btn($('.registered_modal_mob'),registe_btn);
+               $('.agree_con_two_img').prop('src', '__TMPL__/mobilepublic/assets/images/login_btn_s.png')
+           }
+           if ($('#agree_con_two').prop('checked') === false) {
+               registe_btn.removeClass('can_click');
+               $('.agree_con_two_img').prop('src', '__TMPL__/mobilepublic/assets/images/before_check.png')
+           }
+       })
+
+
+   });
+</script>
+<if condition="cmf_is_wechat() eq true and AUTH_PROMOTE eq 1">
+<script>
+    //微信分享
+    var appId = "{$signPackage['appId']}",
+        timestamp = "{$signPackage['timestamp']}",
+        nonceStr = "{$signPackage['nonceStr']}",
+        signature = "{$signPackage['signature']}";
+    var title = "{$game_info['relation_game_name']}",
+        desc = "{$game_info['features']}",
+        imgUrl = "{:cmf_get_image_url($game_info['icon'])}",
+        link = "{$shareparams['link']}";
+    if(imgUrl == ''){
+        imgUrl = "{:cmf_get_domain()}"+'__TMPL__/mobilepublic/download/img/empty.jpg';
+    }
+    try{
+
+        wx.config({
+            debug: false,
+            appId: appId,
+            timestamp: timestamp,
+            nonceStr: nonceStr,
+            signature: signature,
+            jsApiList: [
+                // 所有要调用的 API 都要加到这个列表中
+                'checkJsApi',
+                'openLocation',
+                'getLocation',
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'startRecord',
+                'stopRecord',
+                'playVoice',
+                'downloadVoice',
+                'uploadVoice',
+                'onMenuShareQQ',
+            ]
+        });
+        wx.ready(function () {
+            // config信息验成功
+            wx.checkJsApi({
+                jsApiList: [
+                    'getLocation',
+                    'onMenuShareTimeline',
+                    'onMenuShareAppMessage',
+                    'startRecord',
+                    'stopRecord',
+                    'playVoice',
+                    'downloadVoice',
+                    'uploadVoice',
+                    'onMenuShareQQ',
+                ],
+                success: function (res) {
+                },error:function(res){
+                }
+            });
+            share(title,link,imgUrl,desc);
+        });
+        function share(title,link,imgUrl,desc,e){
+            //分享到朋友
+            wx.onMenuShareAppMessage({
+                title:  title, // 分享标题
+                desc:   desc, // 分享描述
+                link:   link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: imgUrl, // 分享图标
+                type: '', // 分享类型,music、video或link，不填默认为link
+                dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                success: function () {
+                    if(e){
+                        e.source.postMessage({event:"game:shareSdk:callback",status:1,msg:'分享成功'}, "*");
+                    }
+                },
+                cancel: function () {
+                    if(e){
+                        e.source.postMessage({event:"game:shareSdk:callback",status:0,msg:'分享失败'}, "*");
+                    }
+                }
+            });
+            //分享到朋友圈
+            wx.onMenuShareTimeline({
+                title: title, // 分享标题
+                link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: imgUrl, // 分享图标
+                success: function () {
+                    if(e){
+                        e.source.postMessage({event:"game:shareSdk:callback",status:1,msg:'分享成功'}, "*");
+                    }
+                },
+                cancel: function () {
+                    if(e){
+                        e.source.postMessage({event:"game:shareSdk:callback",status:0,msg:'分享失败'}, "*");
+                    }
+                }
+            });
+            //分享到QQ
+            wx.onMenuShareQQ({
+                title: title, // 分享标题
+                desc: desc, // 分享描述
+                link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: imgUrl, // 分享图标
+                success: function () {
+                    if(e){
+                        e.source.postMessage({event:"game:shareSdk:callback",status:1,msg:'分享成功'}, "*");
+                    }
+                },
+                cancel: function () {
+                    if(e){
+                        e.source.postMessage({event:"game:shareSdk:callback",status:0,msg:'分享失败'}, "*");
+                    }
+                }
+            });
+        }
+    }catch(err){
+
+    }
+</script>
+</if>
+<block name='script'></block>
+</body>
+</html>
+

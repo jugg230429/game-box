@@ -1,0 +1,66 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/select2.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/new_select2.css" type="text/css" />
+    <link href="__TMPL__/channelwappublic/assets/css/channel.css" type="text/css" rel="stylesheet" />
+</block>
+<block name="body">
+    <div class="page-container profit-exchange-container">
+        <header>
+            <a href="{:url('promote/index')}" class="back-btn"></a>
+            <div style="width: 100%;height: 100%" class="v-middle h-middle">
+                <p class="header-title">结算汇总</p>
+            </div>
+
+        </header>
+        <div class="page-content">
+            <div class="search-box">
+                <div class="search-item">
+                    <select  class="select_gallery" data-placeholder="渠道账号">
+                        <option value=""></option>
+                        <option value="0">渠道账号1</option>
+                        <option value="1">渠道账号2</option>
+                    </select>
+                </div>
+            </div>
+            <div class="table-box">
+                <table>
+                    <tr class="table-title">
+                        <th>渠道账号</th>
+                        <th>总充值</th>
+                        <th>已结算佣金</th>
+                        <th style="">已发放佣金(提现/兑换)</th>
+                    </tr>
+                    <tr class="total">
+                        <td>汇总:</td>
+                        <td>200.00</td>
+                        <td>10000.00</td>
+                        <td><span style="color: #FFB22B">50.00</span>(30.00/20.00)</td>
+                    </tr>
+                    <tr>
+                        <td>sdfasdf</td>
+                        <td>10.00</td>
+                        <td>100.00</td>
+                        <td>
+                            <span style="color: #FFB22B">50.00</span>(30.00/20.00)
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/select2.min.js"></script>
+    <script>
+        $(function () {
+
+            $(".select_gallery").select2({
+                minimumResultsForSearch: -1
+            });
+
+
+        })
+    </script>
+</block>

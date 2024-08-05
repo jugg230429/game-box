@@ -1,0 +1,116 @@
+<!--左侧导航栏-->
+<div class="nav-new fl">
+    <div class="logo-picture">
+
+        <php>
+            if(!empty($union['union_set'])){
+                $union_set = json_decode($union['union_set'],true);
+            }
+        </php>
+
+        <if condition="$union_set['admin_logo']">
+            <a href="{:url('index/index')}"><img src="{:cmf_get_image_preview_url($union_set['admin_logo'])}" onerror="this.src='__TMPL__/public/assets/images/promote/empty1.png';this.onerror=null" ></a>
+        <else/>
+            <a href="{:url('index/index')}"><img src="{:cmf_get_image_preview_url($promote_set['ch_logo_backstage'])}" onerror="this.src='__TMPL__/public/assets/images/promote/empty1.png';this.onerror=null" ></a>
+        </if>
+
+    </div>
+    <div class="subNavBox">
+        <php>$action = request()->action();</php>
+        <div class="subNav jssubNav "><i class="prev-icon icon-guanli"></i><span>管理中心</span><i class="arrow-icon"></i></div>
+        <div class="navContent jsnavContent">
+            <a href="{:url('promote/index')}" <if condition="$action eq 'index'"> class="active " </if>><span>后台首页</span></a>
+            <a href="{:url('promote/myserver_foreshow')}" <if condition="$action eq 'myserver_foreshow'"> class="active " </if>><span>开服预告</span></a>
+        </div>
+        <if condition="AUTH_GAME eq 1 and AUTH_PAY eq 1">
+        <div class="subNav jssubNav"><i class="prev-icon icon-caiwu"></i><span>我的收益</span><i class="arrow-icon"></i></div>
+        <div class="navContent jsnavContent">
+            <a href="{:url('settlement/profit')}" <if condition="$action eq 'profit' or $action eq 'profit_record'"> class="active " </if>><span>我的收益</span></a>
+            <a href="{:url('promote/balance')}" <if condition="$action eq 'balance' or $action eq 'shift' or $action eq 'record'"> class="active " </if>><span>平台币</span></a>
+            <a href="{:url('promote/bind_balance')}" <if condition="$action eq 'bind_balance' or $action eq 'bind_record'"> class="active " </if>><span>会长代充</span></a>
+            <a href="{:url('promote/welfare')}" <if condition="$action eq 'welfare'"> class="active " </if>><span>我的福利</span></a>
+            <a href="{:url('promote/user_welfare')}" <if condition="$action eq 'user_welfare'"> class="active " </if>><span>玩家福利</span></a>
+            <a href="{:url('coupon/lists')}" <if condition="$action eq 'lists' or $action eq 'add_coupon'"> class="active " </if>><span>代金券</span></a>
+            <a href="{:url('coupon/grant_list')}" <if condition="$action eq 'grant_list' or $action eq 'grant' or $action eq 'recovery'"> class="active " </if>><span>发放记录</span></a>
+
+            <if condition="PID_LEVEL eq 1">
+                <a href="{:url('settlement/period')}" <if condition="$action eq 'period' or $action eq 'show_detail' or $action eq 'period_record'"> class="active " </if>><span>结算打款</span></a>
+            </if>
+
+        </div>
+        </if>
+        <if condition="AUTH_GAME eq 1 ">
+        <div class="subNav jssubNav"><i class="prev-icon icon-fenbao"></i><span>游戏管理</span><i class="arrow-icon"></i></div>
+        <div class="navContent jsnavContent">
+            <a href="{:url('game/apply_game')}" <if condition="$action eq 'apply_game' or $action eq 'apply_game_pc' or $action eq 'apply_game_h5'"> class="active " </if>><span>申请游戏</span></a>
+            <a href="{:url('game/my_game')}" <if condition="$action eq 'my_game' or $action eq 'my_h5_game' or $action eq 'my_yy_game'"> class="active " </if>><span>我的游戏</span></a>
+            <a href="{:url('simulator/white_list')}" <if condition="$action eq 'white_list'"> class="active " </if>><span>模拟器白名单</span></a>
+            <if condition="PID_LEVEL lt 3">
+                <a href="{:url('game/child_game')}" <if condition="$action eq 'child_game' or $action eq 'child_game_pc' or $action eq 'child_game_h5'"> class="active " </if>><span>子渠道游戏</span></a>
+            </if>
+            <a href="{:url('app/app_lists')}" <if condition="$action eq 'app_lists'"> class="active " </if>><span>申请游戏盒子</span></a>
+            <if condition="PID_LEVEL eq 1 and $baseinfo['allow_check_subbox'] eq 1">
+                <a href="{:url('app/child_app_lists')}" <if condition="$action eq 'child_app_lists'"> class="active " </if>><span>子渠道游戏盒子</span></a>
+            </if>
+        </div>
+        </if>
+        <!-- 福利管理 START -->
+        <div class="subNav jssubNav"><i class="prev-icon icon-bt"></i><span>BT福利管理</span><i class="arrow-icon"></i></div>
+        <div class="navContent jsnavContent">
+            <a href="{:url('btwelfare/register_welfare')}" <if condition="$action eq 'register_welfare'"> class="active " </if>><span>注册福利</span></a>
+            <a href="{:url('btwelfare/recharge_welfare')}" <if condition="$action eq 'recharge_welfare'"> class="active " </if>><span>充值福利</span></a>
+            <a href="{:url('btwelfare/total_welfare')}" <if condition="$action eq 'total_welfare'"> class="active " </if>><span>累充福利</span></a>
+            <a href="{:url('btwelfare/month_card_welfare')}" <if condition="$action eq 'month_card_welfare'"> class="active " </if>><span>月卡福利</span></a>
+            <a href="{:url('btwelfare/week_card_welfare')}" <if condition="$action eq 'week_card_welfare'"> class="active " </if>><span>周卡福利</span></a>
+        </div>
+        <!-- 福利管理 END -->
+
+        <div class="subNav jssubNav"><i class="prev-icon icon-zhandian"></i><span>推广联盟</span><i class="arrow-icon"></i></div>
+        <div class="navContent jsnavContent">
+            <a href="{:url('union/siteApply')}" <if condition="$action eq 'siteapply'"> class="active " </if>><span>站点申请</span></a>
+            <if condition="$union['status'] == 1">
+                <a href="{:url('union/siteBase')}" <if condition="$action eq 'sitebase'"> class="active " </if>><span>基本信息</span></a>
+            </if>
+            <a href="{:url('union/article')}" <if condition="$action eq 'article' or $action eq 'articleadd' or $action eq 'articleedit'"> class="active " </if>><span>文档管理</span></a>
+        </div>
+
+        <if condition="PID_LEVEL eq 1">
+            <div class="subNav jssubNav"><i class="prev-icon icon-fcgl"></i><span>扶持管理</span><i class="arrow-icon"></i></div>
+            <div class="navContent jsnavContent">
+                <a href="{:url('Support/apply')}" <if condition="$action eq 'apply' or $action eq 'add'"> class="active " </if>><span>扶持申请</span></a>
+                <a href="{:url('Support/suprecord')}" <if condition="$action eq 'suprecord'"> class="active" </if>><span>扶持记录</span></a>
+                <a href="{:url('Support/statistics')}" <if condition="$action eq 'statistics'"> class="active" </if>><span>扶持额度</span></a>
+            </div>
+        </if>
+
+
+        <div class="subNav jssubNav"><i class="prev-icon icon-shujvi"></i><span>数据管理</span><i class="arrow-icon"></i></div>
+        <div class="navContent jsnavContent">
+            <a href="{:url('query/summary')}" <if condition="$action eq 'summary'"> class="active " </if>><span>数据汇总</span></a>
+            <a href="{:url('query/recharge')}" <if condition="$action eq 'recharge'"> class="active " </if>><span>充值明细</span></a>
+            <a href="{:url('query/role')}" <if condition="$action eq 'role'"> class="active " </if>><span>角色查询</span></a>
+            <a href="{:url('query/register')}" <if condition="$action eq 'register'"> class="active " </if>><span>注册明细</span></a>
+            <a href="{:url('query/arpu')}" <if condition="$action eq 'arpu'"> class="active " </if>><span>ARPU统计</span></a>
+            <a href="{:url('query/rank')}" <if condition="$action eq 'rank'"> class="active " </if>><span>排行榜</span></a>
+        </div>
+        <div class="subNav jssubNav "><i class="prev-icon icon-zhgl"></i><span>账户管理</span><i class="arrow-icon"></i></div>
+        <div class="navContent jsnavContent">
+            <a href="{:url('promote/base_info')}" <if condition="$action eq 'base_info'"> class="active " </if>><span>账户信息</span></a>
+            <if condition="PID_LEVEL eq 1 or PID_LEVEL eq 2">
+                <a href="{:url('promote/mychlid')}" <if condition="$action eq 'mychlid' or $action eq 'add_chlid' or $action eq 'edit_child'"> class="active " </if>><span>子渠道</span></a>
+            </if>
+            <if condition="PID_LEVEL eq 1 and $baseinfo['is_custom_pay'] eq 1">
+                <a href="{:url('promote/prepayment')}" <if condition="$action eq 'prepayment' or $action eq 'prepayment_record' or $action eq 'prepayment_deduct_record'"> class="active " </if>><span>预付款信息</span></a>
+            </if>
+        </div>
+        <if condition="AUTH_GAME eq 1 and AUTH_PAY eq 1 and PID_LEVEL lt 3">
+            <div class="subNav jssubNav"><i class="prev-icon icon-qvdao"></i><span>渠道结算</span><i class="arrow-icon"></i></div>
+            <div class="navContent jsnavContent">
+                <a href="{:url('settlement/settlement')}" <if condition="$action eq 'settlement' or $action eq 'settlement_already' or $action eq 'settlement_never'"> class="active " </if>><span>子渠道结算</span></a>
+                <a href="{:url('settlement/son_sum')}" <if condition="$action eq 'son_sum'"> class="active " </if>><span>结算汇总</span></a>
+                <a href="{:url('settlement/son_withdrawal')}" <if condition="$action eq 'son_withdrawal'"> class="active " </if>><span>收益提现</span></a>
+                <a href="{:url('settlement/son_exchange')}" <if condition="$action eq 'son_exchange'"> class="active " </if>><span>收益兑换</span></a>
+            </div>
+        </if>
+    </div>
+</div>

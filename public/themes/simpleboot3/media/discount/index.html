@@ -1,0 +1,357 @@
+<extend name="../mediapublic/base"/>
+<block name="body">
+    <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/discount.css">
+
+    <div class="discount-mun-box v-middle">
+        <div class="discount-menu v-middle">
+            <a href="{:url('Discount/index',['type_id'=>1])}" class="menu-item v-middle h-middle  <if condition="input('type_id') eq 1 or input('type_id') eq ''">active</if>">
+            <div>
+                <i class="tab-icon all-icon"></i>
+                <span class="discount-type">全部</span>
+            </div>
+            </a>
+            <a href="{:url('Discount/index',['type_id'=>2])}" class="menu-item v-middle h-middle <eq name=":input('type_id')" value="2">active</eq>">
+            <div>
+                <i class="tab-icon rebate-icon"></i>
+                <span class="discount-type">返利</span>
+            </div>
+            </a>
+            <a href="{:url('Discount/index',['type_id'=>3])}" class="menu-item v-middle h-middle <eq name=":input('type_id')" value="3">active</eq>">
+            <div>
+                <i class="tab-icon first-icon"></i>
+                <span class="discount-type">首充</span>
+            </div>
+            </a>
+            <a href="{:url('Discount/index',['type_id'=>4])}" class="menu-item v-middle h-middle <eq name=":input('type_id')" value="4">active</eq>">
+            <div>
+                <i class="tab-icon continue-icon"></i>
+                <span class="discount-type">续充</span>
+            </div>
+            </a>
+            <a href="{:url('Discount/index',['type_id'=>5])}" class="menu-item v-middle h-middle <eq name=":input('type_id')" value="5">active</eq>">
+            <div>
+                <i class="tab-icon bind-icon"></i>
+                <span class="discount-type">绑币充值</span>
+            </div>
+            </a>
+        </div>
+    </div>
+    <!-- 折扣游戏 -->
+    <div class="discount-content">
+        <div class="discount-container">
+
+            <div class="discount-game-box" >
+                <ul>
+                    <li class="discount-game-item">
+                        <a href="javascript:;" class="game-info-box v-middle">
+                            <div class="game-icon">
+                                <img src="" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null">
+                            </div>
+                            <div class="game-info">
+                                <p class="game-name v-middle">
+                                    <span>道友请留步</span>
+                                    <i class="android-icon"></i>
+                                    <i class="ios-icon"></i>
+                                </p>
+                                <p class="game-other v-middle">
+                                    <span class="game-type">类型：角色扮演</span><span></span><span class="game-size">大小：100.01M</span>
+                                </p>
+                                <p class="game-introduce">修炼成仙，幻化成风，成仙路上满是荆棘！</p>
+
+                            </div>
+                            <div class="discount-btn-box v-middle">
+                                <div class="discount-btn rebate v-middle">
+                                    <span class="type">返利</span>
+                                    <span class="proportion">100<span class="fz-12">%</span></span>
+                                </div>
+                                <div class="discount-btn first v-middle">
+                                    <span class="type">首充</span>
+                                    <span class="proportion">7.5<span class="fz-12">折</span></span>
+                                </div>
+                                <div class="discount-btn continue v-middle">
+                                    <span class="type">续充</span>
+                                    <span class="proportion">7.5<span class="fz-12">折</span></span>
+                                </div>
+                                <div class="discount-btn binding v-middle">
+                                    <span class="type">绑币充值</span>
+                                    <span class="proportion">9.2<span class="fz-12">折</span></span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="discount-game-item">
+                        <a href="javascript:;" class="game-info-box v-middle">
+                            <div class="game-icon">
+                                <img src="" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null">
+                            </div>
+                            <div class="game-info">
+                                <p class="game-name v-middle">
+                                    <span>道友请留步</span>
+                                    <i class="android-icon"></i>
+                                    <i class="ios-icon"></i>
+                                </p>
+                                <p class="game-other v-middle">
+                                    <span class="game-type">类型：角色扮演</span><span></span><span class="game-size">大小：100.01M</span>
+                                </p>
+                                <p class="game-introduce">修炼成仙，幻化成风，成仙路上满是荆棘！</p>
+
+                            </div>
+                            <div class="discount-btn-box v-middle">
+                                <div class="discount-btn rebate v-middle">
+                                    <span class="type">返利</span>
+                                    <span class="proportion">100<span class="fz-12">%</span></span>
+                                </div>
+                                <div class="discount-btn first v-middle">
+                                    <span class="type">首充</span>
+                                    <span class="proportion">7.5<span class="fz-12">折</span></span>
+                                </div>
+                                <div class="discount-btn continue v-middle">
+                                    <span class="type">续充</span>
+                                    <span class="proportion">7.5<span class="fz-12">折</span></span>
+                                </div>
+                                <div class="discount-btn binding v-middle">
+                                    <span class="type">绑币充值</span>
+                                    <span class="proportion">9.2<span class="fz-12">折</span></span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="discount-game-item">
+                        <a href="javascript:;" class="game-info-box v-middle">
+                            <div class="game-icon">
+                                <img src="" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null">
+                            </div>
+                            <div class="game-info">
+                                <p class="game-name v-middle">
+                                    <span>道友请留步</span>
+                                    <i class="android-icon"></i>
+                                    <i class="ios-icon"></i>
+                                </p>
+                                <p class="game-other v-middle">
+                                    <span class="game-type">类型：角色扮演</span><span></span><span class="game-size">大小：100.01M</span>
+                                </p>
+                                <p class="game-introduce">修炼成仙，幻化成风，成仙路上满是荆棘！</p>
+
+                            </div>
+                            <div class="discount-btn-box v-middle">
+                                <div class="discount-btn rebate v-middle">
+                                    <span class="type">返利</span>
+                                    <span class="proportion">100<span class="fz-12">%</span></span>
+                                </div>
+                                <div class="discount-btn first v-middle">
+                                    <span class="type">首充</span>
+                                    <span class="proportion">7.5<span class="fz-12">折</span></span>
+                                </div>
+                                <div class="discount-btn continue v-middle">
+                                    <span class="type">续充</span>
+                                    <span class="proportion">7.5<span class="fz-12">折</span></span>
+                                </div>
+                                <div class="discount-btn binding v-middle">
+                                    <span class="type">绑币充值</span>
+                                    <span class="proportion">9.2<span class="fz-12">折</span></span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="discount-game-item">
+                        <a href="javascript:;" class="game-info-box v-middle">
+                            <div class="game-icon">
+                                <img src="" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null">
+                            </div>
+                            <div class="game-info">
+                                <p class="game-name v-middle">
+                                    <span>道友请留步</span>
+                                    <i class="android-icon"></i>
+                                    <i class="ios-icon"></i>
+                                </p>
+                                <p class="game-other v-middle">
+                                    <span class="game-type">类型：角色扮演</span><span></span><span class="game-size">大小：100.01M</span>
+                                </p>
+                                <p class="game-introduce">修炼成仙，幻化成风，成仙路上满是荆棘！</p>
+
+                            </div>
+                            <div class="discount-btn-box v-middle">
+                                <div class="discount-btn rebate v-middle">
+                                    <span class="type">返利</span>
+                                    <span class="proportion">100<span class="fz-12">%</span></span>
+                                </div>
+                                <div class="discount-btn first v-middle">
+                                    <span class="type">首充</span>
+                                    <span class="proportion">7.5<span class="fz-12">折</span></span>
+                                </div>
+                                <div class="discount-btn continue v-middle">
+                                    <span class="type">续充</span>
+                                    <span class="proportion">7.5<span class="fz-12">折</span></span>
+                                </div>
+                                <div class="discount-btn binding v-middle">
+                                    <span class="type">绑币充值</span>
+                                    <span class="proportion">9.2<span class="fz-12">折</span></span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="discount-game-item">
+                        <a href="javascript:;" class="game-info-box v-middle">
+                            <div class="game-icon">
+                                <img src="" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null">
+                            </div>
+                            <div class="game-info">
+                                <p class="game-name v-middle">
+                                    <span>道友请留步</span>
+                                    <i class="android-icon"></i>
+                                    <i class="ios-icon"></i>
+                                </p>
+                                <p class="game-other v-middle">
+                                    <span class="game-type">类型：角色扮演</span><span></span><span class="game-size">大小：100.01M</span>
+                                </p>
+                                <p class="game-introduce">修炼成仙，幻化成风，成仙路上满是荆棘！</p>
+
+                            </div>
+                            <div class="discount-btn-box v-middle">
+                                <div class="discount-btn rebate v-middle">
+                                    <span class="type">返利</span>
+                                    <span class="proportion">100<span class="fz-12">%</span></span>
+                                </div>
+                                <div class="discount-btn first v-middle">
+                                    <span class="type">首充</span>
+                                    <span class="proportion">7.5<span class="fz-12">折</span></span>
+                                </div>
+                                <div class="discount-btn continue v-middle">
+                                    <span class="type">续充</span>
+                                    <span class="proportion">7.5<span class="fz-12">折</span></span>
+                                </div>
+                                <div class="discount-btn binding v-middle">
+                                    <span class="type">绑币充值</span>
+                                    <span class="proportion">9.2<span class="fz-12">折</span></span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="discount-game-item">
+                        <a href="javascript:;" class="game-info-box v-middle">
+                            <div class="game-icon">
+                                <img src="" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null">
+                            </div>
+                            <div class="game-info">
+                                <p class="game-name v-middle">
+                                    <span>道友请留步</span>
+                                    <i class="android-icon"></i>
+                                    <i class="ios-icon"></i>
+                                </p>
+                                <p class="game-other v-middle">
+                                    <span class="game-type">类型：角色扮演</span><span></span><span class="game-size">大小：100.01M</span>
+                                </p>
+                                <p class="game-introduce">修炼成仙，幻化成风，成仙路上满是荆棘！</p>
+
+                            </div>
+                            <div class="discount-btn-box v-middle">
+                                <div class="discount-btn rebate v-middle">
+                                    <span class="type">返利</span>
+                                    <span class="proportion">100<span class="fz-12">%</span></span>
+                                </div>
+                                <div class="discount-btn first v-middle">
+                                    <span class="type">首充</span>
+                                    <span class="proportion">7.5<span class="fz-12">折</span></span>
+                                </div>
+                                <div class="discount-btn continue v-middle">
+                                    <span class="type">续充</span>
+                                    <span class="proportion">7.5<span class="fz-12">折</span></span>
+                                </div>
+                                <div class="discount-btn binding v-middle">
+                                    <span class="type">绑币充值</span>
+                                    <span class="proportion">9.2<span class="fz-12">折</span></span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="discount-game-item">
+                        <a href="javascript:;" class="game-info-box v-middle">
+                            <div class="game-icon">
+                                <img src="" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null">
+                            </div>
+                            <div class="game-info">
+                                <p class="game-name v-middle">
+                                    <span>道友请留步</span>
+                                    <i class="android-icon"></i>
+                                    <i class="ios-icon"></i>
+                                </p>
+                                <p class="game-other v-middle">
+                                    <span class="game-type">类型：角色扮演</span><span></span><span class="game-size">大小：100.01M</span>
+                                </p>
+                                <p class="game-introduce">修炼成仙，幻化成风，成仙路上满是荆棘！</p>
+
+                            </div>
+                            <div class="discount-btn-box v-middle">
+                                <div class="discount-btn rebate v-middle">
+                                    <span class="type">返利</span>
+                                    <span class="proportion">100<span class="fz-12">%</span></span>
+                                </div>
+                                <div class="discount-btn first v-middle">
+                                    <span class="type">首充</span>
+                                    <span class="proportion">7.5<span class="fz-12">折</span></span>
+                                </div>
+                                <div class="discount-btn continue v-middle">
+                                    <span class="type">续充</span>
+                                    <span class="proportion">7.5<span class="fz-12">折</span></span>
+                                </div>
+                                <div class="discount-btn binding v-middle">
+                                    <span class="type">绑币充值</span>
+                                    <span class="proportion">9.2<span class="fz-12">折</span></span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="discount-game-item">
+                        <a href="javascript:;" class="game-info-box v-middle">
+                            <div class="game-icon">
+                                <img src="" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null">
+                            </div>
+                            <div class="game-info">
+                                <p class="game-name v-middle">
+                                    <span>道友请留步</span>
+                                    <i class="android-icon"></i>
+                                    <i class="ios-icon"></i>
+                                </p>
+                                <p class="game-other v-middle">
+                                    <span class="game-type">类型：角色扮演</span><span></span><span class="game-size">大小：100.01M</span>
+                                </p>
+                                <p class="game-introduce">修炼成仙，幻化成风，成仙路上满是荆棘！</p>
+
+                            </div>
+                            <div class="discount-btn-box v-middle">
+                                <div class="discount-btn rebate v-middle">
+                                    <span class="type">返利</span>
+                                    <span class="proportion">100<span class="fz-12">%</span></span>
+                                </div>
+                                <div class="discount-btn first v-middle">
+                                    <span class="type">首充</span>
+                                    <span class="proportion">7.5<span class="fz-12">折</span></span>
+                                </div>
+                                <div class="discount-btn continue v-middle">
+                                    <span class="type">续充</span>
+                                    <span class="proportion">7.5<span class="fz-12">折</span></span>
+                                </div>
+                                <div class="discount-btn binding v-middle">
+                                    <span class="type">绑币充值</span>
+                                    <span class="proportion">9.2<span class="fz-12">折</span></span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+
+                </ul>
+                <div class="no_game_text" style="display: none">
+                    <p><img src="__STATIC__/images/game_ico_Nogames.png" alt=""></p>
+                    <p>~暂无折扣游戏~</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <notempty name="data" >
+        <div class="gamelistpage">{$page}</div>
+    </notempty>
+    <script>
+
+    </script>
+</block>

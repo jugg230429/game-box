@@ -1,0 +1,124 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="javascript:;">编辑奖励</a></li>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('edit')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="form-group">
+                        <label for="input-site_analytics" class="col-sm-2 control-label">分类：</label>
+                        <div class="col-md-3 col-sm-5" style="margin-top: 7px">
+                            {$data.category}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site-name" class="col-sm-2 control-label">适用类型：</label>
+                        <div class="col-md-4 col-sm-6">
+                            <label class="label-width">
+                                <input type="radio" name="mold" value="0" <eq name="data.mold" value="0">checked="checked"</eq>>通用
+                            </label>
+                            <label>
+                                <input type="radio" name="mold" value="1" <eq name="data.mold" value="1">checked="checked"</eq>>游戏
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group game_choose" <empty name="data.mold">hidden</empty>>
+                    <label for="input-site-name" class="col-sm-2 control-label">
+                        游戏名称：
+                    </label>
+                    <div class="col-md-4 col-sm-6">
+                        <select name="game_id" id="game_id" class="selectpicker form-control" data-live-search="true">
+                            <option value="0">选择游戏</option>
+                            <volist name=":get_game_list('relation_game_id,relation_game_name,sdk_version',[],'relation_game_id')" id="vo">
+                                <option value="{$vo.relation_game_id}" <eq name="data.game_id" value="$vo['relation_game_id']">selected</eq> >{$vo.relation_game_name}<if condition="$vo['sdk_version'] eq 3">(H5)</if></option>
+                            </volist>
+                        </select>
+                        <input type="hidden" name="game_name" id="game_name">
+                    </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site_analytics" class="col-sm-2 control-label">满减金额：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <input type="text" class="form-control  " name="limit_money" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" value="{$data.limit_money}" >
+                        </div>
+                        <p class="help-block">用户充值金额大于等于此金额可以使用优惠券</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site_analytics" class="col-sm-2 control-label"><span class="form-required">*</span>优惠金额：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <input type="text" class="form-control  " name="money" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" value="{$data.money}" >
+                        </div>
+                        <p class="help-block">优惠券可抵扣金额</p>
+                    </div>
+                    <if condition="$data['coupon_type'] eq 2">
+                    <div class="form-group">
+                        <label for="input-site_analytics" class="col-sm-2 control-label">消费限额：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <input type="text" class="form-control" name="spend_limit" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" value="{$data.spend_limit}">
+                        </div>
+                    </div>
+                    </if>
+                    <div class="form-group">
+                        <label for="input-site-name" class="col-sm-2 control-label">
+                            有效期：
+                        </label>
+                        <div class="col-md-4 col-sm-6">
+
+<!--                            <input type="text" class="form-control js-bootstrap-datetime fl" id="start_time" name="start_time" style="width:47.6%;" value="<empty name='data.end_time'>{:date('Y-m-d H:i:s')}<else/>{$data.start_time|date='Y-m-d H:i:s',###}</empty>" autocomplete="off">-->
+                            <input type="text" class="form-control js-bootstrap-datetime fl" id="start_time" name="start_time" style="width:47.6%;" value="<notempty name='data.start_time'>{$data.start_time|date='Y-m-d H:i:s',###}</notempty>" autocomplete="off">
+                            <span class="fl to-span">至</span>
+                            <input type="text" class="form-control js-bootstrap-datetime fl" id="end_time" name="end_time" style="width:47.6%;"  autocomplete="off" value="<notempty name='data.end_time'>{$data.end_time|date='Y-m-d H:i:s',###}</notempty>">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site-name" class="col-sm-2 control-label">状态：</label>
+                        <div class="col-md-4 col-sm-6">
+                            <label class="label-width">
+                                <input type="radio" value="1"  name="status" data-input="type1" <eq name="data.status" value="1">checked="checked"</eq>>开启
+                            </label>
+                            <label class="label-width">
+                                <input type="radio" value="0"  name="status" data-input="type2" <eq name="data.status" value="0">checked="checked"</eq> >关闭
+                            </label>
+                        </div>
+                    </div>
+                    <div class="promote_list" hidden>
+                        {$promote_choose}
+                    </div>
+                    <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <input type="hidden" name="id" value="{$data.id}">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                                <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script>
+    $(function () {
+        $('input[type=radio][name=mold]').change(function() {
+            if($('input[name="mold"]:checked').val()==0){
+                $(".game_choose").hide();
+            }else{
+                $(".game_choose").show();
+            }
+        });
+        $("#game_id").change(function () {
+            $("#game_name").val($("#game_id").find("option:selected").text());
+        })
+    })
+
+</script>
+</body>
+</html>

@@ -1,0 +1,284 @@
+html{margin:0;padding:0;font-family:'Microsoft Yahei','微软雅黑',SimHei,'黑体';color:#333;overflow-x:hidden;margin:0 auto;max-width:640px}
+a{color:rgba(51,51,51,1);text-decoration:none!important}
+input,textarea,button{-webkit-appearance:none;border-radius:0px;border:none}
+html{font-size:12px}
+@media (min-width:300px){body{width:100%;height:auto;background-size:100%;background-attachment:fixed}
+}body{margin:0;overflow-x:hidden;-webkit-text-size-adjust:none;-webkit-highlight:none;overflow:auto;-webkit-tap-highlight-color:rgba(0,0,0,0);max-width:640px;margin:0 auto}
+.index_fg_hx{width:100%;height:1px;background:rgba(237,238,239,1);margin-bottom:0.8rem}
+.fl{float:left}
+.fg{float:right}
+.clear{clear:both}
+.layui-layer{border-radius:8px!important}
+.footer{font-size:13px;font-size:12px;background-color:#ffffff;width:100%;box-shadow:0px -1px 8px 0px rgba(174,185,190,0.5);height:3.9rem;position:fixed;bottom:0rem;z-index:999}
+.lwx-header{height:3.8rem;color:#222;font-weight:500}
+.header-title{position:relative;width:100%;height:100%;top:0;left:0;right:0}
+.header-title-prefix,.header-title-suffix{position:absolute;top:0;right:0;bottom:0;height:100%;width:15%;display:flex;justify-content:center;align-items:center}
+.header-title-prefix{left:0}
+.header-title-suffix{}
+.header-title-text{display:flex;justify-content:center;align-items:center;font-size:1.45rem;height:100%}
+.header-title-prefix-back-btn{width:0.74rem}
+.header-title-suffix-search-btn{width:1.5rem}
+@media screen and (max-width:320px) and (orientation:portrait){.footer{height:4rem!important}
+    .login_icon_phone{position:absolute;top:2rem!important;left:9%!important}
+    .login_icon_password{position:absolute;top:5.55rem!important;left:9%!important}
+}.footer div{float:left;width:19%;padding-left:4%;text-align:center}
+.footer div img{width:35%;margin-top:0.2rem}
+.footer p{margin-bottom:0.1rem!important;color:#adaeb6}
+.active_type{color:#018FFF!important}
+.first_type{margin-left:3%!important}
+.login_modal{display:none}
+.close_login_modal,.close_get_back_pwd_modal_one{width:15px;height:14px;position:absolute;right:1rem;top:1rem}
+.login_icon_phone{width:6.8%;position:absolute;left:5.5%;top:1.8rem}
+.login_icon_password{width:6.8%;position:absolute;left:5.5%;top:5.45rem}
+.registered_modal_mob,.registered_modal_pub_real{display:none}
+.real_name_auth_modal{display: none}
+.account{position:absolute;width:86%;z-index:9999;font-size:0.48rem;height:auto;display:none;top:4.8rem;background:#f8f8f8;border-radius:3px;border:1px solid rgba(230,228,228,1);left:7%}
+.accountnum{text-align:left;width:100%;border-bottom:1px solid #fff;height:3.1rem;line-height:3.1rem}
+.accountnum-con{display:inline-block;width:78%;cursor:pointer;font-size:14px;margin-left:1.2rem}
+.pulldown{display:inline-block;width:1.39rem;height:0.8rem;background:url(../images/up_arrow.png) no-repeat;background-size:100% 100%;position:absolute;top:2.5rem;right:2.8rem}
+.pulldown-active{display:inline-block;width:1.3rem;height:0.8;background:url(../images/down_arrow.png) no-repeat;background-size:100% 100%;position:absolute;top:2.5rem;right:2.8rem}
+.btn-clear{float:right;width:1.6rem;margin-top:1rem;margin-right:1.2rem}
+.get_back_pwd_modal_email input[type='text'],.real_name_auth_modal input[type='text'],.get_back_pwd_modal_two input[type='text'],.get_back_pwd_modal_two input[type='number'],.get_back_pwd_modal_one input[type='text'],.login_modal input[type='text'],.registered_modal_pub input[type='text'],.registered_modal_mob input[type='text'],.registered_modal_mob input[type='number'],.registered_modal_real input[type='text']{width:50%;font-size:14px;margin-top:1.4rem;margin-left:2rem;margin-bottom:0.2rem;height:2.6rem;padding-left:3.3rem;padding-right:2.3rem;border:none !important;box-shadow:none !important}
+.get_back_pwd_modal_three input[type='password'],.login_modal input[type='password'],.registered_modal_pub input[type='password'],.registered_modal_mob input[type='password']{margin-top:0.2rem;padding-right:2.3rem;font-size:14px;width:50%;margin-left:2rem;height:2.6rem;margin-bottom:0.2rem;padding-left:3.3rem;border:none !important;box-shadow:none !important}
+.get_back_pwd_modal_three input[type='password']{width:71%;padding-right:0}
+.modal_fengexian{width:86.1%;height:1px;background:rgba(230,228,228,1);margin-left:6.95%;position:relative;top:-0.3rem}
+.modal_fengexian_href{width:50%;height:1px;background:rgba(230,228,228,1);margin-left:8%;position:relative;top:-0.2rem}
+.geetest_success_radar_tip{width:100%!important}
+.geetest_logo,.geetest_success_logo{display:none!important}
+.get_back_pwd_modal_one_btn{width:86.1%;margin:auto;line-height:3rem;background-color:#018FFF;border:1px solid #018FFF;color:#ffffff;text-align:center;border-radius:5px;margin-top:1rem;font-size:14px}
+.get_back_pwd_modal_two_btn{width:86%;margin:auto;line-height:3rem;background-color:#018FFF;border:1px solid #018FFF;box-shadow:none;color:#ffffff;text-align:center;border-radius:5px;margin-top:1.5rem;font-size:14px}
+.get_back_pwd_modal_one_text{width:100%;position:absolute;bottom:0;font-size:13px;text-align:center;color:#018FFF;padding-bottom:1rem}
+.modal_username{margin-top:1.1rem!important}
+#lblTagIdUserPwd{margin-top:0;margin-bottom:0;height:2.7rem}
+.get_back_pwd_modal_two .login_icon_yanzhengmas{position:absolute;top:8.4rem!important}
+.get_back_pwd_modal_email .login_icon_yanzhengmas{position:absolute;top:8.5rem!important}
+.get_back_pwd_modal_two_intoemail{width:100%;text-align:center;margin-top:5.6rem;font-size:12px;color:#999999}
+.get_back_pwd_modal_two .get_yanzhengma{margin-top:0.5rem!important}
+.get_back_pwd_modal_two_intoemail span{color:#018FFF!important}
+.get_back_pwd_modal_two_intotell{position:absolute;bottom:1rem;left:25%;font-size:12px;color:#999999}
+.get_back_pwd_modal_two_intotell span{color:#018FFF!important}
+.get_back_pwd_modal_one_title{text-align:center;font-size:1.46rem;font-weight:500;color:#222;position:absolute;top:1.92rem;width:100%}
+.clear_text{width:5%;position:relative;top:2rem;left:2rem;display:none}
+.geetest_radar_tip_content{font-size:12px}
+@media screen and (max-width:320px) and (orientation:portrait){.modal_yanzhengmas{width:26%!important}
+    .get_back_pwd_modal_two .get_yanzhengma{position:relative;left:-1rem;top:0.2rem}
+    .clear_text{position:relative;top:1.6rem!important;left:-0.4rem!important}
+    .clear_texts{position:relative;left:-0.4rem!important}
+    .clear_textss{position:relative;left:-2.4rem!important}
+    .login_icon_passworde{position:absolute;top:10rem!important}
+    .get_back_pwd_modal_email input[type='text'],.get_back_pwd_modal_two input[type='text'],.get_back_pwd_modal_two input[type='number'],.get_back_pwd_modal_one input[type='text'],.login_modal input[type='text'],.registered_modal_pub input[type='text'],.registered_modal_mob input[type='text'],.registered_modal_mob input[type='number']{font-size:14px;padding-left:2.8rem!important}
+    .get_back_pwd_modal_three input[type='password'],.login_modal input[type='password'],.registered_modal_pub input[type='password'],.registered_modal_mob input[type='password']{font-size:13px;padding-left:2.8rem!important}
+}.modal_yanzhengmas{width:34%!important;margin-top:0rem!important;margin-left:1rem!important}
+.clear_texts{width:5%;position:relative;top:0.7rem;left:2rem;display:none}
+.get_back_pwd_modal_email .clear_texts{top:4.6rem;}
+.get_back_pwd_modal_three .clear_texts{left:2rem;left:auto;right:.1rem}
+.fristclear_texts{top:1.8rem}
+.fristclear_texts.id-card{top:0.75rem}
+.findclear_texts{top:4.8rem}
+.clear_textss{width:5%;position:relative;top:5.1rem;left:-2.4rem;display:none}
+.topclear_texts{left:-2rem}
+.passwordclear_texts{left:-3rem}
+.registeredclear_texts{top:1rem}
+.modal_login_btn{background-color:#018FFF;color:#ffffff;width:86.7%;font-size:14px;height:3rem;border:1px solid #018FFF;line-height:3rem;margin:auto;margin-top:1.1rem;border-radius:5px;text-align:center}
+.new_user{font-size:13px;font-weight:500;color:#018FFF;margin-left:7%;margin-top:0.75rem}
+.registered_result_modal{display:none;text-align:center}
+.get_back_pwd_modal_email,.get_back_pwd_modal_one,.get_back_pwd_modal_two,.get_back_pwd_modal_three,.get_back_pwd_modal_four{display:none}
+.get_back_pwd_modal_four{text-align:center}
+.result_btn{width:86%;margin-left:7.5%;height:3rem;font-size:13px;background-color:#018fff;color:#ffffff;margin-top:1rem;cursor:pointer;border-radius:5px}
+.result_tap{margin-left:11%;margin-top:0.6rem;width:78%;font-size:13px;font-weight:500;color:#999999;line-height:1.8rem}
+.result_btn p{line-height:3rem;letter-spacing:3px;font-size:14px}
+.result_img{width:30%;margin:5.2rem auto 0}
+.result_text{font-size:1.2rem;font-weight:500;color:#018fff;margin:1rem auto 2rem;text-align:center}
+.mt1{margin-top:0.5rem}
+.fogget_pwd{text-align:right;font-size:13px;font-weight:500;color:rgba(153,153,153,1);margin-right:7%;margin-top:0.75rem}
+.duan_fengexian{width:24%;height:1px;background:rgba(221,221,221,1);margin-top:1.6rem}
+.ml40{margin-left:8%}
+.ml20{margin-left:2rem}
+.other_login_type{font-size:12px;width:34%;text-align:center;font-weight:500;color:rgba(192,192,196,1);margin-top:1rem}
+.login_grounp{width:50%;margin-top:1rem;height:4.8rem;margin:0px auto;text-align:center;display:flex;align-items:center;vertical-align:middle}
+.login_type{position:relative;top:0rem;vertical-align:middle}
+.login_type a{width:50%;height:4rem;margin:0px auto}
+.login_type .qq{width:100%;height:100%;padding-top:0.4rem}
+.login_type .wx{width:100%;height:100%;padding-top:0.4rem}
+.login_type img{width:35%}
+.login_type div p{height:1.5rem;line-height:1.5rem;font-size:1rem;color:rgba(192,192,196,1)}
+.registered_modal_pub{display:none}
+.login_icon_username{width:7%}
+.modal_user_name{margin-top:1.3rem!important;margin-left:1rem!important;margin-bottom:0rem!important}
+.modal_user_namea{margin-top:4rem!important;margin-left:1rem!important;margin-bottom:0.5rem!important}
+.modal_user_names{margin-top:4.5rem!important;margin-left:1rem!important;margin-bottom:0.5rem!important}
+.modal_pass_word{margin-top:0.55rem!important;margin-left:1rem!important;margin-bottom:0rem!important}
+.registered_modal_mob .modal_pass_word{margin-top:0.4rem!important;margin-left:1rem!important;margin-bottom:0.3rem!important}
+.modal_pass_word_three{margin-top:4.5rem!important;margin-left:1rem!important;margin-bottom:0.5rem!important}
+.modal_yanzhengma{width:39%!important;margin-top:0.4rem!important;margin-left:1rem!important;margin-bottom:0.3rem!important}
+.get_yanzhengma{background-color:#018FFF;color:#fff;margin-top:0.8rem;width:30%;line-height:2.6rem;border:1px solid #018fff;border-radius:5px;text-align:center;font-weight:500;font-size:1.1rem}
+.get_yanzhengma.no_send{background-color:#CCCCCC;border-color:#CCCCCC;cursor:not-allowed}
+.login_icon_me,.login_icon_card{width:7%;position:absolute;top:2.4rem;left:1.7rem}
+.registered_modal_mob .login_icon_me{width:7%;position:absolute;top:2rem;left:1.5rem}
+.login_icon_mea{width:7%;position:absolute;top:3.6rem;left:1.7rem}
+.login_icon_mes{width:7%;position:absolute;top:5.1rem;left:1.5rem}
+.login_icon_mes_two{width:6.5%;position:absolute;top:4.69rem;left:2.3rem;left:1.5rem}
+.login_icon_passworda{width:7.5%;position:absolute;top:6.35rem;left:1.7rem}
+.login_icon_card {top:6rem;}
+.registered_modal_real {display: none;}
+.registered_modal_real .footer_text {display: block;margin-top: 14rem;}
+@media screen and (min-width:414px) and (max-width:431px) and (orientation:portrait){
+    .login_icon_passwordb{position:absolute;top:9.5rem!important;/*9.45rem!important*/}
+    .login_icon_passwordc{position:absolute;top:13.5rem!important;/*13.4rem!important*/}
+    .login_icon_card {top:5.9rem;}
+}
+.login_icon_password_three{width:7.5%;position:absolute;top:5.1rem;left:1.9rem}
+.login_icon_password_threes{width:7.5%;position:absolute;top:8.7rem;left:1.9rem}
+.login_icon_passwordc{width:7.5%;position:absolute;top:13.8rem;left:1.5rem}
+.login_icon_yanzhengma{width:7.5%;position:absolute;top:5.7rem;left:1.5rem}
+.login_icon_yanzhengma2{width:7.5%;position:absolute;top:9.8rem;left:1.5rem}
+.login_icon_yanzhengmas{width:6.5%;position:absolute;top:8.5rem;left:1.5rem}
+.login_icon_passwordb{width:7.5%;position:absolute;top:9.8rem;left:1.5rem}
+.login_icon_passworde{width:7.5%;position:absolute;top:10.2rem;left:1.7rem}
+.registered_modal_pub_btn{width:87%;height:3rem;font-size:14px;background-color:#D6D6D6;border-radius:5px;text-align:center;border:1px solid #D6D6D6;color:#FFFFFF;margin-left:6.5%;margin-top:0rem}
+.registered_modal_next_btn{width:87%;height:3rem;font-size:14px;background-color:#D6D6D6;border-radius:5px;text-align:center;border:1px solid #D6D6D6;color:#FFFFFF;margin-left:6.5%;margin-top:0rem}
+.get_back_pwd_modal_three_btn{width:86%;height:3rem;background-color:#D6D6D6;border-radius:5px;text-align:center;color:#FFFFFF;margin-left:7.5%;margin-top:1.6rem}
+.get_back_pwd_modal_three_btn p{line-height:3rem}
+.agree_con_img,.agree_con_two_img{width:1.4rem;height:1.4rem;position:relative;left:1.7rem;top:0.8rem}
+.registered_modal_mob .can_jieshou_two p{width:82%;position:relative;left:3rem;top:0.8rem}
+.registered_modal_mob .registered_modal_pub_btn{}
+.agree_con_check,.agree_con_two_check{opacity:0;position:absolute;top:0;left:-10%}
+.can_click{background-color:#018FFF!important;border-color:#018FFF!important}
+input::-webkit-input-placeholder{color:#C1C0C4;font-size:14px}
+input::-moz-input-placeholder{color:#C1C0C4;font-size:14px}
+input::-ms-input-placeholder{color:#C1C0C4;font-size:14px}
+.geetest_holder.geetest_wind,.geetest_holder.geetest_wind .geetest_radar_tip,.geetest_holder.geetest_wind .geetest_success_radar_tip{width:76%!important}
+.btn_delphil.textc{border:1px solid rgba(230,228,228,1)}
+.geetest_holder.geetest_wind .geetest_radar_btn,.geetest_holder.geetest_wind .geetest_success_btn{border:none!important}
+.can_jieshou{height:3rem}
+.can_jieshou_two{height:3rem}
+.can_jieshou p{font-size:13px;width:82%;font-weight:500;color:#999999;position:relative;left:2.6rem;top:0.8rem;text-align:left}
+.can_jieshou_two p{font-size:13px;font-weight:500;color:#999999;position:absolute;left:4.5rem;top:21rem;text-align:left}
+.can_jieshou span,.can_jieshou_two span{color:#018FFF}
+.footer_text{width:100%;margin-top:0.4rem;text-align:center;font-size:13px;font-weight:500;color:rgba(1,143,255,1)}
+.footer-text-register{margin-top:1.67rem}
+.user_zhuce_info_page_header{width:100%;height:3.8rem}
+.user_zhuce_info_page_header .close_user_zhuce_info{margin-top:1.2rem;margin-left:1rem;font-size:1.2rem;color:#018FFF!important}
+.sears_btn{width:5%;margin-top:1.2rem;float:right;margin-right:1.2rem}
+.registered_result_text{width:100%;font-size:16px;text-align:center;margin-top:2.5rem}
+.user_zhuce_info_page_item{font-size:1.2rem;width:30%;margin-top:1.2rem!important;font-weight:550;vertical-align:middle;text-align:center;position:absolute;top:0rem;left:35%;margin:0px auto}
+.type_down__long_hx{width:100%;height:1px;background-color:#EDEEEF;position:relative;top:-0.2rem;z-index:1;margin-top:0.3rem}
+.user_zhuce_info_con_error_text{font-size:12px;color:#999999;margin-top:10rem;text-align:center}
+.user_zhuce_info_error_btn{width:5.5rem;height:2.6rem;background:rgba(254,254,254,1);border:1px solid rgba(1,143,255,1);border-radius:4px;color:#018FFF;margin:auto;margin-top:1rem}
+.user_zhuce_info_error_btn p{padding-top:0.6rem}
+.user_zhuce_info_con{width:92%;margin:auto;margin-top:2rem;margin-bottom:2rem}
+.user_zhuce_info_con p{color:rgba(102,102,102,1);line-height:2.2rem}
+.empty-box{width:100%;color:#999;text-align:center;position:absolute;top:48%}
+.dropload-down{text-align:center;height:3rem;width:100%;line-height:3rem;background:#ffffff;font-size:0.853rem}
+.dropload-down .dropload-noData{color:#999999}
+.yzm-img{width:30%;margin-top:0.5rem}
+.geetest_box{margin:1rem 6.6%!important}
+/*关注公众号弹窗*/
+.public-modal{display: none}
+.public-modal .public-content{
+    width:22.64rem;
+    margin: 0 auto;
+    font-size: 1.12rem;
+}
+.public-content .public-tips{
+    padding-top: 3.37rem;
+    line-height: 1.28rem;
+    color: #ee4b62;
+    padding-bottom: 1.58rem;
+    text-align: left;
+    font-size: 1.12rem;
+}
+.public-content .method-one,.public-content .method-two{
+    line-height: 1.7rem;
+    color: #333;
+    text-align: left;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    align-items: flex-start;
+}
+.public-content .method-one .wx-con-label,.public-content .method-two .wx-con-label{
+    height: 1.64rem;
+    line-height: 1.64rem;
+    width:4.32rem;
+    text-align: center;
+    background: #7dbcef;
+    border-radius: 9.9rem;
+    color: #ffffff;
+    margin-right: 0.5rem;
+}
+.public-content .copy-btn{
+    width:13.4rem;
+    margin: 1.7rem auto;
+    height: 3.2rem;
+    border-radius: 9.9rem;
+    line-height: 3.2rem;
+    text-align: center;
+    background: #018FFF;
+    color: #ffffff;
+    font-size:1.28rem;
+}
+.public-content .public-img-box{
+    padding-bottom:1.78rem;
+    text-align: center;
+    margin-right: 2rem;
+}
+.public-content .public-img-box .ewm-img{
+    margin-top: 0.5rem;
+    width: 11.06rem;
+    height: 11.06rem;
+}
+.open-weixin-modal{
+    display: block;
+}
+.open-weixin-modal .copy-box{
+    width:100%;
+    text-align: center;
+    margin: 3rem auto 2rem;
+    font-size: 1.28rem;
+}
+.open-weixin-modal .success-icon{
+    width:1.7067rem;
+    height:1.7067rem ;
+    background: url(../images/mygame_btn_choose1.png)no-repeat;
+    background-size: 100% 100%;
+    display: inline-block;
+    vertical-align: bottom;
+ }
+.open-weixin-modal  .open-weixin-btn{
+    width:12.8rem;
+    height: 3.072rem;
+    margin: 0 auto;
+    margin-bottom: 1.28rem;
+    background: #018FFF;
+    border-radius: 99.9rem;
+    line-height: 3.072rem;
+    text-align: center;
+    color: #ffffff;
+    font-size: 1.28rem;
+    display: block;
+}
+.layui-layer-hui .layui-layer-content {
+    padding: 12px 15px!important;
+    text-align: center;
+}
+@media screen and (max-width:320px) and (orientation:portrait){.can_jieshou p{font-size:12px!important}
+    input::-webkit-input-placeholder{color:#C1C0C4;font-size:12px!important}
+    input::-moz-input-placeholder{color:#C1C0C4;font-size:12px!important}
+    input::-ms-input-placeholder{color:#C1C0C4;font-size:12px!important}
+    .login_icon_me{position:absolute;top:2.5rem!important;left:1.9rem!important}
+    .registered_modal_mob .login_icon_me{position:absolute;top:2rem!important}
+    .login_icon_yanzhengma{position:absolute;top:5.7rem}
+    .login_icon_passworda{position:absolute;top:6.2rem!important;left:1.9rem!important}
+    .login_icon_passwordb{position:absolute;top:9.7rem!important}
+    .login_icon_passwordc{position:absolute;top:13.8rem}
+}
+.red-spot2{
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 3px;
+    background: red;
+    top:0.2rem;
+    right: 2rem;
+}

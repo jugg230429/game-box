@@ -1,0 +1,139 @@
+<include file="public@header" />
+</head>
+<body>
+<style>
+    table,td,tr,th{
+        text-align: center;
+        /* border: 1px solid red;
+        margin: auto; */
+    }
+</style>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="{:url('Bt/setting')}">福利设置</a></li>
+        <span class="title_remark"></span>
+    </ul>
+
+    <form id="search_form" class="well form-inline  fr" method="get" action="{:url('setting')}">
+        <select name="game_id" id="game_id" class="selectpicker " game_id="{:input('request.game_id')}"
+                data-live-search="true" data-size="7" style="width: 100px;">
+            <option value="">游戏名称</option>
+            <volist name=":get_game_list('id,game_name',$map)" id="vo">
+                <option value="{$vo.id}">{$vo.game_name}</option>
+            </volist>
+        </select>
+
+        <input type="text" class="form-control js-bootstrap-date" id="start_time" name="start_time" placeholder="福利发放开始时间"
+               value="{:input('request.start_time/s','')}" style="width: 140px;" autocomplete="off"><span style="position: relative;top: 10px;">-</span>
+        <input type="text" class="form-control js-bootstrap-date" id="end_time" name="end_time" placeholder="福利发放结束时间"
+               value="{:input('request.end_time/s','')}" style="width: 140px;" autocomplete="off">
+
+        <select name="status" id="status" class="selectpicker" status="{:input('request.status')}" style="width: 120px;">
+            <option value="">显示状态</option>
+            <option value="1">正常</option>
+            <option value="0">关闭</option>
+        </select>
+
+        <input type="submit" class="btn btn-search" id="search_btn" value="搜索" />
+        <a class="btn btn-clear" href="{:url('setting')}">清空</a>
+    </form>
+
+    <form class="js-ajax-form" action="" method="post">
+
+        <div class="table-actions position" style="margin-left: -10px;">
+            <a class="btn btn-success  mtb17" href="{:url('Bt/add')}">新增福利</a>
+        </div>
+
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <!-- <th>ID</th> -->
+                <th>游戏名称</th>
+                <th>注册福利</th>
+                <th>充值福利</th>
+                <th>累充福利</th>
+                <th>月卡福利/30天</th>
+                <th>周卡福利/7天</th>
+                <th>添加时间</th>
+                <th>福利发放时间</th>
+                <th width="50">状态</th>
+                <th width="200">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <empty name="lists">
+                <tr>
+                    <td colspan="13" style="text-align: center;">暂无数据</td>
+                </tr>
+            </empty>
+            <foreach name="lists" item="vo">
+                <tr>
+                    <!-- <td>{$vo['id']}</td> -->
+                    <td>{:get_game_name($vo['game_id'])}</td>
+                    <td>
+                        <volist name=":explode(',',$vo['register_prop_ids'])" id="vos">
+                            {:get_bt_prop_name($vos)}<br/>
+                        </volist>
+                    </td>
+                    <td>
+                        <volist name=":explode(',',$vo['recharge_prop_ids'])" id="vos">
+                            {:get_bt_prop_name($vos)}<br/>
+                        </volist>
+                    </td>
+                    <td>
+                        <volist name=":json_decode($vo['total_recharge_prop'],true)" id="vos">
+                            满{$vos['money']}元:
+                            <volist name="vos['prop']" id="voss">
+                                {:get_bt_prop_name($voss)}
+                            </volist>
+                            <br/>
+                        </volist>
+                    </td>
+                    <td>
+                        <volist name=":explode(',',$vo['month_card_prop_ids'])" id="vos">
+                            {:get_bt_prop_name($vos)}<br/>
+                        </volist>
+                    </td>
+                    <td>
+                        <volist name=":explode(',',$vo['week_card_prop_ids'])" id="vos">
+                            {:get_bt_prop_name($vos)}<br/>
+                        </volist>
+                    </td>
+                    <td>{:date("Y-m-d H:i:s",$vo['create_time'])}</td>
+                    <if condition="$vo['end_time']">
+                        <td>{:date("Y-m-d H:i",$vo['start_time'])} 至 {:date("Y-m-d H:i",$vo['end_time'])}</td>
+                    <else/>
+                        <td>{:date("Y-m-d H:i",$vo['start_time'])} 至 永久</td>
+                    </if>
+                    <td>{:$vo['status']?'正常':'已关闭'}</td>
+                    <td>
+                        <a href="{:url('edit',['id'=>$vo['id']])}">编辑</a>
+                        <a class="js-ajax-dialog-btn"  href="{:url('del',['id'=>$vo['id']])}">删除</a>
+                        <if condition="$vo['status'] eq 1">
+                            <a class="js-ajax-dialog-btn"  href="{:url('changeStatus',['id'=>$vo['id'],'status'=>'0'])}">关闭</a>
+                        <else/>
+                            <a class="js-ajax-dialog-btn"  href="{:url('changeStatus',['id'=>$vo['id'],'status'=>'1'])}">开启</a>
+                        </if>
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+
+    </form>
+    <div class="pagination">{$page}
+
+    </div>
+</div>
+
+<script src="__STATIC__/js/admin.js"></script>
+
+<script type="text/javascript">
+
+    $("#game_id").selectpicker('val', $('#game_id').attr('game_id'));
+    $("#status").selectpicker('val', $('#status').attr('status'));
+
+</script>
+
+</body>
+</html>

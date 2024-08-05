@@ -1,0 +1,338 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/LCalendar.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/select2.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/new_select2.css" type="text/css" />
+    <link href="__TMPL__/channelwappublic/assets/css/apply.css" type="text/css" rel="stylesheet" />
+    <style>
+        .search-item.col-4{
+            width: 33.33%;
+            border-top: 0.0267rem solid #E0E0E0;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+    </style>
+</block>
+<block name="body">
+    <div class="page-container profit-exchange-container" style="padding-bottom: 1.3rem">
+        <div class="page-content">
+            <div class="operate-data-box">
+                <div class="summary-title pt-53">
+                    站点申请
+                    <span class="iconTitle"><img src="__TMPL__/channelwappublic/assets/images/common/shouyi_wenhao.png" class="summary-picture" ></span>
+                </div>
+                <div class="summary-date-tab">
+
+                    <if condition="empty($union) || $union['status'] == -1">
+
+                        <div class="summary-data-box">
+                           <ul class="chooseFrom">
+                               选择来源
+                                <li>
+                                    <label class="radioItem"><input type="radio" class="system" name="apply_domain_type" value="0" checked><i class="radioItemIcon"></i> 系统分配</label>
+                                </li>
+                                <li>
+                                    <label class="radioItem"><input type="radio" class="myselfAdd" name="apply_domain_type" value="1" ><i class="radioItemIcon"></i> 自主添加</label>
+                                </li>
+                           </ul>
+                           <div class="chooseForm-data-apply ">{:PNAME}.{$admin_set['web_site']}</div>
+                           <div class="chooseForm-addData" ><input type="text" class="inputAddress" name="site_url" value="http://"></div>
+                           <div class="chooseForm-btns">
+                                <button class="applyBtn doApply">申请</button>
+                                <if condition="$union['status'] == -1">
+                                    <div class="rejectSystem">
+                                        <span>驳回原因：<span>{$union['remark']}</span></span>
+                                    </div>
+                                    <input type="hidden" class="is_bohui" name="is_bohui" value="1">
+                                </if>
+                           </div>
+                           <div class="chooseMyself">
+                                <button class="addApply doApply">申请</button>
+                                <if condition="$union['status'] == -1">
+                                    <div class="reject">
+                                        <span>驳回原因：<span>{$union['remark']}</span></span>
+                                    </div>
+                                    <input type="hidden" class="is_bohui" name="is_bohui" value="1">
+                                </if>
+                           </div>
+                        </div>
+
+                    <else/>
+
+
+                        <if condition="$union['status'] == 0">
+
+                            <div class="summary-data-box">
+                                <ul class="chooseFrom">
+                                    选择来源
+                                    <li>
+                                        <label class="radioItem"><input type="radio" class="system" <if condition="$union['apply_domain_type'] eq 0"> checked="checked" </if> disabled value="0" class="sdis-radio "><i class="radioItemIcon"></i> 系统分配</label>
+                                    </li>
+                                    <li>
+                                        <label class="radioItem"><input type="radio" class="myselfAdd" <if condition="$union['apply_domain_type'] eq 1"> checked="checked" </if> disabled  value="1"  class="sdis-radio "><i class="radioItemIcon"></i> 自主添加</label>
+                                    </li>
+                                </ul>
+                                <div class="chooseForm-data-apply copy-data" data-clipboard-text="{:PNAME}.{$admin_set['web_site']}" >{$union['domain_url']}</div>
+                                <div class="chooseForm-addData" ><input type="text" class="inputAddress" value="http://"></div>
+                                    <div class="chooseForm-btns">
+                                        <button class="applyBtn" style="background-color:#FEB72E">审核中</button>
+                                    </div>
+                            </div>
+
+                        <elseif condition="$union['status'] == 1" />
+
+                            <div class="summary-data-box">
+                                <div class="cooperation">
+                                    <p class="chooseFrom">联盟地址 </p>
+                                    <div class="chooseForm-data ">{$union['domain_url']}</div>
+                                    <span class="iconBox"><img src="__TMPL__/channelwappublic/assets/images/common/lianmeng_dizhi_ico_fuzhi.png" class="addIcon copy-data" data-clipboard-text="{$union['domain_url']}"></span>
+                                </div>
+                                <div class="chooseForm-btns">
+                                    <button class="goToSite" data-url="{$union['domain_url']}">进入站点</button>
+                                    <button class="setBtn js_set" data-url="{:url('Union/sitebase')}">站点配置</button>
+                                    <button class="setBtn js_article" data-url="{:url('Union/article')}">文档管理</button>
+                                </div>
+                            </div>
+
+                        </if>
+
+                    </if>
+                </div>
+
+            </div>
+            <div class="data-summary-box">
+                <div class="summary-title pt-32">
+                    APP申请
+                </div>
+                <div class="table-box">
+                    <table>
+                        <tbody>
+                        <tr class="table-title">
+                            <th style="width: 1.7rem;">名称</th>
+                            <th>平台</th>
+                            <th style="width: 1.7rem;">大小/MB</th>
+                            <th>打包方式</th>
+                            <th>操作</th>
+                        </tr>
+                        </tbody>
+                        <tbody id="summaryload" >
+                        <notempty name="data_lists">
+                            <volist name="data_lists" id="vo">
+                                <tr>
+                                    <if condition="$i eq 1">
+                                        <if condition="$vo['app_new_name']">
+                                            <td class="gameBox-table" rowspan="2">{$vo['app_new_name']}</td>
+                                        <else/>
+                                            <notempty name="union_set['app_name_ico']">
+                                                <td class="gameBox-table" rowspan="2">{$union_set['app_name_ico']}</td>
+                                            <else/>
+                                                <if condition="cmf_get_option('app_set')['app_name']">
+                                                    <td class="gameBox-table" rowspan="2">{:cmf_get_option('app_set')['app_name']}</td>
+                                                <else/>
+                                                    <td class="gameBox-table" rowspan="2">游戏盒子</td>
+                                                </if>
+                                            </notempty>
+                                        </if>
+                                    </if>
+                                    <td>{:get_info_status($vo['version'],35)}</td>
+                                    <td>{$vo.file_size|default='--'}</td>
+
+                                    <if condition="$vo['apply_id']">
+                                        <if condition="$vo['is_user_define'] eq '1'">
+                                            <td>自定义</td>
+                                        <else/>
+                                            <td>官方</td>
+                                        </if>
+                                    <else/>
+                                        <td>--</td>
+                                    </if>
+                                    <td>
+                                        <empty name="vo.file_url">
+                                            --
+                                        <else/>
+                                            <if condition="$vo['apply_id'] gt 0">
+                                                <eq name="vo.status" value="0">
+                                                    <span style="color: rgb(255,178,43)">审核中</span>
+                                                </eq>
+                                                <eq name="vo.status" value="1">
+                                                    <if condition="$vo['enable_status'] eq 1">
+                                                        <span><a href="{:url('mobile/downfile/download_app',['promote_id'=>PID],'',true)}">下载</a></span>
+                                                    <else/>
+                                                        <span style="color:#eee">下载</span>
+                                                    </if>
+                                                </eq>
+                                            <else/>
+                                                <a href="javascript:;" class="apply " data-id="{$vo['id']}" >申请</a>
+                                            </if>
+                                        </empty>
+<!--                                        <a href="javascript:;" class="apply">申请</a>-->
+                                    </td>
+                                </tr>
+                            </volist>
+<!--                            <tr>-->
+<!--                                <td>游戏盒子</td>-->
+<!--                                <td>IOS</td>-->
+<!--                                <td> 65.00</td>-->
+<!--                                <td> <a href="javascript:;">申请</a></td>-->
+<!--                            </tr>-->
+                        </notempty>
+						</tbody>
+                    </table>
+                    <notempty name="data_lists">
+                        <if condition="$data_lists[0]['enable_status'] eq 1 or $data_lists[1]['enable_status'] eq 1">
+                            <div>
+                                <div class="erweima">
+                                    <div class="erweimaImg">
+                                        <php>$url = cmf_get_domain().'/mobile/downfile/download_app?promote_id='.PID;</php>
+                                        <img src="{:url('Game/qrcode',['url'=>base64_encode(base64_encode($url))])}" alt="" class="codePicture">
+                                    </div>
+                                    <p class="textConfirm">截图保存二维码</p>
+                                    <button class="linkBtn copy-data" data-clipboard-text="{:url('mobile/downfile/download_app',['promote_id'=>PID],'',true)}">复制链接</button>
+                                </div>
+                            </div>
+                        </if>
+                    </notempty>
+                    <div class="descriptionBox">
+                        <div class="shadowBox">
+                            <div class="shadow-cell">
+                                <div class="descriptionContent">
+                                    <p class="content-title">提示说明</p>
+                                   <div class="content-item">
+                                        <p>1.系统分配站点只需申请，通过审核即可使用；</p>
+                                        <p>2.自主添加站点需自行解析指向指定IP，域名必须在阿里云备案后才可以使用。</p>
+                                        <p>3.推荐使用系统分配的域名链接，保证站点稳定。</p>
+                                        <p>4.联盟站点是联运平台为广大渠道商们提供的一站式便利合作栏目。在这您可以获得平台官方为您专门定制的手游推广站，您可以获取一个链接，也可以使用自己的域名建站。</p>
+                                   </div>
+                                    <div class="konwBtn">
+                                        <a href="javascript:;" class="footerButton">知道了</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/select2.min.js"></script>
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/LCalendar.min.js"></script>
+    <script src="__TMPL__/public/assets/js/clipboard.min.js"></script>
+    <script>
+        $(function () {
+             // 点击单选框切换后的内容显示，样式控制
+             $('.myselfAdd').click(function() {
+                $('.chooseForm-addData').css('display','block')
+                $('.chooseMyself').css('display','block')
+                $('.chooseForm-btns').css('display','none')
+                $('.chooseForm-data-apply').css('display','none')
+             })
+             $('.system').click(function() {
+                $('.chooseForm-addData').css('display','none')
+                $('.chooseForm-data-apply').css('display','block')
+                $('.chooseMyself').css('display','none')
+                $('.chooseForm-btns').css('display','block')
+             })
+
+          // 点击站点申请的申请按钮后
+          // $('.applyBtn').click(function() {
+          //     $('.applyBtn').html('审核中')
+          //     $('.applyBtn').css({'background-Color':'#FEB72E','disabled':'true'})
+          // })
+
+            var sub = true;
+            $(".doApply").click(function () {
+                if (!sub) {
+                    return false;
+                }
+                sub = false;
+
+                var url = "{:url('apply_domain_url')}";
+                var apply_domain_type = $("input[name='apply_domain_type']:checked").val();
+                var site_url = '';
+                if (apply_domain_type == 0) {
+                    site_url = $(".chooseForm-data-apply").text();
+                } else {
+                    site_url = $(".inputAddress").val()
+                }
+                var is_bohui = $(".is_bohui").val();
+
+                $.post(url, {apply_domain_type: apply_domain_type, site_url: site_url, is_bohui: is_bohui}, function (res) {
+                    if (res.code != 0) {
+                        layer.msg(res.msg, {icon: 1});
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1500);
+                    } else {
+                        sub = true;
+                        layer.msg(res.msg, {icon: 2});
+                        return false;
+                    }
+                });
+            });
+
+
+
+          // 点击下面的申请
+            $('.apply').click(function() {
+
+
+                var app_id = $(this).data('id');
+                $.ajax({
+                    type:'post',
+                    url:'{:url("apply")}',
+                    data:{app_id:app_id},
+                    success:function(res){
+                        layer.msg(res.msg,{time:1000},function(){
+                            location.href = location.href;
+                        });
+                    },error:function(){
+                        layer.msg('服务器错误，请稍后再试');
+                    }
+                });
+
+                // $('.apply').html('审核中');
+                // $('.apply').addClass('changeColor');
+
+
+            });
+
+
+            $(".goToSite,.js_set,.js_article").click(function () {
+                location.href = $(this).attr('data-url')
+            })
+
+
+            //设置剪切板数据
+            var clipboard = new Clipboard('.copy-data', {
+                text: $(".copy-data").on("click",function (e) {
+                    //点击之后，再拿到当前点击的那一个存储的值
+                    let $target = $(e.target);
+                    return $target.data('clipboard-text');
+                })
+            });
+
+            clipboard.on("success",function (e) {
+                //layer.msg($(this).attr('data-platform')+"下载复制成功",{icon:1,time:1000});
+                layer.msg("复制成功",{icon:1,time:1000});
+            })
+
+            // 点击问号图标
+            $('.iconTitle').click(function() {
+                $('.descriptionBox').css('display','block')
+            })
+            $('.footerButton').click(function() {
+                $('.descriptionBox').css('display','none')
+            })
+
+        })
+
+    </script>
+    <script>
+
+    </script>
+</block>

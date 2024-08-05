@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" media="all" href="__STATIC__/js/datejs/daterangepicker.css"/>
+		<include file="public@head"/>
+	</head>
+	<body>
+		<include file="public@nav"/>
+		<include file="public@header"/>
+		<div class="trunk">
+			<div class="trunk-con">
+				<div class="right-container">
+					<div class="normal-list">
+						<div class="trunk">
+						<div class="record">
+							<ul class="nav-tabs" >
+                                <li class="nav-tabs-con fl <empty name=':input(type)'>nav-tabs-active</empty>">
+                                    <a href="{:url('settlement')}" class="nav-link">未结算订单</a></li>
+                                <li class="nav-tabs-con <eq name=':input(type)' value='1'>nav-tabs-active</eq> fl">
+                                    <a href="{:url('settlement',['type'=>1])}" class="nav-link">已结算订单</a></li>
+							    <li class="nav-tabs-con <eq name=':input(type)' value='2'>nav-tabs-active</eq> fl">
+                                    <a href="{:url('settlement',['type'=>2])}" class="nav-link">不参与结算订单</a><span class="tagging">说明：针对渠道所属用户的注册充值进行结算，充值数据是指消费到游戏的所有订单。</span><span class="tagging color-orange">注：确认结算后的订单不可设置不参与结算。</span></li>
+                            </ul>
+                         </div>
+							<div class="tabpan">
+
+								<div class="tabpan-con tabpan-show">
+									<if condition="input('type') eq ''">
+									<div class="describe " style="width:99%;">
+										参与结算设置：
+										<label class="label-width"> <input type="radio" name="jsis_bind" class="bindbut " value="0" <if condition="input('request.is_bind') neq 1"> checked="" </if>>排除绑币</label>
+										<label class="label-width"> <input type="radio" name="jsis_bind" class="bindbut" value="1" <if condition="input('request.is_bind') eq 1"> checked="" </if>>包含绑币</label>
+										<br>
+										<p>注意①：渠道结算只结算消费到游戏的所有订单记录（系统默认全部排除绑币，可视情况自行勾选）。</p>
+										<p>注意②：包含绑币勾选请慎重，由于玩家账户部分绑币的来源属于后台发放或者会长代充等，涉及到成本盈亏，是否参与渠道结算请考虑清楚！</p>
+									</div>
+									</if>
+									<empty name=":input('type')">
+										<input type="button" class="btn-calc fl jssettlement" url="{:url('generatesettlement',input())}" value="确认结算" >
+									</empty>
+
+									<form action="{:url('settlement')}" method="get">
+										<div class="trunk-search clearfix fr">
+											<input type="text" readonly style="width: 160px;" class="tabpan-input normal-space"
+												   autocomplete="off" name="rangepickdate" id="rangepickdate" placeholder="时间" value="{:input('rangepickdate')}">
+											<input type="text" class="tabpan-input normal-space" name="user_account" style="width: 120px;" value="{:input('request.user_account/s','')}" placeholder="账号">
+											<input type="text" class="tabpan-input normal-space" name="pay_order_number" style="width: 120px;" value="{:input('request.pay_order_number/s','')}" placeholder="支付订单号">
+											<php>$gmap['game_status'] = 1;</php>
+											<select id="game_id" name="game_id" class="tab-input js-select-gallery normal-space trunk-search-select fl">
+												<option value="" data="0">游戏名称</option>
+												<volist name=":get_game_list('id,game_name',$gmap)" id="vo">
+													<option game-id="{$vo.id}" value="{$vo.id}" <if condition="$vo['id'] eq input('game_id')"> selected</if>>{$vo.game_name}</option>
+												</volist>
+											</select>
+											<php>$pmap = ['parent_id'=>['eq',PID]]</php>
+											<select id="promote_id" name="promote_id" class="tab-input js-select-gallery normal-space trunk-search-select fl">
+												<option value="" data="0">所属渠道</option>
+												<volist name=":get_promote_list($pmap)" id="p">
+													<option data="" <if condition="$p['id'] eq input('promote_id')"> selected</if> value="{$p.id}">{$p.account}</option>
+												</volist>
+											</select>
+											<input type="hidden" name="is_bind" id="is_bind" value="{:input('is_bind',0)}">
+											<input type="hidden" name="type" value="{:input('type')}">
+											<input type="button" url="{:url('settlement',['type'=>input('type')])}" class="submit fr normal-space btn-clear"  value="清空">
+											<input type="submit" class="submit fr normal-space" id="submit" value="搜索">
+											<input type="hidden" id="page" name="row" value="{:input('row',10)}">
+										</div>
+									</form>
+									<div class="clear"></div>
+									<table class="table normal-table" id="promotecoin_table">
+										<tbody>
+											<tr>
+
+												<th>订单号</th>
+												<th>账号</th>
+												<th>订单金额</th>
+												<th>实付金额</th>
+												<th>分成比例/注册单价</th>
+												<th>分成佣金</th>
+												<th>支付方式</th>
+												<th>创建时间</th>
+												<th>所属渠道</th>
+												<neq name=":input(type)" value="1">
+												<th>操作</th>
+												</neq>
+											</tr>
+											<notempty name="data_lists">
+												<volist name="data_lists" id="vo">
+													<tr>
+														<td>{$vo.pay_order_number|default='-'}</td>
+														<td>{$vo.user_account}</td>
+														<td><empty name="vo.pattern">{$vo.cost}<else/>--</empty></td>
+														<td><empty name="vo.pattern">{$vo.pay_amount}<else/>--</empty></td>
+														<neq name=":input(type)" value="1">
+															<td>
+																<a href="javascript:;" class="editTab underline" data-title="重新设置分成" data-settlement_id="{$vo.id}">
+																	<switch name="PID_LEVEL" >
+																		<case value="1"><empty name="vo.pattern">{$vo.ratio2}<else/>{$vo.money2}</empty></case>
+																		<case value="2"><empty name="vo.pattern">{$vo.ratio3}<else/>{$vo.money3}</empty></case>
+																	</switch>
+																</a>
+															</td>
+														<else/>
+															<td>
+																<switch name="PID_LEVEL" >
+																	<case value="1"><empty name="vo.pattern">{$vo.ratio2}<else/>{$vo.money2}</empty></case>
+																	<case value="2"><empty name="vo.pattern">{$vo.ratio3}<else/>{$vo.money3}</empty></case>
+																</switch>
+															</td>
+														</neq>
+
+														<td>
+															<switch name="PID_LEVEL" >
+																<case value="1">{$vo.sum_money2}</case>
+																<case value="2">{$vo.sum_money3}</case>
+															</switch>
+														</td>
+														<td>{:get_info_status($vo['pay_way'],1)}</td>
+														<td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+														<td>
+															<switch name="PID_LEVEL" >
+																<case value="1">
+																	{:$vo['parent_id']==$vo['top_promote_id']?get_promote_name($vo['promote_id']):get_promote_name($vo['parent_id'])}
+																</case>
+																<case value="2">
+																	{:get_promote_name($vo['promote_id'])}
+																</case>
+															</switch>
+														<neq name=":input(type)" value="1">
+														<td>
+															<if condition="input('type') eq 2">
+																<a href="javascript:void(0);" url="{:url('changeStatus',['id'=>$vo['id'],'type'=>'on'])}" class="js-ajax-dialog-btn">
+																	<span class="label label-success">参与</span>
+																</a>
+															<else/>
+																<a href="javascript:void(0);" url="{:url('changeStatus',['id'=>$vo['id'],'type'=>'off'])}" class="js-ajax-dialog-btn">
+																	<span class="label label-success">不参与</span>
+																</a>
+															</if>
+														</td>
+														</neq>
+													</tr>
+												</volist>
+													<tr class="data_summary">
+														<td><span style="margin-right: 10px;">汇总(元) </span></td>
+														<td>--</td>
+														<td class="green">{$total.totalcost}</td>
+														<td class="green">{$total.totalamount}</td>
+														<td class="green">--</td>
+														<td class="green">
+															<switch name="PID_LEVEL" >
+																<case value="1">{$total.totalmoney2}</case>
+																<case value="2">{$total.totalmoney3}</case>
+															</switch>
+														<td>--</td>
+														<td>--</td>
+														<td>--</td>
+														<neq name=":input(type)" value="1">
+														<td>--</td>
+														</neq>
+													</tr>
+											<else/>
+												<!--暂无数据-->
+												<tr>
+													<td colspan="10">
+														<div class="no-data">
+															<img src="__TMPL__/public/assets/images/icon_wushujv2.png" alt="" class="no-data-img" />
+															<p class="no-data-text">暂无数据</p>
+														</div>
+													</td>
+												</tr>
+											</notempty>
+										</tbody>
+									</table>
+									<notempty name="data_lists">
+									<div class="pagenation clearfix">
+										{$page}
+									</div>
+									</notempty>
+									<div class="clear"></div>
+
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<include file="public@scripts"/>
+		<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+		<script src="__STATIC__/js/layer/layer.js"></script>
+		<script type="text/javascript" src="__STATIC__/js/datejs/moment.min.js"></script>
+		<script type="text/javascript" src="__STATIC__/js/datejs/momentfunction.js"></script>
+		<script type="text/javascript" src="__STATIC__/js/datejs/daterangepicker.js"></script>
+		<include file="public@date_config_scripts"/>
+		<script>
+            var maxDate = moment().startOf('day');
+            var date_autoUpdateInput = false;
+            var start = '{$start}',end  = '{$end}';
+            $(function() {
+				$(".js-select-gallery").select2();
+                $(".btn-clear").click(function () {
+                    var url = $(this).attr('url');
+                    location.href = url;
+                })
+                $('input[type=radio][name=jsis_bind]').change(function() {
+                    $("#is_bind").val(this.value);
+                    $("#submit").click();
+                });
+			})
+			//批量结算
+			$('.jssettlement').click(function(){
+			    var url = $(this).attr('url');
+                $.ajax({
+                    type:'post',
+                    url:url,
+                    success:function(res){
+                        layer.msg(res.msg,{time:1000},function(){
+                            location.href = location.href;
+                        });
+                    },error:function(){
+                        layer.msg('服务器错误，请稍后再试');
+                    }
+                });
+			});
+			$(".js-ajax-dialog-btn").click(function () {
+			    if(confirm('确定要操作吗？')){
+                    var url = $(this).attr('url');
+                    $.ajax({
+                        type:'post',
+                        url:url,
+                        success:function(res){
+                            layer.msg(res.msg,{time:1000},function(){
+                                location.href = location.href;
+                            });
+                        },error:function(){
+                            layer.msg('服务器错误，请稍后再试');
+                        }
+                    });
+				}
+            })
+            //设置分成比例
+            $(".editTab").click(function(){
+                var that = $(this);
+                var title = that.attr("data-title");
+                var value = that.text();
+                var settlement_id = that.data('settlement_id');
+                layer.prompt({title:title,placeholder:'',formType:0},function(value,index) {
+                    if (!/^(((\d|[1-9]\d)(\.\d{1,2})?)|100|100.0|100.00)$/.test(value)) {
+                        layer.msg('输入错误，0-100之间的两位小数',{time:2000});
+                        return false;
+                    }
+                    layer.closeAll();
+                    $.ajax({
+                        url:"{:url('setratio')}",
+                        type:'post',
+                        dataType:'json',
+                        data:{settlement_id:settlement_id,value:value},
+                        success:function(res){
+                            layer.msg(res.msg);
+                            if(res.code==1){
+                                setTimeout(function () {
+                                    location.reload();
+                                },1000)
+                            }
+                        },error(){
+                            layer.msg('服务器错误');
+                        }
+                    })
+                });
+            })
+		</script>
+		<style type="text/css">
+			.green{color: #26C7DB !important;font-weight: bold;}
+		</style>
+	</body>
+
+</html>

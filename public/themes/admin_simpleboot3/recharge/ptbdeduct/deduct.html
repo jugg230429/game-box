@@ -1,0 +1,146 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('ptbdeduct/lists')}">玩家收回</a></li>
+        <li><a href="{:url('ptbdeduct/lists',['type'=>2])}">渠道收回</a></li>
+        <li class="active"><a href="{:url('ptbdeduct/deduct')}">收回平台币</a></li>
+        <span class="title_remark">说明：此功能是收回玩家或渠道平台币的功能</span>
+
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" action="{:url('deductPost',['type'=>input('type')])}" method="post">
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">收回对象：</label>
+            <div class="col-md-6 col-sm-10">
+                <label class="radio-inline typer mr50" tab_id="1">
+                    <input type="radio" name="type" value="1" <if condition="$type neq 2"> checked="" </if>> 玩家
+                </label>
+                <label class="radio-inline typer" tab_id="2">
+                    <input type="radio" name="type" value="2" <if condition="$type eq 2"> checked="" </if>> 渠道
+                </label>
+            </div>
+        </div>
+        <div id="tab1" class="ttt ">
+            <if condition="$type eq  2">
+                <div class="form-group sendpromote">
+                    <label for="input-name" class="col-sm-2 control-label"><span class="form-required">*</span>渠道账号：</label>
+    				  <div class="col-md-6 col-sm-10">
+                        <select name="promote_id" id="promote_id"  class="selectpicker" data-live-search="true" data-size="8" style="width: 120px;">
+                            <option value="">请选择渠道</option>
+                            <volist name=":get_promote_list()" id="vo">
+                                <option promote-id="{$vo.id}" value="{$vo.id}" <if condition="input('request.promote_id') eq $vo['id']">selected</if>>{$vo.account}</option>
+                            </volist>
+                        </select>
+    				 </div>
+                </div>
+            <else/>
+                <div class="form-group">
+                    <label for="input-remark" class="col-sm-2 control-label"><span class="form-required">*</span>玩家账号：</label>
+                    <div class="col-md-6 col-sm-10">
+                        <input type="text" class="form-control user-input" id="account" name="account" autocomplete="new-password" placeholder="请输入玩家账号">
+                    </div>
+                </div>
+            </if>
+            <div class="form-group">
+                <label for="input-name" class="col-sm-2 control-label"><span class="form-required"></span>账户余额：</label>
+                <div class="col-md-6 col-sm-10">
+                    <if condition="$type eq  2">
+                        <span class="balance">0.00</span>
+                    <else/>
+                        <span class="balance">--</span>
+                    </if>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="input-remark" class="col-sm-2 control-label"><span class="form-required">*</span>收回数量：</label>
+                <div class="col-md-6 col-sm-10">
+                    <input type="text" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" class="form-control user-input" id="" name="num" autocomplete="new-password" placeholder="需输入大于0的整数">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="input-remark" class="col-sm-2 control-label"><span class="form-required">*</span>二级密码：</label>
+                <div class="col-md-6 col-sm-10">
+                    <input type="password" class="form-control user-input"  name="password" autocomplete="new-password" placeholder="请输入管理员二级密码">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-1 col-sm-10">
+                 <button type="submit" class="btn btn-primary js-ajax-submit save-btn">确定</button>
+				<a class="btn btn-default return-btn" href="javascript:history.back(-1)">返回</a>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript">
+    tabid = $('input[name=type]:checked').val();
+    $('.typer').click(function(){
+        tabidd = $('input[name=type]:checked').val();
+        if(tabidd!=tabid){
+            if(tabidd==2){
+                url = "{:url('Ptbdeduct/deduct',['type'=>2])}";
+            }else{
+                url = "{:url('Ptbdeduct/deduct')}";
+            }
+            location.href = url;
+        }
+    });
+    $('input[name=account]').blur(function(){
+        that = $(this);
+        account = that.val();
+        if(account!=''){
+            $.ajax({
+                url:'{:url("get_user_balance")}',
+                type:'post',
+                data:{account:account},
+                dataType:'json',
+                success:function(res){
+                    if(res.code==1){
+                        coin = res.coin>0?res.coin:'0.00';
+                        $('.balance').text(coin);
+                    }else{
+                        $('.balance').text('--');
+                        layer.msg(res.msg);
+                        // setTimeout('location.href=location.href',1500);
+                    }
+                },error:function(){
+                    layer.msg('服务器错误，请稍后再试');
+                }
+            });
+        }else{
+            $('.balance').val('--')
+            return false;
+        }
+    });
+    $('#promote_id').change(function(){
+        pid = $(this).find('option:selected').val();
+        if(!pid){
+            $('.balance').text('0.00');
+        }else{
+            $.ajax({
+                url:'{:url("Ptbpromote/get_promote_coin")}',
+                type:'post',
+                data:{pid:pid},
+                dataType:'json',
+                success:function(res){
+                    if(res.code==1){
+                        coin = res.coin>0?res.coin:'0.00';
+                        $('.balance').text(coin);
+                    }else{
+                        layer.msg(res.msg);
+                        setTimeout('location.href=location.href',1500);
+                    }
+                },error:function(){
+                    layer.msg('服务器错误，请稍后再试');
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

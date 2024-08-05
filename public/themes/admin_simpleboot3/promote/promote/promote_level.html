@@ -1,0 +1,141 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li ><a href="{:url('promote/lists')}">渠道列表</a></li>
+        <!-- <li><a href="{:url('add')}">添加渠道</a></li> -->
+        <li class="active"><a href="{:url('promote/promote_level')}">等级划分</a></li>
+        <span class="title_remark">说明：自定义设置渠道等级标准，当前等级的渠道只能申请对应的游戏。</span>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('promote_level')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div id="promote_level_set"></div>
+                    <div class="form-group">
+                        <div class=" col-sm-10">
+                            <button type="submit" class="btn btn-primary js-ajax-submit " style="margin-left:32px">
+                                {:lang('SAVE')}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script>
+    $(function () {
+
+        var promote_level_set = {$data};
+        var element = $('#promote_level_set')
+        render(element, promote_level_set)
+        function render(ele, data) {
+            var html = ''
+            $.each(data, function(index, item) {
+                console.log(index, item)
+                if (!index)
+                    html +='<div class="form-group apple-item">'
+                else
+                    html +='<div class="form-group apple-item appleGroup">'
+
+                html +='<div class="col-sm-10 v-middle" style="margin-left: 34px"> ' +
+                    '<span style="position: relative;width: 23%"> ' +
+                    ' <span class="apple-title">'+ getLevelName(index) +'：</span>'+
+                    '<input type="hidden" name="promote_level_set['+index+'][promote_level]" value="'+ getLevelName(index) +'">'+
+                    '<input  name="promote_level_set['+index+'][level_name]" value="'+item.level_name+'" placeholder="输入等级名称，如新手" style="width: 73%" class="form-control js-title"></span> ' +
+                    '<span style="position: relative;width: 23%;left: 5px;"> ' +
+                    '   <span class="apple-title">推广流水：</span>'+
+                    '<input  name="promote_level_set['+index+'][sum_money]" value="'+item.sum_money+'" placeholder="下限值，如0，不填表示为0" style="width: 73%" oninput="value=value.toString().match(/^\\d+(?:\\.\\d)?/)" class="form-control js-product_id" ></span> ' +
+                    ' <span class="yuan1">元</span>'+
+
+                    '<span style="position: relative;width: 23%;left: 13px;"> ' +
+                    ' <span class="apple-title">推广押金：</span>'+
+                    '<input  name="promote_level_set['+index+'][cash_money]" value="'+item.cash_money+'" placeholder="下限值，如0，不填表示为0" style="width: 73%" oninput="value=value.toString().match(/^\\d+(?:\\.\\d)?/)" style="width: 100%" class="form-control js-us" ></span> ' +
+                    ' <span class="yuan1" style="left: -27px;">元</span>'+
+                    '<div class="dynamic-btn rebate-dynamic-btn  dy-btn2" > '
+                    if (!index) {
+                        html += '<span class="rebate-add-btn js-rebate-add-btn" data-index="'+index+'">+</span>'
+                    } else {
+                        html += '<span class="rebate-del-btn js-rebate-del-btn" data-index="'+index+'">×</span>'
+                    }
+                    html += ' </div> </div> </div>'
+                })
+            ele.html(html)
+        }
+
+        $('body').on('click', '.js-rebate-add-btn', function () {
+            promote_level_set.push({
+                level_name: '',
+                sum_money: '',
+                cash_money: ''
+            })
+            render(element, promote_level_set)
+        });
+
+        $('body').on('keyup', '#promote_level_set input', function () {
+            var that = $(this)
+            var name = that.attr('name').replace('promote_level_set', '').replace(/\[/g,'').split(']')
+            promote_level_set[name[0]][name[1]] = that.val()
+        });
+
+        $('body').on('keyup', '.js-us, .js-cn', function () {
+            var number = $(this).val()
+            if (number.indexOf('.')>0) {
+                if (number.split('.').length-1>1) {
+                    $(this).val(isNaN(parseFloat(number))?'':parseFloat(number))
+                } else {
+                    var temp = number.split('.')[1];
+                    if (temp==0 || temp=='') {
+                        $(this).val(isNaN(parseFloat(number))?'':parseFloat(number)+'.'+temp)
+                    } else {
+                        $(this).val(isNaN(parseFloat(number))?'':parseFloat(number))
+                    }
+                }
+            } else {
+                $(this).val(isNaN(parseInt(number))?'':parseInt(number))
+            }
+        });
+        // 删除按钮，所有等级重新排序
+        $('body').on('click', '.js-rebate-del-btn', function () {
+            var index = $(this).attr('data-index')
+            promote_level_set.splice(index, 1)
+            render(element, promote_level_set)
+        })
+
+    });
+
+    // 获取渠道等级名称
+    function getLevelName(id=0) {
+       return '等级' + toChinesNum(id+1);
+    }
+
+    // 数字转换为中文
+    const toChinesNum = (num) => {
+        let changeNum = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
+        let unit = ["", "十", "百", "千", "万"];
+        num = parseInt(num);
+        let getWan = (temp) => {
+            let strArr = temp.toString().split("").reverse();
+            let newNum = "";
+            for (var i = 0; i < strArr.length; i++) {
+                newNum = (i == 0 && strArr[i] == 0 ? "" : (i > 0 && strArr[i] == 0 && strArr[i - 1] == 0 ? "" : changeNum[strArr[i]] + (strArr[i] == 0 ? unit[0] : unit[i]))) + newNum;
+            }
+            return newNum;
+        }
+        let overWan = Math.floor(num / 10000);
+        let noWan = num % 10000;
+        if (noWan.toString().length < 4) noWan = "0" + noWan;
+        str =  overWan ? getWan(overWan) + "万" + getWan(noWan) : getWan(num);
+        if(str.indexOf('一十') != -1){
+            str = str.replace('一十','十');
+        }
+        return str;
+    }
+</script>
+</body>
+</html>

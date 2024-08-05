@@ -1,0 +1,55 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li><a href="{:url('site/app_set')}" >站点配置</a></li>
+            <li class="active"><a href="#A">原包上传</a></li>
+            <li><a href="{:url('app/superSignOrder')}">超级签付费下载记录</a></li>
+        </ul>
+
+        <table class="table table-hover table-bordered margin-top-20">
+            <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>运营平台</th>
+                    <th>原包名称</th>
+                    <th>原包大小</th>
+                    <th>原包路径</th>
+                    <th>版本</th>
+                    <th>操作人员</th>
+                    <th>操作时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <empty name="data_lists">
+                    <tr><td colspan="9" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <foreach name="data_lists" item="vo">
+                    <tr>
+                        <td>{$vo['id']}</td>
+                        <td>{:get_info_status($vo['version'],5)}</td>
+                        <td>{$vo.name}</td>
+                        <td>{$vo.file_size}</td>
+                        <td>{:promote_game_get_file_download_url($vo['file_url'])}</td>
+                        <td><eq name="vo.id" value="1">{:cmf_get_option('app_set')['and_version']}<else/>{:cmf_get_option('app_set')['ios_version']}</eq></td>
+                        <td>{$vo['op_account']}</td>
+                        <td><if condition="$vo['create_time']">{$vo['create_time']|date='Y-m-d H:i:s',###}</if></td>
+                        <td>
+                            <a href="{:url('edit',['id'=>$vo['id']])}">更新原包</a>
+                        </td>
+                    </tr>
+                    </foreach>
+                </empty>
+            </tbody>
+        </table>
+        <div class="pagination">{$page}</div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+<script>
+    game_id = $("#game_id").attr('game_id');
+    $("#game_id").selectpicker('val', game_id);
+</script>
+</body>
+</html>

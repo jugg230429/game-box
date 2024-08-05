@@ -1,0 +1,59 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/user_news.css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/coupon.css">
+</block>
+
+<block name="body">
+    <div class="game_bill_page">
+        <div class="my_bag_page_header">
+            <a href="{:url('User/index')}"><img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon"></a>
+            <p class="fl my_bag_page_item">消息中心</p>
+        </div>
+
+        <div class="type_down__long_hx clear"></div>
+<!--        <div class="menu-list swiper-container">-->
+<!--            <div class="swiper-wrapper">-->
+<!--                <a href="{:url('user_tip')}" class="menu-item <if condition='empty(input(type))'>active</if>">系统消息</a>-->
+<!--                <a href="{:url('user_tip',['type'=>1])}" class="menu-item <if condition='input(type) eq 1'>active</if>">通知</a>-->
+<!--                <a href="{:url('user_tip',['type'=>2])}" class="menu-item <if condition='input(type) eq 2'>active</if>">互动</a>-->
+<!--            </div>-->
+<!--        </div>-->
+        <div class="user_news_con">
+            <div class="news-list">
+                <ul>
+                    <volist name="data" id="vo">
+                        <!-- <li class="news-item  <if condition="$read_time lt $vo['create_time']">new</if>"> -->
+                        <if condition="$vo['read_or_not']==1">
+                        <li class="news-item new">
+                        <else/>
+                        <li class="news-item">
+                        </if>
+                            <div class="v-middle">
+                                <span class="news-spot"></span>
+                                <p class="news-title">{$vo.title}</p>
+                            </div>
+                            <p class="news-content">
+                                {$vo.content}<if condition="$vo['game_id']"><a href="{:url('Game/detail',['game_id'=>$vo['game_id']])}">去体验</a></if>
+                            </p>
+                            <p class="news-date">
+                               {$vo.create_time|date='Y-m-d H:i:s',###}
+                            </p>
+                        </li>
+                    </volist>
+                </ul>
+            </div>
+            <empty name="data"><div class="empty-box">~空空如也~</div></empty>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+       /* if(sessionStorage.getItem("isReload")){
+          $(".news-item").removeClass("new")
+        }else{
+            //首次加载
+            sessionStorage.setItem("isReload", true)
+        }*/
+    </script>
+</block>

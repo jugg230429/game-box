@@ -1,0 +1,186 @@
+<include file="public@header"/>
+<script type="text/javascript" src="__STATIC__/js/datejs/momentfunction.js"></script>
+
+</head>
+
+<body>
+<link href="__TMPL__/public/assets/simpleboot3/css/survey.css" rel="stylesheet">
+<link rel="stylesheet" href="/themes/admin_simpleboot3/public/assets/js/laydate.css" id="layuicss-laydate">
+<link rel="stylesheet" href="__JS__/layui/css/layui.css">
+<style>
+    .wrap {
+        padding: 18px 34px 70px 40px;
+    }
+    body{
+        background: rgb(248, 249, 251);
+    }
+    .search-form .bs-searchbox .form-control {
+    width: 120px !important;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(221, 221, 221);
+    border-image: initial;
+}
+.form-cell-wrap .dropdown-menu.open{
+	width: 136px !important;
+}
+.bootstrap-select.btn-group .dropdown-menu li {
+   margin-left: -10px;
+}
+#test {
+    position: relative;
+    top: 2px;
+}
+</style>
+<div class="wrap game-survey">
+    <!--//头部实时-->
+    <div class="top-row">
+        <include file="datareport@game/survey_header"/>
+    </div>
+    <!--//下方图表-->
+    <php>
+        $description = request()->param('description');
+        $game_id = request()->param('game_id');
+        $rangepickdate = $start.'至'.$end;
+    </php>
+    <div class="menu survey-menu">
+        <a class="menu-link menu-link-active" href="javascript:;">运营指标</a>
+        <a class="menu-link" href="{:url('payment',['game_id'=>$game_id,'rangepickdate'=>$rangepickdate])}">付费渗透</a>
+        <if condition="PERMI neq 2">
+        <a class="menu-link menu-link3" href="{:url('game_duration',['game_id'=>$game_id,'rangepickdate'=>$rangepickdate])}">平均游戏时长</a>
+        </if>
+        <form id="search_form" class="fr search-form survey-right" action="{:url('game/game_survey')}" onsubmit="return check();">
+            <span class="form-cell-wrap n-position">
+                <input type="text" name="datetime" class="laydate-input-ico01" id="test" placeholder="开始时间-结束时间" value="{:input('datetime')}" autocomplete="off">
+                <!-- <input type="text" class="form-time-control " name="rangepickdate" id="rangepickdate" style="width: 235px;"
+                       value="" readonly placeholder="请选择日期">
+                <i class="drop-down-icon"></i> -->
+            </span>
+
+            <span class="form-cell-wrap">
+            <select name="game_id" id="game_id" class="selectpicker gameChangeWidth fl " game_id="{:input('game_id')}"
+                    data-live-search="true" data-size="8" style="width: 100px;">
+                <option value="">全部游戏</option>
+                <volist name=":get_game_list('id,game_name')" id="vo">
+                    <option game-id="{$vo.id}" value="{$vo.id}" <if condition="input('game_id') eq $vo['id']">selected</if>>{$vo.game_name}</option>
+                </volist>
+            </select>
+            </span>
+            <input type="hidden" name="type" value="{:input('type')}">
+            <input type="hidden" name="description" value="{:input('description')}">
+            <span class="form-cell-wrap">
+                <input type="submit" class="btn btn-search" id="search_btn" value="搜索"/></span>
+            <span class="form-cell-wrap">
+            <a class="btn btn-clear" href="{:url('game/game_survey',['type'=>input('type'),'description'=>input('description')])}">清空</a>
+            </span>
+        </form>
+    </div>
+    <div class="survey-background game-survey-background">
+    <ul class="nav nav-tabs survey-equate game-survey-tabs">
+
+        <li
+        <if condition=" $description eq ''">class="active"</if>
+        >
+        <a href="{:url('game_survey',['type'=>input('request.type'),'game_id'=>$game_id,'rangepickdate'=>$rangepickdate])}">新增激活用户</a>
+        </li>
+        <li
+        <if condition=" $description eq 'active'">class="active"</if>
+        >
+        <a href="{:url('game_survey',['type'=>input('request.type'),'game_id'=>$game_id,'rangepickdate'=>$rangepickdate,'description'=>'active'])}">活跃用户</a>
+        </li>
+        <li
+        <if condition=" $description eq 'payuser'">class="active"</if>
+        >
+        <a href="{:url('game_survey',['type'=>input('request.type'),'game_id'=>$game_id,'rangepickdate'=>$rangepickdate,'description'=>'payuser'])}"> 付费用户</a>
+        </li>
+        <li
+        <if condition=" $description eq 'paytotal'">class="active"</if>
+        >
+        <a href="{:url('game_survey',['type'=>input('request.type'),'game_id'=>$game_id,'rangepickdate'=>$rangepickdate,'description'=>'paytotal'])}">充值</a>
+        </li>
+    </ul>
+        <div class="survey-chart-game">
+    <div id="newwusers" class="echarts-form"></div>
+        </div>
+    </div>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script src="__STATIC__/js/echarts-all.js"></script>
+<script src="/themes/admin_simpleboot3/public/assets/js/laydate.js"></script>
+<script>
+     var startDate1=new Date(new Date().setDate(1));
+        var endDate1=new Date(new Date(new Date().setMonth(new Date().getMonth()+1)).setDate(0));
+        //定义接收上个月的第一天和最后一天
+        var startDate2=new Date(new Date(new Date().setMonth(new Date().getMonth()-1)).setDate(1));
+        var endDate2=new Date(new Date().setDate(0));
+        laydate.render({
+            elem: '#test',
+            type: 'date',
+            range: '~',
+            format: 'yyyy-M-d',
+            //max:'2018-1-15',//可选最大日期（当然如果加个这上，那扩展的那几个快捷选择时间按扭的值就得判断处理一下了）
+            //min:'2018-1-15',//可选最小日期（当然如果加个这上，那扩展的那几个快捷选择时间按扭的值就得判断处理一下了）
+            extrabtns: [
+                {id: 'today', text: '今天', range: [new Date(), new Date()]},
+                {id: 'lastday-7', text: '过去7天', range: [new Date(new Date().setDate(new Date().getDate()-7)), new Date(new Date().setDate(new Date().getDate()-1))]},
+                {id: 'lastday-30', text: '过去30天', range: [new Date(new Date().setDate(new Date().getDate()-30)), new Date(new Date().setDate(new Date().getDate()-1))]},
+                {id: 'yesterday', text: '昨天', range: [new Date(new Date().setDate(new Date().getDate()-1)), new Date(new Date().setDate(new Date().getDate()-1))]},
+                {id: 'thismonth', text: '本月', range: [startDate1,endDate1]},
+                {id: 'lastmonth', text: '上个月', range: [startDate2,endDate2]}
+            ],
+            done: function(val, stdate, ovdate){
+                //当确认选择时间后调用这里
+            }
+        });
+    //时间插件 默认时间
+    var start = '{$start}', end = '{$end}';
+    function check() {
+        layer.load(1);
+        var jsdate = $("#rangepickdate").val();
+        datearr = jsdate.split('至');
+        var start_time = datearr[0];
+        var end_time = datearr[1];
+        if(start_time != '' && end_time != '' && start_time > end_time) {
+            layer.msg('开始时间不能大于结束时间');
+            return false;
+        }
+        return true;
+    }
+    <if condition = "$description eq ''" >
+        var keys = '{$keys}';//图表x轴
+        var fire_device = '{$fire_device}';//新增设备
+        var new_register_user = '{$new_register_user}';//新增用户
+        var sum_new_register_user = "{$sum_new_register_user}";
+        var sum_fire_device = "{$sum_fire_device}";
+        var avg_new_register_user = "{$avg_new_register_user}";
+        var avg_fire_device = "{$avg_fire_device}";
+        $.getScript('__TMPL__/public/assets/js/game_survey/game_survey_register.js');
+    <elseif condition="$description eq 'active'">
+        var keys = '{$keys}';//图表x轴
+        var new_user = "{$new_user}";
+        var old_user = "{$old_user}";
+        var all_user = "{$all_user}";
+        var avg_user = "{$avg_user}";
+        $.getScript('__TMPL__/public/assets/js/game_survey/game_survey_active.js');
+    <elseif condition="$description eq 'payuser'">
+        var keys = '{$keys}';//图表x轴
+        var new_pay_user = "{$new_pay_user}";
+        var old_pay_user = "{$old_pay_user}";
+        var all_pay_user = "{$all_pay_user}";
+        var avg_pay_user = "{$avg_pay_user}";
+        $.getScript('__TMPL__/public/assets/js/game_survey/game_survey_payuser.js');
+    <elseif condition="$description eq 'paytotal'">
+        var keys = '{$keys}';//图表x轴
+        var all_pay_total = '{$all_pay_total}';
+        var sum_pay_total = '{$sum_pay_total}';
+        var avg_pay_total = '{$avg_pay_total}';
+        $.getScript('__TMPL__/public/assets/js/game_survey/game_survey_paytotal.js');
+    </if>
+
+    
+</script>
+
+</body>
+
+</html>

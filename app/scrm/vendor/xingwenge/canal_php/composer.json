@@ -1,0 +1,25 @@
+{
+    "name": "xingwenge/canal_php",
+    "description": "connect canal server via php client.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "xingwenge",
+            "email": "470703808@qq.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "google/protobuf": "^3.8",
+        "php":  ">=5.6",
+        "clue/socket-raw": "^1.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Com\\Alibaba\\Otter\\Canal\\Protocol\\": "src/protocol/Com/Alibaba/Otter/Canal/Protocol/",
+            "GPBMetadata\\": "src/protocol/GPBMetadata/",
+            "xingwenge\\canal_php\\": "src/"
+        }
+    }
+}

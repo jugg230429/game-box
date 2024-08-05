@@ -1,0 +1,152 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="javascript:;">编辑代金券</a></li>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('edit')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="form-group">
+                        <label for="input-site_icp" class="col-sm-2 control-label">发放对象：</label>
+                        <div class="col-md-4 col-sm-6">
+                            <label class="label-width">
+                                <input type="radio" disabled class="inp_radio" value="1" <eq name="data.type" value="1">checked="checked"</eq>> 全站玩家
+                            </label>
+                            <label class="label-width">
+                                <input type="radio" disabled class="inp_radio" value="2" <eq name="data.type" value="2">checked="checked"</eq>> 官方渠道
+                            </label>
+                            <label class="label-width">
+                                <input type="radio" disabled class="inp_radio" value="3" <eq name="data.type" value="3">checked="checked"</eq>> 推广渠道
+                            </label>
+                            <label class="label-width">
+                                <input type="radio" disabled class="inp_radio" value="4" <eq name="data.type" value="4">checked="checked"</eq>> 部分渠道
+                                <input type="hidden" name="type" value="4">
+                            </label>
+                            <if condition="$data['type'] eq 4">
+                                <button type="button" class="choose_promote">查看推广员</button>
+                            </if>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site-name" class="col-sm-2 control-label">适用类型：</label>
+                        <div class="col-md-4 col-sm-6">
+                            <label class="label-width">
+                                <input type="radio" value="0" disabled  <eq name="data.mold" value="0">checked="checked"</eq>>通用
+                            </label>
+                            <label>
+                                <input type="radio" value="1" disabled  <eq name="data.mold" value="1">checked="checked"</eq>>游戏
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group game_choose" <empty name="data.mold">hidden</empty>>
+                        <label for="input-site-name" class="col-sm-2 control-label">
+                            游戏名称：
+                        </label>
+                        <div class="col-md-4 col-sm-6">
+                            <php>$map['sdk_version'] = ['lt',4]</php>
+                            <select disabled class="selectpicker form-control" data-live-search="true">
+                                <option value="0">选择游戏</option>
+                                <volist name=":get_game_list('relation_game_id,relation_game_name,sdk_version',$map,'relation_game_id')" id="vo">
+                                    <option value="{$vo.relation_game_id}" <eq name="data.game_id" value="$vo['relation_game_id']">selected</eq> >{$vo.relation_game_name}<if condition="$vo['sdk_version'] eq 3">(H5)</if></option>
+                                </volist>
+                            </select>
+                            <input type="hidden" name="game_name" id="game_name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site_analytics" class="col-sm-2 control-label">代金券名称：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <input type="text" class="form-control  " name="coupon_name" value="{$data.coupon_name}" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site_analytics" class="col-sm-2 control-label">满减金额：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <input type="text" class="form-control  " onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" name="limit_money" value="{$data.limit_money}" >
+                        </div>
+                        <p class="help-block"></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site_analytics" class="col-sm-2 control-label"><span class="form-required">*</span>优惠金额：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <input type="text" class="form-control  " onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" name="money" value="{$data.money}" >
+                        </div>
+                        <p class="help-block">优惠券可抵扣金额</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site_analytics" class="col-sm-2 control-label"><span class="form-required">*</span>代金券数量：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <input type="text" class="form-control" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" name="stock" value="{$data.stock}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site_analytics" class="col-sm-2 control-label"><span class="form-required">*</span>用户可领取数量：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <input type="text" class="form-control" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" name="limit" value="{$data.limit}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site-name" class="col-sm-2 control-label">
+                            可领取时间段：
+                        </label>
+                        <div class="col-md-4 col-sm-6">
+                            <input type="text" class="form-control js-bootstrap-datetime fl" id="receive_start_time" name="receive_start_time"  style="width:47.6%;" value="{$data.receive_start_time|date='Y-m-d H:i:s',###}" autocomplete="off">
+                            <span class="fl to-span">至</span>
+                            <input type="text" class="form-control js-bootstrap-datetime fl" id="receive_end_time" name="receive_end_time"  style="width:47.6%;"  autocomplete="off" value="<empty name='data.receive_end_time'>永久<else/>{$data.receive_end_time|date='Y-m-d H:i:s',###}</empty>">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site-name" class="col-sm-2 control-label">
+                            有效期：
+                        </label>
+                        <div class="col-md-4 col-sm-6">
+                            <input type="text" class="form-control js-bootstrap-datetime fl" id="start_time" name="start_time"  style="width:47.6%;" value="{$data.start_time|date='Y-m-d H:i:s',###}" autocomplete="off">
+                            <span class="fl to-span">至</span>
+                            <input type="text" class="form-control js-bootstrap-datetime fl" id="end_time" name="end_time"  style="width:47.6%;"  autocomplete="off" value="<empty name='data.end_time'>永久<else/>{$data.end_time|date='Y-m-d H:i:s',###}</empty>">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site-name" class="col-sm-2 control-label">状态：</label>
+                        <div class="col-md-4 col-sm-6">
+                            <label class="label-width">
+                                <input type="radio" value="1"  name="status" data-input="type1" <eq name="data.status" value="1">checked="checked"</eq>>开启
+                            </label>
+                            <label class="label-width">
+                                <input type="radio" value="0"  name="status" data-input="type2" <eq name="data.status" value="0">checked="checked"</eq> >关闭
+                            </label>
+                        </div>
+                    </div>
+                    <div class="promote_list" hidden>
+                        {$promote_choose}
+                    </div>
+                    <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <input type="hidden" name="id" value="{$data.id}">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                                <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script>
+    $(function () {
+        $(".choose_promote").click(function () {
+            $(".promote_list").show();
+            $(".pro_promot").show();
+        })
+    })
+
+</script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('lists')}">手游</a></li>
+            <neq name="PERMI" value="1">
+                <li><a href="{:url('hlists')}">H5微端包</a></li>
+            </neq>
+            <span class="title_remark">说明：上传、查看、更新官方游戏原包</span>
+        </ul>
+        <form id="search_form" class="well form-inline  fr" method="get" action="{:url('lists')}">
+            <php>$map['sdk_version']=['in',[1,2]]</php>
+            <select name="game_id" id="game_id" class="selectpicker " game_id="{:input('request.game_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+                <option value="">游戏名称</option>
+                <volist name=":get_game_list('id,game_name',$map)" id="vo">
+                    <option value="{$vo.id}" >{$vo.game_name}</option>
+                </volist>
+            </select>
+            <select name="file_type" id="file_type" class="selectpicker" file_type="{:input('request.file_type')}" style="width: 120px;">
+                <option value="">运营平台</option>
+                <option value="1">安卓</option>
+                <option value="2">苹果</option>
+            </select>
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('lists')}">清空</a>
+        </form>
+    <form class="js-ajax-form" action="" method="post">
+        <div class="table-actions position">
+            <a class="btn btn-success  mtb17" href="{:url('add')}" style="margin-left:-10px;">上传原包</a>
+        </div>
+        <button class="btn btn-danger  js-ajax-submit mtb17" type="submit"
+                data-action="{:url('batch_del')}" data-subcheck="true" data-msg="您确定删除吗？">
+            删除
+        </button>
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox" id="all-checkbox" class="table-item-checkbox js-check-all" data-direction="x" data-checklist="js-check-x">
+                        <label for="all-checkbox" class=""></label>
+                    </th>
+                    <th>游戏名称</th>
+                    <th>运营平台</th>
+                    <th width="300px">原包名称</th>
+                    <th>原包大小</th>
+                    <th width="450px">原包路径</th>
+                    <th>操作人员</th>
+                    <th>操作时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <empty name="data_lists">
+                    <tr><td colspan="12" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <foreach name="data_lists" item="vo">
+                    <tr>
+                        <td><input type="checkbox" id="ids-checkbox{$vo.id}" class="table-item-checkbox js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
+                                   value="{$vo.id}" title="ID:{$vo.id}">
+                            <label for="ids-checkbox{$vo.id}" class=""></label>
+                        </td>
+                        <td>{$vo.game_name}</td>
+                        <td>{:get_info_status($vo['file_type'],5)}</td>
+                        <td>{$vo.file_name}</td>
+                        <td>{$vo.file_size}</td>
+                        <td>{:cmf_get_file_download_url($vo['file_url'])}</td>
+                        <td>{$vo.op_account}</td>
+                        <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+                        <td>
+                            <a href="{:url('edit',['id'=>$vo['id']])}">更新原包</a>
+                            <a href="{:url('del',['id'=>$vo['id']])}" class="js-ajax-delete" data-msg="确认执行删除操作吗？">删除</a>
+                        </td>
+                    </tr>
+                    </foreach>
+                </empty>
+            </tbody>
+        </table>
+    </form>
+        <div class="pagination">{$page}</div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script type="text/javascript">
+        game_id = $("#game_id").attr('game_id');
+        $("#game_id").selectpicker('val', game_id);
+        $("#file_type").selectpicker('val', $('#file_type').attr('file_type'));
+    </script>
+</body>
+</html>

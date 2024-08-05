@@ -1,0 +1,407 @@
+<extend name="../mobilepublic/base_download" />
+    <block name="css">
+        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+        <title><notempty name="game_info.back_describe">{$game_info.back_describe}<else />{$game_info.relation_game_name}</notempty></title>
+        <meta content="" name="keywords">
+        <meta content="" name="description">
+        <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+              name="viewport">
+        <link href="__TMPL__/mobilepublic/download/css/mobiledown.css" rel="stylesheet">
+        <link href="__TMPL__/mobilepublic/download/css/mobilereset.css" rel="stylesheet">
+        <link href="__TMPL__/mobilepublic/download/css/swiper-3.4.2.min.css" rel="stylesheet">
+        <link href="__TMPL__/mobilepublic/download/css/style.css" rel="stylesheet">
+        <script src="__TMPL__/mobilepublic/download/js/flexible.js"></script>
+        <script src="__TMPL__/mobilepublic/download/js/jquery-1.10.1.min.js"></script>
+        <script src="__JS__/bootstrap/bootstrap.min.js"></script>
+        <script src="__TMPL__/mobilepublic/download/js/swiper-3.4.2.jquery.min.js"></script>
+        <script src="__STATIC__/js/layer/layer.js"></script>
+        <script src="__TMPL__/mobilepublic/download/js/main_3.0.js"></script>
+        <style>
+            .game_down a {
+                width: 1.8rem;
+                height: 0.8rem;
+                text-decoration: none !important;
+                display: inline-block;
+                border-radius: 0.15rem;
+                text-align: center;
+                line-height: 0.8rem;
+                font-size: 0.43rem;
+                color: #fff;
+                background: #f67b29;
+            }
+            .down_btn.no_download_none {
+                display: none;
+            }
+            .down_btn.no_download {
+                width: 3.6rem;
+            }
+        </style>
+    </block>
+
+<block name="body">
+<script src="__TMPL__/mobilepublic/download/js/jweixin-1.0.0.js"></script>
+<div class="main">
+    <div class="share_tip">
+        <div class="share_tip_in">可以使用浏览器分享按钮分享给好友哦</div>
+    </div>
+    <div class="down_tip" style="display:none">
+        <div class="share_tip_in">请用{$system}手机下载</div>
+    </div>
+    <div class="cover">
+        <div class="user_center">
+            <div class="logo">
+                <img alt="" src="__TMPL__/mobilepublic/download/img/logo.png">
+            </div>
+            <div class="close">
+                <a href="javascript:;" onclick="closeBtn()">✕</a>
+            </div>
+
+
+        </div>
+        <div class="guide">
+            <div class="guide_hed">
+                <span>安装引导</span>
+            </div>
+            <div class="close">
+                <a href="javascript:;" onclick="closeBtn()">✕</a>
+            </div>
+            <div class="guide_banner">
+                <div class="swiper-container swiper-container-horizontal" id="swiper-container2">
+                    <div class="swiper-wrapper" style="transition-duration: 0ms;">
+                        <div class="swiper-slide swiper-slide-active"><a href="javascript:;"><img
+                                alt="" src="__TMPL__/mobilepublic/download/img/guide_1_v2.png"></a></div>
+                        <div class="swiper-slide swiper-slide-next"><a href="javascript:;"><img
+                                alt="" src="__TMPL__/mobilepublic/download/img/guide_2.png"></a></div>
+                        <div class="swiper-slide"><a href="javascript:;"><img alt="" src="__TMPL__/mobilepublic/download/img/guide_3.png"></a>
+                        </div>
+                        <div class="swiper-slide"><a href="javascript:;"><img alt="" src="__TMPL__/mobilepublic/download/img/guide_4.png"></a>
+                        </div>
+                        <div class="swiper-slide"><a href="javascript:;"><img alt="" src="__TMPL__/mobilepublic/download/img/guide_5.png"></a>
+                        </div>
+                        <div class="swiper-slide"><a href="javascript:;"><img alt="" src="__TMPL__/mobilepublic/download/img/guide_6.png"></a>
+                        </div>
+                    </div>
+                    <div class="swiper-pagination swiper-pagination-bullets"></div>
+                    <script>
+                        var index;
+                        var mySwiper2 = new Swiper('#swiper-container2', {
+                            pagination: '.swiper-pagination',
+                            autoplay: false,
+                            loop: false,
+                            observer: true,
+                            observeParents: true,
+                            autoplayDisableOnInteraction: false,
+                            onSlideChangeEnd: function (swiper) {
+                                if (swiper.activeIndex == 0 || swiper.activeIndex == 5) {
+                                    index = 5
+                                } else if (swiper.activeIndex == 1 || swiper.activeIndex == 6) {
+                                    index = 1
+                                } else {
+                                    index = swiper.activeIndex
+                                }
+                            }
+                        })
+                    </script>
+                </div>
+            </div>
+        </div>
+        <div class="img_tishi">
+            <img src="__TMPL__/mobilepublic/download/img/ico_write.png" class="weixin-tip-img">
+            <div class="tip-step">
+                <p class="first-step v-middle">
+                    <i class="first-icon"></i>
+                    <span class="v-middle">点击右上角的" <span class="dian">...</span> "按钮</span>
+                    <img src="__TMPL__/mobilepublic/download/img/ico_arrow.png" class="guide-img">
+                </p>
+                <p class="second-step v-middle">
+                    <i class="second-icon"></i>
+                    <span class="v-middle">选择在<span style="color: #FCFA62">浏览器</span>中打开</span>
+                </p>
+            </div>
+            <!--<img alt="" src="__TMPL__/mobilepublic/download/img/weixin_zd01.png">-->
+        </div>
+    </div>
+
+    <div class="img_bg">
+        <img alt="" onerror="this.src='__TMPL__/mobilepublic/download/img/empty.jpg';this.onerror=null" src="{:cmf_get_image_url($game_info['back_map'])}">
+    </div>
+
+    <div class="content">
+        <div class="game_details">
+            <div class="game_details_top clearfix">
+                <p class="fl">{$game_info.relation_game_name}</p>
+                <a class="share fr" href="javascript:;">点击分享</a>
+            </div>
+            <div class="game_details_middle clearfix">
+                <div class="game_det_icon fl">
+                    <img alt="" onerror="this.src='__TMPL__/mobilepublic/download/img/empty.jpg';this.onerror=null" src="{:cmf_get_image_url($game_info['icon'])}">
+                </div>
+                <div class="game_det_xinxi fl">
+                    <div class="game_det_xinxi_t">
+                        <volist name="game_info.game_type_name" id="vo">
+                            <span>{$vo}</span>
+                        </volist>
+                    </div>
+                    <div class="game_down_count">
+                        <p><span style="color:blue">{:get_simple_number($game_info['dow_num'])}</span>人在玩</p>
+                    </div>
+                </div>
+                <div class="game_anzhuang fr">
+                    <a href="{:url('Game/open_game',[],false)}?game_id={$game_info['id']}&pid={:input('pid')}" class="down_btn" href="javascript:;">去玩</a>
+                </div>
+            </div>
+            <div class="game_jianjie">
+                <div class="game_jianjie_til">游戏简介</div>
+                <div class="game_jianjie_content">
+                    <p>
+                        {:nl2br($game_info['introduction'])}
+                    </p>
+                </div>
+                <div class="see">
+                    <a href="javascript:;">显示全部</a>
+                </div>
+            </div>
+        </div>
+        <php>
+            $screenshot = explode(',',$game_info['screenshot']);
+        </php>
+        <div class="banner">
+            <div class="game_jietu swiper-container swiper-container-horizontal" id="swiper-container3">
+                <div class="swiper-wrapper">
+                    <volist id="vo" name="screenshot">
+                        <div class="swiper-slide" data-swiper-slide-index="{$key}">
+                            <img alt="" onerror="this.src='__TMPL__/mobilepublic/download/img/empty.jpg';this.onerror=null" src="{:cmf_get_image_url($vo)}">
+                        </div>
+                    </volist>
+                </div>
+                <script>
+                    var mySwiper3 = new Swiper('#swiper-container3', {
+                        autoplay: 2000,
+                        loop: true,
+                        observer: true,
+                        observeParents: true,
+                        slidesPerView: 2,
+                        spaceBetween: 5,
+                        autoplayDisableOnInteraction: false,
+                        onTransitionEnd: function (swiper) {
+                            if (swiper.progress == 1) {
+                                swiper.activeIndex = swiper.slides.length - 1
+                            }
+                        }
+                    })
+                </script>
+
+            </div>
+        </div>
+        <notempty name="wjsq">
+            <div class="game_community">
+                <div class="game_community_til">玩家社区</div>
+                <div class="game_community_content">
+                    <div class="game_community_content_sao"><strong>[</strong> 扫码关注 <strong>]</strong></div>
+                    <div class="game_community_content_title">{$wjsq.qrcode_name}</div>
+                    <div class="game_community_content_qrcode">
+                        <div class="game_community_content_qrcode_inner">
+                            <img alt="" src="{:cmf_get_image_url($wjsq['qrcode'])}">
+                        </div>
+                    </div>
+                    <div class="game_community_content_tishi">
+                        <p>长按保存图片，微信/QQ中</p>
+                        <p>识别二维码</p>
+                    </div>
+                </div>
+            </div>
+        </notempty>
+    </div>
+    <div style="text-align: center;">
+        <br>
+        {$copyright_info.pc_set_copyright}
+        <br>
+        {$cp_info.cp_name}
+        
+        <if condition="!empty($source_version)">
+            <br>
+            {$game_info.game_name} {$source_version}
+        </if>
+        <br>
+        <if condition="!empty($source_create_time)"> 
+            更新时间: {:date('Y.m.d', $source_create_time)}
+        </if>
+        <br>
+        <span class="user_zhuce_info22" style="margin-left: 1em;color: #006fc4;" >
+            {$portal.application_privilege_title}
+        </span>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <span class="user_zhuce_yinsi22" style="margin-right: 1em;color: #006fc4;" >
+            {$portal.yinsi_title}
+        </span>
+        <br>
+
+    </div>
+    
+
+    <div class="footer_fix">
+        <div class="game_icon fl">
+            <img alt="" onerror="this.src='__TMPL__/mobilepublic/download/img/empty.jpg';this.onerror=null" src="{:cmf_get_image_url($game_info['icon'])}">
+        </div>
+        <div class="game_name fl">
+            <p class="game_title">{$game_info.relation_game_name}</p>
+            <p class="game_des">{$game_info.features}</p>
+        </div>
+        <div class="game_down fr">
+            <a href="{:url('Game/open_game',[],false)}?game_id={$game_info['id']}&pid={:input('pid')}" class="down_btn" href="javascript:;">去玩</a>
+            <a class="down_btn down_pack" href="javascript:;">下载</a>
+                <php>$url = 'http://' . $_SERVER['HTTP_HOST']  . url('Downfile/indexh5') . '?gid=' . input('gid',0,'intval') . '&pid=' . input('pid',0,'intval');</php>
+                <if condition="!cmf_is_mobile()">
+                <div class="game-down-qrcode">
+                    <div class="game-down-qrcode-wrap">
+                        <img class="game-down-qrcode-image" height="100px" onerror="this.src='__TMPL__/mobilepublic/download/img/empty.jpg';this.onerror=null" src="{:url('qrcode',['url'=>base64_encode(base64_encode($url))])}" width="100px">
+                        <p class="game-down-qrcode-text">手机扫码去玩</p>
+                    </div>
+                </div>
+                </if>
+        </div>
+    </div>
+</div>
+<audio controls="controls" style="display: none;"></audio>
+<div class="timeTravel"
+     style="width:90%; height: 90vh; position: absolute; top: 0; left: 0; z-index: 99; display: none"></div>
+
+<div class="download_notice js-down-notice" style="display: none;">
+    <div class="download_notice-content">
+        <div class="download_notice-cell">
+            <p><span class="download_time js-download_time">3</span>秒后自动下载游戏</p>
+            <div class="download_notice_text">可点击"取消"进行自行下载</div>
+        </div>
+    </div>
+    <div class="download_notice-butn">
+        <div class="download_notice-cell">
+            <a class="download_cancel js-download-cancel" href="#">取消</a>
+        </div>
+    </div>
+</div>
+
+</block>
+<block name="script">
+
+<script type="text/javascript">
+    $(function () {
+
+        var down_status = "{:get_weiduan_down_status($game_info['relation_game_id'],get_devices_type(),$game_info['promote_id'])}";
+        if(!down_status){
+            $('.game_down .down_btn').addClass('no_download');
+            $('.down_btn.down_pack').addClass('dis_btn no_download_none').removeClass('no_download')
+            $('.down_pack').attr('disabled', true).addClass('disabled');
+        }
+        var pack_type = "{$pack_type}";
+        //下载游戏
+        $(".down_pack").on('click', function () {
+
+            if(isWeixin()){
+                $('.cover').css('display','block');
+                $('.img_tishi').css('display','block');
+                return false
+            }
+
+            if (down_status) {
+                var url = "{:url('weiduan_down',['game_id'=>$game_info['relation_game_id'],'sdk_version'=>get_devices_type(),promote_id=>$game_info['promote_id']])}";
+                download_notice(url);
+            } else {
+                $('.game_down .down_btn').addClass('no_download');
+                $('.down_btn.down_pack').addClass('dis_btn no_download_none').removeClass('no_download')
+                $('.down_pack').attr('disabled', true).addClass('disabled');
+            }
+        });
+
+    });
+    var a=null;
+    //弹出下载确认框
+    function download_notice(url) {
+        layer.close();
+        var obj = $('.js-down-notice');
+        if (obj) {
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: false,
+                area: ['7rem', '3rem'],
+                offset: 'auto',
+                content: obj,
+                btnAlign: 'c',
+                shadeClose: true,
+                success: function (layero, index) {
+                   // download_clock(layero.find('.js-download_time'), function() {
+                        layer.close(index);
+                        var el = document.createElement("a");
+                        document.body.appendChild(el);
+                        el.href = url;
+                        el.click();
+                        document.body.removeChild(el);
+                        //window.location.href=url;
+                    //});
+                    //layero.find('.js-download-cancel').click(function () {
+                    //    layero.find('.js-download_time').text(3)
+                    //    clearInterval(a);
+                    //    layer.close(index);
+                    //    return false;
+                   // });
+                },
+                end: function () {
+                    obj.hide();
+                    clearInterval(a);
+                }
+            });
+        }
+    }
+    //倒计时
+    function download_clock(that, callback) {
+        var t = 3;
+        a = setInterval(function () {
+            t--;
+            that.text(t);
+            if(t<=0){
+                clearInterval(a)
+                if(callback) callback();
+            }else{
+                that.text(t);
+            }
+        }, 1000);
+    }
+
+    function isIOS() {
+        var u = navigator.userAgent;
+        var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+        if (isIOS) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    $('.user_zhuce_info22').click(function(){
+        layer.open({
+            skin:'no-border-radius',
+            type: 2,
+            title: false,
+            shadeClose: false,
+            closeBtn: 0,
+            shade: 0.1,
+            area: ['100%', '100%'],
+            content: "{:url('protocol')}"
+        });
+    })
+
+    $('.user_zhuce_yinsi22').click(function(){
+        layer.open({
+            skin:'no-border-radius',
+            type: 2,
+            title: false,
+            shadeClose: false,
+            closeBtn: 0,
+            shade: 0.1,
+            area: ['100%', '100%'],
+            content: "{:url('privacy')}"
+        });
+    })
+
+</script>
+</block>

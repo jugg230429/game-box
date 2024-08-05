@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/summary.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" media="all" href="__STATIC__/js/datejs/daterangepicker.css"/>
+		<include file="public@head"/>
+	</head>
+
+<body>
+	<include file="public@nav"/>
+	<include file="public@header"/>
+	<div class="trunk">
+		<div class="trunk-con">
+			<div class="right-container">
+				<div class="normal-list">
+					<div class="trunk">
+					 	<div class="trunk-title">
+							<div class="location ">
+								<div class="location-container fr">当前位置：<span class="location-container-text">数据管理&gt;</span><span class="location-container-text">数据汇总</span></div>
+							</div>
+							<img src="/themes/simpleboot3/public/assets/images/icon_normal_shujvhuizong.png" class="fl trunk-icon">
+							<span class="title-main fl ">ARPU统计</span><span class="tagging">说明：ARPU数据汇总(缓存处理)，默认显示截至今日数据</span>
+							 <div class="question">
+						   		<i class="question_mark"></i>
+							 	<ul class="question_content">
+									<li class="question_title">数据说明</li>
+									<li class="question_list">
+										<strong>新增用户</strong>
+										<span> 新注册用户数</span>
+									</li>
+									<li class="question_list">
+										<strong> 注册IP</strong>
+										<span>用户注册时的所属IP汇总</span>
+									</li>
+									<li class="question_list">
+										<strong> 活跃用户</strong>
+										<span>登录游戏用户数（含新老用户，累计时去重）</span>
+									</li>
+									<li class="question_list">
+										<strong>付费用户</strong>
+										<span>游戏内充值用户数（统计充值成功，累计时去重）</span>
+									</li>
+								   <li class="question_list">
+										<strong>新增付费用户</strong>
+										<span> 新注册用户充值数</span>
+									</li>
+									<li class="question_list">
+										<strong>总付费额</strong>
+										<span>累计充值总额</span>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="tabpan">
+
+						  <!-- <ul class="nav-tabs"> -->
+						   <!-- <li class="nav-tabs-con fl nav-tabs-active"> -->
+						   <!-- <a href="" class="nav-link">数据汇总</a></li> -->
+						   <!-- <span class="title-remark">说明：渠道数据汇总，默认显示截至昨日数据</span> -->
+
+						<!-- </ul> -->
+
+							<div class="tabpan-con tabpan-show">
+								<form action="{:url('arpu')}">
+									<div class="trunk-search clearfix fr">
+										<input type="text" readonly style="width: 160px;" class="tabpan-input normal-space"
+											   autocomplete="off" name="rangepickdate" id="rangepickdate" placeholder="时间" value="{:input('rangepickdate')}">
+										<select id="game_id" name="game_id" class="tab-input js-select-gallery normal-space trunk-search-smallselect fl" >
+											<option value="" data="0">游戏名称</option>
+											<php>$gmap['game_status'] = 1;</php>
+											<volist name=":get_game_list('id,game_name,relation_game_id,relation_game_name',$gmap,null,'sort desc ,id desc')" id="vv">
+												<option <if condition="$vv['id'] eq input('game_id')"> selected</if> data="{$vv['game_name']}" value="{$vv['id']}">{$vv['game_name']}</option>
+											</volist>
+										</select>
+										<a href="{:url('query/arpu')}"><input type="button" class="submit fr normal-space btn-clear" value="清空"></a>
+										<input type="submit" class="submit fr normal-space" id="submit" value="搜索">
+										<input type="hidden" name="sort" id="sort" value="{:input('request.sort',1)}">
+										<input type="hidden" name="sort_type" id="sort_type" value="{:input('request.sort_type')}">
+										<input type="hidden" id="page" name="row" value="{:input('row',10)}">
+									</div>
+								</form>
+								<div class="clear"></div>
+								<table class="table normal-table" id="promotecoin_table">
+									<tbody>
+									<tr>
+										<th>日期</th>
+										<th>
+											<a href="javascript:changesort('count_new_register_user');" class="basedata-a">新增用户
+												<if condition="input('request.sort_type') eq 'count_new_register_user' and input('request.sort') eq 3">
+													▼
+													<elseif condition="input('request.sort_type') eq 'count_new_register_user' and input('request.sort') eq 2"/>
+													▲
+													<else/>
+													<img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+												</if>
+											</a>
+											<div class="question_">
+												<i class="question_mark">?</i>
+												<div class="question_content">
+													<ul class="question_content_box">
+														<li class="question_list">
+															<span class="title">新增用户</span>
+															<span class="">平台新注册用户数</span>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</th>
+										<th>
+											<a href="javascript:changesort('count_active_user');" class="basedata-a">活跃用户
+												<if condition="input('request.sort_type') eq 'count_active_user' and input('request.sort') eq 3">
+													▼
+													<elseif condition="input('request.sort_type') eq 'count_active_user' and input('request.sort') eq 2"/>
+													▲
+													<else/>
+													<img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+												</if>
+											</a>
+											<div class="question_">
+												<i class="question_mark">?</i>
+												<div class="question_content">
+													<ul class="question_content_box">
+														<li class="question_list">
+															<span class="title">活跃用户</span>
+															<span class="">登录游戏用户数（含新老用户，累计时去重）</span>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</th>
+										<th>
+											<a href="javascript:changesort('count_pay_user');" class="basedata-a">付费用户
+												<if condition="input('request.sort_type') eq 'count_pay_user' and input('request.sort') eq 3">
+													▼
+													<elseif condition="input('request.sort_type') eq 'count_pay_user' and input('request.sort') eq 2"/>
+													▲
+													<else/>
+													<img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+												</if>
+											</a>
+											<div class="question_">
+												<i class="question_mark">?</i>
+												<div class="question_content">
+													<ul class="question_content_box">
+														<li class="question_list">
+															<span class="title">付费用户</span>
+															<span class="">游戏内充值用户数（统计充值成功，累计时去重）</span>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</th>
+										<th>
+											<a href="javascript:changesort('count_new_pay_user');" class="basedata-a">新增付费用户
+												<if condition="input('request.sort_type') eq 'count_new_pay_user' and input('request.sort') eq 3">
+													▼
+													<elseif condition="input('request.sort_type') eq 'count_new_pay_user' and input('request.sort') eq 2"/>
+													▲
+													<else/>
+													<img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+												</if>
+											</a>
+											<div class="question_">
+												<i class="question_mark">?</i>
+												<div class="question_content">
+													<ul class="question_content_box">
+														<li class="question_list">
+															<span class="title">新增付费用户</span>
+															<span class="">新注册用户充值数</span>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</th>
+										<th>
+											<a href="javascript:changesort('new_total_pay');" class="basedata-a">新增付费额
+												<if condition="input('request.sort_type') eq 'new_total_pay' and input('request.sort') eq 3">
+													▼
+													<elseif condition="input('request.sort_type') eq 'new_total_pay' and input('request.sort') eq 2"/>
+													▲
+													<else/>
+													<img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+												</if>
+											</a>
+											<div class="question_">
+												<i class="question_mark">?</i>
+												<div class="question_content">
+													<ul class="question_content_box">
+														<li class="question_list">
+															<span class="title">新增付费额</span>
+															<span class="">新注册用户充值金额</span>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</th>
+										<th>
+											<a href="javascript:changesort('count_total_order');" class="basedata-a">订单数
+												<if condition="input('request.sort_type') eq 'count_total_order' and input('request.sort') eq 3">
+													▼
+													<elseif condition="input('request.sort_type') eq 'count_total_order' and input('request.sort') eq 2"/>
+													▲
+													<else/>
+													<img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+												</if>
+											</a>
+											<div class="question_">
+												<i class="question_mark">?</i>
+												<div class="question_content">
+													<ul class="question_content_box">
+														<li class="question_list">
+															<span class="title">订单数</span>
+															<span class="">游戏内订单数量（统计充值成功） </span>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</th>
+										<th>
+											<a href="javascript:changesort('total_pay');" class="basedata-a">总付费额
+												<if condition="input('request.sort_type') eq 'total_pay' and input('request.sort') eq 3">
+													▼
+													<elseif condition="input('request.sort_type') eq 'total_pay' and input('request.sort') eq 2"/>
+													▲
+													<else/>
+													<img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+												</if>
+											</a>
+											<div class="question_">
+												<i class="question_mark">?</i>
+												<div class="question_content">
+													<ul class="question_content_box">
+														<li class="question_list">
+															<span class="title">总付费额</span>
+															<span class="">累计充值总额</span>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</th>
+										<th>
+											<a href="javascript:changesort('rate');" class="basedata-a">总付费率
+												<if condition="input('request.sort_type') eq 'rate' and input('request.sort') eq 3">
+													▼
+													<elseif condition="input('request.sort_type') eq 'rate' and input('request.sort') eq 2"/>
+													▲
+													<else/>
+													<img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+												</if>
+											</a>
+											<div class="question_">
+												<i class="question_mark">?</i>
+												<div class="question_content">
+													<ul class="question_content_box">
+														<li class="question_list">
+															<span class="title">总付费率</span>
+															<span class="">付费用户/新增用户</span>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</th>
+										<th>
+											<a href="javascript:changesort('arpu');" class="basedata-a">ARPU
+												<if condition="input('request.sort_type') eq 'arpu' and input('request.sort') eq 3">
+													▼
+													<elseif condition="input('request.sort_type') eq 'arpu' and input('request.sort') eq 2"/>
+													▲
+													<else/>
+													<img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+												</if>
+											</a>
+											<div class="question_">
+												<i class="question_mark">?</i>
+												<div class="question_content">
+													<ul class="question_content_box">
+														<li class="question_list">
+															<span class="title">ARPU</span>
+															<span class="">总付费额/活跃用户</span>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</th>
+										<th>
+											<a href="javascript:changesort('arppu');" class="basedata-a">ARPPU
+												<if condition="input('request.sort_type') eq 'arppu' and input('request.sort') eq 3">
+													▼
+													<elseif condition="input('request.sort_type') eq 'arppu' and input('request.sort') eq 2"/>
+													▲
+													<else/>
+													<img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+												</if>
+											</a>
+											<div class="question_">
+												<i class="question_mark">?</i>
+												<div class="question_content">
+													<ul class="question_content_box">
+														<li class="question_list">
+															<span class="title">ARPPU</span>
+															<span class="">总付费额/付费用户</span>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</th>
+										<!--<th>-->
+											<!--<a href="javascript:changesort('count_fire_device');" class="basedata-a">激活设备-->
+												<!--<if condition="input('request.sort_type') eq 'count_fire_device' and input('request.sort') eq 3">-->
+													<!--▼-->
+													<!--<elseif condition="input('request.sort_type') eq 'count_fire_device' and input('request.sort') eq 2"/>-->
+													<!--▲-->
+													<!--<else/>-->
+													<!--<img src="__TMPL__/public/assets/images/up-down.png" width="7px">-->
+												<!--</if>-->
+											<!--</a>-->
+											<!--<div class="question_ last">-->
+												<!--<i class="question_mark">?</i>-->
+												<!--<div class="question_content">-->
+													<!--<ul class="question_content_box">-->
+														<!--<li class="question_list">-->
+															<!--<span class="title">激活设备</span>-->
+															<!--<span class="">首次安装并且打开应用的设备数，只在首次<br/>安装打开应用时计作新增设备</span>-->
+														<!--</li>-->
+													<!--</ul>-->
+												<!--</div>-->
+											<!--</div>-->
+										<!--</th>-->
+									</tr>
+										<notempty name="data_lists">
+											<php>$pay_map['promote_id'] = ['in',$promote_ids];</php>
+											<php>$pay_map['pay_status'] = 1;</php>
+											<volist name='data_lists' id='vo'>
+												<php>$pay_map['pay_time'] = ['lt',strtotime($vo['time'])+86399];</php>
+												<tr>
+													<td>{$vo.time}</td>
+													<td class="js_list-data list-data">
+														{$vo['count_new_register_user']}
+													</td>
+													<td class="js_list-data list-data">
+														{$vo['count_active_user']}
+													</td>
+													<td class="js_list-data list-data">
+														{$vo['count_pay_user']}
+													</td>
+													<td class="js_list-data list-data">
+														{$vo['count_new_pay_user']}
+													</td>
+													<td class="js_list-data needAjax list-data" url="{:url('Ajax/get_pay_detail',['date'=>$vo['time'],'promote_id'=>input('request.promote_id'),'game_id'=>input('request.game_id'),'user_ids'=>$vo['new_pay_user']])}">
+														{$vo['new_total_pay']}
+													</td>
+													<td class="js_list-data list-data">
+														{$vo['count_total_order']}
+													</td>
+													<td>{$vo['total_pay']}</td>
+													<td>{$vo['rate']}</td>
+													<td>{$vo['arpu']}</td>
+													<td>{$vo['arppu']}</td>
+													<!--<td class="js_list-data list-data">-->
+														<!--{$vo['count_fire_device']}-->
+													<!--</td>-->
+												</tr>
+											</volist>
+											<tr class="data_summary">
+												<td><span style="margin-right: 10px;">汇总 </span></td>
+												<td class="data_summary_bold" style="color: #26C7DB;font-weight:bold;">{$total_data['new_register_user']}</td>
+												<td class="data_summary_bold" style="color: #26C7DB;font-weight:bold;">{$total_data['active_user']}</td>
+												<td class="data_summary_bold" style="color: #26C7DB;font-weight:bold;">{$total_data['pay_user']}</td>
+												<td class="data_summary_bold" style="color: #26C7DB;font-weight:bold;">{$total_data['new_pay_user']}</td>
+												<td class="data_summary_bold" style="color: #26C7DB;font-weight:bold;">{$total_data['new_total_pay']}</td>
+												<td class="data_summary_bold" style="color: #26C7DB;font-weight:bold;">{$total_data['total_order']}</td>
+												<td class="data_summary_bold" style="color: #26C7DB;font-weight:bold;">{$total_data['total_pay']}</td>
+												<td class="data_summary_bold" style="color: #26C7DB;font-weight:bold;">{:$total_data['new_register_user']==0?'0.00':null_to_0($total_data['pay_user']/$total_data['new_register_user']*100)}%</td>
+												<td class="data_summary_bold" style="color: #26C7DB;font-weight:bold;">{:$total_data['active_user']==0?'0.00':null_to_0($total_data['total_pay']/$total_data['active_user'])}</td>
+												<td class="data_summary_bold" style="color: #26C7DB;font-weight:bold;">{:$total_data['pay_user']==0?'0.00':null_to_0($total_data['total_pay']/$total_data['pay_user'])}</td>
+												<!--<td class="data_summary_bold">{$total_data['fire_device']}</td>-->
+											</tr>
+										<else/>
+											<!--暂无数据-->
+											<tr>
+												<td colspan="11" >
+												<div class="no-data">
+													<img src="__TMPL__/public/assets/images/icon_wushujv2.png"  alt="" class="no-data-img"/>
+													<p class="no-data-text">暂无数据</p>
+												</div>
+												</td>
+											</tr>
+										</notempty>
+									</tbody>
+								</table>
+								<notempty name="data_lists">
+								<div class="pagenation clearfix">
+									<a download class="sch-btn" href="{:url('Export/expUser',array_merge(['id'=>2],input()))}">导出</a>
+									{$page}
+								</div>
+								</notempty>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<include file="public@scripts"/>
+	<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+	<script src="__STATIC__/js/layer/layer.js"></script>
+	<script type="text/javascript" src="__STATIC__/js/datejs/moment.min.js"></script>
+	<script type="text/javascript" src="__STATIC__/js/datejs/momentfunction.js"></script>
+	<script type="text/javascript" src="__STATIC__/js/datejs/daterangepicker.js"></script>
+	<script>
+        var maxDate = moment().startOf('day');
+        var date_autoUpdateInput = false;
+        var start = '{$start}',end  = '{$end}';
+		$(function() {
+			$(".js-select-gallery").select2();
+
+		})
+		//排序
+		function changesort(type){
+			var sort_type = $("#sort_type").val();
+			if(sort_type != type){
+				var sort = 1;
+			}else{
+				var sort = $("#sort").val();
+			}
+			$("#sort_type").val(type);
+			if(sort == 1){
+				$("#sort").val(3);
+			}else if(sort == 3){
+				$("#sort").val(2);
+			}else{
+				$("#sort").val(1);
+			}
+			$("#submit").click();
+		}
+	</script>
+</body>
+
+</html>

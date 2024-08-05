@@ -1,0 +1,873 @@
+<include file="public@header" />
+<script type="text/javascript" src="__STATIC__/js/datejs/momentfunction.js"></script>
+<link href="__TMPL__/public/assets/simpleboot3/css/question.css" rel="stylesheet">
+<link href="__TMPL__/public/assets/simpleboot3/css/survey.css" rel="stylesheet">
+<link href="__TMPL__/public/assets/simpleboot3/css/app_survey.css" rel="stylesheet">
+<link rel="stylesheet" href="/themes/admin_simpleboot3/public/assets/js/laydate.css" id="layuicss-laydate">
+<link rel="stylesheet" href="__JS__/layui/css/layui.css">
+</head>
+<style>
+		.search-form .bs-searchbox .form-control {
+    width: 120px !important;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(221, 221, 221);
+    border-image: initial;
+}
+.form-cell-wrap .dropdown-menu.open{
+	width: 136px !important;
+}
+.bootstrap-select.btn-group .dropdown-menu li {
+   margin-left: -10px;
+}
+		.aui_border tr{
+			height:0px !important;
+		}
+
+		.aui_border td, .aui_border th {
+			min-width:0px !important;
+		}
+		.table td, .table th {
+			min-width:100px!important;
+		}
+		#test {
+			position: relative;
+			top: 2px;
+		}
+</style>
+<body>
+
+<div class="wrap survey-wrap">
+	<div class="survey-background">
+	<ul class="nav nav-tabs survey-equate">
+		<li class="active">
+			<a href="javascript:;">应用概况</a>
+		</li>
+		<span class="title_remark">说明：统计移动端（SDK）的设备数及机型</span>
+	</ul>
+	<div class="blockinfo">
+
+	<div class="main_content_main m-channel-data main_content_platform" style="border-bottom:1px solid #ddd;margin-bottom:15px;padding:17px 0;    width: 97%;margin-left: 30px;">
+		<div class="main_content_main_item">
+			<div class="js-answer-wrap">
+				<strong class="s-c-orange">{$today|default=0}</strong> <span class="s-c-title">今日新增设备
+				<div class="answer">
+					<i class="answer-mark js-answer">
+						<img src="__TMPL__/public/assets/simpleboot3/images/btn_ask.png">
+					</i>
+					<div class="answer-content js-answer-content" style="display: none;">
+						<p>今日首次安装并且打开游戏的设备数。一台设备，只在首次安装打开应<br/>用时计作新增设备数1，安装多款游戏的同一设备不会重复计量</p>
+					</div>
+				</div>
+			</span>
+			</div>
+		</div>
+		<div class="main_content_main_item">
+			<div class=" js-answer-wrap">
+				<strong class="s-c-orange">{$yesterday|default=0}</strong> <span class="s-c-title">昨日新增设备
+			<div class="answer">
+					<i class="answer-mark js-answer">
+						<img src="__TMPL__/public/assets/simpleboot3/images/btn_ask.png">
+					</i>
+					<div class="answer-content js-answer-content" style="display: none;">
+						<p> 昨日首次安装并且打开游戏的设备数（去重）</p>
+					</div>
+				</div>
+			</span>
+			</div>
+		</div>
+		<div class="main_content_main_item">
+			<div class=" js-answer-wrap">
+				<strong class="s-c-orange">{$total|default=0}</strong> <span class="s-c-title">累计设备
+			<div class="answer">
+					<i class="answer-mark js-answer">
+						<img src="__TMPL__/public/assets/simpleboot3/images/btn_ask.png">
+					</i>
+					<div class="answer-content js-answer-content" style="display: none;">
+						<p>首次安装并打开应用的设备总数（去重）</p>
+					</div>
+				</div>
+			</span>
+			</div>
+		</div>
+		<div class="main_content_main_item">
+			<div class="js-answer-wrap">
+				<strong class="s-c-orange">{$day7|default=0}</strong>
+				<span class="s-c-title">近7日活跃设备
+				<div class="answer">
+					<i class="answer-mark js-answer">
+						<img src="__TMPL__/public/assets/simpleboot3/images/btn_ask.png">
+					</i>
+					<div class="answer-content js-answer-content" style="display: none;">
+						<p>最近7日（截止昨日）至少启动一次应用的设备数</p>
+					</div>
+				</div>
+				</span>
+			</div>
+		</div>
+		<div class="main_content_main_item">
+			<div class=" js-answer-wrap">
+				<strong class="s-c-orange">{$day30|default=0}</strong> <span class="s-c-title">近30日活跃设备
+			<div class="answer">
+					<i class="answer-mark js-answer">
+						<img src="__TMPL__/public/assets/simpleboot3/images/btn_ask.png">
+					</i>
+					<div class="answer-content js-answer-content" style="display: none;">
+						<p>最近30日（截止昨日）至少启动一次应用的设备数</p>
+					</div>
+				</div>
+			</span>
+			</div>
+		</div>
+		<div class="main_content_main_item">
+			<div class=" js-answer-wrap">
+				<strong class="s-c-orange">{$duration7|default='00:00:00'}</strong> <span class="s-c-title">近7日单设备日均使用时长
+			<div class="answer">
+					<i class="answer-mark js-answer">
+						<img src="__TMPL__/public/assets/simpleboot3/images/btn_ask.png">
+					</i>
+					<div class="answer-content last js-answer-content" style="display: none;left: -300px">
+						<p>最近7日（截止昨日），每日单设备使用应用的时长均值之和<br/>的平均值，即近7日单设备使用时长=截止昨日的7日的每日<br/>单设备使用应用的时长均值的总和 / 7</p>
+					</div>
+				</div>
+			</span>
+			</div>
+		</div>
+
+	</div>
+	<form id="search_form" class="fl search-form survey-search-form" method="get" action="{:url('device/survey')}" onsubmit="return check();">
+		<span class="form-cell-wrap">
+			<input type="text" name="datetime" class="laydate-input-ico01" id="test" placeholder="开始时间-结束时间" value="{:input('datetime')}" autocomplete="off">
+		<!-- <input type="text" class="form-time-control calendar" name="rangepickdate" id="rangepickdate" style="width: 220px;" value="" readonly placeholder="请选择日期"> -->
+		</span>
+		<span class="form-cell-wrap">
+			<select name="game_id" id="game_id" class="selectpicker gameChangeWidth changeInput fl " game_id="{:input('game_id')}"
+				data-live-search="true" data-size="8" style="width: 100px;">
+			<option value="">全部游戏</option>
+			<volist name=":get_game_list('id,game_name')" id="vo">
+				<option game-id="{$vo.id}" value="{$vo.id}" <if condition="input('game_id') eq $vo['id']">selected</if>>{$vo.game_name}</option>
+			</volist>
+		</select>
+		</span>
+		<span class="form-cell-wrap">
+				<php>$map = ['parent_id'=>0];</php>
+				<select name="promote_id" id="promote_id" class="selectpicker " game_id="{:input('request.promote_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+					<option value="">全部渠道</option>
+					<option  value='0' <if condition="input('request.promote_id') eq '0'">selected</if>>官方渠道</option>
+					<volist name=":get_promote_list($map)" id="vo">
+						<option promote-id="{$vo.id}" value="{$vo.id}" <if condition="input('request.promote_id') eq $vo['id']">selected</if>>{$vo.account}</option>
+					</volist>
+				</select>
+			</span>
+		<span class="form-cell-wrap">
+		<input type="submit" class="btn btn-primary primaryBtn" id="search_btn" value="搜索" />
+		</span>
+		<span class="form-cell-wrap">
+		<a class="btn btn-clear" href="{:url('device/survey')}">清空</a>
+	</span>
+		<span class="form-cell-wrap">
+			<php>$exportgame = trim(get_game_name(input('game_id')))?get_game_name(input('game_id')).'_':'';</php>
+		<a class="btn btn-export jsexport js-ajax-dialog-btn-xz" data-msg="确定导出吗？" href="javascript:;" url="{:url('Export/expUser',array_merge(['id'=>10,'xlsname'=>'数据分析_应用概况'.$exportgame.''.$start.'至'.$end],input()))}">导出</a>
+	</span>
+	</form>
+	<div class="clear"></div>
+	<!--<div id="newwusers" class="echarts-form survey-chart"></div>-->
+		<div class="table-wrap">
+	<div style="width:100%;overflow:auto;margin:0 auto;height:500px;">
+		<!-- 图表数据图切换按钮 begin-->
+		<div class="tab_fr tab_head">
+			<a href="#0" data-key="news" class="current">新增设备</a>
+			<a href="#1" data-key="active" class="">活跃设备</a>
+			<a href="#2" data-key="model" class="">启动机型</a>
+		</div>
+		<?php $count = count($table['date']);?>
+		<div class="htchart_area tab_content">
+			<div class="htchart_area_tab show">
+				<div class="highchart_area_notice"><span>合计(去重) {$table.sum.news|default=0}</span><span>日均 {$table.average.news|default=0}</span></div>
+				<div class="highchart_area">
+					<div class="highchart_area_tab" id="container1" style="width:100%;height:220px;"></div>
+				</div>
+				<div class="new_users">
+					<table class="new_users_tb">
+						<tr>
+							<th class="tc1">显示</th>
+							<th class="tc2 js-answer-wrap">指标</th>
+							<th class="tc3" rowspan="3">
+								<div class="data-box">
+									<div class="data-wrap" style="width:<eq name='foldline.hours' value='0'><gt name='count' value='14'><eq name='Think.get.num' value='7'>100%<else />{$count*100+100}px</eq><else />100%</gt><else />{13*96}px</eq>">
+										<table>
+											<tr>
+												<eq name="foldline.hours" value="0">
+													<volist name="table.date" id="vo">
+														<th>{$vo}</th>
+													</volist>
+													<else />
+													<th>0:00</th>
+													<th>2:00</th>
+													<th>4:00</th>
+													<th>6:00</th>
+													<th>8:00</th>
+													<th>10:00</th>
+													<th>12:00</th>
+													<th>14:00</th>
+													<th>16:00</th>
+													<th>18:00</th>
+													<th>20:00</th>
+													<th>22:00</th>
+												</eq>
+											</tr>
+											<tr>
+												<volist name="table.news.ios" id="vo">
+													<td style="background:#FFF;">{$vo}</td>
+												</volist>
+											</tr>
+											<tr>
+												<volist name="table.news.and" id="vo">
+													<td style="background:#FFF;">{$vo}</td>
+												</volist>
+											</tr>
+										</table>
+									</div>
+								</div>
+							</th>
+						</tr>
+						<tr class="data-last" style="">
+							<td class="tc1"><i class="circle"></i></td>
+							<td class="tc2">iOS设备</td>
+						</tr>
+						<tr class="data-last" style="<eq name='foldline.hours' value='0'><gt name='count' value='14'><eq name='Think.get.num' value='7'><else />height:52px;</eq><else /></gt><else /></eq>">
+							<td class="tc1"><i class="circle"></i></td>
+							<td class="tc2">Android设备</td>
+						</tr>
+						<tr>
+							<td class="tc1">汇总</td>
+							<td colspan="2"><strong class="txt_blue">{$table.sum.news|default=0}</strong></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="htchart_area_tab">
+				<div class="highchart_area_notice"><span>合计(去重) {$table.sum.active|default=0}</span><span>日均 {$table.average.active|default=0}</span></div>
+				<div class="highchart_area">
+					<div class="highchart_area_tab" id="container2" style="width:100%;height:220px;"></div>
+				</div>
+				<div class="new_users">
+					<table class="new_users_tb">
+						<tr>
+							<th class="tc1">显示</th>
+							<th class="tc2 js-answer-wrap">指标</th>
+							<th class="tc3" rowspan="3">
+								<div class="data-box">
+									<div class="data-wrap" style="width:<eq name='foldline.hours' value='0'><gt name='count' value='14'><eq name='Think.get.num' value='7'>100%<else />{$count*100+100}px</eq><else />100%</gt><else />{13*96}px</eq>">
+										<table>
+											<tr>
+												<eq name="foldline.hours" value="0">
+													<volist name="table.date" id="vo">
+														<th>{$vo}</th>
+													</volist>
+													<else />
+													<th>0:00</th>
+													<th>2:00</th>
+													<th>4:00</th>
+													<th>6:00</th>
+													<th>8:00</th>
+													<th>10:00</th>
+													<th>12:00</th>
+													<th>14:00</th>
+													<th>16:00</th>
+													<th>18:00</th>
+													<th>20:00</th>
+													<th>22:00</th>
+												</eq>
+											</tr>
+											<tr>
+												<volist name="table.active.ios" id="vo">
+													<td style="background:#FFF;">{$vo}</td>
+												</volist>
+											</tr>
+											<tr>
+												<volist name="table.active.and" id="vo">
+													<td style="background:#FFF;">{$vo}</td>
+												</volist>
+											</tr>
+										</table>
+									</div>
+								</div>
+							</th>
+						</tr>
+						<tr class="data-last" style="">
+							<td class="tc1"><i class="circle"></i></td>
+							<td class="tc2">iOS设备</td>
+						</tr>
+						<tr class="data-last" style="<eq name='foldline.hours' value='0'><gt name='count' value='14'><eq name='Think.get.num' value='7'><else />height:52px;</eq><else /></gt><else /></eq>">
+							<td class="tc1"><i class="circle"></i></td>
+							<td class="tc2">Android设备</td>
+						</tr>
+						<tr>
+							<td class="tc1">汇总</td>
+							<td colspan="2"><strong class="txt_blue">{$table.sum.active|default=0}</strong></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="htchart_area_tab">
+				<div class="highchart_area_notice">
+					<a href="javascript:;" data-key="modelios" class=" jsmodelchange <empty name='Think.get.ml'>mcurr<else /><eq name='Think.get.ml' value='0'>mcurr</eq></empty>">iOS设备</a>
+					<a href="javascript:;" data-key="modeland" class=" jsmodelchange <eq name='Think.get.ml' value='1'>mcurr</eq>">Android设备</a>
+				</div>
+				<div class="highchart_area_subtab jsmodeltab <empty name='Think.get.ml'>show<else /><eq name='Think.get.ml' value='0'>show</eq></empty>">
+					<?php $xmodelioscount = count($table['xmodel']['ios']);?>
+					<div class="highchart_area">
+						<div class="highchart_area_tab" id="container3" style="width:100%;height:220px;"></div>
+					</div>
+					<div class="new_users">
+						<table class="new_users_tb">
+							<tr>
+								<th class="tc1">显示</th>
+								<th class="tc2 js-answer-wrap">指标</th>
+								<th class="tc3" rowspan="2">
+									<div class="data-box">
+										<div class="data-wrap" style="width:<gt name='xmodelioscount' value='14'><eq name='Think.get.num' value='7'>100%<else />{$xmodelioscount*100+100}px</eq><else />100%</gt>">
+											<table>
+												<tr>
+
+													<volist name="table.xmodel.ios" id="vo">
+														<th>{:str_replace("'",'',$vo)}</th>
+													</volist>
+
+												</tr>
+												<tr>
+													<volist name="table.model.ios" id="vo">
+														<td style="background:#FFF;">{$vo}</td>
+													</volist>
+												</tr>
+											</table>
+										</div>
+									</div>
+								</th>
+							</tr>
+							<tr class="data-last" style="<gt name='xmodelioscount' value='14'><eq name='Think.get.num' value='7'><else />height:52px;</eq><else /></gt>">
+								<td class="tc1"><i class="circle"></i></td>
+								<td class="tc2">iOS机型</td>
+							</tr>
+						</table>
+
+					</div>
+				</div>
+				<div class="highchart_area_subtab jsmodeltab <eq name='Think.get.ml' value='1'>show</eq>">
+					<?php $xmodelandcount = count($table['xmodel']['and']);?>
+					<div class="highchart_area">
+						<div class="highchart_area_tab" id="container4" style="width:100%;height:220px;"></div>
+					</div>
+					<div class="new_users">
+						<table class="new_users_tb">
+							<tr>
+								<th class="tc1">显示</th>
+								<th class="tc2">指标</th>
+								<th class="tc3" rowspan="2">
+									<div class="data-box">
+										<div class="data-wrap" style="width:<gt name='xmodelandcount' value='10'><eq name='Think.get.num' value='7'>100%<else />{$xmodelandcount*100+100}px</eq><else />100%</gt>">
+											<table>
+												<tr>
+
+													<volist name="table.xmodel.and" id="vo">
+														<th>{:str_replace("'",'',$vo)}</th>
+													</volist>
+
+												</tr>
+												<tr>
+													<volist name="table.model.and" id="vo">
+														<td style="background:#FFF;">{$vo}</td>
+													</volist>
+												</tr>
+											</table>
+										</div>
+									</div>
+								</th>
+							</tr>
+							<tr class="data-last" style="<gt name='xmodelandcount' value='10'><eq name='Think.get.num' value='7'><else />height:52px;</eq><else /></gt>">
+								<td class="tc1"><i class="circle"></i></td>
+								<td class="tc2">Android机型</td>
+							</tr>
+						</table>
+
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+	</div>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script src="__STATIC__/js/echarts-all.js"></script>
+<script src="__TMPL__/public/assets/js/user_retain/function.js"></script>
+<script src="__TMPL__/public/assets/js/highcharts.js"></script>
+<script src="/themes/admin_simpleboot3/public/assets/js/laydate.js"></script>
+		<script>
+			$('.js-answer').click(function () {
+				$(this).siblings(".js-answer-content").show()
+            });
+			$('.js-answer-wrap').mouseout(function () {
+                $(this).find(".js-answer-content").hide()
+            })
+		</script>
+<script type="text/javascript">
+	$('.jstdrow').text('共'+$('.js-trrow').length+'条记录');
+	window.setranges = {
+        '今日': [moment().startOf('day'), moment()],
+		'昨日': getYesterday(),
+		'过去3天': getLastNumDays(3),
+		'过去7天': getLast7Days(1),
+		'过去14天': getLast7Days(2),
+		'过去30天': getLast30Days(),
+		'过去8周': getLastWeekDays(8),
+		'过去12周': getLastWeekDays(12),
+		'所有': getBegin(),
+	}
+	add_color();
+
+	var startDate1=new Date(new Date().setDate(1));
+        var endDate1=new Date(new Date(new Date().setMonth(new Date().getMonth()+1)).setDate(0));
+        //定义接收上个月的第一天和最后一天
+        var startDate2=new Date(new Date(new Date().setMonth(new Date().getMonth()-1)).setDate(1));
+        var endDate2=new Date(new Date().setDate(0));
+        laydate.render({
+            elem: '#test',
+            type: 'date',
+            range: '~',
+            format: 'yyyy-M-d',
+            //max:'2018-1-15',//可选最大日期（当然如果加个这上，那扩展的那几个快捷选择时间按扭的值就得判断处理一下了）
+            //min:'2018-1-15',//可选最小日期（当然如果加个这上，那扩展的那几个快捷选择时间按扭的值就得判断处理一下了）
+            extrabtns: [
+                {id: 'today', text: '今天', range: [new Date(), new Date()]},
+                {id: 'lastday-7', text: '过去7天', range: [new Date(new Date().setDate(new Date().getDate()-7)), new Date(new Date().setDate(new Date().getDate()-1))]},
+                {id: 'lastday-30', text: '过去30天', range: [new Date(new Date().setDate(new Date().getDate()-30)), new Date(new Date().setDate(new Date().getDate()-1))]},
+                {id: 'yesterday', text: '昨天', range: [new Date(new Date().setDate(new Date().getDate()-1)), new Date(new Date().setDate(new Date().getDate()-1))]},
+                {id: 'thismonth', text: '本月', range: [startDate1,endDate1]},
+                {id: 'lastmonth', text: '上个月', range: [startDate2,endDate2]}
+            ],
+            done: function(val, stdate, ovdate){
+                //当确认选择时间后调用这里
+            }
+        });
+
+
+
+	//时间插件 默认时间
+	var start = '{$start}',end = '{$end}';
+	var keys = '{$keys}';
+	var nextdata = '{$nextdata}';
+	function check() {
+		layer.load(1);
+		var jsdate = $("#rangepickdate").val();
+		datearr = jsdate.split('至');
+		var start_time = datearr[0];
+		var end_time = datearr[1];
+		if(start_time != '' && end_time != '' && start_time > end_time) {
+			layer.msg('开始时间不能大于结束时间');
+			return false;
+		}
+		return true;
+	}
+	function add_color(){
+		var colorarr = new Array('bg-869','bg-f0f','bg-e1e','bg-edd','bg-d1d','bg-d8c','bg-c1c','bg-eod','bg-9fa','bg-e8e');
+		jscount = $('.jscount');
+		jscount.each(function(index,element){
+			that = $(this);
+			value = that.data('value');
+			if(value>=30){
+				value = value.toString();
+				first = value.substr(0,1);
+				color = colorarr[first];
+				that.parent('td').addClass(color);
+			}else{
+				return ;
+			}
+		});
+	}
+	$('.detail').click(function () {
+		url = $(this).data('url');
+		user_detail(url);
+	});
+</script>
+<script>
+    if({$foldline.hours|default=1}==1) {
+        Highcharts.setOptions({
+            chart:{type:'spline',spacingLeft:0,spacingTop:40},
+            title:{text: null},legend:{align:'right',verticalAlign:'top',floating:true,x:0,y:-38,itemStyle:{'lineHeight':'32px'}},yAxis:{title:{text:null}},
+            tooltip:{backgroundColor: '#fff',borderColor:'white',borderRadius:10,borderWidth:1,shadow:true,animation:true,style:{color: "#999",fontSize: "12px",fontWeight: "blod",fontFamily: "Microsoft Yahei"},shared: true,useHTML: true,valueDecimals:2,
+                formatter:function(){
+                    var s = '<table>';
+                    $.each(this.points,function() {
+                        s += '<tr><td style="color:#1bb2eb;"><span style="padding-right:2px;">'+this.series.name+':</span><span>'+this.y+'</span></td></tr>';
+                    });
+                    s += '</table><small>';
+                    s += $('.jsctitle1').text()+'/';s += this.x+'~'+(parseInt(this.x)+1)+':00';s += '</small>';
+                    return s;
+                },
+            },
+            credits:{enabled: false},
+            xAxis:{tickInterval:2,categories:['0:00','1:00','2:00','3:00','4:00','5:00','6:00','7:00','8:00','9:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00'],tickmarkPlacement:'on'},
+        });
+        datelist = [{$foldline.date}];
+    } else {
+        var tooltip = '';
+        Highcharts.setOptions({
+            chart:{type:'spline',spacingLeft:0,spacingTop:40},
+            title:{text: null},legend:{align:'right',verticalAlign:'top',floating:true,x:0,y:-38,itemStyle:{'lineHeight':'32px'}},yAxis:{title:{text:null}},
+            tooltip:{backgroundColor: '#fff',borderColor:'white',borderRadius:10,borderWidth:1,shadow:true,animation:true,style:{color: "#999",fontSize: "12px",fontWeight: "blod",fontFamily: "Microsoft Yahei"},shared: true,useHTML: true,
+                headerFormat:'<table>',
+                pointFormat:'<tr><td style="color:#1bb2eb;"><span style="padding-right:2px;">{series.name}:</span><span>{point.y}</span></td></tr>',
+                footerFormat:'</table><small>{point.key}</small>',
+            },
+            credits:{enabled: false},
+            xAxis:{categories:[{$foldline.date}],tickmarkPlacement:'on'},
+    });
+
+        datelist = [{$foldline.date}];
+    }
+    selectrange(datelist);
+    $('#container1').highcharts({legend:{labelFormat:'{name}设备'},
+        series:[{name:'iOS',data:[{$foldline.news.ios}]},{name:'Android',data:[{$foldline.news.and}]}]
+    });
+
+    $('#container2').highcharts({legend:{labelFormat:'{name}设备'},
+        series:[{name:'iOS',data:[{$foldline.active.ios}]},{name:'Android',data:[{$foldline.active.and}]}]
+    });
+
+    $('#container3').highcharts({
+        legend:{enabled:false},chart:{type:'column'},
+        plotOptions:{column:{fillOpacity:0.5,borderWidth:0,pointWidth:20,}},
+        tooltip:{valueDecimals:0,formatter:'',headerFormat:'<table>',pointFormat:'<tr><td style="color:#1bb2eb;">{point.y}</td></tr>',footerFormat:'</table><small>{point.key}</small>',},
+        xAxis:{tickInterval:1,categories:[{$foldline.xmodel.ios}]},
+    series:[{data:[{$foldline.model.ios}]}]
+
+    });
+
+    $('#container4').highcharts({
+        legend:{enabled:false},chart:{type:'column'},
+        plotOptions:{column:{fillOpacity:0.5,borderWidth:0,pointWidth:20,}},
+        tooltip:{valueDecimals:0,formatter:'',headerFormat:'<table>',pointFormat:'<tr><td style="color:#1bb2eb;">{point.y}</td></tr>',footerFormat:'</table><small>{point.key}</small>',},
+        xAxis:{tickInterval:1,categories:[{$foldline.xmodel.and}]},
+    series:[{data:[{$foldline.model.and}]}]
+
+    });
+    //新增用户和付费用户数据图表切换
+    $('.tab_head a').click(function() {
+        var that=$(this),sib = that.closest('.tab_head').siblings('.tab_content');
+        that.siblings().removeClass('current');
+        var index= that.addClass('current').index();
+
+        sib.find('.htchart_area_tab').removeClass('show').eq(index).addClass('show');
+        $('.ranges li a').each(function() {
+            var url = $.trim($(this).attr('href')).replace(/((\.htm(l?))?)$/g,'').replace(/\/tb\/[012]/g,'');
+
+            $(this).attr('href',url+'/tb/'+index+'.html');
+        });
+        $('.each_box .nav li a').each(function() {
+            var url = $.trim($(this).attr('href')).replace(/((\.htm(l?))?)$/g,'').replace(/\/tb\/[012]/g,'');
+
+            $(this).attr('href',url+'/tb/'+index+'.html');
+        });
+
+        change_export_postion();
+
+
+    });
+    $('.jsexport').on('click',function() {
+        var that=$(this),url = $.trim(that.attr('url')).replace(/((\.htm(l?))?)$/g,'');
+
+        var but = $('.tab_head a.current');
+        url += '/name/'+$.trim(but.text())+'/key/'+but.attr('data-key');
+		that.attr('href',url)
+        // window.location.href = url;
+    });
+    $('.jsmodelchange').on('click',function() {
+        var that = $(this);
+        var index = that.addClass('mcurr').index();
+        that.siblings().removeClass('mcurr');
+        $('.jsmodeltab').removeClass('show').eq(index).addClass('show');
+
+        return false;
+    });
+    function change_export_postion() {
+        $('.tab_head a').each(function(i,n) {
+            var that = $(n);
+            if(that.hasClass('current')) {
+                if(that.attr('data-key') == 'model') {
+                    $('.export_box').css('bottom','80px');
+                } else {
+                    $('.export_box').css('bottom','10px');
+                }
+            }
+
+        });
+
+    }
+    function selectrange(range) {
+        if (range) {
+            $.each(range,function(i,n) {
+                if (i == 0) {$('.available[data-key="'+n+'"]').addClass('in-range first');}
+                else if (i == range.length-1) {$('.available[data-key="'+n+'"]').addClass('in-range last');}
+                else {$('.available[data-key="'+n+'"]').addClass('in-range');}
+            });
+        }
+    }
+</script>
+<script>
+    var myChartLine = "";
+
+    //heightChart! begin
+    $(function () {
+        chartLine();
+
+        //柱子颜色渐变
+        var colors = ['#3FDBF2', '#F79FC9','#F8D488'];
+        Highcharts.getOptions().colors = Highcharts.map(colors, function (color) {
+            return {
+                radialGradient: {cx: 0, cy: 1.3, r: 2.3},
+                stops: [[0, color], [2, Highcharts.Color(color).brighten(14).get('rgb')] // darken
+                ]
+            };
+        });
+
+        /*柱状图1*/
+        $('#device_surveyChart1').highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: null
+            },
+            xAxis: {
+                categories: [{$game_chart.game}],
+        crosshair: true,
+            tickInterval:1
+    },
+        yAxis: {
+            min: 0,
+                title: {
+                text: null
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat:'',
+                footerFormat:'</table>',
+                pointFormatter:function(){
+                var s = '';
+                s += '<tr><td style="color:'+this.series.color+';padding:0">'+this.series.name+': </td>' +
+                    '<td style="padding:0"><b>'+this.y+'</b></td></tr>';
+                return s;
+            },
+            shared: true,
+                useHTML: true
+        },
+        credits: {
+            enabled: false
+        },
+        legend: {
+            align: 'center',
+                verticalAlign: 'top',
+                enabled:true,
+                y: -30,
+                symbolRadius: 0,
+                itemStyle: {
+                color: '#A2B8C5',
+                    fontWeight: 'bold'
+            }
+        },
+        plotOptions: {
+            column: {
+                borderWidth: 0,
+                    pointWidth: 20, //柱子宽度
+            }
+        },
+        series: [{
+            name: '注册用户（人）',
+            //color: '#3FDBF2',
+            data: [{$game_chart.reg}]
+    }, {
+            name: '活跃用户（人）',
+                // color: '#F79FC9',
+                data: [{$game_chart.active}]
+        }, {
+            name: '充值金额（元）',
+                // color: '#F8D488',
+                data: [{$game_chart.pay}]
+        }]
+    });
+    });
+
+
+    //heightChart! begin
+    $(function () {
+        chartLine();
+
+        //柱子颜色渐变
+        var colors = ['#3FDBF2', '#F79FC9','#F8D488'];
+        Highcharts.getOptions().colors = Highcharts.map(colors, function (color) {
+            return {
+                radialGradient: {cx: 0, cy: 1.3, r: 2.3},
+                stops: [[0, color], [2, Highcharts.Color(color).brighten(14).get('rgb')] // darken
+                ]
+            };
+        });
+
+        /*柱状图2*/
+        $('#device_surveyChart2').highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: null
+            },
+            xAxis: {
+                categories: [{$promote_chart.promote}],
+        crosshair: true,
+            tickInterval:1
+    },
+        yAxis: {
+            min: 0,
+                title: {
+                text: null
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat:'',
+                footerFormat:'</table>',
+                pointFormatter:function(){
+                var s = '';
+                s += '<tr><td style="color:'+this.series.color+';padding:0">'+this.series.name+': </td>' +
+                    '<td style="padding:0"><b>'+this.y+'</b></td></tr>';
+                return s;
+            },
+            shared: true,
+                useHTML: true
+        },
+        credits: {
+            enabled:false
+        },
+        legend: {
+            align: 'center',
+                verticalAlign: 'top',
+                enabled:true,
+                y: -30,
+                symbolRadius: 0,
+                itemStyle: {
+                color: '#A2B8C5',
+                    fontWeight: 'bold'
+            }
+        },
+        plotOptions: {
+            column: {
+                borderWidth:0,
+                    pointWidth:20, //柱子宽度
+            }
+        },
+        series: [{
+            name: '注册用户（人）',
+            //color: '#3FDBF2',
+            data: [{$promote_chart.reg}]
+    },{
+            name: '活跃用户（人）',
+                //color: '#F79FC9',
+                data: [{$promote_chart.active}]
+        },{
+            name: '充值金额（元）',
+                //color: '#F8D488',
+                data: [{$promote_chart.pay}]
+        }]
+    });
+
+
+    });
+
+    function chartLine(){
+        myChartLine = {
+            chart: {
+                renderTo: 'container',
+                type: 'areaspline'
+            },
+            title: {
+                text: null
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'left',
+                verticalAlign: 'top',
+                x: 150,
+                y: 100,
+                floating: true,
+                borderWidth: 1,
+                symbolRadius: 0,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+            },
+            xAxis: {
+                categories: ['1月','2月','3月','5月','6月']
+            },
+            yAxis: {
+                title: {
+                    text: null
+                }
+            },
+            tooltip: {
+                backgroundColor: '#fff',   // 背景颜色
+                borderColor: 'white',         // 边框颜色
+                borderRadius: 10,             // 边框圆角
+                borderWidth: 1,               // 边框宽度
+                shadow: true,                 // 是否显示阴影
+                animation: true,               // 是否启用动画效果
+                style: {                      // 文字内容相关样式
+                    color: "#999",
+                    fontSize: "12px",
+                    fontWeight: "blod",
+                    fontFamily: "Microsoft Yahei"
+                },
+                shared: true,
+                useHTML: true,
+                headerFormat: '<small style="color:#1bb2eb;margin-left:18px;">{point.y}</small><br/><small>{point.key}-{point.key}</small><table>',
+                pointFormat: '',
+                footerFormat: '</table>',
+                valueDecimals: 2
+            },
+            credits: {
+                enabled: false
+            },
+            plotOptions: {
+                areaspline: {
+                    fillOpacity: 0.5
+                }
+            },
+            series: [{
+                data: []
+            }]
+        };
+        //new Highcharts.Chart(myChartLine)
+    }
+</script>
+
+	<!-- ECharts单文件引入 -->
+	<script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+	<script type="text/javascript">
+		$('.jsnav li a').on('click', function() {
+			var that = $(this),
+				url = $.trim(that.attr('href')),
+				li = that.closest('li'),
+				sib = that.closest('.jsnav').siblings('.mchart');
+			li.addClass('active').siblings('li').removeClass('active');
+			sib.html('');
+			var html = '<iframe src="' + url + '" id="iframepage" name="iframepage" frameBorder=0 scrolling=no width="100%"  height="100%" ></iframe>';
+			sib.html(html);
+			return false;
+		});
+	</script>
+	</div>
+</div>
+</body>
+
+</html>

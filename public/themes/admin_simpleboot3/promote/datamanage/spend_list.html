@@ -1,0 +1,197 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('datamanage/spend_list')}">实时充值</a></li>
+            <span class="title_remark">说明：对所有渠道用户玩家产生的注册信息，进行记录的功能；对账状态里的参与对账表示结算时记录该条数据</span>
+        </ul>
+        <form id="search_form" class="well form-inline fr spend" method="get" action="{:url('datamanage/spend_list')}" onsubmit="return check();">
+            <if condition="AUTH_PROMOTE eq 1">
+                <input type="text" class="form-control" name="user_account" style="width: 100px;" value="{:input('request.user_account/s','')}" placeholder="玩家账号">
+            </if>
+
+            <input type="text" class="form-control" name="pay_order_number" style="width: 100px;" value="{:input('request.pay_order_number/s','')}" placeholder="支付订单号">
+
+            <select name="game_id" id="game_id" class="selectpicker " game_id="{:input('request.game_id')}" data-live-search="true" style="width: 150px;">
+                <option value="">游戏名称</option>
+                <volist name=":get_game_list('id,game_name')" id="vo">
+                    <option game-id="{$vo.id}" value="{$vo.id}" >{$vo.game_name}</option>
+                </volist>
+            </select>
+            <select name="server_id" id="server_id" class="form-control" server_id="{:input('request.server_id')}">
+                <option value="">区服名称</option>
+            </select>
+            <select name="promote_id" id="promote_id"  class="selectpicker" data-live-search="true" promote_id="{:input('request.promote_id','')}">
+                <option value="">所属渠道</option>
+                <volist name=":get_promote_list()" id="vo">
+                    <option promote-id="{$vo.id}" value="{$vo.id}">{$vo.account}</option>
+                </volist>
+            </select>
+
+            <select name="parent_id" id="parent_id"  class="selectpicker" data-live-search="true" parent_id="{:input('request.parent_id','')}">
+                <option value="">上线渠道</option>
+                <volist name=":get_promote_list()" id="vo">
+                    <option promote-id="{$vo.id}" value="{$vo.id}">{$vo.account}</option>
+                </volist>
+            </select>
+            <input type="text" class="form-control js-bootstrap-date" id="start_time" name="start_time" placeholder="充值开始时间"
+                   value="{:input('request.start_time/s','')}" style="width: 120px;" autocomplete="off">-
+            <input type="text" class="form-control js-bootstrap-date" id="end_time" name="end_time" placeholder="充值结束时间"
+                   value="{:input('request.end_time/s','')}" style="width: 120px;" autocomplete="off">
+            <input type="text" class="form-control" name="spend_ip" style="width: 120px;" value="{:input('request.spend_ip/s','')}" placeholder="充值IP">
+            <select name="pay_way" id="pay_way" class="form-control" >
+                <option value="">充值方式</option>
+                <option value="1" <if condition="input('request.pay_way') eq 1">selected</if>>绑币</option>
+                <option value="2" <if condition="input('request.pay_way') eq 2">selected</if>>平台币</option>
+                <option value="3" <if condition="input('request.pay_way') eq 3">selected</if>>支付宝</option>
+                <option value="4" <if condition="input('request.pay_way') eq 4">selected</if>>微信</option>
+            </select>
+
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('datamanage/spend_list')}">清空</a>
+        </form>
+        <form class="js-ajax-form" action="" method="post">
+            <div class="table-actions position">
+                <button class="btn btn-success  btn-sm js-ajax-submit mtb17" type="submit"
+                    data-action="{:url('changeCheck',['is_check'=>1])}" data-subcheck="true" data-msg="您确定参与结算吗？">
+                    参与结算
+                </button>
+                <button class="btn btn-warning  btn-sm js-ajax-submit  mtb17 mr20" type="submit"
+                        data-action="{:url('changeCheck',['is_check'=>2])}" data-subcheck="true" data-msg="您确定不参与结算吗？">
+                    不参与结算
+                </button>
+            </div>
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th width="15">
+                            <label>
+                                <input type="checkbox" class="js-check-all"  data-direction="x" data-checklist="js-check-x">
+                            </label>
+                        </th>
+                        <th>订单号</th>
+                        <th>充值时间</th>
+                        <th>所属渠道</th>
+                        <th>上线渠道</th>
+                        <th>玩家账号</th>
+                        <th>游戏名称</th>
+                        <th>游戏区服</th>
+                        <th>角色名</th>
+                        <th>充值IP</th>
+                        <th>应付金额/￥</th>
+                        <th>实付金额/￥</th>
+                        <th>充值方式</th>
+                        <th>对账状态</th>
+                        <th>结算状态</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <empty name="data_lists">
+                        <tr><td colspan="15" style="text-align: center;">暂无数据</td></tr>
+                    <else/>
+                        <foreach name="data_lists" item="vo">
+                        <tr>
+                            <td>
+                                <input type="checkbox" class="js-check" data-yid="js-check-y" <if condition="$vo['settle_check'] eq 1">disabled</if> data-xid="js-check-x" name="ids[]"
+                                       value="{$vo.id}" >
+                            </td>
+                            <php>$page_total +=$vo['pay_amount'];</php>
+                            <td>{$vo['pay_order_number']}</td>
+                            <td>{$vo['pay_time']|date="Y-m-d H:i:s",###}</td>
+                            <td>{:get_promote_name($vo['promote_id'])}</td>
+                            <td>{:get_promote_list(['id'=>$vo['promote_id']])[0]['parent_id']>0?get_promote_name(get_promote_list(['id'=>$vo['promote_id']])[0]['parent_id']):get_promote_name($vo['promote_id'])}</td>
+                            <td>{$vo['user_account']}</td>
+                            <td>{$vo['game_name']}</td>
+                            <td>{:$vo['server_name']?:'--'}</td>
+                            <td>{:$vo['game_player_name']?:'--'}</td>
+                            <td>{$vo['spend_ip']}</td>
+                            <td>{$vo['pay_amount']}</td>
+                            <td>{$vo['pay_amount']}</td>
+                            <td>{:get_pay_way($vo['pay_way'])}</td>
+                            <td>
+                                <span <if condition="$vo['is_check'] eq 1"> class="label label-success"<else/>class="label label-danger"</if>>{:get_info_status($vo['is_check'],17)}</span>
+                            </td>
+                            <td>
+                                <span <if condition="$vo['settle_check'] eq 1"> class="label label-success"<else/>class="label label-danger"</if>>{:get_info_status($vo['settle_check'],18)}</span>
+                            </td>
+                        </tr>
+                        </foreach>
+                         <tr class="data_summary">
+                            <td colspan="2"><span style="margin-right: 10px;">汇总（只汇总充值成功） </span></td>
+                            <td colspan="13"><span>今日充值：{:null_to_0($today['total'])}元 ； 昨日充值：{:null_to_0($yestoday['total'])}元 ； 当页充值：{:null_to_0($page_total)}元 ； 累计充值：{:null_to_0($total['total'])}元</span></td>
+
+                        </tr>
+                    </empty>
+                </tbody>
+            </table>
+        </form>
+        <div class="pagination">
+            {$page}
+        </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script type="text/javascript">
+        game_id = $("#game_id").attr('game_id');
+        server_id = $("#server_id").attr('server_id');
+        promote_id = $("#promote_id").attr('promote_id');
+        parent_id = $("#parent_id").attr('parent_id');
+        $("#promote_id").selectpicker('val', promote_id);
+        $("#parent_id").selectpicker('val', parent_id);
+        $("#game_id").selectpicker('val', game_id);
+        if(game_id){
+            get_game_server(game_id);
+        }
+        $('#game_id').change(function(){
+            gi = $("#game_id").val();
+            get_game_server(gi);
+        });
+        $('#promote_id').change(function(){
+            $("#parent_id").selectpicker('val', '');
+        });
+        $('#parent_id').change(function(){
+            $("#promote_id").selectpicker('val', '');
+        });
+        function get_game_server(game_id){
+            $('#server_id').empty();
+            $('#server_id').append("<option value=''>区服名称</option>");
+            $.ajax({
+               url:"{:url('game/server/get_game_server')}",
+               type:'post',
+               dataType:'json',
+               data:{game_id:game_id},
+               success:function(res){
+                if(res.code!=1){
+                    layer.msg(res.msg);
+                }else{
+                    option = '';
+                    $.each(res.data,function (key,value) {
+                       option+="<option value='";
+                       option+=value['id']+"'";
+                       if(value['id']==server_id){
+                        option+="selected";
+                       }
+                       option+=" >"+value['server_name'];
+                       option+="</option>";
+                    });
+                    $('#server_id').append(option);
+                    server_id = '';
+                }
+               },error(){
+                layer.msg('服务器错误');
+               }
+            })
+        }
+        function check(){
+            var start_time = $("#start_time").val();
+            var end_time = $("#end_time").val();
+            if(start_time != '' && end_time != '' && start_time > end_time){
+                layer.msg('开始时间不能大于结束时间');
+                return false;
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>

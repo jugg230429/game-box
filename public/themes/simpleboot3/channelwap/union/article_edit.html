@@ -1,0 +1,92 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/select2.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/new_select2.css" type="text/css" />
+    <link href="__TMPL__/channelwappublic/assets/css/set.css" type="text/css" rel="stylesheet" />
+</block>
+<block name="body">
+    <div class="page-container profit-exchange-container">
+        <header>
+            <a href="javascript:history.back(-1);" class="back-btn"></a>
+            <p class="siteItem accountSet">编辑文档</p>
+        </header>
+        <div class="page-content-box">
+            <div class="profit-exchange-content">
+                <div class="exchange-tab">
+                <form action="" id="ajaxForm1" method="post">
+                    <div class="form">
+                        <div class="tabpan-con-con">
+                            <label class="fl label-name"><span class="req">*</span>文档标题：</label>
+                            <input type="text" class="tabpan-input" name="title" id="title" maxlength="30" value="{$info['title']|default=''}" placeholder="请输入文档标题">
+                        </div>
+
+                        <div class="tabpan-con-con">
+                            <label class="fl label-name"><span class="req">*</span>文档内容：</label>
+                            <script type="text/plain" id="content" name="content">{:htmlspecialchars_decode($info['content'])}</script>
+                        </div>
+                        <div class="form-item">
+                            <input type="hidden" name="id" value="{$info['id']}" />
+                            <div class="submit-btn js_submit">确认</div>
+                        </div>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script>
+        //全局变量
+        var GV = {
+            ROOT: "__ROOT__/",
+            WEB_ROOT: "__WEB_ROOT__/",
+            JS_ROOT: "static/js/",
+            APP: '{$Request.module}'/*当前应用名*/
+        };
+        //编辑器路径定义
+        var editorURL = GV.WEB_ROOT;
+    </script>
+    <script type="text/javascript" src="__STATIC__/js/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" src="__STATIC__/js/ueditor/ueditor.all.min.js"></script>
+    <style>
+        .edui-default .edui-for-insertimage .edui-dialog-content {
+            max-width: 650px;
+            min-width: 320px;
+            width: auto;
+        }
+    </style>
+    <script>
+        $(function () {
+            editorcontent = new baidu.editor.ui.Editor({initialFrameHeight:200});
+            editorcontent.render('content');
+            try {
+                editorcontent.sync();
+            } catch (err) {
+            }
+        });
+        $(".js_submit").click(function () {
+            var form = $(this).parents('form');
+            $(".js_submit").attr('disabled',true);
+            $.ajax({
+                type: 'post',
+                url: '{:url("articleEdit")}',
+                data: form.serialize(),
+                async: false,
+                success: function (res) {
+                    layer.msg(res.msg);
+                    if(res.code == 1){
+                        setTimeout(function () {
+                            window.location.href = "{:url('article')}";
+                        },1000)
+                    }
+                },
+                error: function () {
+                    $(".js_exchange").attr('disabled',false);
+                    layer.msg('服务器错误，请稍后再试');
+                }
+            });
+        })
+    </script>
+</block>

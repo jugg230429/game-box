@@ -1,0 +1,221 @@
+.v-middle{
+    display: flex;
+    align-items: center;
+}
+.update_nickname_header {
+    width: 100%;
+    line-height: 3.75rem;
+    font-size:1.34rem;
+    position: relative;
+    text-align: center;
+}
+
+.update_nickname_header .back_icon {
+    width: 0.74rem;
+    left: 1rem;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.update_nickname_header p {
+    line-height: 3.75rem;
+    color: #222222;
+    text-align: center
+}
+
+.clear_textzzz {
+    display: none;
+    width: 5%;
+    position: relative;
+    right: 4rem;
+    top: 37px;
+}
+
+.game_bag_down_hx {
+    width: 100%;
+    height: 1px;
+    background-color: #F2F2F2;
+}
+
+.into_icon {
+    width: 0.586rem;
+    margin-top: 0.3rem;
+    margin-right: 2.5%;
+    margin-left: auto;
+}
+.address-list {
+   width:94%;
+   margin:0 auto;
+}
+.address-list li{
+	padding: 0.76rem 0;
+	border-bottom: 1px solid #E7E7E7;
+}
+.address-list li:last-child{
+	border:none;
+}
+.title{
+	margin-bottom:1rem;
+    display: flex;
+    align-items: center;
+}
+.name{
+    color: #333;
+    font-weight: bold;
+    font-size: 1.3rem;
+    margin-right: 2rem;
+    max-width: 19.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+	
+}
+.phone{
+	color:#999;
+	font-size:1.3rem;
+}
+.address{
+	width:90%;
+	color:#666;
+}
+/* . */
+.adreesinfo-item{
+	width:100%;
+	height: 4.5rem;
+	padding:0 1rem;
+	border-bottom: 1px solid #E7E7E7;
+	line-height: 4.5rem;
+	font-size:1.255rem;
+  
+}
+.adreesinfo-item:last-child{
+	border-bottom:none;
+}
+.adreesinfo-item input[type="text"]{
+	border:none;
+	-webkit-box-shadow:none;
+    -moz-box-shadow: none;
+    box-shadow:none; 
+	height: 1.5rem;
+	font-size:1.255rem;
+	padding:0;
+	margin: 1.5rem 0 0 0;
+	color:#333;
+	float:left;
+    width: 60%;	
+}
+.imitate-input{
+            width: 260px;
+            height: 16px;
+            border: 1px solid dodgerblue;
+            border-radius: 3px;
+            padding: 13px 10px;
+            size: 16px;
+            line-height: 16px;
+            outline: none;
+            color: #000;
+            white-space: nowrap;
+            overflow-x: scroll;
+            overflow-y: hidden;
+            word-break: normal;
+        }
+        /* 清除左右滚动条 */
+.imitate-input::-webkit-scrollbar{
+            display: none;
+        }
+        .imitate-input:empty:before{
+            content: attr(placeholder);
+            color: #999;
+        }
+        .imitate-input:focus:before{
+            content: none;
+        }
+.adreesinfo-item input[type="text"]::-webkit-input-placeholder {color:#C2C2C9;}
+.adreesinfo-item input[type="text"]::-ms-input-placeholder {color:#C2C2C9;}
+.adreesinfo-item input[type="text"]::-moz-placeholder {color:#C2C2C9;}
+.adreesinfo-item input[type="text"]::-moz-placeholder {color:#C2C2C9;}
+.adreesinfo-item-name{
+	 line-height: 4.5rem;
+     color: #666;
+	 font-size:1.255rem;
+	 display:block;
+     width:8rem;
+     float:left;
+}
+.adreesinfo-item-name-adress{
+	border-bottom:none;
+}
+textarea:focus{
+	 outline:none;
+	 -webkit-box-shadow: none;
+     box-shadow: none;
+}
+.adreesinfo-item textarea{
+	outline: none;
+    -webkit-appearance: none;
+	-webkit-box-shadow: none; 
+    -moz-box-shadow: none;
+    box-shadow: none; 
+	width:93%;
+   
+}
+.adreesinfo-item .into_icon{
+	
+	margin:6% 5% 0 0;
+}
+.adreesinfo-item .default {
+    color: #333;
+    word-spacing: 0.2rem;
+    cursor: pointer;
+}
+.user-save,.user-add{
+	position:absolute;
+	color:#F9780E;
+	right:1rem;
+	top:0;
+	font-size:1.175rem;
+}
+.user-add{
+	display:none;
+}
+.save-class.layui-layer-dialog .layui-layer-content{
+	border-bottom:1px solid #EDEDED ;
+	text-align: center;
+	padding:0;
+	font-size:1.52rem;
+	color:#333;
+	height: 5rem;
+    line-height: 5rem;
+}
+.save-class .layui-layer-btn{
+	padding:0;
+}
+.save-class .layui-layer-btn a{
+	width: 49%;
+    text-align: center;
+    height: 5rem;
+    line-height: 5rem;
+    border: none;
+	margin:0;
+	padding:0;
+	font-size:1.52rem;
+}
+.save-class .layui-layer-btn .layui-layer-btn0{
+	background:#fff;
+	color:#333;
+	border-right:1px solid #ededed;
+	
+}
+.save-class .layui-layer-btn .layui-layer-btn1{
+	color:#F9780E;
+}
+.empty-box {
+    width: 100%;
+    color: #999;
+    text-align: center;
+    position: absolute;
+    top: 22%;
+	font-size:1.34rem;
+}

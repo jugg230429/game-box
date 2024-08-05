@@ -1,0 +1,129 @@
+<include file="public@header"/>
+</head>
+<body>
+<style>
+    .form-group .input-suffix {
+        position: absolute;
+        right: 25px;
+        top: 7px;
+    }
+</style>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="javascript:;">编辑绑币充值折扣</a></li>
+    </ul>
+
+    <div class="describe">
+        <p>注意①：设置某款游戏的折扣对象为全站玩家时，则不可再设置官方渠道、推广渠道或部分渠道，反之同理</p>
+        <p>注意②：设置某款游戏的官方渠道时，可再设置该游戏的推广渠道或部分推广渠道，反之同理。</p>
+        <p>注意③：设置某游戏的部分渠道折扣时，可针对不同渠道设置不同折扣。</p>
+    </div>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('bd_edit')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>游戏名称：
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <select  disabled class="selectpicker form-control" data-live-search="true">
+                                    <volist name=":get_game_list('id,game_name,sdk_version')" id="vo">
+                                        <option <eq name="data.game_id" value="$vo.id">selected</eq> value="{$vo.id}" >{$vo.game_name}<eq name="vo.sdk_version" value="3">（H5）</eq></option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_icp" class="col-sm-2 control-label">折扣对象：</label>
+                            <div class="col-md-4 col-sm-6">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" disabled <eq name="data.type" value="1">checked="checked"</eq>> 全站玩家
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" disabled <eq name="data.type" value="2">checked="checked"</eq>> 官方渠道
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" disabled <eq name="data.type" value="3">checked="checked"</eq>> 推广渠道
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio"  disabled <eq name="data.type" value="4">checked="checked"</eq> > 部分渠道
+                                </label>
+                                <if condition="$data['type'] eq 4">
+                                    <button type="button" class="choose_promote">查看推广员</button>
+                                </if>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio"  disabled <eq name="data.type" value="5">checked="checked"</eq> > 部分玩家
+                                </label>
+                            </div>
+                        </div>
+                        <if condition="$data['type'] eq 5">
+                            <div class="form-group ">
+                                <label for="input-site-name" class="col-sm-2 control-label"></label>
+                                <div class="col-md-4 col-sm-6">
+                                    <textarea name="game_user_account" class="form-control" rows="10"  placeholder="输入用户账号,一行一个">{$game_user_list}</textarea>
+                                    <span  class="fl user-remarks"></span>
+                                </div>
+                                <p class="help-block">请正确填写当前游戏的玩家账号,查询不到的玩家不会保存</p>
+                            </div>
+                        </if>
+
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">首充折扣：</label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" value="{$data.first_discount}" class="form-control"  name="first_discount"  >
+                                <span class="input-suffix">折</span>
+                            </div>
+                            <p class="help-block">设置折扣对象下某个游戏的玩家首次充值时可享受的折扣</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">续充折扣：</label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" value="{$data.continue_discount}" class="form-control"  name="continue_discount"  >
+                                <span class="input-suffix">折</span>
+                            </div>
+                            <p class="help-block">设置折扣对象下某个游戏的玩家非首次充值时可享受的折扣</p>
+                        </div>
+
+                        <div class="promote_list" hidden>
+                            {$promote_choose}
+                        </div>
+                        <div class="game_user_list" hidden>
+                            {$game_user_choose}
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <input type="hidden" name="id" value="{$data.id}">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                                <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script>
+    $(function () {
+        $(".choose_promote").click(function () {
+            $(".promote_list").show();
+            $(".pro_promot").show();
+        })
+        $(".choose_game_user").click(function () {
+            $(".game_user_list").show();
+            $(".pro_promot").show();
+        })
+    })
+
+</script>
+</body>
+</html>

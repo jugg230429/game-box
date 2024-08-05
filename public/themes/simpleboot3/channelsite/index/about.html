@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<include file="public@head"/>
+		<link href="__TMPL__/public/assets/css/common.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/about.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../public/assets/css/about.css">
+	</head>
+	<body>
+		<div class="banner"></div>
+		<header>
+			<include file="public@indexheader"/>
+		</header>
+		<div class="clear"></div>
+		<div class="inner intr">
+			<notempty name="promote_set.ch_set_about_us">
+			<img src="{:cmf_get_image_preview_url($promote_set['ch_set_about_us'])}" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null" class="fl intr-img"/>
+			</notempty>
+			<div class="intr-con <if condition='empty($promote_set[ch_set_about_us])'>nointr-con</if>">
+				{$data[0]['post_content']}
+			</div>
+
+		</div>
+		<div class="clear"></div>
+		<!--footer-->
+		<include file="public@index_footer"/>
+
+	</body>
+</html>

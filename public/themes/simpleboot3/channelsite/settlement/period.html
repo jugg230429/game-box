@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+    <link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+    <link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+    <link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" />
+    <link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+
+    <include file="public@head"/>
+</head>
+<style>
+    .daterangepicker .ranges li.active {
+        color: #fff!important;
+    }
+    input[type=text]:focus {
+        border-color: #E5E5E5!important;
+    }
+</style>
+<body>
+<include file="public@nav"/>
+<include file="public@header"/>
+<link href="__TMPL__/public/assets/css/finance.css" rel="stylesheet"/>
+
+<style>
+    .layui-layer-iframe{
+        border-radius: 4px;
+        overflow: hidden;
+    }  
+
+</style>
+
+<div class="trunk">
+    <div class="trunk-con">
+        <div class="right-container">
+            <div class="normal-list">
+
+                <div class="record">
+                    <ul class="nav-tabs">
+                        <li class="nav-tabs-con fl nav-tabs-active">
+                            <a href="{:url('settlement/period')}" class="nav-link">结算打款</a></li>
+                        <!-- <li class="nav-tabs-con fl">
+                            <a href="{:url('settlement/period_record')}" class="nav-link">支出记录</a>
+                        </li> -->
+                    </ul>
+
+                    <form id="submit_form"  onsubmit="return check()" method="get">
+                        <div class="trunk-search clearfix fr">
+
+                            <input type="text" id="sdate" class="tabpan-input normal-space" autocomplete="off" name="start_time" placeholder="结算周期开始时间" value="{:input('start_time')}">
+                                <label class="line-color">&nbsp;-&nbsp;</label>
+                            <input type="text" id="edate" class="tabpan-input " name="end_time" autocomplete="off" placeholder="结算周期结束时间" value="{:input('end_time')}">
+
+                            <input type="text" id="sdate_1" class="tabpan-input normal-space" autocomplete="off" name="start_time_1" placeholder="结算开始时间" value="{:input('start_time_1')}">
+                                <label class="line-color">&nbsp;-&nbsp;</label>
+                            <input type="text" id="edate_1" class="tabpan-input " name="end_time_1" autocomplete="off" placeholder="结算结束时间" value="{:input('end_time_1')}">
+
+                            <select name="remit_status" id="remit_status" class="tab-input js-select-gallery normal-space  fl select2-hidden-accessible trunk-search-select" >
+                                <option value="">打款状态</option>
+                                <option value="0" <if condition="input('remit_status') eq '0'">selected</if>>未打款</option>
+                                <option value="1" <if condition="input('remit_status') eq '1'">selected</if>>已打款</option>
+                            </select>
+
+                            <input type="text" id="sdate_2" class="tabpan-input normal-space" autocomplete="off" name="start_time_2" placeholder="打款开始时间" value="{:input('start_time_2')}">
+                                <label class="line-color">&nbsp;-&nbsp;</label>
+                            <input type="text" id="edate_2" class="tabpan-input " name="end_time_2" autocomplete="off" placeholder="打款结束时间" value="{:input('end_time_2')}">
+
+                            <a href="{:url('period')}"><input type="button" url="" class="submit fr normal-space btn-clear"
+                                    value="清空"></a>
+                            <input type="submit" class="submit fr normal-space" id="submit" value="搜索">
+                        </div>
+                    </form>
+
+                    <div class="clear"></div>
+                    <div class="minh-table">
+                        <table class="table normal-table" id="promotecoin_table">
+                            <tbody>
+                            <tr>
+                                <th>结算单号</th>
+                                <th>结算周期</th>
+                                <th>结算时间</th>
+                                <!-- <th>渠道账号信息</th> -->
+                                <th>CPS实付流水</th>
+                                <th>CPS分成金额</th>
+                                <th>CPA分成金额</th>
+                                <th>打款状态</th>
+                                <th width="230px">打款信息</th>
+                                <th>详情</th>
+                            </tr>
+
+                            <notempty name="data_lists">
+                                <volist name="data_lists" id="vo">
+                                    <tr>
+                                        <td>{$vo.order_num}</td>
+                                        <td>{$vo.period}</td>
+                                        <td>{:date('Y-m-d H:i:s',$vo.create_time)}</td>
+                                        <td>{$vo.total_money}</td>
+                                        <td>{$vo.total_cps}</td>
+                                        <td>{$vo.total_cpa}</td>
+
+                                        <td>
+                                            <if condition="$vo.is_remit eq 1">
+                                                <span >已打款</span>
+                                            </if>
+                                            <if condition="$vo.is_remit eq 0">
+                                                <span >未打款</span>
+                                            </if>
+                                        </td>
+
+                                        <td style="text-align: left;">
+                                            <if condition="$vo.is_remit eq 1">
+                                                <p>打款时间: {:date('Y-m-d H:i:s', $vo.remit_time)}</p>
+                                                <p>打款人: {$vo.operator}</p>
+                                                <p>打款金额: <span style="color:#006fc4">{$vo.remit_amount}</span></p>
+                                                <p>
+                                                    打款方式:
+                                                    <if condition="$vo.type_of_receive eq 0">银行卡</if>
+                                                    <if condition="$vo.type_of_receive eq 1">支付宝</if>
+                                                </p>
+                                                <php>
+                                                    $comma = '';
+                                                    if(!empty($data['promote_receive_account']) && !empty($data['promote_receive_name'])){
+                                                        $comma = ' , ';
+                                                    }elseif(empty($vo['name_of_receive']) || empty($vo['accounts_of_receive'])){
+                                                        $comma = '--';
+                                                    }
+                                                </php>
+                                                <p>打款账户: {$vo.name_of_receive} {$comma} {$vo.accounts_of_receive}</p>
+                                            </if>
+                                            <if condition="$vo.is_remit eq 0">
+                                                <span >--</span>
+                                            </if>
+                                        </td>
+
+                                        <!-- <td>{:null_to_0($vo.total_money - $vo.promoter_earn)}</td> -->
+                                        <!-- <td class="data_summary_bold">{$vo.promoter_earn}</td> -->
+
+                                        <td>
+                                            <a href="javascript:show_detail('{$vo['id']}');">
+                                            <!-- <a href="{:url('show_detail',['period_id'=>$vo['id']])}"> -->
+                                                <span class="show_detail" style="color:blue;">查看</span>
+                                            </a>
+                                        </td>
+                                    
+                                    </tr>
+                                </volist>
+                                <tr class="data_summary">
+                                    <td>汇总</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>{:null_to_0($total.total_earn)}</td>
+                                    <td>{:null_to_0($total.total_cps)}</td>
+                                    <td>{:null_to_0($total.total_cpa)}</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    
+                                </tr>
+                                <else/>
+                                <!--暂无数据-->
+                                <tr>
+                                    <td colspan="<if condition='PID_LEVEL neq 3'>9<else/>8</if>">
+                                        <div class="no-data">
+                                            <img src="__TMPL__/public/assets/images/icon_wushujv2.png" alt=""
+                                                 class="no-data-img">
+                                            <p class="no-data-text">暂无数据</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </notempty>
+                            </tbody>
+                        </table>
+                        <notempty name="data_lists">
+                            <div class="pagenation clearfix">
+                                <!-- <a download class="sch-btn" -->
+                                <a class="sch-btn"
+                                   href="{:url('Export/expSettlementPeriod',input())}">导出
+                                </a>
+                                {$page}
+                            </div>
+                        </notempty>
+                    </div>
+
+                </div>
+            </div>
+            
+        </div>
+        <include file="public@scripts"/>
+
+        <script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+		<script src="__STATIC__/js/layer/layer.js"></script>
+		<script src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.js"></script>
+		<script src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+        <script>
+            $(function() {
+				$(".js-select-gallery").select2();
+                //			日历
+                var date = "{$setdate}";
+                $('#sdate').datetimepicker({
+                    format: 'yyyy-mm-dd',
+                    language: "zh-CN",
+                    minView: 2,
+                    autoclose: true,
+                    scrollMonth: false,
+                    scrollTime: false,
+                    scrollInput: false,
+                    endDate: date
+                });
+                $('#edate').datetimepicker({
+                    format: 'yyyy-mm-dd',
+                    language: "zh-CN",
+                    minView: 2,
+                    autoclose: true,
+                    pickerPosition: 'bottom-left',
+                    scrollMonth: false,
+                    scrollTime: false,
+                    scrollInput: false,
+                    endDate: date
+                });
+
+                $('#sdate_1').datetimepicker({
+                    format: 'yyyy-mm-dd',
+                    language: "zh-CN",
+                    minView: 2,
+                    autoclose: true,
+                    scrollMonth: false,
+                    scrollTime: false,
+                    scrollInput: false,
+                    endDate: date
+                });
+                $('#edate_1').datetimepicker({
+                    format: 'yyyy-mm-dd',
+                    language: "zh-CN",
+                    minView: 2,
+                    autoclose: true,
+                    pickerPosition: 'bottom-left',
+                    scrollMonth: false,
+                    scrollTime: false,
+                    scrollInput: false,
+                    endDate: date
+                });
+
+                $('#sdate_2').datetimepicker({
+                    format: 'yyyy-mm-dd',
+                    language: "zh-CN",
+                    minView: 2,
+                    autoclose: true,
+                    scrollMonth: false,
+                    scrollTime: false,
+                    scrollInput: false,
+                    endDate: date
+                });
+                $('#edate_2').datetimepicker({
+                    format: 'yyyy-mm-dd',
+                    language: "zh-CN",
+                    minView: 2,
+                    autoclose: true,
+                    pickerPosition: 'bottom-left',
+                    scrollMonth: false,
+                    scrollTime: false,
+                    scrollInput: false,
+                    endDate: date
+                });
+
+                
+
+            })
+
+            //时间插件 默认时间
+            function check() {
+                
+            }
+
+            //  查看周期结算单详情
+            function show_detail(period_id){
+                var period_url = "{:url('show_detail')}"+"?period_id="+period_id+"";
+                layer.open({
+                    type: 2,
+                    title: "结算单详情",
+                    shadeClose: true,
+                    shade: 0.5,
+                    skin: 'layerdemo',
+                    area: ['80%', '80%'],
+                    // content: "{:url('user_bind_balance')}?user_id="+user_id //iframe的url
+                    content: "{:url('show_detail')}"+"?period_id="+period_id+"" //iframe的url
+                });
+                // console.log(period_url);
+                // return false;
+                // window.location.href=period_url;
+                                
+            }
+
+            $('.chakan').click(function () {
+                var that = $(this),
+                    settlement_number = that.data('settlement_number');
+                if (!settlement_number) {
+                    layer.msg('数据错误');
+                    return false;
+                }
+                layer.closeAll();
+                layer.open({
+                    type: 2,
+                    title: "结算详情",
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['70%', '80%'],
+                    content: ["{:url('settlement_detail')}?settlement_number=" + settlement_number, 'no'] //iframe的url
+                });
+            });
+            
+            $('.appy_earn').click(function () {
+                var that = $(this),
+                    settlement_number = that.data('settlement_number'),
+                    ti_status = that.data('ti_status');
+                if (!settlement_number) {
+                    layer.msg('数据错误');
+                    return false;
+                }
+                $.ajax({
+                    type: 'post',
+                    url: '{:url("apply")}',
+                    data: {
+                        settlement_number: settlement_number,
+                        ti_status: ti_status
+                    },
+                    success: function (res) {
+                        layer.msg(res.msg, {
+                                time: 1000
+                            },
+                            function () {
+                                location.href = location.href;
+                            });
+                    },
+                    error: function () {
+                        layer.msg('服务器错误，请稍后再试');
+                    }
+                });
+            });
+        
+        
+        </script>
+    </div>
+</div>
+</body>
+
+</html>

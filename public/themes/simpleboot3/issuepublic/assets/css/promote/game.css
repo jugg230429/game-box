@@ -1,0 +1,72 @@
+.form-input{
+	
+    border: 1px solid #ccc;
+    outline: none;
+    border-radius: 5px;
+    height: 35px;
+    padding-left: 10px;
+    width: 230px;
+	background: #fff;
+}
+.configForm-input{
+    border-radius: 5px;
+}
+.game-copy {
+    background: #00aeef;
+    color: #fff;
+    padding: 9px 13px;
+    border-radius: 5px;
+}
+.game-label{
+	font-size: 14px;
+     margin: 10px 0 0 0;
+    display: block;
+    height: auto;
+    overflow: hidden;
+    width: 390px;
+}
+.game-name {
+    display: block;
+    width: 120px;
+    text-align: right;
+    line-height: 35px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.layui-layer-rim .layui-layer-btn {
+    padding-top: 10px;
+    text-align: center;
+	
+}
+.layui-layer-rim .layui-layer-btn .layui-layer-btn0{
+	background:#FF9900;
+	border:1px solid #FF9900;
+}
+.form-btn-box{
+	display: flex;
+   align-items: center;
+   justify-content: center;
+   width: 100%;
+   margin-top: 25px;
+}
+.confirm-btn,.cancel-btn {
+    background: #00aeef;
+    color: #ffffff;
+	padding: 5px 20px;
+    text-align: center; 
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+	border:none;
+	margin:10px;
+}
+.cancel-btn {
+    background: #dddddd;
+}
+.game-icon{
+	border-radius:5px;
+}
+.layui-layer-content{
+	padding:0 20px;
+}

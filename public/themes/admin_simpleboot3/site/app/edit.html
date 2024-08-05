@@ -1,0 +1,171 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+
+	<div class="nav-tabs mb20">
+        <span class="pb10">上传原包</span>
+    </div>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('edit')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group" <if condition="$data['id'] eq 1 and $data['type'] eq 0"> hidden</if>>
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">打包方式：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" name="type" value="0" <empty name="data.type">checked</empty>>原包
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" name="type" value="1" <eq name="data.type" value="1">checked</eq>>超级签
+                                </label>
+                            </div>
+                        </div>
+
+                    <div class="form-group type1" <if condition="$data['type'] eq 1">hidden</if>>
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                上传原包：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="file_url" type="hidden" name="file_url" value="{$data.file_url}">
+                                <input id="file_url-name" class="form-control" name="file_name" type="text" value="{$data.file_name}" title="文件名称" style="display:block;border:none;">
+                                <a data-type="add" href="javascript:uploadPack('文件上传','#file_url','file',{'retain_local':'0'});">上传</a>
+                                <a data-type="del" href="javascript:(function(){$('#file_url-name').val('');$('#file_url').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">更新原包后会自动进行渠道包更新，打包完成后，对应推广员下的渠道包无需手动更新，渠道玩家即可下载最新版APP包（前提：服务器开启定时任务）</p>
+                        </div>
+
+                        <div class="form-group type2" <if condition="$data['type'] neq 1">hidden</if>>
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>超级签地址：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input  name="super_url" class="form-control" value="{$data.file_url}" >
+                            </div>
+                        </div>
+
+                        <div class="form-group type2" <if condition="$data['type'] neq 1">hidden</if>>
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>文件大小(MB)：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input  name="file_size" class="form-control" value="{:str_replace('MB','',$data.file_size)}" >
+                            </div>
+                        </div>
+
+
+                        <div class="form-group type1" <if condition="$data['type'] eq 1">hidden</if>>
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>包名：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="bao_name"  name="bao_name" class="form-control" value="{$data.bao_name}" >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                更新说明：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <textarea maxlength="100" name="remark" class="form-control">{$data.remark}</textarea>
+                            </div>
+                            <p class="help-block">用于APP更新弹窗内展示</p>
+                        </div>
+
+                        <div class="form-group type2" <if condition="$data['type'] neq 1"> hidden</if>>
+                            <label for="pay_download" class="col-sm-2 control-label">付费下载：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" name="pay_download" value="1" <?php if(!empty($data['pay_download']) && $data['pay_download']=='1') echo 'checked'; ?> />开启
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" name="pay_download" value="0" <?php if(empty($data['pay_download'])) echo 'checked'; ?> />关闭
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group pay_price" <if condition="empty($data['pay_download']) or $data['type'] neq 1">hidden</if>>
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>付费金额：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input name="pay_price" class="form-control" value="{$data['pay_price']|default=''}" onkeyup="this.value= this.value.match(/\d+(\.\d{0,2})?/) ? this.value.match(/\d+(\.\d{0,2})?/)[0] : ''" >
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <input type="hidden" name="id" value="{$data.id}">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9 btn-tijiao-load-img" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                                <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script>
+    game_id = $('#game_id').attr('game_id');
+    $("#game_id").selectpicker('val', game_id);
+    var ctype ="{:cmf_get_option('storage')['type']}";
+	$('.btn-tijiao-load-img').on('click', function(){
+	    if(ctype != 'Local'){
+            btn_tijiao_load_img_id=layer.msg('上传服务器中，请耐心等待', {
+                icon: 16,
+                shade: 0.4,
+                time:false //取消自动关闭
+            });
+        }
+	});
+	$("input[type=radio][name=type]").change(function () {
+        var value= $(this).val();
+        if(value == 0){
+            $(".type1").show();
+            $(".type2").hide();
+        }else{
+            $(".type2").show();
+            $(".type1").hide();
+        }
+    });
+
+    $("input[type=radio][name=pay_download]").change(function () {
+        var value = $(this).val();
+        if (value == 0) {
+            $(".pay_price").hide();
+        } else {
+            $(".pay_price").show();
+        }
+    })
+    $("input[type=radio][name=type]").change(function () {
+        var value = $(this).val();
+        if (value == 0) {
+            $(".pay_price").hide();
+        } else {
+            $(".pay_price").show();
+        }
+    })
+
+    function get_pack_name() {
+        var get_pack_name_url = "{:url('game/Gamesource/getPackName')}";
+        var pack_url = $("#file_url").val();
+        $.post(get_pack_name_url, {pack_url: pack_url}, function (res) {
+            if (res.code == '1') {
+                $("#bao_name").val(res.data.bao_name);
+            }
+        });
+        return false;
+    }
+
+</script>
+</body>
+</html>

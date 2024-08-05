@@ -1,0 +1,192 @@
+@charset "utf-8";
+html,body{
+    color: #333333;
+    width: 100%;
+    height: 100%;
+}
+p{
+    margin: 0;
+}
+footer{
+    display: none!important;
+}
+
+.form{
+    width: 100%;
+    padding: 0 0.55rem;
+    box-sizing: border-box;
+}
+.form .form-item{
+    width: 100%;
+    height: 0.9rem;
+    margin-top: 0.373rem;
+    /*border-bottom: 0.0267rem solid #EDEEEF;*/
+    display: flex;
+    align-items: center;
+    position: relative;
+
+}
+.form .form-item:first-child{
+    margin-top: 0.5rem;
+}
+.form-item .form-item-title{
+    width: 2.3333rem;
+    height: 100%;
+    font-size: 0.373rem;
+    color: #666;
+    line-height: 1rem;
+
+}
+.form-item .form-item-text{
+    width:calc(100% - 2.1333rem) ;
+    height: 100%;
+    box-sizing: border-box;
+    font-size: 0.34666rem;
+    line-height: 1rem;
+    position: relative;
+}
+.form-item  .form-item-input{
+    width: 100%;
+    border: 0.0267rem solid #E0E0E0;
+    outline: none;
+    height: 100%;
+    padding-left: 0.2rem;
+    box-sizing: border-box;
+	border-radius: 3px;
+	font-size: 0.373rem;
+}
+.form-item  .couponInput {
+    width: 100%;
+    border: 0.0267rem solid #E0E0E0;
+    outline: none;
+    height: 100%;
+    padding-left: 0.2rem;
+    box-sizing: border-box;
+	border-radius: 3px;
+	font-size: 0.373rem;
+}
+.form-item .form-item-input::-webkit-input-placeholder{
+	color:#C0C0C4;
+}
+.form-item .form-item-input::-webkit-input-placeholder{
+	color:#C0C0C4;
+}
+.form-item .form-item-input::-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:#C0C0C4;
+}
+.form-item .form-item-input::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:#C0C0C4;
+}
+.form-item .form-item-input::-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:#C0C0C4;
+}
+.label-choose {
+	position: relative;
+	margin-right: 0.2rem;
+	cursor: pointer;
+	color:#666;
+}
+.radio-choose {
+    cursor: pointer;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    opacity: 0;
+}
+.label-choose .label-choose-i {
+	width: 0.43rem;
+	height: 0.43rem;
+	display: inline-block;
+	vertical-align: middle;
+	margin-top: -2px;
+	margin-right: 5px;
+	background: url(../images/common/order_pay_btn_choose_s.png) no-repeat;
+	background-size:100% 100%;
+	
+}
+
+.label-choose i.current {
+	background: url(../images/common/order_pay_btn_choose.png) no-repeat;
+	background-size:100% 100%;
+}
+.form-item  .form-item-input:read-only{
+    border: none;
+    padding-left: 0;
+}
+.form-item-tips{
+    color: #999999;
+    font-size: 0.32rem;
+    position: absolute;
+    bottom: -0.4rem;
+    left: 0;
+    line-height: 1.2;
+}
+.form-item .submit-btn{
+   font-size: 0.4rem;
+    color: #fff;
+    background: #26c7db;
+    border-radius: 0.08rem;
+    width: 2.2rem;
+    height: 0.9rem;
+    /*margin: -0.5rem 0 0 0;*/
+    line-height: 0.9rem;
+    text-align: center;
+    border: none;
+}
+.form-item .form-item-radio{
+    cursor: pointer;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    opacity: 0
+}
+.form-item .form-item-radio:not(:first-child){
+    margin-left: 0.6rem;
+}
+
+
+.form-item-text .select2-container .select2-selection--single .select2-selection__rendered {
+    border: 0.0267rem solid #E0E0E0;
+    height: 0.9rem;
+    line-height: 0.9rem;
+    padding-left: 0.32rem;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    right: 0.32rem;
+}
+.select2-container .select2-selection--single .select2-selection__rendered +.select2-selection__arrow {
+    background: url(../images/common/game_btn_open@2x.png)no-repeat;
+    background-size: 100% 100%;
+}
+.select2-results__option {
+    padding-left: 0.32rem;
+}
+.select2-container--default .select2-results__option--highlighted[aria-selected]:after {
+    right: 0.32rem;
+}
+.select2-container--default .select2-results>.select2-results__options {
+    margin-top: -0.15rem;
+}
+.select2-container .select2-selection--single .select2-selection__rendered {
+    color: #333333;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__placeholder{
+    color: #999999;
+    font-size: 0.373rem;
+}
+.record-icon{
+    position: absolute;
+    top:0.35rem;
+    right:0.5rem;
+    background: url(../images/common/shouyi_chongzhi_ico_shuoming.png) no-repeat;
+	background-size:100% 100%;
+	width: 0.43rem;
+    height: 0.48rem;
+	
+}
+

@@ -1,0 +1,228 @@
+<extend name="../mobilepublic/trade_common" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/trade.css">
+    <style>
+        
+    </style>
+</block>
+<block name="body">
+    <div class="page tradePage tradeIndexPage">
+        <header class="header tradeHeader tradeIndexHeader">
+            <div class="headerTitle center">账号交易</div>
+            <div class="headerOperation center">
+                <a data-value="<empty name='union_set.qq'>{:cmf_get_option('kefu_set')['pc_set_server_qq']}<else />{$union_set['qq']}</empty>" href="javascript:;" class="operationIcon operationQQ jschatqq"></a>
+                <!--<a href="" class="operationIcon operationPrice point"></a>-->
+            </div>
+        </header>
+
+        <section class="menu tradeMenu">
+            <a href="{:url('Trade/sale')}" class="menuItem tradeMenuItem <eq name="session.login_auth" value="0">to_login</eq>">
+                <i class="menuIcon saleMenuIcon"></i>
+                <div class="menuTitle">我要卖号</div>
+            </a>
+            <a href="{:url('Trade/record')}" class="menuItem tradeMenuItem <eq name="session.login_auth" value="0">to_login</eq>">
+                <i class="menuIcon recordMenuIcon"></i>
+                <div class="menuTitle">交易记录</div>
+            </a>
+            <a hidden href="{:url('Trade/trends')}" class="menuItem tradeMenuItem <eq name="session.login_auth" value="0">to_login</eq>">
+                <i class="menuIcon trendsMenuIcon"></i>
+                <div class="menuTitle">成交动态</div>
+            </a>
+            <a href="{:url('Trade/rule')}" class="menuItem tradeMenuItem">
+                <i class="menuIcon ruleMenuIcon"></i>
+                <div class="menuTitle">交易须知</div>
+            </a>
+        </section>
+
+        <section class="list tradeList tradeIndexList">
+            <form action="javascript:submitInputContent();" class="form1">
+            <div class="listTitle tradeListTitle">
+                <span class="listTitleText js-titleText"><span>最新发布</span><i class="listTitleTextIcon"></i>
+                    <div class="listTitleSelect js-titleSelect">
+                        <a href="javascript:;" class="listTitleSelectItem active">最新发布</a>
+                        <a href="javascript:;" class="listTitleSelectItem">价格升序</a>
+                        <a href="javascript:;" class="listTitleSelectItem">价格降序</a>
+                    </div>
+                </span>
+                <div class="listTitleSearch">
+                    <input type="text" id="key" value="{:input('key')}" placeholder="搜索游戏/标题" class="listTitleSearchInput">
+                    <i class="listTitleSearchIcon"></i>
+                </div>
+            </div>
+            <div class="listContent tradeListContent" id="tradeload">
+            </div>
+            </form>
+        </section>
+
+    </div>
+</block>
+
+<block name="script">
+    <script>
+        var key = $("#key").val();
+        var order = 0;
+        var lwx = window.lwx || {};
+        lwx.ready = true;
+        lwx.width = $(window).width();
+        lwx.height = $(window).height();
+        lwx.number = {trade:1};
+        lwx.row = {trade:10};
+        is_xgkf ="{:get_xgkf_info(0)}";
+        xgkf_url = "{:get_xgkf_info(1)}";
+        $(function () {
+            $('.jschatqq').click(function() {
+                var qq = $.trim($(this).attr('data-value'));
+                var u = navigator.userAgent;
+                $mt = "{:get_devices_type()}";
+                if(is_xgkf == 1){
+                    if($mt==2){
+                        try{
+                            window.webkit.messageHandlers.sy_app_xgkf_url.postMessage(xgkf_url);
+                        }catch (e) {
+                            window.open(xgkf_url);
+                            return false;
+                        }
+                    }else{
+                        window.open(xgkf_url);
+                    }
+                }else{
+                    try{
+                        if($mt==2){
+                            window.webkit.messageHandlers.sy_small_serviceQQ.postMessage(1);
+                        }else{
+                            window.mengchuang.sy_small_serviceQQ();
+                        }
+                    }catch (e) {
+                        var is_mobile = "{:cmf_is_mobile()}";
+                        if (is_mobile) {
+                            window.location.href="mqqwpa://im/chat?chat_type=wpa&uin="+qq+"&version=1&src_type=web";
+                        }else
+                            window.location.href="http://wpa.qq.com/msgrd?v=3&uin="+qq+"&site=qq&menu=yes";
+                        return false;
+                    }
+                }
+            });
+            $('.js-titleText').click(function () {
+                if($(this).hasClass('open')) {
+                    $(this).removeClass('open').find('i').removeClass('on');
+                    $('.js-titleSelect').slideUp();
+                } else {
+                    $(this).addClass('open').find('i').addClass('on');
+                    $('.js-titleSelect').slideDown();
+                }
+            });
+            $('.js-titleSelect a').click(function () {
+                var text = $(this).text();
+                $(this).addClass('active').siblings().removeClass('active');
+                $('.js-titleText span').text(text);
+                if(text == '最新发布'){
+                    order = 0;
+                }else if(text == '价格升序'){
+                    order = 1;
+                }else{
+                    order = 2;
+                }
+                lwx.number.trade = 1;
+                $("#tradeload").empty();
+                pageChange();
+            })
+            $(".listTitleSearchIcon").click(function () {
+                key = $("#key").val();
+                lwx.number.trade = 1;
+                $("#tradeload").empty();
+                pageChange();
+            });
+        })
+        lwx.http = {
+            getJSON:function(url,callback){
+                $.getJSON(url + '&v=' + Date.now(),function(data){
+                    callback(data);
+                });
+            },
+            postJSON:function(url,args,callback) {
+                $.post(url + '&v=' + Date.now(), args, function(data) {
+                    callback(data);
+                },"json")
+            },
+        };
+        lwx.url ={
+            trade:'{:url("Trade/get_sell_list")}',
+        };
+        lwx.page = {
+            trade:function(){
+                if(lwx.number.trade) {
+                    lwx.http.getJSON(lwx.url.trade+'?limit='+lwx.row.trade+'&p='+lwx.number.trade+'&key='+key+'&order='+order,function(data) {
+                        var tradeload = $('#tradeload');
+                        var data = data.data;
+                        if(data && data.length) {
+                            var html = '';
+                            for (var i in data) {
+                                html += '<a href="'+data[i].url+'" class="listItem tradeListItem">';
+                                html += '<div class="listItemIcon tradeListItemIcon">';
+                                html += '<img src="'+data[i].icon+'" onerror="this.src=\'/static/images/empty.jpg\';this.onerror=null">';
+                                html += '</div>';
+                                html += '<div class="listItemInfo tradeListItemInfo">';
+                                html += '<div class="listItemInfoTitle ellipsis">'+data[i].title+'</div>';
+                                html += '<span class="listItemDesc ellipsis">#'+data[i].game_name+'#'+data[i].server_name+'</span>';
+                                html += '<span class="listItemRecord">';
+                                html += '<span class="listItemRecordItem">创建<i>'+data[i].days+'</i>天</span>';
+                                html += '<span class="listItemRecordItem">累计消费<i>'+data[i].cumulative+'</i>元</span>';
+                                html += '</span>';
+                                html += '</div>';
+                                html += '<div class="listItemPrice">'+data[i].money+'</div>';
+                                html += '</a>';
+                            }
+                            html += '</div>';
+                            tradeload.append(html);
+                            tradeload.find('.jsdropload').remove();
+                            if(data.length >= lwx.row.trade) {
+                                lwx.number.trade++;
+                                lwx.ready = true;
+                                tradeload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.trade = false;
+                                tradeload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                        } else {
+                            if(lwx.number.trade==1){
+                                if(key == ''){
+                                    tradeload.html('').append('<div class="tradeEmpty"><i class="tradeEmptyIcon"></i><p class="tradeEmptyText">~暂无商品~</p> </div>');
+                                }else{
+                                    tradeload.html('').append('<div class="tradeSearchEmpty"> <p>未匹配到商品，换个姿势再试试</p></div>');
+                                }
+
+                            } else{
+                                tradeload.find('.jsdropload').remove();
+                                tradeload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                            lwx.number.trade = false;
+                        }
+                    });
+                }
+            },
+        };
+        pageChange();
+        function pageChange(n) {
+            lwx.page.trade();
+            if(lwx.number.trade) {lwx.ready=true;}
+        }
+        function pageScroll(scrollTop, boxHeight, maxScrollHeight) {
+            if (scrollTop + boxHeight >= maxScrollHeight - 50) {
+                if (lwx.ready && lwx.number.trade>1) {
+                    lwx.ready = false;
+                    lwx.page.trade();
+                }
+            }
+        }
+        window.onscroll = function() {
+            var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+            pageScroll(scrollTop, lwx.height, $(document).height())
+        }
+        function submitInputContent() {
+            key = $("#key").val();
+            lwx.number.trade = 1;
+            $("#tradeload").empty();
+            pageChange();
+        }
+    </script>
+</block>

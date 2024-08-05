@@ -1,0 +1,158 @@
+<link href="__TMPL__/public/assets/simpleboot3/css/game.css" rel="stylesheet">
+<style>
+    .pro_promot{display:flex;align-items:center;justify-content:center}
+    .pro_promot_main{width:1160px;border-radius:5px;height:674px;overflow:hidden;position:static;left:50%;top:25%;margin-left:0}
+    .pro_promot_title{height:49px;width:100%;line-height:49px;background:#e6e6e6;border-bottom:1px solid #dddddd}
+    .pro_promot_btn{width:100%;height:52px;display:flex;align-items:center;justify-content:flex-end;background:#E6E6E6;margin:0;position:relative}
+    .pro_promot_btn_cancel{background:#BCBCBC;color:#FFFFFF}
+    .pro_promot_btn_confirm,.pro_promot_btn_cancel{margin-right:26px}
+    .pro_promot_game{min-height:300px;margin:-20px 0 0 0;height:500px}
+    .pro_promot_game_con{width:115px}
+    .omission{max-width:80px}
+    .game_list{margin-left:100px;list-style:none;width:auto}
+    .pro_promot_game_check:disabled + label{border:none}
+    .pro_promot_game_check:disabled + label:before{content:"";width:15px;height:15px;display:block;background:url("__TMPL__/public/assets/images/btn_nochoose.png")}
+    .pro_promot_btn .all-select-btn{position:absolute;left:100px}
+
+    .pro_promot_select_tab_item {
+        font-size: 14px;
+        margin: 0 10px;
+        line-height: 29px;
+        color: #393b6b;
+    }
+    .pro_promot_select_tab_item.active {
+        /* color: #8895f3; */
+    }
+    .pro_promot_search_input {
+        width: 180px;
+        margin-right: 10px;
+        height: 29px;
+        line-height: 29px;
+    }
+    .pro_promot_search_btn {
+        height: 29px;
+        line-height: 28px;
+        padding: 0 6px;
+    }
+    .pro_promot_game {
+        padding-top: 10px;
+    }
+</style>
+<div class="pro_promot " >
+    <div class="pro_promot_main">
+        <div class="pro_promot_title">
+            <div class="fl pro_promot_title_text">
+                <div class="fl pro_promot_title_bigtext">选择游戏部分玩家</div></div>
+            <div class="pro_promot_close fr"><img src="__TMPL__/public/assets/images/btn_close_pop.png"></div>
+        </div>
+        <div class="pro_promot_con">
+            <div class="pro_promot_select_title fl">选择玩家：</div>
+            <div class="pro_promot_select_tab fl">
+                <a href="javascript:;" class="firstChooseNum js-screen js-pst ">全部</a>
+                <a href="javaScript:;" class="firstChooseNum js-screen firstNumCurrent"  key="ABCD">ABCD</a>
+                <a href="javaScript:;" class="firstChooseNum js-screen" key="EFGH">EFGH</a>
+                <a href="javaScript:;" class="firstChooseNum js-screen" key="IJKL">IJKL</a>
+                <a href="javaScript:;" class="firstChooseNum js-screen" key="MNOP">MNOP</a>
+                <a href="javaScript:;" class="firstChooseNum js-screen" key="QRST">QRST</a>
+                <a href="javaScript:;" class="firstChooseNum js-screen" key="UVWX">UVWX</a>
+                <a href="javaScript:;" class="firstChooseNum js-screen" key="YZ">YZ</a>
+            </div>
+            <div class="pro_promot_search fr">
+                <input type="text" name="key" id="key" class="pro_promot_search_input form-control fl" placeholder="输入玩家帐号">
+                <input type="button" class="btn btn-primary pro_promot_search_btn fl" id="psi" value="搜索">
+            </div>
+            <div class="clear"></div>
+            <div class="pro_promot_game">
+                <ul id="promote_list" class="z_clearfix game_list">
+                    <volist name="game_user_list" id="vo">
+                        <li class="fl pro_promot_game_con promoteSelectLabel " id="{$vo['account']}" data-level="{$vo.promote_level}"  >
+                            <input type="checkbox" <if condition="isset($lists[$vo['id']])">checked</if> data-check="0"  value="{$vo.id}" name="game_user_ids[]" class="fl pro_promot_game_check jsgameid" id="gameCheck{$vo.id}" />
+                            <label for="gameCheck{$vo.id}" class="fl"></label>
+                            <span class="fl pro_promot_game_name omission" title="{$vo.account}" style="line-height: 16px;">{$vo.account}</span>
+                        </li>
+                    </volist>
+                </ul>
+            </div>
+
+        </div>
+        <div class="pro_promot_btn">
+            <div class="all-select-btn">
+                <input type="checkbox" class="fl pro_promot_game_check jsgameid" id="all-select" />
+                <label for="all-select" class="fl"></label>
+                <span class="fl pro_promot_game_name omission" >全选</span>
+            </div>
+            <div class="fl pro_promot_btn_cancel pro_promot_close">取消</div>
+            <div class="fr pro_promot_btn_confirm">确定</div>
+        </div>
+    </div>
+</div>
+<script>
+    //保存修改
+    $(".pro_promot_btn_confirm").click(function(){
+        $(".pro_promot").css("display","none");
+    });
+
+    //关闭弹窗
+    $(".pro_promot_close").click(function(){
+        $(".pro_promot").css("display","none");
+    });
+    //全选
+    $('#all-select').click(function () {
+        if(this.checked){
+            $(".pro_promot_game_check:checkbox").prop("checked",true)
+        }else{
+            $(".pro_promot_game_check:checkbox").prop("checked",false)
+        }
+    });
+
+    //全部显示
+    $('.js-pst').on('click', function () {
+        $(this).addClass('active').siblings().removeClass('active');
+        $('#promote_list li').show().find('input').prop('disabled', false);
+        return false;
+    });;
+    //筛选条件
+    // $(".js-screen").click(function () {
+    //     $(this).addClass('firstNumCurrent').siblings().removeClass('firstNumCurrent')
+    //     var keys = $(this).attr("key");
+    //     var keyArr = keys.split("");
+    //     $(".promoteSelectLabel").hide();
+    //     keyArr.forEach(function (ele) {
+    //         $(".short-" + ele + "").show();
+    //     });
+    //     return false;
+    // });
+    $(".js-screen").click(function () {
+        $(this).addClass('firstNumCurrent').siblings().removeClass('firstNumCurrent')
+        var keys = $(this).attr("key");//大写
+        if(keys != ''){
+            zimushaixuan(keys);
+        }
+    });
+
+    zimushaixuan("ABCD");
+    function zimushaixuan(keys){
+        var keys2 = keys.toLowerCase();//小写
+        var keyArr = keys.split("");
+        var keyArr2 = keys2.split("");
+        $(".promoteSelectLabel").hide();
+        keyArr.forEach(function (ele) {
+            $('#promote_list li span[title^="'+ele+'"]').siblings('input').prop('disabled', false).closest('li').show();
+        });
+        keyArr2.forEach(function (ele2) {
+            $('#promote_list li span[title^="'+ele2+'"]').siblings('input').prop('disabled', false).closest('li').show();
+        });
+        return false;
+    }
+
+
+    // 搜索
+    $('#psi').on('click', function () {
+        var key = $.trim($('#key').val());
+        if (key) {
+            $('#promote_list li').hide().find('input').prop('disabled', true);
+            $('#promote_list li span[title*="'+key+'"]').siblings('input').prop('disabled', false).closest('li').show();
+        }
+        return false;
+    });
+</script>

@@ -1,0 +1,123 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/user_trumpet.css">
+</block>
+
+<block name="body">
+    <div class="user_rebate_page">
+        <div class="my_bag_page_header">
+            <a href="javascript:back();"><img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon"></a>
+            <p class="fl my_bag_page_item">小号管理</p>
+        </div>
+        <div class="type_down__long_hx clear"></div>
+
+        <div class="user-trumpet-list">
+            <ul>
+                <volist name="data" id="vo" key="key">
+                    <li class="user-trumpet-item">
+                        <div class="game-info">
+                        <span class="game-icon">
+                            <if condition="$vo[0]['icon']">
+                                 <img src="{:cmf_get_image_url($vo[0]['icon'])}" />
+                            </if>
+                        </span>
+                            <span class="game-name">{$vo[0]['fgame_name']}</span>
+                        </div>
+                        <ul class="game-trumpet-list">
+                            <volist name="vo" id="v">
+                            <li class="game-trumpet-item">
+                                <div class="trumpetTitle">
+                                    <p class="trumpetName">{$v.nickname}</p>
+                                    <p class="trumpetCharge">（消费{$v.cumulative}元）</p>
+                                    <if condition="$v['sell_status'] eq 1">
+                                        <p class="trumpetStatus">(出售中)</p>
+                                    <else/>
+                                        <a href="javascript:;" data-user_id="{$v.id}" class="trumpetEdit js-trumpet-edit"></a>
+                                    </if>
+                                </div>
+                                <ul class="trumpetList">
+                                    <volist name="v.role" id="vv">
+                                        <li class="trumpetItem">
+                                            <span class="trumpetServer">{$vv.server_name}</span>
+                                            <span class="trumpetRole">{$vv.role_name}</span>
+                                            <span style="color:#999">创建 {$vv.update_time|date='Y-m-d',###}</span>
+                                        </li>
+                                    </volist>
+                                    <empty name="v.role">
+                                        <li class="trumpetItem">
+                                            <span class="trumpetNone">暂无区服信息</span>
+                                        </li>
+                                    </empty>
+                                </ul>
+                            </li>
+                            </volist>
+                        </ul>
+                    </li>
+                </volist>
+            </ul>
+            <empty name="data">
+            <div class="empty-box" >~空空如也~</div>
+            </empty>
+        </div>
+    </div>
+
+</block>
+<block name="script">
+    <script>
+        function back(){
+            try{
+                $mt = "{:get_devices_type()}";
+                if($mt==2){
+                    window.webkit.messageHandlers.xgsdk_finishPage.postMessage(1);
+                }else{
+                    window.xgsdk.finishPage()
+                }
+            }catch (e) {
+                history.go(-1);
+            }
+        }
+       $(function () {
+           $('.js-trumpet-edit').click(function () {
+               var that=$(this);
+               var user_id = that.data('user_id');
+               var val= that.siblings('.trumpet-name').text();
+               layer.prompt({
+                   formType: 0,
+                   title: "修改小号名称",
+                   area: ['25.487rem', 'auto'],
+                   closeBtn: false,
+                   value: val,
+                   max:10,
+                   success:function (layero, index) {
+                       layero.find('input').attr('placeholder','请输入小号名称').attr('maxlength',20);
+                   },
+                   end:function () {
+
+                   },
+
+               },function(account){
+                   $.ajax({
+                       async: false,
+                       url: "{:url('update_small_account')}",
+                       type: "POST",
+                       dataType: "json",
+                       data: {user_id: user_id, account: account},
+                       success: function (result) {
+                           layer.msg(result.msg);
+                           if (result.code) {
+                               setTimeout(function () {
+                                   window.location.reload();
+                               }, 1500);
+
+                           }
+                       },
+                       error: function () {
+                           layer.msg('服务器异常');
+                       }
+                   });
+               })
+           })
+
+       })
+    </script>
+</block>

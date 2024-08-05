@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<link href="__TMPL__/public/assets/css/promote/base_info.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+		<include file="public@head"/>
+	</head>
+
+	<body>
+		<include file="public@nav"/>
+		<include file="public@header"/>
+		<div class="trunk">
+			<div class="trunk-con">
+				<div class="right-container">
+					<div class="normal-list">
+						<div class="trunk-title">
+							<div class="location ">
+								<div class="location-container fr">当前位置：<span class="location-container-text">管理中心&gt;</span><span class="location-container-text">账户信息</span></div>
+							</div>
+							<img src="__TMPL__/public/assets/images/promote/icon_normal_zhanghu.png" class="fl trunk-icon">
+							<span class="title-main fl ">账户信息</span>
+						</div>
+						<ul class="tab">
+							<li class="tab-menu tab-menu-active">基本信息</li>
+							<li class="tab-menu">结算账户信息</li>
+							<li class="tab-menu">修改密码</li>
+							<li class="tab-menu">修改二级密码</li>
+						</ul>
+						<div class="clear"></div>
+						<ol class="tabpan">
+							<li class="tabpan-con tabpan-show">
+								<form>
+									<div class="tabpan-con-con">
+										<label class="fl label-name">用户名：</label>
+										<span class="formtxt fl">{$data.account}</span>
+									</div>
+									<!-- <div class="tabpan-con-con">
+										<label class="fl label-name">昵称：</label>
+										<input type="text" class="tabpan-input" name="nickname" id="nickname" value="{$data.nickname}" placeholder="昵称为1-24位字符">
+									</div> -->
+									<div class="tabpan-con-con">
+										<label class="fl label-name"><span class="req">*</span>姓名：</label>
+										<input type="text" class="tabpan-input" name="real_name" maxlength="25" id="real_name" value="{$data.real_name}" placeholder="2-25个字符">
+									</div>
+									<div class="tabpan-con-con">
+										<label class="fl label-name"><span class="req">*</span>手机号：</label>
+										<input type="text" class="tabpan-input" name="mobile_phone" id="mobile_phone" maxlength="11"  value="{$data.mobile_phone}" placeholder="请输入手机号">
+									</div>
+									<div class="tabpan-con-con postionr">
+										<label class="fl label-name"><span class="req">*</span>邮箱：</label>
+										<input type="text" class="tabpan-input" name="email" id="email" data-suffix="@qq.com" data-mail="" value="{$data.email}" placeholder="请输入邮箱" >
+									</div>
+									<div class="tabpan-con-con">
+										<input type="hidden" name="tab" value="1">
+										<input type="button" class="button button-zhxx" style="margin-left: 139px;" value="确认"  title="" target-form="paw_info">
+									</div>
+								</form>
+							</li>
+							<li class="tabpan-con">
+								<form>
+									<div class="tabpan-con-con">
+										<label class="fl label-name"><span class="req">*</span>结算账户:</label>
+										<label class="label-choose js_choose"><input type="radio" class="radio-choose" name="settment_type" value="0" <empty name="data.settment_type">checked</empty> ><i class="label-choose-i <empty name='data.settment_type'>current</empty>"></i><span>银行卡</span></label>
+										<label class="label-choose js_choose"><input type="radio" class="radio-choose" name="settment_type" value="1" <eq name="data.settment_type" value="1">checked</eq>  ><i class="label-choose-i <eq name='data.settment_type' value='1'>current</eq>"></i><span>支付宝</span></label>
+										<label style="color:#8B8CA0;margin-left: 120px;"><span>平台将打款至所选的结算账号</span></label>
+									</div>
+									<div class="tabpan-con-con type1">
+										<label class="fl label-name"><span class="req">*</span>手机号:</label>
+										<input type="text" class="tabpan-input" name="bank_phone" id="bank_phone" value="{$data.bank_phone}" maxlength="25"  placeholder="银行预留手机号">
+									</div>
+									<div class="tabpan-con-con type1">
+										<label class="fl label-name"><span class="req">*</span>银行卡号:</label>
+										<input type="text" maxlength="19" class="tabpan-input" name="bank_card" id="bank_card" value="{$data.bank_card}" placeholder="输入卡号">
+									</div>
+
+									<div class="tabpan-con-con type1">
+										<label class="fl label-name"><span class="req">*</span>收款银行:</label>
+										<select id="bank_name" name="bank_name" style="width: 280px;"></select>
+									</div>
+									<div class="tabpan-con-con type1">
+										<label class="fl label-name"><span class="req">*</span>持卡人:</label>
+										<input type="text" class="tabpan-input" name="bank_account" id="bank_account" maxlength="25" value="{$data.bank_account}" placeholder="持卡人姓名，2-25个字符">
+									</div>
+									<div class="tabpan-con-con type1">
+
+										<label class="fl label-name"><span class="req"></span>开户城市:</label>
+										<select id="province" name="province" class="areaselect1 select_gallery js-select-gallery" style="width: 90px;"></select>
+										<select id="city" name="city" class="areaselect2 select_gallery js-select-gallery" style="width: 90px;"></select>
+										<select id="county" name="county" class="areaselect3 select_gallery js-select-gallery" style="width: 90px;"></select>
+
+									</div>
+									<div class="tabpan-con-con type1">
+										<label class="fl label-name"><span class="req">*</span>开户网点:</label>
+										<input type="text" class="tabpan-input" name="account_openin" id="account_openin" value="{$data.account_openin}" placeholder="开户网点">
+									</div>
+
+									<div class="tabpan-con-con type2">
+										<label class="fl label-name"><span class="req">*</span>支付宝账号:</label>
+										<input type="text" class="tabpan-input" name="alipay_account" id="alipay_account" value="{$data.alipay_account}" placeholder="">
+									</div>
+									<div class="tabpan-con-con type2">
+										<label class="fl label-name"><span class="req">*</span>支付宝真实姓名:</label>
+										<input type="text" class="tabpan-input" name="alipay_name" id="alipay_name" value="{$data.alipay_name}" placeholder="">
+									</div>
+
+									<div class="tabpan-con-con">
+
+										<input type="hidden" name="tab" value="2">
+										<input type="button" class="button button-zhxx" style="margin-left: 139px;" value="确认" title="" target-form="paw_info">
+									</div>
+								</form>
+							</li>
+							<li class="tabpan-con ">
+								<form>
+									<div class="tabpan-con-con">
+										<label class="fl label-name">用户名:</label>
+										<span class="formtxt fl">{$data.account}</span>
+									</div>
+									<div class="tabpan-con-con">
+										<label class="fl label-name"><span class="req">*</span>原密码:</label>
+										<input type="password" class="tabpan-input" name="old_password" id="old_password" placeholder="">
+									</div>
+									<div class="tabpan-con-con">
+										<label class="fl label-name"><span class="req">*</span>新密码:</label>
+										<input type="password" class="tabpan-input" name="password" id="password" placeholder="6-30位字母或数字组合">
+									</div>
+									<div class="tabpan-con-con">
+										<label class="fl label-name"><span class="req">*</span>确认密码:</label>
+										<input type="password" class="tabpan-input" name="password_confirm" id="password_confirm" placeholder="再次输入确认密码">
+									</div>
+									<div class="tabpan-con-con">
+
+										<input type="hidden" name="tab" value="3">
+										<input type="button" class="button button-zhxx" style="margin-left: 139px;" value="确认" title="" target-form="paw_info">
+									</div>
+								</form>
+							</li>
+							<li class="tabpan-con">
+								<form>
+									<notempty name="data['second_pwd']">
+										<div class="tabpan-con-con">
+											<label class="fl label-name"><span class="req">*</span>原二级密码:</label>
+											<input type="password" class="tabpan-input" name="old_second_pwd" id="old_second_pwd" placeholder="请输入原二级密码">
+										</div>
+									</notempty>
+									<div class="tabpan-con-con">
+										<label class="fl label-name"><span class="req">*</span>新二级密码:</label>
+										<input type="password" class="tabpan-input" name="second_pwd" id="second_pwd" placeholder="请输入二级新密码">
+									</div>
+									<div class="tabpan-con-con">
+										<label class="fl label-name"><span class="req">*</span>确认密码:</label>
+										<input type="password" class="tabpan-input" name="second_pwd_confirm" id="second_pwd_confirm" placeholder="请再次输入确认密码">
+									</div>
+									<div class="tabpan-con-con">
+
+										<input type="hidden" name="tab" value="4">
+										<input type="button" class="button button-zhxx" style="margin-left: 139px;" value="确认" title="" target-form="paw_er_info">
+									</div>
+								</form>
+							</li>
+						</ol>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+		</div>
+
+		<include file="public@scripts"/>
+		<script src="__STATIC__/js/layer/layer.js"></script>
+		<script src="__TMPL__/public/assets/js/promote/area.js"></script>
+		<script src="__TMPL__/public/assets/js/promote/bank.js"></script>
+		<script src="__TMPL__/public/assets/js/promote/mail_suffix.js"></script>
+		<script type="text/javascript" src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+		<script>
+			var settment_type = "{$data.settment_type}";
+			if(settment_type == 0){
+			    $(".type2").hide();
+			}else{
+                $(".type1").hide();
+			}
+
+			$(".js-select-gallery").select2();
+			_init_area("province", "city", "county");
+
+			var pro="{:$data['bank_area']['0']?:'省'}";
+            var city="{:$data['bank_area']['1']?:'市'}";
+            var are="{:end($data['bank_area'])?:'区/县'}";
+			// 默认选中
+			$("#select2-province-container").text(pro);
+			$("#select2-city-container").text(city);
+			$("#select2-county-container").text(are);
+			$('#province').val(pro);
+			$('#province').change(function(){
+				$("#select2-city-container").text('市');
+				$("#select2-county-container").text('区/县');
+			});
+			$('#city').val(pro);
+			$('#county').val(pro);
+//				银行选择
+			var data_bank_name = '{$data["bank_name"]}';
+			var bank_name = '<option value="">选择银行</option>';
+			// console.log(bank);
+			for(var bn in bank) {
+				if(data_bank_name == bank[bn]) {
+					bank_name += '<option value="' + bank[bn] + '" selected>' + bank[bn] + '</option>';
+				} else {
+					bank_name += '<option value="' + bank[bn] + '">' + bank[bn] + '</option>';
+				}
+			}
+			$('#bank_name').html(bank_name).select2();
+			//邮箱
+			function add_mail_suffix(that) {
+				var suffix = $(that).data('suffix');
+				var input = $(that).closest('.mail_suffix').prev();
+				if(input.attr('data-mail').length > 0) {
+					input.val(input.attr('data-mail') + suffix);
+				}
+			}
+			$('#email').focus(function() {
+				var val = $.trim($(this).val());
+				if(val) {
+					var index = val.indexOf('@');
+					if(index > -1) {
+						var suffix = val.substring(index);
+						val = val.substring(0, index);
+						$(this).val(val).attr('data-suffix', suffix).attr('data-mail', val);
+					}
+				}
+				var html = '<ul class="mail_suffix">';
+				for(var item in mail_suffix) {
+					html += '<li onclick="add_mail_suffix(this)" data-suffix="' + mail_suffix[item] + '">' + mail_suffix[item] + '</li>';
+				}
+
+				html += '</ul>';
+				$(this).after(html);
+				$('body').click(function(event) {
+					var e = event || window.event;
+					var target = e.target || e.srcElement;
+
+					if($(target).attr('id') != 'email' && $(target).attr('class') != 'mail_suffix') {
+						$('.mail_suffix').remove();
+					}
+					return false;
+				});
+				return false;
+			}).blur(function(event) {
+				var e = event || window.event;
+				var target = e.target || e.srcElement;
+				var that = $(this);
+				if($(target).attr('id') == 'email' && $(target).attr('class') == 'mail_suffix') {
+					$('.mail_suffix').remove();
+				}
+				if(that.attr('data-mail')) {
+					var data_mail_index = that.attr('data-mail').indexOf('@');
+					if(data_mail_index > -1) {
+						var data_mail = that.attr('data-mail');
+						that.val(data_mail);
+						that.attr('data-mail', data_mail.substring(0, data_mail_index));
+						that.attr('data-suffix', data_mail.substring(data_mail_index));
+					} else {
+						that.val(that.attr('data-mail') + that.attr('data-suffix'));
+					}
+
+				}
+				return false;
+			}).keyup(function() {
+				var val = $.trim($(this).val());
+				if(val.length > 64) {
+					val = val.substr(0, 64);
+					$(this).val(val);
+				}
+				$(this).attr('data-mail', val);
+
+				return false;
+			});
+          $('.js_choose').click(function(){
+			that = $(this);
+			input = that.children('.radio-choose');
+			i = that.children('.label-choose-i');
+			$('.label-choose-i').removeClass('current');
+			i.addClass('current');
+			$('input[name=settment_type]').removeAttr('checked');
+			$('input[name=settment_type]').removeClass('paycheck');
+			input.attr('checked','checked').addClass('paycheck');
+
+			if( $(this ).find(".radio-choose ").val() == 0){
+                    $(".type1").show();
+                    $(".type2").hide();
+				}else{
+                    $(".type1").hide();
+                    $(".type2").show();
+				}
+		});
+		</script>
+		<script type="text/javascript">
+			$('.button-zhxx').click(function(){
+				that = $(this);
+				data = that.parents('form').serialize();
+				if(data.indexOf('settment_type') == -1){
+				    var settment_type = $('input[name=settment_type][checked]').val();
+				    data = data + '&settment_type=' + settment_type;
+				}
+				$.ajax({
+					url:"{:url('base_info')}",
+					type:'post',
+					data:data,
+					success:function(res){
+						if(res.code==1){
+							layer.msg(res.msg,{time:1000},function(){
+		                        location.href= location.href;
+		                    })
+						}else{
+							layer.msg(res.msg,{time:1500})
+						}
+					},error:function(){
+						layer.msg('服务器错误，请稍后再试');
+					}
+				})
+			});
+		</script>
+	</body>
+
+</html>

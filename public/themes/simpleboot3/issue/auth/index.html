@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="__TMPL__/issuepublic/assets/css/promote/select2.min.css" rel="stylesheet" />
+    <link href="__TMPL__/issuepublic/assets/css/promote/pay.css" rel="stylesheet" />
+    <link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+    <link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+	<link href="__TMPL__/public/assets/css/site.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" media="all" href="__STATIC__/js/datejs/daterangepicker.css"/>
+    {:widget('issue/Management/css')}
+</head>
+
+<body>
+<!--左侧导航栏-->
+{:widget('issue/Management/left')}
+
+<!--头部-->
+{:widget('issue/Management/header')}
+
+
+<div class="trunk-con">
+    <div class="right-container">
+        <div class="normal-list">
+            <div class="trunk">
+                <ul class="tab">
+                    <li class="tab-menu tab-menu-active"><a href="{:url('issue/Auth/index')}">基本信息</a></li>
+                    <li class="tab-menu "><a href="{:url('issue/Auth/settlement')}">结算信息</a></li>
+                    <li class="tab-menu "><a href="{:url('issue/Auth/changePassword')}">修改密码</a></li>
+                </ul>
+                <div class="clear"></div>
+                <div class="data">
+                    <ol class="tabpan">
+                        <li class="tabpan-con tabpan-show">
+                            <form id="form1" action="{:url('issue/Auth/saveInfo')}" method="post">
+
+                                <div class="tabpan-con-con">
+                                    <label class="fl label-name"><span class="req">*</span>公司名称：</label>
+                                    <input type="text" class="tabpan-input" name="company_name" id="company_name" value="{$info['company_name']|default=''}" placeholder="输入公司名称">
+                                </div>
+                                <div class="tabpan-con-con">
+                                    <label class="fl label-name"><span class="req">*</span>联系人姓名：</label>
+                                    <input type="text" class="tabpan-input" name="linkman" id="linkman" value="{$info['linkman']|default=''}" placeholder="输入联系人姓名">
+                                </div>
+                                <div class="tabpan-con-con">
+                                    <label class="fl label-name"><span class="req">*</span>职务：</label>
+                                    <input type="text" class="tabpan-input" name="job" id="job" value="{$info['job']|default=''}" placeholder="输入职务">
+                                </div>
+                                <div class="tabpan-con-con">
+                                    <label class="fl label-name"><span class="req">*</span>联系电话：</label>
+                                    <input type="text" class="tabpan-input" name="mobile" id="mobile" value="{$info['mobile']|default=''}" placeholder="输入联系电话">
+                                </div>
+                                <div class="tabpan-con-con">
+                                    <label class="fl label-name"><span class="req">*</span>联系QQ：</label>
+                                    <input type="text" class="tabpan-input" name="qq" id="qq" value="{$info['qq']|default=''}" placeholder="输入联系QQ">
+                                </div>
+                                <div class="tabpan-con-con">
+                                    <label class="fl label-name"><span class="req">*</span>联系微信：</label>
+                                    <input type="text" class="tabpan-input" name="wechat" id="wechat" value="{$info['wechat']|default=''}" placeholder="输入联系微信">
+                                </div>
+                                <div class="tabpan-con-con">
+                                    <label class="fl label-name"><span class="req">*</span>联系地址：</label>
+                                    <input type="text" class="tabpan-input" name="address" id="address" value="{$info['address']|default=''}" placeholder="输入联系地址">
+                                </div>
+                                <div class="tabpan-con-con upload-height">
+                                    <label class="fl label-name"><span class="req">*</span>营业执照</label>
+                                    <span class="formtxt">
+												<input id="business_license_img" type="hidden" name="business_license_img" value="{$info['business_license_img']}">
+
+				                                <img id="business_license_img-preview" class="upload-img" style="max-width: 60px;" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null" <if condition="$info['business_license_img']">src="{:cmf_get_image_preview_url($info['business_license_img'])}"</if>>
+				                                <a href="javascript:uploadOneImage('上传图片','#business_license_img');" class="btn btn-sm btn-default btn-uploadify">上传图片</a>
+				                                <a class="btn-uploadify" href="javascript:(function(){$('#business_license_img-preview').removeAttr('src');$('#business_license_img').val('')})();">移除</a>
+											</span>
+                                    <span class="notice-tip"></span>
+                                </div>
+                                <div class="tabpan-con-con upload-height">
+                                    <label class="fl label-name"><span class="req">*</span>文网文</label>
+                                    <span class="formtxt">
+												<input id="wenwangwen_img" type="hidden" name="wenwangwen_img" value="{$info['wenwangwen_img']}">
+
+				                                <img id="wenwangwen_img-preview" class="upload-img" style="max-width: 60px;" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null" <if condition="$info['wenwangwen_img']">src="{:cmf_get_image_preview_url($info['wenwangwen_img'])}"</if>>
+				                                <a href="javascript:uploadOneImage('上传图片','#wenwangwen_img');" class="btn btn-sm btn-default btn-uploadify">上传图片</a>
+				                                <a class="btn-uploadify" href="javascript:(function(){$('#wenwangwen_img-preview').removeAttr('src');$('#wenwangwen_img').val('')})();">移除</a>
+											</span>
+                                    <span class="notice-tip"></span>
+                                </div>
+                                <div class="tabpan-con-con upload-height">
+                                    <label class="fl label-name"><span class="req">*</span>ICP许可证</label>
+                                    <span class="formtxt">
+												<input id="icp_img" type="hidden" name="icp_img" value="{$info['icp_img']}">
+
+				                                <img id="icp_img-preview" class="upload-img" style="max-width: 60px;" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null" <if condition="$info['icp_img']">src="{:cmf_get_image_preview_url($info['icp_img'])}"</if>>
+				                                <a href="javascript:uploadOneImage('上传图片','#icp_img');" class="btn btn-sm btn-default btn-uploadify">上传图片</a>
+				                                <a class="btn-uploadify" href="javascript:(function(){$('#icp_img-preview').removeAttr('src');$('#icp_img').val('')})();">移除</a>
+											</span>
+                                    <span class="notice-tip"></span>
+                                </div>
+                                <div class="tabpan-con-con">
+                                    <label class="fl label-name"><span class="req">*</span>联运协议：</label>
+                                    <div class="fl pr">请先<a style="color: rgb(38,199,219)" href="__STATIC__/lyxy.doc">下载协议</a><br>
+                                    <span class="notice-tip authnotice-tip">签署完成后邮寄到：{:cmf_get_option('issue_set')['addressee']}</span>
+									</div>
+                                </div>
+
+                                <if condition="$info['auth_status'] eq 0 or $info['auth_status'] eq 3">
+                                    <div class="tabpan-con-con">
+                                        <input type="submit" style="cursor: pointer;" class="button jsconfirm" value="提交" title="">
+                                    </div>
+                                <elseif condition="$info['auth_status'] eq 2"/>
+                                    <div class="tabpan-con-con">
+                                        <label class="fl label-name">&nbsp;&nbsp;</label>
+                                        <span style="color: red">资料审核中，如需修改资料，请联系客服</span>
+                                    </div>
+                                <elseif condition="$info['auth_status'] eq 1" />
+                                    <label class="fl label-name">&nbsp;&nbsp;</label>
+                                    <div class="tabpan-con-con">
+                                        <span style="color: red">已认证成功，如需修改资料，请联系客服</span>
+                                    </div>
+                                </if>
+                            </form>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    //全局变量
+    var GV = {
+        ROOT: "__ROOT__/",
+        WEB_ROOT: "__WEB_ROOT__/",
+        JS_ROOT: "static/js/",
+        APP: '{$Request.module}'/*当前应用名*/
+    };
+</script>
+<script src="__TMPL__/issuepublic/assets/js/promote/jquery-1.11.1.min.js"></script>
+<script src="__TMPL__/issuepublic/assets/js/promote/common.js"></script>
+<script src="__TMPL__/issuepublic/assets/js/promote/select2.min.js"></script>
+<script src="__STATIC__/js/wind.js"></script>
+<script src="__TMPL__/public/assets/js/frontend.js"></script>
+<script>
+    $(function() {
+        $(".js-select-gallery").select2();
+    })
+</script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+{:widget('issue/Management/footer')}
+<script type="text/javascript">
+
+    $(function () {
+        $(".jsconfirm").click(function () {
+
+            var url = "{:url('issue/auth/saveInfo')}";
+            var data = $("#form1").serialize();
+            $.post(url, data, function (res) {
+                if (res.code == 0) {
+                    layer.msg(res.msg);
+                    return false;
+                }
+                layer.msg(res.msg);
+                setTimeout(function () {
+                    location.reload();
+                }, 1500);
+            });
+
+            return false;
+        });
+    })
+
+</script>
+
+</body>
+</html>

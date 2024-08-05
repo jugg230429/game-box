@@ -1,0 +1,112 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/select2.min.css" type="text/css" />
+    <link href="__TMPL__/channelwappublic/assets/css/recharge.css" type="text/css" rel="stylesheet" />
+    <link href="__TMPL__/channelwappublic/assets/css/agency.css" type="text/css" rel="stylesheet" />
+    <link href="__TMPL__/channelwappublic/assets/css/bind_balance.css" type="text/css" rel="stylesheet" />
+</block>
+<block name="body">
+    <div class="page-container">
+        <header>
+            <a href="javascript:history.back(-1);" class="back-btn"></a>
+            <div style="width: 100%;height: 100%" class="v-middle h-middle">
+                <p class="header-title addTitle">添加代金券</p>
+            </div>
+        </header>
+        <div class="page-content">
+            <form action="{:url('add_coupon')}" id="ajaxForm2" method="post">
+                <div class="form agency-form">
+                    <div class="form-item">
+                        <!-- <label><span class="req">*</span></label> -->
+                        <div  class="fl agency-item-title couponChange"><span class="req">*</span>选择游戏：</div>
+                        <div class="form-item-text">
+                            <select id="pgame_id" name="pgame_id" class="tab-input js-select-gallery normal-space select_gallery " style="width:100%;">
+                                <option value="">请选择游戏</option>
+                                <php>
+                                    $gmap['sdk_version'] = ['lt',4];
+                                    $gmap['id'] = ['in',get_promote_game_id(PID)];
+                                    $gmap['test_game_status'] = 0;
+                                </php>
+                                <volist name=":get_game_list('id,game_name',$gmap,false,'sort desc ,id desc')" id="vv">
+                                    <option value="{$vv['id']}">{$vv['game_name']}</option>
+                                </volist>
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="agency-item-title couponChange"><span class="req">*</span>代金券名称：</div>
+                        <div class="form-item-text">
+                            <input type="text" class="tabpan-input couponInput" name="coupon_name">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="agency-item-title couponChange">满减金额：</div>
+                        <div class="form-item-text">
+                            <input type="text" class="tabpan-input couponInput" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" name="limit_money" placeholder="使用代金券的最低充值金额">
+                            <!-- <span>用户充值金额大于等于此金额可以使用优惠券</span> -->
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="agency-item-title couponChange"><span class="req">*</span>优惠金额：</div>
+                        <div class="form-item-text">
+                            <input type="text" class="tabpan-input couponInput" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" name="money">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="agency-item-title couponChange"><span class="req">*</span>有效期：</div>
+                        <div class="form-item-text">
+                            <input type="text" class="tabpan-input couponInput js-datetime" id="start_time" name="start_time" value="{:date('Y-m-d H:i:s')}" placeholder="开始时间">
+                            <input type="text" class="endtimeInput couponInput js-datetime" id="end_time" name="end_time" value="" placeholder="结束时间">
+                        </div>
+                    </div>
+
+                    <!-- <div class="tabpan-con-con">
+                        <label class="fl label-name"><span class="req">*</span>有效期：</label>
+                        <input class="js-datetime tabpan-input" type="text" id="start_time" name="start_time" value="{:date('Y-m-d H:i:s')}" placeholder="开始时间">
+                        -
+                        <input class="js-datetime tabpan-input" type="text" id="end_time" name="end_time" value="" placeholder="结束时间">
+                        <span>不填表示永久</span>
+                    </div> -->
+                    <div class="form-item confirmButtonLast">
+					     <div class="form-item-title"></div>
+                        <button type="button" class="submit-btn js-ajax-submit">确认</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/select2.min.js"></script>
+    <script>
+        $(function () {
+            $(".select_gallery").select2({
+                minimumResultsForSearch: -1
+            });
+            $(".js-ajax-submit").click(function () {
+                var url = $("#ajaxForm2").attr('action');
+                $.ajax({
+                    type: 'post',
+                    url: url,
+                    data: $("#ajaxForm2").serialize(),
+                    async: false,
+                    success: function (res) {
+                        if(res.code == 1){
+                            layer.msg(res.msg);
+                            setTimeout(function () {
+                                window.location.href = res.url;
+                            },1000)
+                        }else{
+                            layer.msg(res.msg);
+                        }
+                    },
+                    error: function () {
+                        layer.msg('服务器错误，请稍后再试');
+                    }
+                });
+            })
+        })
+    </script>
+</block>

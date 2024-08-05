@@ -1,0 +1,150 @@
+<include file="public@header"/>
+<link href="__TMPL__/public/assets/simpleboot3/css/game.css" rel="stylesheet">
+<style>
+html{
+/* background-color: aquamarine; */
+   background-image: url(/themes/admin_simpleboot3/public/assets/images/login/bg_fxxt1.png);
+    /* background-size: 100% 160%; */
+}
+.js-del, .updateText {
+    font-size: 12px;
+}
+.f_div{
+    margin-left: 20px;
+    margin-top: 40px;
+}
+.topContent ul li {
+    margin-bottom: 10px;
+}
+</style>
+</head>
+<body class="body1">
+
+ <!-- 已配置 -->
+    <div class="fl rightFinish">
+        <div class="f_div">
+            <div class="topContent">
+                <ul>
+                    <volist name="lists" id="vo">
+                        <li>
+                            <img src="{$vo['logo']}" width="120px">
+                            <p>{$vo['channel_name']}</p>
+                            <if condition="$vo['is_apply'] eq 1">
+                                <button class="btn no-btn">已申请</button>
+                                <p>
+                                    <a href="javascript:;" class="js-del" data-tag="{$vo['tag_name']}">删除</a>
+                                    <if condition="$vo['has_new_version'] eq 1">
+                                        <a href="javascript:layer.msg('可删除当前对接后重新对接');" class="updateText">更新</a>
+                                    </if>
+                                </p>
+                            <else/>
+                                <button class="btn yes-btn js-apply" data-id="{$vo['id']}">申请对接</button>
+                            </if>
+                        </li>
+                    </volist>
+                </ul>
+            </div>
+            <div class="bottomTitle">
+                更多渠道敬请期待...
+            </div>
+        </div>
+    </div>
+
+<div class="k-pop" hidden>
+    <div class="kefu-pop" >
+      <div class="kefu-box">
+          <div class="kefu-top">
+              <p>联系客服</p>
+              <img src="__TMPL__/public/assets/images/close.png" class="kefu-close">
+            </div>
+            <div class="kefu-content">
+                <ul>
+                    <li>
+                        <img src="/themes/admin_simpleboot3/public/assets/images/ico_kefu_m.png">
+                        <p>海唐</p>
+                    </li>
+                    <li>
+                        <img src="/themes/admin_simpleboot3/public/assets/images/ico_kefu_mm.png">
+                        <p>小龙</p>
+                    </li>
+                    <li>
+                        <img src="/themes/admin_simpleboot3/public/assets/images/ico_kefu_w.png">
+                        <p>丹丹</p>
+                    </li>
+                </ul>
+            </div>
+      </div>
+    </div>
+</div>
+
+
+<script src="__STATIC__/js/admin.js"></script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script type="text/javascript">
+
+    $(function () {
+
+        $(".js-apply").click(function () {
+
+            var load = layer.load(1, {
+                shade: [0.1,'#fff'] //0.1透明度的白色背景
+            });
+
+            var url = "{:url('issue/channel/apply')}";
+            var channel_id = $(this).attr('data-id');
+
+            $.post(url, {channel_id: channel_id}, function (res) {
+                if (res.code == '0') {
+                    layer.close(load);
+                    layer.msg(res.msg);
+                    return false;
+                }
+                layer.msg(res.msg);
+                setTimeout(function () {
+                    location.reload();
+                }, 2000);
+                layer.close(load);
+            });
+            return false;
+        });
+
+    });
+  //关闭打开客服弹框
+  // $(".yes-btn").click(function(){
+  //           $(".k-pop").css("display","block")
+  //       })
+        $(".kefu-close").click(function(){
+            $(".k-pop").css("display","none")
+        })
+
+
+    $(".js-del").click(function () {
+        var tag = $(this).attr('data-tag');
+        var del_url = "{:url('issue/channel/delete')}";
+
+        layer.confirm('您确定要删除该渠道吗？（不影响已接入的游戏）', {
+            btn: ['确定', '取消']
+        }, function () {
+            //删除
+            $.post(del_url, {tag: tag}, function (res) {
+                if (res.code != '1') {
+                    layer.msg(res.msg);
+                    return false;
+                }
+                layer.msg(res.msg);
+
+                setTimeout(function () {
+                    location.reload();
+                },2000);
+                return true;
+            });
+        }, function () {
+            //取消
+        });
+
+    });
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li><a href="{:url('task')}">试玩任务</a></li>
+            <li><a href="{:url('record')}">试玩列表</a></li>
+            <li class="active"><a href="{:url('withdraw')}">提现记录</a></li>
+            <li><a href="{:url('withdraw_set')}">提现设置</a></li>
+        </ul>
+        <form id="search_form" class="well form-inline  fr" method="get" action="{:url('Tplay/withdraw')}">
+            <input type="text" class="form-control" name="user_account" style="width: 120px;" value="{:input('request.user_account/s','')}" placeholder="玩家账号">
+            <select name="type" id="type" class="selectpicker"  style="width: 120px;">
+                <option value="">提现方式</option>
+                <option value="0" <if condition="input('request.type') eq '0'">selected</if>>兑换平台币</option>
+                <option value="1" <if condition="input('request.type') eq 1">selected</if>>提现</option>
+            </select>
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('Tplay/withdraw')}">清空</a>
+        </form>
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>账号</th>
+                    <th>金额</th>
+                    <th>手续费</th>
+                    <th>实际到账</th>
+                    <th>方式</th>
+                    <th>提现账号</th>
+                    <th>状态</th>
+                    <th>时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <empty name="data_lists">
+                    <tr><td colspan="9" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <foreach name="data_lists" item="vo">
+                    <tr>
+                        <td>{$vo.user_account}</td>
+                        <td>{$vo.money}</td>
+                        <td>{$vo.fee}</td>
+                        <td>{$vo['money']-$vo['fee']}</td>
+                        <td>{:get_info_status($vo['pay_way'],32)}</td>
+                        <td>{$vo.money_account|default='--'}</td>
+                        <td>{:get_info_status($vo['status'],33)}</td>
+                        <td>{$vo['create_time']|date='Y-m-d H:i:s',###}</td>
+                        <td>
+                            <empty name="vo.status">
+                                <a href="{:url('setstatus',['id'=>$vo['id']])}" class="js-ajax-dialog-btn" data-msg="确认打款吗？">打款</a>
+                            </empty>
+                            <eq name="vo.status" value="2">
+                                <a href="{:url('reissue',['id'=>$vo['id']])}" class="js-ajax-dialog-btn" data-msg="确认补发吗？">补发</a>
+                            </eq>
+                        </td>
+                    </tr>
+                    </foreach>
+                    <tr class="data_summary">
+                        <td>汇总</td>
+                        <td>{$total.total_money>0?:0}</td>
+                        <td>{$total.total_fee>0?:0}</td>
+                        <td>{$total['total_money'] - $total['total_fee']}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </empty>
+            </tbody>
+        </table>
+        <div class="pagination">
+            {$page}
+        </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script type="text/javascript">
+    </script>
+</body>
+</html>

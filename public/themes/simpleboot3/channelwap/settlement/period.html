@@ -1,0 +1,361 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/LCalendar.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/select2.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/new_select2.css" type="text/css" />
+    <link href="__TMPL__/channelwappublic/assets/css/profit.css" type="text/css" rel="stylesheet" />
+</block>
+<block name="body">
+    <div class="page-container profit-exchange-container">
+        <header>
+            <a href="{:url('promote/index')}" class="back-btn"></a>
+            <div style="width: 100%;height: 100%" class="v-middle h-middle">
+                <p class="header-title active" data-url="{:url('settlement/profit')}">结算打款</p>
+                <!-- <p class="header-title" data-url="{:url('settlement/profit_record')}" style="margin-left: 1.5rem">我的支出</p> -->
+            </div>
+
+        </header>
+        <div class="page-content">
+            <div class="my-profit-content">
+                <div class="exchange-tab">
+                    <div class="search-box">
+
+                        <div class="search-item  col-4">
+                            <input type="text" class="input-date btn-date" readonly name="start_time" id="start_time" placeholder="结算周期开始时间" value="" autocomplete="off">
+                        </div>
+
+                        <div class="search-item  col-4">
+                            <input type="text" class="input-date btn-date" readonly name="end_time" id="end_time" placeholder="结算周期结束时间" value="" autocomplete="off">
+                        </div>
+
+                        <div class="search-item  col-4">
+                            <input type="text" class="input-date btn-date" readonly name="start_time_1" id="start_time_1" placeholder="结算开始时间" value="" autocomplete="off">
+                        </div>
+
+                        <div class="search-item  col-4">
+                            <input type="text" class="input-date btn-date" readonly name="end_time_1" id="end_time_1" placeholder="结算结束时间" value="" autocomplete="off">
+                        </div>
+
+                        <div class="search-item  col-4">
+                            <select id="is_remit" class="select_gallery" data-placeholder="打款状态">
+                                <option value="0" data="0">打款状态</option>
+                                <option value="2" <if condition="2 eq input('is_remit')"> selected</if> data="2">未打款</option>
+                                <option value="1" <if condition="1 eq input('is_remit')"> selected</if> data="1">已打款</option>
+                            </select>
+                        </div>
+
+                        <div class="search-item  col-4">
+                            <input type="text" class="input-date btn-date" readonly name="start_time_2" id="start_time_2" placeholder="打款开始时间" value="" autocomplete="off">
+                        </div>
+
+                        <div class="search-item  col-4">
+                            <input type="text" class="input-date btn-date" readonly name="end_time_2" id="end_time_2" placeholder="打款结束时间" value="" autocomplete="off">
+                        </div>
+
+                    </div>
+                    <div class="table-box" style="overflow-x: auto;">
+                        <table style="width:1000px;">
+                            <tbody>
+                                <tr class="table-title">
+                                    <th style="width: 6.8rem;">结算信息 </th>
+                                    <th >CPS实付流水</th>
+                                    <th>CPS分成金额</th>
+                                    <th >CPA分成金额</th>
+                                    <th>打款状态</th>
+                                    <th style="width: 5.8rem;">打款信息</th>
+                                    <th>详情</th>
+                                </tr>
+
+                                <tr class="total">
+                                    <td>汇总：</td>
+                                    <td><span class="total_total_money" style="color: #FFB22B;font-weight: bold">0.00</span></td>
+                                    <td><span class="total_total_cps" style="color: #FFB22B;font-weight: bold">0.00</span></td>
+                                    <td><span class="total_total_cpa" style="color: #FFB22B;font-weight: bold">0.00</span></td>
+                                    <td></td>
+                                    <td><span class="total_remit_amount" style="color: #FFB22B;font-weight: bold">0.00</span></td>
+                                    <td></td>
+
+                                </tr>
+
+                            </tbody>
+                            <tbody id="profitload">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/select2.min.js"></script>
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/LCalendar.min.js"></script>
+    <script>
+        $(function () {
+
+            //点击tap
+            $('.header-title').click(function () {
+                location.href=$(this).data("url");
+            });
+            $(".select_gallery").select2({
+                minimumResultsForSearch: -1
+				
+				
+            });
+           
+			 $(".select2-container").click(function(){
+			   $(".select2-container").addClass("game-select");
+			   $(".game-select .select2-dropdown--below").css("width","100%");
+			   $(".select2-container").css("left","0");
+			 })
+			    
+			// <!-- select.data('select2').$dropdown.addClass('lwx-select'); -->
+
+            //时间插件
+            var start_calendar = new LCalendar();
+            start_calendar.init({
+                'trigger': '#start_time', //标签id
+                'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+                'minDate': (new Date().getFullYear() - 3) + '-' + 1 + '-' + 1, //最小日期
+                'maxDate': (new Date().getFullYear() + 3) + '-' + 12 + '-' + 31 //最大日期
+            });
+            var end_calendar = new LCalendar();
+            end_calendar.init({
+                'trigger': '#end_time', //标签id
+                'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+                'minDate': (new Date().getFullYear() - 3) + '-' + 1 + '-' + 1, //最小日期
+                'maxDate': (new Date().getFullYear() + 3) + '-' + 12 + '-' + 31 //最大日期
+            })
+
+            //时间插件 1
+            var start_calendar_1 = new LCalendar();
+            start_calendar_1.init({
+                'trigger': '#start_time_1', //标签id
+                'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+                'minDate': (new Date().getFullYear() - 3) + '-' + 1 + '-' + 1, //最小日期
+                'maxDate': (new Date().getFullYear() + 3) + '-' + 12 + '-' + 31 //最大日期
+            });
+            var end_calendar_1 = new LCalendar();
+            end_calendar_1.init({
+                'trigger': '#end_time_1', //标签id
+                'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+                'minDate': (new Date().getFullYear() - 3) + '-' + 1 + '-' + 1, //最小日期
+                'maxDate': (new Date().getFullYear() + 3) + '-' + 12 + '-' + 31 //最大日期
+            })
+
+            //时间插件 2
+            var start_calendar_2 = new LCalendar();
+            start_calendar_2.init({
+                'trigger': '#start_time_2', //标签id
+                'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+                'minDate': (new Date().getFullYear() - 3) + '-' + 1 + '-' + 1, //最小日期
+                'maxDate': (new Date().getFullYear() + 3) + '-' + 12 + '-' + 31 //最大日期
+            });
+            var end_calendar_2 = new LCalendar();
+            end_calendar_2.init({
+                'trigger': '#end_time_2', //标签id
+                'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+                'minDate': (new Date().getFullYear() - 3) + '-' + 1 + '-' + 1, //最小日期
+                'maxDate': (new Date().getFullYear() + 3) + '-' + 12 + '-' + 31 //最大日期
+            })
+
+        })
+    </script>
+    <script>
+        var itemIndex = 0;
+        var game_id = 0;
+        var user_account = '';
+        var start_time = '';
+        var end_time = '';
+
+        var is_remit = '';
+        var start_time_1 = '';
+        var end_time_1 = '';
+
+        var start_time_2 = '';
+        var end_time_2 = '';
+
+
+        var promote_id = 0;
+        var lwx = window.lwx || {};
+        var pid_level = {:PID_LEVEL};
+        lwx.ready = true;
+        lwx.width = $(window).width();
+        lwx.height = $(window).height();
+        lwx.number = {profit:1};
+        lwx.row = {profit:15};
+        lwx.http = {
+            getJSON:function(url,callback){
+                $.getJSON(url + '&v=' + Date.now(),function(data){
+                    callback(data);
+                });
+            },
+            postJSON:function(url,args,callback) {
+                $.post(url + '&v=' + Date.now(), args, function(data) {
+                    callback(data);
+                },"json")
+            },
+        };
+        lwx.url ={
+            // profit:'{:url("Settlement/get_profit")}',
+            profit:'{:url("Settlement/getPeriod")}',
+        };
+        lwx.page = {
+            profit:function(){
+                if(lwx.number.profit) {
+                    lwx.http.getJSON(lwx.url.profit+'?row='+lwx.row.profit+'&page='+lwx.number.profit+'&start_time_1='+start_time_1+'&end_time_1='+end_time_1+'&start_time_2='+start_time_2+'&end_time_2='+end_time_2+'&is_remit='+is_remit+'&start_time='+start_time+'&end_time='+end_time,function(data) {
+                        var hotload = $('#profitload');
+                        $(".total").show();
+                        var total = data.total;
+                        if(total.total_total_money == null){ total.total_total_money = ''; }
+                        if(total.total_total_cps == null){ total.total_total_cps = ''; }
+                        if(total.total_total_cpa == null){ total.total_total_cpa = ''; }
+                        if(total.total_remit_amount == null){ total.total_remit_amount = ''; }
+
+                        $(".total_total_money").text(total.total_total_money);
+                        $(".total_total_cps").text(total.total_total_cps);
+                        $(".total_total_cpa").text(total.total_total_cpa);
+                        $(".total_remit_amount").text(total.total_remit_amount);
+
+                        var data = data.data;
+                        if(data && data.length) {
+                            var html = '';
+                            for (var i in data) {
+                                html += '<tr>';
+                                html += '<td>订单号: '+data[i].order_num+'<br/>结算周期: '+data[i].period+'<br/>结算时间: '+data[i].create_time+'</td>'
+                                html += '<td>'+data[i].total_money+'</td>'
+                                html += '<td>'+data[i].total_cps+'</td>';
+                                html += '<td>'+data[i].total_cpa+'</td>';
+                                html += '<td>'+data[i].is_remit+'</td>';
+                                if(data[i].is_remit_status == 1){
+                                    html += '<td>打款时间: '+data[i].remit_time+'<br/>打款人: '+data[i].operator+'<br/>打款金额: '+data[i].remit_amount+'<br/>打款方式:'+data[i].type_of_receive+'<br/>打款账户: '+data[i].name_of_receive+'  '+data[i].accounts_of_receive+'</td>';
+                                }else{
+                                    html += '<td> -- </td>';
+                                }
+                                // var tmp_url = '{:url("Game/my_game",[""],false)}';
+
+                                // html += '<td>'+'查看'+'</td>';
+                                html += '<td><a href="javascript:show_detail('+data[i].id+');">查看</td>';
+                                
+                                html += '</tr>';
+                            }
+                            hotload.append(html);
+                            hotload.find('.jsdropload').remove();
+                            if(data.length >= lwx.row.profit) {
+                                lwx.number.profit++;
+                                lwx.ready = true;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.profit = false;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                        } else {
+                            if(lwx.number.profit==1){
+                                $(".total").hide();
+                                hotload.html('').append('<p class="no_invest_info jsdropload">~空空如也~</p>');
+                            } else{
+                                hotload.find('.jsdropload').remove();
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                            lwx.number.profit = false;
+                        }
+                    });
+                }
+            }
+        };
+        pageChange();
+        function pageChange() {
+            lwx.page.profit();
+        }
+        function pageScroll(scrollTop, boxHeight, maxScrollHeight) {
+            if (scrollTop + boxHeight >= maxScrollHeight - 50) {
+                if (lwx.ready) {
+                    lwx.ready = false;
+                    lwx.page.profit();
+                }
+            }
+        }
+        window.onscroll = function() {
+            var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+            pageScroll(scrollTop, lwx.height, $(document).height())
+        }
+        $(function () {
+            $('.game-menu-box a').click(function () {
+                $(this).addClass("active").siblings().removeClass("active");
+                var index = $(this).index();
+                $('.menu-tab').eq(index).show().siblings(".menu-tab").hide();
+                itemIndex = index;
+                location.hash = index;
+            });
+        
+            $("#start_time").bind('input porpertychange',function(){
+                start_time = $("#start_time").val();
+                $("#profitload").empty();
+                lwx.number.profit = 1;
+                pageChange();
+            });
+            $("#end_time").bind('input porpertychange',function(){
+                end_time = $("#end_time").val();
+                $("#profitload").empty();
+                lwx.number.profit = 1;
+                pageChange();
+            });
+            $("#start_time_1").bind('input porpertychange',function(){
+                start_time_1 = $("#start_time_1").val();
+                $("#profitload").empty();
+                lwx.number.profit = 1;
+                pageChange();
+            });
+            $("#end_time_1").bind('input porpertychange',function(){
+                end_time_1 = $("#end_time_1").val();
+                $("#profitload").empty();
+                lwx.number.profit = 1;
+                pageChange();
+            });
+            $("#is_remit").change(function () {
+                is_remit = $("#is_remit").val();
+                $("#profitload").empty();
+                lwx.number.profit = 1;
+                pageChange();
+            })
+            $("#start_time_2").bind('input porpertychange',function(){
+                start_time_2 = $("#start_time_2").val();
+                $("#profitload").empty();
+                lwx.number.profit = 1;
+                pageChange();
+            });
+            $("#end_time_2").bind('input porpertychange',function(){
+                end_time_2 = $("#end_time_2").val();
+                $("#profitload").empty();
+                lwx.number.profit = 1;
+                pageChange();
+            });
+            
+        })
+        $(window).on("hashchange", function() {
+            pageChange();
+        });
+
+        //  查看周期结算单详情
+        function show_detail(period_id){
+            var period_url = "{:url('showDetail')}"+"?period_id="+period_id+"";
+            // alert(period_url);
+            // return false;
+            layer.open({
+                type: 2,
+                title: "周期结算表详情",
+                shadeClose: true,
+                shade: 0.5,
+                skin: 'layerdemo',
+                area: ['99%', '80%'],
+                // content: "{:url('user_bind_balance')}?user_id="+user_id //iframe的url
+                content: "{:url('showDetail')}"+"?period_id="+period_id+"" //iframe的url
+            });
+            // console.log(period_url);
+            // return false;
+            // window.location.href=period_url;
+                            
+        }
+    </script>
+</block>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<include file="public@head"/>
+		<link href="__TMPL__/public/assets/css/common.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/notice.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+		<script src="__TMPL__/public/assets/js/jquery-1.11.1.min.js"></script>
+	</head>
+
+	<body>
+		<header>
+			<include file="public@indexheader"/>
+		</header>
+		<div class="main">
+			<div class="inner">
+				<div class="inner-left">
+					<div class="inner-left-con">
+							<div class="notice-title"> <span class="notice-title-text">{$data['post_title']}</span> <span class="fr time"> {:date('Y-m-d H:i:s',$data['update_time'])} </span></div>
+
+					<div class="notice-details">
+						{$data['post_content']}
+					</div>
+					</div>
+
+				</div>
+				<div class="inner-right fr" >
+					<div class="kf">
+						<span class="name-game fl">游戏</span>
+						<span class="name-number fl">服数</span>
+						<span class="name-time fl">日期</span>
+					</div>
+					<div class="slideBox" id="slideBox">
+						<div class="bd">
+							<ul>
+								<volist name="server" id='sv'>
+									<li>
+										<volist name="sv" id = 's'>
+											<div class="kf-con">
+												<span class="kf-game fl">{$s.relation_game_name}</span>
+												<span class="kf-number fl">{$s.server_name}</span>
+												<span class="kf-time fl"> {:date('m-d H:i',$s['start_time'])} </span>
+											</div>
+										</volist>
+									</li>
+								</volist>
+							</ul>
+
+						</div>
+						<if condition="!empty($server) and count($server) gt 1">
+						<div class="hd">
+							<ul>
+
+								<volist name="server" id='sv'>
+									<li></li>
+								</volist>
+							</ul>
+						</div>
+						</if>
+					</div>
+				</div>
+			</div>
+		</div>
+		<include file="public@index_footer"/>
+		<script src="__TMPL__/public/assets/js/jquery.superslide.2.1.1.js"></script>
+		<script>
+			$('.jspagerow').attr('style','display: none;');
+			$(".slideBox").slide({
+				mainCell: ".bd ul",
+				titCell: ".hd li",
+				autoPlay: false
+			})
+		</script>
+	</body>
+
+</html>

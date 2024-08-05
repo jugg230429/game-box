@@ -1,0 +1,201 @@
+.invest_record_page{
+    background-color: #f3f3f3;
+}
+.invest_record_header{
+    width: 100%;
+    height: 3.8rem;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+}
+.record_page_item {
+    margin-left: 5.12rem;
+    font-size: 1.45rem;
+    line-height: 1.5rem;
+    color: #222;
+    font-weight: 500;
+    padding-top: 1.2rem;
+    margin-bottom: 0.9rem;
+}
+.record_page_item.active {
+    color: #018FFF;
+    position: relative;
+}
+.record_page_item.active:after{
+    content: '';
+    position: absolute;
+    bottom: -1.1rem;
+    left: 0;
+    width:100%;
+    height: 2px;
+    background-color: #018FFF;
+}
+
+.invest_record_header .back_icon{
+    width:0.74rem;
+    margin-left: 1rem;
+    margin-top: .4rem;
+}
+.invest_record_header_title{
+    font-size: 1.2rem;
+    font-weight:500;
+    margin-left: 0.8rem;
+    color: #999;
+}
+.invest_record_header_mid{
+    font-size: 1.54rem;
+    width: 30%;
+    text-align: center;
+    position: absolute;
+    right: 35%;
+}
+.invest_record_header_right img{
+    width: 30%;
+    margin-top: 1.3rem;
+    float: right;
+    margin-right: 1.2rem;
+}
+.invest_money_sum{
+    clear: both;
+    width: 100%;
+    height: 3rem;
+    margin-top: 0.1rem;
+    font-size: 1.2rem;
+    color: #999999;
+}
+.no_invest_info{
+    clear: both;
+    text-align: center;
+    background-color: #fff;
+    color: #999;
+    width: 100%;
+    border-top: 1px solid #EDEEEF;
+    padding-top: 70%
+}
+.invest_money_sum p{
+    line-height: 3rem;
+    margin-left: 1.2rem;
+}
+.invest_money_sum p span{
+    color: #666666
+}
+.invest_money_cons{
+    background-color: #ffffff
+}
+.invest_money_item_mon{
+    font-size: 1.29rem;
+    font-weight:normal;
+    margin-left: 1rem;
+    width: 11.5rem;
+}
+.zfb_money{
+    color: #018FFF;
+}
+.wx_money{
+    color: #4CBA3B;
+}
+.jz_money{
+    color: #E4AE3E;
+}
+.invest_money_item{
+    padding-top: 0.8rem;
+    font-size: 12px;
+    height: 2.5rem;
+    display: flex;
+    align-items: center
+}
+.type_down__long_hx{
+    width: 100%;
+    height: 1px;
+    background-color: #EDEEEF;
+    /* position: relative; */
+    /* top: -0.3rem; */
+    z-index: 1;
+}
+.invest_money_item_time{
+    width: 11.5rem;
+    color: #999999;
+}
+.invest_money_item_type{
+    width: 5rem;
+    color: #999999;
+    padding-left: 1.5rem;
+    position: relative;
+    right: -1.5rem;
+}
+.binding-record-item{
+    width:100%;
+    height: 4.77rem;
+    border-bottom: 1px solid #EDEEEF;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0 1.11rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.binding-record-item .charge-part1{
+    width:82%;
+}
+.binding-record-item .charge-part1 .game-name{
+    font-size: 1.28rem;
+    font-weight: 500;
+    color: #222222;
+    width:100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.binding-record-item .charge-part1 .game-date-account{
+    margin-top: 0.4rem;
+    font-size: 1rem;
+    color: #999999;
+}
+.division{
+    margin: 0 0.4rem 0.2rem;
+}
+.binding-record-item .charge-part2{
+    margin-left: auto;
+    font-size: 1rem;
+    text-align: right;
+    color: #999999;
+}
+.binding-record-item .charge-part2 .charge-unm{
+    font-size:  1.28rem;
+    margin-bottom: 0.4rem;
+}
+.binding-record-item .charge-part2 .charge-unm.zfb{
+    color: #018FFF;
+}
+.binding-record-item .charge-part2 .charge-unm.wechat{
+    color: #4CBA3B;
+}
+
+
+
+@media screen and (max-width:320px) and (orientation:portrait){
+    .invest_record_header_title{
+    }
+    .invest_money_item{
+        height: 2.3rem;
+    }
+    .invest_money_sum{
+        height: 3rem!important;
+        line-height: 3rem!important;
+    }
+    .invest_money_sum p{
+        padding-top: 0rem!important;
+    }
+    .invest_money_item_time{
+        width: 13rem!important;
+    }
+    .invest_money_item_mon{
+        width: 9rem!important;
+    }
+    .invest_money_item_type{
+        width: 4rem!important;
+    }
+}

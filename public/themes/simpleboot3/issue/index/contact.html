@@ -1,0 +1,56 @@
+<extend name="../issuepublic/base"/>
+
+<block name="css">
+    <link href="__TMPL__/issuepublic/assets/css/contact.css" rel="stylesheet"/>
+</block>
+
+<block name="body">
+    <div class="trunk">
+
+        <div class="page-container">
+            <div class="contact-our-box">
+                <div class="our-address-box">
+                    {:cmf_get_option('issue_set')['address']}
+                </div>
+                <div class="contact-info-box">
+                    <div class="contact-info-item-1">
+                        <div class="contact-info">
+                            <p>{:cmf_get_option('issue_set')['service_name']}</p>
+                            <p>QQ：
+                                <a style="color: white;" target="_blank"
+                                   href="https://wpa.qq.com/msgrd?v=3&uin={:cmf_get_option('issue_set')['service_qq']}&site=qq&menu=yes">{:cmf_get_option('issue_set')['service_qq']}</a>
+                            </p>
+                            <p>手机：{:cmf_get_option('issue_set')['service_phone']}</p>
+                            <p>邮箱：{:cmf_get_option('issue_set')['service_mail']}</p>
+                        </div>
+                        <div class="contact-ewm">
+                            <div class="ewm-box">
+                                <img src="{:cmf_get_image_url(cmf_get_option('issue_set')['service_qrcode'])}" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null">
+                            </div>
+                            <p class="contact-iphone"></p>
+                        </div>
+                    </div>
+                    <div class="contact-info-item-2">
+                        <div class="contact-info">
+                            <p>{:cmf_get_option('issue_set')['service2_name']}</p>
+                            <p>QQ：
+                                <a style="color: white;" target="_blank"
+                                   href="https://wpa.qq.com/msgrd?v=3&uin={:cmf_get_option('issue_set')['service2_qq']}&site=qq&menu=yes">{:cmf_get_option('issue_set')['service2_qq']}</a>
+                            </p>
+                            <p>手机：{:cmf_get_option('issue_set')['service2_phone']}</p>
+                            <p>邮箱：{:cmf_get_option('issue_set')['service2_mail']}</p>
+                        </div>
+                        <div class="contact-ewm">
+                            <div class="ewm-box">
+                                <img src="{:cmf_get_image_url(cmf_get_option('issue_set')['service2_qrcode'])}" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null">
+                            </div>
+                            <p class="contact-iphone"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</block>

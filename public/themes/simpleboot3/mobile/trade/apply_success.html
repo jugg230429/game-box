@@ -1,0 +1,32 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/trade_record.css">
+
+</block>
+
+<block name="body">
+    <div class="trade_record_page">
+        <div class="trade_record_header">
+            <a href="javascript:;" onclick="history.go(-1)"><img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon"></a>
+            <p class="trade-record-title">提交成功</p>
+        </div>
+        <div class="type_down__long_hx clear"></div>
+        <div class="apply-success-contain">
+            <img src="__TMPL__/mobilepublic/assets/images/trade/application_img_sucess.png" class="success-icon">
+            <p class="success-text">申请提交成功！</p>
+            <p class="success-tips">
+                我们将会尽快完成审核，审核和商品上架期间您将无法登录该小号
+            </p>
+            <a href="{:url('Trade/index')}" class="back-home-btn">返回首页</a>
+        </div>
+    </div>
+
+</block>
+<block name="script">
+    <script>
+        $(function () {
+
+        });
+
+    </script>
+</block>

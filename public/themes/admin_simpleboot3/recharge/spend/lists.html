@@ -1,0 +1,430 @@
+<include file="public@header" />
+</head>
+<body>
+<style>
+    .bind_order_promote {
+        overflow: visible;
+    }
+    .bind_order_promote.layui-layer-page .layui-layer-content {
+        overflow: visible;
+    }
+    .bind_order_promote .layui-layer-content {
+        height: 75px;
+    }
+    .clear {
+        clear: both;
+    }
+    .addPromoteDialog .form-group {
+        height: 35px;
+        margin-left: 7px;
+        margin-top: 15px;
+    }
+    .tipFinal{
+        margin: 10px 20px 20px 96px;
+        /* margin-left: 96px; */
+        color: red;
+        width: 74%;
+
+    }
+     .layui-layer-content {
+    position: relative;
+    padding: 20px 20px 0 20px;
+    word-wrap: break-word;
+    word-break: normal;
+    overflow-y: auto;
+}
+.layui-layer-title  .layui-layer-content {
+    position: relative;
+    padding: 20px 20px 0 20px;
+    word-wrap: break-word;
+    word-break: normal;
+}
+.layui-layer-btn {
+    padding: 74px 0 16px 109px !important;
+    text-align: left;
+
+    }
+    .open{
+        margin-left: 2px !important;
+    }
+</style>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('spend/lists')}">游戏订单</a></li>
+            <span class="title_remark">说明：统计用户游戏内的消费订单，包括SDK现金支付、平台币支付。订单异常指苹果SDK内的苹果支付异常订单。</span>
+        </ul>
+        <form id="search_form" class="well form-inline  fr" style="width:94%;margin-right: 0px;" method="get" action="{:url('spend/lists')}" onsubmit="return check();">
+            <if condition="AUTH_PROMOTE eq 1">
+                <input type="text" class="form-control" name="user_account" style="width: 120px;" value="{:input('request.user_account/s','')}" placeholder="账号">
+            </if>
+
+            <input type="text" class="form-control" name="pay_order_number" style="width: 120px;" value="{:input('pay_order_number/s','')}" placeholder="支付订单号">
+            <input type="text" class="form-control" name="extend" style="width: 120px;" value="{:input('request.extend/s','')}" placeholder="CP订单号">
+
+            <input type="text" class="form-control js-bootstrap-date" id="start_time" name="start_time" placeholder="充值开始时间"
+                   value="{:input('request.start_time/s','')}" style="width: 140px;" autocomplete="off">-
+            <input type="text" class="form-control js-bootstrap-date" id="end_time" name="end_time" placeholder="充值结束时间"
+                   value="{:input('request.end_time/s','')}" style="width: 140px;" autocomplete="off">
+            <select name="promote_account" id="promote_account" class="selectpicker " promote_account="{:input('request.promote_account')}" data-live-search="true" data-size="8" style="width: 100px;">
+                <option value="">渠道账号</option>
+                <option value="is_gf" >官方渠道</option>
+                <volist name=":get_promote_list()" id="vo">
+                    <option value="{$vo.account}" >{$vo.account}</option>
+                </volist>
+            </select>
+            <select name="top_promote" id="top_promote" class="selectpicker sss" top_promote="{:input('request.top_promote')}" data-live-search="true" data-size="8" style="width: 100px;">
+                <option value="">上线渠道</option>
+                <php>$map=['parent_id'=>['eq',0]];</php>
+                <option value="is_gf" >官方渠道</option>
+                <volist name=":get_promote_list($map)" id="vo">
+                    <option value="{$vo.id}" >{$vo.account}</option>
+                </volist>
+            </select>
+            <if condition="AUTH_GAME eq 1">
+                <select name="game_id" id="game_id" class="selectpicker " game_id="{:input('request.game_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+                    <option value="">游戏名称</option>
+                    <volist name=":get_game_list('id,game_name')" id="vo">
+                        <option game-id="{$vo.id}" value="{$vo.id}" >{$vo.game_name}</option>
+                    </volist>
+                </select>
+                <input type="text" class="form-control" name="server_name" style="width: 120px;" value="{:input('request.server_name/s','')}" placeholder="区服名称">
+            </if>
+            <select name="pay_way" id="pay_way" class="selectpicker" pay_way="{:input('request.pay_way')}">
+                <option value="">充值方式</option>
+                <option value="1" <if condition="input('request.pay_way') eq 1">selected</if>>绑币</option>
+                <option value="2" <if condition="input('request.pay_way') eq 2">selected</if>>平台币</option>
+                <option value="3" <if condition="input('request.pay_way') eq 3">selected</if>>支付宝</option>
+                <option value="4" <if condition="input('request.pay_way') eq 4">selected</if>>微信</option>
+                <option value="6" <if condition="input('request.pay_way') eq 6">selected</if>>苹果内购</option>
+            </select>
+
+            <input type="text" class="form-control" name="spend_ip" style="width: 120px;" value="{:input('request.spend_ip/s','')}" placeholder="充值IP">
+            <select name="pay_status" id="pay_status" class="selectpicker" pay_status="{:input('request.pay_status')}" style="width: 120px;">
+                <option value="">订单状态</option>
+                <option value="1" <if condition="input('pay_status') eq 1">selected</if>>充值成功</option>
+                <option value="0" <if condition="input('pay_status') eq '0'">selected</if>>下单未付款</option>
+                <option value="2" <if condition="input('pay_status') eq 2">selected</if>>订单异常</option>
+            </select>
+            <if condition="AUTH_GAME eq 1">
+                <select name="pay_game_status" id="pay_game_status" class="selectpicker" pay_game_status="{:input('request.pay_game_status')}" style="width: 140px;">
+                    <option value="">游戏通知状态</option>
+                    <option value="1" <if condition="input('pay_game_status') eq 1">selected</if>>通知成功</option>
+                    <option value="0" <if condition="input('pay_game_status') heq '0'">selected</if>>通知失败</option>
+                </select>
+            </if>
+            <select name="cp_id" id="cp_id" class="selectpicker " data-live-search="true" data-size="8" style="width: 100px;">
+                <option value="">所属CP</option>
+                <volist name=":get_cp_list()" id="vo">
+                    <option value="{$vo.id}" <if condition="input('request.cp_id') eq $vo['id']">selected</if> >{$vo.cp_name}</option>
+                </volist>
+            </select>
+
+            <select name="use_coupon" id="use_coupon" class="selectpicker " data-live-search="true" data-size="8" style="width: 100px;">
+                <option value="">代金券折扣</option>
+                <option value="1" <?php if(input('use_coupon')=='1') echo 'selected'; ?> >使用代金券</option>
+                <option value="0" <?php if(input('use_coupon')==='0') echo 'selected'; ?> >未使用代金券</option>
+            </select>
+            <input type="hidden" name="sort" id="sort" value="{:input('request.sort',1)}">
+            <input type="hidden" name="sort_type" id="sort_type" value="{:input('request.sort_type')}">
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('spend/lists')}">清空</a>
+            <a class="btn btn-export js-ajax-dialog-btn-xz" data-msg="确定导出吗？" href="{:url('Export/expUser',array_merge(['id'=>1,'xlsname'=>'游戏充值'],input()))}">导出</a>
+        </form>
+        <form class="js-ajax-form" action="" method="post" style="margin-left: -8px;">
+            <input type="hidden" id="f_promote_id" name="promote_id" >
+        <div class="table-actions position">
+            <button class="btn btn-primary js-pop-submit mtb17"
+                    data-action="{:url('bind')}" >
+                订单绑定
+            </button>
+        </div>
+        <div class="scroll-table-wrapper">
+        <table class="table table-hover table-bordered scroll-table" style="margin-left:0px;">
+            <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox" id="all-checkbox" class="table-item-checkbox js-check-all" data-direction="x" data-checklist="js-check-x">
+                        <label for="all-checkbox" class=""></label>
+                    </th>
+                    <th>订单号</th>
+                    <th>CP订单号</th>
+                    <th>时间</th>
+                    <th>账号</th>
+                    <th>游戏名称</th>
+                    <th>所属渠道</th>
+                    <th>充值IP</th>
+                    <th>游戏区服</th>
+                    <th>角色名称</th>
+<!--                    <th>额外信息</th>-->
+                    <!--<th>角色等级</th>-->
+                    <th>订单金额</th>
+                    <th>
+                        <a href="javascript:changesort('pay_amount');">实付金额
+                            <if condition="input('request.sort_type') eq 'pay_amount' and input('request.sort') eq 2">▼
+                                <elseif condition="input('request.sort_type') eq 'pay_amount' and input('request.sort') eq 3"/>▲
+                                <else/>
+                                <img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+                            </if>
+                        </a>
+                    </th>
+                    <th>代金券抵扣</th>
+                    <th>充值方式</th>
+                    <th>折扣</th>
+                    <th>所属CP</th>
+                    <th>订单状态</th>
+                    <th>游戏通知状态</th>
+                    <th>{:lang('ACTIONS')}</th>
+                    <th>额外信息</th>
+                </tr>
+            </thead>
+            <tbody style="background: #ffffff">
+                <empty name="data_lists">
+                    <tr><td colspan="19" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <foreach name="data_lists" item="vo">
+                    <tr>
+                        <php>if($vo['pay_status'] == 1) { $page_total +=$vo['pay_amount']; $page_us_total += $vo['us_cost'];}</php>
+                        <td>
+                            <input type="checkbox" id="ids-checkbox{$vo.id}" class="table-item-checkbox js-check" <if condition="$vo['status'] eq 1 or $vo['pay_status'] neq 1"> disabled</if> data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
+                            value="{$vo.id}" >
+                            <label for="ids-checkbox{$vo.id}" class=""></label>
+                        </td>
+                        <td>{$vo['pay_order_number']}</td>
+                        <td title="{$vo['extend']}"><a data-order="{$vo['extend']}" href="javascript:;" class="show_order_no">查看</a> </td>
+                        <td>{$vo['pay_time']|date="Y-m-d H:i:s",###}</td>
+                        <td>{$vo['user_account']}</td>
+                        <td>{$vo['game_name']}</td>
+                        <if condition="AUTH_PROMOTE eq 1">
+                            <td>{:get_promote_name($vo['promote_id'])}</td>
+                        <else/>
+                            <td>请购买渠道权限</td>
+                        </if>
+                        <td>{$vo['spend_ip']}</td>
+                        <td>{:$vo['server_name']?:'--'}</td>
+                        <td>{:$vo['game_player_name']?:'--'}</td>
+                        <!--<td><if condition="$vo['role_level'] gt 0">{$vo.role_level}<else/>&#45;&#45;</if></td>-->
+                        <td>
+                            <div>￥{$vo['cost']}</div>
+                            <eq name="vo.area" value="1">
+                            <div style="font-size:10px;color:#999;">({$vo.currency_code} {$vo.currency_cost}/${$vo.us_cost})</div>
+                            </eq>
+                        </td>
+                        <td>{$vo['pay_amount']}</td>
+                        <td>
+                            <eq name="vo.pay_status" value="1">
+                                <empty name="vo.coupon_record_id">--<else/>{:get_coupon_entity($vo['coupon_record_id'],'money')['money']}</empty><else/>--</eq></td>
+                        <td>{:get_pay_way($vo['pay_way'])}</td>
+                        <td><if condition="$vo['discount'] eq 10"><else/>{$vo.discount}折</if></td>
+                        <td>{:get_game_cp_name($vo['game_id'])}</td>
+                        <td>
+                            <span <if condition="$vo['pay_status'] eq 1"> class="label" style="color:#3FAD46;font-size:14px"<else/>class="label" style="color:#d9534f;font-size:14px"</if>>{:get_info_status($vo['pay_status'],2)}</span>
+                        </td>
+                        <td>
+                            <spa <if condition="$vo['pay_game_status'] eq 1"> class="label" style="color:#3FAD46;font-size:14px"<else/>class="label " style="color:#d9534f;font-size:14px"</if>>{:get_info_status($vo['pay_game_status'],3)}</span>
+                        </td>
+                        <td>
+                            <if condition="($vo['pay_game_status'] eq 0 and $vo['pay_status'] eq 1) or $vo['pay_status'] eq 2">
+                                <a href="javascript:;" class="budan" data-orderno="{$vo['pay_order_number']}">
+                                    补单
+                                </a>
+                                <a href="javascript:;" class="callback-info" data-orderno="{$vo['pay_order_number']}">回调信息</a>
+                            <else/>
+                                --
+                            </if>
+                        </td>
+                        <td>{:$vo['goods_reserve']?:'--'}</td>
+                    </tr>
+                    </foreach>
+                     <tr class="data_summary">
+                        <td colspan="2"><span style="margin-right: 10px;">汇总（只汇总充值成功） </span></td>
+                         <td colspan="18"><span>今日充值：{:null_to_0($today['total'])}元<eq name="pay_oversea" value="1">(${:null_to_0($today['us_total'])})</eq> ； 昨日充值：{:null_to_0($yestoday['total'])}元<eq name="pay_oversea" value="1">(${:null_to_0($yestoday['us_total'])})</eq> ； 当页充值：{:null_to_0($page_total)}元<eq name="pay_oversea" value="1">(${:null_to_0($page_us_total)})</eq> ； 累计充值：{:null_to_0($total['total'])}元<eq name="pay_oversea" value="1">(${:null_to_0($total['us_total'])})</eq>； 累计充值用户数：{$totaluser}人;  累计订单金额：{$order_total_money['all_cost']}元</span></td>
+                    </tr>
+                </empty>
+            </tbody>
+        </table>
+        </div>
+        </form>
+        <div class="pagination">
+            {$page}
+        </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script type="text/javascript">
+        game_id = $("#game_id").attr('game_id');
+        account = $("#promote_account").attr('promote_account');
+        top_promote = $('#top_promote').attr('top_promote');
+        server_id = $("#server_id").attr('server_id');
+        $("#game_id").selectpicker('val', game_id);
+        $("#promote_account").selectpicker('val', account);
+        $("#top_promote").selectpicker('val', top_promote);
+        $("#pay_way").selectpicker('val', $('#pay_way').attr('pay_way'));
+        $("#pay_status").selectpicker('val', $('#pay_status').attr('pay_status'));
+        $("#pay_game_status").selectpicker('val', $('#pay_game_status').attr('pay_game_status'));
+
+        $(".show_order_no").click(function () {
+            var order = $(this).data('order');
+            layer.open({
+                type: 1,
+                title:"CP订单号",
+                skin: 'layui-layer-rim', //加上边框
+                area: ['400px', '200px'], //宽高
+                content: order
+            });
+        })
+
+        //回调信息查看
+        $(".callback-info").click(function () {
+            var pay_order_number = $(this).data('orderno');
+            var getNotifyInfoUrl = "{:url('recharge/spend/getNotifyInfo')}";
+            $.post(getNotifyInfoUrl, {pay_order_number: pay_order_number}, function (res) {
+                var game_notify_info = res.data.game_notify_info;
+                layer.open({
+                    type: 1,
+                    title: "回调信息",
+                    closeBtn :1,
+                    skin: 'layui-layer-rim', //加上边框
+                    area: ['400px', '300px'], //宽高
+                    content: game_notify_info
+                });
+            });
+        })
+
+        $('button.js-pop-submit').on('click', function (e) {
+            var btn = $(this), form = btn.parents('form.js-ajax-form');
+            btn.parent().find('span').remove();
+            if (form.find('input.js-check:checked').length) {
+                btn.data('subcheck', false);
+            } else {
+                var pay_order_number = $(this).data('orderno');
+            var getNotifyInfoUrl = "{:url('recharge/spend/getNotifyInfo')}";
+            $.post(getNotifyInfoUrl, {pay_order_number: pay_order_number}, function (res) {
+                var game_notify_info = res.data.game_notify_info;
+                layer.open({
+                    type: 1,
+                    title: "订单绑定",
+                    skin: 'layui-layer-rim', //加上边框
+                    area: ['200px', '106px'], //宽高
+                    content: '<span class="tips_error" style="color:red;margin-left: 3px;">请至少选择一项</span>'
+                });
+            });
+                // var btnStyle = btn.data('style') || '';
+                // $('<span class="tips_error" style="' + btnStyle + '">请至少选择一项</span>').appendTo(btn.parent()).fadeIn('fast');
+                return false;
+            }
+            //ie处理placeholder提交问题
+            if ($.browser && $.browser.msie) {
+                form.find('[placeholder]').each(function () {
+                    var input = $(this);
+                    if (input.val() == input.attr('placeholder')) {
+                        input.val('');
+                    }
+                });
+            }
+
+            $.post('{:url("get_promote_lists")}', function (data) {
+                var html='<form class="js-ajax-form addPromoteDialog" action="" method="post">' +
+                    '<div class="form-group clear">' +
+                    '<label for="input-site_seo_title" class="col-sm-3 control-label" style="line-height: 32px;width:16%;padding-right:0">绑定渠道：</label>' +
+                    '<div class="col-sm-9" style="padding-left:0">' +
+                    '<select id="promote_id" name="promote_id" class="form-control selectpicker" data-live-search="true" data-size="8"> ' +
+                    '<option value="">选择渠道</option>' +
+                    '<option value="0">官方渠道</option>';
+
+                if (data.code==1 && data.data) {
+                    $.each(data.data, function (index, item) {
+                        html += '<option value="'+item.id+'" >'+item.account+'</option>'
+                    })
+                }
+
+                html += '</select>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="tipFinal">注：补链后会出现【数据报表】下的数据与实时记录表内的数据不一致问题，希望显示一致需联系售后进行定制化处理。</div>'+
+                    '</form>';
+
+                layer.open({
+                    type: 1,
+                    title:"新增绑定",
+                    skin: 'bind_order_promote', //加上边框
+                    area: ['600px', 'auto'], //宽高
+                    btn: ['确定', '取消'],
+                    content: html,
+                    success: function (layero) {
+                        layero.find('#promote_id').selectpicker();
+                    },
+                    yes: function (index, layero) {
+                        var promote_id = layero.find('#promote_id').val();
+                        if (!isNaN(parseInt(promote_id))) {
+                            form.find('#f_promote_id').val(promote_id);
+                            $.post(btn.attr('data-action'), form.find('input.js-check:checked, input#f_promote_id').serialize(), function (response) {
+                                if (response.code==1) {
+                                    layer.msg(response.msg)
+                                    layer.close(index)
+                                    setTimeout(function () {
+                                        window.location.reload();
+                                    },1000)
+                                } else {
+                                    layer.msg(response.msg)
+                                }
+                            }, 'json');
+
+                        } else {
+                            layer.msg('请选择渠道')
+                        }
+                    },
+                });
+            }, 'json');
+
+            return false;
+        });
+
+
+        function check(){
+            var start_time = $("#start_time").val();
+            var end_time = $("#end_time").val();
+            if(start_time != '' && end_time != '' && start_time > end_time){
+                layer.msg('开始时间不能大于结束时间');
+                return false;
+            }
+            return true;
+        }
+        $('.budan').click(function(){
+            var orderno = $(this).attr('data-orderno');
+            $.ajax({
+                url:"{:url('repair')}",
+                type:'post',
+                dataType:'json',
+                data:{orderno:orderno},
+                success:function(res){
+                    layer.msg(res.msg);
+                    if(res.code == 1){
+                        setTimeout(function () {
+                            window.location.reload();
+                        },1000)
+                    }
+                },error(){
+                    layer.msg('服务器错误');
+                }
+            })
+        });
+        function changesort(type){
+            var sort_type = $("#sort_type").val();
+            if(sort_type != type){
+                var sort = 1;
+            }else{
+                var sort = $("#sort").val();
+            }
+            $("#sort_type").val(type);
+            if(sort == 1){
+                $("#sort").val(2);
+            }else if(sort == 2){
+                $("#sort").val(3);
+            }else{
+                $("#sort").val(1);
+            }
+            $("#search_btn").click();
+        }
+    </script>
+</body>
+</html>

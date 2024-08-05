@@ -1,0 +1,177 @@
+<include file="public@header" />
+</head>
+<body>
+<style>
+    table,td,tr,th{
+        text-align: center;
+        /* border: 1px solid red;
+        margin: auto; */
+    }
+</style>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="{:url('lists')}">月卡福利</a></li>
+        <span class="title_remark"></span>
+    </ul>
+
+    <form id="search_form" class="well form-inline  fr" method="get" action="{:url('lists')}" onsubmit="return check();">
+
+        <input type="text" class="form-control" name="user_account" style="width: 120px;" value="{:input('user_account/s','')}" placeholder="玩家账号" autocomplete="off">
+
+        <select name="promote_id" id="promote_id" class="selectpicker " promote_id="{:input('request.promote_id')}"
+                data-live-search="true" data-size="7" style="width: 100px;">
+            <option value="">渠道</option>
+            <volist name=":get_promote_list()" id="vo">
+                <option value="{$vo.id}">{$vo.account}</option>
+            </volist>
+        </select>
+
+        <select name="game_id" id="game_id" class="selectpicker " game_id="{:input('request.game_id')}"
+                data-live-search="true" data-size="7" data-width="120px" >
+            <option value="">游戏名称</option>
+            <volist name=":get_game_list('id,game_name',$map)" id="vo">
+                <option value="{$vo.id}">{$vo.game_name}</option>
+            </volist>
+        </select>
+
+        <select name="server_id" id="server_id" class="selectpicker " server_id="{:input('request.server_id')}"
+                data-live-search="true" data-size="7" data-width="120px" >
+            <option value="">区服</option>
+            
+        </select>
+
+        <input type="text" class="form-control" name="game_player_name" style="width: 120px;" value="{:input('game_player_name/s','')}" placeholder="角色名">
+
+        <input type="submit" class="btn btn-search" id="search_btn" value="搜索" />
+        <a class="btn btn-clear" href="{:url('lists')}">清空</a>
+    </form>
+
+    <form class="js-ajax-form" action="" method="post">
+
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <!-- <th>ID</th> -->
+                <th>玩家账号</th>
+                <th>所属渠道</th>
+                <th>游戏名称</th>
+                <th>区服</th>
+                <th>角色名</th>
+                <th>角色ID</th>
+                <th>累计周卡数</th>
+                <th>已发天数/总福利天数</th>
+                <th>首笔648日期</th>
+            </tr>
+            </thead>
+            <tbody>
+            <empty name="lists">
+                <tr>
+                    <td colspan="11" style="text-align: center;">暂无数据</td>
+                </tr>
+            <else/>
+
+            <foreach name="lists" item="vo">
+                <tr>
+                    <!-- <td>{$vo['id']}</td> -->
+                    <td>{:get_user_name2($vo['user_id'])}</td>
+                    <td>{$vo['promote_name']}</td>
+                    <td>{$vo['game_name']}</td>
+                    <td>{$vo['server_name']}</td>
+                    <td>{$vo['game_player_name']}</td>
+                    <td>{$vo['game_player_id']}</td>
+                    <td>{$vo['total_number']}</td>
+                    <td>{$vo['already_send_num']}/{:$vo['total_number']*30}</td>
+                    <if condition="$vo['first_six_four_eight_time']">
+                        <td>{:date("Y-m-d",$vo['first_six_four_eight_time'])}</td>
+                    <else/>
+                        <td>--</td>
+                    </if>
+                </tr>
+            </foreach>
+
+            <tr style="background: #E4E4E4;">
+                <td>汇总</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><strong>{$res_total['tt_number']}</strong></td>
+                <td><strong>{$res_total['tt_already_send_num']} / {$res_total['total_days']}</strong></td>
+                <td></td>
+            </tr>
+            </empty>
+            </tbody>
+        </table>
+
+    </form>
+    <div class="pagination">
+        {$page}
+    </div>
+</div>
+
+<script src="__STATIC__/js/admin.js"></script>
+
+<script type="text/javascript">
+
+    $("#promote_id").selectpicker('val', $('#promote_id').attr('promote_id'));
+    $("#game_id").selectpicker('val', $('#game_id').attr('game_id'));
+    $("#server_id").selectpicker('val', $('#server_id').attr('server_id'));
+    $("#status").selectpicker('val', $('#status').attr('status'));
+
+
+    game_id = $("#game_id").attr('game_id');
+    server_id = $("#server_id").attr('server_id');
+    if (game_id) {
+        get_game_server(game_id);
+    }
+    $('#game_id').change(function () {
+        gi = $("#game_id").val();
+        get_game_server(gi);
+    });
+    $("#server_id").click(function () {
+        if ($('#game_id').val() == 0) {
+            layer.msg('请先选择游戏');
+            return false;
+        }
+        if ($('#game_id').val() == '') {
+            layer.msg('请先选择游戏');
+            return false;
+        }
+    });
+
+
+    function get_game_server(game_id) {
+        $('#server_id').empty();
+        $('#server_id').append("<option value=''>区服</option>");
+        $.ajax({
+            url: "{:url('game/server/get_game_server')}",
+            type: 'post',
+            dataType: 'json',
+            data: {game_id: game_id},
+            success: function (res) {
+                if (res.code != 1) {
+                    layer.msg(res.msg);
+                } else {
+                    option = '';
+                    $.each(res.data, function (key, value) {
+                        option += "<option value='";
+                        option += value['id'] + "'";
+                        if (value['id'] == server_id) {
+                            option += "selected";
+                        }
+                        option += " >" + value['server_name'];
+                        option += "</option>";
+                    });
+                    $('#server_id').append(option).selectpicker('refresh');
+                }
+            }, error() {
+                layer.msg('服务器错误');
+            }
+        })
+    }
+
+</script>
+
+</body>
+</html>

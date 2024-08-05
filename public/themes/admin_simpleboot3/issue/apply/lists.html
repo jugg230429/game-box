@@ -1,0 +1,208 @@
+<include file="public@header" />
+<link href="__TMPL__/public/assets/simpleboot3/css/pro_promote.css" rel="stylesheet">
+</head>
+<body>
+<div class="wrap js-check-wrap" >
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="{:url('apply/lists')}">联运申请</a></li>
+        <span class="title_remark">说明：查看并管理平台申请的联运游戏记录</span>
+    </ul>
+    <form id="search_form" class="well form-inline fr" method="get" action="{:url('lists')}">
+        <select name="open_user_id" id="open_user_id"  class="selectpicker" data-live-search="true"  data-size="8" style="width: 120px;">
+            <option value="">用户账号</option>
+            <volist name=":get_issue_open_user('id,account')" id="vo">
+                <option value="{$vo.id}" <if condition="input('request.open_user_id') eq $vo['id']">selected</if>>{$vo.account}</option>
+            </volist>
+        </select>
+        <select name="platform_id" id="platform_id"  class="selectpicker" data-live-search="true"  data-size="8" style="width: 120px;">
+            <option value="">平台名称</option>
+            <volist name=":get_pt_list('id,account')" id="vo">
+                <option value="{$vo.id}" <if condition="input('request.platform_id') eq $vo['id']">selected</if>>{$vo.account}</option>
+            </volist>
+        </select>
+
+        <select name="game_name" id="game_name"  class="selectpicker" data-live-search="true"  data-size="8" style="width: 120px;">
+            <option value="">游戏名称</option>
+            <volist name=":get_issue_game_entity([],'id,game_name,sdk_version',0,'game_name')" id="vo">
+                <option value="{$vo.game_name}" <if condition="input('request.game_name') eq $vo['game_name']">selected</if>>{$vo.game_name}</option>
+            </volist>
+        </select>
+
+<!--        <input type="text" class="form-control notempty" name="game_name" style="width: 120px;" value="{:input('request.game_name','')}" placeholder="游戏名称">-->
+
+        <select name="status" id="status"  class="selectpicker" style="width: 120px;">
+            <option value="">审核状态</option>
+            <option value="0" <if condition="input('request.status') heq '0'">selected</if>>待审核</option>
+            <option value="1" <if condition="input('request.status') eq 1">selected</if>>已审核</option>
+        </select>
+
+        <input type="submit" class="btn btn-search" id="search_btn" value="搜索" />
+        <a class="btn btn-clear" href="{:url('lists')}">清空</a>
+    </form>
+    <form class="js-ajax-form" action="" method="post">
+        <div class="table-actions position" style="max-width:620px;margin-left: -10px;">
+            <button class="btn btn-success   js-ajax-submit mtb17" type="submit"
+                    data-action="{:url('issue/apply/audit')}" data-subcheck="true" data-msg="您确定审核吗？">
+                审核
+            </button>
+<!--            <button class="btn btn-danger   js-ajax-submit mtb17 ml20" type="submit"-->
+<!--                    data-action="{:url('issue/apply/delete')}" data-subcheck="true" data-msg="您确定要删除吗？该操作不可恢复！">-->
+<!--                删除-->
+<!--            </button>-->
+        </div>
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th width="15">
+                    <input type="checkbox" id="all-checkbox" class="table-item-checkbox js-check-all" data-direction="x" data-checklist="js-check-x">
+                    <label for="all-checkbox" class=""></label>
+                </th>
+                <th>ID</th>
+                <th>用户账号</th>
+                <th>平台名称</th>
+                <th>游戏名称</th>
+                <th>运营平台</th>
+                <th>参数配置</th>
+                <th>分成比例(%)</th>
+                <th>累计注册</th>
+                <th>累计充值</th>
+                <th>申请状态</th>
+                <th>锁定状态</th>
+                <th>申请时间</th>
+                <th width="230">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <empty name="data_lists">
+                <tr><td colspan="100" style="text-align: center;">暂无数据</td></tr>
+            <else/>
+                <php>
+                    $sdk_version_name = [1=>'安卓',2=>'IOS',3=>'H5','4'=>'页游'];
+                </php>
+                <foreach name="data_lists" item="vo">
+                    <tr>
+                        <td>
+                            <input type="checkbox" id="ids-checkbox{$vo.id}" class="table-item-checkbox js-check" <if condition="$vo['status'] eq 1"> disabled</if> data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
+                            value="{$vo.id}" >
+                            <label for="ids-checkbox{$vo.id}" class=""></label>
+                        </td>
+                        <td>{$vo['id']}</td>
+                        <td>{:get_issue_open_useraccount($vo['open_user_id'])}</td>
+                        <td>{:get_pt_account($vo['platform_id'])}</td>
+                        <td>{$vo.game_name}</td>
+                        <td>{$sdk_version_name[$vo['sdk_version']]}</td>
+                        <td>
+                            <if condition="$vo['status'] eq '1'">
+                                <a href="javascript:void(0);" class="ajax-view" data-id="{$vo['id']}" data-type="1">配置</a>
+                                <if condition="$vo['sdk_version'] neq '3'">
+                                    <a href="javascript:void(0);" class="ajax-view" data-id="{$vo['id']}" data-type="2">服务端配置</a>
+                                </if>
+                            <else/>
+                                --
+                            </if>
+                        </td>
+                        <td>
+                            <a href="javascript:;" class="editTab underline" data-title="分成比例(%)" data-field="ratio"
+                                data-id="{$vo['id']}">{$vo.ratio}</a>
+                        </td>
+                        <td>{$vo.total_register}</td>
+                        <td>{$vo.total_pay}</td>
+                        <if condition="$vo['status'] eq '1'">
+                            <td><span class="label " style="color: #3FAD46;font-size: 14px;padding:0;">已审核</span></td>
+                            <if condition="$vo['enable_status'] eq '1'">
+                                <td><span class="label " style="color: #3FAD46;font-size: 14px;padding:0;">正常</span></td>
+                            <else/>
+                                <td><span class="label " style="color:#d9534f;font-size: 14px;padding:0;" >锁定</span></td>
+                            </if>
+                        <else/>
+                            <td><span class="label " style="color: #f0ad4e;font-size: 14px;padding:0;">待审核</span></td>
+                            <td>--</td>
+                        </if>
+                        <td>{:date("Y-m-d H:i:s",$vo['create_time'])}</td>
+                        <if condition="$vo['status'] eq '0'">
+                            <td><a href="{:url('issue/apply/audit',['ids'=>$vo['id']])}" class="js-ajax-dialog-btn">审核</a></td>
+                        <else/>
+                            <if condition="$vo['enable_status'] eq 1">
+                                <td><a href="{:url('issue/apply/changeField',['id'=>$vo['id'],'field'=>'enable_status','value'=>0])}" class="js-ajax-dialog-btn">锁定</a></td>
+                            <else/>
+                                <td><a href="{:url('issue/apply/changeField',['id'=>$vo['id'],'field'=>'enable_status','value'=>1])}" class="js-ajax-dialog-btn">解锁</a></td>
+                            </if>
+                        </if>
+                    </tr>
+                </foreach>
+            </empty>
+            </tbody>
+        </table>
+    </form>
+    <div class="pagination" style="padding-bottom: 50px">{$page}</div>
+
+
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+
+<script type="text/javascript">
+
+    $(function () {
+
+        //设置字段数值
+        $(".editTab").click(function () {
+            var that = $(this);
+            var title = that.attr("data-title");
+            var field = that.attr('data-field');
+            var id = that.attr('data-id');
+            var num = that.text();
+            layer.prompt({
+                formType: 0,
+                title: title,
+                value: num,
+                success: function (layero, index) {
+                    layero.find('input').attr('placeholder', '');
+                }
+            }, function (value, index) {
+                if (!/^(((\d|[1-9]\d)(\.\d{1,2})?)|100|100.0|100.00)$/.test(value)) {
+                    layer.msg('输入错误，0-100之间的两位小数', {time: 2000});
+                    return false;
+                }
+                $.ajax({
+                    async: false,
+                    url: "{:url('issue/Apply/changeField')}",
+                    type: "POST",
+                    dataType: 'JSON',
+                    data: {id: id, field: field, value: value},
+                    success: function (result) {
+                        layer.msg(result.msg, {time: 1000}, function () {
+                            !result.code || location.reload();
+                        });
+                    },
+                    error: function () {
+                        layer.msg('服务器异常', {time: 2000});
+                    }
+                })
+            });
+        });
+
+        $(".ajax-view").click(function () {
+            var url = "{:url('issue/apply/gameConfig')}";
+            var applyId = $(this).attr('data-id');
+            var type = $(this).attr('data-type');
+            layer.open({
+                type: 2,
+                title: '参数配置',
+				skin:'parameter',
+                shadeClose: true,
+                btnAlign: 'c',
+                btn: ['确定'],
+                shade: 0.8,
+                area: ['50%', '80%'],
+                content: url + '?id=' + applyId + '&type=' + type
+            });
+        });
+
+
+    })
+
+</script>
+
+</body>
+</html>

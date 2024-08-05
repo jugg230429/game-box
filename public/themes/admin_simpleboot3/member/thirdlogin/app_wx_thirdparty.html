@@ -1,0 +1,76 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('user/age')}">实名认证</a></li>
+        <li><a href="{:url('user/age',['type'=>1])}">防沉迷</a></li>
+        <li><a href="{:url('wechat/index')}">公众号设置</a></li>
+        <li><a href="{:url('thirdlogin/qq_thirdparty')}">QQ登录</a></li>
+        <li class="active"><a href="{:url('thirdlogin/wx_thirdparty')}">微信登录</a></li>
+        <li><a href="{:url('user/vip_set')}">VIP设置</a></li>
+        <li><a href="{:url('thirdlogin/fb_param_lists')}">脸书登录</a></li>
+		<span class="title_remark">说明：用于配置相关第三方登录所用参数的功能</span>
+    </ul>
+    <div class="describe">
+        <div>微信第三方登录在本系统有3处需使用，PC官网、WAP站和手游SDK；PC官网、WAP站需申请网页应用，手游SDK需申请移动应用。</div>
+		<div>网页应用申请地址：https://open.weixin.qq.com/（微信开放平台）</div>
+		<div>移动应用申请地址：https://open.weixin.qq.com/</div>
+
+    </div>
+    <ul class="nav nav-tabs nav-mt">
+        <li><a href="{:url('wx_thirdparty')}">PC官网/WAP站</a></li>
+        <li class="active"><a href="{:url('app_wx_thirdparty')}">游戏盒子APP</a></li>
+        <li><a href="{:url('wx_param_lists')}">SDK</a></li>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('app_qq_thirdparty')}" method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active">
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label"> <span class="form-required">*</span>APPID：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" class="form-control fl user-input" id="appid" name="config[appid]" value="{$app_weixin_login_data['appid']}">
+								 <span  class="fl user-remarks ">微信移动应用提供的唯一识别码</span>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_icp" class="col-sm-2 control-label"><span class="form-required">*</span> APPSECRET：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" class="form-control fl user-input" id="appsecret" name="config[appsecret]" value="{$app_weixin_login_data['appsecret']}">
+								<span  class="fl user-remarks "> 应用注册成功后分配的KEY</span>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_icp" class="col-sm-2 control-label"><span class="form-required">&nbsp;</span>启用状态：</label>
+                            <div class="col-md-6 col-sm-10">
+								<div class="fl pt7 user-input">
+									<input type="radio" name="status" value="0" <eq name="app_weixin_login.status" value="0">checked="checked"</eq>> 禁用
+									  <label class="mr100"></label>
+									<input type="radio" name="status" value="1" <eq name="app_weixin_login.status" value="1">checked="checked"</eq>> 启用
+								</div>
+								<span  class="fl user-remarks ">微信登录启用状态，控制APP上是否显示微信登录入口</span>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <input type="hidden" name="name" value="app_weixin_login">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn" data-refresh="1">
+                                    确定
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

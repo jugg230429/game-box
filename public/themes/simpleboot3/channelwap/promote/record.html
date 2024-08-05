@@ -1,0 +1,187 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/select2.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/new_select2.css" type="text/css" />
+    <link href="__TMPL__/channelwappublic/assets/css/recharge.css" type="text/css" rel="stylesheet" />
+</block>
+<block name="body">
+    <div class="page-container profit-exchange-container">
+        <header>
+            <a href="javascript:history.back(-1);" class="back-btn"></a>
+            <div style="width: 100%;height: 100%" class="v-middle h-middle">
+                <p class="header-title">平台币记录</p>
+            </div>
+        </header>
+        <div class="page-content">
+            <div class="search-box">
+                <div class="search-item col-6">
+                    <select id="promote_id" class="select_gallery2" data-placeholder="账号">
+                        <option value="0" >渠道账户</option>
+                        <option value="自己" <if condition="'自己' eq input('to_id')"> selected</if> data="0">自己</option>
+                        <volist name=":get_song_promote_lists(PID)" id="p">
+                            <option data="" <if condition="$p['id'] eq input('promote_id')"> selected</if> value="{$p.id}">{$p.account}</option>
+                        </volist>
+                    </select>
+                </div>
+                <div class="search-item col-6">
+                    <select id="type"  class="select_gallery" data-placeholder="途径">
+                        <option value="0">途径</option>
+                        <option value="5" <if condition="input('type') eq 5"> selected </if>>后台收回</option>
+                        <option value="3" <if condition="input('type') eq 3"> selected </if> >平台币转移</option>
+                        <option value="2" <if condition="input('type') eq 2"> selected </if> >渠道充值</option>
+                        <option value="4" <if condition="input('type') eq 4"> selected </if> >发放/转移</option>
+                    </select>
+                </div>
+            </div>
+            <div class="table-box">
+                <table>
+                    <tbody>
+                        <tr class="table-title">
+                            <th style="width:1.6rem">账号</th>
+                            <th style="width:1.6rem">数量</th>
+                            <th style="width:1.6rem">途径</th>
+                            <th style="width:2.1rem">时间</th>
+                        </tr>
+                    </tbody>
+                    <tbody id="recordload">
+
+                    </tbody>
+                    <tr class="total">
+                        <td colspan="4">汇总：累计收入<span style="color: #FFB22B;" class="total_shouru"></span>，累计支出<span style="color: #FFB22B;" class="total_zhichu"></span></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/select2.min.js"></script>
+    <script>
+        $(function () {
+
+            $(".select_gallery").select2({
+                minimumResultsForSearch: -1
+            });
+            $(".select_gallery2").select2({
+
+            });
+        })
+    </script>
+    <script>
+        var itemIndex = 0;
+        var type = 0;
+        var promote_id = '';
+        var lwx = window.lwx || {};
+        lwx.ready = true;
+        lwx.width = $(window).width();
+        lwx.height = $(window).height();
+        lwx.number = {record:1};
+        lwx.row = {record:15};
+        lwx.http = {
+            getJSON:function(url,callback){
+                $.getJSON(url + '&v=' + Date.now(),function(data){
+                    callback(data);
+                });
+            },
+            postJSON:function(url,args,callback) {
+                $.post(url + '&v=' + Date.now(), args, function(data) {
+                    callback(data);
+                },"json")
+            },
+        };
+        lwx.url ={
+            record:'{:url("Promote/get_record")}',
+        };
+        lwx.page = {
+            record:function(){
+                if(lwx.number.record) {
+                    lwx.http.getJSON(lwx.url.record+'?row='+lwx.row.record+'&page='+lwx.number.record+'&type='+type+'&to_id='+promote_id,function(data) {
+                        var hotload = $('#recordload');
+                        $(".total").show();
+                        var total = data.total;
+                        if(total.shouru == null){
+                            total.shouru = '';
+                        }
+                        $(".total_shouru").text(total.shouru);
+                        if(total.zhichu == null){
+                            total.zhichu = '';
+                        }
+                        $(".total_zhichu").text(total.zhichu);
+                        var data = data.data;
+                        if(data && data.length) {
+                            var html = '';
+                            for (var i in data) {
+                                html += '<tr>';
+                                html += '<td>'+data[i].promote_id+'</td>'
+                                html += '<td>'+data[i].pay_amount+'</td>';
+                                html += '<td>'+data[i].get_way+'</td>';
+                                html += '<td>'+data[i].create_time+'</td>';
+                                html += '</tr>';
+                            }
+                            hotload.append(html);
+                            hotload.find('.jsdropload').remove();
+                            if(data.length >= lwx.row.record) {
+                                lwx.number.record++;
+                                lwx.ready = true;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.record = false;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                        } else {
+                            if(lwx.number.record==1){
+                                $(".total").hide();
+                                hotload.html('').append('<p class="no_invest_info jsdropload">~空空如也~</p>');
+                            } else{
+                                hotload.find('.jsdropload').remove();
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                            lwx.number.record = false;
+                        }
+                    });
+                }
+            }
+        };
+        pageChange();
+        function pageChange() {
+            lwx.page.record();
+        }
+        function pageScroll(scrollTop, boxHeight, maxScrollHeight) {
+            if (scrollTop + boxHeight >= maxScrollHeight - 50) {
+                if (lwx.ready) {
+                    lwx.ready = false;
+                    lwx.page.record();
+                }
+            }
+        }
+        window.onscroll = function() {
+            var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+            pageScroll(scrollTop, lwx.height, $(document).height())
+        }
+        $(function () {
+            $('.game-menu-box a').click(function () {
+                $(this).addClass("active").siblings().removeClass("active");
+                var index = $(this).index();
+                $('.menu-tab').eq(index).show().siblings(".menu-tab").hide();
+                itemIndex = index;
+                location.hash = index;
+            });
+            $("#promote_id").change(function () {
+                promote_id = $("#promote_id").val();
+                $("#recordload").empty();
+                lwx.number.record = 1;
+                pageChange();
+            })
+            $("#type").change(function () {
+                type = $("#type").val();
+                $("#recordload").empty();
+                lwx.number.record = 1;
+                pageChange();
+            })
+        })
+        $(window).on("hashchange", function() {
+            pageChange();
+        });
+    </script>
+</block>

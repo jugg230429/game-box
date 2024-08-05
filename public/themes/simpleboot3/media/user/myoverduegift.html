@@ -1,0 +1,78 @@
+<extend name="../mediapublic/base" />
+<!-- 主体内容 -->
+<block name="body">
+    <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/my_bag.css">
+    <!-- 用户信息 -->
+    <div class="userinfo_con">
+        <div class="layui-container">
+            <div class="fl left_user_info">
+                <div class="left_user_info_img">
+                    <img src="{:cmf_get_image_url($user['head_img'])}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                    <span class="levelIcon">V{$user['vip_level']}</span>
+                </div>
+                <!-- <div class="left_user_info_grade">
+                    <if condition="$user['vip_level'] gt 0">
+                        <img src="__STATIC__/images/my_ico_grade{$user['vip_level']}.png" alt="">
+                    </if>
+
+                </div> -->
+                <p class="left_user_info_name">{$user.nickname}</p>
+                <div class="checked_item_con">
+                    <include file="mediapublic@left_menu" />
+                </div>
+            </div>
+            <div class="fl right_user_info">
+                <div class="right_user_info_title">
+                    <a href="{:url('User/mygift')}">
+                        <div class="fl right_user_info_title_left">
+                            已领取
+                            <div class="sort_fgx_fe"></div>
+                        </div>
+                    </a>
+                    <a href="{:url('User/myoverduegift')}">
+                        <div class="fl right_user_info_title_left active">
+                            已过期
+                            <div class="sort_fgx_fe"></div>
+                        </div>
+                    </a>
+                    <p class="fg right_user_info_title_right">您当前的位置：<a href="{:url('Index/index')}">平台首页</a>><a href="{:url('User/userinfo')}"> 用户中心</a>><span>我的礼包</span></p>
+                </div>
+                <!-- 游戏内容 -->
+                <div class="my_bag_list">
+                    <empty name="list">
+                    <!-- 无领取记录 -->
+                        <p class="no_mygame_con_item">~暂无过期礼包~</p>
+                    </empty>
+                    <volist name="list" id="vo">
+                        <div class="my_bag_item clear">
+                            <div class="fl my_bag_item_img">
+                                <notempty name="vo.icon"><img src="{:cmf_get_image_url($vo['icon'])}" alt="" class="fl gameimg" onerror="this.src='/static/images/empty.jpg';this.onerror=null"></notempty>
+                            </div>
+                           
+                            <div class="fl my_bag_item_info">
+                                <p class="one">《{$vo.relation_game_name}》{$vo.gift_name}</p>
+                                <p class="two">有效期：{:show_time($vo['start_time'],2)}至{:show_time($vo['end_time'],2)}
+
+								</p>
+                            </div>
+                            <div class="fl my_bag_item_delete">
+                                <a class="js-ajax-delete" data-msg="确认删除过期礼包？" href="{:url('User/delgift',['gift_id'=>$vo['id']])}">删除</a>
+                            </div>
+                        </div>
+                    </volist>
+                </div>
+                <!--<div id="page1" class="gamelistpage">
+                    <notempty name="list">
+                        {$page}
+                    </notempty>
+                </div>-->
+                <notempty name="list">
+                    <div class="bag_long_hx"></div>
+                    <div class="all_delete_btn">
+                        <a class="js-ajax-delete" data-msg="确认清空所有过期礼包？" href="{:url('User/delgift',['type'=>'all'])}">一键清空</a>
+                    </div>
+                </notempty>
+            </div>
+        </div>
+    </div>
+</block>

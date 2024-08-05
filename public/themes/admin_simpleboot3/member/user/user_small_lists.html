@@ -1,0 +1,54 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap" style="padding: 11px 11px 70px 30px;">
+        <form id="search_form" class="well form-inline fr" method="get" action="{:url('User/user_small_lists',['user_id'=>input('user_id')])}" >
+            <input type="submit" class="btn btn-primary hidden" id="search_btn" value="搜索" />
+        </form>
+        <table class="table table-hover table-bordered"  style="margin-left: -10px;">
+            <thead>
+            <tr><th colspan="8" style="background: #ffffff">玩家账号：{$user.account}</th></tr>
+                <tr>
+                    <th>小号ID</th>
+                    <th>小号名</th>
+                    <th>游戏名称</th>
+                    <th>创建天数</th>
+                    <th>累计充值</th>
+                    <th>创建时间</th>
+                    <th>状态</th>
+                </tr>
+            </thead>
+            <tbody>
+                <php>$user_statuses=array("0"=>'已锁定',"1"=>'正常');</php>
+                <empty name="data_lists">
+                    <tr><td colspan="8" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <foreach name="data_lists" item="vo">
+                        <tr>
+                            <td>{$vo.id}</td>
+                            <td>{$vo.nickname}</td>
+                            <td>{$vo.fgame_name}</td>
+                            <php>
+                                $day = intval((time()-$vo['register_time'])/86400)+1;
+                            </php>
+                            <td>{$day}</td>
+                            <td>{$vo.cumulative}</td>
+                            <td>{:date("Y-m-d H:i:s",$vo['register_time'])}</td>
+                            <if condition="$vo['lock_status'] eq 1">
+                                <td><span class="label" style="color: #3FAD46;font-size:14px">{$user_statuses[$vo['lock_status']]}</span></td>
+                            <else/>
+                                <td> <span class="label" style="color:#d9534f;font-size:14px">{$user_statuses[$vo['lock_status']]}</span></td>
+                            </if>
+                        </tr>
+                    </foreach>
+                </empty>
+            </tbody>
+        </table>
+        <notempty name="data_lists">
+        <div class="pagination">
+            {$page}
+        </div>
+        </notempty>
+    </div>
+</body>
+</html>

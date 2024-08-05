@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="zh_CN" style="height: 100%;overflow: hidden;">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <!-- Set render engine for 360 browser -->
+    <meta name="renderer" content="webkit">
+    <meta charset="utf-8">
+    <title>{:cmf_get_option('admin_set')['web_site_title']}</title>
+    <meta name="description" content="{:cmf_get_option('admin_set')['web_set_meta_desc']}">
+    <meta name="keywords" content="{:cmf_get_option('admin_set')['web_set_telecom_license']}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- HTML5 shim for IE8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <![endif]-->
+    <link href="{:cmf_get_image_url(cmf_get_option('admin_set')['web_set_ico'])}" type="image/x-icon"  rel="shortcut icon">
+    <link href="__TMPL__/public/assets/themes/{:cmf_get_admin_style()}/bootstrap.min.css" rel="stylesheet">
+    <link href="__TMPL__/public/assets/simpleboot3/css/simplebootadmin.css" rel="stylesheet">
+	 <link href="__TMPL__/public/assets/simpleboot3/css/index.css" rel="stylesheet">
+    <link href="__STATIC__/font-awesome/css/font-awesome.min.css?page=index" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/themes/{:cmf_get_admin_style()}/simplebootadminindex.min.css">
+    <link href="__TMPL__/public/assets/css/newBar.css" rel="stylesheet">
+    <link href="__TMPL__/public/assets/css/newLogin.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        /* body {
+            overflow: hidden!important;
+        } */
+        /*-----------------导航hack--------------------*/
+        .nav-list > li.open {
+            position: relative;
+        }
+
+        .nav-list > li.open .back {
+            display: none;
+        }
+
+        .nav-list > li.open .normal {
+            display: inline-block !important;
+        }
+
+        .nav-list > li .submenu > li > a {
+            background: #2f3160;
+        }
+
+        .nav-list > li .submenu > li a > [class*="fa-"]:first-child {
+            left: 40px;
+        }
+
+        .nav-list > li ul.submenu ul.submenu > li a > [class*="fa-"]:first-child {
+            left: 50px;
+        }
+        .nav-list>li {
+            min-height: 101px;
+            border-bottom: 1px solid #1B2F52;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+        .nav-list .one-menu-title {
+            color: #fff;
+            line-height: 29px;
+        }
+        #nav-wrapper {
+            padding-top: 0;
+            display:flex;
+            overflow: auto;
+            width: 220px;
+            background: #162642;
+        }
+        .nav-list>li .submenu {
+            display: block;
+            background-color: #162642;
+        }
+        .dropdown-menu.open {
+		margin-left: 0px !important;
+}
+        .nav-list .submenu.two-menu.twoSubMenuChange {
+            padding-left: 33px;
+        }
+
+        .nav-list>li>.submenu li {
+           float: left;
+        }
+        .nav-list>li>.submenu li.havetreeMenuData {
+            display: block;
+            width: auto;
+        }
+        .nav-list > li .submenu > li > a {
+            background: #162642;
+        }
+        .nav-list .submenu .two-menu-title {
+            border-top: none;
+        }
+        .nav-list .one-menu-title {
+            padding: 0;
+        }
+        .nav-list .submenu a {
+            padding-left: 0;
+        }
+        .nav-list>li>.submenu li.havetreeMenuData a {
+            margin-left: 0;
+            padding-right: 7px;
+            margin-right: 13px;
+        }
+        .nav-list>li .submenu.third-menu{
+            margin-left: -1px;
+        }
+        .nav-list .submenu .third-menu-title {
+            color: #C5D2E8;
+        }
+        .nav-list .submenu .two-menu-title .onlytwoText{
+            color: #C5D2E8;
+        }
+        .nav-list .one-menu-title:hover {
+            color: #fff;
+        }
+        .newListSilder {
+            background-color: #000A1B;
+            width: 1.6%;
+        }
+        .sliderSystem{
+            color:#C5D2E8;
+            width:auto;
+            padding:20px 8px;
+            background:#000A1B;
+            line-height: 19px;
+            word-break: break-all;
+            text-align: center
+        }
+        .sliderSystem a {
+            color:#C5D2E8;
+        }
+        .sliderSystem a:hover {
+            color:#C5D2E8;
+            text-decoration: none;
+        }
+        .activeSystem{
+            background-color: #162642;
+            color: #fff;
+        }
+        .customerOneMenu {
+            height: 35px;
+        }
+        .havetreeMenuData .two-menu-title .menu-text {
+            color: #1890FF;
+        }
+        .rejudgeItem{
+            margin-left: 26px!important;
+        }
+        .overWidthItem {
+            margin-right: 0!important;
+            margin-left: 12px!important;
+        }
+        .removeWidth {
+            margin-right: 0!important;
+        }
+        .changeIframe{
+            display: block!important;
+        }
+        .fireFoxContent{
+            margin-right: 5px!important;
+        }
+        .twelve {
+            margin-left: 12px!important;
+        }
+        .nine {
+            margin-left: 9px!important;
+        }
+        #navbar-main {
+            box-shadow: 0px 0px 10px 1px rgba(60, 108, 188, 0.15);
+        }
+
+        @media screen and (max-width:900px) {
+            body {
+                overflow: hidden;
+            }
+           .newListSilder {
+               width: 3%;
+           }
+           #nav-wrapper {
+               width: 25.3%;
+           }
+           .rightTipOA{
+               width: 78%;
+           }
+           .navbar-header {
+               width: 100%!important;
+           }
+           .navbar-brand {
+               width: 250px!important;
+           }
+           .page-content{
+               height: 100%!important;
+           }
+           .systemModalLeft {
+               width: 222px!important;
+           }
+           .rightMainContentIframe {
+               width: 74%;
+           }
+
+        }
+
+
+        .cooperationBox {
+    /* display: none; */
+    overflow: hidden;
+    position: fixed;
+    top: -46px;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,.5);
+    z-index: 99;
+}
+.detailContainer {
+    width: 786px;
+    height: 534px;
+    background: #FFFFFF;
+    border-radius: 6px;
+    margin: auto;
+    margin-top: 10%;
+}
+.content-title {
+
+    height: 54px;
+    /* background: #29364C; */
+    background-image: url("__TMPL__/public/assets/images/bg_ptgg.png");
+    border-radius: 6px 6px 0px 0px;
+    color: #fff;
+    font-size: 18px;
+    position: relative;
+    top: -1px;
+}
+.content-title p {
+    padding: 13px 0 18px 25px;
+}
+.dialogOperationClose {
+    content: '';
+    display: block;
+    width: 13px;
+    height: 13px;
+    background-image: url("__TMPL__/public/assets/images/close_w.png");
+    background-size: 100% 100%;
+    position: absolute;
+    right: 25px;
+    top: 21px;
+}
+.title-bt{
+    width: 725px;
+    height: 18px;
+    margin: 20px 31px 10px 30px;
+    font-size: 20px;
+    color: #354359;
+    font-weight: Bold;
+    letter-spacing:1px;
+    font-family: 'MicrosoftYaHei';
+}
+.content-textBox {
+    width: 748px;
+    margin-left: 10px;
+    margin: 25px 31px 0 30px;
+    height: 392px;
+    max-height: 349px;
+    color: #354359;
+    font-family: 'MicrosoftYaHei';
+    font-size: 13px;
+    letter-spacing: 1px;
+    line-height: 25px;
+    overflow-y: scroll;
+    padding-bottom: 10px;
+    overflow-x: hidden;
+    margin-bottom: 7px;
+}
+.content1{
+    width: 734px;
+    float: left;
+}
+.xinxi{
+    width: 725px;
+    float: left;
+    margin-top: 20px;
+}
+.bottom{
+    width:100%;
+    height: 60px;
+    line-height: 60px;
+    color: #354359;
+    font-size: 13px;
+    /* margin-top: -3px; */
+    box-shadow:0px 5px 30px -16px #29364c;
+}
+.bottom p{
+    color: #018FFF;
+   width:300px;
+    overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+}
+.shang{
+    margin: 0px 20px 10px 30px;
+
+    float:left;
+}
+
+.bottom a{color: #018FFF;}
+.xia{
+    float:left;
+padding-left:20px;
+}
+.detailContainer-content .content-textBox img{
+    width: 80%;
+}
+@media screen and (max-width: 1000px) {
+    .cooperationBox {
+        /* margin-top: 0px; */
+        position: fixed;
+
+    width: 100%;
+    height: 130%;
+    }
+    .detailContainer-content {
+    margin-top: -10%;
+    height: 100px;
+}
+    .detailContainer {
+        width:35%;
+        margin-left: 35px;
+    }
+    .content1 {
+    width: 100%;}
+    .content-textBox {
+    width: 85%;}
+    .title-bt {
+    width: 85%;
+    height: 48px !important;
+    font-size: 15px;
+}
+    .bottom p {
+    width: 40%;}
+    img {
+    vertical-align: middle;
+    width: 90%;
+}
+.content-textBox {
+    height: 321px;
+}
+
+}
+        /*----------------导航hack--------------------*/
+    </style>
+
+    <script>
+        //全局变量
+        var GV = {
+            HOST: "{$_SERVER['HTTP_HOST']|default=''}",
+            ROOT: "__ROOT__/",
+            WEB_ROOT: "__WEB_ROOT__/",
+            JS_ROOT: "static/js/"
+        };
+    </script>
+    <php>$submenus=$menus;</php>
+
+    <php>
+        if (!function_exists('getsubmenu')) {
+            function getsubmenu($submenus){
+
+    </php>
+    <notempty name="submenus">
+        <php>foreach($submenus as $menu){</php>
+        <li>
+            <php>
+                $menu_name=lang($menu['lang']);
+                $menu_name=$menu['lang']==$menu_name?$menu['name']:$menu_name;
+            </php>
+            <php>if(empty($menu['items'])){</php>
+            <a href="javascript:openapp('{$menu.url}','{$menu.id}','{$menu_name}',true);" data-menu="{$menu_name}" data-id="{:intval($menu['id'])}" class="one-menu-title one-no-drop-title js-one-menu-title">
+                <i class="fa fa-{$menu.icon|default='desktop'}"></i>
+                <span class="menu-text"> {$menu_name} </span>
+            </a>
+            <php>}else{</php>
+            <a href="javascript:;" style="pointer-events: none;" class="dropdown-toggle one-menu-title one-drop-title js-one-drop-title customerOneMenu">
+                <i class="fa fa-{$menu.icon|default='desktop'} normal"></i>
+                <span class="menu-text normal"> {$menu_name} </span>
+                <!-- <b class="arrow fa fa-angle-right normal"></b> -->
+                <i class="fa fa-reply back"></i>
+                <span class="menu-text back">返回</span>
+
+            </a>
+
+            <ul class="submenu two-menu twoSubMenuChange">
+                <php>getsubmenu1($menu['items'])</php>
+            </ul>
+            <php>}</php>
+
+        </li>
+
+        <php>}</php>
+    </notempty>
+    <php>
+            }
+        }
+    </php>
+
+    <php>
+        if (!function_exists('getsubmenu1')) {
+            function getsubmenu1($submenus){
+    </php>
+    <php>foreach($submenus as $menu){</php>
+    <li class="havetreeMenuData">
+        <php>
+            $menu_name=lang($menu['lang']);
+            $menu_name=$menu['lang']==$menu_name?$menu['name']:$menu_name;
+        </php>
+        <php>if(empty($menu['items'])){</php>
+        <a href="javascript:openapp('{$menu.url}','{$menu.id}','{$menu_name}',true);" data-menu="{$menu_name}" data-id="{:intval($menu['id'])}" id="menuData" class="two-menu-title two-no-drop-title js-two-menu-title">
+            <!-- <b class="menu-dot"></b> -->
+            <span class="menu-text onlytwoText">
+									{$menu_name}
+								</span>
+        </a>
+        <php>}else{</php>
+        <a href="javascript:;" style="pointer-events: none;" class="dropdown-toggle two-menu-title two-drop-title js-two-menu-title">
+            <b class="menu-dot"></b>
+            <span class="menu-text">
+									{$menu_name}
+								</span>
+            <!--<b class="arrow fa fa-angle-right"></b>-->
+        </a>
+        <ul class="submenu third-menu">
+            <php>getsubmenu2($menu['items'])</php>
+        </ul>
+        <php>}</php>
+
+    </li>
+
+    <php>}</php>
+    <php>}
+    }
+    </php>
+
+    <php>
+        if (!function_exists('getsubmenu2')) {
+            function getsubmenu2($submenus){</php>
+    <php>foreach($submenus as $menu){</php>
+    <li>
+        <php>
+            $menu_name=lang($menu['lang']);
+            $menu_name=$menu['lang']==$menu_name?$menu['name']:$menu_name;
+        </php>
+
+        <a href="javascript:openapp('{$menu.url}','{$menu.id}','{$menu_name}',true);" data-menu="{$menu_name}" data-id="{:intval($menu['id'])}" id="menuData"  class="third-menu-title js-third-menu-title">
+            <span class="menu-text">
+								{$menu_name}
+							</span>
+        </a>
+    </li>
+
+    <php>}</php>
+    <php>}
+    }
+    </php>
+
+
+    <if condition="APP_DEBUG">
+        <style>
+            #think_page_trace_open {
+                left: 0 !important;
+                right: initial !important;
+            }
+        </style>
+    </if>
+
+</head>
+
+<body style="height: 100%;min-width: 900px;-webkit-overflow-scrolling: touch">
+<div id="loading"><i class="loadingicon"></i><span>{:lang('LOADING')}</span></div>
+<div id="right-tools-wrapper">
+    <!--<span id="right_tools_clearcache" title="清除缓存" onclick="javascript:openapp('{:url('admin/Setting/clearcache')}','right_tool_clearcache','清除缓存');"><i class="fa fa-trash-o right_tool_icon"></i></span>-->
+    <!--<span id="refresh-wrapper" title="{:lang('REFRESH_CURRENT_PAGE')}"><i-->
+            <!--class="fa fa-refresh right_tool_icon"></i></span>-->
+</div>
+<div class="navbar navbar-default top-navbar" >
+    <div style="display: flex;width:100%;height: 54px;">
+        <div class="newListSilder" style="width:1.6% ;">&nbsp;</div>
+
+    <div style="width:100%;display: flex;">
+    <div class="container-fluid" style="display:flex;width:100%;padding: 0;">
+
+        <div class="navbar-header" style="width: 220px;float: none;">
+
+			 <a href="{:url('admin/index/index')}" class="navbar-brand" style="width:100%;text-align: center;background:rgba(22, 38, 66, 1);line-height: 30px;padding: 0!important;">
+               <div style="width: 100%;height: 100%;display: flex;align-items: center;justify-content: center;">
+                    <img src="{:cmf_get_image_url(cmf_get_option('admin_set')['web_set_center_logo'])}" alt="手游联运系统"  style="height: 45px;" >
+               </div>
+            </a>
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <div class="navbar-collapse collapse" id="navbar-main" style="padding-left: 0!important;flex: 1;">
+            <div class="pull-left headerNav" style="position: relative;">
+               <div class="newHeaderAddNav">
+                <div class="navShowBtn">
+                    <i class="putAwayIcon"></i>
+                </div>
+                <a href="javascript:;" class="headerNavLeft"></a>
+                <a id="task-pre" class="task-changebt"><i class="fa fa-chevron-left"></i></a>
+                <div id="task-content" class="headerNavListBox">
+                    <ul class="nav navbar-nav cmf-component-tab headerNavList" id="task-content-inner">
+                        <li class="cmf-component-tabitem noclose jsfirsttab active" app-id="0" app-url="{:url('main/index')}"
+                            app-name="首页">
+                            <a class="cmf-tabs-item-text headerNavLink" app-id="0" app-url="{:url('main/index')}">后台首页</a>
+                        </li>
+                    </ul>
+                    <div style="clear:both;"></div>
+                </div>
+                <a href="javascript:;" class="headerNavRight" ></a>
+                <a href="javascript:;" class="headerNavClose" ></a>
+                <!-- <a class="btn btn-sm delete-all" id="close-wrapper" href="javascript:;"
+                   title="关闭顶部菜单"
+                   data-toggle="tooltip"
+                   data-placement="bottom">
+                    <img src="__TMPL__/public/assets/images/icon_delete_all.png" >
+                </a> -->
+               </div>
+            </div>
+
+            <ul class="nav navbar-nav navbar-right simplewind-nav v-middle">
+                <!--<li class="light-blue" style="border-left:none;display: none;" id="close-all-tabs-btn">
+                    <a id="close-wrapper" href="javascript:void(0);" title="{:lang('CLOSE_TOP_MENU')}" style="color:#fff;font-size: 16px">
+                        <i class="fa fa-times right_tool_icon"></i>
+                    </a>
+                </li>-->
+                <li class="light-blue" style="border-left:none;">
+                    <a id="refresh-wrapper" href="javacript:void(0);" title="{:lang('REFRESH_CURRENT_PAGE')}" >
+                        <i class="fa fa-refresh_ right_tool_new_icon"></i>
+                    </a>
+                </li>
+                <li class="light-blue dropdown" style="border-left:none;">
+<!--                    <a data-toggle="dropdown" href="#" class="dropdown-toggle">-->
+                    <a class="pr-5">
+
+                        <span class="user-info">
+								{:lang('WELCOME_USER',array('user_nickname' => empty($admin['user_nickname'] )? $admin['user_login'] : $admin['user_nickname']))}
+							</span>
+<!--                        <i class="fa fa-caret-down"></i>-->
+                    </a>
+                </li>
+                 <li class="light-blue " style="border-left:none;"><a href="{:url('Public/logout')}" class="logout">{:lang('LOGOUT')}</a>
+            </ul>
+            <div class="sidebar-shortcuts fr" id="sidebar-shortcuts">
+
+                <!-- <a class="btn btn-sm"
+                    href="javascript:openapp('{:url('admin/Setting/clear_redis22')}','index_clearcache','{:lang('ADMIN_SETTING_CLEARCACHE')}',true);"
+                    title="删除"
+                    data-toggle="tooltip"
+                    data-placement="bottom">
+                    <img src="__TMPL__/public/assets/images/btn_eliminate.png">
+                </a> -->
+
+                <a class="btn btn-sm newbtn-home" href="__ROOT__/"
+                   title="{:lang('WEBSITE_HOME_PAGE')}"
+                   target="_blank"
+
+                   data-placement="bottom">
+                    <img src="__TMPL__/public/assets/images/icon_home.png">
+                </a>
+                <!-- data-toggle="tooltip" -->
+
+                <!--
+                <if condition="cmf_auth_check(cmf_get_current_admin_id(),'portal/AdminCategory/index')">
+                    <a class="btn btn-sm btn-success" href="javascript:openapp('{:url('portal/AdminCategory/index')}','index_termlist','文章分类管理');" title="文章分类管理">
+                        <i class="fa fa-th"></i>
+                    </a>
+                </if>
+
+                <if condition="cmf_auth_check(cmf_get_current_admin_id(),'portal/AdminArticle/index')">
+                    <a class="btn btn-sm btn-info" href="javascript:openapp('{:url('portal/AdminArticle/index')}','index_postlist','文章管理');" title="文章管理">
+                        <i class="fa fa-pencil"></i>
+                    </a>
+                </if>
+                -->
+
+                <!--            <if condition="cmf_auth_check(cmf_get_current_admin_id(),'user/AdminAsset/index')">-->
+                <!--                <a class="btn btn-sm newbtn-info"-->
+                <!--                   href="javascript:openapp('{:url('user/AdminAsset/index')}','userAdminAssetindex','资源管理',true);"-->
+                <!--                   title="资源管理"-->
+                <!--                   data-toggle="tooltip">-->
+                <!--                    <img src="__TMPL__/public/assets/images/icon_info.png"> -->
+                <!--                </a>-->
+                <!--            </if>-->
+
+                <if condition="cmf_auth_check(cmf_get_current_admin_id(),'admin/Setting/clearcache')">
+                    <a class="btn btn-sm newbtn-clear"
+                       href="javascript:openapp('{:url('admin/Setting/clearcache')}','index_clearcache','{:lang('ADMIN_SETTING_CLEARCACHE')}',true);"
+                       title="{:lang('ADMIN_SETTING_CLEARCACHE')}"
+
+                       data-placement="bottom">
+                        <img src="__TMPL__/public/assets/images/icon_clear.png">
+                    </a>
+                </if>
+
+                <!--            <if condition="cmf_auth_check(cmf_get_current_admin_id(),'admin/RecycleBin/index')">-->
+                <!--                <a class="btn btn-sm newbtn-recycle"-->
+                <!--                   href="javascript:openapp('{:url('admin/RecycleBin/index')}','index_recycle','回收站',true);"-->
+                <!--                   title="回收站"-->
+                <!--                   data-toggle="tooltip">-->
+                <!--                    <img src="__TMPL__/public/assets/images/icon_recycle.png">-->
+                <!--                </a>-->
+                <!--            </if>-->
+
+                <if condition="APP_DEBUG">
+                    <a class="btn btn-sm newbtn-menu"
+                       href="javascript:openapp('{:url('admin/Menu/index')}','index_menu','{:lang('ADMIN_MENU_INDEX')}',true);"
+                       title="{:lang('ADMIN_MENU_INDEX')}"
+
+                       data-placement="bottom">
+                        <img src="__TMPL__/public/assets/images/icon_menu.png">
+                    </a>
+                </if>
+
+            </div>
+        </div>
+
+
+        </div>
+    </div>
+    </div>
+</div>
+</div>
+
+<div class="main-container container-fluid" style="height: calc(100% - 45px );transform: translateY(-8px);">
+    <div style="display: flex;width:100%;height: 100%;">
+        <div class="newListSilder">
+            <ul style="cursor: pointer">
+                <li class="sliderSystem activeSystem" id="js-homeBack" >旗舰管理后台</li>
+                <!-- <li class="sliderSystem" ><a href="{:cmf_get_option('system_set')['ad_domain']}">广告监测分析系统</a></li> -->
+                <li class="sliderSystem" id="js-scrm" ><a href="javascript:;">玩家维护和公会服务系统</a></li>
+<!--                <li class="sliderSystem" id="js-fuwu"><a href="javaScript:;" >售后服务平台</a></li>-->
+<!--                <li class="sliderSystem" id="js-kf_business" ><a href="javascript:;">在线客服系统</a></li>-->
+<!--                <li class="sliderSystem" id="js-kf_work" ><a href="javascript:;">客服工作台</a></li>-->
+                <li class="sliderSystem" id="issue_system" ><a href="javascript:;">发行系统</a></li>
+                <li class="sliderSystem" id="js-oa" ><a href="javascript:;">工作室OA系统</a></li>
+                <li class="sliderSystem" id="system_setting" onclick="" >系统设置</li>
+            </ul>
+        </div>
+    <!-- 侧边栏右边的布局 -->
+       <div style="width:100%;display: flex;">
+        <!-- 套个iframe的话可以是OA的登录页 -->
+        <!-- <iframe id="login_ifr" style="width:100%;height:100%;border:none"  src="http://www.oa.vlsdk.com/#/login" scrolling="no"></iframe> -->
+
+        <!-- 这个是旗舰版的东西 -->
+        <div style="width:100%;display: flex;" class="main-page">
+            <div id="nav-wrapper" style="height: 100%;">
+                <ul class=" nav-list one-menu" style="width:214px;padding-left:10px">
+                    {:getsubmenu($submenus)}
+                </ul>
+            </div>
+            <div class="main-content" style="flex: 1;margin-left: 0;">
+                <div class="page-content" id="content">
+                    <iframe src="{:url('Main/index')}" style="width:100%;height: 100%;" frameborder="0" id="appiframe-0"
+                            class="appiframe"></iframe>
+                </div>
+                <if condition="!empty($upgrade_data) and $upgrade_data['this_version'] neq $upgrade_data['last_version']">
+                <div class="systemModal" hidden>
+                    <div style="position: relative;width:100%;height:100%">
+                        <div class="systemTipBox">
+                            <div class="leftContentBox">
+                            <div class="centerLimit">
+                                    <div class="tipNowVersion">
+                                        <p class="titleVersion">尊敬的客户您好~</p>
+                                        <p style="line-height:25px;">该系统目前最新版本为<span class="deferrentColorBlue">{$upgrade_data['data'][0]['name']}</span>，监测到您还未升级至最新版本，为了第一时间体验新功能，建议您及时进行升级！</p>
+                                    </div>
+                                    <div>
+                                        <p class="deferrentColorBlue"><span class="timeBeforeLogo"></span >{$upgrade_data['data'][0]['name']}更新时间</p>
+                                        <div class="showTimeBox">{:date("Y-m-d",$upgrade_data['data'][0]['effective_time'])}</div>
+                                    </div>
+                                    <div>
+                                        <php>
+                                            $remark = explode(PHP_EOL,$upgrade_data['data'][0]['remark']);
+                                        </php>
+                                        <p class="deferrentColorBlue"><span class="timeBeforeLogo"></span >{$upgrade_data['data'][0]['name']}更新内容</p>
+                                        <div class="updateContentBox">
+                                            <volist name="remark" id="vo">
+                                                <p>{$vo}</p>
+                                            </volist>
+                                        </div>
+                                    </div>
+                            </div>
+                                <p class="redTipText"><i class="tipRedIcon"></i>注：如您进行过个性化定制，可联系售后客服获取更新文件</p>
+                                <div class="bottomUpdateBtn">
+                                    <a href="javaScript:;" class="updateBtns cancelUpVersion">暂不升级</a>
+                                    <a href="javascript:openapp('{:url('upgrade/index/index')}','','',true);" class="updateBtns rightUpVersion">立即升级</a>
+                                </div>
+                            </div>
+                            <div class="rightImgBox">
+                                <i class="closeModalIcon"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </if>
+            </div>
+           </div>
+
+           <include file="website"/>
+            <!-- 弹窗 判断是否需要显示-->
+           <notempty name="gonggao_info">
+
+               <div class="cooperationBox need_show_gonggao" style="display:none">
+                   <div class="detailContainer">
+                       <div class="detailContainer-content">
+                           <div class="content-title">
+                               <p>平台公告</p>
+                               <a href="javaScript:;" class="dialogOperationClose"></a>
+                           </div>
+                           <div class="title-bt">{$gonggao_info[0]['post_title']}</div>
+                           <div class="content-textBox">
+                               <div class="content1">
+                                   {$gonggao_info[0]['post_content']}
+                               </div>
+                               <!-- <div class="xinxi">
+                                   <p>超神之刃（无限爆真充）游戏关服通知</p>
+                                   <p>产品名称：<span>《超神之刃（无限爆真充）》</span></p>
+                                   <p>下架原因：由于项目运营计划调整。</p>
+                                   <p>正式关闭注册和充值时间：2021年07月03日</p>
+                                   <p>正式关服时间：2021年08月03日</p>
+                                   <p>游戏内公告：已发布</p>
+                               </div> -->
+                               <input type="hidden" name="d_post_id" value="{$gonggao_info[0]['post_id']}">
+                           </div>
+
+                           <div class="bottom">
+                               <p class="shang previous-post">
+                                   <span style="color:#354359">上一篇：</span>
+                                   <a href="javascript:;" id="previous_title">
+                                       <if condition="!empty($gonggao_info[1]['post_title'])">
+                                           {$gonggao_info[1]['post_title']}
+                                           <else />
+                                           暂无
+                                       </if>
+                                   </a>
+                                   <input type="hidden" name="post_id_previous" value="{$gonggao_info[1]['post_id']}">
+                                   <!-- <input type="hidden" name="limit_1" value="{$limit_1}"> -->
+                                   <input type="hidden" name="post_sort_pre" value="{$gonggao_info[1]['sort']}">
+
+                               </p>
+                               <p class="xia next-post">
+                                   <span style="color:#354359">下一篇：</span>
+                                   <a href="javascript:;" id="next_title">暂无</a>
+                                   <input type="hidden" name="post_id_next" value="">
+                               </p>
+
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </notempty>
+
+       </div>
+    </div>
+    <!-- <div class="sidebar" id="sidebar" style="display:none">
+    </div> -->
+</div>
+
+<script src="__TMPL__/public/assets/js/jquery-1.10.2.min.js"></script>
+<script src="__STATIC__/js/wind.js"></script>
+<script src="__TMPL__/public/assets/js/bootstrap.min.js"></script>
+<script src="__STATIC__/js/admin.js"></script>
+<script src="__STATIC__/js/cookie.js"></script>
+<script src="__TMPL__/public/assets/simpleboot3/js/adminindex.js"></script>
+<script>
+
+    // 上一篇公告 by wjd
+    $('.previous-post').click(function(){
+        var post_id = $("input[ name='post_id_previous'] ").val(); // 当前展示的公告id
+        var tmp_url = '{:url("index/getPreviousNextArticle")}';
+        $.ajax({
+            url: tmp_url,
+            type: 'post',
+            dataType: 'json',
+            data: {post_id:post_id},
+            success: function (data) {
+                if (data.code > 0) {
+                    // console.log(data.data);
+                    $('.title-bt').html(data.data.d_gonggaoInfo['post_title']);
+                    $('.content1').html(data.data.d_gonggaoInfo['post_content']);
+                    if(data.data.previous_gonggaoInfo == null || data.data.previous_gonggaoInfo == undefined || data.data.previous_gonggaoInfo==""){
+                        // 上一篇为空
+                        $('#previous_title').html("暂无");
+                    }else{
+                        $('#previous_title').html(data.data.previous_gonggaoInfo['post_title']);
+                    }
+                    if(data.data.next_gonggaoInfo == null || data.data.next_gonggaoInfo == undefined || data.data.next_gonggaoInfo==""){
+                        // 下一篇为空
+                        $('#next_title').html("暂无");
+                    }else{
+                        $('#next_title').html(data.data.next_gonggaoInfo['post_title']);
+                    }
+                    $("input[ name='post_id_previous'] ").val(data.data.previous_gonggaoInfo['id']);
+                    $("input[ name='post_id_next'] ").val(data.data.next_gonggaoInfo['id']);
+                } else {
+                    // layer.msg(data.msg)
+                }
+            },
+            error: function () {
+                // layer.msg("系统繁忙,请销后再试！");
+            }
+        });
+    });
+    // 下一篇公告 by wjd
+    $('.next-post').click(function(){
+        // var limit_1 = $("input[ name='limit_1'] ").val();
+        var tmp_url = '{:url("index/getPreviousNextArticle")}';
+        var post_id = $("input[ name='post_id_next'] ").val(); // 当前展示的公告id
+        $.ajax({
+            url: tmp_url,
+            type: 'post',
+            dataType: 'json',
+            data: {post_id:post_id},
+            success: function (data) {
+                if (data.code > 0) {
+                    console.log(data.data);
+                    $('.title-bt').html(data.data.d_gonggaoInfo['post_title']);
+                    $('.content1').html(data.data.d_gonggaoInfo['post_content']);
+
+                    if(data.data.previous_gonggaoInfo == null || data.data.previous_gonggaoInfo == undefined || data.data.previous_gonggaoInfo==""){
+                        // 上一篇为空
+                        $('#previous_title').html("暂无");
+
+                    }else{
+                        $('#previous_title').html(data.data.previous_gonggaoInfo['post_title']);
+                    }
+                    if(data.data.next_gonggaoInfo == null || data.data.next_gonggaoInfo == undefined || data.data.next_gonggaoInfo==""){
+                        // 下一篇为空
+                        $('#next_title').html("暂无");
+                    }else{
+                        $('#next_title').html(data.data.next_gonggaoInfo['post_title']);
+                    }
+
+                    $("input[ name='post_id_previous'] ").val(data.data.previous_gonggaoInfo['id']);
+                    $("input[ name='post_id_next'] ").val(data.data.next_gonggaoInfo['id']);
+                } else {
+                    // layer.msg(data.msg)
+                }
+            },
+            error: function () {
+                // layer.msg("系统繁忙,请销后再试！");
+            }
+        });
+    });
+    var admin_id = "{$admin_id}";
+    // 今天的时间
+    var myDate = new Date;
+    var year = myDate.getFullYear(); //获取当前年
+    var mon = myDate.getMonth() + 1; //获取当前月
+    var date = myDate.getDate();
+    var d_date = year + '.' + mon + '.' + date;
+    if(localStorage.getItem('need_show_gonggao' + admin_id + 'date_' + d_date) != '1'){
+        $('.need_show_gonggao').css('display','block')
+        localStorage.setItem('need_show_gonggao' + admin_id + 'date_' + d_date, '1');
+    }
+
+    $(function () {
+        //平台公告 弹框
+        $('.dialogOperationClose').click(function() {
+            $('.cooperationBox').css('display','none')
+            // logout();
+        });
+
+        //监听浏览器返回事件
+        pushHistory();
+        window.addEventListener("popstate", function(e) {
+           var all = $('.appiframe')
+            if(all.length>1){
+                var final = all[all.length - 1]
+                final.remove()
+                Array.prototype.pop.call(all)
+                all[all.length - 1].classList.add('changeIframe')
+            }
+        });
+        function pushHistory() {
+            var state = {
+                title: "title",
+                url: "#"
+            };
+            window.history.pushState(state, "title", "#");
+        }
+
+        // 弹窗图标点击消失
+        $('.closeModalIcon').click(function () {
+            $('.systemModal').css('display', 'none')
+        });
+        $(".rightUpVersion").click(function () {
+            $('.systemModal').css('display', 'none');
+        });
+        $(".cancelUpVersion").click(function () {
+            $.cookie('is_upgrade_tag', '1', {expires: 1});
+            $('.systemModal').css('display', 'none')
+            return false;
+        });
+        if ($.cookie('is_upgrade_tag') != '1') {
+            $('.systemModal').css('display', 'block')
+        }
+
+
+        $('.navShowBtn').click(function() {
+             // 展开的功能
+            if($('.navbar-default').hasClass('navbar-defaultActive')) {
+                $('.navbar-default').removeClass('navbar-defaultActive')
+                $('.putAwayIcon').removeClass('putAwayActiveIcon')
+                $('#nav-wrapper').css('display','block')
+                $('.navbar-brand').css('width','100%')
+                $(".systemModalLeft").css('display','block')
+                return
+            }
+            // 收起的功能
+            $('.navbar-default').addClass('navbar-defaultActive')
+            $('.putAwayIcon').addClass('putAwayActiveIcon')
+            $('#nav-wrapper').css('display','none')
+            $(".systemModalLeft").css('display','none')
+            $('.navbar-brand').css('width','auto')
+            // $('.sidebar').css('borderRight','none').width(0).siblings('.main-content').addClass('sidebarActive')
+        })
+
+        navWidth()
+        $("[data-toggle='tooltip']").tooltip();
+        /*$("li.dropdown").hover(function () {
+            $(this).addClass("open");
+        }, function () {
+            $(this).removeClass("open");
+        });*/
+
+        var menus= {:$menus_js_var};
+        var tw = window.top;
+        var twa =tw.location.href.split("#");
+        var url = twa[1];
+        var urlTmp = url;
+        try {
+            var newurl = urlTmp.split('/').slice(0,4);
+        }catch (e) {
+            urlTmp = '/';
+            var newurl = urlTmp.split('/').slice(0,4);
+        }
+        var newurlTmp = newurl.join('/');
+        var arr =twa[0].split("#");
+        var test =location.search;
+        //后台首页不允许多次出现
+        $(".nav-list a").click(function(){
+           href = $(this).attr('href');
+           if(href.indexOf("openapp('/admin/main/index")!=-1){
+               var url = "{:url('main/index')}"
+               openapp(url,'0','首页');
+               openapp($('.jsfirsttab').attr("app-url"), $('.jsfirsttab').attr("app-id"), $('.jsfirsttab').attr("app-name"));
+               return false;
+           }
+        })
+        //读取url参数。尝试执行菜单功能。
+        if(typeof(menus) != "undefined"){
+
+            if (url !=null ){
+                //去掉/ 去掉_ 全部小写。
+                newurlTmp = newurlTmp.replace(/[\\/|_|]/g,"");
+                newurlTmp = newurlTmp.replace(".html","");
+                var menu = menus[newurlTmp];
+                if (menu){
+                    if(url=='/admin/main/index.html'){
+                        return false;
+                    }
+                    openapp(url,menu.id+menu.app,menu.name,true);
+                    $('.nav-list .submenu a[data-id="'+menu.id+'"]').addClass('menu-active')
+                        .parents('ul.submenu').slideDown(150).parent().addClass('open')
+                        .find('li').addClass('open').find('ul').slideDown(150);
+                }
+            }
+
+        }
+    });
+        $('.headerNavClose').click(function() {
+            $('.headerNavList').html('')
+            window.location.href = '/admin/index/index'
+        })
+
+        function getOverWidth() {
+            var listWidth = $("#task-content").innerWidth()
+            var sonWidth = $("#task-content-inner").width()
+            var finalWidth = listWidth-sonWidth
+            if(sonWidth > listWidth) {
+                $(".headerNavList").css('margin-left', finalWidth+ 'px')
+            }
+        }
+
+        function navWidth() {
+            var w = window.innerWidth
+            var navWidth = $('.navbar-header').width()
+            var simple = $('.simplewind-nav').width()
+            var sidebar = $('.sidebar-shortcuts').width()
+            $('#task-content').css('max-width',w - navWidth - simple - sidebar - 250)
+        }
+
+        $(".nav-list .js-one-drop-title").on("click", function (event) {
+
+            var closest_a = $(event.target).closest("a");
+
+            if (!closest_a || closest_a.length == 0 || !closest_a.hasClass("dropdown-toggle")) {
+                return
+            }
+
+            var closest_a_next = closest_a.next().get(0);
+
+            $(closest_a_next).slideToggle(150).parent().toggleClass("open").siblings().removeClass('open').find('ul').slideUp(150);
+            $(closest_a_next).find('li').toggleClass('open').find('ul').slideToggle(150);
+
+            return false;
+        });
+
+        $('.nav-list .js-third-menu-title, .nav-list .js-one-menu-title, .nav-list .js-two-menu-title').on('click', function () {
+            $('.nav-list .js-third-menu-title, .nav-list .js-one-menu-title, .nav-list .js-two-menu-title').removeClass('menu-active');
+            $(this).addClass('menu-active');
+             getOverWidth()
+        });
+
+        // 左边箭头的事件
+        $('.headerNavLeft').click(function() {
+            $('.headerNavList').css('margin-left','0px')
+        })
+        // 右边箭头的事件
+        $('.headerNavRight').click(function() {
+            getOverWidth()
+        })
+
+        if( $('.two-no-drop-title[data-id="468"]')) {
+           $('.two-no-drop-title[data-id="468"]').addClass('menu-active')
+        }
+
+
+        function myBrowser() {
+            var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+            var isOpera = userAgent.indexOf("Opera") > -1;
+            if (userAgent.indexOf("Firefox") > -1) { //判断是否Firefox浏览器
+                return "FF";
+            }
+        }
+        var brower = myBrowser()
+        if(brower == "FF") {
+            $('.nav-list > li > .submenu li.havetreeMenuData a').css('margin-right','7px')
+            document.querySelector('[data-id="364"]').classList.add('fireFoxContent')
+        }
+        var u = navigator.userAgent;
+        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        if(isiOS) {
+           $('html').css({'-webkit-overflow-scrolling': 'touch','overflow':'auto'})
+        }
+
+        // 修改侧边栏导航中字数只有两个样式错位的问题
+    try {
+        document.querySelector('[data-id="240"]').classList.add('rejudgeItem')
+    } catch(err){}
+    try {
+        document.querySelector('[data-id="353"]').classList.add('rejudgeItem')
+    } catch(err){}
+    try {
+        document.querySelector('[data-id="362"]').classList.add('overWidthItem')
+    } catch(err){}
+    try {
+        document.querySelector('[data-id="459"]').classList.add('removeWidth')
+    } catch(err){}
+    try {
+        document.querySelector('[data-id="196"]').classList.add('twelve')
+    } catch(err){}
+    try {
+        document.querySelector('[data-id="50"]').classList.add('twelve')
+    } catch(err){}
+    try {
+        document.querySelector('[data-id="371"]').classList.add('nine')
+    } catch(err){}
+    try {
+        document.querySelector('[data-id="227"]').classList.add('nine')
+    } catch(err){}
+
+</script>
+</body>
+</html>

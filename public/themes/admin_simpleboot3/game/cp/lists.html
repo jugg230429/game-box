@@ -1,0 +1,107 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('lists')}">CP列表</a></li>
+           
+            <span class="title_remark">说明：查看所添加的CP</span>
+        </ul>
+        <form id="search_form" class="well form-inline  fr" method="get" action="{:url('lists')}">
+            <!-- <php>  // $map['sdk_version']=['in',[1,2]]</php> -->
+            <input type="text" class="form-control" name="cp_name" style="width: 120px;" value="{:input('request.cp_name/s','')}" placeholder="cp商名称">
+
+            <select name="game_id" id="game_id" class="selectpicker " game_id="{:input('request.game_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+                <option value="">游戏名称</option>
+                <volist name=":get_game_list('id,game_name')" id="vo">
+                    <option value="{$vo.id}" >{$vo.game_name}</option>
+                </volist>
+            </select>
+            
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('lists')}">清空</a>
+        </form>
+    <form class="js-ajax-form" action="" method="post">
+        <div class="table-actions position" style="margin-left: -10px;">
+            <a class="btn btn-success  mtb17" href="{:url('add')}">添加CP</a>
+        </div>
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>开发者名称</th>
+                    <th>属性</th>
+                    <th>联系人</th>
+                    <th>手机号</th>
+                    <th>邮箱</th>
+                    <th>QQ</th>
+                    <th>游戏</th>
+                    <th>总注册</th>
+                    <th>总充值</th>
+                    <th>添加时间</th>
+                    <th width="500px">备注</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <empty name="data_lists">
+                    <tr><td colspan="13" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                   
+                    <tr>
+                        <td>汇总</td>
+                        <!-- <td colspan="4"></td> -->
+                        <td style="color: #d9534f;font-weight: bold;"></td>
+                        <td style="color: #d9534f;font-weight: bold;"></td>
+                        <td style="color: #d9534f;font-weight: bold;"></td>
+                        <td style="color: #d9534f;font-weight: bold;"></td>
+                        <td style="color: #d9534f;font-weight: bold;"></td>
+                        <td style="color: #d9534f;font-weight: bold;"></td>
+                        <td style="color: #d9534f;font-weight: bold;"></td>
+                        <td style="color: #d9534f;font-weight: bold;">{$d_page_register}</td>
+                        <td style="color: #d9534f;font-weight: bold;">{$d_page_recharge}</td>
+                        <td style="color: #d9534f;font-weight: bold;"></td>
+                        <td style="color: #d9534f;font-weight: bold;"></td>
+                        <td style="color: #d9534f;font-weight: bold;"></td>
+                    </tr>
+                    <foreach name="data_lists" item="vo">
+                        <tr>
+                            <td>{$vo.id}</td>
+                            <td>{$vo.cp_name}</td>
+                            <if condition="$vo['cp_attribute'] eq 1">
+                                <td>公司</td>
+                            </if>
+                            <if condition="$vo['cp_attribute'] eq 2">
+                                <td>个人</td>
+                            </if>
+    
+                            <td>{$vo.cp_contact_name}</td>
+                            <td>{$vo.cp_mobile}</td>
+                            <td>{$vo.cp_email}</td>
+                            <td>{$vo.cp_qq}</td>
+                            <td>{$vo.count_game}</td>
+                            <td>{$vo.total_register}</td>
+                            <td>{$vo.total_recharge}</td>
+    
+                            <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+                            <td style="max-width: 500px; overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{$vo.remark}</td>
+                            <td>
+                                <a href="{:url('edit',['id'=>$vo['id']])}">编辑</a>
+                            </td>
+                        </tr>
+                        </foreach>
+                </empty>
+            </tbody>
+        </table>
+    </form>
+        <div class="pagination">{$page}</div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script type="text/javascript">
+        game_id = $("#game_id").attr('game_id');
+        $("#game_id").selectpicker('val', game_id);
+        $("#file_type").selectpicker('val', $('#file_type').attr('file_type'));
+    </script>
+</body>
+</html>

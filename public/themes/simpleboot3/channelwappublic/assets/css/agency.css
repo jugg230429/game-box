@@ -1,0 +1,113 @@
+@charset "utf-8";
+/* 代充记录 */
+
+.agency-form {
+    width: 100%;
+    padding: 0 0.55rem 0 0.15rem;
+    box-sizing: border-box;
+}
+.agency-record{
+    position: absolute;
+    top:0.35rem;
+    right:0.5rem;
+    font-size: 0.32rem;
+    color: #666;
+    
+}
+
+.form-item .agency-item-title {
+    width: 2.3333rem;
+    height: 100%;
+    text-align: right;
+    font-size: 0.373rem;
+    color: #666;
+    line-height: 1rem;
+	margin-right: 0.2rem;
+}
+.form-item .agency-item-input{
+	color:#26c7db;
+}
+.label-choose {
+	position: relative;
+	margin-right: 0.2rem;
+	cursor: pointer;
+	color:#666;
+}
+.radio-choose {
+    cursor: pointer;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    opacity: 0;
+}
+.label-choose .label-choose-i {
+	width: 0.43rem;
+	height: 0.43rem;
+	display: inline-block;
+	vertical-align: middle;
+	margin-top: -2px;
+	margin-right: 5px;
+	background: url(../images/common/order_pay_btn_choose_s.png) no-repeat;
+	background-size:100% 100%;
+	
+}
+
+.label-choose i.current {
+	background: url(../images/common/order_pay_btn_choose.png) no-repeat;
+	background-size:100% 100%;
+}
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: transparent;
+    color: #26C7DB;
+    position: relative;
+
+}
+.select2-container--default .select2-results__option--highlighted[aria-selected = false] {
+    color: #333333;
+
+}
+.select2-container--default .select2-results>.select2-results__options {
+    max-height: 7.3867rem;
+    border-left:1px solid rgba(207,207,207,0.5);
+    box-shadow:3px 4px 6px 0px rgba(143,143,143,0.18);
+    border-radius:3px;
+    border-top: none;
+    
+}
+.form-item-text .select2-container .select2-selection--single .select2-selection__rendered {
+    border-radius:3px;
+	border:1px solid rgba(230,228,228,1);
+
+}
+.select2-container--default .select2-results__option--highlighted[aria-selected]:after{
+	background:none;
+}
+.select2-results__option{
+	width:90%;
+	margin-left: 0.32rem;
+	padding-left:0;
+    border-top: 0.0267rem solid #E6E4E4;
+    box-sizing: border-box;
+    font-size: 0.373rem;
+}
+.select2-results__option:first-child{
+	    border-top: none;
+}
+.select2-container .select2-selection--single .select2-selection__rendered +.select2-selection__arrow {
+    background: url(../images/common/ico_xiala.png)no-repeat;
+    background-size: 100% 100%;
+    top: 0.38rem;
+
+}
+.select2-container--open .select2-selection--single .select2-selection__rendered +.select2-selection__arrow {
+    background: url(../images/common/ico_up.png)no-repeat;
+    background-size: 100% 100%;
+}
+.agency-form .form-item .form-item-input {
+    border-radius:3px;
+}
+.select2-container--default.select2-container--below .select2-selection--single .select2-selection__rendered{
+    color: #26c7db;
+}

@@ -1,0 +1,65 @@
+<extend name="../apppublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/apppublic/assets/css/new_detail.css">
+    <style>
+        .new_detail_con_time {
+            margin-bottom: 0.6rem!important;
+        }
+    </style>
+</block>
+<block name="body">
+    <div class="new_detail_page">
+        <div class="game_bag_down_hx clear"></div>
+        <div class="new_detail_con">
+            <div class="new_detail_con_head">
+                <p class="new_detail_con_title">{$data.post_title}</p>
+                <p class="new_detail_con_time">{:date('Y-m-d',$data.update_time)}</p>
+            </div>
+            <div class="new_detail_con_info">
+                {$data.post_content}
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+        $(function () {
+            // $(".new_detail_con_title").each(function () {
+            //     if ($(this).text().length > 30) {
+            //         $(this).text($(this).text().substring(0, 30));
+            //         $(this).html($(this).html() + '...');
+            //
+            //     }
+            // });
+
+        })
+
+    </script>
+    <!--<script>
+        (function(doc, win) {
+            var docEl = doc.documentElement,
+                isIOS = navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/),
+                dpr = isIOS ? Math.min(win.devicePixelRatio, 3) : 1,
+                dpr = window.top === window.self ? dpr : 1, //被iframe引用时，禁止缩放
+                dpr = 1,
+                scale = 1 / dpr,
+                resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
+            docEl.dataset.dpr = dpr;
+            var metaEl = doc.createElement('meta');
+            metaEl.name = 'viewport';
+            metaEl.content = 'initial-scale=' + scale + ',maximum-scale=' + scale + ', minimum-scale=' + scale;
+            docEl.firstElementChild.appendChild(metaEl);
+            var recalc = function() {
+                var width = docEl.clientWidth;
+                if (width / dpr > 1080) {
+                    width = 1080 * dpr;
+                }
+                // 乘以100，px : rem = 100 : 1
+                docEl.style.fontSize = 100 * (width / 1080) + 'px';
+            };
+            recalc()
+            if (!doc.addEventListener) return;
+            win.addEventListener(resizeEvt, recalc, false);
+        })(document, window);
+    </script>-->
+</block>

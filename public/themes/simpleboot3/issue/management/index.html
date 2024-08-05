@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+
+    {:widget('issue/Management/css')}
+    <link href="__TMPL__/issuepublic/assets/css/promote/index.css" rel="stylesheet"/>
+
+</head>
+<style>
+    .select2-dropdown {
+        border: 1px solid #26C7DB;
+    }
+    .detailDataBox {
+        height: auto!important;
+        padding-bottom: 3%;
+    }
+
+/*  */
+
+
+</style>
+<body>
+<!--左侧导航栏-->
+{:widget('issue/Management/left')}
+
+<!--头部-->
+{:widget('issue/Management/header')}
+
+<div class="trunk">
+    <div class="trunk-con">
+        <div class="right-container">
+            <div class="normal-list">
+                <div class="clear"></div>
+                <!-- 数据 -->
+                <div class="data">
+                    <div class="data-con fl data-con-frist">
+                        <div class="data-title">注册玩家</div>
+                        <div class="fl">
+                            <div class="data-name">今日注册</div>
+                            <div class="data-name">昨日注册</div>
+                            <div class="data-name">累计注册</div>
+
+                        </div>
+                        <div class="fr data-line"></div>
+                        <div class="fr">
+                            <div class="data-num">{$head['new_user']['today']|default=0}</div>
+                            <div class="data-num">{$head['new_user']['yestoday']|default=0}</div>
+                            <div class="data-num">{$head['new_user']['all']|default=0}</div>
+                        </div>
+
+                    </div>
+                    <!--                    (缓存处理)-->
+                    <div class="data-con fl ">
+                        <div class="data-title">活跃玩家</div>
+                        <div class="fl">
+                            <div class="data-name">今日活跃</div>
+                            <div class="data-name">昨日活跃</div>
+                            <div class="data-name">累计活跃</div>
+
+                        </div>
+                        <div class="fr data-line"></div>
+                        <div class="fr">
+                            <div class="data-num">{$head['record']['today']|default=0}</div>
+                            <div class="data-num">{$head['record']['yestoday']|default=0}</div>
+                            <div class="data-num">{$head['record']['all']|default=0}</div>
+                        </div>
+
+                    </div>
+                    <div class="data-con fl ">
+                        <div class="data-title w75">付费玩家</div>
+                        <div class="fl">
+                            <div class="data-name">今日付费</div>
+                            <div class="data-name">昨日付费</div>
+                            <div class="data-name">累计付费</div>
+                        </div>
+                        <div class="fr data-line"></div>
+                        <div class="fr">
+                            <div class="data-num">{$head['pay_user']['today']|default=0}</div>
+                            <div class="data-num">{$head['pay_user']['yestoday']|default=0}</div>
+                            <div class="data-num">{$head['pay_user']['all']|default=0}</div>
+                        </div>
+
+                    </div>
+                    <div class="data-con fl ">
+                        <div class="data-title">玩家充值</div>
+                        <div class="fl">
+                            <div class="data-name">今日充值</div>
+                            <div class="data-name">昨日充值</div>
+                            <div class="data-name">累计充值</div>
+
+                        </div>
+                        <div class="fr data-placeholder"></div>
+                        <div class="fr">
+                            <div class="data-num">{$head['pay']['today']|default=0.00}</div>
+                            <div class="data-num">{$head['pay']['yestoday']|default=0.00}</div>
+                            <div class="data-num">{$head['pay']['all']|default=0.00}</div>
+                        </div>
+
+                    </div>
+                    <div class="question">
+                        <i class="question_mark"></i>
+                        <ul class="question_content">
+                            <li class="question_title">数据说明</li>
+                            <li class="question_list">
+                                <strong>新增玩家</strong>
+                                <span>游戏内的新注册用户数</span>
+                            </li>
+                            <li class="question_list">
+                                <strong>活跃玩家</strong>
+                                <span>登录游戏的用户数（含新老用户，累计时去重）</span>
+                            </li>
+                            <li class="question_list">
+                                <strong>付费玩家</strong>
+                                <span>游戏内的充值用户数（统计充值成功，累计时去重）</span>
+                            </li>
+                            <li class="question_list">
+                                <strong>新付费玩家</strong>
+                                <span>注册当日进行游戏内充值的用户数（统计充值成功，累计时去重）</span>
+                            </li>
+                            <li class="question_list">
+                                <strong>老玩家</strong>
+                                <span>登录平台或游戏的老用户数，去重</span>
+                            </li>
+
+
+							<li class="question_list">
+                                <strong>付费金额</strong>
+                                <span>玩家在游戏的充值总额（统计充值成功）</span>
+                            </li>
+							<li class="question_list">
+                                <strong>付费率</strong>
+                                <span>付费用户/活跃用户</span>
+                            </li>
+
+							<li class="question_list">
+                                <strong>累计付费玩家</strong>
+                                <span>截止统计日时累计充值用户数（统计充值成功，累计时去重）</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="data detailDataBox">
+                    <div class="fl title-main ">详细数据</div>
+                    <div class="fr">
+                        <select id="pay_way" name="pay_way"
+                                class="tab-input js-select-gallery js-select-gallery-time normal-space trunk-search-smallselect fl ">
+                            <option value="1" data="0" <if condition="input('type') eq '' or input('type') eq 1">selected</if>>按天查看</option>
+                            <option value="3" data="0" <if condition="input('type') eq 3">selected</if>>按周查看</option>
+                            <option value="2" data="0" <if condition="input('type') eq 2">selected</if>>按月查看</option>
+                        </select>
+                        <input type="submit" class="submit fr normal-space" id="submit" value="导出"
+                               data-url="{:url('datareport/export/expuser',['id'=>11,'xlsname'=>'游戏概览-详细数据','open_user_id'=>OID,'platform_id'=>PID,'type'=>input('type','1')])}">
+                    </div>
+                    <div class="clear"></div>
+                    <div>
+                        <div class="table-data table-data-show">
+                            <table class="table normal-table" id="promotecoin_table">
+                                <tbody>
+                                <tr>
+                                    <th>日期</th>
+                                    <th>新增玩家</th>
+                                    <th>活跃玩家</th>
+                                    <th>付费玩家</th>
+                                    <th>新付费玩家</th>
+                                    <th>老玩家</th>
+                                    <th>付费金额</th>
+                                    <th>付费率</th>
+                                    <th>累计付费玩家</th>
+                                </tr>
+                                <volist name="table_data" id="vo">
+                                    <php>$totalpayuser = $totalpayuser+$vo['payuser']</php>
+                                    <tr class="js-tr">
+                                        <td>{$key}</td>
+                                        <td>{$vo.newsplayer}</td>
+                                        <td>{$vo.activeplayer}</td>
+                                        <td>{$vo.payuser}</td>
+                                        <td>{$vo.newpayuser}</td>
+                                        <td>{:$vo['activeplayer']-$vo['newsplayer']}</td>
+                                        <td>{$vo.totalpay}</td>
+                                        <td>{$vo.rate}</td>
+                                        <td>{$vo.totalpayuser}</td>
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                        </div>
+<!--                        <div class="table-data">-->
+<!--                            <table class="table normal-table" id="promotecoin_table">-->
+<!--                                <tbody>-->
+<!--                                <tr>-->
+<!--                                    <th>日期</th>-->
+<!--                                    <th>新增玩家</th>-->
+<!--                                    <th>活跃玩家</th>-->
+<!--                                    <th>付费玩家</th>-->
+<!--                                    <th>新付费玩家</th>-->
+<!--                                    <th>老玩家</th>-->
+<!--                                    <th>付费金额</th>-->
+<!--                                    <th>付费率</th>-->
+<!--                                    <th>充值IP</th>-->
+<!--                                    <th>累计付费玩家</th>-->
+<!--                                </tr>-->
+
+<!--                                </tbody>-->
+<!--                            </table>-->
+<!--                        </div>-->
+<!--                        <div class="table-data">-->
+<!--                            <table class="table normal-table" id="promotecoin_table">-->
+<!--                                <tbody>-->
+<!--                                <tr>-->
+<!--                                    <th>日期</th>-->
+<!--                                    <th>新增玩家</th>-->
+<!--                                    <th>活跃玩家</th>-->
+<!--                                    <th>付费玩家</th>-->
+<!--                                    <th>新付费玩家</th>-->
+<!--                                    <th>老玩家</th>-->
+<!--                                    <th>付费金额</th>-->
+<!--                                    <th>付费率</th>-->
+<!--                                    <th>充值IP</th>-->
+<!--                                    <th>累计付费玩家</th>-->
+<!--                                </tr>-->
+
+<!--                                </tbody>-->
+<!--                            </table>-->
+<!--                        </div>-->
+                    </div>
+					<div id="pageBox" class="indexPagenationBottom">
+                        {$page}
+			        </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="__TMPL__/issuepublic/assets/js/promote/jquery-1.11.1.min.js"></script>
+    <script src="__TMPL__/issuepublic/assets/js/promote/common.js"></script>
+    <script src="__TMPL__/issuepublic/assets/js/promote/select2.min.js"></script>
+
+
+    <script>
+        console.log(123)
+         // 公告弹框
+          $(function () {
+        //平台公告 弹框
+        $('.dialogOperationClose').click(function() {
+            $('.cooperationBox').css('display','none')
+            console.log(123)
+            // logout();
+        });
+
+        $(function () {
+
+            $(".js-select-gallery").select2();
+            var res = $(".js-select-gallery-time").select2("data")[0];
+
+            $(".js-select-gallery-time").select2({
+                minimumResultsForSearch: -1
+            });
+            var myselect = document.getElementById("pay_way");
+            var index = myselect.selectedIndex;
+            // $(".table-data").eq(index).addClass("table-data-show").siblings().removeClass("table-data-show");
+            $('#pay_way').change(function () {
+                var myselect = document.getElementById("pay_way");
+                var index = myselect.selectedIndex;
+                type =$(this).find('option:selected').val();
+                // $(".table-data").eq(index).addClass("table-data-show").siblings().removeClass("table-data-show");
+                location.href="{:url('management/index',[],false)}"+'/type/'+type;
+            })
+		// <!-- 分页 -->
+          tabPage({
+            pageMain: '#promotecoin_table',
+            pageNav: '#pageNav',
+            pagePrev: '#prev',
+            pageNext: '#next',
+            curNum: 10, /*每页显示的条数*/
+            activeClass: 'active', /*高亮显示的class*/
+            ini: 0/*初始化显示的页面*/
+        });
+        function tabPage(tabPage) {
+            var pageMain = $(tabPage.pageMain);
+            /*获取内容列表*/
+            var pageNav = $(tabPage.pageNav);
+            /*获取分页*/
+            var pagePrev = $(tabPage.pagePrev);
+            /*上一页*/
+            var pageNext = $(tabPage.pageNext);
+            /*下一页*/
+
+
+            var curNum = tabPage.curNum;
+            /*每页显示数*/
+            var len = Math.ceil(pageMain.find(".js-tr").length / curNum);
+            /*计算总页数*/
+            console.log(len);
+            var pageList = '';
+            /*生成页码*/
+            var iNum = 0;
+            /*当前的索引值*/
+
+            for (var i = 0; i < len; i++) {
+                pageList += '<a href="javascript:;">' + (i + 1) + '</a>';
+            }
+
+
+            pageNav.html(pageList);
+            /*头一页加高亮显示*/
+            pageNav.find("a:first").addClass(tabPage.activeClass);
+
+            /*******标签页的点击事件*******/
+                pageNav.find("a").each(function(){
+                    $(this).click(function () {
+                        pageNav.find("a").removeClass(tabPage.activeClass);
+                        $(this).addClass(tabPage.activeClass);
+                        iNum = $(this).index();
+                        $(pageMain).find(".js-tr").hide();
+                        for (var i = ($(this).html() - 1) * curNum; i < ($(this).html()) * curNum; i++) {
+                            $(pageMain).find(".js-tr").eq(i).show()
+                        }
+
+                    });
+            })
+
+
+            $(pageMain).find(".js-tr").hide();
+            /************首页的显示*********/
+            for (var i = 0; i < curNum; i++) {
+                $(pageMain).find(".js-tr").eq(i).show()
+            }
+
+
+            /*下一页*/
+            pageNext.click(function () {
+                console.log(iNum)
+                $(pageMain).find(".js-tr").hide();
+                if (iNum == len - 1) {
+                    // alert('已经是最后一页');
+                    for (var i = (len - 1) * curNum; i < len * curNum; i++) {
+                        $(pageMain).find(".js-tr").eq(i).show()
+                    }
+                    return false;
+                } else {
+                    pageNav.find("a").removeClass(tabPage.activeClass);
+                    iNum++;
+                    pageNav.find("a").eq(iNum).addClass(tabPage.activeClass);
+//                    ini(iNum);
+                }
+                for (var i = iNum * curNum; i < (iNum + 1) * curNum; i++) {
+                    $(pageMain).find(".js-tr").eq(i).show()
+                }
+            });
+            /*上一页*/
+            pagePrev.click(function () {
+                $(pageMain).find(".js-tr").hide();
+                if (iNum == 0) {
+                    // alert('当前是第一页');
+                    for (var i = 0; i < curNum; i++) {
+                        $(pageMain).find(".js-tr").eq(i).show()
+                    }
+                    return false;
+                } else {
+                    pageNav.find("a").removeClass(tabPage.activeClass);
+                    iNum--;
+                    pageNav.find("a").eq(iNum).addClass(tabPage.activeClass);
+                }
+                for (var i = iNum * curNum; i <script (iNum + 1) * curNum; i++) {
+                    $(pageMain).find(".js-tr").eq(i).show()
+                }
+            })
+
+        }
+
+
+            $("#submit").click(function () {
+                var exurl = $(this).attr('data-url');
+                location.href = exurl;
+            });
+
+
+        })
+          })
+    </script>
+</div>
+{:widget('issue/Management/footer')}
+</body>
+</html>

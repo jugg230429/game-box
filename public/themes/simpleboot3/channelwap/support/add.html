@@ -1,0 +1,262 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/select2.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/new_select2.css" type="text/css" />
+    <link href="__TMPL__/channelwappublic/assets/css/support.css" type="text/css" rel="stylesheet" />
+</block>
+<block name="body">
+    <div class="page-container">
+        <header>
+            <a href="javascript:history.back(-1);" class="back-btn"></a>
+            <div style="width: 100%;height: 100%" class="v-middle h-middle">
+                <p class="header-title ">新增扶持</p>
+               
+            </div>
+            <p class="f-question">?</p>
+        </header>
+        <div class="page-content">
+            <form action="" method="post" class="support_add">
+                <div class="tabpan">
+                    <div class="tabpan-con tabpan-show">
+                        <div class="trunk-search clearfix fr search-box" style="padding-bottom: 0.3rem">
+                            <div class="search-item col-6">
+                            <select id="game_id" name="game_id" style="width: 240px" class="tab-input js-select-gallery normal-space trunk-search-smallselect fl" >
+                                <option value="">游戏名称</option>
+                                <php>
+                                    $map = [];
+                                    $map['first_support_num'] = ['neq',0];
+                                </php>
+                                <volist name=":get_game_list('id,game_name',$map)" id="vo">
+                                    <option value="{$vo['id']}">{$vo['game_name']}</option>
+                                </volist>
+
+                            </select>
+                        </div>
+                        <div class="search-item col-6">
+                            <select id="server_id" name="server_id" class="tab-input js-select-gallery normal-space trunk-search-smallselect fl" >
+                                <option value="">区服名称</option>
+                            </select>
+                        </div>
+                        <div class="showCreateLimit" >
+                            <img src="__TMPL__/channelwappublic/assets/images/common/shouyi_icon_tips.png" alt="" class="sighIcon">
+                            <span class="support_limit">新增扶持额度上限:<span id="limit_num">0</span></span>
+                        </div>
+                        </div>
+                        <div class="clear"></div>
+
+                        <!-- <table class="table normal-table" id="promotecoin_table">
+                            <tbody>
+                            <tr>
+                              
+                            </tr>
+
+                            <tr class="rows js-support-rows" data-num="1">
+                                <td><input type="text" name="support[1][user_account]" class="tabpan-input" placeholder="账号"></td>
+                                <td><input type="text" name="support[1][role_name]" class="tabpan-input" placeholder="角色名称"></td>
+                                <td><input type="text" name="support[1][apply_num]" oninput="value=value.replace(/[^\d]/g,'')"
+                                           class="tabpan-input " placeholder="申请元宝或钻石数量"></td>
+                                <td><input type="text" name="support[1][remark]" class="tabpan-input " placeholder="备注"></td>
+                                <td class="js-support-td-last">
+                                    <a href="javascript:;" class="apply-btn js-support-delete" >删除</a>
+                                    <a href="javascript:;" class="apply-btn js-support-add" >新增</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td colspan="6" class="support-btn-box">
+                                    <input type="button" class="submit fr normal-space" onclick="check()" value="保存">
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table> -->
+
+                    </div>
+                    <div class="bottomTable js-support-rows" data-num="1">
+                        <div class="bottom-item">
+                            <input type="text " name="support[1][user_account]" class="tabpan-input inputContent" placeholder="玩家账号">
+                            <input type="text inputContent" name="support[1][role_name]" class="tabpan-input inputContent" placeholder="角色名称">
+                        </div>
+                        <div class="bottom-item">
+                            <input type="text" name="support[1][apply_num]" oninput="value=value.replace(/[^\d]/g,'')"
+                                       class="tabpan-input inputContent" placeholder="扶持数量"></td>
+                            <input type="text" name="support[1][remark]" class="tabpan-input inputContent" placeholder="备注">
+                        </div>
+                        <div class="aloneButtons">
+                            <button type="button" class="submit confirmSubmit" onclick="check()">保存</button>
+                            <button type="button" class="apply-btn js-support-add addSupplyBtn" onclick="createSave()">新增</button>
+                            <!-- <a href="javascript:;" class="apply-btn js-support-delete" >删除</a> -->
+                            <!-- <a href="javascript:;" class="apply-btn js-support-add addSupplyBtn" >新增</a> -->
+                           
+                        </div>
+                    </div>
+                    <!-- <div class="aloneButtons">
+                        <button class="submit fr normal-space confirmSubmit" onclick="check()">保存</button>
+                        <a href="javascript:;" class="apply-btn js-support-delete" >删除</a>
+                        <a href="javascript:;" class="apply-btn js-support-add addSupplyBtn" >新增</a>
+                       
+                    </div> -->
+                </div>
+            </form>
+        </div>
+    <!-- 扶持说明弹窗 -->
+    <div class="fuchiPop" hidden>
+        <div class="pop">
+            <div class="fuchibox">
+                <div class="fuchi-top">
+                    <p>扶持说明</p>
+                    <img src="/themes/simpleboot3/channelwappublic/assets/images/profit/ico_close.png" alt="" class=" h-close">
+                </div>
+                <div class="fuchi-content">
+                    <div class="fuchi-content-top">
+                        <p>1. 测试资源未到账前，请不要在游戏内修改角色名称，避免无法到账；</p>
+                        <p>2. 申请的游戏必须是已授权的游戏 ；</p>
+                        <p>3. 玩家账号必须归属于您以及您的下级推广账号，才可以申请测试号；</p>
+                        <p>4. 提示：本系统申请的带团资源仅供游戏测试、参加游戏活动，部分功能开放等游戏体验使用，禁止用于与第三方交易、欺诈等获取不当利益的相关行为。</p>
+                    </div>
+                    <div class="fuchi-content-bottom">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/select2.min.js"></script>
+    <script>
+        var getServerUrl = "{:url('Support/getServer')}";
+        var subUrl = "{:url('Support/add')}";
+        var applyUrl = "{:url('Support/apply')}";
+        var gameSupportNum = "{:url('Support/gameFirstSupportNum')}";
+        var getSupportIntroductionUrl = "{:url('Support/getIntroduction')}";
+
+
+        $(function () {
+
+            $(".js-select-gallery").select2();
+            $("#server_id").change(function() {
+                var game_id = $("#game_id").val();
+                if(!game_id){
+                    layer.msg('请选择游戏');
+                    return false;
+                }
+                $.post(gameSupportNum,{game_id:game_id}, function (res) {
+                    if(res){
+                        $("#limit_num").text(res).parent().parent().show();
+                    }else{
+                        layer.msg('该游戏暂未设置扶持额度');
+                    }
+                });
+            })
+
+
+            // 删除
+            $('body').on('click', '.js-support-delete', function () {
+                var that = $(this);
+                var parent = that.closest('.js-support-rows');
+                if (parent.parent().find('.js-support-rows').length < 2) {
+                    return false;
+                }
+                if (that.siblings('.js-support-add').length > 0) {
+                    var add = that.siblings('.js-support-add')[0];
+                    parent.prev('.js-support-rows').find('.js-support-td-last').append(add);
+                }
+                parent.remove();
+                return false;
+            });
+            $('body').on('click', '.js-support-add', function () {
+                var that = $(this);
+                var parent = that.closest('.js-support-rows');
+                var num = parseInt(parent.attr('data-num')) + 1;
+                var html = parent.html();
+                html = '<div class="fengexian"></div><div class=" js-support-rows newAddBox" data-num="' + (num) + '">' + html + '</div>';
+                var reg = new RegExp("\\[" + (num - 1) + "\\]", 'g');
+                html = html.replace(reg, '[' + num + ']');
+                that.parent().find('.confirmSubmit').remove()
+                that.remove();
+                parent.after(html);
+                return false;
+            });
+
+            $('#game_id').change(function () {
+                var game_id = $(this).val();
+                getServerLists(game_id);
+                getSupportIntroduction(game_id);
+            })
+
+        });
+
+        //获取扶持规则
+        function getSupportIntroduction(game_id){
+            $.post(getSupportIntroductionUrl, {game_id: game_id}, function (res) {
+                if(res.code==0){
+                    $(".fuchi-content-bottom").hide();
+                    return false;
+                }
+                var html = "<br/><p>扶持规则：</p>";
+                var data = res.data.support_introduction;
+                $.each(data,function (index,ele) {
+                    html += '<p>'+ele+'</p>'
+                });
+                $(".fuchi-content-bottom").html(html).show();
+                return false;
+            });
+        }
+
+
+        //获取区服列表
+        function getServerLists(game_id) {
+            $("#server_id").empty();
+            $("#select2-server_id-container").text('请选择区服');
+
+            var html = '<option  value="">请选择区服</option>';
+            $.post(getServerUrl, {game_id: game_id}, function (res) {
+                if (res.code == '1') {
+                    var data = res.data;
+                    $.each(data, function (index, ele) {
+                        html += '<option  value="' + ele.id + '">' + ele.server_name + '</option>';
+                    });
+                    $("#server_id").html(html);
+                }
+            });
+
+        }
+        function createSave() {
+            var that = $(this);
+                var parent = that.closest('.js-support-rows');
+                var num = parseInt(parent.attr('data-num')) + 1;
+                var html = parent.html();
+                html = '<div class="fengexian"></div><div class=" js-support-rows newAddBox" data-num="' + (num) + '">' + html + '</div>';
+                var reg = new RegExp("\\[" + (num - 1) + "\\]", 'g');
+                html = html.replace(reg, '[' + num + ']');
+                that.parent().find('.confirmSubmit').remove()
+                that.remove();
+                parent.after(html);
+                return false;
+        }
+
+        function check() {
+            var data = $('.support_add').serializeArray();
+            $.post(subUrl, data, function (res) {
+                if (res.code == '0') {
+                    layer.msg(res.msg);
+                    return false;
+                }
+                layer.msg(res.msg);
+                setTimeout(function () {
+                    location.href = applyUrl;
+                }, 2000);
+            });
+
+        }
+        $('.f-question').click(function(){
+            $(".fuchiPop").css("display","block")
+        })
+        $('.h-close').click(function(){
+            $(".fuchiPop").css("display","none")
+        })
+
+    </script>
+</block>

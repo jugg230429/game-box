@@ -1,0 +1,67 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/type.css">
+</block>
+<block name="body">
+ 
+    <div class="ecard-header">
+      <div>
+	     <a href="javascript:history.go(-1);" class="fl"><img src="/themes/simpleboot3/mobilepublic/assets/images/common_btn_back.png" alt="" class=" back_icon"></a>
+		 <div class="ecard-header-title fl">月卡类型</div>
+	  </div>
+   </div> 
+   
+ 
+  <div class="daylist">
+     <div class="day fl">
+	     <div class="day-tag">悦享卡</div>
+	     <div class="day-num">30天</div>
+		 <div class="day-money">¥ <strong>50</strong></div>
+		 <div class="day-meal">1.67元/天</div>
+	 </div>
+	 <div class="day  fl">
+	   <div class="day-tag">季享卡</div>
+	     <div class="day-num">90天</div>
+		 <div class="day-money">¥ <strong>150</strong></div>
+		 <div class="day-give">送5天</div>
+		 <div class="day-meal">1.59元/天</div>
+	 </div>
+	 <div class="day  fl">
+	   <div class="day-tag">年享卡</div>
+	     <div class="day-num">360天</div>
+		 <div class="day-money">¥ <strong>500</strong></div>
+		  <div class="day-give">送30天</div>
+		 <div class="day-meal">1.28元/天</div>
+	 </div>
+  </div>
+  <div class="pay-title">选择付款方式</div>
+  <div class="pay-box">
+      <div class="pay-way">
+	      <img src="__TMPL__/mobilepublic/assets/images/ecard/icon-zhifubao.png" class="fl pay-way-icon">
+		  <div class="fl pay-way-name">支付宝支付</div>
+		  <img src="__TMPL__/mobilepublic/assets/images/ecard/icon-weixuan.png" class="fg pay-way-choose">
+		  <img src="__TMPL__/mobilepublic/assets/images/ecard/icon-xuanzhong.png" class="fg pay-way-selected">
+	  </div>
+	   <div class="pay-way">
+	      <img src="__TMPL__/mobilepublic/assets/images/ecard/icon-weixin.png" class="fl pay-way-icon">
+		  <div class="fl pay-way-name">微信支付</div>
+		  <img src="__TMPL__/mobilepublic/assets/images/ecard/icon-weixuan.png" class="fg pay-way-choose">
+		  <img src="__TMPL__/mobilepublic/assets/images/ecard/icon-xuanzhong.png" class="fg pay-way-selected">
+	  </div>
+  </div>
+  <div class="btn-pay"><a class="btn-pay-con">去付款</a></div>
+</block>
+<block name="script">
+<script>
+    $(".day").click(function(){
+
+	   $(this).addClass("day-active").siblings().removeClass("day-active")
+	})
+	$(".pay-way").click(function(){
+
+	   $(this).addClass("pay-way-active").siblings().removeClass("pay-way-active")
+	})
+	
+</script>
+</block>
+

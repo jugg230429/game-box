@@ -1,0 +1,278 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/select2.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/new_select2.css" type="text/css" />
+    <link href="__TMPL__/channelwappublic/assets/css/coupon.css" type="text/css" rel="stylesheet" />
+    <link href="__TMPL__/channelwappublic/assets/css/swiper-bundle.min.css" type="text/css" rel="stylesheet" />
+</block>
+<block name="body">
+    <div class="page-container">
+        <header>
+            <a href="{:url('promote/index')}" class="back-btn"></a>
+            <div style="width: 100%;height: 100%" class="v-middle h-middle">
+                <a href="{:url('coupon/lists')}" class="header-title">代金券列表</a>
+                <a href="javascript:;" class="header-title active">发放记录</a>
+                <a href="{:url('coupon/grant')}" class="add-child-icon">
+                   发放
+                </a>
+            </div>
+        </header>
+        <div class="page-content">
+            <div class="search-box">
+                <div class="search-item">
+                    <div>
+                        <input type="text" class="input-date" id="coupon_name" placeholder="代金券名称">
+                    </div>
+                    <select id="limit_money" class="select_gallery" data-placeholder="使用条件">
+                        <option value="0">使用条件</option>
+                        <option value="1" >无门槛</option>
+                        <option value="2">满减</option>
+                    </select>
+                    <php>$gmap['game_status'] = 1;$gmap['sdk_version'] = ['in',[1,2,3]];</php>
+                    <select id="game_id" class="select_gallery" data-placeholder="来源游戏">
+                        <option value="0" >选择游戏</option>
+                        <volist name=":get_game_list('relation_game_id,relation_game_name,sdk_version',$gmap,'relation_game_id')" id="vo">
+                            <option value="{$vo.relation_game_id}" >{$vo.relation_game_name}<if condition="$vo['sdk_version'] eq 3">(H5)</if></option>
+                        </volist>
+                    </select>
+                </div>
+            </div>
+            <div class="newBox">
+                <div class="swiper-container" >
+                    <div class="swiper-wrapper" >
+                      <div class="swiper-slide">
+                                <table class="applyBox">
+                                    <tbody>
+                                    <tr class="table-title">
+                                        <th>玩家账号</th>
+                                        <th>名称</th>
+                                        <th>游戏</th>
+                                        <th>优惠金额</th>
+                                        <th>扣除平台币</th>
+                                        <th>订单金额</th>
+                                        <th>实付金额</th>
+                                        <th>使用条件</th>
+                                        <th>发放时间</th>
+                                        <th>使用时间</th>
+                                        <th>状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </tbody>
+                                    <tbody id="grantload">
+                                    </tbody>
+                                    <tr class="total">
+                                        <td>汇总</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="total_deduct">0.00</td>
+                                        <td class="total_cost">0.00</td>
+                                        <td class="total_pay">0.00</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </table>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tips-prop-pop">
+                <div class="pop-table">
+                    <div class="pop-cell">
+                        <div class="pop-box">
+                            <p>确定回收后，相关代金券将会被删除，</p>
+                            <p>用户将无法使用。</p>
+                            <div class="pop-btn-box">
+                                <a class="buttonConfirm">确定</a>
+                                <a class="buttonCancel">取消</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+        </div>
+    </div>
+    <div class="pop"></div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/select2.min.js"></script>
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/pop.lwx.min.js"></script>
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/swiper-bundle.min.js"></script>
+    <script>
+        $(function () {
+            $(".select_gallery").select2({});
+  
+        })
+        var itemIndex = 0;
+        var coupon_name = '';
+        var limit_money = '';
+        var game_id = 0;
+        var lwx = window.lwx || {};
+        lwx.ready = true;
+        lwx.width = $(window).width();
+        lwx.height = $(window).height();
+        lwx.number = {grant:1};
+        lwx.row = {grant:15};
+        lwx.http = {
+            getJSON:function(url,callback){
+                $.getJSON(url + '&v=' + Date.now(),function(data){
+                    callback(data);
+                });
+            },
+            postJSON:function(url,args,callback) {
+                $.post(url + '&v=' + Date.now(), args, function(data) {
+                    callback(data);
+                },"json")
+            },
+        };
+        lwx.url ={
+            grant:'{:url("Coupon/get_grant_list")}',
+        };
+        lwx.page = {
+            grant:function(){
+                if(lwx.number.grant) {
+                    lwx.http.getJSON(lwx.url.grant+'?coupon_name='+coupon_name+'&limit_money='+limit_money+'&game_id='+game_id+'&row='+lwx.row.grant+'&page='+lwx.number.grant,function(data) {
+                        var hotload = $('#grantload');
+                        var total = data.total;
+                        if(total.totaldeduct > 0){
+                            $(".total_deduct").text(total.totaldeduct);
+                        }
+                        if(total.totalcost > 0){
+                            $(".total_cost").text(total.totalcost);
+                        }
+                        if(total.total > 0){
+                            $(".total_pay").text(total.total);
+                        }
+                        var data = data.data.data;
+                        if(data && data.length) {
+                            $(".total").show();
+                            var html = '';
+                            for (var i in data) {
+                                html += '<tr class="child-channel-item">';
+                                html += '<td class="channel-name">'+data[i].user_account+'</td>';
+                                html += '<td class="channel-name">'+data[i].coupon_name+'</td>';
+                                html += '<td class="channel-date">'+data[i].game_name+'</td>';
+                                html += '<td class="channel-date">'+data[i].money+'</td>';
+                                html += '<td class="channel-date">'+data[i].deduct_amount+'</td>';
+                                html += '<td class="channel-date">'+data[i].cost+'</td>';
+                                html += '<td class="channel-date">'+data[i].pay_amount+'</td>';
+                                html += '<td class="channel-date">'+data[i].condition+'</td>';
+                                html += '<td class="channel-date">'+data[i].create_time+'</td>';
+                                html += '<td class="channel-date">'+data[i].update_time+'</td>';
+                                html += '<td class="channel-date">'+data[i].status+'</td>';
+                                if(data[i].status == '未使用'){
+                                    html += '<td class="channel-date"><a class="js-recovery" data-href="'+data[i].url+'">回收</a></td>';
+                                }else{
+                                    html += '<td class="channel-date">-</td>';
+                                }
+                                html += '</tr>';
+                            }
+                            hotload.append(html);
+                            hotload.find('.jsdropload').remove();
+                            if(data.length >= lwx.row.grant) {
+                                lwx.number.grant++;
+                                lwx.ready = true;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.grant = false;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                        } else {
+                            if(lwx.number.grant==1){
+                                $(".total").hide();
+                                hotload.html('').append('<p class="no_invest_info jsdropload">~空空如也~</p>');
+                            } else{
+                                hotload.find('.jsdropload').remove();
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                            lwx.number.grant = false;
+                        }
+                    });
+                }
+            }
+        };
+        pageChange();
+        function pageChange() {
+            lwx.page.grant();
+            var swiper = new Swiper('.swiper-container', {
+                slidesPerView: 'auto',
+                freeMode: true,
+                mousewheel: true,
+            });
+            setTimeout(function() {
+                $('.applyBox').parent().css('width',$('.applyBox').width()+'px')  
+                swiper.update()  
+            },500)
+        }
+        function pageScroll(scrollTop, boxHeight, maxScrollHeight) {
+            if (scrollTop + boxHeight >= maxScrollHeight - 50) {
+                if (lwx.ready) {
+                    lwx.ready = false;
+                    lwx.page.grant();
+                }
+            }
+        }
+        window.onscroll = function() {
+            var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+            pageScroll(scrollTop, lwx.height, $(document).height())
+        }
+        $(function () {
+            $('.game-menu-box a').click(function () {
+                $(this).addClass("active").siblings().removeClass("active");
+                var index = $(this).index();
+                $('.menu-tab').eq(index).show().siblings(".menu-tab").hide();
+                itemIndex = index;
+                location.hash = index;
+            });
+            $("#coupon_name").bind('input porpertychange',function(){
+                coupon_name = $("#coupon_name").val();
+                $("#grantload").empty();
+                lwx.number.grant = 1;
+                pageChange();
+            });
+            $("#limit_money").change(function () {
+                limit_money = $("#limit_money").val();
+                $("#grantload").empty();
+                lwx.number.grant = 1;
+                pageChange();
+            })
+            $("#game_id").change(function () {
+                game_id = $("#game_id").val();
+                $("#grantload").empty();
+                lwx.number.grant = 1;
+                pageChange();
+            })
+            // 回收按钮
+            $("body").on('click',".js-recovery",function () {
+                $('.tips-prop-pop').css('display','block').find('.buttonConfirm').attr('data-href',$(this).attr('data-href'))
+               
+            })
+            $('.buttonConfirm').click(function() {
+                var url = $(this).attr('data-href');
+                lwx.http.getJSON(url,function(data) {
+                    layer.msg(data.msg);
+                    if(data.code == 1){
+                        setTimeout(function () {
+                            window.location.reload();
+                        },1000)
+                    }
+                });
+            })
+            $('.buttonCancel').click(function() {
+                $('.tips-prop-pop').css('display','none')
+            })
+        })
+        $(window).on("hashchange", function() {
+            pageChange();
+        });
+
+
+        
+    
+    </script>
+</block>

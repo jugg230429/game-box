@@ -1,0 +1,36 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <form id="search_form" class="well form-inline fr" method="get" action="{:url('User/denglu',['user_id'=>input('user_id')])}" >
+            <input type="submit" class="btn btn-primary hidden" id="search_btn" value="搜索" />
+        </form>
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr><th colspan="8" style="background: #ffffff">玩家账号：{$user.account}</th></tr>
+                <tr>
+                    <th>游戏名称</th>
+                    <th>登录时间</th>
+                    <th>登录IP</th>
+                </tr>
+            </thead>
+            <tbody>
+                <empty name="data_lists">
+                    <tr><td colspan="5" style="text-align: center;">暂无数据</td></tr>
+                </empty>
+                <foreach name="data_lists" item="vo">
+                    <tr>
+                        <td>{$vo.game_name}</td>
+                        <td>{$vo['login_time']|date='Y-m-d H:i:s',###}</td>
+                        <td>{$vo.login_ip}</td>
+                    </tr>
+                </foreach>
+            </tbody>
+        </table>
+        <div class="pagination">
+            {$page}
+            <li class="page-item"><a class="page-link" href="{:url('Export/expUser',array_merge(['id'=>3,'xlsname'=>'玩家_登录记录表'],input()))}">导出</a></li>
+        </div>
+    </div>
+</body>
+</html>

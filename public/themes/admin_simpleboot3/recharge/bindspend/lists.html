@@ -1,0 +1,124 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('bindspend/lists')}">绑币充值</a></li>
+            <span class="title_remark">说明：玩家充值绑定平台币到游戏的记录。</span>
+        </ul>
+        <form id="search_form" class="well form-inline  fr" method="get" action="{:url('bindspend/lists')}" onsubmit="return check();">
+            <input type="text" class="form-control" name="user_account" style="width: 120px;" value="{:input('user_account/s','')}" placeholder="玩家账号">
+            <input type="text" class="form-control" name="pay_order_number" style="width: 120px;" value="{:input('pay_order_number/s','')}" placeholder="订单号">
+            <select name="promote_id" id="promote_id" class="selectpicker " promote_id="{:input('request.promote_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+                <option value="">所属渠道</option>
+                <option value="0">官方渠道</option>
+                <volist name=":get_promote_list()" id="vo">
+                    <option value="{$vo.id}" >{$vo.account}</option>
+                </volist>
+            </select>
+            <select name="game_id" id="game_id" class="selectpicker " game_id="{:input('request.game_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+                <option value="">游戏名称</option>
+                <volist name=":get_game_list('id,game_name')" id="vo">
+                    <option game-id="{$vo.id}" value="{$vo.id}" >{$vo.game_name}</option>
+                </volist>
+            </select>
+            <input type="text" class="form-control js-bootstrap-date" id="start_time" name="start_time" placeholder="充值开始时间"
+                   value="{:input('request.start_time/s','')}" style="width: 140px;" autocomplete="off">-
+            <input type="text" class="form-control js-bootstrap-date" id="end_time" name="end_time" placeholder="充值结束时间"
+                   value="{:input('request.end_time/s','')}" style="width: 140px;" autocomplete="off">
+
+            <select name="pay_way" id="pay_way" class="selectpicker" pay_way="{:input('request.pay_way')}">
+                <option value="">充值方式</option>
+                <option value="3" <if condition="input('request.pay_way') eq 3">selected</if>>支付宝</option>
+                <option value="4" <if condition="input('request.pay_way') eq 4">selected</if>>微信</option>
+            </select>
+
+            <input type="text" class="form-control" name="spend_ip" style="width: 120px;" value="{:input('request.spend_ip/s','')}" placeholder="充值IP">
+            <select name="pay_status" id="pay_status" class="selectpicker" pay_status="{:input('request.pay_status')}" style="width: 120px;">
+                <option value="">订单状态</option>
+                <option value="1" <if condition="input('pay_status') eq 1">selected</if>>充值成功</option>
+                <option value="0" <if condition="input('pay_status') eq '0'">selected</if>>下单未付款</option>
+                <option value="2" <if condition="input('pay_status') eq 2">selected</if>>订单异常</option>
+            </select>
+           <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('bindspend/lists')}">清空</a>
+        </form>
+        <div class="scroll-table-wrapper" style="padding-left: 10px;">
+        <table class="table table-hover table-bordered scroll-table">
+            <thead>
+                <tr>
+                    <th>订单号</th>
+                    <th>账号</th>
+                    <th>所属渠道</th>
+                    <th>游戏名称</th>
+                    <th>充值绑币</th>
+                    <th>实付金额</th>
+                    <th>充值方式</th>
+                    <th>充值IP</th>
+                    <th>充值时间</th>
+                    <th>订单状态</th>
+                </tr>
+            </thead>
+            <tbody>
+                <empty name="data_lists">
+                    <tr><td colspan="10" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <foreach name="data_lists" item="vo">
+                    <tr>
+                        <php>if($vo['pay_status'] == 1) $page_total +=$vo['pay_amount'];</php>
+                        <td>{$vo['pay_order_number']}</td>
+
+                        <td>{$vo['user_account']}</td>
+                        <if condition="AUTH_PROMOTE eq 1">
+                            <td><eq name="vo['promote_id']" value="0">	官方渠道<else/>{$vo['promote_account']}</eq></td>
+                            <else/>
+                            <td>请购买渠道权限</td>
+                        </if>
+                        <td>{$vo['game_name']}</td>
+                        <td>{$vo['cost']}</td>
+                        <td>{$vo['pay_amount']}</td>
+                        <td>{:get_pay_way($vo['pay_way'])}</td>
+                        <td>{$vo['pay_ip']}</td>
+                        <td>{$vo['pay_time']|date="Y-m-d H:i:s",###}</td>
+                        <td>
+                            <span <if condition="$vo['pay_status'] eq 1"> class="label" style="color:#3FAD46;font-size:14px"<else/>class="label" style="color:#d9534f;font-size:14px"</if>>{:get_info_status($vo['pay_status'],2)}</span>
+                        </td>
+                    </tr>
+                    </foreach>
+                     <tr class="data_summary">
+                        <td><span style="margin-right: 10px;">汇总（只汇总充值成功） </span></td>
+                        <td colspan="14"><span>今日充值：{:null_to_0($today['total'])}元 ； 昨日充值：{:null_to_0($yestoday['total'])}元 ； 当页充值：{:null_to_0($page_total)}元 ； 累计充值：{:null_to_0($total['total'])}元； </span></td>
+
+                    </tr>
+                </empty>
+            </tbody>
+        </table>
+        </div>
+        <div class="pagination">
+
+            {$page}
+
+        </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script type="text/javascript">
+        game_id = $("#game_id").attr('game_id');
+        promote_id = $('#promote_id').attr('promote_id');
+        $("#game_id").selectpicker('val', game_id);
+        $("#promote_id").selectpicker('val', promote_id);
+        $("#pay_way").selectpicker('val', $('#pay_way').attr('pay_way'));
+        $("#pay_status").selectpicker('val', $('#pay_status').attr('pay_status'));
+        function check(){
+            var start_time = $("#start_time").val();
+            var end_time = $("#end_time").val();
+            if(start_time != '' && end_time != '' && start_time > end_time){
+                layer.msg('开始时间不能大于结束时间');
+                return false;
+            }
+            return true;
+        }
+
+    </script>
+</body>
+</html>

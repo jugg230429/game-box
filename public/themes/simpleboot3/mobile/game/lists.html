@@ -1,0 +1,261 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__JS__/layui/css/layui.css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/rec_hot_new.css">
+</block>
+
+<block name="body">
+    <div class="rec_hot_new_page">
+        <div class="rec_hot_new_header">
+            <a href="{:url('index/index')}"><img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt=""
+                    class="fl back_icon"></a>
+            <p class='fl rec_hot_new_item <if condition="input('type') eq 1 or input('type') eq ''">active_rec_hot_new_type</if> '>推荐</p>
+            <p class='fl rec_hot_new_item <if condition=" input('type') eq 2">active_rec_hot_new_type</if> '>热门</p>
+            <p class='fl rec_hot_new_item <if condition="input('type') eq 3">active_rec_hot_new_type</if> '>新上架</p>
+            <div class='type_down_hx1 clear fl  <if condition="input('type') eq 1 or input('type') eq '' ">active_type_down_hx</if> '></div>
+            <div class='type_down_hx2 fl  <if condition=" input('type') eq 2">active_type_down_hx</if> '></div>
+            <div class='type_down_hx3 fl  <if condition="input('type') eq 3">active_type_down_hx</if> '></div>
+            <a href="{:url('game/search')}"><img src="__TMPL__/mobilepublic/assets/images/common_btn_search.png" alt=""
+                    class="searchs_btn"></a>
+        </div>
+        <div class="type_down__long_hx clear"></div>
+        <div class="rec_hot_new_cons_rec" id="hotload">
+            <!-- 流加载 -->
+            <ul class="flow-default" id="LAY_demo1"></ul>
+
+
+        </div>
+
+        <div class="rec_hot_new_cons_new">
+
+
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script src="__TMPL__/mobilepublic/assets/js/drop.js"></script>
+    <script src="__STATIC__/js/layui/layui.js"></script>
+    <script>
+        $(function(){
+            layui.use('flow', function () {
+            var $ = layui.jquery;
+            var flow = layui.flow;
+            var p = 1;
+            flow.load({
+                isAuto: false,
+                elem: '#LAY_demo1' //流加载容器
+                , done: function (page, next) { //执行下一页的回调
+                    //数据插入
+                    var lis = [];
+                    var type = "{:input('type')}";
+                    $.ajax({
+                        type: 'get',
+                        dataType: 'json',
+                        url: '{:url("Game/lists")}',
+                        data: { type: type, p: p },
+                        success: function (data) {
+                            if (data.code === 1) {
+                                p++;
+                                if (data && data.data.length !== 0) {
+                                    layui.each(data.data, function (index, item) {
+                                        var result = '';
+                                        result += '<div class="rec_hot_new_cons_item clear">';
+                                        result += '<a href="/mobile/game/detail/game_id/' + item.id + '">';
+                                        result += '<div class="rec_hot_new_cons_item_img fl">';
+                                        if(item.icon){
+                                            result += '<img src=' + item.icon + ' alt="" onerror="this.src=\'/static/images/empty.jpg\';this.onerror=null">' ;
+                                        }
+                                        result +=  '</div>';
+                                        result += '<div class="fl rec_hot_new_info">';
+                                        result += '   <p class="rec_hot_new_info_one">' + item.relation_game_name + '</p>';
+                                        result += '   <p class="rec_hot_new_info_two"><span class="rec_hot_new_info_type">' + item.game_type_name + '</span><span class="rec_hot_new_fgx">|</span><span class="rec_hot_new_download_num">' + item.dow_num + '</span><span>下载</span><span class="rec_hot_new_fgx">|</span><span>' + item.game_size + '</span></p>';
+                                        result += '  <div class="rec_hot_new_info_three">';
+                                        if (item.tag_name.length === 1 && item.tag_name[0] != '') {
+                                            result += '      <div class="fl bq_one"><p>' + item.tag_name[0] + '</p></div>';
+                                        }
+                                        if (item.tag_name.length === 2) {
+                                            result += '      <div class="fl bq_one"><p>' + item.tag_name[0] + '</p></div>';
+                                            result += '      <div class="fl bq_two"><p>' + item.tag_name[1] + '</p></div>';
+                                        }
+                                        if (item.tag_name.length === 3) {
+                                            result += '      <div class="fl bq_one"><p>' + item.tag_name[0] + '</p></div>';
+                                            result += '      <div class="fl bq_two"><p>' + item.tag_name[1] + '</p></div>';
+                                            result += '      <div class="fl bq_three"><p>' + item.tag_name[2] + '</p></div>';
+                                        }
+                                        result += '  </div>';
+                                        result += ' </div>';
+                                        result += ' </a>';
+                                        if (item.down_status == 0) {
+                                            result += ' <div class="fg rec_hot_new_download rec_hot_new_downloaded">';
+                                            result += '    <p>下载</p>';
+                                            result += ' </div>';
+                                        } else {
+
+                                            if (is_login() == 1) {
+                                                result += '<a href="' + item.down_status + '">';
+                                                result += ' <div class="fg rec_hot_new_download ">';
+                                            } else {
+                                                result += '<a href="javascript:;" onclick="javascript:login()">';
+                                                result += ' <div class="fg rec_hot_new_download">';
+                                            }
+
+                                            result += '    <p>下载</p>';
+                                            result += ' </div>';
+                                            result += '</a>';
+
+                                        }
+                                        result += ' </div>';
+										result += '<div class="type_down__long_hx clear"></div>';
+									
+                                        lis.push(result);
+                                        if (data.data.length <= 5) {
+                                            $('#LAY_demo1 .layui-flow-more').hide()
+                                        }
+                                    });
+                                    //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
+                                    //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
+                                    next(lis.join(''), page < data.count_p); //假设总页数为2
+                                } else {
+                                    if(p==1){
+                                        var result = ''
+                                        result += ' <div class="no_rec_hot_new_text">'
+                                        result += ' <img src="__TMPL__/mobilepublic/assets/images/icon_wushujv.png" alt="" onerror="this.src=\'/static/images/empty.jpg\';this.onerror=null">'
+                                        result += ' <p>~空空如也~</p>'
+                                        result += ' </div>'
+                                        lis.push(result);
+                                        $('#LAY_demo1 .layui-flow-more').hide()
+                                        next(lis.join(''), page < 0);
+                                    }
+                                }
+                            } else {
+                                var result = ''
+                                result += ' <div class="no_rec_hot_new_text">'
+                                result += ' <img src="__TMPL__/mobilepublic/assets/images/icon_wushujv.png" alt=""  onerror="this.src=\'/static/images/empty.jpg\';this.onerror=null">'
+                                result += ' <p>~空空如也~</p>'
+                                result += ' </div>'
+                                lis.push(result);
+                                $('#LAY_demo1 .layui-flow-more').hide()
+                                next(lis.join(''), page < 0);
+                            }
+                        },
+                        error: function () {
+                            layer.msg('服务器故障，请稍候再试');
+                        }
+                    });
+                }
+            });
+        });
+        });
+        $(window).scroll(function () {
+            var scrollTop = $(this).scrollTop();
+            var scrollHeight = $(document).height();
+            var windowHeight = $(this).height();
+            var ua = navigator.userAgent.toLowerCase()
+          if (ua.indexOf('mqqbrowser') > -1 && ua.indexOf(" qq") < 0) {
+                //qq浏览器
+                // if (scrollTop-100 >= scrollHeight-windowHeight) {
+                    if ($('#LAY_demo1 .layui-flow-more').css('display') === 'block') {
+                        $('#LAY_demo1 .layui-flow-more a').trigger('click')
+                    }
+                // }
+            } else {
+                if (scrollTop + windowHeight == scrollHeight) {
+                    if ($('#LAY_demo1 .layui-flow-more').css('display') === 'block') {
+                        $('#LAY_demo1 .layui-flow-more a').trigger('click')
+                    }
+                }
+            }
+        })
+        $('.rec_hot_new_item').click(function () {
+
+            if ($(this).text().indexOf('推荐') !== -1) {
+                window.location.href = "{:url('game/lists',['type'=>1])}";
+
+            }
+            if ($(this).text().indexOf('热门') !== -1) {
+                window.location.href = "{:url('game/lists',['type'=>2])}";
+
+            }
+            if ($(this).text().indexOf('新上架') !== -1) {
+                window.location.href = "{:url('game/lists',['type'=>3])}";
+
+            }
+        })
+
+
+        /**
+         * 是否登录
+         */
+        function is_login() {
+            var status = "{$session.login_auth}";
+            return status;
+        }
+        function login() {
+            var consa = $('.login_modal');
+            var auth_user = "{:AUTH_USER}";
+            if (auth_user != 1) {
+                layer.msg('请购买用户权限');
+                return false;
+            }
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: false,
+                area: ['80%', '26rem'],
+                offset: 'auto',
+                content: consa,
+                btnAlign: 'c',
+                shadeClose: true,
+                success: function (layero, index) {
+
+                    layero.find('.modal_login_btn').click(function () {
+                        var that = $(this);
+                        if (that.hasClass('no_send')) { return false; }
+                        that.addClass('no_send');
+                        var account = consa.find('input[name=account]').val();
+                        var password = consa.find('input[name=password]').val();
+                        $.ajax({
+                            type: 'post',
+                            dataType: 'json',
+                            url: '{:url("User/login")}',
+                            data: { account: account, password: password },
+                            success: function (data) {
+                                that.removeClass('no_send');
+                                layer.msg(data.msg);
+                                if (data.code == 1) {
+                                    setTimeout(function () {
+                                        if (data.url) {
+                                            window.location.href = data.url;
+                                        } else {
+                                            window.location.reload();
+                                        }
+                                    }, data.wait * 1000);
+                                }
+                            },
+                            error: function () {
+                                layer.msg('服务器故障，请稍候再试');
+                                that.removeClass('no_send');
+                            }
+                        });
+
+                        return false;
+                    });
+
+                    layero.find('.close_login_modal').click(function () {
+
+                        $('.login_modal input').val('');
+
+                        layer.close(index);
+
+                        return false;
+                    });
+                },
+                end: function () {
+                    $('.login_modal').hide();
+                }
+            })
+        }
+
+
+    </script>
+</block>

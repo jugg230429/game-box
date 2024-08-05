@@ -1,0 +1,60 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li><a href="{:url('site/sdk_set')}">站点设置</a></li>
+<!--            <li><a href="{:url('notice/lists')}">系统公告</a></li>-->
+            <li class="active"><a href="{:url('lists')}">猜你喜欢</a></li>
+
+        </ul>
+        <div>
+            <a href="{:url('add')}" class="btn btn-primary btn-sm mtb17">添加链接</a>
+        </div>
+        <form id="search_form" class="well form-inline  fr" method="get" action="{:url('lists')}">
+            <input type="submit" class="btn btn-primary hidden" id="search_btn" value="搜索" />
+        </form>
+        <table class="table table-hover table-bordered margin-top-20">
+            <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>名称</th>
+                    <th>链接</th>
+                    <th>图标</th>
+                    <th>开始时间</th>
+                    <th>结束时间</th>
+                    <th>排序</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <empty name="data_lists">
+                    <tr><td colspan="8" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <foreach name="data_lists" item="vo">
+                    <tr>
+                        <td>{$vo['id']}</td>
+                        <td>{$vo.title}</td>
+                        <td>{$vo.url}</td>
+                        <td width="120"><img  src="{:cmf_get_image_preview_url($vo['icon'])}"  alt="" class="icon-img"></td>
+                        <td>{$vo.start_time}</td>
+                        <td>{$vo.end_time}</td>
+                        <td>{$vo['sort']}</td>
+                        <td>
+                            <a href="{:url('edit',['id'=>$vo['id']])}">编辑</a>
+                            <a href="{:url('del',['id'=>$vo['id']])}" class="js-ajax-delete" data-msg="确定要删除吗？">删除</a>
+                        </td>
+                    </tr>
+                    </foreach>
+                </empty>
+            </tbody>
+        </table>
+        <div class="pagination">{$page}</div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+<script>
+    game_id = $("#game_id").attr('game_id');
+    $("#game_id").selectpicker('val', game_id);
+</script>
+</body>
+</html>

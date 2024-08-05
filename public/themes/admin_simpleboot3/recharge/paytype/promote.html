@@ -1,0 +1,89 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('lists')}#A" >支付宝</a></li>
+        <li><a href="{:url('lists')}#B">微信（扫码/H5）</a></li>
+        <li class="active"><a href="{:url('promote')}">支付渠道</a></li>
+        <li><a href="{:url('lists')}#C">平台币</a></li>
+        <li><a href="{:url('lists')}#D">绑币</a></li>
+		<span class="title_remark">说明：用于配置网站所用到的支付功能相关参数</span>
+    </ul>
+    <form id="search_form" class="well form-inline  fr" method="get" action="{:url('lists')}">
+        <if condition="AUTH_GAME eq 1">
+            <select name="game_id" id="game_id" class="selectpicker " game_id="{:input('request.game_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+                <option value="">游戏名称</option>
+                <volist name=":get_game_list('id,game_name')" id="vo">
+                    <option game-id="{$vo.id}" value="{$vo.id}" >{$vo.game_name}</option>
+                </volist>
+            </select>
+        </if>
+        <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+    </form>
+    <form class="js-ajax-form" action="" method="post">
+        <div class="table-actions position">
+            <a href="{:url('add')}" class="btn btn-danger  mtb17" >新增</a>
+            <button class="btn btn-danger  js-ajax-submit  mtb17" type="submit"
+                    data-action="{:url('del')}" data-subcheck="true" data-msg="您确定删除吗？">
+                删除
+            </button>
+        </div>
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th><input type="checkbox" class="js-check-all" data-direction="x" data-checklist="js-check-x"></th>
+                <th>游戏ID</th>
+                <th>游戏名称</th>
+                <th>渠道</th>
+                <th>支付类型</th>
+                <th>商户号</th>
+                <th>秘钥</th>
+                <th>下单地址</th>
+                <th>通道编码</th>
+                <th>回调IP</th>
+                <th>权重</th>
+                <th>启用状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <empty name="data_lists">
+                <tr><td colspan="8" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                <foreach name="data_lists" item="vo">
+                    <tr>
+                        <th><input type="checkbox" class="js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
+                                   value="{$vo.id}" title="ID:{$vo.id}"></th>
+                        <td>{$vo.game_id}</td>
+                        <td>{$vo.game_name}</td>
+                        <td>{$promote_list[$vo.promote_id]['promote_name']}</td>
+                        <td>{$type_list[$vo.type]}</td>
+                        <td>{$vo.partner}</td>
+                        <td>{$vo.key}</td>
+                        <td>{$vo.order_address}</td>
+                        <td>{$vo.channel_coding}</td>
+                        <td>{$vo.callback_ip}</td>
+                        <td>{$vo.weight}</td>
+                        <td><span <if condition="$vo['status'] eq 1"> class="label label-success"<else/>class="label label-danger"</if>>{$vo['status_name']}</span></td>
+                        <td>
+                            <a href="{:url('edit',['id'=>$vo['id']])}" >编辑</a>
+                            <a href="{:url('del',['ids'=>$vo['id']])}" class="js-ajax-delete" data-msg="您确定删除吗？">删除</a>
+                        </td>
+                    </tr>
+                </foreach>
+            </empty>
+            </tbody>
+        </table>
+        <div class="pagination">
+            {$page}
+        </div>
+    </form>
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script>
+    game_id = $("#game_id").attr('game_id');
+    $("#game_id").selectpicker('val', game_id);
+</script>
+</body>
+</html>

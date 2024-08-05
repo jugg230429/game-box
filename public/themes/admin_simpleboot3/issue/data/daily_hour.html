@@ -1,0 +1,251 @@
+<include file="public@header"/>
+<link rel="stylesheet" href="/themes/admin_simpleboot3/public/assets/js/laydate.css" id="layuicss-laydate">
+<link rel="stylesheet" href="__JS__/layui/css/layui.css">
+<style>
+    .daily-content ul {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .daily-content ul li {
+        height: 70px;
+        margin-right: 12px;
+        margin-left: 0;
+    }
+    .daily-content ul li p:first-child {
+        margin-top: 10px;
+    }
+    .daily-content ul li p:last-child {
+        font-size: 24px;
+    }
+    .demo-input {
+        margin-top: 0!important;
+        top: 2px;
+    }
+    .dalidyMainBody .well>div, .well>input, .well>select, .well>a {
+        margin-top: 0!important;
+    }
+    .dalidyMainBody #search_form {
+        margin-top: 6px;
+    }
+    .nav-tabs>li.active>a {
+        background-color: transparent!important;
+    }
+</style>
+</head>
+<body>
+<div class="wrap js-check-wrap dalidyMainBody">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="javascript:;">日报表(时)</a></li>
+        <span class="title_remark"></span>
+    </ul>
+    <div class="daily-content">
+        <ul>
+            <li class="d-one">
+                <p>新增用户</p>
+                <p>{$total['new_user']}</p>
+            </li>
+            <li class="d-two">
+                <p>活跃用户</p>
+                <p>{$total['active_user']}</p>
+            </li>
+            <li class="d-three">
+                <p>付费用户</p>
+                <p>{$total['pay_user']}</p>
+            </li>
+            <li class="d-four">
+                <p>新增付费用户</p>
+                <p>{$total['new_pay_user_count']}</p>
+            </li>
+            <li class="d-five">
+                <p>新增付费额</p>
+                <p>￥{$total['new_pay_amount']}</p>
+            </li>
+            <li class="d-six">
+                <p>付费总额</p>
+                <p>￥{$total['pay_amount']}</p>
+            </li>
+            <li class="d-seven">
+                <p>新增付费率</p>
+                <p>{$total['new_pay_rate']}</p>
+            </li>
+            <li class="d-eight">
+                <p>付费率</p>
+                <p>{$total['pay_rate']}</p>
+            </li>
+            <li class="d-nine">
+                <p>新增ARPU</p>
+                <p>{$total['new_arpu']}</p>
+            </li>
+            <li class="d-ten">
+                <p>活跃ARPU</p>
+                <p>{$total['active_arpu']}</p>
+            </li>
+            <li class="d-ele">
+                <p>新增付费ARPU</p>
+                <p>{$total['new_pay_arpu']}</p>
+            </li>
+            <li class="d-twe">
+                <p>付费ARPU</p>
+                <p>{$total['pay_arpu']}</p>
+            </li>
+        </ul>
+     </div>
+    <form id="search_form" class="well form-inline fr" method="get" action="{:url('issue/data/dailyHour')}"
+          onsubmit="return check();">
+<!--
+        <input type="text" class="form-control js-bootstrap-date" name="start_time" id="start_time" placeholder="时间"
+               value="{:input('start_time','')}" style="width: 120px;" autocomplete="off"> -->
+        <input type="text" class="demo-input" placeholder="请选择日期" id="chooseDate" name="start_time" value="{:input('start_time','')}" autocomplete="off">
+        <select name="open_user_id" id="open_user_id" class="selectpicker" data-live-search="true" data-size="8"
+                style="width: 120px;">
+            <option value="">分发用户</option>
+            <volist name=":get_issue_open_user('id,account')" id="vo">
+                <option value="{$vo.id}" <if condition="input('request.open_user_id') eq $vo['id']">selected</if> >{$vo.account}</option>
+            </volist>
+        </select>
+
+        <select name="platform_id" id="platform_id" class="selectpicker" data-live-search="true" data-size="8"
+                style="width: 120px;">
+            <option value="">分发平台</option>
+            <volist name=":get_pt_list('id,account')" id="vo">
+                <option value="{$vo.id}" <if condition="input('request.platform_id') eq $vo['id']">selected</if> >{$vo.account}</option>
+            </volist>
+        </select>
+
+        <php>
+            $sdk_version_arr = [1=>'(安卓版)',2=>'(苹果版)','3'=>''];
+            if($type=='1'){
+                $map['sdk_version'] = 3;
+            }else{
+                $map['sdk_version'] = ['neq',3];
+            }
+        </php>
+        <select name="game_id" id="game_id" class="selectpicker" data-live-search="true" data-size="8"
+                style="width: 120px;">
+            <option value="">游戏名称</option>
+            <volist name=":get_issue_game_entity($map,'id,game_name,sdk_version',0)" id="vo">
+                <option value="{$vo.id}"<if condition="input('request.game_id') eq $vo['id']">selected</if>>{$vo.game_name}{$sdk_version_arr[$vo['sdk_version']]}</option>
+            </volist>
+        </select>
+
+        <input type="submit" class="btn btn-search" id="search_btn" value="搜索"/>
+        <a class="btn btn-clear" href="{:url('issue/data/dailyHour')}">清空</a>
+        <a class="btn btn-export js-ajax-dialog-btn-xz" data-msg="确定导出吗？" href="{:url('Export/expDailyHour',input(''))}">导出</a>
+
+    </form>
+
+    <form class="js-ajax-form" action="" method="post">
+
+        <table class="table table-hover table-bordered scroll-table" id="promotecoin_table">
+            <thead>
+            <tr>
+                <th>日期</th>
+                <th>分发用户</th>
+                <th>分发平台</th>
+                <th>游戏名称</th>
+                <th>新增数据</th>
+                <th>活跃数据</th>
+                <th>付费数据(元)</th>
+                <th>新增付费(元)</th>
+                <th>付费率(%)</th>
+                <th>ARPU值(元)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <empty name="lists">
+                <tr>
+                    <td colspan="100" style="text-align: center;">暂无数据</td>
+                </tr>
+                <else/>
+                <volist name="lists" id="vo">
+                    <tr>
+                        <td>{$key}</td>
+                        <if condition="input('open_user_id',0)">
+                            <td>{:get_issue_open_useraccount(input('open_user_id'))}</td>
+                        <else/>
+                            <td>全部</td>
+                        </if>
+                        <if condition="input('platform_id',0)">
+                            <td>{:get_pt_account(input('platform_id'))}</td>
+                        <else/>
+                            <td>全部</td>
+                        </if>
+                        <if condition="input('game_id',0)">
+                            <td>{:get_issue_game_name(input('game_id'))}</td>
+                        <else/>
+                            <td>全部</td>
+                        </if>
+                        <td>
+                            新增用户: {$vo['new_user']}<br/>
+                            新增设备: {$vo['new_equipment']}<br/>
+                            注册转化率: {$vo['CR']}<br/>
+                        </td>
+                        <td>
+                            活跃用户: {$vo['active_user']}<br/>
+                            活跃设备: {$vo['active_equipment']}<br/>
+                        </td>
+                        <td>
+                            付费用户: {$vo['pay_user']}<br/>
+                            付费总额: {$vo['pay_amount']}<br/>
+                            订单数: {$vo['order_count']}<br/>
+                            付费率: {$vo['pay_rate']}<br/>
+                        </td>
+                        <td>
+                            新增付费用户: {$vo['new_pay_user_count']}<br/>
+                            新增付费额: {$vo['new_pay_amount']}<br/>
+                        </td>
+                        <td>
+                            付费率: {$vo['pay_rate']}<br/>
+                            新增付费率: {$vo['new_pay_rate']}<br/>
+                        </td>
+                        <td>
+                            新增ARPU: {$vo['new_arpu']}<br/>
+                            活跃ARPU: {$vo['active_arpu']}<br/>
+                            付费ARPU: {$vo['pay_arpu']}<br/>
+                            新增付费ARPU: {$vo['new_pay_arpu']}<br/>
+                        </td>
+                    </tr>
+                </volist>
+            </empty>
+            </tbody>
+        </table>
+    </form>
+    <div class="pagination" style="padding-bottom: 50px">{$page}</div>
+</div>
+
+<script src="__STATIC__/js/admin.js"></script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script src="/themes/admin_simpleboot3/public/assets/js/laydate.js"></script>
+<script type="text/javascript">
+
+    function check() {
+        var start_time = $("#start_time").val();
+        var end_time = $("#end_time").val();
+        if (start_time != '' && end_time != '' && start_time > end_time) {
+            layer.msg('开始时间不能大于结束时间');
+            return false;
+        }
+        var index = layer.load(1, {
+            shade: [0.1, '#fff'] //0.1透明度的白色背景
+        });
+        return true;
+    }
+
+    $(function () {
+        $(".pagination li a").click(function () {
+            if ($(this).hasClass('active') || $(this).hasClass('disabled')) {
+                return false;
+            }
+            var index = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+            return true;
+        })
+    })
+    //时间
+    laydate.render({
+  elem: '#chooseDate' //指定元素
+});
+</script>
+</body>
+</html>

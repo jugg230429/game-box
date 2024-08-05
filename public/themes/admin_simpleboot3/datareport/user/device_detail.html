@@ -1,0 +1,64 @@
+<html>
+<body>
+    <div class="wrap js-check-wrap">
+        <form id="search_form" class="well form-inline  fr" method="get" action="{:url('user/user_detail')}">
+            <input type="hidden" name="sort" id="sort" value="{:input('request.sort',1)}">
+            <input type="hidden" name="sort_type" id="sort_type" value="{:input('request.sort_type')}">
+            <input type="hidden" name="date" id="date" value="{:input('date')}">
+            <input type="hidden" name="game_id" id="game_id" value="{:input('game_id')}">
+            <input type="hidden" name="data" id="data" value="{:input('data')}">
+            <input type="submit" class="btn btn-primary" id="search_btn" style="display: none;" value="搜索" />
+            <php>$exportgame = trim(get_game_name(input('game_id')))?get_game_name(input('game_id')).'_':'';</php>
+            <a class="btn btn-export js-ajax-dialog-btn-xz" data-msg="确定导出吗？" href="{:url('Export/expUser',array_merge(['id'=>9,'xlsname'=>'设备列表_'.$exportgame.''.input('date')],input()))}">导出</a>
+        </form>
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>设备码</th>
+                    <th>首次访问时间</th>
+                    <th>最后一次访问时间</th>
+                    <th>近30天访问次数</th>
+                    <th>近30天访问时长</th>
+                </tr>
+            </thead>
+            <tbody>
+                <empty name="data_lists">
+                    <tr><td colspan="6" style="text-align: center;">暂无数据</td></tr>
+                </empty>
+                <foreach name="data_lists" item="vo">
+                    <tr>
+                        <td>{$vo.equipment_num}</td>
+                        <td>{:date('Y-m-d H:i:s',$vo['start_time'])}</td>
+                        <td>{:date('Y-m-d H:i:s',$vo['last_time'])}</td>
+                        <td>{$vo.login_count30}</td>
+                        <td>{$vo.online_time30}</td>
+                    </tr>
+                </foreach>
+            </tbody>
+        </table>
+        <div class="pagination">
+
+        </div>
+    </div>
+    <script>
+        //排序
+        function changesort(type){
+            var sort_type = $("#sort_type").val();
+            if(sort_type != type){
+                var sort = 1;
+            }else{
+                var sort = $("#sort").val();
+            }
+            $("#sort_type").val(type);
+            if(sort == 1){
+                $("#sort").val(3);
+            }else if(sort == 3){
+                $("#sort").val(2);
+            }else{
+                $("#sort").val(1);
+            }
+            $("#search_btn").click();
+        }
+    </script>
+</body>
+</html>

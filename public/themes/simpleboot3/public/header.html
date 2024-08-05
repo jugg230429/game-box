@@ -1,0 +1,251 @@
+<!--头部-->
+<div class="header">
+<div class="header-left"> 当前登录IP：{:get_client_ip()}     当前登录时间：{:date('Y-m-d H:i:s')}</div>
+	<div class="header-right">
+
+		<span class="pinfo">{:get_promote_name(PID)}</span>
+		<a class="pinfo pinfo-exit" href="javascript:logout();">
+			<!--退出-->
+		</a>
+
+
+	</div>
+	<!--短信通知-->
+	<if condition="$promote_sms_notice_info['promote_sms_notice_switch'] eq 1">
+		<div class="header-right" >
+
+			<label for="" class="changeInput" style="display: inline-block;">
+				<input  style="margin:20px 0 0 0;" onclick="open_change_sms_page()" class="sms_notice_switch" type="checkbox" name="sms_notice_switch" value="" <if condition="$promote_sms_notice_info.sms_notice_switch eq 1"> checked</if> />
+				<i class="topCheckIcon"></i>
+				<span>短信通知</span>
+				<span class="question2 row-right" style="margin:10px 0 0 0;">
+				<i class="question_mark2"></i>
+				<div class="question_content2">
+					<ul class="question_content_box">
+						
+						<li class="question_list2">
+							<span>短信通知后，您将免费在每日10:00<br/>
+							短信收到前一日的业绩数据！</span>
+						</li>
+					</ul>
+				</div>
+			</span>
+			</label>
+
+		</div>
+		<style>
+
+			.question2 {
+				position: absolute;
+				top: 10px;
+				color: #6a7082;
+			}
+
+
+			.question_mark2 {
+				display: block;
+				width: 14px;
+				height: 14px;
+				margin: 1px 0 0 10px;
+				text-align: center;
+				background: url(/themes/simpleboot3/public/assets/images/promote/index/home_btn_annotation_n.png);
+			}
+			.question_mark2:hover{
+				background: url(/themes/simpleboot3/public/assets/images/promote/index/home_btn_annotation_s.png);
+			}
+			.question2:hover .question_content {
+				display: block;
+			}
+
+			.question_content2 {
+				display: none;
+				position: absolute;
+				top: 25px;
+				left: -90px;
+				width:auto;
+				max-width: 467px;
+				z-index: 10;
+				color: #fff;
+				background-color: #374760;
+				background-size: 100% 100%;
+				border-radius: 5px;
+				padding: 0px 5px 0 5px;
+				
+				/*padding: 10px 20px;*/
+				border: 1px solid rgba(230, 232, 236, 1);
+			}
+			.question_content2::after{
+				content: "";
+				position: absolute;
+				bottom: 100%;
+				left: 50%;
+				margin-left: -5px;
+				border-width: 5px;
+				border-style: solid;
+				border-color: transparent transparent #374760 transparent;
+			}
+			.question_list2 span{
+				padding-bottom: 10px;
+				font-size: 12px;
+				font-family: 'Microsoft YaHei';
+				font-weight: 400;
+				line-height: 20px;
+				white-space: nowrap;
+				padding-top: 7px;
+			}
+
+
+			.question_title2 {
+				height: 30px;
+				line-height: 30px;
+				background-color: #374760;
+				border-top-left-radius: 5px;
+				border-top-right-radius: 5px;
+				color: #fff;
+				padding-left: 10px;
+				font-size: 12px;
+				margin-bottom: 6px;
+			}
+
+			.question_list2 {
+				overflow: hidden;
+				clear: both;
+				padding:  0 10px;
+				font-size: 12px;
+				display: -webkit-box;
+				display: -ms-flexbox;
+				display: flex;
+				-webkit-box-align: center;
+				-ms-flex-align: center;
+				align-items: center;
+			}
+			.question_list2 strong{
+				color: #374760;
+			}
+
+			.question_list2 strong {
+				width: 63px;
+				margin-right: 25px;
+				line-height: 30px;
+				display: block;
+				float: left;
+				text-align: justify;
+				-moz-text-align-last: justify;
+				text-align-last: justify;
+				font-weight:normal;
+			}
+		</style>
+
+	</if>
+</div>
+<!-- hidden -->
+<div class="xz_change_sms_notice_status" >
+	<div class="xz_exchange-con">
+		<if condition="$promote_sms_notice_info.sms_notice_switch eq 1 and $promote_sms_notice_info.mobile_phone">
+			<div class="xz_exchange-title">
+				<div class="xz_borderleft"></div>
+				<div class="fl ">关闭短信提醒</div>
+				<div class="fr xz_close" onclick="close_sms_notice_page()"><img src="__TMPL__/public/assets/images/close1.png">
+				</div>
+			</div>
+			<div class="xz_tabpan-con-con">
+				<p>即将为您关闭短信提醒功能。</p>
+				<p>关闭后您将不再免费短信接收到每日业绩数据，确定关闭吗？</p>
+			</div>
+		<elseif condition="$promote_sms_notice_info.sms_notice_switch eq 0 and $promote_sms_notice_info.mobile_phone eq ''"/>
+			<div class="xz_exchange-title">
+				<div class="xz_borderleft"></div>
+				<div class="fl  xz_title">开通短信提醒</div>
+				<div class="fr xz_close" onclick="close_sms_notice_page()"><img src="__TMPL__/public/assets/images/close1.png">
+				</div>
+			</div>
+			<div class="xz_tabpan-con-con">
+				<p>您还未添加手机号，无法开通短信提醒功能。</p>
+				<p>请到<span style="color: #018FFF;">账户信息-基本信息</span>页内进行添加。</p>
+			</div>
+		<else/>
+			<div class="xz_exchange-title">
+				<div class="xz_borderleft"></div>
+				<div class="fl xz_title">开通短信提醒</div>
+				<div class="fr xz_close" onclick="close_sms_notice_page()"><img src="__TMPL__/public/assets/images/close1.png">
+				</div>
+			</div>
+			<div class="xz_tabpan-con-con">
+				<p>即将为您免费开通短信提醒功能。</p>
+				<p>开通后您将免费在<span style="color:#26C7DB">每日10:00</span>收到前一日业绩数据</p>
+			</div>
+		</if>
+		<div class="xz1_tabpan-con-con">
+			<if condition="$promote_sms_notice_info.sms_notice_switch eq 0 and $promote_sms_notice_info.mobile_phone eq ''">
+				<button type="button " class="button exchange_submit1 xz_button" onclick="close_sms_notice_page()" >确定</button>
+			<else/>
+				<button type="button" class="button exchange_submit1 xz_button" onclick="change_sms_notice_status()" >确定</button>
+			</if>
+		</div>
+	</div>
+
+</div>
+<include file="public@scripts" />
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script type="text/javascript">
+
+	$('.xz_close').click(function(){
+		$(".xz_change_sms_notice_status").hide();
+	})
+
+	function logout(){
+		$.ajax({
+			url:"{:url('index/logout')}",
+			type:'post',
+			success:function(){
+				location.href = location.href;
+			}
+		});
+	}
+
+
+	function open_change_sms_page() {
+		$(".change_sms_notice_status").show();
+		$(".xz_change_sms_notice_status").show();
+	}
+	function close_sms_notice_page() {
+		$(".change_sms_notice_status").hide();
+		var status = "{$promote_sms_notice_info['sms_notice_switch']}";
+		if(status==1){
+			$(".sms_notice_switch").prop("checked", true);
+		}else{
+			$(".sms_notice_switch").prop("checked", false);
+		}
+	}
+
+
+	function change_sms_notice_status() {
+		$.ajax({
+			type:'post',
+			url:'{:url("promote/set_sms_notice_status")}',
+			data:{},
+			success:function(res){
+				if(res.code != 1){
+					layer.msg(res.msg);
+					return false;
+				}
+				layer.msg(res.msg,{icon:1,time:1500, shift: 1},function(){
+					location.href = location.href;
+				});
+			},error:function(){
+				layer.msg('服务器错误，请稍后再试');
+			}
+		});
+	}
+	$('.question_mark2').on({
+    mouseover: function () {
+       //鼠标移入回调
+        $(".question_content2").show();
+    },
+    mouseout: function () {
+        //鼠标移出回调
+        $(".question_content2").hide();
+    }
+});    
+
+</script>

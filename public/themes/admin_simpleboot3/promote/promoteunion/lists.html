@@ -1,0 +1,163 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('promoteunion/lists')}">联盟申请</a></li>
+            <span class="title_remark">说明：此功能是查看并管理联盟申请的功能</span>
+        </ul>
+        <form id="search_form" class="well form-inline  fr" method="get" action="{:url('lists')}">
+
+            <select name="promote_id" id="promote_id" class="selectpicker" promote_id="{:input('request.promote_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+                <option value="">渠道账号</option>
+                <volist name=":get_promote_list()" id="vo">
+                    <option value="{$vo.id}" >{$vo.account}</option>
+                </volist>
+            </select>
+
+            <select name="apply_domain_type" id="apply_domain_type" class="selectpicker" apply_domain_type="{:input('request.apply_domain_type')}">
+                <option value="">站点来源</option>
+                <option value="0">系统分配</option>
+                <option value="1">自主添加</option>
+            </select>
+            <select name="status" id="status" class="selectpicker" status="{:input('status')}">
+                <option value="">审核状态</option>
+                <option value="1">已通过</option>
+                <option value="0">待审核</option>
+                <option value="-1">已驳回</option>
+            </select>
+
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('lists')}">清空</a>
+            <a class="btn btn-export js-ajax-dialog-btn-xz" data-msg="确定导出吗？" href="{:url('Export/expUser',array_merge(['id'=>3,'xlsname'=>'混服申请'],input()))}">导出</a>
+        </form>
+        <form class="js-ajax-form" action="" method="post">
+        <div class="table-actions position" style="margin-left: -10px;">
+            <button class="btn btn-success   js-ajax-submit mtb17" type="submit"
+                    data-action="{:url('changeStatus',['status'=>0])}" data-subcheck="true" data-msg="您确定审核吗？">
+                审核
+            </button>
+
+            <button type="button" class="btn btn-danger   bohui mtb17 ml20" data-action="{:url('changeStatus',['status'=>1])}">
+                驳回
+            </button>
+            &nbsp;
+            &nbsp;
+            &nbsp;
+            &nbsp;
+            <button class="btn  js-ajax-submit mtb17 btn-audit" type="submit"
+                    data-action="{:url('set_config_auto_audit_union',['status'=>$autostatus])}" data-subcheck="false" data-msg="您确定操作吗？">
+                <input type="checkbox" name="" <if condition="$autostatus eq 1">checked</if> id="auto-check" class="auto-checkbox promote_auto_audit"><label for="auto-check" class="fl"></label><div class="span-audit">自动审核</div>
+            </button>
+        </div>
+            <table class="table table-hover table-bordered prom-table">
+                <thead>
+                    <tr>
+                        <th width="15">
+
+                                <input type="checkbox" id="all-checkbox" class="table-item-checkbox js-check-all" data-direction="x" data-checklist="js-check-x">
+                                <label for="all-checkbox" class=""></label>
+                        </th>
+                        <th>编号</th>
+                        <th>渠道账号</th>
+                        <th>站点来源</th>
+                        <th>站点链接</th>
+                        <th>审核状态</th>
+                        <th>创建时间</th>
+                        <th>渠道配置</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <empty name="data_lists">
+                        <tr><td colspan="12" style="text-align: center;">暂无数据</td></tr>
+                    <else/>
+                        <foreach name="data_lists" item="vo">
+                        <tr>
+                            <td>
+                                <input type="checkbox" id="ids-checkbox{$vo.id}" class="table-item-checkbox js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
+                                       value="{$vo.id}" >
+                                <label for="ids-checkbox{$vo.id}" class=""></label>
+                            </td>
+                            <td>{$vo.id}</td>
+                            <td>{:get_promote_name($vo['union_id'])}</td>
+                            <td>{:$vo['apply_domain_type']==0?'系统分配':'自主添加'}</td>
+                            <td>{$vo.domain_url}</td>
+                            <td>
+                                <if condition="$vo['status'] eq 1">
+                                    <span class="label " style="color: #3FAD46;font-size:14px">已通过</span>
+                                <elseif condition="$vo['status'] eq -1">
+                                    <span class="label " style="color:#d9534f;font-size:14px">已驳回</span>
+                                <else/>
+                                    <span class="label " style="color: #f0ad4e;font-size:14px">待审核</span>
+                                </if>
+
+                            </td>
+                            <td>{:date('Y-m-d H:i:s',$vo['apply_time'])}</td>
+                            <td>
+                                <if condition="$vo['status'] eq 1">
+                                    <a href="{:url('view_detail',['promote_id'=>$vo['union_id']])}">查看</a>
+
+                                </if>
+                            </td>
+                        </tr>
+                        </foreach>
+                    </empty>
+                </tbody>
+            </table>
+        </form>
+        <div class="pagination">{$page}
+        </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script type="text/javascript">
+        promote_id = $("#promote_id").attr('promote_id');
+        $("#promote_id").selectpicker('val', promote_id);
+        $("#apply_domain_type").selectpicker('val', $('#apply_domain_type').attr('apply_domain_type'));
+        $("#status").selectpicker('val', $('#status').attr('status'));
+        $(function () {
+            $('.bohui').click(function () {
+                var $this = $(this);
+                var url = $this.attr('data-action');
+                //批量操作 判断选项
+                var ids = [];
+                $('input[name="ids[]"]:checked').each(function(){
+                    ids.push($(this).val());
+                });
+                if(ids == '' || ids == undefined) {
+                    layer.msg('请至少选择一项');
+                    return false;
+                }
+                layer.prompt(
+                    {
+                        formType: 2,
+                        title: "请输入驳回原因",
+                        area: ['300px', '50px'],
+                        placeholder:'请输入驳回原因',
+                        value: ''
+                    }
+                    , function (val) {
+                        $.ajax({
+                            url: url,
+                            type: 'post',
+                            dataType: 'json',
+                            data: {'remark': val,'ids':ids},
+                            success: function (data) {
+                                if (data.code > 0) {
+                                    layer.msg(data.msg);
+                                    setTimeout(function () {
+                                       window.location.reload();
+                                    },1000)
+                                } else {
+                                    layer.msg(data.msg)
+                                }
+                            },
+                            error: function () {
+                                layer.msg('服务器错误');
+                            }
+                        });
+                    });
+            })
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,267 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/select2.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/new_select2.css" type="text/css" />
+    <link href="__TMPL__/channelwappublic/assets/css/grant.css" type="text/css" rel="stylesheet" />
+    <style>
+        -webkit-input-placeholder {
+            font-size: 0.36rem;
+        }
+        input::-webkit-input-placeholder {
+            font-size: 0.36rem;
+        }
+    </style>
+</block>
+<block name="body">
+    <div class="page-container">
+        <header>
+            <a href="javascript:history.back()" class="back-btn"></a>
+            <div style="width: 100%;height: 100%" class="v-middle h-middle">
+                <p class="siteItem ">发放</p>
+            </div>
+        </header>
+        <div class="page-content">
+            <form id="form1" action="{:url('grant_post')}" method="post">
+                <div class="fl formGrant">
+                    <div style="display:flex ;">
+                        <div class="titleText">
+                            <span class="fl pro_promot_name ">选择用户：</span>
+                        </div>
+                        <div class="pro_promot_search">
+                            <input type="text" name="key" id="key" class="pro_promot_search_input form-control fl" placeholder="请选择玩家" onkeydown="keyup_submit(event);" style="width:107%">
+                            <input type="button" class="btn btn-primary pro_promot_search_btn fl" id="psi" value="搜索" style="right: -21px;">
+                        </div>
+                    </div>
+
+                        <div class=" player fl">
+                            <div>
+                                <div class="pro_promot_game">
+                                    <ul id="promote_list" class="z_clearfix game_list ">
+
+
+                                    </ul>
+                                    <div style="text-align: center" class="jxjiazai">点击继续加载</div>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                            <div class="all-select-btn ">
+                                <label for="all-select" class="fl radioItem">
+                                    <input type="checkbox" class="fl pro_promot_game_check jsgameid itemIcon" id="all-select">
+                                <i class="itemIcon"></i>
+                               </label>
+                                <span class="fl pro_promot_game_name omission">全选</span>
+                            </div>
+                            <!-- <button type="button" class="button  save-btn" >保存</button> -->
+                    </div>
+
+                </div>
+                <div class="fengeixan"></div>
+                <div class="fl" id="coupon">
+                    <div class="fl formGrant">
+                        <div class="titleText" style="display: flex;align-items: center;">
+                            <span class="fl pro_promot_name">选择代金券：</span>
+                            <div class="pro_promot_search">
+                                <input type="text" name="key2" id="key2" class="pro_promot_search_input form-control fl" placeholder="请选择代金券" >
+                                <input type="button" class="btn btn-primary pro_promot_search_btn fl" id="psi2" value="搜索">
+                            </div>
+                        </div>
+                        <div class="couponList">
+                            <ul class="fl coupon-dropdown">
+                            </ul>
+                        </div>
+                        <div class="coupon-bottom">
+                            <input type="button" class="button confirm-btn js_submit" value="确定" title="">
+                            <p class="bottomText">说明：代金券优惠金额从平台币金额内扣除。</p>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/select2.min.js"></script>
+    <script>
+        var is_ok = true;
+        page = 1;
+        key = '';
+        key2 = '';
+        $(function() {
+            dealUserAjaxData()//加载用户数据
+            getCouponList('')//加载代金券数据
+            //全选
+            $('#all-select').click(function () {
+                if(this.checked){
+                    $(".pro_promot_game_check:checkbox").prop("checked",true)
+                }else{
+                    $(".pro_promot_game_check:checkbox").prop("checked",false)
+                }
+            });
+            //提交事件
+            $(".js_submit").click(function () {
+                if(is_ok == false){
+                    return false;
+                }
+                is_ok = false;
+                var url = $("#form1").attr('action');
+                $.ajax({
+                    type: 'POST',
+                    url: url ,
+                    data:$("#form1").serialize(),
+                    async:false,
+                    dataType:'json',
+                    success:function(data){
+                        if (data.code > 0){
+                            layer.msg(data.msg,{time:1000},function(){
+                                window.location.href= data.url;
+                            })
+                        }
+                        else{
+                            layer.msg(data.msg,{time:1000});
+                        }
+                    }
+                })
+                is_ok = true;
+            })
+        })
+        $(document).on('keydown', function(e){
+            if(e.keyCode === 13)
+            {
+                e.preventDefault();
+            }
+        })
+        // 搜索
+        // $('#psi').on('click', function () {
+        //     var key = $.trim($('#key').val());
+        //     if (key) {
+        //         $('#promote_list li').hide().find('input').prop('disabled', true);
+        //         $('#promote_list li span[title*="'+key+'"]').siblings('input').prop('disabled', false).closest('li').show();
+        //     }else{
+        //         $('#promote_list li').hide().find('input').prop('disabled', true);
+        //         $('#promote_list li span').siblings('input').prop('disabled', false).closest('li').show();
+        //     }
+        //     return false;
+        // });
+        //输入框键入
+        function keyup_submit(e){
+            var evt = window.event || e;
+            if (evt.keyCode == 13){
+                //回车事件
+                var key = $.trim($('#key').val());
+                if (key) {
+                    console.log(333,key);
+                    $('#promote_list li').hide().find('input').prop('disabled', true);
+                    $('#promote_list li span[title*="'+key+'"]').siblings('input').prop('disabled', false).closest('li').show();
+                }
+                return false;
+            }
+        }
+    </script>
+    <script>
+        //上方关于用户搜索相关的js未生效,此处新增ajax查询搜索功能,返回对应数据拼接渲染
+        //by:byh 2021-9-22 09:30:42
+        //用户搜索
+        $('#psi').on('click', function () {
+            var list = $('#promote_list');
+            list.empty();
+            key = $.trim($('#key').val());
+            dealUserAjaxData();
+            return false;
+        });
+        $('.jxjiazai').on('click', function () {
+            key = $.trim($('#key').val());
+            dealUserAjaxData();
+            return false;
+        });
+
+        function dealUserAjaxData() {
+            getUserList(key,page)
+            page ++;
+        }
+        //获取渠道下的玩家(含筛选)
+        function getUserList(key,page) {
+            console.log(page)
+            $.post('{:url("ajax_get_user_lists_info")}', {page:page,name:key}, function (response) {
+                var list = $('#promote_list');
+                // list.empty();
+                $(".pro_promot_game_check:checkbox").prop("checked",false)
+                if (response.data) {
+                    var data = response.data.list;
+                    if (data && data.length) {
+                        var html = '';
+                        $.each(data, function (index, item) {
+                            var _index = index+40*(page-1);
+                            html += '<li class="fl pro_promot_game_con" >\n' +
+                                '       <label for="gameCheck' + _index + '" class="fl radioItem">\n' +
+                                '          <input type="checkbox" value="' + item.id + '" name="ids[]" class="fl pro_promot_game_check jsgameid itemIcon" id="gameCheck' + _index + '">\n' +
+                                '          <i class="itemIcon"></i>\n' +
+                                '       </label>\n' +
+                                '       <span class="fl pro_promot_game_name omission" title="' + item.account + '">' + item.account + '</span>\n' +
+                                '    </li>';
+
+                        });
+                        list.append(html);
+                    }
+                    console.log(data.length)
+                    if(data.length<40){
+                        $('.jxjiazai').html('')
+                    }else{
+                        $('.jxjiazai').html('点击加载更多')
+                    }
+
+                }
+            });
+        }
+
+
+        //代金券加载和搜索
+        $('#psi2').on('click', function () {
+            key2 = $.trim($('#key2').val());
+            getCouponList(key2)
+            return false;
+        });
+        function getCouponList(key2) {
+            $.post('{:url("ajax_get_coupon_lists_info")}', {name:key2}, function (res) {
+                console.log(res)
+                console.log(key2)
+                var list2 = $('.coupon-dropdown');
+                list2.empty();
+                $(".pro_promot_coupon_check:checkbox").prop("checked",false)
+                if (res) {
+                    var data = res;
+                    if (data && data.length) {
+                        var html = '';
+                        $.each(data, function (index, item) {
+                            html += '<li>\n' +
+                                '      <label for="coupon'+index+'" class="fl radioItem">\n' +
+                                '         <input type="checkbox" value="'+item.id+'" name="coupon_ids[]" class="fl pro_promot_coupon_check  itemIcon" id="coupon'+index+'" checked>\n' +
+                                '         <i class="itemIcon"></i>\n' +
+                                '      </label>\n' +
+                                '      <span class="fl pro_promot_game_name omission pro_promot_game_name_tg" title="">'+item.coupon_name+'</span>\n' +
+                                '      <span class="jiantouIcon"><img src="__TMPL__/channelwappublic/assets/images/common/ico_up.png" alt=""></span>\n' +
+                                '       <div class="coupon-content">\n' +
+                                '            <div class="coupon-list">\n' +
+                                '                <p><span>券值：</span><span>'+item.money+'</span></p>\n' +
+                                '             </div>\n' +
+                                '              <p class="timing"><span>游戏：</span><span>'+item.game_name+'</span></p>\n' +
+                                '              <p class="timing"><span>时效：</span><span>'+item.time_str+'</span></p>\n' +
+                                '        </div>\n' +
+                                '     </li>';
+
+                        });
+                        list2.append(html);
+                        $(".jiantouIcon").click(function(){
+                            $(this).parent('li').find('.coupon-content').toggle(300);
+                            // $(this).find('img').css("transform","rotate(180deg)");
+                        })
+
+                    }
+
+                }
+            });
+        }
+       
+
+    </script>
+</block>

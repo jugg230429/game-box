@@ -1,0 +1,200 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link href="__TMPL__/channelwappublic/assets/css/recharge.css" type="text/css" rel="stylesheet" />
+</block>
+<block name="body">
+    <div class="page-container profit-exchange-container">
+        <header>
+            <a href="{:url('promote/index')}" class="back-btn"></a>
+            <div style="width: 100%;height: 100%" class="v-middle h-middle">
+                <p class="header-title active" data-url="{:url('Promote/balance')}">平台币充值</p>
+                <if condition="PID_LEVEL lt 3"><p class="header-title" data-url="{:url('Promote/shift')}" style="margin-left: 1.5rem">给下级转移</p></if>
+            </div>
+            <a href="{:url('promote/record')}" class="record-icon"></a>
+        </header>
+        <div class="page-content">
+            <form action="" id="ajaxForm2" method="post">
+                <div class="form">
+                    <div class="form-item">
+                        <div class="form-item-title">充值账号：</div>
+                        <div class="form-item-text">
+                            <input type="text" id="account"  placeholder="输入渠道账号" value="" class="form-item-input">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-item-title">金额：</div>
+                        <div class="form-item-text">
+                            <input type="text" onkeyup="this.value=this.value.replace(/\D/, '');" name="amount" id="amount" placeholder="请输入金额" class="form-item-input">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-item-title">支付方式：</div>
+                        <div class="form-item-text">
+                            <label>
+                                <if condition="pay_type_status('zfb') eq 1" >
+							   <label class="label-choose js_choose">
+                                <input type="radio" name="pay_type"  class="form-item-radio radio-choose" value="zfb" checked><i class="label-choose-i current"></i><span>支付宝</span>
+								</label>
+                                </if>
+                                <if condition="pay_type_status('wxscan') eq 1">
+								<label class="label-choose js_choose">
+                                    <input type="radio" name="pay_type"  class="form-item-radio radio-choose" value="wx"><i class="label-choose-i"></i><span>微信</span>
+								</label>
+                                </if>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-item-title">获得平台币：</div>
+                        <div class="form-item-text">
+                            <input type="text"  placeholder="" readonly value="0" id="show" class="form-item-input">
+                        </div>
+                    </div>
+                    <div class="form-item">
+					    <div class="form-item-title"></div>
+                        <div class="submit-btn js_withdrawal jsconfirm">确认</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+
+    <script>
+        var is_type = 0;
+        var is_wechat = "{:cmf_is_wechat()}";
+        var is_company_weixin = "{:cmf_is_company_wechat()}";
+        var promote_id = "{:PID}";
+        $(function () {
+            $('.header-title').click(function () {
+                location.href=$(this).data("url");
+            });
+            $('#recharge-money').keyup(function () {
+                $('#get-ptb').val($(this).val())
+            });
+            $('#amount').on('input propertychange',function(){
+                var amount = $.trim($('#amount').val());
+                re = /^[1-9]\d*$/ ;
+                if(re.test(amount)){
+                    $('#show').val(amount);
+                }else{
+                    $('#show').val(0);
+                }
+            });
+			
+			<!-- 支付方式选择 -->
+            $('input[name=pay_type]:first').attr('checked','checked').addClass('paycheck');
+            $('.js_choose').click(function(){
+                that = $(this);
+                input = that.children('.radio-choose');
+                i = that.children('.label-choose-i');
+                $('.label-choose-i').removeClass('current');
+                i.addClass('current');
+                $('input[name=pay_type]').removeAttr('checked');
+                $('input[name=pay_type]').removeClass('paycheck');
+                input.attr('checked','checked').addClass('paycheck');
+            });
+            var is_type = 0;
+            //充值提交
+            $('.jsconfirm').click(function(){
+                account=$('#account').val();
+                amount=$('#amount').val();
+                res = check();
+                if(!res){
+                    return false;
+                }
+                order_no = get_order();
+                if(!order_no){
+                    layer.msg('订单生成失败，请刷新后重试');
+                    return false;
+                }else{
+                    $('.getresult').attr('order_no',order_no);
+                }
+                pay_type = $('.paycheck').val();
+                if(pay_type=='zfb'){
+                    url = "{:url('recharge/PromoteWapPay/alipay','',false)}";
+                    url = url+'?'+'account='+account+'&amount='+amount+'&order_no='+order_no+'&type='+is_type;
+                    url_open(url);
+                }else if(pay_type=='wx'){
+                    if(is_wechat == 1 && !is_company_weixin){
+                        url = "{:url('api/Pay/get_wx_code','',false)}";
+                    }else{
+                        url = "{:url('recharge/PromoteWapPay/weixinpay','',false)}";
+                    }
+                    url = url+'?'+'weixin_pay_type=4&account='+account+'&amount='+amount+'&order_no='+order_no+'&type='+is_type+'&promote_id='+promote_id;
+                    url_open(url);
+                }else{
+                    layer.msg('支付方式错误');
+                    return false;
+                }
+            });
+        })
+        function check(){
+            var account = $.trim($('#account').val());
+            var pid = "{:PID}";
+            if(account == ''){
+                layer.msg('充值账户不能为空');
+                return false;
+            }
+            var is_true = false;
+            $.ajax({
+                type: 'POST',
+                url: "{:url('checkAccount')}" ,
+                data:{"account":account},
+                async:false,
+                dataType:'json',
+                success:function(data){
+                    if (data.code > 0){
+                        is_true = true;
+                        if(data.data.id == pid){
+                            is_type = 1;
+                        }else if(data.data.parent_id == pid){
+                            is_type = 2;
+                        }else{
+                            is_type = 3;
+                        }
+                    }
+                }
+            })
+            if(!is_true){
+                layer.msg('充值账户不存在');
+                return false;
+            }
+            var amount = $.trim($('#amount').val());
+            re = /^[1-9]\d*$/ ;
+            if(amount == ''){
+                layer.msg('金额不能为空');
+                return false;
+            }else if(!re.test(amount)){
+                layer.msg('金额错误，请输入正整数');
+                return false;
+            }
+
+            return true;
+        }
+        //新开页面 防止浏览器拦截
+        function url_open(url){
+            var form = document.createElement("form");
+            document.body.appendChild(form);
+            form.method = "post";
+            form.action = url;
+            form.submit();
+        }
+        //获取订单号
+        function get_order(){
+            order_no = '';
+            $.ajax({
+                type: 'POST',
+                url: "{:url('recharge/PromoteWapPay/get_order')}" ,
+                async:false,
+                dataType:'json',
+                success:function(data){
+                    order_no = data.order_no;
+                }
+            })
+            return order_no;
+        }
+    </script>
+</block>

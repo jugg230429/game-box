@@ -1,0 +1,169 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="javascript:;">编辑任务</a></li>
+    </ul>
+
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('edit')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>游戏名称：
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <select disabled class="selectpicker form-control" data-live-search="true">
+                                    <option value="0">选择游戏</option>
+                                    <volist name=":get_game_list('id,game_name')" id="vo">
+                                        <option <eq name="data.game_id" value="$vo.id">selected</eq> value="{$vo.id}" >{$vo.game_name}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">区服名称：</label>
+                            <div class="col-md-4 col-sm-6">
+                                <select disabled class="form-control">
+                                    <option value="">{$data.server_name}</option>
+                                </select>
+                            </div>
+                            <p class="help-block">须与游戏实际区服名保持一致</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">任务时间：</label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" class="form-control js-bootstrap-datetime fl" name="start_time" id="start_time"  style="width:47.6%;" value="{$data.start_time|date='Y-m-d H:i:s',###}" autocomplete="off">
+                                <span class="fl to-span">至</span>
+                                <input type="text" class="form-control js-bootstrap-datetime fl" name="end_time" id="end_time"  style="width:47.6%;" value="<empty name='data.end_time'><else/>{$data.end_time|date='Y-m-d H:i:s',###}</empty>"  autocomplete="off" placeholder="选择结束时间，不填默认永久有效">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">任务名额：</label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text"  value="{$data.quota}" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" min="1" class="form-control"  name="quota"  >
+                            </div>
+                            <p class="help-block">可报名参与任务的玩家限额</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label"><span class="form-required">*</span>任务时限：</label>
+                            <div class="col-md-4 col-sm-6">
+                                <div style="position: relative">
+                                    <input type="text" disabled value="{$data.time_out}" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" min="1" class="form-control"  >
+                                    <span class="input-suffix">小时</span>
+                                </div>
+
+                            </div>
+                            <p class="help-block"></p>
+                        </div>
+                        <div class="form-group rebate-item">
+                            <label for="input-site_analytics" class="col-sm-2 control-label"><span class="form-required">*</span>阶段奖励1：</label>
+                            <div class="col-md-4 col-sm-6 v-middle" >
+                                <span style="position: relative;width: 47%">
+                                    <input value="{$data.level[0]}"  name="level[]" style="width: 100%" onkeyup="this.value = this.value.replace(/\D|^0/g, '');" class="form-control js-money" placeholder="游戏等级"  >
+                                     <span class="input-suffix">等级</span>
+                                </span>
+
+                                <span class="line"></span>
+                                <span style="position: relative;width: 47%">
+                                    <input value="{$data.award[0]}" name="award[]" style="width: 100%" onkeyup="value=value.replace(/^(\d*\.?\d{0,2}).*/,'$1')" class="form-control js-rebate" placeholder="奖励金额"  >
+                                    <span class="input-suffix">平台币</span>
+                                </span>
+
+                                <span class="line"></span>
+                                <span style="position: relative;width: 47%">
+                                    <input value="{$data.cash[0]}" name="cash[]" style="width: 100%" onkeyup="value=value.replace(/^(\d*\.?\d{0,2}).*/,'$1')" class="form-control js-rebate" placeholder="奖励现金"  >
+                                    <span class="input-suffix">元</span>
+                                </span>
+
+                            </div>
+							  <div class=" add-dynamic-btn">
+                                    <span class="rebate-add-btn js-rebate-add-btn">+</span>
+                              </div>
+                        </div>
+
+                        <div id="rebate-list" >
+                            <volist name="data.level" id="vo" key="key" offset="1">
+                                <div class="form-group rebate-item">
+                                    <label for="input-site_analytics" class="col-sm-2 control-label js-rank">返利档位{$key}</label>
+                                    <div class="col-md-4 col-sm-6 v-middle" >
+                                            <span style="position: relative;width: 47%">
+                                                <input value="{$vo}"  name="level[]" style="width: 100%" onkeyup="this.value = this.value.replace(/\D|^0/g, '');" class="form-control js-money" placeholder="游戏等级"  >
+                                                 <span class="input-suffix">等级</span>
+                                            </span>
+                                        <span class="line"></span>
+                                        <span style="position: relative;width: 47%">
+                                                <input value="{$data['award'][$key-1]}"  name="award[]" style="width: 100%" onkeyup="value=value.replace(/^(\d*\.?\d{0,2}).*/,'$1')" class="form-control js-rebate" placeholder="奖励金额"  >
+                                                <span class="input-suffix">平台币</span>
+                                            </span>
+                                        <span class="line"></span>
+                                        <span style="position: relative;width: 47%">
+                                                <input value="{$data['cash'][$key-1]}"  name="cash[]" style="width: 100%" onkeyup="value=value.replace(/^(\d*\.?\d{0,2}).*/,'$1')" class="form-control js-rebate" placeholder="奖励现金"  >
+                                                <span class="input-suffix">元</span>
+                                            </span>
+                                    </div>
+                                    <div class="dynamic-btn" style="position:static;width:auto;margin-top:8px;">
+                                        <span class="rebate-del-btn js-rebate-del-btn">-</span>
+                                    </div>
+                                </div>
+                            </volist>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <input type="hidden" name="id" value="{$data.id}">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                                <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script>
+    $(function () {
+        //动态添加返利档位
+        var add_one = function () {
+            $('.js-rebate-add-btn').unbind('click');
+            $('.js-rebate-add-btn').click(function () {
+                var tr = $(this).closest('.rebate-item');
+                var parent = $('#rebate-list') ;
+                var html ='<div class="form-group rebate-item"> <label for="input-site_analytics" class="col-sm-2 control-label js-rank">阶段奖励</label> <div class="col-md-4 col-sm-6 v-middle" > <span style="position: relative;width: 47%"> <input  name="level[]" style="width: 100%" onkeyup="this.value = this.value.replace(/\\D|^0/g, \'\');" class="form-control js-money" placeholder="游戏等级"  > <span class="input-suffix">等级</span> </span> <span class="line"></span> <span style="position: relative;width: 47%"> <input  name="award[]" style="width: 100%" onkeyup="value=value.replace(/^(\\d*\\.?\\d{0,2}).*/,\'$1\')" class="form-control js-rebate" placeholder="奖励金额"  > <span class="input-suffix">平台币</span> </span><span class="line"></span> <span style="position: relative;width: 47%"> <input  name="cash[]" style="width: 100%" onkeyup="value=value.replace(/^(\\d*\\.?\\d{0,2}).*/,\'$1\')" value="0.00" class="form-control js-rebate" placeholder="奖励现金"  > <span class="input-suffix">元</span> </span> </div><div class="dynamic-btn" style="position:static;width:auto;margin-top:8px;"> <span class="rebate-del-btn js-rebate-del-btn">-</span>  </div> </div>'
+                parent.append(html);
+                re_bind();
+            })
+        };
+        var remove_li = function () {
+            $('.js-rebate-del-btn').unbind('click');
+            $('.js-rebate-del-btn').click(function () {
+                var parent = $(this).closest('.rebate-item');
+                parent.remove();
+                re_bind();
+            })
+        };
+        var add_flag = function () {
+            $('#rebate-list .rebate-item').each(function (index, element) {
+                $(this).find('.js-rank').text("阶段奖励"+(index+2));
+            })
+        };
+        var re_bind = function () {
+            add_one();
+            remove_li();
+            add_flag();
+        };
+        re_bind();
+    })
+
+</script>
+</body>
+</html>

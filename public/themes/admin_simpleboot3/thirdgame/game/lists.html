@@ -1,0 +1,995 @@
+<include file="public@header"/>
+<link href="__TMPL__/public/assets/simpleboot3/css/game.css" rel="stylesheet">
+<script src="__STATIC__/js/ajaxForm.js"></script>
+</head>
+<body>
+<style>
+    .copy {
+        position: absolute;
+        right: 50px;
+        top: 11px;
+        text-decoration: underline;
+        font-size: 12px;
+        color: #659be1;
+        cursor: pointer;
+    }
+    .layui-layer-demo .layui-layer-content {
+        position: static;
+    }
+    .layui-layer-demo .layui-layer-content td {
+        height: 42px;
+        padding-left: 20px;
+    }
+    .layui-layer-demo .layui-layer-title {
+        background: #F0F5F7;
+        font-weight: bold;
+    }
+    .layui-layer{
+        border: none;
+    }
+    .table-actions {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        padding: 0px;
+        margin-left: -10px;
+    }
+    .changeGame{
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background: rgba(39, 49, 69, 0.3);
+        z-index: 19891015;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        top:0px;
+        left: 0px;
+    }
+    .p_content{
+        width: 430px;
+        height: 242px;
+        border-radius: 5px;
+        /* overflow: hidden; */
+        position: static;
+        left: 50%;
+        top: 25%;
+        margin-left: 0;
+        background-color: #fff;
+    }
+    .p_content .pro_promot_title1 {
+        height: 45px;
+        width: 100%;
+        line-height: 45px;
+        background: #ffffff;
+        border-radius: 5px;
+        border-bottom: 1px solid #F2F3F7;
+    }
+    .p_content .pro_promot_title_bigtext {
+        font-size: 15px;
+        font-family: 'Microsoft YaHei';
+        font-weight: bold;
+        color: #333333;
+        line-height: 48px;
+        margin: 0 0 0 20px;
+    }
+    .p_content .pro_promot_close {
+        margin-right: 20px;
+    }
+    .p_neirong{
+        width: 100%;
+        height: 130px;
+    }
+    .p_input{
+        width:390px;
+        float: left;
+        margin-left: 20px;
+    }
+    .zhishi{
+        width: 100%;
+        font-size: 14px;
+        font-family: Microsoft YaHei;
+        font-weight: 400;
+        color: #FF0000;
+        line-height: 50px;
+        margin-left: 20px;
+        float: left;
+    }
+    .p_bottom{
+        width: 100%;
+        float: left;
+        display: flex;
+        justify-content: center;
+    }
+    .p_bottom .pro_promot_btn_cancel1 {
+        width: 76px;
+        height: 32px;
+        line-height: 32px;
+        text-align: center;
+        border-radius: 3px;
+        cursor: pointer;
+        background: #DEDEDE;
+        color: #FFFFFF;
+    }
+    .p_bottom .pro_promot_btn_confirm1 {
+        width: 76px;
+        height: 32px;
+        line-height: 32px;
+        text-align: center;
+        border-radius: 3px;
+        cursor: pointer;
+        background: rgb(0, 111, 196);
+        color: rgb(255, 255, 255);
+    }
+    /* 弹框 */
+    .zhifuPop{
+	position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(39, 49, 69, 0.3);
+    z-index: 19891015;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  top:0px;
+    left: 0px;
+}
+.zhifuPop_content{
+	width: 470px;
+		height: 198px;
+		border-radius: 5px;
+		/* overflow: hidden; */
+		position: static;
+		left: 50%;
+		top: 25%;
+		margin-left: 0;
+		background-color: #fff;
+}
+.pro_promot_close1{
+
+    width: 100%;
+    text-align: right;
+    margin-top: 10px;
+    padding-right: 20px;
+}
+.jianjie{
+    width: 100%;
+    font-size: 14px;
+    font-family: Microsoft YaHei;
+    font-weight: 400;
+    color: #999999;
+    padding-left: 40px;
+    float: left;
+    margin-top: 15px;
+}
+.p_input1 {
+    width: 390px;
+    float: left;
+    margin-left: 40px;
+}
+.jianjie p{
+    margin: 0px;
+}
+.p_neirong1{
+    width: 100%;
+    height: 100px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.zhifu .p_bottom {
+    width: 100%;
+    float: left;
+    display: flex;
+    justify-content: center;
+    margin-left: 5px;
+}
+.d_box{
+
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(39, 49, 69, 0.3);
+    z-index: 19891015;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0px;
+    left: 0px;
+}
+.d_content{
+    width: 283px;
+    height: 141px;
+    border-radius: 5px;
+    /* overflow: hidden; */
+    position: static;
+    left: 50%;
+    top: 25%;
+    margin-left: 0;
+    
+    background-color: #fff;
+}
+.d_wenzi{
+    margin: 0 auto;
+    width: 217px;
+    height: 36px;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color:#333333;
+
+}
+.only{
+    margin-right: 20px;
+    margin-left: 10px;
+}
+</style>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <volist name="platforms" id="vo">
+            <li <if condition="input('platformId') eq $vo['id']"> class="active"><else/>></if><a href="{:url('Game/lists',array('platformId'=>$vo['id']))}">{$vo['platform_name']}</a></li>
+        </volist>
+    </ul>
+    <form id="search_form" class="well form-inline  fr" method="get" action="{:url('lists',array('platformId'=>input('platformId')))}">
+        <php>$map['platform_id']=input('platformId')</php>
+        <select name="game_name" id="game_name" class="selectpicker " game_name="{:input('request.game_name')}"
+                data-live-search="true" data-size="7" style="width: 100px;">
+            <option value="">游戏名称</option>
+            <volist name=":get_game_list('id,game_name',$map)" id="vo">
+                <option value="{$vo.game_name}">{$vo.game_name}</option>
+            </volist>
+        </select>
+
+        <select name="sdk_version" id="sdk_version" class="selectpicker" sdk_version="{:input('request.sdk_version')}" style="width: 120px;">
+            <option value="">运营平台</option>
+            <option value="1"
+            <if condition="input('request.sdk_version') eq 1">selected</if>
+            >安卓</option>
+            <option value="2"
+            <if condition="input('request.sdk_version') eq 2">selected</if>
+            >苹果</option>
+            <option value="3"
+            <if condition="input('request.sdk_version') eq 3">selected</if>
+            >H5</option>
+            <option value="4"
+            <if condition="input('request.sdk_version') eq 4">selected</if>
+            >页游</option>
+        </select>
+
+        <select name="recommend_status" id="recommend_status" class="selectpicker" recommend_status="{:input('request.recommend_status')}" style="width: 120px;">
+            <option value="">推荐状态</option>
+            <option value="0"
+            <if condition="input('request.recommend_status') eq '0'">selected</if>
+            >不推荐</option>
+            <option value="1"
+            <if condition="input('request.recommend_status') eq 1">selected</if>
+            >推荐</option>
+            <option value="2"
+            <if condition="input('request.recommend_status') eq 2">selected</if>
+            >热门</option>
+            <option value="3"
+            <if condition="input('request.recommend_status') eq 3">selected</if>
+            >最新</option>
+        </select>
+
+        <select name="game_status" id="game_status" class="selectpicker" game_status="{:input('request.game_status')}" style="width: 120px;">
+            <option value="">上架状态</option>
+            <option value="1"
+            <if condition="input('request.game_status') eq '1'">selected</if>
+            >上架中</option>
+            <option value="0"
+            <if condition="input('request.game_status') eq '0'">selected</if>
+            >下架中</option>
+        </select>
+
+        <select name="type" id="type" data-size="7" class="selectpicker" type="{:input('request.type')}" style="width: 120px;">
+            <option value="">游戏类型</option>
+            <volist name="game_types" id="vo">
+                <option value="{$vo.id}"
+                <eq name=":input('type')" value="$vo.id">selected</eq>
+                >{$vo.type_name}</option>
+            </volist>
+        </select>
+
+        <input type="submit" class="btn btn-primary" id="search_btn" value="搜索"/>
+        <a class="btn btn-clear" href="{:url('lists',['platformId'=>input('platformId')])}">清空</a>
+    </form>
+    <form class="js-ajax-form" action="" method="post">
+        <div class="table-actions position">
+            <a class="btn btn-success  mtb17 clickPop" href="javascript:;">一键导入(0)</a>
+
+            <button class="btn btn-success   js-ajax-submit mtb17" type="submit"
+                    data-action="{:url('changeStatus',['name'=>'game_status','value'=>1])}" data-subcheck="true" data-msg="您确定要上架吗？">
+                上架
+            </button>
+            <button class="btn btn-danger  js-ajax-submit mtb17" type="submit"
+                    data-action="{:url('changeStatus',['name'=>'game_status','value'=>0])}" data-subcheck="true" data-msg="您确定要下架吗？">
+                下架
+            </button>
+            <a class="btn btn-success  mtb17 openPop" id="pay_config" href="javascript:;" data-id="{:input('platformId')}">支付设置</a>
+        </div>
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>
+                    <input type="checkbox" id="all-checkbox" class="table-item-checkbox js-check-all" data-direction="x" data-checklist="js-check-x">
+                    <label for="all-checkbox" class=""></label>
+                </th>
+                <th>ID</th>
+                <th>ICON</th>
+                <th>游戏名称</th>
+                <th>运营平台</th>
+                <th>基础设置</th>
+                <th>CP分成</th>
+                <th>渠道分成</th>
+                <th>上架状态</th>
+                <th>安装包</th>
+                <th>二维码</th>
+                <th>素材包</th>
+                <th>操作</th>
+                <th width="200">推广说明</th>
+            </tr>
+            </thead>
+            <tbody>
+            <empty name="data_lists">
+                <tr>
+                    <td colspan="14" style="text-align: center;">暂无数据</td>
+                </tr>
+                <else/>
+                <foreach name="data_lists" item="vo">
+                    <tr>
+                        <td>
+                            <input type="checkbox" id="ids-checkbox{$vo.id}" class="table-item-checkbox js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
+                                   value="{$vo.id}" >
+                            <label for="ids-checkbox{$vo.id}" class=""></label>
+                        </td>
+                        <td>{$vo['id']}</td>
+                        <td><img src="{:cmf_get_image_preview_url($vo['icon'])}" style="width: 35px;height: 35px" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null"></td>
+                        <td>{$vo['game_name']}</td>
+                        <td>{:get_info_status($vo['sdk_version'],5)}</td>
+                        <td>
+                            <span>游戏类型：{$vo['game_type_name']}</span><br/>
+                            <span>推荐状态：{$vo['recommend_status']}</span><br/>
+                            <span><div style="float: left;">下载次数：</div>
+                                <div style="cursor: pointer" name="dow_num" data-title="{$vo.game_name} 下载次数" game-id="{$vo.id}" data-msg="请输入正整数"
+                                     class="tab_not_same editTab">
+                                <span style="color:#006fc4;text-decoration: underline;">{$vo.dow_num}</span>
+                            </div>
+                            </span>
+                            <span><div style="float: left;">排序设置：</div>
+                                <div style="cursor: pointer" name="sort" data-title="{$vo.game_name} 排序设置" game-id="{$vo.id}" data-msg="请输入正整数"
+                                             class="tab_not_same editTab">
+                                <span style="color:#006fc4;text-decoration: underline;">{$vo.sort}</span>
+                                </div>
+                             </span>
+                            <span><div style="float: left;">游戏评分：</div>
+                                <div style="cursor: pointer" name="game_score" data-title="{$vo.game_name} 排序设置" game-id="{$vo.id}" data-msg="请输入0-10之间的正整数"
+                                            class="tab_not_same editTab">
+                                <span style="color:#006fc4;text-decoration: underline;">{$vo.game_score}</span>
+                                </div></span>
+                            <span>不可申请渠道：
+                                <if condition="AUTH_PROMOTE eq 1"><a href="javascript:void(0);" class="ajax-view" style="text-decoration: underline;" data-id="{$vo.id}">{$vo.promote_ids}</a><else/>0</if>
+                            </span>
+                        </td>
+                        <td>
+                             <span><div style="float: left;">CP分成比例：</div><div style="cursor: pointer" name="cp_ratio" data-title="{$vo.game_name} 排序设置" game-id="{$vo.id}" data-msg="请输入0-100之间的正整数"
+                                               class="tab_not_same editTab">
+                                <span style="color:#006fc4;text-decoration: underline;">{$vo.cp_ratio}%</span>
+                                </div></span><br/>
+                             <span><div style="float: left;">CP通道费率：</div><div style="cursor: pointer" name="cp_pay_ratio" data-title="{$vo.game_name} 排序设置" game-id="{$vo.id}" data-msg="请输入0-100之间的正整数"
+                                               class="tab_not_same editTab">
+                                <span style="color:#006fc4;text-decoration: underline;">{$vo.cp_pay_ratio}%</span>
+                                </div></span>
+                        </td>
+                        <td>
+                             <span><div style="float: left;">CPS分成比例：</div><div style="cursor: pointer" name="ratio" data-title="{$vo.game_name} 排序设置" game-id="{$vo.id}" data-msg="请输入0-100之间的正整数"
+                                               class="tab_not_same editTab">
+                                <span style="color:#006fc4;text-decoration: underline;">{$vo.ratio}</span>%
+                                </div></span><br/>
+                            <span><div style="float: left;">CPA注册单价：</div><div style="cursor: pointer" name="money" data-title="{$vo.game_name} 排序设置" game-id="{$vo.id}" data-msg="请输入正整数"
+                                              class="tab_not_same editTab">
+                                <span style="color:#006fc4;text-decoration: underline;">{$vo.money}</span>元
+                                </div></span>
+                        </td>
+                        <td><eq name="vo.game_status" value="1">上架中<else/><span style="color: red">下架中</span></eq></td>
+                        <td>
+                           <switch name="vo.sdk_version">
+                               <case value="1"><a href="{$vo['add_game_address']}">下载</a></case>
+                              <case value="2"><a href="{$vo['ios_game_address']}">下载</a></case>
+                              <case value="3">--</case>
+                              <case value="4">--</case>
+                           </switch>
+                        </td>
+                        <td>
+                            <eq name="vo.sdk_version" value="4">
+                                --
+                                <else/>
+                                <a href="javascript:;" class="erwei-btn" data-url="{:cmf_get_domain() . url('mobile/game/detail',array('game_id'=>$vo['id']))}">下载</a>
+                            </eq>
+                        </td>
+                        <td>
+                            <notempty name="vo['material_url']" >
+                                <a href="{:cmf_get_file_download_url($vo['material_url'])}">下载</a>
+                            <else/>
+                                --
+                            </notempty>
+                        </td>
+                        <td>
+                            <a href="{:url('edit',['id'=>$vo['id']])}">编辑</a><br/>
+                            <if condition="$vo['game_status'] eq 1">
+                                <a href="{:url('changeStatus',['ids'=>$vo['id'],'name'=>'game_status','value'=>0])}">下架</a><br/>
+                            <else/>
+                                <a href="{:url('changeStatus',['ids'=>$vo['id'],'name'=>'game_status','value'=>1])}">上架</a><br/>
+                            </if>
+                            <a target="_blank" class="change_game_name"  data-id="{$vo['id']}" data-game_name="{$vo['game_name']}" style="cursor: pointer">修改游戏名称</a><br/>
+                            <a target="_blank" class="import_gift"  data-id="{$vo['id']}"  style="cursor: pointer">导入礼包</a><br/>
+                            <a target="_blank" class="import_server"  data-id="{$vo['id']}"  style="cursor: pointer">导入区服</a><br/>
+                            <if condition="$vo['sdk_version'] eq 1 or $vo['sdk_version'] eq 2">
+                            <a target="_blank" class="import_source"  data-id="{$vo['id']}"  style="cursor: pointer">更新游戏原包</a>
+                            </if>
+                        </td>
+                        <td>
+                             {$vo.promote_declare}
+                        </td>
+                    </tr>
+                </foreach>
+            </empty>
+            </tbody>
+        </table>
+    </form>
+    <div class="pagination">{$page}</div>
+    <!-- 修改游戏名称弹框 -->
+    <div class="pop change_name_box" hidden>
+        <div class="changeGame">
+            <div class="p_content">
+                <div class="pro_promot_title1">
+                    <div class="fl pro_promot_title_text">
+                        <div class="fl pro_promot_title_bigtext">修改游戏名称</div></div>
+                    <div class="pro_promot_close fr"><img src="__TMPL__/public/assets/images/btn_close_pop.png" class="img_close2"></div>
+                </div>
+                <div class="p_neirong">
+                    <form class=" js-ajax-form margin-top-20" role="form" action="" method="post">
+                        <div class="p_input">
+                            <input type="text" class="form-control" value="" autocomplete="off" id="new_game_name" placeholder="输入新游戏名称">
+                        </div>
+                        <div class="zhishi">注：修改占用时间较长，禁止关闭或刷新当前页面</div>
+                    </form>
+                </div>
+                <div class="p_bottom">
+                    <div class="fl pro_promot_btn_cancel1 pro_promot_close qvxiao2">取消</div>
+                    <div class="fr pro_promot_btn_confirm1 h submit_change_name">确定</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="daoru" hidden>
+    <div class="d_box">
+        <div class="d_content">
+            <div class="pro_promot_close1"><img src="__TMPL__/public/assets/images/btn_close_pop.png" class="guanbi2"></div>
+            <div class="d_wenzi">
+                <p>
+                    一键导入所有游戏，导入时间较长，请勿关闭或刷新当前页面</p>
+            </div>
+            <div class="p_bottom">
+                <div class="fl pro_promot_btn_cancel1 only close_import_game">关闭</div>
+                <div class="fr pro_promot_btn_confirm1 import_game">导入</div>
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- 更新原包弹窗  -->
+    <div class="daoru2" hidden>
+        <div class="d_box">
+            <div class="d_content">
+                <div class="pro_promot_close1"><img src="__TMPL__/public/assets/images/btn_close_pop.png" class="guanbi3"></div>
+                <div class="d_wenzi">
+                    <p>更新游戏原包比较慢，请勿关闭或刷新当前页面！</p>
+                </div>
+                <div class="p_bottom">
+                    <div class="fl pro_promot_btn_cancel1 only close_import_game2">关闭</div>
+                    <div class="fr pro_promot_btn_confirm1 import_game_source" data-game_id="0">导入</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 支付设置弹框 -->
+    <div class="zhifu" hidden>
+        <div class="zhifuPop">
+            <div class="zhifuPop_content">
+                    <div class="pro_promot_close1"><img src="__TMPL__/public/assets/images/btn_close_pop.png" class="guanbi"></div>
+           
+            <div class="p_neirong1">
+                <form class=" js-ajax-form changePayType" role="form" action="" method="post">
+                    <div class="p_input1">
+                      支付渠道：
+                      <label class="label-width">
+                          <input type="radio" value="1" name="pay_type" <eq name="platformInfo.pay_type" value="1">checked</eq>>本平台
+                    </label>
+                    <label>
+                        <input type="radio" value="2" name="pay_type" <eq name="platformInfo.pay_type" value="2">checked</eq>>{$platformInfo['platform_name']}
+                    </label>
+                    </div>
+                    <input type="hidden" name="id" value="{$platformInfo['id']}">
+                    <div class="jianjie">
+                        <p>本平台：玩家在游戏内的充值走渠道，通过扣除预付款来进行结算；</p>
+                        <p>{$platformInfo['platform_name']}：玩家在游戏内的充值走{$platformInfo['platform_name']}，由{$platformInfo['platform_name']}进行结算。</p>
+                    </div>
+                </form>
+            </div>
+            <div class="p_bottom">
+                <div class="fl pro_promot_btn_cancel1 pro_promot_close qvxiao1">取消</div>
+                <div class="fr pro_promot_btn_confirm1 h submit_change_pay">确定</div>
+            </div>
+        </div> 
+        </div>
+    </div>
+</div>
+<!-- 新的不可修改渠道 -->
+<div id="code" style="display: none;"></div>
+<div class="pro_promot" style="display: none;" id="newProModal">
+    <form action="{:url('game/game/savePromote')}" id="ajaxForm" method="post">
+        <input type="hidden" name="game_id" id="id" value="">
+        <div class="promoteModal">
+            <div class="promoteModal-header">
+                <div class="modalheader-ttile fl">
+                    <div class="fl headerTitleName">不可申请渠道</div>
+                    （选中的渠道后台不显示该游戏）
+                </div>
+                <div class="fr btnCloseModal"><img src="__TMPL__/public/assets/images/btn_close_pop.png" alt=""></div>
+            </div>
+            <div class="promoteModal-body">
+                <div style="padding-left:27px">
+                    <span class="mainTextSame">游戏名称：</span>
+                    <span class="gameNameShowText"></span>
+                </div>
+                <div class="promoteChooseAllInfo">
+                    <div>
+                        <span class="mainTextSame fl">不可申请渠道：</span>
+                        <div class="fl" style="margin-left: 2px;">
+                            <a href="javaScript:;" class="firstChooseNum defferentTextColor firstNumCurrent js-show-all">全部</a>
+                            <a href="javaScript:;" class="firstChooseNum js-screen" key="ABCD">ABCD</a>
+                            <a href="javaScript:;" class="firstChooseNum js-screen" key="EFGH">EFGH</a>
+                            <a href="javaScript:;" class="firstChooseNum js-screen" key="IJKL">IJKL</a>
+                            <a href="javaScript:;" class="firstChooseNum js-screen" key="MNOP">MNOP</a>
+                            <a href="javaScript:;" class="firstChooseNum js-screen" key="QRST">QRST</a>
+                            <a href="javaScript:;" class="firstChooseNum js-screen" key="UVWX">UVWX</a>
+                            <a href="javaScript:;" class="firstChooseNum js-screen" key="YZ">YZ</a>
+                        </div>
+                    </div>
+                    <div>
+                        <input type="text" class="inputSearchContent" placeholder="输入渠道名称">
+                        <button class="searchButtonPromote">搜索</button>
+                    </div>
+                </div>
+                <div class="promoteGameSelect">
+
+                </div>
+            </div>
+            <div class="promoteModal-footer">
+                <div class="fl footerAllCheckBtn">
+                    <label class="" for="">
+                        <input type="checkbox" class="checkBoxIcon" id="jsgamecheckall">
+                        <i class="checkBoxIcon"></i>
+                        <span class="mainTextSame" >全选</span>
+                    </label>
+                </div>
+                <div class="fl">
+                    <button class="cancelModalBtn">取消</button>
+                    <button class="confirmModalBtn">确定</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="__TMPL__/public/assets/js/qrcode.min.js"></script>
+<script src="__STATIC__/js/admin.js"></script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script src="__STATIC__/js/clipboard.min.js"></script>
+<script type="text/javascript">
+    platform_id = "{:input('platformId')}";
+    game_id = $("#game_id").attr('game_id');
+    game_name = $("#game_name").attr('game_name');
+    $("#game_id").selectpicker('val', game_id);
+    $("#game_name").selectpicker('val', game_name);
+    $("#sdk_version").selectpicker('val', $('#sdk_version').attr('sdk_version'));
+    $("#recommend_status").selectpicker('val', $('#recommend_status').attr('recommend_status'));
+    $("#game_status").selectpicker('val', $('#game_status').attr('game_status'));
+    $("#type").selectpicker('val', $('#type').attr('type'));
+    $(function () {
+        $(".ajax-view").click(function(){
+            //获取游戏列表
+            var url = "{:url('game/game/getpromote')}";
+            var id = $(this).attr('data-id');
+            $.post(url,{id:id},function(res){
+                if(res.code==1){
+                    var promote_list = res.promote_list;
+                    var game_info = res.game;
+                    $('.gameNameShowText').html(game_info.game_name);
+                    pids = '';
+                    if(game_info['promote_ids']){
+                        pids=game_info['promote_ids'].split(","); //字符分割
+                    }
+                    var lis = [];
+                    $.each(promote_list,function(index,ele){
+                        if(pids == ''){
+                            lis.push('<label class="promoteSelectLabel short-'+ele.short+'" id="'+ele.account+'">' +
+                                '<input type="checkbox" value="'+ele.id+'" name="promote_ids[]" class="checkBoxIcon jsgameid ">' +
+                                '<i class="checkBoxIcon"></i>' +
+                                '<span class="mainTextSame limitTextStyle">'+ele.account+'</span>' +
+                                '<i class="overTextStyle">'+ele.account+'</i>' +
+                                '</label>');
+                        }else{
+                            if($.inArray(ele.id.toString(), pids)!=-1){
+                                lis.push('<label class="promoteSelectLabel short-'+ele.short+'" id="'+ele.account+'">' +
+                                    '<input type="checkbox" value="'+ele.id+'" name="promote_ids[]" checked="checked" class="checkBoxIcon jsgameid">' +
+                                    '<i class="checkBoxIcon"></i>' +
+                                    '<span class="mainTextSame limitTextStyle">'+ele.account+'</span>' +
+                                    '<i class="overTextStyle">'+ele.account+'</i>' +
+                                    '</label>');
+                            }else{
+                                lis.push('<label class="promoteSelectLabel short-'+ele.short+'" id="'+ele.account+'">' +
+                                    '<input type="checkbox" value="'+ele.id+'" name="promote_ids[]" class="checkBoxIcon jsgameid">' +
+                                    '<i class="checkBoxIcon"></i>' +
+                                    '<span class="mainTextSame limitTextStyle">'+ele.account+'</span>' +
+                                    '<i class="overTextStyle">'+ele.account+'</i>' +
+                                    '</label>');
+                            }
+                        }
+                    });
+                    $(".promoteGameSelect").html(lis.join(''));
+                    $("#id").val(res.game.id);
+                    $("#newProModal").css("display","block");
+                    $('.promoteModal').css('display','block')
+                    jsgameid();
+
+                }else{
+                    layer.msg('请求失败');
+                }
+            });
+        });
+
+        //保存修改
+        $(".confirmModalBtn").click(function(){
+            $("#ajaxForm").ajaxSubmit(function(res){
+                layer.msg(res.msg);
+                location.reload();
+                $(".pro_promot").hide();
+            });
+            return false;
+        });
+
+        $("#jsgamecheckall").click(function(){
+            $('.promoteGameSelect').find(".jsgameid:visible").prop("checked",this.checked);
+        });
+
+        //点击取消按钮，弹窗关闭
+        $('.cancelModalBtn').click(function(){
+            $('.pro_promot').css('display','none');
+            return false;
+        });
+
+        $('.btnCloseModal').click(function() {
+            $('.pro_promot').css('display','none');
+            return false;
+        });
+
+        //全部显示
+        $(".js-show-all").click(function () {
+            $(this).addClass('firstNumCurrent').siblings().removeClass('firstNumCurrent')
+            $(".promoteSelectLabel").show();
+            return false;
+        });
+        //筛选条件
+        $(".js-screen").click(function () {
+            $(this).addClass('firstNumCurrent').siblings().removeClass('firstNumCurrent')
+            var keys = $(this).attr("key");
+            var keyArr = keys.split("");
+            $(".promoteSelectLabel").hide();
+            keyArr.forEach(function (ele) {
+                $(".short-" + ele + "").show();
+            });
+            return false;
+        });
+
+        //搜索
+        $('.searchButtonPromote').click(function () {
+            var content = $(".inputSearchContent").val();
+            if (content == '') {
+                $(".promoteSelectLabel").show();
+                return false;
+            }
+            $(".promoteSelectLabel").hide();
+            $("label[id*=" + content + "]").show();
+            return false;
+        });
+
+
+        //修改下载人数和排序值
+        $('.editTab').click(function () {
+            var that = $(this);
+            var game_id = that.attr('game-id');
+            var names = that.attr('name');
+            var title = that.attr('data-title');
+            var msg = that.attr('data-msg');
+
+            layer.prompt({title: title, formType: 0,value:'',placeholder:msg}, function (value, index) {
+                layer.close(index);
+                $.ajax({
+                    async: false,
+                    url: "{:url('changeStatus')}",
+                    type: "POST",
+                    dataType: "json",
+                    data: {ids: game_id, name: names, value: value},
+                    success: function (result) {
+                        if (result.code) {
+                            layer.msg('修改成功');
+                            setTimeout(function () {
+                                $('#tip').find('.tipclose').click();
+                                window.location.reload();
+                            }, 2000);
+
+                        } else {
+                            layer.msg(result.msg);
+                            setTimeout(function () {
+                                $('#tip').find('.tipclose').click();
+                            }, 2000);
+                        }
+                    },
+                    error: function () {
+                        layer.msg('服务器异常');
+                        setTimeout(function () {
+                            $('#tip').find('.tipclose').click();
+                        }, 2000);
+                    }
+                });
+            });
+            return false;
+        });
+    })
+    //不可申请渠道 全选及全选反选 功能  @author  zwm  date 20180604
+    function jsgameid(){
+        $(".jsgameid").click(function(){
+            var option = $(this).closest('ul').find(".jsgameid"),
+                checkall = $(this).closest('ul').siblings('.jsgamecheckallbox').find('.jsgamecheckall');
+            option.each(function(i){
+                if(!this.checked){
+                    checkall.prop("checked", false);
+                    return false;
+                }else{
+                    checkall.prop("checked", true);
+                }
+            });
+        });
+    }
+    function copy(option,txt){
+        var clipboard = new Clipboard(option,{
+            text: function() {
+                return txt;
+            }
+        });
+        clipboard.on('success', function(e) {
+            layer.msg("复制成功");
+            e.clearSelection();
+            clipboard.destroy();
+        });
+    }
+    $(".erwei-btn").click(function () {
+        var url = $(this).attr('data-url');
+        var qrcode = new QRCode(document.getElementById("code"), {
+            width : 200,
+            height : 200,
+            colorDark : "#000000",
+            colorLight : "#ffffff",
+            correctLevel:0//容错级别
+        });
+        qrcode.makeCode(url);
+        var canvas=$("#code").find('canvas').get(0);
+        //如果有循环,此句必不可少 qrcode.find('canvas').remove();
+        $("#code").find('canvas').remove();
+        var data = canvas.toDataURL('image/jpg');
+        saveFile(data,"二维码");
+    });
+</script>
+<script>
+// 支付设置弹框
+    $(".openPop").click(function(){
+        $(".zhifu").css("display","block");
+    })
+    $(".guanbi").click(function(){
+        $(".zhifu").css("display","none");
+
+    })
+    $(".qvxiao1").click(function(){
+        $(".zhifu").css("display","none");
+
+    })
+    $(".clickPop").click(function(){
+        $(".daoru").css("display","block");
+
+    })
+    $(".guanbi2").click(function(){
+        $(".daoru").css("display","none");
+
+    })
+    $('.submit_change_pay').click(function () {
+        var url = "{:url('changePayType')}";
+        var pay_type = $('input[name="pay_type"]:checked').val();
+        $.post(url, {pay_type: pay_type,id:platform_id}, function (res) {
+            layer.msg(res.msg);
+            setTimeout(function () {
+                location.reload();
+            },1500);
+        });
+    });
+
+    // 修改游戏名称弹框
+    $(".img_close2").click(function(){
+        $(".change_name_box").css("display","none");
+
+    })
+    $(".qvxiao2").click(function(){
+        $(".change_name_box").css("display","none");
+
+    })
+    $(".change_game_name").click(function () {
+        var url = "{:url('game/game/changeGameName')}";
+        var id = $(this).attr("data-id");
+        var game_name = $(this).attr("data-game_name");
+        game_name = game_name.replace('(苹果版)', '');
+        game_name = game_name.replace('(安卓版)', '');
+        $("#new_game_name").val(game_name);
+        $(".change_name_box").show();
+        $(".submit_change_name").unbind();
+        $(".submit_change_name").click(function () {
+            var value = $("#new_game_name").val();
+            if (game_name == value) {
+                layer.msg('修改后名称和原名称一致');
+                return false;
+            }
+            var loading = layer.load(1, {});
+            $.post(url, {id: id, game_name: value}, function (res) {
+                layer.close(loading);
+                if(res.code != 1){
+                    layer.msg(res.msg);
+                    return false;
+                }
+                layer.msg(res.msg);
+                $(".change_name_box").hide();
+                setTimeout(function () {
+                    location.reload();
+                }, 1000);
+                return false;
+            });
+
+            return false;
+        });
+
+        return false;
+    })
+
+</script>
+<script>
+    function saveFile(data,filename){
+        var save_link=document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
+        save_link.href=data;
+        save_link.download=filename;
+        var event=document.createEvent('MouseEvents');
+        event.initMouseEvent('click',true,false,window,0,0,0,0,0,false,false,false,false,0,null);
+        save_link.dispatchEvent(event);
+    };
+
+    //获取可导入游戏数量
+    var url = "{:url('getSelectGame')}";
+    $.post(url,{platform_id: platform_id,type:'selectGame'},function (result) {
+        if (result.code) {
+            $('.clickPop').text('一键导入(' + result.data.count + ')');
+        } else {
+            $('.clickPop').text('一键导入(0)');
+        }
+    });
+    // 一键导入游戏
+    $('.import_game').click(function () {
+        var url = "{:url('Game/getSelectGame')}";
+        $('.daoru').hide();
+        layer.msg('游戏导入中，请勿关闭页面', {
+            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+        }, function(){
+            layer.load(1);
+            $.post(url,{platform_id:platform_id,type:'importGame'},function (result) {
+                layer.closeAll();
+                if(result.code == 1){
+                     layer.msg('导入成功个数：'+result.data.suc_num+'；导入失败个数：'+result.data.err_num);
+                 }else{
+                     layer.msg('导入失败');
+                 }
+                setTimeout(function () {
+                    location.reload();
+                },1500);
+            })
+        });
+    });
+    //导入区服
+    $('.import_server').click(function () {
+        var url = "{:url('Game/getSelectGame')}";
+        var game_id = $(this).data('id');
+        layer.msg('游戏区服导入中，请勿关闭页面', {
+            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+        }, function(){
+            layer.load(1);
+            $.post(url,{platform_id:platform_id,game_id:game_id,type:'importServer'},function (result) {
+                layer.closeAll();
+                if(result.code == 1){
+                    layer.msg('导入成功个数：'+result.data.suc_num+'导入失败个数：'+result.data.err_num);
+                }else{
+                    layer.msg('导入失败');
+                }
+                setTimeout(function () {
+                    location.reload();
+                },1500);
+            })
+        });
+    });
+    //导入礼包
+    $('.import_gift').click(function () {
+        var url = "{:url('Game/getSelectGame')}";
+        var game_id = $(this).data('id');
+        layer.msg('游戏礼包导入中，请勿关闭页面', {
+            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+        }, function(){
+            layer.load(1);
+            $.post(url,{platform_id:platform_id,game_id:game_id,type:'importGift'},function (result) {
+                layer.closeAll();
+                if(result.code == 1){
+                    layer.msg('导入成功个数：'+result.data.suc_num+'导入失败个数：'+result.data.err_num);
+                }else{
+                    layer.msg('导入失败');
+                }
+                setTimeout(function () {
+                    location.reload();
+                },1500);
+            })
+        });
+    });
+    //导入原包
+    $('.import_source').click(function () {
+        var game_id = $(this).data('id');
+        $(".daoru2").css("display", "block");
+        $('.import_game_source').attr('data-game_id',game_id);
+    });
+    $(".guanbi3").click(function(){
+        $(".daoru2").css("display","none");
+
+    })
+    $('.import_game_source').click(function () {
+        $(".daoru2").hide();
+        var url = "{:url('Game/getSelectGame')}";
+        var game_id = $(this).data('game_id');
+        layer.msg('游戏原包更新中，请勿关闭页面', {
+            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+        }, function(){
+            layer.load(1);
+            $.post(url,{platform_id:platform_id,game_id:game_id,type:'importSource'},function (result) {
+                layer.closeAll();
+                if(result.code == 1){
+                    layer.msg('导入成功');
+                }else{
+                    layer.msg('导入失败');
+                }
+                setTimeout(function () {
+                    location.reload();
+                },1500);
+            })
+        });
+    })
+
+
+    //取消导入
+    $('.close_import_game').click(function () {
+        $('.daoru').hide();
+    });
+    $('.close_import_game2').click(function () {
+        $('.daoru2').hide();
+    });
+
+</script>
+</body>
+</html>

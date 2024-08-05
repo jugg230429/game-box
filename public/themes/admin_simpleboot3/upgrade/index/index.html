@@ -1,0 +1,125 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="javascript:;">系统更新</a></li>
+    </ul>
+    <div class="describe">
+        <div>更新步骤：</div>
+        <div>① 下载更新包</div>
+        <div>② 备份数据库、备份需要更新的文件</div>
+        <div>③ 执行数据库更新脚本、替换更新文件</div>
+        <div>注意①：更新前请务必备份源代码及数据库</div>
+        <div>注意②：手动下载更新包更新时，请严格按照版本号正序更新</div>
+        <div>注意③：步骤③执行过程中若没有出现错误则为更新成功，若出现错误则需要回滚操作（还原更新前的状态：用备份文件替换新文件，备份数据库替换新数据库）</div>
+    </div>
+    <form class="js-ajax-form" action="" method="post">
+        <div class="table-actions position">
+
+        </div>
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>版本号</th>
+                <th>更新时间</th>
+                <th>更新内容</th>
+                <th>更新包地址</th>
+                <th>更新注意</th>
+            </tr>
+            </thead>
+            <tbody>
+            <empty name="data_lists">
+                <tr>
+                    <td>700</td>
+                    <td>2019-09-30</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                </tr>
+                <else/>
+                <foreach name="data_lists" item="vo">
+                    <tr>
+                        <td>{$vo.version_num}</td>
+                        <td>{:date('Y-m-d',$vo['create_time'])}</td>
+                        <td><pre>{$vo['remark']}</pre></td>
+                        <td><a href="{$vo.file_urls}">下载</a></td>
+                        <td>--</td>
+                    </tr>
+                </foreach>
+                <tr>
+                    <td>700</td>
+                    <td>2019-09-30</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                </tr>
+            </empty>
+            </tbody>
+        </table>
+        <br>
+        <if condition="$data['show_up'] eq 1">
+            <p>
+                尊敬的用户，您的系统当前版本号为<b style="color: #8693f3;">{$data['this_version']}</b>，最新版本号为<b style="color: #8693f3;">{$data['last_version']}</b>
+                <if condition="$up_error eq 1">
+                    ，<span style="color: red;">您上次更新出现sql执行失败</span><a href="{$errorurl}" style="text-decoration:underline;" target="_blank">错误详情></a>，<span style="color: red;">请自行检查或联系售后</span>
+                    <a href="javascript:;" class="up_error">已解决或忽略</a>
+                <elseif condition="$data['need_up'] eq 1"/>
+                    ，建议您进行更新升级。提示：跨版本更新需要升级多次。
+                    <a href="javascript:;" class="upgrade_version">去更新</a>
+                </if>
+            </p>
+        </if>
+    </form>
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script>
+    $(".upgrade_version").click(function () {
+        //询问框
+        layer.confirm('<span style="color: red;">如您进行过二次开发请不要使用自动更新功能，使用自动更新需备份源码及数据库，且更新期间不可关闭、刷新本页面</span>', {title:'提示',
+            btn: ['不同意','同意'] //按钮
+        }, function(){
+            layer.closeAll();
+        }, function(){
+            layer.confirm('是否确认已备份', {title:'提示',
+                btn: ['确认','取消'] //按钮
+            }, function(){
+                layer.closeAll();
+                up();
+            }, function(){
+                layer.closeAll();
+            });
+        });
+
+    });
+    function up(){
+        layer.open({
+            type: 2,
+            title: " 自动更新进度",
+            shadeClose: false,
+            shade: 0.6,
+            closeBtn:false,
+            area: ['30%', '40%'],
+            content: "{:url('upgrade_info')}",
+            end:function(){
+                //刷新表格
+            }
+        });
+    }
+    $('.up_error').click(function () {
+        layer.confirm('确定问题已解决或忽略吗', {title:'提示',
+            btn: ['取消','确定'] //按钮
+        }, function(){
+            layer.closeAll();
+        }, function(){
+            $.ajax({
+                url:"{:url('solve_error')}",
+                success:function () {
+                    location.reload();
+                }
+            })
+        });
+    })
+</script>
+</body>
+</html>

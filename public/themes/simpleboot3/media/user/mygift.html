@@ -1,0 +1,101 @@
+<extend name="../mediapublic/base" />
+<!-- 主体内容 -->
+<block name="body">
+    <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/my_bag.css">
+    <!-- <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/userinfos.css"> -->
+    <!-- userinfos.css -->
+    <!-- 用户信息 -->
+    <div class="userinfo_con">
+        <div class="layui-container">
+            <div class="fl left_user_info">
+                <div class="left_user_info_img">
+                    <img src="{:cmf_get_image_url($user['head_img'])}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                    <span class="levelIcon">V{$user['vip_level']}</span>
+                </div>
+                <!-- <div class="left_user_info_grade" style="z-index: 100;display:block;"> -->
+                <!-- <div style="margin-left: 138px; margin-top: -20px;"> -->
+                <!-- <div style="margin-left: 138px;">
+                    <if condition="$user['vip_level'] gt 0">
+                        <img src="__STATIC__/images/my_ico_grade{$user['vip_level']}.png" alt="">
+                    </if>
+                    
+                </div> -->
+
+                <p class="left_user_info_name">{$user.nickname}</p>
+                <div class="checked_item_con">
+                    <include file="mediapublic@left_menu" />
+                </div>
+            </div>
+            <div class="fl right_user_info">
+                    <div class="right_user_info_title">
+                        <a href="{:url('User/mygift')}">
+                        <div class="fl right_user_info_title_left active">
+                            已领取
+                            <div class="sort_fgx_fe"></div>
+                        </div>
+                        </a>
+                        <a href="{:url('User/myoverduegift')}">
+                            <div class="fl right_user_info_title_left">
+                                已过期
+                                <div class="sort_fgx_fe"></div>
+                            </div>
+                        </a>
+                        <p class="fg right_user_info_title_right">您当前的位置：<a href="{:url('Index/index')}">平台首页</a>><a href="{:url('User/userinfo')}"> 用户中心</a>><span>我的礼包</span></p>
+                    </div>
+                    <div class="my_bag_list">
+                        <empty name="list">
+                            <!-- 无领取记录 -->
+                            <p class="no_mygame_con_item">~暂无领取礼包~</p>
+                        </empty>
+                        <volist name="list" id="vo">
+                            <div class="my_bag_item clear">
+                                <a href="{:url('Gift/detail',['gift_id'=>$vo['gift_id']])}">
+                                <div class="fl my_bag_item_img">
+                                    <notempty name="vo.icon"><img src="{:cmf_get_image_url($vo['icon'])}" alt="" class="fl gameimg" onerror="this.src='/static/images/empty.jpg';this.onerror=null"></notempty>
+                                </div>
+
+                               
+                                <div class="fl my_bag_item_info">
+                                    <p class="one">《{$vo.relation_game_name}》{$vo.gift_name}</p>
+                                    
+									  					
+                                    <p class="two">有效期：{:show_time($vo['start_time'],2)}至{:show_time($vo['end_time'],2)}
+									   <!-- 安卓/苹果 -->
+
+									</p>
+                                </div>
+                                </a>
+                                <div class="fl my_bag_item_con">
+                                    <p class="fl">激活码：</p>
+                                    <input type="text" class="fl select_con" value="{$vo.novice}">
+                                </div>
+                                <div class="fl my_bag_item_p">
+                                    <p>复制</p>
+                                </div>
+                            </div>
+                        </volist>
+                    </div>
+                    <div id="page1" class="gamelistpage">
+                        <notempty name="list">
+                            {$page}
+                        </notempty>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $('.my_bag_item_p p').click(function () {
+            $(this).parent().prev().children('.select_con').select()
+            try {
+                if (document.execCommand('copy', false, null)) {
+                    document.execCommand("copy")
+                    layer.msg('复制成功', { time: 1000,skin:'demo-blue' });
+                } else {
+                    layer.msg('复制失败，请手动复制', { time: 1000,skin: 'demo-red'});
+                }
+            } catch (err) {
+                layer.msg('复制失败，请手动复制', { time: 1000 ,skin: 'demo-red'});
+            }
+        })
+    </script>
+</block>

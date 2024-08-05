@@ -1,0 +1,54 @@
+/*
+* @description: 账号信息
+ *@author:王奉
+* @update: name(xxxx-xx-xx xx:xx)
+ */
+
+
+.label-name {
+	text-align: right;
+	color: #8B8CA0;
+	width: 95px;
+	margin-right: 15px;
+}
+
+.formtxt {
+	
+	color: #535875;
+}
+.postionr {
+
+    position: relative;
+
+}
+
+.mail_suffix {
+	position: absolute;
+	top: 48px;
+	left: 110px;
+	border: 1px solid rgb(229, 229, 229);
+	border-radius: 2px;
+	color: #666;
+	font-size: 11px;
+	width: 256px;
+	padding: 0 10px;
+	line-height: 1.4;
+	z-index: 1;
+	background: #FFF;
+	height: 200px;
+	overflow: hidden;
+	overflow-y: auto;
+}
+
+.mail_suffix li {
+	padding: 2px 0;
+	cursor: pointer;
+}
+
+.mail_suffix li:first-child {
+	padding-top: 4px;
+}
+
+.mail_suffix li:last-child {
+	padding-bottom: 4px;
+}

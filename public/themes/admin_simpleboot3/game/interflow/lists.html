@@ -1,0 +1,67 @@
+<include file="public@header" />
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="{:url('lists')}">游戏互通</a></li>
+        <span class="title_remark">说明：可选择任意游戏进行账号数据互通（前提是游戏支持）</span>
+    </ul>
+    <a class="btn btn-success" href="{:url('add')}" style="margin-top:20px;margin-left:-10px;">添加互通</a>
+    <form id="search_form" class="well form-inline  fr" method="get" action="{:url('lists')}" style="margin-right: 10px;">
+
+        <select name="game_id" id="game_id" class="selectpicker " data-live-search="true">
+            <option value="">游戏名称</option>
+            <volist name=":get_game_list('id,game_name')" id="vo">
+                <option value="{$vo.id}" <?php if($vo['id']==input('game_id')) echo 'selected'; ?> >{$vo.game_name}</option>
+            </volist>
+        </select>
+
+        <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+        <a class="btn btn-clear" href="{:url('lists')}">清空</a>
+    </form>
+    <form class="js-ajax-form" action="" method="post">
+
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>互通游戏</th>
+                <th width="120">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+                <empty name="lists">
+                    <tr><td colspan="7" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <volist name="lists" id="vo">
+                        <php>
+                            $ids = explode(',',$vo['game_ids']);
+                        </php>
+                        <tr>
+                            <td>{$key+1}</td>
+                            <td>
+                                <volist name="ids" id="vos">
+                                    <span style="margin-right: 15px">
+                                        {:get_game_name($vos)}
+                                        <a href="{:url('game/interflow/delete',['game_id'=>$vos])}" class="js-ajax-delete" data-msg="确定要取消这个游戏关联吗？" >
+                                            <span style="color: red"><i class="fa fa-times"></i></span>
+                                        </a>
+                                    </span>
+                                </volist>
+                            </td>
+                            <td>
+                                <a href="{:url('game/interflow/append',['interflow_tag'=>$vo['interflow_tag']])}">追加</a>
+                                <a href="{:url('game/interflow/delete',['interflow_tag'=>$vo['interflow_tag']])}" class="js-ajax-delete" data-msg="确定要取消这一组游戏关联吗？">删除</a>
+                            </td>
+                        </tr>
+                    </volist>
+                </empty>
+            </tbody>
+
+        </table>
+    </form>
+    <div class="pagination">{$lists->render()}</div>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

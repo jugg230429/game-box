@@ -1,0 +1,52 @@
+ <extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__JS__/layui/css/layui.css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/discount_game.css">
+</block>
+
+<block name="body">
+    <div class="discount_lists_page">
+        <!-- 头部 -->
+        <include file="mobilepublic@header_menu" />
+		<div class="discount-game-list">
+            <notempty name="data">
+		    <ul>
+				<volist name="data" id="data">
+					<li class="discount-game-item fl">
+						<a href="{$data.url}">
+						<div class="discount-game-top">
+							<div class="game-icon"><img src="{$data.icon}" onerror="this.src='/static/images/empty.jpg';this.onerror=null" ></div>
+							<div class="">
+								<p class="game-name">{$data.relation_game_name}</p>
+								<span class="game-type">{$data.game_type_name}</span>
+							</div>
+						</div>
+						<div>
+							<if condition="$data['ratio']">
+								<div class="discount-btn fl"><span class="game-num fl">{$data.ratio}</span><span class="game-text fl">%</span><span class="fl">返利</span></div>
+							</if>
+							<if condition="$data['first_status'] eq 1">
+								<div class="discount-btn fl"><span class="game-num fl">{$data.first_discount}</span><span class="game-text fl">折</span><span class="fl">首充</span></div>
+							</if>
+							<if condition="$data['continue_status'] eq 1">
+								<div class="discount-btn fl"><span class="game-num fl">{$data.continue_discount}</span><span class="game-text fl">折</span><span class="fl">续充</span></div>
+							</if>
+							<if condition="$data['bind_first_discount'] and $data['bind_first_discount'] lt 10">
+								<div class="discount-btn fl"><span class="game-num fl">{$data.bind_first_discount}</span><span class="game-text fl">折</span><span class="fl">首充绑币</span></div>
+							</if>
+							<if condition="$data['bind_continue_discount'] and $data['bind_continue_discount'] lt 10">
+								<div class="discount-btn fl"><span class="game-num fl">{$data.bind_continue_discount}</span><span class="game-text fl">折</span><span class="fl">续充绑币</span></div>
+							</if>
+						</div>
+						</a>
+					</li>
+				</volist>
+			</ul>
+            <else />
+			<div class="no_open_game_text">
+				<p>~空空如也~</p>
+			</div>
+            </notempty>
+		</div>
+    </div>
+</block>

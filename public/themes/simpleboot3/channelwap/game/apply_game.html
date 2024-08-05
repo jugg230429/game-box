@@ -1,0 +1,414 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/select2.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/new_select2.css" type="text/css" />
+    <link href="__TMPL__/channelwappublic/assets/css/game.css" type="text/css" rel="stylesheet" />
+</block>
+<block name="body">
+    <div class="page-container my-game-container">
+        <div class="addTopHeader">
+            <a href="/channelwap/Simulator/white_list" class="whiteCard ">模拟器白名单</a>
+            <a href="javascript:;" class="chooseActive">游戏管理</a>
+         </div>
+        <header>
+            <div style="width: 100%;"  class="v-middle h-middle">
+                <p class="header-title " data-url="{:url('game/index')}">我的游戏</p>
+                <if condition="PID_LEVEL lt 3">
+                <p class="header-title " data-url="{:url('game/child')}">子渠道游戏</p>
+                </if>
+                <p class="header-title active" data-url="{:url('game/apply_game')}">申请游戏</p>
+            </div>
+
+        </header>
+        <div class="page-content">
+            <div class="game-menu-box">
+                <if condition="PERMI gt 0">
+                <a href="{:url('apply_game')}" class="active">手游+H5</a>
+                </if>
+                <if condition="YPERMI gt 0">
+                <a id="game_h5_url" href="{:url('apply_ygame')}">页游</a>
+                </if>
+            </div>
+
+            <div class="search-box">
+                <div class="search-item">
+                    <select id="game_name" class="select_gallery search-select" data-placeholder="游戏名称">
+                        <option value="0" data="0">选择游戏</option>
+                        <php>
+                            $gmap['game_status'] = 1;
+                            $gmap['sdk_version'] = ['lt',4];
+                            $gmap['test_game_status'] = 0;  // 测试游戏不显示,但可以正常进入
+                            $gmap['id'] = $map_id;  // 渠道独占条件
+                            $gmap['down_port'] = ['neq',2] ;  // 第三方游戏不显示
+                        </php>
+                        <volist name=":get_game_list('id,game_name,relation_game_id,relation_game_name',$gmap,'relation_game_name','sort desc ,id desc')" id="vv">
+                            <option <if condition="$vv['relation_game_name'] eq input('game_name')"> selected</if> data="{$vv['relation_game_name']}" value="{$vv['relation_game_name']}">{$vv['relation_game_name']}</option>
+                        </volist>
+                    </select>
+                </div>
+            </div>
+            <div class="table-box js-choose">
+                <table>
+                    <tbody>
+                    <tr class="table-title">
+                        <th>名称</th>
+                        <th>平台</th>
+                        <if condition="$promote_level eq 1">
+                            <if condition="$baseinfo['pattern'] eq 0">
+                                <th>分成比例/%</th>
+                                <else/>
+                                <th>注册单价/元</th>
+                            </if>
+                        </if>
+                        <th>严控</th>
+                        <th>推广限制等级</th>
+                        <th>推广说明</th>
+                        <if condition="$promote_level eq 1">
+                            <if condition="$baseinfo['pattern'] eq 0">
+                                <th style="width: 20%">当前分成比例生效时间</th>
+                                <else/>
+                                <th style="width: 20%">当前注册单价生效时间</th>
+                            </if>
+                        </if>
+                        <th style="width:0.8rem;">操作</th>
+                    </tr>
+                    </tbody>
+                    <tbody id="applyload">
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/select2.min.js"></script>
+    <script>
+        var selectHeight = 0
+        $(function () {
+            // selectHeight = $(window).outerHeight() - $('.js-choose').offset().top;
+            //点击tap
+            $('.header-title').click(function () {
+                location.href=$(this).data("url");
+            });
+            $(".select_gallery").select2({
+                escapeMarkup: function(m) {
+                    selectHeight = $(window).outerHeight() - $('.js-choose').offset().top;
+                   return m;
+                }
+            });
+            $(".select_gallery").on('select2:open', function() {
+               $('.select2-container:not(.select2)').css({
+                   'height': selectHeight,
+                   'background-color':'rgba(0,0,0,.5)',
+                   'z-index': 9
+               })
+                return false;
+            });
+
+
+            
+        })
+
+    </script>
+    <script>
+        var pattern = {$baseinfo['pattern']};
+        var promote_level = "{$promote_level}";
+
+        var pid_level = {:PID_LEVEL};
+        var itemIndex = 0;
+        var relation_game_name = '';
+        var lwx = window.lwx || {};
+        lwx.ready = true;
+        lwx.width = $(window).width();
+        lwx.height = $(window).height();
+        lwx.number = {apply:1,napply:1};
+        lwx.row = {apply:15,napply:15};
+        lwx.http = {
+            getJSON:function(url,callback){
+                $.getJSON(url + '&v=' + Date.now(),function(data){
+                    callback(data);
+                });
+            },
+            postJSON:function(url,args,callback) {
+                $.post(url + '&v=' + Date.now(), args, function(data) {
+                    callback(data);
+                },"json")
+            },
+        };
+        lwx.url ={
+            apply:'{:url("Game/get_apply_game",[],false)}',
+        };
+        lwx.page = {
+            apply:function(){
+                if(lwx.number.apply) {
+                    lwx.http.getJSON(lwx.url.apply+'?row='+lwx.row.apply+'&page='+lwx.number.apply+'&game_name='+relation_game_name,function(data) {
+                        var hotload = $('#applyload');
+                        var data = data.data;
+                        if(data && data.length) {
+                            var html = '';
+                            for (var i in data) {
+                                html += '<tr>';
+                                html += '<td>'+data[i].relation_game_name+'</td>';
+                                if(data[i].sdk_version.length == 3){
+                                    html += '<td><span class="box-span">'+get_version(data[i]['sdk_version'][0])+'</span><span class="box-span">'+get_version(data[i]['sdk_version'][1])+'</span><span class="box-span">'+get_version(data[i]['sdk_version'][2])+'</span></td>';
+                                    if(promote_level == 1){
+                                        if(pattern == 0){
+                                            html += '<td><span class="box-span">'+data[i]['ratio'][0]+'</span><span  class="box-span">'+data[i]['ratio'][1]+'</span><span class="box-span">'+data[i]['ratio'][2]+'</span></td>';
+                                        }else{
+                                            html += '<td><span class="box-span">'+data[i]['money'][0]+'</span><span class="box-span">'+data[i]['money'][1]+'</span><span class="box-span">'+data[i]['money'][2]+'</span></td>';
+                                        }
+                                    }
+                                    // 严控
+                                    html += '<td><span class="box-span">';
+                                    if(data[i]['is_control'][0] ==1){
+                                        html+='是';
+                                    }else{
+                                        html+='--';
+                                    }
+                                    html+='</span><span class="box-span">';
+                                    if(data[i]['is_control'][1] ==1){
+                                        html+='是';
+                                    }else{
+                                        html+='--';
+                                    }
+                                    html+='</span><span class="box-span">';
+                                    if(data[i]['is_control'][2] ==1){
+                                        html+='是';
+                                    }else{
+                                        html+='--';
+                                    }
+                                    html+='</span></td>';
+                                    // 推广员等级
+                                    html += '<td><span class="box-span">'+data[i]['promote_level_limit'][0]+'</span><span class="box-span">'+data[i]['promote_level_limit'][1]+'</span><span class="box-span">'+data[i]['promote_level_limit'][2]+'</span></td>';
+                                    // 推广说明
+                                    html += '<td><span class="box-span">';
+                                    if(data[i]['promote_declare'][0] == ''){
+                                        html+='--';
+                                    }else{
+                                        html+='<a href="javascript:;" class="declare" data-title="'+ data[i]['promote_declare'][0] +'">查看</a>';
+                                    }
+                                    html+='</span><span class="box-span">';
+                                    if(data[i]['promote_declare'][1] == ''){
+                                        html+='--';
+                                    }else{
+                                        html+='<a href="javascript:;" class="declare" data-title="'+ data[i]['promote_declare'][1] +'">查看</a>';
+                                    }
+                                    html+='</span><span class="box-span">';
+                                    if(data[i]['promote_declare'][2] == ''){
+                                        html+='--';
+                                    }else{
+                                        html+='<a href="javascript:;" class="declare" data-title="'+ data[i]['promote_declare'][2] +'">查看</a>';
+                                    }
+                                    html+='</span></td>';
+                                    if(promote_level == 1){
+                                        if(pattern == 0){
+                                            html += '<td><span class="box-span">'+data[i]['ratio_begin_time'][0]+'</span><span  class="box-span">'+data[i]['ratio_begin_time'][1]+'</span><span class="box-span">'+data[i]['ratio_begin_time'][2]+'</span></td>';
+                                        }else{
+                                            html += '<td><span class="box-span">'+data[i]['money_begin_time'][0]+'</span><span class="box-span">'+data[i]['money_begin_time'][1]+'</span><span class="box-span">'+data[i]['money_begin_time'][2]+'</span></td>';
+                                        }
+                                    }
+                                    if(data[i]['is_apply'][0] == 0) {
+                                        html += '<td><span class="box-span"><a style="color: #666;text-decoration: none">申请</a></span>';
+                                    }else{
+                                        html += '<td><span class="box-span"><a href="javascript:;" class="no-underline js_apply" data-id="'+data[i]['id'][0]+'">申请</a></span>';
+                                    }
+                                    if(data[i]['is_apply'][1] == 0) {
+                                        html += '<span class="box-span"><a style="color: #666;text-decoration: none">申请</a></span>';
+                                    }else {
+                                        html += '<span class="box-span"><a href="javascript:;" class="no-underline js_apply" data-id="' + data[i]['id'][1] + '">申请</a></span>';
+                                    }
+                                    if(data[i]['is_apply'][2] == 0) {
+                                        html += '<span class="box-span"><a style="color: #666;text-decoration: none">申请</a></span></td>';
+                                    }else {
+                                        html += '<span class="box-span"><a href="javascript:;" class="no-underline js_apply" data-id="' + data[i]['id'][2] + '">申请</a></span></td>';
+                                    }
+                                }else if(data[i].sdk_version.length == 2){
+                                    html += '<td><span class="box-span">'+get_version(data[i]['sdk_version'][0])+'</span><span class="box-span">'+get_version(data[i]['sdk_version'][1])+'</span></td>';
+                                    if(promote_level == 1){
+                                        if(pattern == 0){
+                                            html += '<td><span class="box-span">'+data[i]['ratio'][0]+'</span><span class="box-span">'+data[i]['ratio'][1]+'</span></td>';
+                                        }else{
+                                            html += '<td><span class="box-span">'+data[i]['money'][0]+'</span><span class="box-span">'+data[i]['money'][1]+'</span></td>';
+                                        }
+                                    }
+
+                                    // 严控
+                                    html += '<td><span class="box-span">';
+                                    if(data[i]['is_control'][0] ==1){
+                                        html+='是';
+                                    }else{
+                                        html+='--';
+                                    }
+                                    html+='</span><span class="box-span">';
+                                    if(data[i]['is_control'][1] ==1){
+                                        html+='是';
+                                    }else{
+                                        html+='--';
+                                    }
+                                    html+='</span></td>';
+                                    // 渠道等级
+                                    html += '<td><span class="box-span">'+data[i]['promote_level_limit'][0]+'</span><span class="box-span">'+data[i]['promote_level_limit'][1]+'</span></td>';
+                                    // 推广说明
+                                    html += '<td><span class="box-span">';
+                                    if(data[i]['promote_declare'][0] == ''){
+                                        html+='--';
+                                    }else{
+                                        html+='<a class="declare" href="javascript:;" data-title="'+ data[i]['promote_declare'][0] +'">查看</a>';
+                                    }
+                                    html+='</span><span class="box-span">';
+                                    if(data[i]['promote_declare'][1] == ''){
+                                        html+='--';
+                                    }else{
+                                        html+='<a class="declare" href="javascript:;" data-title="'+ data[i]['promote_declare'][1] +'">查看</a>';
+                                    }
+                                    html+='</span></td>';
+                                    if(promote_level == 1){
+                                        if(pattern == 0){
+                                            html += '<td><span class="box-span">'+data[i]['ratio_begin_time'][0]+'</span><span  class="box-span">'+data[i]['ratio_begin_time'][1]+'</span></td>';
+                                        }else{
+                                            html += '<td><span class="box-span">'+data[i]['money_begin_time'][0]+'</span><span class="box-span">'+data[i]['money_begin_time'][1]+'</span></td>';
+                                        }
+                                    }
+                                    if(data[i]['is_apply'][0] == 0) {
+                                        html += '<td><span class="box-span"><a style="color: #666;text-decoration: none">申请</a></span>';
+                                    }else {
+                                        html += '<td><span class="box-span"><a href="javascript:;" class="no-underline js_apply" data-id="' + data[i]['id'][0] + '">申请</a></span>';
+                                    }
+                                    if(data[i]['is_apply'][1] == 0) {
+                                        html += '<span class="box-span"><a style="color: #666;text-decoration: none">申请</a></span></td>';
+                                    }else {
+                                        html += '<span class="box-span"><a href="javascript:;" class="no-underline js_apply" data-id="' + data[i]['id'][1] + '">申请</a></span></td>';
+                                    }
+                                }else{
+                                    html += '<td><span class="box-span">'+get_version(data[i]['sdk_version'][0])+'</span></td>';
+                                    if(promote_level == 1){
+                                        if (pattern == 0) {
+                                            html += '<td><span class="box-span">' + data[i]['ratio'][0] + '</span></td>';
+                                        } else {
+                                            html += '<td><span class="box-span">' + data[i]['money'][0] + '</span></td>';
+                                        }
+                                    }
+                                    // 严控
+                                    html += '<td><span class="box-span">';
+                                    if(data[i]['is_control'][0] ==1){
+                                        html+='是';
+                                    }else{
+                                        html+='--';
+                                    }
+                                    html+='</span></td>';
+                                    // 推广等级
+                                    html += '<td><span class="box-span">' + data[i]['promote_level_limit'][0] + '</span></td>';
+                                    // 推广说明
+                                    html += '<td><span class="box-span">';
+                                    if(data[i]['promote_declare'][0] == ''){
+                                        html+='--';
+                                    }else{
+                                        html+='<a class="declare" href="javascript:;" data-title="'+ data[i]['promote_declare'][0] +'">查看</a>';
+                                    }
+                                    html+='</span></td>';
+                                    if(promote_level == 1){
+                                        if(pattern == 0){
+                                            html += '<td><span class="box-span">'+data[i]['ratio_begin_time'][0]+'</span></td>';
+                                        }else{
+                                            html += '<td><span class="box-span">'+data[i]['money_begin_time'][0]+'</span></td>';
+                                        }
+                                    }
+                                    if(data[i]['is_apply'][0] == 0) {
+                                        html += '<td><span class="box-span"><a style="color: #666;text-decoration: none">申请</a></span></td>';
+                                    }else {
+                                        html += '<td><span class="box-span"><a href="javascript:;" class="no-underline js_apply" data-id="' + data[i]['id'][0] + '">申请</a></span></td>';
+                                    }
+                                }
+                                html += '</tr>';
+                            }
+                            hotload.append(html);
+                            hotload.find('.jsdropload').remove();
+                            if(data.length >= lwx.row.apply) {
+                                lwx.number.apply++;
+                                lwx.ready = true;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.apply = false;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                        } else {
+                            if(lwx.number.apply==1){
+                                hotload.html('').append('<p class="no_invest_info nodata jsdropload">~空空如也~</p>');
+                            } else{
+                                hotload.find('.jsdropload').remove();
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                            lwx.number.apply = false;
+                        }
+                    });
+                }
+            }
+        };
+        pageChange();
+        function pageChange() {
+            lwx.page.apply();
+        }
+        function pageScroll(scrollTop, boxHeight, maxScrollHeight) {
+            if (scrollTop + boxHeight >= maxScrollHeight - 50) {
+                if (lwx.ready) {
+                    lwx.ready = false;
+                    lwx.page.apply();
+                }
+            }
+        }
+        window.onscroll = function() {
+            var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+            pageScroll(scrollTop, lwx.height, $(document).height())
+        }
+        $(function () {
+            $("body").on('click', '.declare', function () {
+                var title = $(this).attr('data-title');
+                layer.alert(title);
+            });
+            $('.game-menu-box a').click(function () {
+                $(this).addClass("active").siblings().removeClass("active");
+                var index = $(this).index();
+                $('.menu-tab').eq(index).show().siblings(".menu-tab").hide();
+                itemIndex = index;
+                location.hash = index;
+            });
+            $("#game_name").change(function () {
+                relation_game_name = $("#game_name").val();
+                $("#applyload").empty();
+                lwx.number.apply = 1;
+                pageChange();
+            })
+            $('body').on('click','.js_apply',function () {
+                var game_id = $(this).data('id');
+                $.ajax({
+                    type:'post',
+                    url:'{:url("apply")}',
+                    data:{game_id:game_id},
+                    success:function(res){
+                        layer.msg(res.msg,{time:1000},function(){
+                            location.href = location.href;
+                        });
+                    },error:function(){
+                        layer.msg('服务器错误，请稍后再试');
+                    }
+                });
+            })
+        })
+        $(window).on("hashchange", function() {
+            pageChange();
+        });
+        function get_version(version) {
+            if(version == 1){
+                return '安卓';
+            }else if(version == 2){
+                return '苹果';
+            }else{
+                return 'H5';
+            }
+        }
+
+
+    </script>
+</block>

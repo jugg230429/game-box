@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<include file="public@head"/>
+		<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/promote/mychlid.css" rel="stylesheet" />
+	</head>
+	<style>
+		.customGameCount {
+			width: 265px;
+			height: 150px;
+			overflow: auto;
+			border-radius: 4px;
+			border: none;
+			outline: none;
+			padding: 0;
+			padding-left: 10px;
+			padding-top: 10px;
+			margin: 0;
+			resize: none;
+			font-size:14px;
+			border: 1px solid #E5E5E5;
+			font-family: 'Microsoft Yahei','微软雅黑', SimHei,'黑体';
+		}
+		.tabpan-con-con{
+			display: inline-block;
+		}
+		.explain-txt {
+			margin-left: 17px;
+			color: #999;
+			font-size: 14px;
+		}
+		.min_discount{
+			color: #26C7DB;
+		}
+		.hasDiscountBox{
+			position: relative;
+		}
+		.discountModal {
+			position: absolute;
+			right: 74%;
+			top: 0;
+			color: #999;
+			font-style: initial;
+		}
+	</style>
+	<body>
+		<include file="public@nav"/>
+		<include file="public@header"/>
+		<div class="trunk">
+			<div class="trunk-con">
+				<div class="right-container">
+					<div class="normal-list">
+						<div class="trunk">
+							<div class="trunk-title">
+								<div class="location ">
+									<div class="location-container fr">当前位置：<span class="location-container-text">管理中心&gt;</span><span class="location-container-text">我的收益>&gt;</span><span class="location-container-text">新增首充续充折扣</span></div>
+								</div>
+								<img src="__TMPL__/public/assets/images/promote/icon_normal_ziqudao.png" class="fl trunk-icon">
+								<span class="title-main fl ">新增首充续充折扣 </span>
+							</div>
+
+							<div class="clear"></div>
+							<ol class="tabpan">
+								<li class="tabpan-con tabpan-show">
+									<form id="form1">
+										<div class="tabpan-con-con">
+											<label class="fl label-name"><span class="req">*</span>游戏名称：</label>
+											<select id="game_id" name="game_id" class="tab-input js-select-gallery normal-space  " style="width:278px;">
+												<option value="">请选择游戏</option>
+												<php>
+													$gmap['id'] = ['in',get_promote_game_id(PID)];
+													$gmap['test_game_status'] = 0;
+												</php>
+												<volist name=":get_game_list('id,game_name',$gmap,false,'sort desc ,id desc')" id="vv">
+													<option value="{$vv['id']}">{$vv['game_name']}</option>
+												</volist>
+
+											</select>
+											<span class="explain-txt min_discount" style="display: none;">平台最低折扣：<span id="show_gf_limit_discount">10.00</span>折</span>
+										</div>
+										<div class="tabpan-con-con">
+											<label class="fl label-name">折扣玩家：</label>
+											<textarea type="text" name="game_user_account" id="game_user_account" class="customGameCount " placeholder="输入玩家账号,一行一个"></textarea>
+											<span class="explain-txt">不填代表全部玩家</span>
+										</div>
+										<div class="tabpan-con-con hasDiscountBox">
+											<label class="fl label-name"><span class="req"></span>首充折扣：</label>
+											<input type="text" class="tabpan-input" onkeyup="value=value.replace(/^(\d*\.?\d{0,2}).*/,'$1')" name="first_discount" >
+											<i class="discountModal">折</i>
+											<span class="explain-txt">设置折扣对象下某个游戏的玩家首次充值时可享受的折扣</span>
+										</div>
+										<div class="tabpan-con-con hasDiscountBox">
+											<label class="fl label-name"><span class="req"></span>续充折扣：</label>
+											<input type="text" class="tabpan-input" onkeyup="value=value.replace(/^(\d*\.?\d{0,2}).*/,'$1')" name="continue_discount" >
+											<i class="discountModal">折</i>
+											<span class="explain-txt">设置折扣对象下某个游戏的玩家非首次充值时可享受的折扣</span>
+										</div>
+										<div class="tabpan-con-con">
+											<label class="fl label-name"><span class="req"></span>首充状态：</label>
+											<label class="label-choose js_choose"><input type="radio" class="radio-choose" name="first_status" value="0" checked ><i class="label-choose-i current"></i><span>关闭</span></label>
+											<label class="label-choose js_choose"><input type="radio" class="radio-choose" name="first_status" value="1" ><i class="label-choose-i "></i><span>开启</span></label>
+										</div>
+										<div class="tabpan-con-con">
+											<label class="fl label-name"><span class="req"></span>续充状态：</label>
+											<label class="label-choose js_choose2"><input type="radio" class="radio-choose" name="continue_status" value="0" checked><i class="label-choose-i current"></i><span>关闭</span></label>
+											<label class="label-choose js_choose2"><input type="radio" class="radio-choose" name="continue_status" value="1" ><i class="label-choose-i "></i><span>开启</span></label>
+										</div>
+
+
+										<div class="tabpan-con-con">
+											<input type="button" class="button jssub add-coupon-btn" value="确认" title="" target-form="paw_er_info">
+											<a class="back-btn " alt="返回上一页" title="返回上一页" href="javascript:window.history.back();">返回</a>
+										</div>
+									</form>
+								</li>
+
+							</ol>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<include file="public@scripts"/>
+		<script type="text/javascript">
+            //全局变量
+            var GV = {
+                ROOT: "__ROOT__/",
+                WEB_ROOT: "__WEB_ROOT__/",
+                JS_ROOT: "static/js/",
+                APP: '{$Request.module}'/*当前应用名*/
+            };
+		</script>
+		<script src="__STATIC__/js/wind.js"></script>
+		<script src="__TMPL__/public/assets/js/frontend.js"></script>
+		<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+		<script src="__STATIC__/js/layer/layer.js"></script>
+		<script>
+			$(function() {
+				$(".js-select-gallery").select2();
+				$('.jssub').click(function(){
+					that = $(this);
+					data = $("#form1").serialize();
+					console.log(data)
+					$.ajax({
+						url:"{:url('add_user_welfare')}",
+						type:'post',
+						data:data,
+						success:function(res){
+							if(res.code==1){
+								layer.msg(res.msg,{time:1000},function(){
+			                        location.href= "{:url('user_welfare')}";
+			                    })
+							}else{
+								layer.msg(res.msg,{time:1500})
+							}
+						},error:function(){
+							layer.msg('服务器错误，请稍后再试');
+						}
+					})
+				});
+			})
+
+			$('.js_choose').click(function(){
+				that = $(this);
+				input = that.children('.radio-choose');
+				i = that.children('.label-choose-i');
+				$('.js_choose .label-choose-i').removeClass('current');
+				i.addClass('current');
+				// $('input[name=first_status]').removeAttr('checked');
+				input.attr('checked','checked');
+				var q1 = $("input[name=first_status]:checked").val();
+				console.log(q1);
+
+			});
+			$('.js_choose2').click(function(){
+				that = $(this);
+				input = that.children('.radio-choose');
+				i = that.children('.label-choose-i');
+				$('.js_choose2 .label-choose-i').removeClass('current');
+				i.addClass('current');
+				// $('input[name=continue_status]').removeAttr('checked');
+				input.attr('checked','checked');
+
+			});
+			//new_add_js
+
+			$('#game_id').change(function(){
+				var game_id = $(this).val();
+				$.ajax({
+					url:"{:url('getGameGfLimitDiscount')}",
+					data:{game_id,game_id},
+					success:function (res) {
+						var limit = res.gf_limit_discount;
+						$("#show_gf_limit_discount").text(limit);
+						$(".min_discount").show();
+					},error:function () {
+						layer.msg('服务器出错，请稍后再试');
+					}
+				})
+				//增加判断当前游戏是否已经设置过折扣type 1=充值折扣 2=绑币充值折扣
+				$.ajax({
+					url:"{:url('judgeGameIsSetDiscount')}",
+					data:{game_id,game_id,type:1},
+					success:function (res) {
+						if(res.code != 1){
+							layer.msg(res.msg);
+						}
+
+					},error:function () {
+						layer.msg('服务器出错，请稍后再试');
+					}
+				})
+
+			});
+
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,46 @@
+<include file="public@header"/>
+<style type="text/css">
+    .pic-list li {
+        margin-bottom: 5px;
+    }
+</style>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <div class="margin-top-20">
+        <volist name="titles" id="vo">
+            <a href="{:url('AdminPay/config')}?name={$vo.name}" class="btn <if condition="$pay_name eq $vo['name']">disabled</if> btn-success">{$vo.title}</a>
+        </volist>
+    </div>
+    <form action="{:url('AdminPay/doSave')}" method="post" class="form-horizontal js-ajax-form margin-top-20">
+        <volist name="data.config" id="vo">
+        <div class="form-group">
+            <label for="input-{$key}" class="col-sm-1 control-label">{$vo.name}</label>
+            <div class="col-md-6 col-sm-10 padding-top">
+                <input type="hidden" class="form-control" name="{$key}[name]" value="{$vo.name}" />
+                <input type="hidden" class="form-control" name="{$key}[type]" value="{$vo.type}" />
+                <if condition="$vo.type eq 'text'">
+                    <input type="text" class="form-control" name="{$key}[value]" value="{$vo.value}" />
+                <else />
+                    <textarea class="form-control" name={$key}[value]>{$vo.value}</textarea>
+                </if>
+            </div>
+        </div>
+        </volist>
+        <input type="hidden" name="id" value="{$data.id}" />
+        <div class="form-group">
+            <div class="col-sm-offset-1 col-sm-10">
+                <button type="submit" class="btn btn-primary js-ajax-submit">{:lang('SAVE')}</button>
+                <a class="btn btn-default" href="javascript:history.back(-1)">{:lang('BACK')}</a>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript">
+    $(function () {
+
+    });
+</script>
+</body>
+</html>

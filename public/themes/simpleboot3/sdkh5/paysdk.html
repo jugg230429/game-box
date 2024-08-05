@@ -1,0 +1,744 @@
+<style>
+    .iframepay{display: none;}
+    .iframepay #jjspay_url_mainframe{
+        height: 100%;
+        visibility: inherit;
+        width: 100%;
+        overflow: visible;
+        position: absolute;
+        background-image: url();
+        background-repeat: no-repeat;
+        background-size: cover;
+        z-index: 2000;
+        left: 0;
+        top: 0%;
+    }
+    .iframepay .iframecolse{
+        display: none;
+        z-index: 2001;
+        top: 0;
+        position: fixed;
+        right: 0;
+        width: 100%;
+        height:44px;
+    }
+	 .iframepay .iframecolse img{
+         margin-left: 4%;
+         margin-top: 5%;
+         width: 20px;
+	 }
+     .head{
+         width:100%;
+         height:5rem;
+     }
+     .return_img{
+        margin-top: 0.7rem;
+    width: 13px;
+    height: 17px;
+    float: left;
+     }
+    .return{
+        float: left;
+    }
+    .needPayDialog1{
+        height: 28rem !important;
+    }
+    .paypop-con1{
+        background: #fff;
+    box-shadow: 0px 0px 12px 0px rgb(86 157 236 / 20%);
+    border-radius: 0.6rem;
+    padding: 0.65rem 0.85rem;
+    width: 27rem;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: 0 0 0 -14.5rem;
+    transform: translateY(-50%);
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    }
+     .fangshi{
+         float: left;
+         color: #666666;
+         font-weight: bold;
+          font-size: 1.7rem;
+          padding-top:1rem;
+          margin: -0.7rem 0 0 6.3rem;
+     }
+     .zhifubao{
+        color: #018FFF;
+        float: left;
+     }
+     .weChat{
+        font-size: 1.5rem;
+        margin-left:4.5rem;
+     }
+     .erweima{
+       width:100%;
+    height: 18rem;
+         float: left;
+         margin-top: 1rem;
+     }
+     .erweima1{
+        width: 17.5rem;
+    height: 17.5rem;
+    position: relative;
+    left: 50%;
+    margin-left: -8.75rem;
+    z-index: -1;
+     }
+     .erweima_zhifu{
+        width: 16.5rem;
+    height: 16.5rem;
+    margin-left: -17.5rem;
+    position: relative;
+    left: 50%;
+        }
+     .erweima_weChat{
+        width: 16.5rem;
+    height: 16.5rem;
+    margin-left: -17.5rem;
+    position: relative;
+    left: 50%;
+        }
+     .foot{
+         color:#999999;
+         text-align: center;
+         font-size: 1.4rem;
+         position: relative;
+         top: 0.8rem;
+
+     }
+     .btn-close {
+    width: 1.3rem;
+    height: 1.2rem;
+    position: absolute;
+    right: 1rem;
+    top: 1.35rem !important;
+    z-index: 999;
+    cursor: pointer;
+}
+</style>
+<div class="pay-sdk-item">
+<div class="payscanpop js-pop">
+    <div class="payscanpop-con">
+        <img src="/themes/simpleboot3/sdkh5/assets/images/notice_ico_return.png" class="pop-icon-return js-btn-close">
+        <div class="payscanpop-title">需支付</div>
+        <img src="/themes/simpleboot3/sdkh5/assets/images/icon_close.png" class="btn-close js-btn-close">
+        <div class="paypop-money"></div>
+        <img src="" class="paypop-code qrcode-img">
+        <div>
+            <img src="/themes/simpleboot3/sdkh5/assets/images/scan-icon.png" class="scan-icon fl">
+            <div class="scan-text fl">请使用微信“扫一扫” <br>扫码二维码支付</div>
+        </div>
+    </div>
+</div>
+
+<div class="paypop js-pop">
+    <div class="paypop-con needPayDialog">
+        <div class="paypop-title">需支付
+        </div>
+        <img src="/themes/simpleboot3/sdkh5/assets/images/icon_close.png" class="btn-close js-btn-close">
+        <div class="paypop-money">{$realAmount}<span>元</span></div>
+        <div class="paypop-box">
+            <div class="paypop-infobox">
+                <div class="fl paypop-name">购买道具：</div>
+                <div class="fl paypop-text">{$props_name|default=''} （价格{$amount|default='0.00'}元<lt name="discount.discount" value="1">/{:$discount['discount']?$discount['discount']*10:10}折</lt>）</div>
+            </div>
+            <div class="paypop-infobox">
+                <div class="fl paypop-name">代金券：</div>
+                <div class="fl paypop-text"><span class="paypop-orgcolor choose_coupon"><span class="count-coupon">{:count($coupon)}</span>张可用</span>><span
+                        class="paypop-orgcolor paypop-coupon"></span></div>
+            </div>
+            <div class="paypop-infobox">
+                <div class="fl paypop-name">平台币余额：</div>
+                <div class="fl paypop-text"> {$user.balance|default='0.00'}元</div>
+            </div>
+            <div class="paypop-infobox">
+                <div class="fl paypop-name">绑币余额：</div>
+                <div class="fl paypop-text">{$user.bind_balance|default='0.00'}元</div>
+            </div>
+        </div>
+        <div class="paypop-way-title">请选择支付方式</div>
+		<div style="display:flex;justify-content: space-around">
+        <if condition="pay_type_status('zfb') == 1">
+        <div class="paypop-way-box fl js-alipay">
+            <img src="/themes/simpleboot3/sdkh5/assets/images/ico_zfb.png" class="paypop-way-box-icon">
+            <div class="paypop-way-box-title ">支付宝</div>
+			<img  src="/themes/simpleboot3/sdkh5/assets/images/sdk_pay_btn_choose_s.png" class="paypop-way-box-select">
+        </div>
+        </if>
+        <if condition="pay_type_status('wxscan') || pay_type_status('wxapp')">
+        <div class="paypop-way-box fl js-weixinpay">
+            <img src="/themes/simpleboot3/sdkh5/assets/images/ico_wx.png" class="paypop-way-box-icon">
+            <div class="paypop-way-box-title ">微信</div>
+			<img  src="/themes/simpleboot3/sdkh5/assets/images/sdk_pay_btn_choose_s.png" class="paypop-way-box-select">
+        </div>
+        </if>
+        <if condition="pay_type_status('ptb_pay') == 1 && $is_custom neq '1' ">
+        <div class="paypop-way-box fl js-ptb">
+            <img src="/themes/simpleboot3/sdkh5/assets/images/ico_ptb.png" class="paypop-way-box-icon">
+            <div class="paypop-way-box-title ">平台币</div>
+			<img  src="/themes/simpleboot3/sdkh5/assets/images/sdk_pay_btn_choose_s.png" class="paypop-way-box-select">
+        </div>
+        </if>
+        <if condition="pay_type_status('bind_pay') == 1 && $is_custom neq '1'" >
+        <div class="paypop-way-box fl js-bind-ptb">
+            <img src="/themes/simpleboot3/sdkh5/assets/images/ico_bangbi.png" class="paypop-way-box-icon">
+            <div class="paypop-way-box-title ">绑币</div>
+			<img  src="/themes/simpleboot3/sdkh5/assets/images/sdk_pay_btn_choose_s.png" class="paypop-way-box-select">
+        </div>
+        </if>
+		</div>
+		<div class="clear"></div>
+		<div class="paypop-way-btn jssubmit">立即充值</div>
+        <div class="zhifu" style="width:100%;text-align:center;margin:20px 0 0px 0;">扫码支付></div>
+    </div>
+    <div class="paypop-con1 needPayDialog1 zhifu1" style="display: none" >
+        <div class="head">
+            <div class="return">
+                <img  src="/themes/simpleboot3/sdkh5/assets/images/notice_ico_return.png" class="return_img">
+                <div class="fangshi">
+                    <span class="zhifubao">支付宝</span>
+                    <span class="weChat">微信</span>
+                </div>
+                <img src="/themes/simpleboot3/sdkh5/assets/images/icon_close.png" class="hImg btn-close js-btn-close">
+            </div>
+        </div>
+        <div class="erweima">
+           <img src="/themes/simpleboot3/sdkh5/assets/images/_border.png" class="erweima1">
+           <img src="" class="erweima_zhifu">
+        </div>
+        <div class="foot">
+            <span id="count-down">120</span>秒后更新二维码
+        </div>
+    </div>
+</div>
+
+</div>
+</div>
+
+<div class="iframepay">
+    <a title="关闭" id="iframecolse" class="iframecolse"><img style="background: rgba(0,0,0,.5);" src="/themes/simpleboot3/sdkh5/assets/images/close_white.png" alt=""></a>
+    <iframe id="jjspay_url_mainframe" frameborder="0" scrolling="yes" name="main" src="">
+    </iframe>
+</div>
+<script>
+
+    var zfb_is_open =  "{:pay_type_status('zfb')}";
+    var wechat_is_open = "{:pay_type_status('wxscan')}";
+
+    //扫码付款
+    $(function(){
+        $('.zhifu').on('click',function(){
+            if(zfb_is_open=='1'){
+                scan_alipay_pay();
+            }else if(wechat_is_open=='1'){
+                scan_weixin_pay();
+            }else{
+                layer.msg('支付未开启');
+            }
+        })
+        $('.return_img').on('click',function(){
+            $(".paypop-con").css("display","block");
+            $(".zhifu1").css("display","none")
+        })
+        $('.weChat').on('click',function(){
+            scan_weixin_pay();
+        })
+        $('.zhifubao').on('click',function(){
+            scan_alipay_pay();
+        })
+            
+        $(".js-btn-close").click(function(){
+            window.clearInterval(InterValObj);
+            SysSecond = 0;
+        });
+    })
+
+</script>
+
+<script type="text/javascript">
+    var alipayUrl = "{:url('sdkh5/pay/alipay')}";
+    var weixinUrl = "{:url('sdkh5/pay/weixinpay')}";
+    var platformUrl = "{:url('sdkh5/pay/platformcoinpay')}";
+    var checkUrl = "{:url('sdkh5/pay/check_status')}";
+    var pay_amount = "{$amount|default='0'}";
+    var game_appid = "{$data['game_appid']|default=''}";
+    var server_id = "{$data['server_id']|default=''}";
+    var server_name = "{$data['server_name']|default=''}";
+    var role_id = "{$data['role_id']|default=''}";
+    var role_name = "{$data['role_name']|default=''}";
+    var role_level = "{$data['role_level']|default=''}";
+    var timestamp = "{$data['timestamp']|default=''}";
+    var combat_number = "{$data['combat_number']|default=''}";
+    var trade_no = "{$data['trade_no']}";
+    var props_name = "{$data['props_name']}";
+    var discount="{$discount['discount']|default='10'}";
+    var wechat = "{:cmf_is_wechat()}";
+    var version = "{:get_devices_type()}";
+    var sign = "{$data['sign']|default=''}";
+    var channelExt = "{$data['channelExt']|default=''}";
+    var is_weiduan = 0;
+    var weiduan_app = "{$data.weiduan_pay_status}";
+    var paytype = '';
+    var count_coupon = "{:$coupon?count($coupon):0}";
+    $(function () {
+        if(isH5App() && weiduan_app == 1){
+            is_weiduan = 1;
+        }
+        clicked = false;
+        $(".jssubmit").click(function () {
+            if(clicked){
+                layer.msg('请勿频繁点击');
+                return false;
+            }
+            clicked = true;
+            if(paytype == ''){
+                clicked = false;
+               layer.msg("请选择支付方式");
+                return false;
+            }
+            switch (paytype){
+                case 'alipay':
+                    alipay_pay();
+                    break;
+                case 'weixinpay':
+                    weixin_pay();
+                    break;
+                case 'ptbpay':
+                    ptb_pay();
+                    break;
+                case 'bindpay':
+                    bind_pay();
+                    break;
+                default:
+                    layer.msg("支付方式错误");
+                    clicked = false;
+                    return false;
+            }
+        })
+        $(".js-alipay").click(function () {
+		    $(this).addClass("paypop-way-box-show").siblings().removeClass("paypop-way-box-show");
+		    paytype = "alipay";
+            if(coupon_id > 0){
+                return false;
+            }else{
+                var real_money = pay_amount*discount;
+                $(".paypop-money").html(real_money.toFixed(2)+"<span>元</span>");
+            }
+            $(".count-coupon").html(count_coupon);
+        });
+
+        $(".js-weixinpay").click(function () {
+		    $(this).addClass("paypop-way-box-show").siblings().removeClass("paypop-way-box-show");
+            paytype = "weixinpay";
+            if(coupon_id > 0){
+                return false;
+            }else{
+                var real_money = pay_amount*discount;
+                $(".paypop-money").html(real_money.toFixed(2)+"<span>元</span>");
+            }
+            $(".count-coupon").html(count_coupon);
+        });
+
+        $(".js-ptb").click(function () {
+		    $(this).addClass("paypop-way-box-show").siblings().removeClass("paypop-way-box-show");
+            paytype = "ptbpay";
+            if(coupon_id > 0){
+                return false;
+            }else{
+                var real_money = pay_amount*discount;
+                $(".paypop-money").html(real_money.toFixed(2)+"<span>元</span>");
+            }
+            $(".count-coupon").html(count_coupon);
+        });
+
+        $(".js-bind-ptb").click(function () {
+            $(this).addClass("paypop-way-box-show").siblings().removeClass("paypop-way-box-show");
+            coupon_id = 0;
+            $(".paypop-coupon").text("");
+            $(".count-coupon").html(0);
+            $(".paypop-money").html(pay_amount+"<span>元</span>");
+            paytype = "bindpay";
+        });
+
+        //选择代金券
+        $(".choose_coupon").click(function () {
+            if(paytype == "bindpay"){
+              layer.msg("绑币支付不支持代金券");
+
+                return false;
+            }
+            window.coupon_money = pay_amount;
+            // $(".couponpop-menu").eq(1).click();
+            $(".couponpop").show();
+            // 点击代金券勾选
+            $("body").one('click',".coupon_use",function(){
+                coupon_id = $(this).attr('data-id');
+                var money = parseFloat($(this).attr('data-money'));
+                $(".paypop-coupon").text("代金券：-"+money.toFixed(2)+"元");
+                var real_money = (pay_amount-money)*discount;
+                if(real_money<0){
+                    real_money = 0;
+                }
+                $(".paypop-money").html(real_money.toFixed(2)+"<span>元</span>");
+                window.coupon_money=0;
+                $(".couponpop").hide();
+            })
+            $("body").one('click','.coupon-choose',function () {
+                coupon_id = 0;
+                $(".paypop-coupon").text("");
+                var real_money = pay_amount*discount;
+                $(".paypop-money").html(real_money.toFixed(2)+"<span>元</span>");
+                $(".couponpop").hide();
+            })
+        })
+//关闭支付宝iframe
+        $(".iframecolse").click(function(){
+            $('.iframepay').css('display','none');
+            $("#jjspay_url_mainframe").attr("src",'');
+            $("#jjspay_url_mainframe").css("z-index",'-2000');
+            $(".iframecolse").css("z-index",'-2001');
+        });
+
+    });
+    //微信支付
+    function weixin_pay() {
+        var data = {
+            pay_amount: pay_amount,
+            game_appid:game_appid,
+            server_id:server_id,
+            server_name:server_name,
+            role_id:role_id,
+            role_name:role_name,
+            role_level:role_level,
+            trade_no:trade_no,
+            props_name:props_name,
+            timestamp:timestamp,
+            coupon_id:coupon_id,
+            is_weiduan:is_weiduan,
+            channelExt:channelExt,
+            sign:sign
+        };
+        $.post(weixinUrl, data, function (res) {
+            if(res.status <1){
+                clicked = false;
+                layer.msg(res.message);
+            }else if(res.status == 1){
+                //PC端微信扫码支付
+                $(".payscanpop").show();
+                $(".paypop-money").html(res.amount+"<span>元</span>");
+                $(".qrcode-img").attr('src',res.qrcode_url);
+                $(".scan-text").html("请使用微信“扫一扫” <br>扫码二维码支付");
+                check_pay(res.out_trade_no);
+            }else if(res.status == 2){
+                $(".js-btn-close").click();
+                //手机端支付
+                window.location = res.url;
+            }else if(res.status == 4){
+                 layer.msg("支付成功");
+                // window.webkit.messageHandlers.wxAppPay.postMessage
+                // if(is_weiduan == 1){
+                //     window.webkit.messageHandlers.h5shellwxnative.postMessage(res);
+                // }else{
+                //     window.webkit.messageHandlers.wxAppPay.postMessage(res);
+                // }
+                $(".js-btn-close").click();
+            }else{
+                $(".js-btn-close").click();
+                //公众号支付
+                callpay(JSON.parse(res.jsApiParameters));
+            }
+        });
+    }
+    //支付宝支付
+    function alipay_pay() {
+        var data = {
+            pay_amount: pay_amount,
+            game_appid:game_appid,
+            server_id:server_id,
+            server_name:server_name,
+            role_id:role_id,
+            role_name:role_name,
+            role_level:role_level,
+            trade_no:trade_no,
+            timestamp:timestamp,
+            props_name:props_name,
+            coupon_id:coupon_id,
+            is_weiduan:is_weiduan,
+            channelExt:channelExt,
+            sign:sign
+        };
+        $.post(alipayUrl, data, function (res) {
+            if(res.status <1){
+                clicked = false;
+                layer.msg(res.message);
+            }else if(res.status == 1){
+                //PC端支付宝扫码支付
+                $(".payscanpop").show();
+                $(".paypop-money").html(res.amount+"<span>元</span>");
+                $(".qrcode-img").attr('src',res.qrcode_url);
+                $(".scan-text").html("请使用支付宝“扫一扫” <br>扫码二维码支付");
+                check_pay(res.out_trade_no);
+            }else if(res.status == 2){
+                $(".js-btn-close").click();
+                if(wechat == 1){
+                    window.location.href = res.url;
+                }else if(version == 1){
+                    //手机端支付
+                    $('.iframepay').css('display','block');
+                    $("#jjspay_url_mainframe").attr("src",res.url);
+                    $("#jjspay_url_mainframe").css("z-index",'2000');
+                    $(".iframecolse").css("z-index",'2001');
+                    $(".iframecolse").css('display','block');
+                }else{
+                    window.location.href = res.url;
+                }
+            }else if(res.status == 3){
+                //苹果APP支付
+                if(is_weiduan == 1){
+                    window.webkit.messageHandlers.h5shellzfbnative.postMessage(res);
+                }else{
+                    window.webkit.messageHandlers.zfbAppPay.postMessage(res);
+                }
+                $(".js-btn-close").click();
+            }else if(res.status == 4){
+                layer.msg("支付成功");
+                $(".js-btn-close").click();
+            }
+        });
+    }
+    //平台币支付
+    function ptb_pay() {
+        var data = {
+            pay_amount: pay_amount,
+            game_appid:game_appid,
+            server_id:server_id,
+            server_name:server_name,
+            role_id:role_id,
+            role_name:role_name,
+            role_level:role_level,
+            trade_no:trade_no,
+            timestamp:timestamp,
+            props_name:props_name,
+            coupon_id:coupon_id,
+            channelExt:channelExt,
+            code:1,
+            sign:sign
+        };
+        $.post(platformUrl, data, function (res) {
+            if(res.status <1){
+                clicked = false;
+                layer.msg(res.message);
+            }else{
+                 layer.msg("支付成功");
+                $(".js-btn-close").click();
+            }
+        });
+    }
+    //绑币支付
+    function bind_pay() {
+        var data = {
+            pay_amount: pay_amount,
+            game_appid:game_appid,
+            server_id:server_id,
+            server_name:server_name,
+            role_id:role_id,
+            role_name:role_name,
+            role_level:role_level,
+            trade_no:trade_no,
+            timestamp:timestamp,
+            props_name:props_name,
+            coupon_id:coupon_id,
+            channelExt:channelExt,
+            code:2,
+            sign:sign
+        };
+        $.post(platformUrl, data, function (res) {
+            if(res.status <1){
+                clicked = false;
+                layer.msg(res.message);
+            }else{
+			    layer.msg("支付成功");
+                $(".js-btn-close").click();
+            }
+        });
+    }
+    function check_pay(out_trade_no){
+        $.ajax({
+            type:'post',
+            url:checkUrl,
+            data:{'out_trade_no':out_trade_no},
+            success:function(data){
+                if(data.code==1){
+                 layer.msg("支付成功");
+
+
+                   $(".js-btn-close").click();
+                }else{
+                    check_b =setTimeout(function () {
+                        check_pay(out_trade_no);
+                    },1500);
+                }
+            },error:function(){
+                alert('服务器错误');
+            }
+        })
+    }
+
+    //调用微信JS api 支付
+    function jsApiCall(jsApiParameters)
+    {
+        WeixinJSBridge.invoke(
+            'getBrandWCPayRequest',jsApiParameters,
+            function(res){
+                if(res.err_msg == "get_brand_wcpay_request:ok"){
+                 layer.msg("支付成功");
+
+                    $(".js-btn-close").click();
+                }
+                // alert(res.err_code+res.err_desc+res.err_msg);
+            }
+        );
+    }
+    function callpay(jsApiParameters)
+    {
+        if (typeof WeixinJSBridge == "undefined"){
+            if( document.addEventListener ){
+                document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+            }else if (document.attachEvent){
+                document.attachEvent('WeixinJSBridgeReady', jsApiCall);
+                document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+            }
+        }else{
+            jsApiCall(jsApiParameters);
+        }
+    }
+    function isH5App(){
+        var ua = window.navigator.userAgent.toLowerCase();
+        if(ua.match(/app\/h5shell/i) == 'app/h5shell'){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+ function IsPC() {
+    var userAgentInfo = navigator.userAgent;
+    var Agents = ["Android", "iPhone",
+                "SymbianOS", "Windows Phone",
+                "iPad", "iPod"];
+    var flag = true;
+    for (var v = 0; v < Agents.length; v++) {
+        if (userAgentInfo.indexOf(Agents[v]) > 0) {
+            flag = false;
+            break;
+        }
+    }
+    return flag;
+}
+
+var flag = IsPC(); //true为PC端，false为手机端
+if(flag) {
+    $('.needPayDialog').css({'width':'27.5rem','transform':'scale(1) translateY(-50%) translateX(-18%)'})
+
+    console.log(6666)
+}
+
+
+    var SysSecond = 120;
+    var InterValObj = window.setInterval(SetRemainTime, 1000)
+
+    function scan_alipay_pay() {
+        var data = {
+            pay_amount: pay_amount,
+            game_appid:game_appid,
+            server_id:server_id,
+            server_name:server_name,
+            role_id:role_id,
+            role_name:role_name,
+            role_level:role_level,
+            trade_no:trade_no,
+            timestamp:timestamp,
+            props_name:props_name,
+            coupon_id:coupon_id,
+            is_weiduan:is_weiduan,
+            channelExt:channelExt,
+            sign:sign,
+            is_scan:1,
+        };
+        $.post(alipayUrl, data, function (res) {
+
+            if(res.status <1){
+                clicked = false;
+                layer.msg(res.message);
+            }else if(res.status == 1){
+                //PC端支付宝扫码支付
+                $(".erweima_zhifu").attr('src',res.qrcode_url);
+                $(".paypop-con").css("display","none");
+                $(".zhifu1").css("display","block");
+                $('.zhifubao').css({"color":"#018FFF","font-size":"1.7rem"});
+                $('.weChat').css({"color":"#666666","font-size":"1.5rem"})
+                check_pay(res.out_trade_no);
+                SysSecond = 120;
+                SetRemainTime()
+            }
+        });
+    }
+
+    function scan_weixin_pay() {
+        var data = {
+            pay_amount: pay_amount,
+            game_appid:game_appid,
+            server_id:server_id,
+            server_name:server_name,
+            role_id:role_id,
+            role_name:role_name,
+            role_level:role_level,
+            trade_no:trade_no,
+            props_name:props_name,
+            timestamp:timestamp,
+            coupon_id:coupon_id,
+            is_weiduan:is_weiduan,
+            channelExt:channelExt,
+            sign:sign,
+            is_scan:1
+        };
+        $.post(weixinUrl, data, function (res) {
+            if(res.status <1){
+                clicked = false;
+                layer.msg(res.message);
+            }else if(res.status == 1){
+
+                //PC端微信扫码支付
+                $(".erweima_zhifu").attr('src',res.qrcode_url);
+                $(".paypop-con").css("display","none");
+                $(".zhifu1").css("display","block");
+                $('.weChat').css({"color":"#018FFF","font-size":"1.7rem"});
+                $('.zhifubao').css({"color":"#666666","font-size":"1.5rem","margin-top": "0.3rem"});
+                check_pay(res.out_trade_no);
+
+                SysSecond = 120;
+                SetRemainTime()
+            }
+        });
+    }
+
+
+    function SetRemainTime(){
+        if(SysSecond>0){
+            SysSecond = SysSecond-1;
+            $("#count-down").html(SysSecond);
+        }else{
+            //剩余时间小于或等于0的时候，就停止间隔函数
+            window.clearInterval(InterValObj);
+            //这里可以添加倒计时时间为0后需要执行的事件
+
+            $(".js-btn-close").click();
+
+        }
+    }
+
+
+</script>

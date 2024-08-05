@@ -1,0 +1,150 @@
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+<if condition="$action_name eq index and $controller_name eq Index">
+    <title>{:seo_replace($seo['channel_index']['seo_title'],array(),'channel')}</title>
+    <meta name="keywords" content="{:seo_replace($seo['channel_index']['seo_keyword'],array(),'channel')}">
+    <meta name="description" content="{:seo_replace($seo['channel_index']['seo_description'],array(),'channel')}">
+<elseif condition="$action_name eq game_list and $controller_name eq Index" />
+    <title>{:seo_replace($seo['channel_game_list']['seo_title'],array('game_name'=>$data['game_name']),'channel')}</title>
+    <meta name="keywords" content="{:seo_replace($seo['channel_game_list']['seo_keyword'],array(),'channel')}">
+    <meta name="description" content="{:seo_replace($seo['channel_game_list']['seo_description'],array(),'channel')}">
+<elseif condition="$action_name eq notice and $controller_name eq Index" />
+    <title>{:seo_replace($seo['channel_news_list']['seo_title'],array('game_name'=>$data['game_name']),'channel')}</title>
+    <meta name="keywords" content="{:seo_replace($seo['channel_news_list']['seo_keyword'],array('game_name'=>$data['game_name'],),'channel')}">
+    <meta name="description" content="{:seo_replace($seo['channel_news_list']['seo_description'],array('game_name'=>$data['game_name'],),'channel')}">
+<elseif condition="$action_name eq notice_details and $controller_name eq Index" />
+    <title>{:seo_replace($seo['channel_news_detail']['seo_title'],array('catetitle'=>$data['post_title']),'channel')}</title>
+    <meta name="keywords" content="{:seo_replace($seo['channel_news_detail']['seo_keyword'],array('catetitle'=>$data['post_title'],),'channel')}">
+    <meta name="description" content="{:seo_replace($seo['channel_news_detail']['seo_description'],array('catetitle'=>$data['post_title'],),'channel')}">
+<elseif condition="$action_name eq about and $controller_name eq Index" />
+    <title>{:seo_replace($seo['channel_about']['seo_title'],array('catetitle'=>$data['post_title']),'channel')}</title>
+    <meta name="keywords" content="{:seo_replace($seo['channel_about']['seo_keyword'],array('catetitle'=>$data['post_title'],),'channel')}">
+    <meta name="description" content="{:seo_replace($seo['channel_about']['seo_description'],array('catetitle'=>$data['post_title'],),'channel')}">
+<else/>
+    <title>{:seo_replace($seo['channel_index']['seo_title'],array(),'channel')}</title>
+    <meta name="keywords" content="{:seo_replace($seo['channel_index']['seo_keyword'],array(),'channel')}">
+    <meta name="description" content="{:seo_replace($seo['channel_index']['seo_description'],array(),'channel')}">
+</if>
+<!-- QQ分享 -->
+<meta itemprop="name" content="{$shareparams.title}"/>
+<meta itemprop="image" content="{$shareparams.imgUrl}" />
+<meta name="description" itemprop="description" content="{$shareparams.desc}" />
+<link href="{:cmf_get_image_preview_url($promote_set['ch_set_ico'])}" type="image/x-icon" rel="shortcut icon">
+<link href="__TMPL__/public/assets/css/promote/common.css" rel="stylesheet" />
+<!-- 微信分享 -->
+<if condition="cmf_is_wechat() eq true and AUTH_PROMOTE eq 1">
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script>
+        //微信分享
+        var appId = "{$signPackage['appId']}",
+            timestamp = "{$signPackage['timestamp']}",
+            nonceStr = "{$signPackage['nonceStr']}",
+            signature = "{$signPackage['signature']}";
+        var title = "{$shareparams['title']}",
+            desc = "{$shareparams['desc']}",
+            imgUrl = "{$shareparams['imgUrl']}",
+            link = "{$shareparams['link']}";
+
+
+        try{
+
+            wx.config({
+                debug: false,
+                appId: appId,
+                timestamp: timestamp,
+                nonceStr: nonceStr,
+                signature: signature,
+                jsApiList: [
+                    // 所有要调用的 API 都要加到这个列表中
+                    'checkJsApi',
+                    'openLocation',
+                    'getLocation',
+                    'onMenuShareTimeline',
+                    'onMenuShareAppMessage',
+                    'startRecord',
+                    'stopRecord',
+                    'playVoice',
+                    'downloadVoice',
+                    'uploadVoice',
+                    'onMenuShareQQ',
+                ]
+            });
+            wx.ready(function () {
+                // config信息验成功
+                wx.checkJsApi({
+                    jsApiList: [
+                        'getLocation',
+                        'onMenuShareTimeline',
+                        'onMenuShareAppMessage',
+                        'startRecord',
+                        'stopRecord',
+                        'playVoice',
+                        'downloadVoice',
+                        'uploadVoice',
+                        'onMenuShareQQ',
+                    ],
+                    success: function (res) {
+                    },error:function(res){
+                    }
+                });
+                share(title,link,imgUrl,desc);
+            });
+            function share(title,link,imgUrl,desc,e){
+                //分享到朋友
+                wx.onMenuShareAppMessage({
+                    title:  title, // 分享标题
+                    desc:   desc, // 分享描述
+                    link:   link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                    imgUrl: imgUrl, // 分享图标
+                    type: '', // 分享类型,music、video或link，不填默认为link
+                    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                    success: function () {
+                        if(e){
+                            e.source.postMessage({event:"game:shareSdk:callback",status:1,msg:'分享成功'}, "*");
+                        }
+                    },
+                    cancel: function () {
+                        if(e){
+                            e.source.postMessage({event:"game:shareSdk:callback",status:0,msg:'分享失败'}, "*");
+                        }
+                    }
+                });
+                //分享到朋友圈
+                wx.onMenuShareTimeline({
+                    title: title, // 分享标题
+                    link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                    imgUrl: imgUrl, // 分享图标
+                    success: function () {
+                        if(e){
+                            e.source.postMessage({event:"game:shareSdk:callback",status:1,msg:'分享成功'}, "*");
+                        }
+                    },
+                    cancel: function () {
+                        if(e){
+                            e.source.postMessage({event:"game:shareSdk:callback",status:0,msg:'分享失败'}, "*");
+                        }
+                    }
+                });
+                //分享到QQ
+                wx.onMenuShareQQ({
+                    title: title, // 分享标题
+                    desc: desc, // 分享描述
+                    link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                    imgUrl: imgUrl, // 分享图标
+                    success: function () {
+                        if(e){
+                            e.source.postMessage({event:"game:shareSdk:callback",status:1,msg:'分享成功'}, "*");
+                        }
+                    },
+                    cancel: function () {
+                        if(e){
+                            e.source.postMessage({event:"game:shareSdk:callback",status:0,msg:'分享失败'}, "*");
+                        }
+                    }
+                });
+            }
+        }catch(err){
+
+        }
+    </script>
+</if>

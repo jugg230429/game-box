@@ -1,0 +1,333 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/invite_friends.css">
+</block>
+
+<block name="body">
+    <if condition="1">
+        <a href="javascript:back();" class="fl js-close back_icon">
+            <img src="__TMPL__/mobilepublic/assets/images/back_return.png" alt="" class="fl back_icon"></a>
+    </if>
+    <div class="inviteBigBox">
+    <div class="invite-contain">
+        <img src="__TMPL__/mobilepublic/assets/images/invite/invite_little.png" class="invite-little-img">
+        <div class="invite-little-text">邀请好友注册，充值成功赠送双份代金券</div>
+        <!--<img src="__TMPL__/mobilepublic/assets/images/invite/invite_img_steps.png" >-->
+        <if condition="$reg_award or $sp_award">
+        <div class="invite_img_steps v-middle h-middle">
+            <if condition="$reg_award or ($sp_award and $sp_award['spend_limit'] eq 0)">
+            <div class="invite-steps">
+                <p class="step">1</p>
+                <p class="invite-text">好友注册</p>
+            </div>
+            <div class="invite-steps">
+                <p class="step">2</p>
+                <p class="invite-text">领取代金券</p>
+            </div>
+            </if>
+            <if condition="$reg_award and $sp_award and $sp_award['spend_limit'] gt 0">
+                <div class="invite-steps">
+                    <p class="step">3</p>
+                    <p class="invite-text">好友充值</p>
+                </div>
+                <div class="invite-steps">
+                    <p class="step">4</p>
+                    <p class="invite-text">领取{$sp_award.money}元代金券</p>
+                </div>
+            <elseif condition="!$reg_award and $sp_award and $sp_award['spend_limit'] gt 0" />
+                <div class="invite-steps">
+                    <p class="step">1</p>
+                    <p class="invite-text">好友充值</p>
+                </div>
+                <div class="invite-steps">
+                    <p class="step">2</p>
+                    <p class="invite-text">领取{$sp_award.money}元代金券</p>
+                </div>
+            </if>
+        </div>
+        </if>
+        <button class="invite-btn js-invite" data-clipboard-text="{$share_url}" id="inviteFiendBtn"></button>
+        <a href="{:url('User/invite_rules')}" class="look-rules">查看规则</a>
+
+        <div class="invite-award-box">
+            <if condition="$sp_award or $reg_award or $other_award">
+            <div class="reward-tab">
+                <if condition="$sp_award or $reg_award">
+                    <a href="javascript:;" class="active">你的奖励</a>
+                </if>
+                <if condition="$other_award">
+                    <a href="javascript:;" <if condition="!$sp_award and !$reg_award">class="active"</if>>好友奖励</a>
+                </if>
+            </div>
+            </if>
+            <if condition="$sp_award or $reg_award">
+            <div class="reward-tab-content">
+                <div class="my-reward v-middle h-middle">
+                    <if condition="$reg_award">
+                    <div class="coupon-item">
+                        <div class="coupon-box">
+                            <div class="coupon-num">
+                                <p class="coupon-money"><span>￥</span>{$reg_award.money}</p>
+                                代金券
+                            </div>
+                            <div class="coupon-condition"><empty name="reg_award.limit_money">无门槛<else/>满{$reg_award.limit_money}可用</empty></div>
+                        </div>
+                        <p class="lq-condition">好友注册</p>
+                    </div>
+                    </if>
+                    <if condition="$sp_award">
+                    <div class="coupon-item" >
+                        <div class="coupon-box">
+                            <div class="coupon-num">
+                                <p class="coupon-money"><span>￥</span>{$sp_award.money}</p>
+                                代金券
+                            </div>
+                            <div class="coupon-condition"><empty name="sp_award.limit_money">无门槛<else/>满{$sp_award.limit_money}可用</empty></div>
+                        </div>
+                        <p class="lq-condition"><empty name="sp_award.spend_limit">好友充值<else/>好友实际消费{$sp_award.spend_limit}元</empty></p>
+                    </div>
+                    </if>
+                </div>
+            </div>
+            </if>
+            <if condition="$other_award">
+                <div class="reward-tab-content" <if condition="$sp_award or $reg_award">style="display: none"</if>>
+                <div class="my-reward v-middle h-middle">
+                    <volist name="other_award" id="vo">
+                        <div class="coupon-item">
+                            <div class="coupon-box">
+                                <div class="coupon-num">
+                                    <p class="coupon-money"><span>￥</span>{$vo.money}</p>
+                                    代金券
+                                </div>
+                                <div class="coupon-condition"><empty name="vo.limit_money">无门槛<else/>满{$vo.limit_money}可用</empty></div>
+                            </div>
+                        </div>
+                    </volist>
+                </div>
+                <p class="lq-condition">注册并绑定手机号，领新人大礼包</p>
+                </div>
+            </if>
+        </div>
+
+        <div class="my-invited-box">
+            <div class="invited-title"><i></i>已邀请好友</div>
+            <div class="invited-list-box">
+                <ul class="invited-list" id="invitationload">
+                </ul>
+            </div>
+        </div>
+    </div>
+        <div class="inviteDialoge">
+            <div class="inviteBottomIcon">
+                <ul class="inviteList">
+                    <li onclick="share('qqim');" class="iconInviteImg">
+                        <img src="__TMPL__/mobilepublic/assets/images/invite/invite_share_btn_QQ.png" >
+                        <div class="iconTextContent">QQ好友</div>
+                    </li>
+                    <li onclick="share('qzone');" class="iconInviteImg">
+                        <img src="__TMPL__/mobilepublic/assets/images/invite/invite_share_btn_space.png" >
+                        <div class="iconTextContent">QQ空间</div>
+                    </li>
+                    <li onclick="share('weixin');" class="iconInviteImg">
+                        <img src="__TMPL__/mobilepublic/assets/images/invite/invite_share_btn_wechat.png" >
+                        <div class="iconTextContent">微信好友</div>
+                    </li>
+                    <li onclick="share('wxroom');" class="iconInviteImg">
+                        <img src="__TMPL__/mobilepublic/assets/images/invite/invite_share_btn_friend.png" >
+                        <div class="iconTextContent">朋友圈</div>
+                    </li>
+                </ul>
+            </div>
+            <div class="inviteClear">取消</div>
+        </div>
+
+    </div>
+</block>
+<block name="script">
+    <script type="text/javascript" charset="utf-8" src="__JS__/jsshare/buttonLite.js#style=-1&uuid=&pophcol=2&lang=zh"></script>
+    <script type="text/javascript" charset="utf-8" src="__JS__/jsshare//bshareC0.js"></script>
+    <script src="__JS__/clipboard.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        var is_app = "{:session('app_user_login')}";
+        var logo = "{:cmf_get_option('app_set')['app_logo']?cmf_get_image_url(cmf_get_option('app_set')['app_logo']):''}";
+        if(logo == ''){
+            logo = "{:cmf_get_domain()}/static/images/empty.jpg";
+        }
+        var title = "邀请好友送豪礼";
+        var decri = '什么值得玩？来这里，福利多多任你玩';
+        var url = "{$share_url}";
+        var app_name = "{:cmf_get_option('app_set')['app_name']}";
+        if(app_name != ''){
+            decri = '什么值得玩？来'+app_name+"，福利多多任你玩";
+        }
+        bShare.addEntry({
+            url : url,
+            title: title,
+            summary: decri,
+            pic: logo
+        });
+        function share(key) {
+            var key3 = key;
+            if(key="wxroom"){
+                key3 = 'weixin';
+            }
+            bShare.share(event,key3);
+            shareOutCompleteTask(key);
+        }
+        // 分享到微信朋友圈 或者 分享到QQ空间 完成分享任务 by wjd
+        //app中分享为原生,需要调此js-qq/qzone/wx/wxroom
+        function shareOutCompleteTask(key){
+            var key2 = ''; // 'wx_friends_share' 或者 'qq_zone_share'
+            if(key == 'qzone'){
+                key2 = 'qq_zone_share';
+            }
+            if(key == 'wxroom'){
+                key2 = 'wx_friends_share';
+            }
+            $.ajax({
+				type: 'POST',
+				url: "{:url('share_out_complete_task')}" ,
+				data:{key:key2},
+				async:true,
+				dataType:'json',
+				success:function(data){
+					if (data.code > 0){
+						// 成功
+                        // layer.mag(data.msg);
+					}
+					else{
+						// 失败
+						// layer.mag(data.msg);
+					}
+				}
+			})
+        }
+
+        function back(){
+            try{
+                $mt = "{:get_devices_type()}";
+                if($mt==2){
+                    window.webkit.messageHandlers.xgsdk_finishPage.postMessage(1);
+                }else{
+                    window.xgsdk.finishPage()
+                }
+            }catch (e) {
+                history.go(-1);
+            }
+        }
+        $(function () {
+            // var clipboard = new Clipboard('.js-invite');
+			// var CopyText=$('.js-invite').data("clipboard-text");
+
+            // clipboard.on('success', function(e) {
+			// console.log(CopyText);
+            //     layer.msg('<p">链接已复制，赶紧分享给好友吧~</p>');
+            //     e.clearSelection();
+            // });
+            // clipboard.on('error', function(e) {
+            //    layer.msg('长按链接复制<br>'+CopyText +'',{time:8000});
+
+            // });
+            $('#inviteFiendBtn').click(function () {
+                if(is_app == 1){
+                    $mt = "{:get_devices_type()}";
+                    if($mt==2){
+                        var data = {"title":title,"decri":decri,"url":url,"logo":logo};
+                        window.webkit.messageHandlers.xgsdk_shareFriends.postMessage(data);
+                    }else{
+                        window.xgsdk.shareFriends(title,decri,url,logo);
+                    }
+                    return false;
+                }
+                $('.inviteDialoge').show()
+                $('.inviteBigBox').addClass('markOpacity')
+                $('.invite-contain').addClass('maskBox')
+            })
+            $('.inviteClear').click(function () {
+                $('.inviteDialoge').hide()
+                $('.inviteBigBox').removeClass('markOpacity')
+                $('.invite-contain').removeClass('maskBox')
+            })
+            $('.reward-tab a').click(function () {
+                $(this).addClass("active").siblings("a").removeClass("active");
+                var index =$(this).index();
+                $('.reward-tab-content').eq(index).show().siblings(".reward-tab-content").hide()
+            });
+
+        })
+        var lwx = window.lwx || {};
+        lwx.ready = true;
+        lwx.width = $(window).width();
+        lwx.height = $(window).height();
+        lwx.number = {invitation:1};
+        lwx.row = {invitation:10};
+        lwx.http = {
+            getJSON:function(url,callback){
+                $.getJSON(url + '&v=' + Date.now(),function(data){
+                    callback(data);
+                });
+            },
+            postJSON:function(url,args,callback) {
+                $.post(url + '&v=' + Date.now(), args, function(data) {
+                    callback(data);
+                },"json")
+            },
+        };
+        lwx.url ={
+            invitation:'{:url("User/get_invitation")}',
+        };
+        lwx.page = {
+            invitation:function(){
+                if(lwx.number.invitation) {
+                    lwx.http.getJSON(lwx.url.invitation+'&limit='+lwx.row.invitation+'&p='+lwx.number.invitation,function(data) {
+                        var invitationload = $('#invitationload');
+                        if(data && data.length) {
+                            var html = '';
+                            html += '<div class="invest_money_cons">';
+                            for (var i in data) {
+                                html += '<li class="invited-item">账号：'+data[i].invitation_account+' </li>';
+                            }
+                            html += '</div>';
+                            invitationload.append(html);
+                            invitationload.find('.jsdropload').remove();
+                            if(data.length >= lwx.row.invitation) {
+                                lwx.number.invitation++;
+                                lwx.ready = true;
+                                invitationload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.invitation = false;
+                                invitationload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                        } else {
+                            if(lwx.number.invitation==1){
+                                invitationload.html('').append('<div class="no-invited" >~还没有邀请到好友~</div>');
+                            } else{
+                                invitationload.find('.jsdropload').remove();
+                                invitationload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                            lwx.number.invitation = false;
+                        }
+                    });
+                }
+            },
+        };
+        pageChange();
+        function pageChange(n) {
+            lwx.page.invitation();
+            if(lwx.number.invitation) {lwx.ready=true;}
+        }
+        function pageScroll(scrollTop, boxHeight, maxScrollHeight) {
+            if (scrollTop + boxHeight >= maxScrollHeight - 50) {
+                if (lwx.ready && lwx.number.invitation>1) {
+                    lwx.ready = false;
+                    lwx.page.invitation();
+                }
+            }
+        }
+        window.onscroll = function() {
+            var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+            pageScroll(scrollTop, lwx.height, $(document).height())
+        }
+    </script>
+</block>

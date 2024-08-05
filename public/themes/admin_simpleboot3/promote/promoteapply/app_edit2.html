@@ -1,0 +1,219 @@
+<include file="public@header"/>
+</head>
+<style>
+    .btn.disabled, .btn[disabled], fieldset[disabled] .btn {
+        background-color: rgb(238,238,238)!important;
+        border-color: rgb(238,238,238)!important;
+        opacity: 1;
+    }
+</style>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs mb20">
+        <li class="active">
+            <a href="javascript:;">
+                <if condition="$info['app_version'] eq 1">安卓分包</if>
+                <if condition="$info['app_version'] eq 2">IOS分包</if>
+                <!-- 自定义APP分包 -->
+            </a>
+        </li>
+
+        <span class="title_remark">说明：对渠道后台申请的游戏盒子APP渠道包进行审核并打包。</span>
+    </ul>
+
+    <form class="form-horizontal js-ajax-form margin-top-20" action="{:url('appEdit2')}" method="post">
+        <div class="tabbable">
+            <div class="tab-content">
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">是否自定义渠道包：</label>
+                    <div class="col-md-4 col-sm-6">
+                        <label class="radio-inline label-width">
+                            <input type="radio" name="is_user_define" value="0" <?php if($info['is_user_define']=='0') echo 'checked'; ?>><b>默认</b>
+                        </label>
+                        <label class="radio-inline label-width">
+                            <input type="radio" name="is_user_define" value="1" <?php if($info['is_user_define']=='1') echo 'checked'; ?>> <b>自定义</b>
+                        </label>
+                    </div>
+                    <p class="help-block">是否自定义渠道包</p>
+                </div>
+
+
+
+                <div class="user_define_block" <?php if($info['is_user_define']=='0') echo 'style="display: none"'; ?>>
+
+                    <!-- <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('edit')}" method="post"> -->
+                        <fieldset>
+                            <div class="tabbable">
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="A">
+                                        <div class="form-group" >
+                                            <label for="input-site_adminstyle" class="col-sm-2 control-label">打包方式：</label>
+                                            <div class="col-md-3 col-sm-5">
+                                                <label class="label-width">
+                                                    <input type="radio" name="type" value="0" <empty name="info.type">checked</empty>>原包
+                                                </label>
+                                                <label class="label-width">
+                                                    <input type="radio" name="type" value="1" <eq name="info.type" value="1">checked</eq>>超级签
+                                                </label>
+                                            </div>
+                                            <p class="help-block">注：选择超级签分包后需要手动修改包名，使用该打包方式前需注册开发者账号，<a href="https://baijiahao.baidu.com/s?id=1663098909350018616&wfr=spider&for=pc" target="_blank">查看教程</a></p>
+                                        </div>
+
+                                    <div class="form-group type1" <if condition="$info['type'] eq 1">hidden</if>>
+                                        <label for="input-site-name" class="col-sm-2 control-label">
+                                            上传原包：
+                                        </label>
+                                        <div class="col-md-3 col-sm-5">
+                                            <input id="dow_url" type="hidden" name="dow_url" value="{$info.dow_url}">
+                                            <input id="dow_url-name" class="form-control" name="file_name" type="text" value="{$info.dow_url}" title="文件名称" style="display:block;border:none;">
+                                            <a data-type="add" href="javascript:uploadOne('文件上传','#dow_url','file',{'retain_local':'0'});">上传</a>
+                                            <a data-type="del" href="javascript:(function(){$('#dow_url-name').val('');$('#dow_url').val('')})();">移除</a>
+                                        </div>
+                                        <p class="help-block">更新原包后会自动进行渠道包更新，打包完成后，对应推广员下的渠道包无需手动更新，渠道玩家即可下载最新版APP包（前提：服务器开启定时任务）</p>
+
+                                        <br>
+                                    </div>
+                                    <div class="form-group type1" <if condition="$info['type'] eq 1">hidden</if>>
+                                        <label for="input-site-name" class="col-sm-2 control-label">
+                                            APP图标：
+                                        </label>
+
+                                        <div class="col-md-3 col-sm-5">
+                                            <input id="app_new_icon" type="hidden" name="app_new_icon" value="{$info.app_new_icon}" >
+                                            <img id="app_new_icon-preview" class="upload-img"  <if condition="$info['app_new_icon']">src="{:cmf_get_image_preview_url($info['app_new_icon'])}"</if>>
+                                            <a href="javascript:uploadOneImage('图片上传','#app_new_icon');">上传</a>
+                                            <a href="javascript:(function(){$('#app_new_icon-preview').attr('src','');$('#app_new_icon').val('')})();">移除</a>
+                                            <p class="help-block"> 200px * 200px (图片格式为png，不可将其他格式图片修改后缀上传)</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group type1" <if condition="$info['type'] eq 1">hidden</if>>
+                                        <label for="input-site-name" class="col-sm-2 control-label">
+                                            版本号：
+                                        </label>
+                                        <div class="col-md-3 col-sm-5">
+                                            <input  name="ios_version" class="form-control" value="{$info.ios_version}" >
+                                        </div>
+                                        <p class="help-block">如100，用于服务平台-渠道打包-IOS自定义分包内的版本号进行对比检测是否进行APP更新提示</p>
+                                    </div>
+
+
+                                    <div class="form-group type1" <if condition="$info['type'] eq 1">hidden</if>>
+                                        <label for="input-site-name" class="col-sm-2 control-label">
+                                            易盾业务ID：
+                                        </label>
+                                        <div class="col-md-3 col-sm-5">
+                                            <input  name="yidun_business_id" class="form-control" value="{$info.yidun_business_id}" >
+                                        </div>
+                                        <p class="help-block">开启盒子APP内的易盾一键登录功能时使用(iOS自定义时使用配置)</p>
+                                    </div>
+
+                                    <div class="form-group type2" <if condition="$info['type'] neq 1">hidden</if>>
+                                        <label for="input-site-name" class="col-sm-2 control-label">
+                                            <span class="form-required">*</span>超级签地址：
+                                        </label>
+                                        <div class="col-md-3 col-sm-5">
+                                            <input  name="super_url" class="form-control" value="{$info.super_url}" >
+                                        </div>
+                                    </div>
+                                    <div class="form-group type2" <if condition="$info['type'] neq 1">hidden</if>>
+
+                                        <label for="input-site-name" class="col-sm-2 control-label">
+                                            <span class="form-required">*</span>包大小：
+                                        </label>
+                                        <div class="col-md-3 col-sm-5">
+                                            <input  name="file_size2" class="form-control" value="{$info.file_size2}" >
+                                        </div>
+                                        <p class="help-block">格式(如: 11.12MB)</p>
+                                    </div>
+
+
+                                        <!-- <div class="form-group type2" <if condition="$data['type'] neq 1">hidden</if>>
+                                            <label for="input-site-name" class="col-sm-2 control-label">
+                                                <span class="form-required">*</span>文件大小(MB)：
+                                            </label>
+                                            <div class="col-md-3 col-sm-5">
+                                                <input  name="file_size" class="form-control" value="{:str_replace('MB','',$data.file_size)}" >
+                                            </div>
+                                        </div>
+ -->
+
+                                        <!-- <div class="form-group type1" <if condition="$data['type'] eq 1">hidden</if>>
+                                            <label for="input-site-name" class="col-sm-2 control-label">
+                                                <span class="form-required">*</span>包名：
+                                            </label>
+                                            <div class="col-md-3 col-sm-5">
+                                                <input id="bao_name"  name="bao_name" class="form-control" value="{$data.bao_name}" >
+                                            </div>
+                                        </div> -->
+
+                                        <!-- <div class="form-group">
+                                            <label for="input-site-name" class="col-sm-2 control-label">
+                                                更新说明：
+                                            </label>
+                                            <div class="col-md-3 col-sm-5">
+                                                <textarea maxlength="100" name="remark" class="form-control">{$data.remark}</textarea>
+                                            </div>
+                                            <p class="help-block">用于APP更新弹窗内展示</p>
+                                        </div> -->
+
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-1 col-sm-5">
+                                                <input type="hidden" name="id" value="{$info.id}">
+                                                <!-- <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9 btn-tijiao-load-img" data-refresh="1">
+                                                    {:lang('SAVE')}
+                                                </button> -->
+                                                <!-- <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    <!-- </form> -->
+
+                </div>
+
+                <div class="form-group">
+                    <input type="hidden" name="id" value="{$info['id']}">
+                    <div class="col-sm-offset-1 col-sm-10">
+                        <button type="submit" class="btn btn-primary js-ajax-submit save-btn">保存</button>
+                        <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript">
+
+    $(function () {
+
+        $("input[name='is_user_define']").click(function () {
+
+            var is_user_define = $(this).val();
+            if (is_user_define == '1') {
+                $(".user_define_block").show();
+            } else {
+                $(".user_define_block").hide();
+            }
+        });
+
+    })
+
+    $("input[type=radio][name=type]").change(function () {
+        var value= $(this).val();
+        if(value == 0){
+            $(".type1").show();
+            $(".type2").hide();
+        }else{
+            $(".type2").show();
+            $(".type1").hide();
+        }
+    })
+
+</script>
+</body>
+</html>

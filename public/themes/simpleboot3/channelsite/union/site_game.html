@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+		<include file="public@head"/>
+	</head>
+
+	<body>
+		<include file="public@nav"/>
+		<div class="trunk">
+			<div class="trunk-con">
+				<div class="right-container">
+					<div class="normal-list">
+						<div class="trunk">
+							<div class="trunk-title">
+								<div class="location ">
+									<div class="location-container fr">当前位置：<span class="location-container-text">游戏管理&gt;</span><span class="location-container-text">我的游戏</span></div>
+								</div>
+								<img src="__TMPL__/public/assets/images/icon_normal_game.png" class="fl trunk-icon">
+								<span class="title-main fl ">游戏列表  </span>
+
+							</div>
+
+							<ol class="tabpan">
+
+								<li class="tabpan-con tabpan-show">
+									
+									<div class="trunk-search clearfix fr">
+										<select id="game_id" name="game_id" class="tab-input js-select-gallery normal-space  fl select2-hidden-accessible trunk-search-select">
+											<option value="" data="0">推荐状态</option>
+
+											<option data="liddid" value="liddid">liddid</option>
+
+										</select>
+
+										<input type="submit" class="submit fr normal-space" id="submit" value="查询">
+									</div>
+									<div class="clear"></div>
+									<div class="minh-table">
+									<table class="table normal-table" id="promotecoin_table">
+										<tbody>
+											<tr>
+
+												<th>游戏名称</th>
+												<th>版本号</th>
+												<th>游戏类型</th>
+												<th>推荐状态</th>
+												<th>更新时间</th>
+												<th>显示状态</th>
+												<th>优先级 </th>
+												<th>操作</th>
+												
+											</tr>
+											<tr>
+
+												
+												<td>宫爆三国</td>
+												<td>
+												<img src="__TMPL__/public/assets/images/andriod.png" width="20" height="20">
+													<img src="__TMPL__/public/assets/images/IOS.png" width="20" height="20">
+												</td>
+
+												<td>
+													<p>角色</p>
+												
+												</td>
+												<td>
+													<p>推荐、热门</p>
+													
+												</td>
+												<td>
+													<p>2018-04-03</p>
+													
+												</td>
+												<td>
+													<a class="color-blue">开</a>
+													
+												</td>
+												<td>
+													<p class="color-blue">0</p>
+													
+												</td>
+												<td>
+													<a class="color-blue">取消置顶</a>
+													
+												</td>
+												
+											</tr>
+											<tr>
+
+												
+												<td>宫爆三国</td>
+												<td>
+												<img src="images/andriod.png" width="20" height="20">
+													<img src="images/IOS.png" width="20" height="20">
+												</td>
+
+												<td>
+													<p>角色</p>
+												
+												</td>
+												<td>
+													<p>推荐、热门</p>
+													
+												</td>
+												<td>
+													<p>2018-04-03</p>
+													
+												</td>
+												<td>
+													<a class="color-red">已关闭</a>
+													
+												</td>
+												<td>
+													<p class="color-blue">0</p>
+													
+												</td>
+												<td>
+													<a class="color-blue">取消置顶</a>
+													
+												</td>
+												
+											</tr>
+											
+											<!--暂无数据-->
+											<tr style="display: none;">
+												<td colspan="10">
+													<div class="no-data">
+														<img src="__TMPL__/public/assets/images/icon_wushujv2.png" alt="" class="no-data-img">
+														<p class="no-data-text">暂无数据</p>
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+									<div class="pagenation clearfix">
+										<a class="sch-btn" href="">导出</a>
+										<div>
+											<script>
+												function pagechange(that) {
+													url = location.href.replace(".html", "").replace(/(&|\/)row(=|\/)\d*/gi, "").replace(/\/p\/\d*/gi, "");
+													window.location.href = url + "/row/" + that.value;
+												}
+											</script>
+											<select id="pagechange" name="row" onchange="pagechange(this)">
+												<option value="10">每页10条</option>
+												<option value="25">每页25条</option>
+												<option value="50">每页50条</option>
+												<option value="100">每页100条</option>
+											</select><span class="rows">共 1 条记录</span></div>
+									</div>
+									</div>
+									
+								</li>
+
+							</ol>
+						</div>
+
+					</div>
+					
+				</div>
+			</div>
+		</div>
+
+		<include file="public@scripts"/>
+		<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+		<script src="__STATIC__/js/layer/layer.js"></script>
+		<script src="__TMPL__/public/assets/js/clipboard.min.js"></script>
+		<script>
+			$(function() {
+				$(".js-select-gallery").select2();
+			})
+
+			
+			//			全选
+			$(".check-all").click(function() {
+				$('.ids').prop("checked", this.checked);
+			});
+			$(".ids").click(function() {
+				var option = $(".ids");
+				option.each(function(i) {
+					if(!this.checked) {
+						$(".check-all").prop("checked", false);
+						return false;
+					} else {
+						$(".check-all").prop("checked", true);
+					}
+				});
+			});
+			//			复制下载链接
+
+		 //设置剪切板数据
+    var clipboard = new Clipboard('.copy-data', {
+        text: $(".copy-data").on("click",function (e) {//点击之后，再拿到当前点击的那一个存储的值
+            let $target = $(e.target);
+            return $target.data(`clipboard-text`);
+        })
+    });
+
+    clipboard.on("success",function (e) {
+//   layer.msg($(this).attr('data-platform')+"下载复制成功",{icon:1,time:1000});
+      layer.msg("下载复制成功",{icon:1,time:1000});
+        //
+        
+    })
+			//			下载二维码图片
+			//判断是否为Trident内核浏览器(IE等)函数
+			function browserIsIe() {
+				if(!!window.ActiveXObject || "ActiveXObject" in window) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+			//创建iframe并赋值的函数,传入参数为图片的src属性值.
+			function createIframe(imgSrc) {
+				//如果隐藏的iframe不存在则创建
+				if($("#IframeReportImg").length === 0) {
+					$('<iframe style="display:none;" id="IframeReportImg" name="IframeReportImg" onload="downloadImg();" width="0" height="0" src="about:blank"></iframe>').appendTo("body");
+				}
+				//iframe的src属性如不指向图片地址,则手动修改,加载图片
+				if($('#IframeReportImg').attr("src") != imgSrc) {
+					$('#IframeReportImg').attr("src", imgSrc);
+				} else {
+					//如指向图片地址,直接调用下载方法
+					downloadImg();
+				}
+			}
+			//下载图片的函数
+			function downloadImg() {
+				//iframe的src属性不为空,调用execCommand(),保存图片
+				if($('#IframeReportImg').src != "about:blank") {
+					window.frames["IframeReportImg"].document.execCommand("SaveAs");
+				}
+			}
+			//接下来进行事件绑定
+			var aBtn = $(".imgbig-erwei .erwei-btn");
+			if(browserIsIe()) {
+				//是ie等,绑定事件
+				aBtn.on("click", function() {
+					var imgSrc = $(this).siblings("img").attr("src");
+					//调用创建iframe的函数
+					createIframe(imgSrc);
+				});
+			} else {
+				aBtn.each(function(i, v) {
+					//支持download,添加属性.
+					var imgSrc = $(v).siblings("img").attr("src");
+					$(v).attr("download", imgSrc);
+					$(v).attr("href", imgSrc);
+				})
+			}
+		</script>
+
+	</body>
+
+</html>

@@ -1,0 +1,785 @@
+<!-- <link href="__TMPL__/sdkh5/assets/css/public.css" rel="stylesheet" > -->
+<link rel="stylesheet" href="__JS__/swiper/swiper.min.css">
+<link href="__TMPL__/sdkh5/assets/css/newPublic.css" rel="stylesheet" >
+<link href="__TMPL__/sdkh5/assets/css/play.css" rel="stylesheet" >
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+
+	<if condition='cmf_get_option(wap_set)[ball] eq 1 && $is_third_platform neq 1'>
+	<a href="javascript:;" class="suspensionbtn" id="jssuspensionbtn"  draggable="true" >
+        <if condition='cmf_get_option(wap_set)[xfq]'>
+            <img class="xuanfqiu" src="{:cmf_get_image_url(cmf_get_option(wap_set)[xfq])}">
+        <else/>
+            <img class="xuanfqiu" src="__TMPL__/sdkh5/assets/images/sdkicon.png">
+        </if>
+	</a>
+    </if>
+	<if condition="!cmf_is_mobile() && $is_third_platform neq 1">
+	<div class="arrow-code js_develop"><img  src="__TMPL__/sdkh5/assets/images/arrow_left.png"></div>
+	<div class="develop  js_retract">
+	    <div class="develop-arrow-code fl"><img  src="__TMPL__/sdkh5/assets/images/arrow_right.png" class=""></div>
+		<div class="develop-code fl">
+		    <div class="develop-code-title">手机扫码<br>随时畅玩</div>
+            <img src="" class="game-code-img">
+            <div class="divideLine"></div>
+			<img src="" class="develop-code-img">
+			<div class="develop-code-text">公众号名称</div>
+		</div>
+	</div>
+    </if>
+
+    <a href="/" class="btn-return backHome">回首页</a>
+
+    <!-- 退出弹窗 -->
+    <div class="logOutModal">
+        <div class="modalPhotoTip">
+            <img src="" alt="" onerror="this.src='{$h5_game_logout_adv_pic}';this.onerror=null">
+        </div>
+        <div class="confirmBtnFinal">
+            <a href="javaScript:;" class="bottomConfirmBtn" id="finalOutGameText">退出游戏</a>
+            <a href="javaScript:;" class="bottomConfirmBtn playMoreBtn">再玩一会</a>
+        </div>
+    </div>
+    <!-- 隐藏悬浮球弹窗 -->
+    <div class="xuanfuqiuPop">
+        <div class="xf-con">
+         <p class="xf-title">
+            重启游戏后即可重新显示悬浮球
+         </p>
+        <p class="xf-check">
+            <input type="hidden" id="xfq_check_status" value="0">
+            <img src="__TMPL__/sdkh5/assets/images/ico_weixuan.png" check_status="1"   class="weixuan">
+            <img src="__TMPL__/sdkh5/assets/images/ico_yixuan.png" check_status="0" class="yixuan xf-checked">
+            <span class="xf-no">不再提示</span></p>
+        </p>
+        <div class="xf-bottom">
+            <p class="x-con">继续隐藏</p><p class="x-zanbu">暂不隐藏</p>
+        </div>
+    </div>
+    </div>
+    <!-- 设置修改密码 -->
+    <div class="changeMima ">
+        <div class="change-con">
+            <div class="change-top">
+                <p class="top-title">
+                    修改密码
+                 </p>
+                <img src="/themes/simpleboot3/sdkh5/assets/images/icon_close.png" class="btn-close js-btn-close">
+            </div>
+
+            <div class="change-input">
+                <form class="change-form" action="" method="">
+                    <input type="text" id="last-pwd" class="last-pwd" value="" placeholder="原密码">
+                    <input type="password" id="new-pwd" class="new-pwd" value="" placeholder="新密码（6-15位字母或数字）">
+                    <input type="password" id="confirm-pwd" class="confirm-pwd" value="" placeholder="确认密码">
+                    <p class="but-confirm" onclick="checkpas2();">确定</p>
+                </form>
+            </div>
+         </div>
+    </div>
+    <!-- 设置绑定手机 未绑定-->
+    <div class="gobindPhone ">
+        <div class="change-con">
+            <div class="change-top">
+                <p class="top-title">
+                    验证手机
+                 </p>
+                <img src="/themes/simpleboot3/sdkh5/assets/images/icon_close.png" class="btn-close js-btn-close">
+            </div>
+
+            <div class="Phone-input">
+                <form class="Phone-form" action="" method="">
+                    <input type="text" id="phone-num" class="phone-num" value="" placeholder="输入11位手机号">
+                    <input type="text" id="yzm" class="yzm" value="" placeholder="输入验证码">
+                    <button class="y-but-confirm huopqv getcode1" type="button">获取验证码</button>
+                    <p class="y-but-confirm" onclick="confirm();">确认</p>
+                </form>
+            </div>
+         </div>
+    </div>
+    <!-- 设置绑定手机 绑定成功-->
+    <div class="gobindSucess ">
+        <div class="success-con">
+            <div class="sccess-center">
+                <img src="/themes/simpleboot3/sdkh5/assets/images/p-sucess.png" class="p-sucess">
+
+            <p class="bindSuccess">绑定成功！</p>
+            <p class="b-tishi">该手机号可用于找回密码</p>
+            <p class="y-but-confirm" onclick="fanhui();">返回</p>
+              </div>
+         </div>
+    </div>
+    <!-- 设置绑定手机 已绑定 解绑手机号-->
+    <div class="jiebang " >
+        <div class="jiebang-con">
+            <div class="change-top">
+                <p class="top-title">
+                    绑定手机
+                 </p>
+                <img src="/themes/simpleboot3/sdkh5/assets/images/icon_close.png" class="btn-close js-btn-close">
+            </div>
+            <div class="sccess-center">
+
+
+                <p class="j-title">您绑定的手机号：<span class="user_phone"></span></p>
+            <p class="j-title2">绑定手机号后，您可以通过手机号找回密码，同时提高账户安全性，如需更换手机号请先解绑手机号。</p>
+            <p class="y-but-confirm" onclick="jiebang();">解绑手机号</p>
+              </div>
+         </div>
+    </div>
+     <!-- 设置绑定手机 已绑定 验证原手机-->
+     <div class="yanzhengPhone ">
+        <div class="change-con">
+            <div class="change-top">
+                <p class="top-title">
+                    验证原手机
+                 </p>
+                <img src="/themes/simpleboot3/sdkh5/assets/images/gift_ico_back.png" class="left-back y-back">
+                <img src="/themes/simpleboot3/sdkh5/assets/images/icon_close.png" class="btn-close js-btn-close back">
+            </div>
+
+            <div class="Phone-input">
+                <form class="Phone-form" action="" method="">
+                    <input type="text" id="phone-num1" class="phone-num" value="" readonly>
+                    <input type="text" id="yzm1" class="yzm" value="" placeholder="输入验证码">
+                    <button class="y-but-confirm huopqv getcode2" type="button">获取验证码</button>
+                    <p class="y-but-confirm" onclick="confirm2();">确认</p>
+                </form>
+            </div>
+            <div class="stop-use">
+            <p class="y-bottom">手机号停用？<span onclick="contact();">联系客服></span></p>
+             </div>
+         </div>
+    </div>
+     <!-- 设置绑定手机 已绑定 绑定新手机-->
+     <div class="bind-newPhone ">
+        <div class="change-con">
+            <div class="change-top">
+                <p class="top-title">
+                    绑定新手机
+                 </p>
+                <img src="/themes/simpleboot3/sdkh5/assets/images/gift_ico_back.png" class="left-back back-old">
+                <img src="/themes/simpleboot3/sdkh5/assets/images/icon_close.png" class="btn-close js-btn-close back">
+            </div>
+
+            <div class="Phone-input">
+                <form class="Phone-form" action="" method="">
+                    <input type="text" id="phone-num2" class="phone-num" value="" placeholder="输入11位手机号">
+                    <input type="text" id="yzm2" class="yzm" value="" placeholder="输入验证码">
+                    <button class="y-but-confirm huopqv getcode3" type="button">获取验证码</button>
+                    <p class="y-but-confirm" onclick="newConfirm();">确认</p>
+                </form>
+            </div>
+            <div class="stop-use">
+            <p class="y-bottom">手机号停用？<span onclick="contact();">联系客服></span></p>
+             </div>
+         </div>
+    </div>
+    <script src="__TMPL__/sdkh5/assets/js/sdk/function.js"></script>
+    <script>
+        var third_user_id = "{$third_user_id|default=0}";
+		var is_mobile = "{:cmf_is_mobile()}";
+        var game_id = "{:input('game_id',0,'intval')}";
+        var pid = "{:input('pid',0,'intval')}";
+        var auth_status = "{:get_user_config('age')}";
+        var age_prevent = "{:get_user_config('age_prevent')}";
+        var auth_msg = "{:get_user_config_info('age')['contents_off']}";
+        var real_pay_status = "{:get_user_config_info('age')['real_pay_status']}";
+        var real_pay_msg = "{:get_user_config_info('age')['real_pay_msg']}";
+        var is_app = "{$session.app_user_login|default=0}";
+        var is_wechat = "{:cmf_is_wechat()}";
+        var $mt ="{:get_devices_type()}";
+        var service_info = [];
+        var vip_level = 0;
+        var age_status = 0;
+        var coupon_id=0;
+        var check_b = 0;
+		var mobile_flag = isMobile();
+        var ball = "{:cmf_get_option('wap_set')['ball']}";
+        var task_id = 0;
+        var task_url = "{:url('@recharge/Tplay/task')}";
+        var is_force_real = "1";
+        var is_open_sub_account = "{:cmf_get_option('wap_set')['is_open_sub_account']}";
+        var small_id = "{:input('small_id',0,'intval')}";
+        var prevent_way = "{$prevent_way|default='2'}";
+        var surplus_second = "{$surplus_second|default='0'}";
+        var user_token = "{:input('user_token')?:'0'}";
+        var is_third_platform = "{$is_third_platform|default=0}";
+        var platform_url = "{$platform_url|default=0}";
+        is_xgkf ="{:get_xgkf_info(0)}";
+        //客服信息
+        ajax_post('/sdkh5/game/get_service','promote_id='+pid+'&game_id='+game_id, function (result) {
+            service_info = result;
+            $(".game-code-img").attr('src',result.game_qrcode);
+            $(".develop-code-img").attr('src',result.qrcode);
+            $(".develop-code-text").text(result.qrcode_name);
+            if(result.xfq != ''){
+               $(".xuanfqiu").attr('src',result.xfq);
+            }
+        });
+        //定时请求实名认证等待结果
+        $(function () {
+            var basetime = 300;
+            var truetime = 60;
+            var time = 60;
+            var b = setInterval(function(){
+                time--;
+                if(time <=0){
+                    truetime = truetime + basetime;
+                    time = truetime;
+                    $.ajax({
+                        type:'post',
+                        url:"{:url('@member/User/get_user_age_result')}",
+                        data:{game_id:game_id},
+                        success:function(data){
+                        }
+                    })
+                }
+            },1000);
+        })
+    </script>
+	<if condition="$screen_type eq 1 and cmf_is_mobile()">
+		<link href="__TMPL__/sdkh5/assets/css/play_m_x.css" rel="stylesheet" >
+		<script src="__TMPL__/sdkh5/assets/js/sdk/pay_x_m.js"></script>
+	<elseif condition="($screen_type eq 1 or $screen_type eq 2 or $screen_type eq 0) and !cmf_is_mobile()" />
+		<link href="__TMPL__/sdkh5/assets/css/play_x.css" rel="stylesheet" >
+		<script src="__TMPL__/sdkh5/assets/js/sdk/pay_x.js"></script>
+    <elseif condition="$screen_type eq 2 and cmf_is_mobile()" />
+        <link href="__TMPL__/sdkh5/assets/css/playLand.css" rel="stylesheet" >
+        <script src="__TMPL__/sdkh5/assets/js/sdk/pay_y.js"></script>
+	<else/>
+        <link href="__TMPL__/sdkh5/assets/css/play_y.css" rel="stylesheet" >
+		<script src="__TMPL__/sdkh5/assets/js/sdk/pay_y.js"></script>
+	</if>
+  <script src="__TMPL__/sdkh5/assets/js/sdk/pay.js?t={:time()}"></script>
+  <script src="__TMPL__/sdkh5/assets/js/sdk/role.js?t={:time()}"></script>
+  <script src="__JS__/swiper/swiper.min.js"></script>
+  <script src="__TMPL__/sdkh5/assets/js/sdk/perinfo.js"></script>
+  <!-- 设置弹窗 -->
+  <script src="__TMPL__/sdkh5/assets/js/sdk/perinfo1.js"></script>
+
+  <!-- 礼包弹窗 -->
+  <script src="__TMPL__/sdkh5/assets/js/sdk/gift.js"></script>
+   <!-- 礼包详情弹窗-->
+  <script src="__TMPL__/sdkh5/assets/js/sdk/giftdetail.js"></script>
+  <!-- 客服弹窗-->
+  <script src="__TMPL__/sdkh5/assets/js/sdk/service.js"></script>
+  <!-- 代金券弹窗-->
+  <script src="__TMPL__/sdkh5/assets/js/sdk/coupon.js"></script>
+  <!-- 公告弹窗 -->
+  <script src="__TMPL__/sdkh5/assets/js/sdk/news.js"></script>
+   <!-- 公告详情弹窗 -->
+  <script src="__TMPL__/sdkh5/assets/js/sdk/newsdetail.js"></script>
+ <script src="__TMPL__/sdkh5/assets/js/jquery-1.11.1.min.js" type="text/javascript"></script>
+  <!-- 实名认证弹窗 -->
+<script src="__STATIC__/js/clipboard.min.js"></script>
+ <!-- 选择小号弹窗 -->
+ <script src="__TMPL__/sdkh5/assets/js/sdk/smallNum.js"></script>
+ <!-- 小号说明 -->
+ <script src="__TMPL__/sdkh5/assets/js/sdk/ch_shuoming.js"></script>
+ <!-- 增加小号 -->
+ <script src="__TMPL__/sdkh5/assets/js/sdk/ch_add.js"></script>
+<!--cookie-20210914-byh-->
+<script src="//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<!--设置功能新增实名认证-20210914-byh-->
+<script src="__TMPL__/sdkh5/assets/js/sdk/realname_in_set.js"></script>
+
+
+<script>
+
+    // 判断手机还是电脑
+function IsPC() {
+    var userAgentInfo = navigator.userAgent;
+    var Agents = ["Android", "iPhone",
+                "SymbianOS", "Windows Phone",
+                "iPad", "iPod"];
+    var flag = true;
+    for (var v = 0; v < Agents.length; v++) {
+        if (userAgentInfo.indexOf(Agents[v]) > 0) {
+            flag = false;
+            break;
+        }
+    }
+    return flag;
+}
+
+var flag = IsPC(); //true为PC端，false为手机端
+
+if(flag) {
+	$('.popinfo').addClass('levelInfoPop')
+    $('.js-pop').addClass('backGroundChange')
+    $('.playMoreBtn').click(function() {
+        $('.logOutModal').hide()
+        pushHistory();
+        //未选择小号
+        if (small_id == 0) {
+            $(".chooseNum").show();
+        }
+    });
+    $('#finalOutGameText').click(function() {
+
+        if(isH5App()){
+
+        }else if( is_app == 1){
+            if($mt == 2 ){
+                window.webkit.messageHandlers.gameGoBack.postMessage(1);
+            }else{
+                window.mengchuang.backHome();
+            }
+        }else{
+            if(is_third_platform > 0){
+                location.href = platform_url + '/media/game/game_hcenter.html';
+            }else{
+                location.href = "{:url('media/game/hdetail',['game_id'=>input('game_id')])}";
+            }
+        }
+
+    })
+}
+
+    // 如果是手机，退出弹窗则文字以及样式修改
+    if(mobile_flag) {
+        $('#finalOutGameText').html('再玩一会')
+        $('#finalOutGameText').addClass('phonePlayMoreColor')
+        $('#finalOutGameText').click(function() {
+            $('.logOutModal').hide()
+            setTimeout(function () {
+                pushHistory();
+                //未选择小号
+                if(small_id==0){
+                    $(".chooseNum").show();
+                }
+            },100)
+        })
+
+        $('.playMoreBtn').html('退出游戏')
+        $('.playMoreBtn').addClass('phoneChangeColor')
+        $('.playMoreBtn').click(function() {
+
+            if(isH5App()){
+
+            }else if( is_app == 1){
+                if($mt == 2 ){
+                    window.webkit.messageHandlers.gameGoBack.postMessage(1);
+                }else{
+                    window.mengchuang.backHome();
+                }
+            }else{
+                if(is_third_platform > 0){
+                    location.href = platform_url + '/mobile/index/index.html';
+                }else{
+                    location.href = "{:url('mobile/game/detail',['game_id'=>input('game_id')])}";
+                }
+            }
+
+        })
+    }else {
+
+    }
+
+
+    window.addEventListener("message", function (event) {
+        switch (event.data.operation) {
+            case 'payurl': {
+                var param = event.data.param;
+                if(is_wechat == 1 && param.pay_way == 3){
+                    window.location.href = "{:url('@sdkh5/Wechatpay/alipay_ff')}?url="+param.url;
+				}else{
+                    window.location = param.url;
+				}
+                break;
+            }
+        }
+    }, false);
+    if(age_status == 0 && auth_status == 1){
+        $.getScript("__TMPL__/sdkh5/assets/js/sdk/realname.js");
+    }
+
+    //未成年并且官方防沉迷并且开启防沉迷
+    if((age_status == 3 || age_status == 4) && prevent_way == 1 && age_prevent == 1){
+        $.getScript("__TMPL__/sdkh5/assets/js/sdk/anti_addiction.js");
+    }
+
+    if(ball != 1 && isH5App()){
+        $("#jssuspensionbtn").hide();
+    }
+	//游戏登录
+	// ajax_post('/sdkh5/game/get_play_info', {game_id: game_id, pid: pid}, function (result) {
+	// 	var mobile_flag = isMobile();
+	// 	if (mobile_flag) {
+	// 		$(".arrow-code").hide();
+	// 	} else {
+	// 		$(".popinfo-con").css({"top": "30%", "left": "5rem", "margin": "0 0"});
+	// 	}
+	// 	if (result.data.user_id <= 0) {
+	// 		alert('未登录');
+	// 		return false;
+	// 	}
+	// 	$('#game_ifr').attr('src', result.data.game_url);
+	// });
+   //阻止左右翻页
+        var xStart, xEnd, yStart, yEnd;
+
+        document.addEventListener("touchstart", function (evt) {
+            xStart = evt.touches[0].pageX;
+            yStart = evt.touches[0].pageY;
+        }, false);
+
+         document.addEventListener('touchmove', function (evt) {
+            xEnd = evt.touches[0].pageX;
+            yEnd = evt.touches[0].pageY;
+            //左右滑动
+            if(Math.abs(xStart - xEnd) > Math.abs(yStart - yEnd)){
+                evt.preventDefault();
+            }
+        }, false);
+     $(function(){
+         //微端隐藏官网按钮
+		 if (mobile_flag){
+		    $(".arrow-code").hide();
+			 $(".btn-waprenturn").show();
+			 $(".pop").css({"width": "100%"});
+
+		 }
+		 else{
+		   $(".develop").show();
+		   $(".btn-return").show();
+		    $(".popinfo-con").css({"top": "30%", "left": "5rem", "margin": "0 0"});
+		 }
+
+         //切换账号
+         $(document).on('click','.s-btn-change',function () {
+             ajax_post('/sdkh5/game/logout','', function (result) {
+                 if(isH5App()){
+                     if($mt == 2 ){
+                         window.webkit.messageHandlers.h5shelldeletecookies.postMessage(1);
+                     }else{
+                         window.h5shell.saveGameToken("''");
+                     }
+                 }else if( is_app == 1){
+                     if($mt == 2 ){
+                         window.webkit.messageHandlers.h5shellAndAppReLogin.postMessage(1);
+                     }else{
+                         window.mengchuang.h5shellAndAppReLogin();
+                     }
+                 }
+                 setTimeout(function () {
+                     top.location.href = "{:url('game/open_game',['game_id'=>input('game_id'),'pid'=>input('pid')])}";
+                 },500)
+
+             });
+         })
+         //关闭设置弹窗
+         $(document).on('click','.shezhiPop .js-btn-close',function () {
+             $(".shezhiPop").css("display","none")
+         });
+        //  //隐藏悬浮球弹窗  zanbu
+        //  $(".hide-Xuanfuqiu").click(function() {
+        //     var isClick = false;
+        //     //  $(".xuanfuqiuPop").css("display","block")
+        //      if($(".weixuan").hasClass("xf-checked") || $(".x-zanbu").click({isClick = true})){
+        //         $(".xuanfuqiuPop").css("display","none");
+        //      }
+        //      else{
+        //         $("#jssuspensionbtn").css("display","none");
+        //         layer.msg("浮球隐藏成功！");
+
+        //      }
+        //  });
+          //隐藏悬浮球弹窗  zanbu
+         $(document).on('click','.hide-Xuanfuqiu',function () {
+             if($.cookie('xfq_tip_status') == '11' ){
+                 $("#jssuspensionbtn").css("display","none");
+                 $(".xuanfuqiuPop").css("display","none");
+                 $(".shezhiPop").css("display","none")
+                 $('.popinfo').hide()
+                 layer.msg("浮球隐藏成功！");
+                 
+             }else{
+                 $(".xuanfuqiuPop").css("display","block");
+               
+                if (flag) {
+                     $(".shezhiPop").css("display","");
+                }
+             }
+         });
+         //复选框选择
+         $(".xf-check img").click(function() {
+
+             $(this).addClass("xf-checked").siblings().removeClass("xf-checked");
+             var _status = $(this).attr('check_status');
+             $("#xfq_check_status").val(_status);
+         });
+         //点击暂不隐藏
+         $(".x-zanbu").click(function() {
+            $(".xuanfuqiuPop").css("display","none");
+
+         });
+         //点击继续隐藏
+         $(".x-con").click(function() {
+             var tip_status = $("#xfq_check_status").val();
+             if(tip_status==1){
+                 $.cookie('xfq_tip_status', '11', { expires: 14 });
+             }
+            $("#jssuspensionbtn").css("display","none");
+            $(".xuanfuqiuPop").css("display","none");
+             $(".shezhiPop").css("display","none");
+             $('.popinfo').hide()
+            layer.msg("浮球隐藏成功！");
+
+         });
+
+
+         //设置
+         $(".btn-shezhi").click(function(){
+            $(".shezhiPop").css("display","block");
+            $(".pop").css("display","none");
+         })
+
+         //点击退出游戏，弹窗出现
+         // $(".js_waprenturn").click(function () {
+            $(document).on('click','#logOutGameBtn, .js_waprenturn',function () {
+             $('.logOutModal').css('display','block')
+             // 如果是手机端则悬浮球信息模块消失
+             if(mobile_flag) {
+                $('.popinfo').hide()
+             }
+             $(".chooseNum").hide();
+            //  if(isH5App()){
+            //  }else if( is_app == 1){
+            //      if($mt == 2 ){
+            //          window.webkit.messageHandlers.backHome.postMessage(1);
+            //      }else{
+            //          window.mengchuang.backHome();
+            //      }
+            //  }else{
+            //     window.location.href='/';
+            //  }
+         })
+
+         //QQ跳转
+         $(".js_qq").click(function () {
+             var qq = $(this).data('qq');
+             var qq_url = $(this).data('href');
+             if(is_xgkf == 1){
+                 if($mt == 2 && is_app == 1 ){
+                     window.webkit.messageHandlers.sy_app_xgkf_url.postMessage(qq_url);
+                 }else{
+                     window.open(qq_url);
+                 }
+             }else{
+                 if(isH5App()){
+                     if($mt == 2 ){
+                         window.webkit.messageHandlers.h5shellchatqq.postMessage(qq);
+                     }else{
+                         var qqS = qq.toString();
+                         window.h5shell.chatqq(qqS);
+                         //   window.h5shell.h5shellchatqq(qq);
+                     }
+                 }else if(is_app == 1){
+                     if($mt == 2 ){
+                         window.webkit.messageHandlers.chatqq.postMessage(qq);
+                     }else{
+                         var qqS = qq.toString();
+                         window.mengchuang.chatqq(qqS);
+                     }
+                 }else{
+                     window.open(qq_url);
+                 }
+             }
+         })
+
+         //QQ群跳转
+         $(".js_group").click(function () {
+             var group = $(this).data('group');
+             var group_url = $(this).data('href');
+             if(isH5App()){
+                 if($mt == 2 ){
+                     window.webkit.messageHandlers.chatQQGroup.postMessage(group);
+                 }else{
+                     window.h5shell.chatQQGroup(group);
+                 }
+             }else if(is_app == 1){
+                 if($mt == 2 ){
+                     window.webkit.messageHandlers.chatQQGroup.postMessage(group);
+                 }else{
+                     window.mengchuang.chatQQGroup(group);
+                 }
+             }else{
+                 window.open(group_url);
+             }
+         })
+
+
+
+         $(".backHome").click(function () {
+             $('.logOutModal').css('display','block')
+             // 如果是手机端则悬浮球信息模块消失
+             if(mobile_flag) {
+                 $('.popinfo').hide()
+             }
+             return false;
+         })
+
+
+	 })
+    //设置剪切板数据
+    var clipboard = new Clipboard('.copy', {
+        text: $(".copy").on("click",function (e) {
+            //点击之后，再拿到当前点击的那一个存储的值
+            let $target = $(e.target);
+            return $target.data(`clipboard-text`);
+        })
+    });
+
+    clipboard.on("success",function (e) {
+
+		layer.msg("复制成功");
+
+
+  })
+	// 二维码隐藏演示
+	$(".js_develop").click(function(){
+	   $(this).hide();
+       $(".js_retract").fadeIn();
+
+	})
+	$(".js_retract").click(function(){
+	   $(this).fadeOut();
+       $(".js_develop").show();
+
+	})
+
+	$(document).on('click','.js-btn-close',function(){
+        window.coupon_money=0;
+        coupon_id = 0;
+        clearInterval(check_b);
+        $(this).closest(".js-pop").hide();
+        $('.popinfo').hide()
+		$(".pay-sdk-item").remove();
+
+	})
+	// 返回按钮
+	$("body").on('click',".js-btn-return",function(){
+        window.coupon_money=0;
+        clearInterval(check_b);
+        $(".servicepop").hide();
+	   $(this).closest(".js-pop").hide();
+	})
+	// 当横竖屏变换时,从缓存中获取资源刷新页面  /*注释掉解决横屏游戏支付时刷新问题*/
+	//     addEventListener('orientationchange', function() {
+    //         location.reload(false);
+    //     });
+
+
+
+    $(function(){
+
+        setTimeout(function () {
+            pushHistory();
+        },500)
+
+        window.addEventListener("popstate", function(e) {
+            $('.logOutModal').css('display','block')
+            // 如果是手机端则悬浮球信息模块消失
+            if(mobile_flag) {
+                $('.popinfo').hide()
+            }
+        }, false);
+
+
+
+        //  选择小号
+        $(".ch_content ul li").click(function(){
+            // alert(111)
+            $(this).addClass("active1").siblings().removeClass("active1")
+            // $(this).find(".list_xiaohao").addClass("xuanzhong").siblings().removeClass("xuanzhong");
+
+        });
+        //小号说明
+        $(".ch_shuoming").click(function(){
+            $('.shuomingPop').css("display","block");
+        });
+
+        $(".sh_bottom").click(function(){
+            $('.shuomingPop').css("display","none");
+        });
+        //增加小号
+        $(".ch_add").click(function(){
+            $('.addPop').css("display","block");
+        });
+        $(".add_qx").click(function(){
+            $('.addPop').css("display","none");
+        });
+        $(".add_confir").click(function(){
+            var url = "{:url('sdkh5/game/addSmall')}";
+            var small_account = $("#small_account").val();
+            if(small_account==''){
+                layer.msg('小号名不能为空');
+                return false;
+            }
+            $.post(url,{small_account:small_account,game_id:game_id},function (res) {
+                if(res.code==0){
+                    layer.msg(res.msg);
+                    return false;
+                }
+                if(res.code==1){
+                    $(".addPop").hide();
+                    layer.msg(res.msg);
+                    setTimeout(function () {
+                        top.location.reload();
+                    },500);
+                }
+            });
+            return false;
+        });
+
+
+        $(document).on('click', '.choose_small_account', function (res) {
+            var choose_id = $(this).attr('data-id');
+            localStorage.setItem('last_login_id', choose_id);
+        });
+
+    })
+
+    function pushHistory() {
+        var state = {
+            title: "title",
+            url: "#"
+        };
+        window.history.pushState(state, "title", "#");
+    }
+
+	function isMobile() {
+            var userAgentInfo = navigator.userAgent;
+
+            var mobileAgents = [ "Android", "iPhone", "SymbianOS", "Windows Phone", "iPad","iPod"];
+
+
+            //根据userAgent判断是否是手机
+            for (var v = 0; v < mobileAgents.length; v++) {
+                if (userAgentInfo.indexOf(mobileAgents[v]) > 0) {
+                    mobile_flag = true;
+                    break;
+                }
+            }
+             var screen_width = window.screen.width;
+             var screen_height = window.screen.height;
+
+             //根据屏幕分辨率判断是否是手机
+             if(screen_width < 500 && screen_height < 800){
+                 mobile_flag = true;
+             }
+
+             return mobile_flag;
+        }
+
+    function isH5App(){
+        var ua = window.navigator.userAgent.toLowerCase();
+        if(ua.match(/app\/h5shell/i) == 'app/h5shell'){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+</script>

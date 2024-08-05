@@ -1,0 +1,17 @@
+<script src="__TMPL__/public/assets/js/promote/jquery-1.11.1.min.js"></script>
+<script src="__TMPL__/public/assets/js/promote/common.js"></script>
+<script src="__STATIC__/js/lwx.js"></script>
+<script type="text/javascript">
+	$('.jspagerow').change(function(){
+        value = $('.jspagerow option:selected').attr('vv');
+        $('#page').remove();
+        $('#submit').append('<input type="hidden" id="page" name="row" value="'+value+'">');
+        $('#submit').click();
+    });
+    // 分页
+	$(".page-item").wrapAll("<div class='fr jspageitem'></div>");
+ 	var $one_li = $(".jspagerow");    
+	var $two_li = $(".jspageitem");    
+	$two_li.insertBefore($one_li);
+</script>
+

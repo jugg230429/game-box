@@ -1,0 +1,75 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#A" data-toggle="tab">系统设置</a></li>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20 " role="form" action="{:url('site/site/sitePost')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">手游联运系统域名：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" value="{:cmf_get_domain()}" disabled>
+                            </div>
+                        </div>
+
+<!--                        <div class="form-group">-->
+<!--                            <label for="input-site_adminstyle" class="col-sm-2 control-label">广告监测分析系统域名：</label>-->
+<!--                            <div class="col-md-3 col-sm-5">-->
+<!--                                <input type="text" class="form-control"  name="ad_domain"-->
+<!--                                       value="{$data.ad_domain|default=''}">-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">工作室OA系统域名：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control"  name="oa_domain"
+                                       value="{$data.oa_domain|default=''}">
+                            </div>
+                        </div>
+<!--                        <div class="form-group">-->
+<!--                            <label for="input-site_adminstyle" class="col-sm-2 control-label">商户客服管理域名：</label>-->
+<!--                            <div class="col-md-3 col-sm-5">-->
+<!--                                <input type="text" class="form-control"  name="kf_business_domain"-->
+<!--                                       value="{$data.kf_business_domain|default=''}">-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="form-group">-->
+<!--                            <label for="input-site_adminstyle" class="col-sm-2 control-label">商户客服标识符：</label>-->
+<!--                            <div class="col-md-3 col-sm-5">-->
+<!--                                <input type="text" class="form-control"  name="kf_business_id"-->
+<!--                                       value="{$data.kf_business_id|default=''}">-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="form-group">-->
+<!--                            <label for="input-site_adminstyle" class="col-sm-2 control-label">客服系统地址：</label>-->
+<!--                            <div class="col-md-3 col-sm-5">-->
+<!--                                <input type="text" class="form-control"  name="kf_work_domain"-->
+<!--                                       value="{$data.kf_work_domain|default=''}">-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <input type="hidden" name="set_type" value="{$name}">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn " data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

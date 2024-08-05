@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link href="__TMPL__/issuepublic/assets/css/promote/select2.min.css" rel="stylesheet" />
+	<link href="__TMPL__/issuepublic/assets/css/promote/pay.css" rel="stylesheet" />
+	<link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+	<link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" media="all" href="__STATIC__/js/datejs/daterangepicker.css"/>
+	{:widget('issue/Management/css')}
+</head>
+
+<body>
+<!--左侧导航栏-->
+{:widget('issue/Management/left')}
+
+<!--头部-->
+{:widget('issue/Management/header')}
+
+
+	<div class="trunk-con">
+		<div class="right-container">
+			<div class="normal-list">
+				<div class="trunk">
+					<ul class="tab">
+						<li class="tab-menu tab-menu-active"><a href="{:url('issue/Currency/index')}">联运币充值</a></li>
+						<li class="tab-menu "><a href="{:url('issue/Currency/orders')}">充值记录</a></li>
+<!--						<li class="tab-menu "><a href="{:url('issue/Currency/withdraw')}">提现记录</a></li>-->
+					</ul>
+				<div class="clear"></div>
+				<div class="data">
+					<ol class="tabpan">
+						<li class="tabpan-con tabpan-show">
+							<from id="form1" action="" target="_blank">
+								<div class="tabpan-con-con">
+									<label class="fl label-name">联运币余额：</label>
+									<span>{:get_balance(OID)}</span>
+<!--									<button class="button">提现</button>-->
+								</div>
+								<div class="tabpan-con-con">
+									<label class="fl label-name">充值金额：</label>
+									<input type="input" class="tabpan-input" name="amount" id="amount" onkeyup="num(this)" maxlength="8" value="" placeholder="">
+								</div>
+								<div class="tabpan-con-con">
+									<label class="fl label-name">支付方式：</label>
+									<volist name="paytype" id="pt">
+										<if condition="$pt['name'] eq 'zfb'">
+											<label class="label-choose js_choose"><input type="radio" class="radio-choose" value="zfb" name="pay_type"><i class="label-choose-i"></i><span>支付宝</span></label>
+										</if>
+										<if condition="$pt['name'] eq 'wxscan'">
+											<label class="label-choose js_choose"><input type="radio" class="radio-choose" value="wx" name="pay_type"><i class="label-choose-i"></i><span>微信</span></label>
+										</if>
+									</volist>
+								</div>
+								<div class="tabpan-con-con">
+									<label class="fl label-name">应付金额：</label>
+									<span class="formtxt" id="show">--</span>
+								</div>
+								<div class="tabpan-con-con">
+									<input type="submit" style="cursor: pointer;" class="button jsconfirm" value="确认" title="" target-form="paw_er_info">
+								</div>
+							</from>
+						</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="new_czinfobg" style="display: none;">
+	<div id="czerrots" class="czerrots">
+		<div class="qrcz_ts">
+			<h1 class="qrcz_title"><span>请在新打开的支付页面上完成付款充值！</span><a href="javascript:void(0);"  class="czinfobox_close3 qrcz_close">close</a></h1>
+			<ul class="czinfobox_con">
+				<li class="tscon1 czinfobox_con_con">付款前请不要关闭或刷新此窗口。</li>
+			</ul>
+			<span class="qrtjBtn">
+							<a class="getresult" href="javascript:getresult();" order_no=''>查看充值结果</a>
+				<!-- <a href="javascript:;" class="czinfobox_close3">返回</a> -->
+						</span>
+		</div>
+	</div>
+</div>
+<script src="__TMPL__/issuepublic/assets/js/promote/jquery-1.11.1.min.js"></script>
+<script src="__TMPL__/issuepublic/assets/js/promote/common.js"></script>
+<script src="__TMPL__/issuepublic/assets/js/promote/select2.min.js"></script>
+<script>
+	$(function() {
+		$(".js-select-gallery").select2();
+	})
+</script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script src="__STATIC__/js/ajaxForm.js"></script>
+{:widget('issue/Management/footer')}
+
+<script type="text/javascript">
+	$(function () {
+		//支付方式选中
+		$('.label-choose-i:first').addClass('current');
+		$('input[name=pay_type]:first').attr('checked','checked').addClass('paycheck');
+		$('.js_choose').click(function(){
+			that = $(this);
+			input = that.children('.radio-choose');
+			i = that.children('.label-choose-i');
+			$('.label-choose-i').removeClass('current');
+			i.addClass('current');
+			$('input[name=pay_type]').removeAttr('checked');
+			$('input[name=pay_type]').removeClass('paycheck');
+			input.attr('checked','checked').addClass('paycheck');
+		});
+		//金额联动
+		$('#amount').on('input propertychange',function(){
+			var amount = $.trim($('#amount').val());
+			amount = numvalue(amount);
+
+			//re = /^[1-9]\d*$/ ;
+			// if(re.test(amount)){
+				$('#show').text(amount);
+			// }else{
+			// 	$('#show').text('--');
+			// }
+		});
+		//充值提交
+		$('.jsconfirm').click(function(){
+			amount=$('#amount').val();
+			if(amount==''){
+				layer.msg('充值金额不能为空');return false;
+			}
+			// if(!(/(^[1-9]\d*$)|(^[0-9]{1,2}[\.]{1}[0-9]{1,2}$)/.test(amount))){
+			// 	layer.msg('充值金额格式不正确');return false;
+			// }
+			order_no = get_order();
+			if(!order_no){
+				layer.msg('订单生成失败，请刷新后重试');
+				return false;
+			}else{
+				$('.getresult').attr('order_no',order_no);
+			}
+			pay_type = $('.paycheck').val();
+			if(pay_type=='zfb'){
+				url = "{:url('recharge/IssuePay/alipay','',false)}";
+				url = url+'?'+'&amount='+amount+'&order_no='+order_no;
+				$("#new_czinfobg").show();
+				url_open(url);
+			}else if(pay_type=='wx'){
+				url = "{:url('recharge/IssuePay/weixinpay','',false)}";
+				url = url+'?'+'&amount='+amount+'&order_no='+order_no;
+				$("#new_czinfobg").show();
+				url_open(url);
+			}else{
+				layer.msg('支付方式错误');
+				return false;
+			}
+			var count = 0;
+			var timer = setInterval(function() {
+				if(count<200){
+					checkStatus(timer);//轮询
+				}else{
+					location.href=location.href;
+				}
+				count++;
+			},3000);
+
+		});
+	})
+</script>
+<script>
+	$(".czinfobox_close3").click(function() {
+		$("#new_czinfobg").hide();
+	})
+	//新开页面 防止浏览器拦截
+	function url_open(url){
+		var a = $("<a href='"+url+"' target='_blank'>支付</a>").get(0);
+		var e = document.createEvent('MouseEvents');
+		e.initEvent( 'click', true, true );
+		a.dispatchEvent(e);
+	}
+	//查看充值结果
+	function getresult(){
+		order_no = check_order_no()||$('.getresult').attr('order_no');
+		console.log(order_no);
+		$('.getresult').attr('order_no',order_no);
+		url = "{:url('check_order_status')}"+'?'+'order_no='+order_no;
+		url_open(url);
+	}
+	//获取订单号
+	function get_order(){
+		order_no = '';
+		$.ajax({
+			type: 'POST',
+			url: "{:url('get_order')}" ,
+			async:false,
+			dataType:'json',
+			success:function(data){
+				order_no = data.order_no;
+			}
+		})
+		return order_no;
+	}
+	function check_order_no(){
+		order_no = lwx.getItem('order_no');
+		return order_no;
+	}
+	//轮询查询订单状态
+	function checkStatus(timer){
+		order_no = $('.getresult').attr('order_no');
+		$.ajax({
+			type: 'POST',
+			url: "{:url('check_order_status')}" ,
+			data:{'order_no':order_no},
+			async:true,
+			dataType:'json',
+			success:function(data){
+				if(data.code==1){
+					$("#new_czinfobg").hide();
+					clearInterval(timer);
+				}
+			}
+		})
+
+	}
+
+
+	function num(obj){
+		obj.value = obj.value.replace(/[^\d.]/g,""); //清除"数字"和"."以外的字符
+		obj.value = obj.value.replace(/^\./g,""); //验证第一个字符是数字
+		obj.value = obj.value.replace(/\.{2,}/g,"."); //只保留第一个, 清除多余的
+		obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+		obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3'); //只能输入两个小数
+	}
+
+	function numvalue(obj) {
+		obj = obj.replace(/[^\d.]/g, ""); //清除"数字"和"."以外的字符
+		obj = obj.replace(/^\./g, ""); //验证第一个字符是数字
+		obj = obj.replace(/\.{2,}/g, "."); //只保留第一个, 清除多余的
+		obj = obj.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+		obj = obj.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3'); //只能输入两个小数
+		return obj;
+	}
+
+</script>
+</body>
+</html>

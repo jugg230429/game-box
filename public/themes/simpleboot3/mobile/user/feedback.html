@@ -1,0 +1,245 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/user_rebate.css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/feedback.css">
+</block>
+
+<block name="body">
+    <div class="user_rebate_page">
+        <div class="my_bag_page_header">
+            <a href="javascript:back();"><img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon"></a>
+            <p class="fl my_bag_page_item">投诉反馈</p>
+        </div>
+       <div>
+           <form action="{:url('mobile/user/feedback')}" id="doFeedback" method="post" class="feedbackCondition">
+              <div id="phoneModal" style="margin-top: 1.3rem;margin-bottom:2.56rem">
+                    <label for="" class="labelName">手机型号</label>
+                   <div class="conditionContent fr">{:get_phone_brand()}</div>
+              </div>
+              <div id="gotoChooseName">
+                <label for="" class="labelName">游戏名称</label>
+                <div class="conditionContent fr">
+                    <if condition="input('game_name')==''" >
+                        <span class="garyColorText">请选择您要投诉的游戏名称</span>
+                    <else/>
+                       <span>{:input('game_name')}</span>
+                    </if>
+                   <i class="chooseGameName"></i>
+                </div>
+                  <input type="hidden" name="game_id" value="{:input('game_id',0,'intval')}" />
+              </div>
+                <div class="fengeline"></div>
+                <div id="contactWay" style="margin-top: 1.3rem;margin-bottom:1.3rem">
+                    <label for="" class="labelName">联系QQ</label>
+                    <input type="text" placeholder="必填" name="qq" class="fr inputContentText">
+                </div>
+                <div>
+                    <label for="" class="labelName">联系电话</label>
+                    <input type="text" placeholder="非必填" name="tel" class="fr inputContentText">
+                </div>
+                <div  id="typeRebate" style="margin-top: 1.3rem;">
+                    <p>举报类型（必填）</p>
+                    <div class="reportContainer">
+                        <div class="wd3">
+                            <label for="" class="labelName">
+                                <input type="checkbox" name="report_type[]" value="色情内容" class="itemIconSelect">
+                                <i class="itemIconSelect"></i>
+                                <span class="content-text">色情内容</span>
+                            </label>
+
+                        </div>
+                        <div class="wd4">
+                            <label for="" class="labelName">
+                                <input type="checkbox" name="report_type[]" value="暴力内容" class="itemIconSelect">
+                                <i class="itemIconSelect"></i>
+                                <span class="content-text">暴力内容</span>
+                            </label>
+
+                        </div>
+                        <div class="wd9 rightShow">
+                            <label for="" class="labelName">
+                                <input type="checkbox" name="report_type[]" value="反动内容" class="itemIconSelect">
+                                <i class="itemIconSelect"></i>
+                                <span class="content-text">反动内容</span>
+                            </label>
+
+                        </div>
+                        <div class="wd3">
+                            <label for="" class="labelName">
+                                <input type="checkbox" name="report_type[]" value="侵犯版权" class="itemIconSelect">
+                                <i class="itemIconSelect"></i>
+                                <span class="content-text">侵犯版权</span>
+                            </label>
+
+                        </div>
+                        <div class="wd4">
+                            <label for="" class="labelName">
+                                <input type="checkbox" name="report_type[]" value="携带病毒" class="itemIconSelect">
+                                <i class="itemIconSelect"></i>
+                                <span class="content-text">携带病毒</span>
+                            </label>
+
+                        </div>
+                        <div class="wd9 rightShow">
+                            <label for="" class="labelName">
+                                <input type="checkbox" name="report_type[]" value="恶意扣费" class="itemIconSelect">
+                                <i class="itemIconSelect"></i>
+                                <span class="content-text">恶意扣费</span>
+                            </label>
+
+                        </div>
+                        <div class="wd3">
+                            <label for="" class="labelName">
+                                <input type="checkbox" name="report_type[]" value="含有不良插件" class="itemIconSelect">
+                                <i class="itemIconSelect"></i>
+                                <span class="content-text">含有不良插件</span>
+                            </label>
+
+                        </div>
+                        <div class="wd4" >
+                            <label for="" class="labelName">
+                                <input type="checkbox" name="report_type[]" value="无法安装或重启" class="itemIconSelect">
+                                <i class="itemIconSelect"></i>
+                                <span class="content-text">无法安装或重启</span>
+                            </label>
+
+                        </div>
+                        <div class="wd9 rightShow">
+                            <label for="" class="labelName">
+                                <input type="checkbox" name="report_type[]" value="其他" class="itemIconSelect">
+                                <i class="itemIconSelect"></i>
+                                <span class="content-text"> 其他&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            </label>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="inputFeedBackBox">
+                   <div class="feedBackContentBox">
+                       <textarea name="remark" id="remark" cols="30" rows="10" class="feedBack-content" placeholder="请描述您在玩游戏中遇到的问题或向我们提出修改建议， 我们会尽快处理！"></textarea>
+                   </div>
+                   <div class="bottomInfo">
+                        <div id="addConditionImg" >
+<!--                           <div class="addConditionImg">-->
+<!--                               <img src="__TMPL__/mobilepublic/assets/images/download_img_ipone.png" alt="" class="uploadImgMore">-->
+<!--                               <i class="deleteImgIcon"></i>-->
+<!--                               <input type="hidden" name="images[]" value=""/>-->
+<!--                           </div>-->
+                        </div>
+
+                        <a class="upload_btn" href="javascript:uploadImages('图片','#upload_images');">
+                            <input id="upload_images" type="hidden" name="upload_images" >
+                            <div class="showDefaultPhoto">
+                                <i class="iconPhoto"></i>
+                            </div>
+                        </a>
+                       <div class="upload_btn" style="margin-left: 0.99rem;line-height: 2.5rem;">
+                            <p>上传图片</p>
+                            <p class="garyColorText">请上传3-5张图片</p>
+                       </div>
+                   </div>
+                </div>
+                <button class="formSubmit">确认提交</button>
+           </form>
+       </div>
+
+
+    </div>
+</block>
+<block name="script">
+    <script src="__STATIC__/js/wind.js"></script>
+    <script src="__TMPL__/mobilepublic/assets/js/frontend.js"></script>
+    <script type="text/javascript" src="__STATIC__/js/ajaxForm.js"></script>
+    <script>
+
+        $(function () {
+
+
+            // $('.deleteImgIcon').click(function(){
+            $(document).on('click','.deleteImgIcon',function(){
+                $(this).parent('.addConditionImg').remove();
+                checkImagesNum();
+            })
+            $('#gotoChooseName').click(function() {
+                window.location.href = "{:url('mobile/user/game_list')}";
+            })
+
+            $("#doFeedback").submit(function () {
+
+                $(".formSubmit").attr("disabled", true);
+
+                $(this).ajaxSubmit(function (res) {
+                    layer.msg(res.msg);
+                    if (res.code == '1') {
+                        setTimeout(function () {
+                            location.href = "{:url('mobile/user/index')}";
+                        }, 1500);
+                    } else {
+                        $(".formSubmit").removeAttr('disabled');
+                    }
+                    return false;
+                });
+                return false;
+            });
+
+        });
+
+
+
+        function uploadImages(dialog_title, input_selector, extra_params, app) {
+            openUploadDialog(dialog_title, function (dialog, files) {
+                var html = "";
+                $.each(files, function (i, item) {
+                    html += "<div class=\"addConditionImg\">\n" +
+                        "<img src=\""+item.preview_url+"\" alt=\"\" class=\"uploadImgMore\">\n" +
+                        "<i class=\"deleteImgIcon\"></i>\n" +
+                        "<input type=\"hidden\" name=\"images[]\" value=\""+item.filepath+"\"/>"+
+                        "</div>";
+                });
+                $("#addConditionImg").append(html);
+
+                checkImagesNum();
+
+            }, extra_params, 1, 'image', app,5);
+        }
+
+
+        function checkImagesNum() {
+            var num = $(".addConditionImg").length;
+            if(num>=5){
+                $(".upload_btn").hide()
+            }else{
+                $(".upload_btn").show()
+            }
+        }
+
+        function back(){
+            try{
+                $mt = "{:get_devices_type()}";
+                if($mt==2){
+                    window.webkit.messageHandlers.xgsdk_finishPage.postMessage(1);
+                }else{
+                    window.xgsdk.finishPage()
+                }
+            }catch (e) {
+                location.href = "{:url('mobile/user/index')}";
+            }
+        }
+
+        var u = navigator.userAgent;
+        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        if(isiOS) {
+            console.log('sfsdfsdsf')
+            $('#phoneModal').css({'margin-bottom':'1.5rem','margin-top':'1rem'})
+            // $('#contactWay').css({'margin-bottom':'0.8rem','margin-top':'1rem'})
+            $('.wd3').css('margin-bottom','0.5rem')
+            $('.fengeline').css('margin-top','1rem')
+            $('.reportContainer').css('margin-top','.5rem')
+            // $('#typeRebate').css('margin-top','.8rem')
+        }
+
+
+
+    </script>
+</block>

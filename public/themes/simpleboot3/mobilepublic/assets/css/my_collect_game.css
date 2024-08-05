@@ -1,0 +1,257 @@
+.type_down__long_hx{
+    width: 100%;
+    height: 1px;
+    background-color: #EDEEEF;
+    position: relative;
+    top: -0.2rem;
+    z-index: 1;
+    margin-top: 0.3rem;
+}
+.my_game_page_header{
+    width: 100%;
+    height: 3.5rem;
+	position: relative;
+}
+.end_delete{
+    font-size: 15px;
+    color: #222;
+    font-weight:400;
+    position: absolute;
+    right: 1.2rem;
+    display: none;
+	top: 50%;
+    transform: translateY(-50%);
+}
+.my_game_page_header .back_icon{
+    width: .74rem;
+    margin-top: 1.25rem;
+    margin-left: 1rem;
+}
+#all_checked +label{
+    display: block;
+    width: 17px;
+    height: 17px;
+    cursor: pointer;
+    float: left;
+    background: #e2e2e2
+}
+.one_checked_check{
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 50%;
+}
+.all_checked_check{
+    width: 1.21rem;
+    height: 1.21rem;
+    margin: 1.1rem .4rem 0 1.85rem;
+}
+.check_con{
+    width:1.8rem;
+    height: 2rem;;
+}
+.one_checked_img{
+    display: none;
+    width:1.7rem;
+/*    position: relative;
+    left: 5.2rem;
+    top: -3.4rem;;*/
+}
+.my_all_checked_text{
+    position: relative;
+    left: 0;
+}
+.delete_text{
+
+	margin:0 0 0 30%;
+}
+#my_all_checked{
+    opacity: 0;
+}
+.my_game_footer{
+    display: none;
+    width: 100%;
+    background-color: #0092FF;
+    height: 3.4rem;
+	line-height:3.4rem;
+    position: fixed;
+    bottom: 0;
+    text-align: center;
+    color: #FFFFFF;
+    font-size: 1.27rem;
+}
+.my_game_footer .delete_text {
+    font-size: 1.38rem;
+}
+.my_game_page_item{
+    margin-left: 6rem;
+    font-size: 1.45rem;
+    line-height: 1.5rem;
+    color: #999999;
+    padding-top: 1.2rem;
+    margin-bottom: 0.9rem;
+}
+.my_game_page_item a{
+    color: #999999;
+}
+.active_my_game_page_type a{
+    color: #018FFF;
+    font-weight:bold;
+}
+
+.active_type_down_hx{
+    background-color: #018FFF;
+}
+
+.type_down_hx1,.type_down_hx2{
+	width: 6.2rem;
+    height: 2px;
+    position: relative;
+    top: -0.1rem;
+    z-index: 2;
+}
+.type_down_hx1 {
+    margin-left:7.6rem;
+}
+.type_down_hx2 {
+    margin-left: 17.6rem;
+}
+
+.delete_btn{
+    width: 5%;
+    position: absolute;
+    top: 1.1rem;
+    right: 1.2rem;
+
+}
+.game-time{
+    font-size: 13px;
+	line-height:24px;
+	padding-left:1rem;
+    background:#f2f2f2;
+    position: relative;
+    top: -0.2rem;
+	color:#666;
+}
+.mygame_item{
+    width:25%;
+    height: 7.7rem;
+    float: left;
+    text-align:center;
+	 font-weight: normal;
+    position: relative;
+}
+.mygame_item .check_con{
+    position: absolute;
+    top: 4rem;
+    right: .6rem;
+}
+.mygame_item_img{
+    width: 4.8rem;
+    height: 4.8rem;
+    background-color: #e2e2e2;
+    border-radius: 10px;
+	margin:0.5rem auto 0;
+}
+.mygame_item_img img{
+    width: 4.8rem;
+    height: 4.8rem;
+    border-radius: 10px;
+}
+.mygame_item_con{
+    width: 68%;
+    /* margin-left: 5%; */
+    margin-top: 0.6rem;
+}
+.mygame_collect{
+    display: none
+}
+.mygame_item_con_title{
+    font-size: 13px;
+    width: 90%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+	text-align:center;
+	margin:0.7rem auto 0.5rem;
+}
+.mygame_item_con_summny{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #999999;
+    font-size: 13px;
+}
+@media screen and (max-width:320px) and (orientation:portrait){
+    .delete_btn{
+        top: 1.2rem;
+    }
+    .one_checked_img{
+        width:1.6rem;
+        position: relative;
+        left: 3.3rem;
+        top: -3.6rem;;
+    }
+    .mygame_item{
+        height: 7.2rem;
+        margin-left: calc(25% - 5.15rem)
+    }
+    .mygame_item_img{
+        width: 4.2rem;
+        height: 4.2rem;
+        background-color: #e2e2e2;
+    }
+    .mygame_item_img img{
+        width: 4.2rem;
+        height: 4.2rem;
+    }
+
+    .my_game_page_header{
+        height: 3.4rem!important;
+    }
+    .my_game_page_item{
+        font-size: 1.3rem;
+        padding-top: 1rem;
+        margin-left: 4.6rem!important;
+        margin-bottom: 0.8rem;
+    }
+    .type_down_hx{
+        width: 4.2rem;
+        margin-left: 2.4rem;
+    }
+    .type_down_hx1{
+        margin-left: 6.2rem!important;
+        top: 0rem!important
+    }
+    .type_down_hx2{
+        margin-left: 14.7rem!important;
+        top: -0.1rem!important
+    }
+    .type_down__long_hx{
+        top: -0.3rem!important;
+        height: 1px!important;
+    }
+    .my_game_page_cons_item{
+        margin-left: 1rem!important;
+        height: 7.1rem!important;
+    }
+    .my_game_page_info{
+        width: 13.8rem!important;
+    }
+    .my_game_page_info_three div{
+        max-width: 3.8rem!important;
+        /* padding-left: 0.2rem!important;
+        padding-right: 0.2rem!important; */
+    }
+}
+@media screen and (min-width:360px) and (max-width:374px) and (orientation:portrait) {
+    .my_game_page_info{
+        width: 16rem!important;
+    }
+}
+@media screen and (min-width:414px) and (max-width:431px) and (orientation:portrait){
+    .type_down_hx1,.type_down_hx2{
+        position: relative;
+        top: 0!important;
+    }
+}

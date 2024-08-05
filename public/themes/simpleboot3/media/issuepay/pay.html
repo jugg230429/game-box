@@ -1,0 +1,155 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+
+    <link href="" type="image/x-icon" rel="shortcut icon">
+
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="applicable-device" content="mobile">
+
+    <link rel="apple-touch-icon" href="" />
+
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+
+    <link href="__TMPL__/mediapublic/assets/css/webpay.css" rel="stylesheet" >
+
+    <script>
+        (function(doc, win) {
+            var docEl = doc.documentElement,
+                isIOS = navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/),
+                dpr = isIOS ? Math.min(win.devicePixelRatio, 3) : 1,
+                dpr = window.top === window.self ? dpr : 1, //被iframe引用时，禁止缩放
+                dpr = 1,
+                scale = 1 / dpr,
+                resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
+            docEl.dataset.dpr = dpr;
+            var metaEl = doc.createElement('meta');
+            metaEl.name = 'viewport';
+            metaEl.content = 'initial-scale=' + scale + ',maximum-scale=' + scale + ', minimum-scale=' + scale;
+            docEl.firstElementChild.appendChild(metaEl);
+            var recalc = function() {
+                var width = docEl.clientWidth;
+                if (width / dpr > 1080) {
+                    width = 1080 * dpr;
+                }
+                // 乘以100，px : rem = 100 : 1
+                docEl.style.fontSize = 100 * (width / 1080) + 'px';
+            };
+            recalc()
+            if (!doc.addEventListener) return;
+            win.addEventListener(resizeEvt, recalc, false);
+        })(document, window);
+    </script>
+
+    <script src="__JS__/jquery-1.11.1.min.js"></script>
+
+    <script src="__JS__/layui/layui.all.js"></script>
+
+</head>
+<body>
+    <div class="header">
+        <div class="caption">
+            <span class="table">
+                <span class="tableCell center">购买商品</span>
+            </span>
+        </div>
+    </div>
+    <div class="space"></div>
+    <div class="container">
+        <div class="base">
+            <span class="table"><span class="tableCell">
+            <div class="game"><span class="name">{$game.game_name}</span><span class="server">{$data.server_name}</span></div>
+            </span></span>
+        </div>
+        <div class="form">
+            <form class="jsform formBox" id="jsform" action="" method="post">
+                <div class="formPart formItem">
+                    <div class="formPrefix">价格：</div>
+                    <div class="formMain">
+                        <div class="formRadioBox">
+                            <label class="formRadioItem">
+                                <input type="radio" name="money" checked class="radio" value="10"><span class="number flex moneyIcon">10</span>
+                            </label>
+                            <label class="formRadioItem">
+                                <input type="radio" name="money" class="radio" value="30"><span class="number flex moneyIcon">30</span>
+                            </label>
+                            <label class="formRadioItem">
+                                <input type="radio" name="money" class="radio" value="50"><span class="number flex moneyIcon">50</span>
+                            </label>
+                            <label class="formRadioItem">
+                                <input type="radio" name="money" class="radio" value="100"><span class="number flex moneyIcon">100</span>
+                            </label>
+                            <label class="formRadioItem">
+                                <input type="radio" name="money" class="radio" value="500"><span class="number flex moneyIcon">500</span>
+                            </label>
+                            <label class="formRadioItem">
+                                <input type="radio" name="money" class="radio" value="1000"><span class="number flex moneyIcon">1000</span>
+                            </label>
+                            <label class="formRadioItem">
+                                <input type="radio" name="money" class="radio" value="5000"><span class="number flex moneyIcon">5000</span>
+                            </label>
+                            <label class="formRadioItem">
+                                <input type="radio" name="money" class="radio" value="10000"><span class="number flex moneyIcon">10000</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="formPart formItem">
+                    <div class="formPrefix">获得：</div>
+                    <div class="formMain"><span class="money">{$game['currency_ratio']*10}</span>{$game.currency_name}</div>
+                </div>
+                <div class="formPart formItem formItemBtn">
+                    <input type="button" class="btn flex submit submit_btn" value="立即购买" >
+                </div>
+                <input type="hidden" name="user_id" value="{$data.user_id}">
+                <input type="hidden" name="game_id" value="{$data.game_id}">
+                <input type="hidden" name="channel_code" value="{$data.channel_code}">
+                <input type="hidden" name="server_id" value="{$data.server_id}">
+                <input type="hidden" name="weixin_pay_type" value="7">
+            </form>
+        </div>
+    </div>
+
+    <script>
+        var alipay_url = "{:url('Issuepay/alipay')}";
+        var weixinpay_url = "{:url('api/Pay/get_wx_code')}";
+        var is_wechat = "{:cmf_is_wechat()}";
+        var error_msg = "{$error_msg|default=''}";
+        var ratio = "{$game['currency_ratio']|default=100}";
+        $(function () {
+            if(error_msg != ''){
+                layer.msg(error_msg);
+            }
+            if(is_wechat == 1){
+                $("#jsform").attr('action',weixinpay_url);
+            }else{
+                $("#jsform").attr('action',alipay_url);
+            }
+            $(".submit_btn").click(function () {
+                if(error_msg != ''){
+                    layer.msg(error_msg);
+                    return false;
+                }
+                $("#jsform").submit();
+            })
+            $('input[type=radio][name=money]').change(function() {
+                var money = parseInt($(this).val())*parseInt(ratio);
+                $(".money").text(money);
+            });
+        })
+    </script>
+</body>
+</html>

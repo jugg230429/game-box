@@ -1,0 +1,89 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('ptbspend/senduserlists')}">发放记录</a></li>
+        <li class="active"><a href="{:url('ptbspend/senduser')}">给玩家发放</a></li>
+        <span class="title_remark">说明：给玩家发放平台币</span>
+        
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" action="{:url('senduser')}" method="post">
+        
+        <div class="form-group">
+            <label class="col-sm-2 control-label">发放方式：</label>
+            <div class="col-md-6 col-sm-10">
+                <label class="radio-inline typer mr50" tab_id="1">
+                    <input type="radio" name="type" value="1" checked=""> 单用户
+                </label>
+                <label class="radio-inline typer mr50" tab_id="2">
+                    <input type="radio" name="type" value="2"> 多用户
+                </label>
+                <label class="radio-inline typer" tab_id="3">
+                    <input type="radio" name="type" value="3" > 批量发放
+                </label>
+            </div>
+        </div>
+        <div id="tab1" class="ttt ">
+            <div class="form-group">
+                <label for="input-name" class="col-sm-2 control-label"><span class="form-required">*</span>玩家账号：</label>
+                <div class="col-md-6 col-sm-10">
+                    <input type="text" class="form-control user-input" id="" name="account" placeholder="只能输入玩家账号">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input-remark" class="col-sm-2 control-label"><span class="form-required">*</span>发放数量：</label>
+                <div class="col-md-6 col-sm-10">
+                    <input type="text" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" class="form-control user-input" id="" name="num" placeholder="需输入大于0的整数">
+                </div>
+            </div>
+        </div>
+        <div id="tab2" class="ttt hidden">
+            <div class="form-group">
+                <label for="input-name" class="col-sm-2 control-label"><span class="form-required">*</span>玩家账号：</label>
+                <div class="col-md-6 col-sm-10">
+                    <textarea type="text" class="form-control user-input" id="" name="accounts" placeholder="输入玩家账号，一行一个"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input-remark" class="col-sm-2 control-label"><span class="form-required">*</span>发放数量：</label>
+                <div class="col-md-6 col-sm-10">
+                    <input type="text" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" class="form-control user-input" id="" name="nums" placeholder="需输入大于0的整数">
+                </div>
+            </div>
+        </div>
+        <div id="tab3" class="ttt hidden">
+            <div class="form-group">
+                <label for="input-name" class="col-sm-2 control-label"><span class="form-required"></span>Excel模板：</label>
+                <div class="col-md-6 col-sm-10">
+                    <a href="/upload/exclexls/Platform_issuance.xls">下载模板</a>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input-remark" class="col-sm-2 control-label">导入模板：</label>
+                <div class="col-md-6 col-sm-10">
+                    <input type="file" name="excelData" value=""  >
+                    <input type="hidden" name="filetype" value="file"  >
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-1 col-sm-10">
+                <button type="submit" class="btn btn-primary js-ajax-submit save-btn">保存</button>
+				<a class="btn btn-default return-btn" href="javascript:history.back(-1)">返回</a>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript">
+    tabid = $('input[name=type]:checked').val();
+    $('#tab'+tabid).addClass('show').removeClass('hidden').siblings('.ttt').addClass('hidden').removeClass('show');
+    $('.typer').click(function(){
+        tabidd = $('input[name=type]:checked').val();
+        console.log(tabidd)
+        $('#tab'+tabidd).addClass('show').removeClass('hidden').siblings('.ttt').addClass('hidden').removeClass('show');
+    });
+</script>
+</body>
+</html>

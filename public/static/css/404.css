@@ -1,0 +1,43 @@
+/*
+* @description: 404页面样式
+ *@author:王奉
+* @update: name(xxxx-xx-xx xx:xx)
+ */
+.con {
+	text-align: center;
+}
+
+a {
+	text-decoration: none;
+	font-size: 16px;
+}
+
+.title {
+	font-size: 30px;
+	color: #333;
+}
+
+.error-img {
+	width: 673px;
+	margin: 10% 0 0 0;
+}
+
+.a-reload {
+	color: #008eff;
+	margin-right: 59px;
+}
+.a-service {
+	color: #ff9600;
+}
+
+.icon {
+	vertical-align: middle;
+	margin-right: 3px;
+}
+
+@media screen and (max-width: 1200px) {
+	.error-img {
+		width: 90%;
+		margin: 10% 0 0 0;
+	}
+}

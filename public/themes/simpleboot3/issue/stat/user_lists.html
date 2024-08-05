@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="__TMPL__/issuepublic/assets/css/promote/select2.min.css" rel="stylesheet" />
+	<link href="__TMPL__/issuepublic/assets/css/promote/game.css" rel="stylesheet" />
+    <link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+    <link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" media="all" href="__STATIC__/js/datejs/daterangepicker.css"/>
+    {:widget('issue/Management/css')}
+</head>
+
+<body>
+<!--左侧导航栏-->
+{:widget('issue/Management/left')}
+
+<!--头部-->
+{:widget('issue/Management/header')}
+
+<div class="trunk">
+
+    <div class="trunk-con">
+        <div class="right-container">
+            <div class="normal-list">
+                <div class="trunk">
+                    <div class="tabpan">
+
+                        <div class="tabpan-con tabpan-show">
+                            <form action="{:url('issue/stat/user_lists')}">
+                                <div class="trunk-search clearfix fr">
+                                    <input type="text" class="tabpan-input normal-space" name="id" placeholder="玩家ID" value="{:input('id')}">
+                                    <input type="text" class="tabpan-input normal-space" name="account" placeholder="玩家账号" value="{:input('account')}">
+                                    <input type="text" class="tabpan-input normal-space" name="openid" placeholder="平台ID" value="{:input('openid')}">
+                                    <input type="text" readonly style="width: 160px;" class="tabpan-input normal-space"
+                                           autocomplete="off" name="rangepickdate" id="rangepickdate" placeholder="充值时间" value="{:input('rangepickdate')}">
+                                    <input type="submit" class="submit fr normal-space" id="submit" value="查询">
+                                    <input type="hidden" id="page" name="row" value="{:input('row',10)}">
+                                </div>
+                            </form>
+                            <div class="clear"></div>
+                            <table class="table normal-table" id="promotecoin_table">
+                                <tbody>
+                                <tr>
+                                    <th>玩家ID</th>
+                                    <th>玩家账号</th>
+                                    <th>平台ID</th>
+                                    <th>注册游戏</th>
+                                    <th>充值流水(元)</th>
+                                    <th>注册时间</th>
+                                    <th>注册IP</th>
+                                    <th>最后登录时间</th>
+                                </tr>
+                                <notempty name="data_lists">
+                                    <volist name="data_lists" id='vo'>
+                                        <tr>
+                                            <td>{$vo.id}</td>
+                                            <td>{$vo.account}</td>
+                                            <td style="width:120px;word-break: break-all">{$vo.openid}</td>
+                                            <php>$map['id'] = $vo['game_id']</php>
+                                            <td>{:get_issue_game_entity($map,'game_name')['game_name']}{:get_game_sdk_version_name($vo['game_id'])}</td>
+                                            <td>{$vo.cumulative}</td>
+                                            <td>{:show_time($vo['create_time'])}</td>
+                                            <td>{$vo.register_ip}</td>
+                                            <td>{:show_time($vo['last_login_time'])}</td>
+                                        </tr>
+                                    </volist>
+                                    <else/>
+                                    <!--暂无数据-->
+                                    <tr>
+                                        <td colspan="8" >
+                                            <div class="no-data">
+                                                <img src="__TMPL__/issuepublic/assets/images/icon_wushujv2.png"  alt="" class="no-data-img"/>
+                                                <p class="no-data-text">暂无数据</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </notempty>
+                                </tbody>
+                            </table>
+                            <notempty name="data_lists">
+                                <div class="pagenation clearfix">
+                                    {$page}
+                                </div>
+                            </notempty>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="__TMPL__/issuepublic/assets/js/promote/jquery-1.11.1.min.js"></script>
+<script src="__TMPL__/issuepublic/assets/js/promote/common.js"></script>
+<script src="__TMPL__/issuepublic/assets/js/promote/select2.min.js"></script>
+<script type="text/javascript" src="__STATIC__/js/datejs/moment.min.js"></script>
+<script type="text/javascript" src="__STATIC__/js/datejs/momentfunction.js"></script>
+<script type="text/javascript" src="__STATIC__/js/datejs/daterangepicker.js"></script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script src="__STATIC__/js/ajaxForm.js"></script>
+{:widget('issue/Management/footer')}
+<script>
+    $(function() {
+        $(".js-select-gallery").select2();
+    })
+</script>
+<script type="text/javascript">
+        var maxDate = moment().startOf('day');
+        var date_autoUpdateInput = false;
+        var start = '{$start}',end  = '{$end}';
+        //			日历
+        var date = "{$setdate}";
+</script>
+
+</body>
+
+</html>

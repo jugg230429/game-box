@@ -1,0 +1,63 @@
+<extend name="../mediapublic/base" />
+<!-- 主体内容 -->
+<block name="body">
+    <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/my_game.css">
+    <!-- 用户信息 -->
+    <div class="userinfo_con">
+        <div class="layui-container">
+            <div class="fl left_user_info">
+                <div class="left_user_info_img">
+                    <img src="{:cmf_get_image_url($user['head_img'])}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                    <span class="levelIcon">V{$user['vip_level']}</span>
+                </div>
+                <!-- <div class="left_user_info_grade">
+                    <if condition="$user['vip_level'] gt 0">
+                        <img src="__STATIC__/images/my_ico_grade{$user['vip_level']}.png" alt="">
+                    </if>
+
+                </div> -->
+                <p class="left_user_info_name">{$user.nickname}</p>
+                <div class="checked_item_con">
+                    <include file="mediapublic@left_menu" />
+                </div>
+            </div>
+            <div class="fl right_user_info">
+                <div class="right_user_info_title">
+                    <a href="{:url('User/mygame')}" class="fl right_user_info_title_left ">
+                        最近在玩
+                        <div class="sort_fgx_fe"></div>
+                    </a>
+                    <a href="javascript:;" class="fl right_user_info_title_left active">
+                        我的收藏
+                        <div class="sort_fgx_fe"></div>
+                    </a>
+                    <p class="fg right_user_info_title_right">您当前的位置：<a href="{:url('Index/index')}">平台首页</a>><a href="{:url('User/userinfo')}"> 用户中心</a>><span>我的收藏</span></p>
+                </div>
+                <!-- 有下载记录 -->
+                <div class="mygame_con">
+                    <empty name="list">
+                        <!-- 无下载记录 -->
+                        <p class="no_mygame_con_item">~暂无收藏记录~</p>
+                    </empty>
+                    <volist name="list" id="vo">
+                        <a href="{:url('Game/detail',['game_id'=>$vo['relation_game_id']])}">
+                        <div class="mygame_con_item">
+                            <div class="mygame_con_item_img">
+                                <div class="game_icon_div"><notempty name="vo.icon"><img src="{:cmf_get_image_url($vo['icon'])}" alt="" class="fl game_icon" onerror="this.src='/static/images/empty.jpg';this.onerror=null"></notempty></div>
+                                <if condition="$vo['sdk_version'] eq 1">
+                                    <img src="__STATIC__/images/gift_ico_android.png" alt="" class="game_type_icon">
+                                <elseif condition="$vo['sdk_version'] eq 2"/>
+                                    <img src="__STATIC__/images/gift_ico_ios.png" alt="" class="game_type_icon">
+                                <else/>
+                                    <img src="__STATIC__/images/gift_ico_h5.png" alt="" class="game_type_icon">
+                                </if>
+                            </div>
+                            <p class="mygame_con_item_title">{$vo.relation_game_name}</p>
+                        </div>
+                        </a>
+                    </volist>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>

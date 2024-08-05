@@ -1,0 +1,569 @@
+<include file="public@header" />
+<link href="__TMPL__/public/assets/simpleboot3/css/pro_promote.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="{:url('promote/lists')}">渠道列表</a></li>
+        <!-- <li><a href="{:url('add')}">添加渠道</a></li> -->
+        <li class=""><a href="{:url('promote/promote_level')}">等级划分</a></li>
+    </ul>
+    <form id="search_form" class="well form-inline fr" method="get" action="{:url('lists')}">
+        <select name="promote_id" id="promote_id" class="selectpicker bs-select-hidden" promote_id="{:input('request.promote_id')}" data-size="8" data-live-search="true" style="width: 100px;">
+            <option value="">渠道ID</option>
+            <volist name=":get_promote_list()" id="vo">
+                <option game-id="{$vo.id}" value="{$vo.id}" >{$vo.id}</option>
+            </volist>
+        </select>
+        <select name="account" id="account" class="selectpicker bs-select-hidden" account="{:input('request.account')}" data-live-search="true" data-size="8" style="width: 100px;">
+            <option value="">渠道账号</option>
+            <volist name=":get_promote_list()" id="vo">
+                <option value="{$vo.account}" >{$vo.account}</option>
+            </volist>
+        </select>
+        <php>$pmap['parent_id'] = 0</php>
+        <select name="parent_id" id="parent_id" class="selectpicker bs-select-hidden" parent_id="{:input('request.parent_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+            <option value="">上线渠道</option>
+            <volist name=":get_promote_list($pmap)" id="vo">
+                <option value="{$vo.id}" >{$vo.account}</option>
+            </volist>
+        </select>
+        <select name="busier_id" id="busier_id" class="selectpicker bs-select-hidden" busier_id="{:input('request.busier_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+            <option value="">所属商务</option>
+            <option value="0" >官方</option>
+            <volist name=":get_business_lists([],'id,account')" id="vo">
+                <option value="{$vo.id}" >{$vo.account}</option>
+            </volist>
+        </select>
+        <select name="register_type" id="register_type" class="selectpicker" register_type="{:input('request.register_type')}" style="width: 120px;">
+            <option value="">类型</option>
+            <option value="0">个人</option>
+            <option value="1">公会</option>
+            <option value="2">公众号</option>
+            <option value="3">其它</option>
+        </select>
+        <select name="level" id="level" class="selectpicker" level="{:input('request.level')}" style="width: 120px;">
+            <option value="">等级</option>
+            <option value="1">一级渠道</option>
+            <option value="2">二级渠道</option>
+            <option value="3">三级渠道</option>
+        </select>
+
+        <select name="status" id="status" class="selectpicker" status="{:input('request.status')}" style="width: 120px;">
+            <option value="">显示状态</option>
+            <option value="1">正常</option>
+            <option value="0">待审核</option>
+            <option value="-1">已锁定</option>
+        </select>
+        <select name="promote_level" id="promote_level" class="selectpicker" status="{:input('request.promote_level')}" style="width: 120px;">
+            <php>$promote_level = cmf_get_option('promote_level_set');</php>
+                <option value="">推广等级</option>
+            <volist name="$promote_level" id="vo">
+                <option value="{$vo.level}">{$vo.level_name}</option>
+            </volist>
+        </select>
+
+        <input type="submit" class="btn btn-search" id="search_btn" value="搜索" />
+        <a class="btn btn-clear" href="{:url('lists')}">清空</a>
+        <a class="btn btn-export js-ajax-dialog-btn-xz" data-msg="确定导出吗？" href="{:url('Export/expUser',array_merge(['id'=>1,'xlsname'=>'渠道列表'],input()))}">导出</a>
+    </form>
+    <form class="js-ajax-form" action="" method="post">
+        <div class="table-actions position" style="margin-left: -10px;">
+            <a href="{:url('add')}" class="btn btn-success   js-ajax-submit mbt17">新增</a>
+            <button class="btn btn-success   js-ajax-submit mbt17" type="submit"
+                    data-action="{:url('changeStatus',['status'=>0])}" data-subcheck="true" data-msg="您确定审核吗？">
+                审核
+            </button>
+            <button class="btn btn-success   js-ajax-submit mbt17" type="submit"
+                    data-action="{:url('changeStatus',['status'=>1,'type'=>'lock'])}" data-subcheck="true" data-msg="您确定锁定吗？">
+                锁定
+            </button>
+            <button class="btn btn-success   js-ajax-submit mbt17" type="submit"
+                    data-action="{:url('changeStatus',['status'=>-1,'type'=>'lock'])}" data-subcheck="true" data-msg="您确定解锁吗？">
+                解锁
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="btn   js-ajax-submit mtb17 btn-audit" type="submit"
+                    data-action="{:url('set_config_auto_audit',['status'=>$autostatus])}" data-subcheck="false" data-msg="您确定操作吗？">
+                <input type="checkbox" id="auto-check" name="" <if condition="$autostatus eq 1">checked</if> class="auto-checkbox promote_auto_audit"><label for="auto-check" class="fl"></label><div class="span-audit"> 自动审核</div>
+            </button>
+        </div>
+        <div style="overflow: auto hidden; width:100%">
+        <table class="table table-hover table-bordered" style="margin-left: 0px;">
+            <thead>
+            <tr style="white-space: nowrap;">
+                <th width="15">
+
+                    <input type="checkbox" id="all-checkbox" class="table-item-checkbox js-check-all" data-direction="x" data-checklist="js-check-x">
+                    <label for="all-checkbox" class=""></label>
+                </th>
+                <th>ID</th>
+                <th>渠道账号</th>
+                <th>姓名</th>
+                <th>手机号</th>
+                <th>渠道押金</th>
+                <th>平台币余额</th>
+                <if condition="AUTH_USER eq 1"><th>总流水</th></if>
+                <th>总注册</th>
+                <th>结算类型</th>
+                <th>推广等级</th>
+                <th>渠道类型</th>
+                <th>自动结算周期/天</th>
+                <th>不可推广游戏</th>
+                <th>注册时间</th>
+                <th>最后登录时间</th>
+                <th>等级</th>
+                <th>上线渠道</th>
+                <th>商务专员</th>
+                <th>状态</th>
+                <th width="130">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <empty name="data_lists">
+                <tr><td colspan="21" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                <foreach name="data_lists" item="vo">
+                    <php>
+                        $total_balance += $vo['balance_coin'];
+                        $pay_amount = get_promote_user_pay($vo['id']);
+                        $total_amount += $pay_amount;
+                        $total_count += $vo['user_count'];
+                    </php>
+                    <tr style="white-space: nowrap;">
+                        <td>
+                            <input type="checkbox" id="ids-checkbox{$vo.id}" class="table-item-checkbox js-check"  data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
+                            value="{$vo.id}" >
+                            <label for="ids-checkbox{$vo.id}" class=""></label>
+                        </td>
+                        <td>{$vo['id']}</td>
+                        <td>{$vo['account']}</td>
+                        <td>{$vo.real_name}</td>
+                        <td>{$vo['mobile_phone']}</td>
+                        <td><a href="javascript:;" class="editCashTab underline" data-title="修改已交押金" promote-id="{$vo.id}"  field='cash_money' >{$vo['cash_money']}</a></td>
+                        <td>{$vo['balance_coin']}</td>
+                        <if condition="AUTH_USER eq 1"><td>{$pay_amount}</td></if>
+                        <td>{$vo.user_count}</td>
+                        <td>{:get_info_status($vo['pattern'],21)}</td>
+                        <td>{$vo.level_name}</td>
+                        <td>{:get_info_status($vo['register_type'],28)}</td>
+                        <!-- 自动结算周期 -->
+                        <td>
+                            <if condition="$vo['promote_level'] eq 1">
+                                <a href="javascript:;" class="editTab underline" data-title="自动结算周期" promote-id="{$vo.id}" promote-account="{$vo.account}">{$vo['settlement_day_period']}</a>
+                            <else/>
+                            --
+                            </if>
+
+                        </td>
+
+                        <td><if condition="$vo['promote_level'] eq 1"><a href="javascript:void(0);" class="ajax-view" data-id="{$vo.id}"><empty name="vo.game_ids">0<else/>{:count(explode(',',$vo['game_ids']))}</empty></a><else/>--</if></td>
+                        <td>{:date('Y-m-d H:i:s',$vo['create_time'])}</td>
+                        <td>{:get_login_time($vo['last_login_time'])}</td>
+                        <td>{:$vo['parent_id']==0?'一级渠道':($vo['promote_level']==2?'二级渠道':'三级渠道')}</td>
+                        <td>{:$vo['parent_id']==0?get_promote_name($vo['id']):get_promote_name($vo['parent_id'])}</td>
+                        <td>{:$vo['busier_id']==0?官方:get_business_entity($vo['busier_id'],'account')['account']}</td>
+                        <td>
+                            <span <if condition="$vo['status'] eq 1"> class="label" style="color: #3FAD46;font-size:14px" <elseif condition="$vo['status'] eq 0">class="label " style="color: #f0ad4e;font-size:14px"<else/>class="label" style="color:#d9534f;font-size:14px"</if>>{:get_info_status($vo['status'],10)}</span>
+                        </td>
+                        <td>
+                            <if condition="$vo['status'] neq  0">
+                                <a href="{:url('edit',['id'=>$vo['id']])}">编辑</a>
+                            </if>
+                            <a href="{:url('changeStatus',['ids'=>$vo['id'],'status'=>$vo['status'],'type'=>'lock'])}" class="js-ajax-dialog-btn">{:get_info_status($vo['status'],11)}</a>
+
+                            <if condition="$vo['status'] eq  0">
+                                <a href="{:url('del',['ids'=>$vo['id']])}" class="js-ajax-dialog-btn" style="color: red">删除</a>
+                            </if>
+                        </td>
+                    </tr>
+                </foreach>
+                <tr style="background: #E4E4E4;">
+                    <td colspan="3">累计汇总</td>
+                    <td></td>
+                    <td></td>
+                    <td style="color:rgba(255, 177, 112)"><strong>{:sprintf("%.2f",$total_cash_money)}</strong></td>
+                    <td style="color:rgba(255, 177, 112)"><strong>{:sprintf("%.2f",$total_balance_coin)}</strong></td>
+                    <td style="color:rgba(255, 177, 112)"><strong>{:sprintf("%.2f",$total_pay_amount)}</strong></td>
+                    <td style="color:rgba(255, 177, 112)"><strong>{$total_user_count}</strong></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </empty>
+            </tbody>
+        </table>
+         </div>
+    </form>
+    <div class="pagination">{$page}
+
+    </div>
+</div>
+<!-- <div class="pro_promot" style="display:none">
+    <form action="{:url('Promote/savePromoteGame')}" id="ajaxForm" method="post" />
+    <input type="hidden" name="promote_id" id="se_promote_id" value="" />
+    <div class="pro_promot_main">
+        <div class="pro_promot_title">
+            <div class="fl pro_promot_title_text">
+                <div class="fl pro_promot_title_bigtext">不可推广游戏</div>（选中的游戏将不在推广后台展示，渠道不可进行游戏申请并推广；二三级渠道推广权限同一级）</div>
+            <div class="pro_promot_close fr" style="display: none;"><img src="__TMPL__/public/assets/images/pro_promot_close.png"></div>
+        </div>
+        <div class="pro_promot_con">
+            <div class="pro_promot_account"><div class="pro_promot_select_title fl">渠道账号：</div><span class="pro_promot_number fl"></span></div>
+            <div class="clear"></div>
+
+                <div class="pro_promot_select_title pro_promot_mt20 fl">选择游戏：</div>
+
+
+            <div class="pro_promot_game fl">
+
+                <ul id="game_list" class="z_clearfix game_list">
+
+                </ul>
+            </div>
+            <div class="clear"></div>
+            <div class="pro_promot_btn">
+                <div class="fr pro_promot_btn_confirm">确定</div>
+                <div class="fl pro_promot_btn_cancel">取消</div>
+            </div>
+        </div>
+    </div>
+    </form>
+</div> -->
+
+
+
+<!-- 新的不可修改渠道 -->
+<div class="pro_promot" style="display:none">
+    <form action="{:url('Promote/savePromoteGame')}" id="ajaxForm" method="post" />
+    <input type="hidden" name="promote_id" id="se_promote_id" value="" />
+    <div class="promoteModal">
+        <div class="promoteModal-header">
+            <div class="modalheader-ttile fl">
+                <div class="fl headerTitleName">不可推广游戏</div>
+                （选中的游戏将不在推广后台展示，渠道不可进行游戏申请并推广，二三级渠道推广权限同一级）
+            </div>
+            <div class="fr btnCloseModal"><img src="__TMPL__/public/assets/images/btn_close_pop.png" alt=""></div>
+        </div>
+        <div class="promoteModal-body">
+            <div style="padding-left:27px">
+                <span class="mainTextSame">渠道账号：</span>
+                <span class="gameNameShowText"></span>
+            </div>
+            <div class="promoteChooseAllInfo">
+                <div>
+                    <span class="mainTextSame fl">不可申请游戏：</span>
+                    <div class="fl" style="margin-left: 2px;">
+                        <a href="javaScript:;" class="firstChooseNum defferentTextColor firstNumCurrent js-show-all">全部</a>
+                        <a href="javaScript:;" class="firstChooseNum js-screen" key="ABCD">ABCD </a>
+                        <a href="javaScript:;" class="firstChooseNum js-screen" key="EFGH">EFGH</a>
+                        <a href="javaScript:;" class="firstChooseNum js-screen" key="IJKL">IJKL</a>
+                        <a href="javaScript:;" class="firstChooseNum js-screen" key="MNOP">MNOP</a>
+                        <a href="javaScript:;" class="firstChooseNum js-screen" key="QRST">QRST</a>
+                        <a href="javaScript:;" class="firstChooseNum js-screen" key="UVWX">UVWX</a>
+                        <a href="javaScript:;" class="firstChooseNum js-screen" key="YZ">YZ</a>
+                    </div>
+                </div>
+                <div>
+                    <input type="text" class="inputSearchContent" placeholder="输入游戏名称">
+                    <button class="searchButtonPromote">搜索</button>
+                </div>
+            </div>
+            <div class="promoteGameSelect">
+
+            </div>
+        </div>
+        <div class="promoteModal-footer">
+            <div class="fl footerAllCheckBtn">
+                <label class="" for="">
+                    <input type="checkbox" class="checkBoxIcon" id="jsgamecheckall">
+                    <i class="checkBoxIcon"></i>
+                    <span class="mainTextSame" >全选</span>
+                </label>
+            </div>
+            <div class="fl">
+                <button class="cancelModalBtn">取消</button>
+                <button class="confirmModalBtn">确定</button>
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script type="text/javascript">
+    //点击取消按钮，弹窗关闭
+    $('.cancelModalBtn').click(function(){
+        $('.pro_promot').css('display','none');
+        return false;
+    });
+    $('.btnCloseModal').click(function() {
+        $('.pro_promot').css('display','none');
+        return false;
+    });
+
+
+
+    promote_id = $("#promote_id").attr('promote_id');
+    account = $("#account").attr('account');
+    parent_id = $("#parent_id").attr('parent_id');
+    busier_id = $("#busier_id").attr('busier_id');
+    register_type = $("#register_type").attr('register_type');
+    $("#promote_id").selectpicker('val', promote_id);
+    $("#account").selectpicker('val', account);
+    $("#busier_id").selectpicker('val', busier_id);
+    $("#parent_id").selectpicker('val', parent_id);
+    $("#register_type").selectpicker('val', register_type);
+    $("#level").selectpicker('val', $('#level').attr('level'));
+    $("#status").selectpicker('val', $('#status').attr('status'));
+    //打开弹窗
+
+    $(function () {
+        $(".ajax-view").click(function(){
+            //获取游戏列表
+            var url = "{:url('Promote/getPromoteGame')}";
+            var id = $(this).attr('data-id');
+            $.post(url,{id:id},function(res){
+                if(res.code==1){
+                    var game_list = res.data.game_list;
+                    var promote_info = res.data.promote_info;
+                    $('.gameNameShowText').html(promote_info.account);
+                    var lis = [];
+                    var pids = '';
+                    if(promote_info['game_ids']){
+                        pids = ','+promote_info['game_ids'].toString()+','; //字符分割
+                    }
+                    $.each(game_list,function(index,ele){
+                        if(ele.game_name.length>7){
+                            ele.game_name = ele.game_name .substring(0,7)+"..."
+                        }
+                        lis.push('<li class="fl pro_promot_game_con short-'+ele.short_f+'" id="'+ele.game_name+'">');
+
+                        if(promote_info['game_ids']==''){
+                            lis.push('<label class="promoteSelectLabel" >' +
+                                '<input type="checkbox" value="'+ele.id+'" name="game_ids[]" class="checkBoxIcon jsgameid">' +
+                                '<i class="checkBoxIcon"></i>' +
+                                '<span class="mainTextSame limitTextStyle">'+ele.game_name+'</span>' +
+                                '<i class="overTextStyle">'+ele.game_name+'</i>' +
+                                '</label>');
+                        }else{
+
+                            if(pids.indexOf(','+ele.id+',')>-1){
+                                lis.push('<label class="promoteSelectLabel">' +
+                                    '<input type="checkbox" value="'+ele.id+'" name="game_ids[]" checked="checked" class="checkBoxIcon jsgameid">' +
+                                    '<i class="checkBoxIcon"></i>' +
+                                    '<span class="mainTextSame limitTextStyle">'+ele.game_name+'</span>' +
+                                    '<i class="overTextStyle">'+ele.game_name+'</i>' +
+                                    '</label>');
+                            }else{
+                                lis.push('<label class="promoteSelectLabel">' +
+                                    '<input type="checkbox" value="'+ele.id+'" name="game_ids[]" class="checkBoxIcon jsgameid">' +
+                                    '<i class="checkBoxIcon"></i>' +
+                                    '<span class="mainTextSame limitTextStyle">'+ele.game_name+'</span>' +
+                                    '<i class="overTextStyle">'+ele.game_name+'</i>' +
+                                    '</label>');
+                            }
+                        }
+                    });
+                    $(".promoteGameSelect").html(lis.join(''));
+                    $("#se_promote_id").val(res.data.promote_info.id);
+                    $(".pro_promot").css("display","block");
+                    jsgameid();
+                }else{
+                    alert('请求失败');
+                }
+            });
+        });
+
+        //保存修改
+        $(".pro_promot_btn_confirm").click(function(){
+            $("#ajaxForm").ajaxSubmit(function(res){
+                layer.msg(res.msg);
+                setTimeout(function () {
+                    top.location.reload();
+                },1000);
+                $(".pro_promot").hide();
+            });
+            return false;
+        });
+
+        //关闭弹窗
+        $(".pro_promot_close").click(function(){
+            $(".pro_promot").css("display","none");
+        });
+        //取消修改
+        $(".pro_promot_btn_cancel").click(function(){
+            $(".pro_promot").css("display","none");
+            //layer.msg('修改已取消');
+        });
+
+
+        //保存修改
+        $(".confirmModalBtn").click(function(){
+            $("#ajaxForm").ajaxSubmit(function(res){
+                layer.msg(res.msg);
+                location.reload();
+                $(".pro_promot").hide();
+            });
+            return false;
+        });
+
+        $("#jsgamecheckall").click(function(){
+           $('.promoteGameSelect').find(".jsgameid:visible").prop("checked",this.checked);
+        });
+
+        //全部显示
+        $(".js-show-all").click(function () {
+            $(this).addClass('firstNumCurrent').siblings().removeClass('firstNumCurrent')
+            $(".pro_promot_game_con").show();
+            return false;
+        });
+        //筛选条件
+        $(".js-screen").click(function () {
+           $(this).addClass('firstNumCurrent').siblings().removeClass('firstNumCurrent')
+            var keys = $(this).attr("key");
+            var keyArr = keys.split("");
+
+            $(".pro_promot_game_con").hide();
+            keyArr.forEach(function (ele) {
+                $(".short-" + ele + "").show();
+            });
+            return false;
+        });
+
+        //搜索
+        $('.searchButtonPromote').click(function () {
+            var content = $(".inputSearchContent").val();
+            if (content == '') {
+                $(".pro_promot_game_con").show();
+                return false;
+            }
+            $(".pro_promot_game_con").hide();
+            $("li[id*=" + content + "]").show();
+            return false;
+        });
+
+    })
+
+    //可申请游戏 全选及全选反选 功能  @author  zwm  date 20180604
+    function jsgameid(){
+        $(".jsgameid").click(function(){
+            var option = $(this).closest('ul').find(".jsgameid"),
+                checkall = $(this).closest('ul').siblings('.jsgamecheckallbox').find('.jsgamecheckall');
+            option.each(function(i){
+                if(!this.checked){
+                    checkall.prop("checked", false);
+                    return false;
+                }else{
+                    checkall.prop("checked", true);
+                }
+            });
+        });
+    }
+
+    // 渠道自动结算周期编辑
+    $(function(){
+        //设置分成比例
+        $(".editTab").click(function(){
+            var that = $(this);
+            var title = that.attr("data-title");
+            var promote_id = that.attr("promote-id");
+            var promote_account = that.attr("promote-account");
+            var num = that.text();
+            // console.log(num);
+            // console.log(promote_id);
+            // console.log(promote_account);
+            layer.prompt({
+                formType:0,
+                title:title,
+                value:num,
+                placeholder:'请输入自动结算周期(整数)'
+            }, function(value) {
+                if (!/^(((\d|[1-9]\d)(\.\d{1,2})?)|100|100.0|100.00)$/.test(value)) {
+                    layer.msg('输入错误，请输入数字',{time:2000});
+                    return false;
+                }
+                $.ajax({
+                    async: false,
+                    url:"{:url('Promote/alterPromoteSettlement')}",
+                    type:"POST",
+                    dataType:'JSON',
+                    data:{promote_id:promote_id,day_period:value,promote_account:promote_account},
+                    success:function(result){
+                        if(result.code > 0){
+                            // layer.msg(result.msg,{time:1000});
+                            layer.msg(result.msg,{time:1000},function(){
+                                !result.code || location.reload();
+                            });
+                        }else{
+                            layer.msg(result.msg,{time:1000});
+                        }
+
+                    },
+                    error:function(){
+                        layer.msg('服务器异常',{time:2000});
+                    }
+                })
+            });
+        })
+
+        $(".editCashTab").click(function(){
+            var that = $(this);
+            var title = that.attr("data-title");
+            var promote_id = that.attr("promote-id");
+            var field = that.attr("field");
+            var num = that.text();
+            layer.prompt({
+                formType:0,
+                title:title,
+                value:num,
+                placeholder:'输入渠道已交押金（最多2位小数）',
+                success: function (layero) {
+                   layero.find('.layui-layer-input').on('keyup', function () {
+                       var obj = this
+                       obj.value = obj.value.replace(/[^\d.]/g,"");  //清除“数字”和“.”以外的字符
+                       obj.value = obj.value.replace(/\.{2,}/g,"."); //只保留第一个. 清除多余的
+                       obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+                       obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');//只能输入两个小数
+                       if(obj.value.indexOf(".")< 0 && obj.value !=""){
+                           obj.value= parseFloat(obj.value);
+                       }
+                   })
+                }
+            }, function(value) {
+                $.ajax({
+                    async: false,
+                    url:"{:url('Promote/savePromoteField')}",
+                    type:"POST",
+                    dataType:'JSON',
+                    data:{promote_id:promote_id,value:value,field:field},
+                    success:function(result){
+                        if(result.code > 0){
+                            layer.msg(result.msg,{time:1000},function(){
+                                !result.code || location.reload();
+                            });
+                        }else{
+                            layer.msg(result.msg,{time:1000});
+                        }
+
+                    },
+                    error:function(){
+                        layer.msg('服务器异常',{time:2000});
+                    }
+                })
+            });
+        })
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,423 @@
+<extend name="../mobilepublic/trade_common" />
+<block name="css">
+    <link rel="stylesheet" href="__STATIC__/js/webuploader/webuploader.css" >
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/trade.css">
+</block>
+<block name="body">
+    <script type="text/html" id="photos-item-tpl">
+        <li id="saved-image{id}">
+            <input id="photo-{id}" type="hidden" name="screenshot[]" value="{filepath}">
+            <img id="photo-{id}-preview" src="{url}" style="height:36px;width: 36px;"
+                 onclick="imagePreviewDialog(this.src);">
+            <a href="javascript:(function(){$('#saved-image{id}').remove();})();">移除</a>
+        </li>
+    </script>
+    <div class="page tradePage tradeTransactionPage">
+        <header class="header tradeHeader tradeTransactionHeader">
+            <a href="javascript:history.back(-1);" class="headerBack tradeHeaderBack center"></a>
+            <div class="headerTitle center">填写小号信息</div>
+        </header>
+        <if condition="empty($user['phone']) && empty($user['email'])">
+        <div class="transactionNotice">
+            很抱歉，您还未绑定手机号或邮箱，无法出售，可到我的-帐号设置内<a href="{:url('user/set')}" class="toBind">去绑定&gt;</a>
+        </div>
+        </if>
+        <div class="detail tradeDetail tradeTransactionDetail">
+
+            <section class="smallInfo">
+                <div class="smallInfoItem">
+                    <div class="smallInfoItemTitle">已选游戏</div>
+                    <div class="smallInfoItemContent">{$sell_account.fgame_name}</div>
+                </div>
+                <div class="smallInfoItem">
+                    <div class="smallInfoItemTitle">已选小号</div>
+                    <div class="smallInfoItemContent">{$sell_account.nickname}</div>
+                </div>
+                <div class="smallInfoItem">
+                    <div class="smallInfoItemTitle">累计消费</div>
+                    <div class="smallInfoItemContent">{$sell_account.cumulative}元</div>
+                </div>
+            </section>
+            <section class="goodInfo">
+                <div class="goodInfoItem">
+                    <div class="goodInfoItemTitle">标题<i class="goodInfoItemMark">*</i></div>
+                    <div class="goodInfoItemContent">
+                        <input type="text" value="{$data.title}" name="title" id="title" maxlength="30" placeholder="说明核心卖点，5-30字" >
+                    </div>
+                </div>
+                <div class="goodInfoItem">
+                    <div class="goodInfoItemTitle">所在区服<i class="goodInfoItemMark">*</i></div>
+                    <div class="goodInfoItemContent">
+                        <input type="text" id="server"  value="{$data.server_name}" name="server" placeholder="请严格按照游戏内区服信息填写" >
+                    </div>
+                </div>
+                <div class="goodInfoItem">
+                    <div class="goodInfoItemTitle">二级密码</div>
+                    <div class="goodInfoItemContent">
+                        <input type="text"  value="{$data.password}" id="password" name="password" placeholder="例如仓库密码，仅审核人员及最终买家可见" >
+                    </div>
+                </div>
+                <div class="goodInfoItem">
+                    <div class="goodInfoItemTitle">售价<i class="goodInfoItemMark">*</i></div>
+                    <div class="goodInfoItemContent">
+                        <input type="number" id="price"  value="{$data.money}"  placeholder="设置售价，最低{$min_price+$min_dfee}元" >
+                    </div>
+                </div>
+                <div class="goodInfoNotice">*手续费<i id="rate">{:cmf_get_option('transaction_set')['fee']?:0}</i>%(最低<i id="poundage">{:cmf_get_option('transaction_set')['min_dfee']?:0}</i>元)，售出将获得<i id="money">0.00</i>元</div>
+                <!--<div class="goodInfoItem goodInfoItemPrice">-->
+                    <!--<div class="goodInfoItemTitle">还价</div>-->
+                    <!--<div class="goodInfoItemContent goodInfoItemContentPrice">-->
+                        <!--<label>-->
+                            <!--<input type="radio" name="change" checked value="1">-->
+                            <!--<div>接受还价</div>-->
+                        <!--</label>-->
+                        <!--<label>-->
+                            <!--<input type="radio" name="change" value="0">-->
+                            <!--<div>拒绝还价</div>-->
+                        <!--</label>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="goodInfoNotice">*有新的买家还价会通过平台消息通知你</div>-->
+            </section>
+            <section class="smallDesc">
+                <div class="smallDescItem">
+                    <div class="smallDescItemTitle">小号描述</div>
+                    <div class="smallDescItemContent">
+                        <textarea id="dec" name="dec" placeholder="可描述角色等级、装备、战力等，完善的描述可有效的促成交易哦~">{$data.dec}</textarea>
+                    </div>
+                </div>
+            </section>
+            <section class="smallScreen">
+                <div class="smallScreenItem">
+                    <div class="smallScreenItemTitle">上传截图</div>
+                    <div class="smallScreenItemContent smallScreenItemContentUpload">
+                        <!--<section class="uploadTab js-uploadTab">-->
+                            <!--<label>-->
+                                <!--<input type="radio" name="upload_status" data-id="self" checked value="1">-->
+                                <!--<div>自己上传</div>-->
+                            <!--</label>-->
+                            <!--<label>-->
+                                <!--<input type="radio" name="upload_status" data-id="other" value="0">-->
+                                <!--<div>客服代传</div>-->
+                            <!--</label>-->
+                        <!--</section>-->
+                        <section class="uploadPan js-uploadPan">
+                            <div class="uploadArea uploadSelf" id="self" style="display:block">
+                                <div class="uploadNotice">
+                                    请上传真实的截图，若审核时发现截图作假可能会面临封号的惩罚哦~
+                                </div>
+                                <div class="uploadContent">
+                                    <ul id="photos" class="uploadList pic-list list-unstyled form-inline">
+                                        <li class="uploadPick" onclick="uploadMultiImage('图片上传','#photos','photos-item-tpl');"></li>
+                                        <notempty name="data.screenshot">
+                                            <php>$screenshot= explode(',',$data['screenshot']);</php>
+                                            <foreach name="screenshot" item="vo">
+                                                <li id="saved-image{$key}">
+                                                    <input id="photo-{$key}" type="hidden" name="screenshot[]"
+                                                           value="{$vo}">
+                                                    <img id="photo-{$key}-preview"
+                                                         src="{:cmf_get_image_preview_url($vo)}"
+                                                         style="height:36px;width: 36px;"
+                                                         onclick="parent.imagePreviewDialog(this.src);" >
+                                                    <a href="javascript:(function(){$('#saved-image{$key}').remove();})();">移除</a>
+                                                </li>
+                                            </foreach>
+                                        </notempty>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="uploadArea uploadOther" id="other">
+                                <div class="uploadOtherNotice">
+                                    客服审核时，将同时为您上传截图
+                                </div>
+                                <div class="uploadOtherWarn">
+                                    <div class="uploadOtherWarnTitle">温馨提示</div>
+                                    <div class="uploadOtherWarnContent">
+                                        客服小姐姐将会帮您上传游戏截图，其中包含：角色主页、战斗排名、角色等，有特殊截图要求请在备注中说明哦。
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <div class="tradeSpace"></div>
+        <div class="tradeFooter">
+            <a class="tradeFooterServiceIcon jschatqq" data-value="<empty name='union_set.qq'>{:cmf_get_option('kefu_set')['pc_set_server_qq']}<else />{$union_set['qq']}</empty>" href="javascript:;" ></a>
+            <a href="javascript:;" class="tradeFooterSubmitBtn js-saleSubmit">提交审核</a>
+        </div>
+
+    </div>
+
+    <div class="realShade js-real">
+        <div class="realWrapper">
+            <div class="realBox">
+                <div class="realHeader">
+                    <a href="javascript:;" class="realHeaderIcon center js-realClose"></a>
+                    <div class="realHeaderTitle center">验证身份</div>
+                </div>
+                <div class="realBody">
+                    <notempty name="user.phone">
+                    <div class="realBodyPan realPhone" style="display: block;">
+                        <p class="realNotice">为了确保是您本人操作，我们将下发验证码到您绑定的<i class="realNoticeMain">{:hideStar($user['phone'])}</i>手机上，请填写验证码。</p>
+                        <div class="realForm">
+                            <div class="realFormItem">
+                                <input type="text" class="realFormInput phone" placeholder="请输入验证码">
+                                <a href="javascript:;" class="realCodeSend center js-realCode">发送验证码</a>
+                            </div>
+                        </div>
+                        <div class="realBtn">
+                            <a href="javascript:;" class="realBtnConfirm center js-realConfirm">确定</a>
+                        </div>
+                        <notempty name="user.email">
+                        <div class="realWay">
+                            手机号无法使用？使用<a href="javascript:;" class="js-realCheck">邮箱验证&gt;</a>
+                        </div>
+                        </notempty>
+                    </div>
+                    </notempty>
+                    <notempty name="user.email">
+                        <div class="realBodyPan realEmail" <empty name="user.phone">style="display: block;"</empty>>
+                        <p class="realNotice">为了确保是您本人操作，我们将下发验证码到您绑定的<i class="realNoticeMain">{:hideStar($user['email'])}</i>邮箱，请填写验证码。</p>
+                        <div class="realForm">
+                            <div class="realFormItem">
+                                <input type="text" class="realFormInput email" placeholder="请输入验证码">
+                                <a href="javascript:;" class="realCodeSend center js-realCode">发送验证码</a>
+                            </div>
+                        </div>
+                        <div class="realBtn">
+                            <a href="javascript:;" class="realBtnConfirm center  js-realConfirm">确定</a>
+                        </div>
+                        <notempty name="user.phone">
+                        <div class="realWay">
+                            邮箱无法使用？使用<a href="javascript:;" class="js-realCheck">手机验证&gt;</a>
+                        </div>
+                        </notempty>
+                    </div>
+                    </notempty>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</block>
+<block name="script">
+    <script src="__STATIC__/js/webuploader/webuploader.min.js"></script>
+    <script src="__TMPL__/mobilepublic/assets/js/diyUpload.js"></script>
+    <script src="__STATIC__/js/wind.js"></script>
+    <script src="__TMPL__/mobilepublic/assets/js/frontend.js"></script>
+    <script>
+        var rate = parseFloat({$fee});  // 手续费率
+        var poundage = parseFloat({$min_dfee});   // 最低手续费
+        var sale = parseFloat({$min_price}); // 最低价格
+
+        $(function () {
+            $('.jschatqq').click(function() {
+                var qq = $.trim($(this).attr('data-value'));
+                var u = navigator.userAgent;
+                try{
+                    $mt = "{:get_devices_type()}";
+                    if($mt==2){
+                        window.webkit.messageHandlers.sy_small_serviceQQ.postMessage(1);
+                    }else{
+                        window.mengchuang.sy_small_serviceQQ();
+                    }
+                }catch (e) {
+                    var is_mobile = "{:cmf_is_mobile()}";
+                    if (is_mobile) {
+                        window.location.href="mqqwpa://im/chat?chat_type=wpa&uin="+qq+"&version=1&src_type=web";
+                    }else
+                        window.location.href="http://wpa.qq.com/msgrd?v=3&uin="+qq+"&site=qq&menu=yes";
+                    return false;
+                }
+            });
+            $('.js-uploadTab input').change(function () {
+                var that = $(this);
+                var id = that.attr('data-id');
+
+                $('#'+id).stop(true).fadeIn().siblings().fadeOut();
+
+                return false;
+            });
+
+            $('#title').blur(function () {
+                var val = $.trim($(this).val());
+                if(!val) {
+                    layer.msg('说明核心卖点，5-30字');
+                    return false;
+                }
+                if(val.length<5 || val.length >30) {
+                    layer.msg('说明核心卖点，5-30字');
+                    return false;
+                }
+
+                return false;
+            });
+
+            $('#server').blur(function () {
+                var val = $.trim($(this).val());
+                if(!val) {
+                    layer.msg('请严格按照游戏内区服信息填写');
+                    return false;
+                }
+                return false;
+            });
+
+            $('#price').blur(function () {
+                var val = $.trim($(this).val());
+                if(!val) {
+                    layer.msg('设置售价');
+                    return false;
+                }
+                return false;
+            }).keyup(function () {
+                var val = parseFloat($.trim($(this).val()));  //售价
+                val = isNaN(val)? 0: val;
+                var moneyDom = $('#money');
+                if (!val) {layer.msg('请输入售价');return false;}
+
+                var price = poundage + sale;
+                if(val < price) {
+                    layer.msg('出售价不低于'+price+'元');
+                    return false;
+                }
+                if(poundage > val*rate/100){
+                    var coin = val - poundage;
+                }else{
+                    var coin = val - val*rate/100;
+                }
+                moneyDom.text(coin.toFixed(2));
+                return false;
+            });
+
+            // 关闭弹窗
+            $('body').on('click', '.js-realClose', function () {
+                $(this).closest('.js-real').fadeOut();
+                return false;
+            });
+            // 切换验证弹窗
+            $('body').on('click', '.js-realCheck', function () {
+                $(this).closest('.realBodyPan').fadeOut(function () {
+                   $(this).siblings('.realBodyPan').stop(true).fadeIn();
+                });
+                return false;
+            });
+            // 发送验证码
+            $('body').on('click', '.js-realCode', function () {
+                var that = $(this);
+                var input = that.siblings('input');
+                if(input.hasClass('email')) {
+                    // 获取邮箱验证码
+                    var send_type = 2;
+                } else {
+                    // 获取手机验证码
+                    var send_type = 1;
+                }
+                $.ajax({
+                    type: 'post',
+                    dataType: 'json',
+                    url: '{:url("sendCode")}',
+                    data: {send_type: send_type},
+                    success: function (data) {
+                        layer.msg(data.msg);
+                        if (data.code == 1) {
+                            clock(that);
+                        }
+                    },
+                    error: function () {
+                        layer.msg('服务器故障，请稍候再试');
+                        that.removeClass('no_send');
+                    }
+                });
+                return false;
+            });
+
+            $('.js-saleSubmit').click(function () {
+                var mobile = "{$user.phone}";
+                var email = "{$user.email}";
+                if(mobile == '' && email == ''){
+                    layer.msg('请先绑定手机或邮箱');
+                    return false;
+                }
+                var id = "{:input('id')}";
+                var that = $(this);
+                var title = $.trim($('#title').val());
+                var server = $.trim($('#server').val());
+                var price = $.trim($('#price').val());
+                var password = $.trim($('#password').val());
+                if(!title) {
+                    layer.msg('请输入标题');
+                    return false;
+                }
+                if(title.length < 5 && title.length > 30) {
+                    layer.msg('说明核心卖点，5-30字符');
+                    return false;
+                }
+
+                if(!server) {
+                    layer.msg('请输入所在区服');
+                    return false;
+                }
+
+                if(!price) {
+                    layer.msg('请输入售价');
+                    return false;
+                }
+                if(!/^([1-9]\d*|0)(\.\d{1,2})?$/.test(price)) {
+                    layer.msg('请输入正确价格');
+                    return false;
+                }
+                var screenshot = '';
+                var count= 0;
+                $("input[name='screenshot[]']").each(function(i, el) {
+                    screenshot += $(this).val()+',';
+                    count ++;
+                });
+                if(screenshot == ''){
+                    layer.msg('请上传截图');
+                    return false;
+                }
+                if(count > 9){
+                    layer.msg('最多上传9张截图');
+                    return false;
+                }
+                screenshot = screenshot.substring(0, screenshot.lastIndexOf(','));
+                var dec = $("#dec").val();
+                var small_id = "{$sell_account.id}";
+                $.ajax({
+                    type: 'post',
+                    dataType: 'json',
+                    url: '{:url("edit")}',
+                    data: {id:id,password:password,title:title,server_name:server,money:price,dec:dec,screenshot:screenshot,small_id:small_id},
+                    success: function (data) {
+                        if (data.code == 1) {
+                            window.location.href = data.url;
+                        }else{
+                            layer.msg(data.msg);
+                        }
+                    },
+                    error: function () {
+                        layer.msg('服务器故障，请稍候再试');
+                        that.removeClass('no_send');
+                    }
+                });
+
+                return false;
+            });
+
+        });
+        // 倒计时
+        function clock(that,time) {
+            var e = that;var t = time?time:60;
+            e.addClass('disabled').html(t+'秒后重新获取');
+            var a = setInterval(function() {
+                t--;
+                e.html(t+'秒后重新获取');
+                t>0 || (clearInterval(a),e.removeClass('disabled').html('重新获取'));
+            },1000);
+        }
+    </script>
+</block>

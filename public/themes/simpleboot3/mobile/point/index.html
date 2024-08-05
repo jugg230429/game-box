@@ -1,0 +1,147 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/mall.css">
+
+</block>
+
+<block name="body">
+<div style="width: 100%;height: 100vh;">
+	<div class="banner">
+		<if condition="session('member_auth.request_source') eq 'sdk'">
+			<a href="javascript:;" class="fl js-close back_icon"><img src="__TMPL__/mobilepublic/assets/images/back_return.png" alt="" class="fl back_icon"></a>
+		</if>
+		<div class="integral-title">积分</div>
+		<div  class="integral-num">{:session('member_auth.point')?:0}</div>
+	</div>
+	<div class="integral-box">
+		<a <if condition="UID gt 0">class="integral-box-con " href="{:url('mall_task')}"<else/>class="integral-box-con login"</if>>
+		   <img src="__TMPL__/mobilepublic/assets/images/mall/jifen_ico_renwu.png" class="integral-box-img">
+		   <div class="integral-box-text">任务中心</div>
+	   </a>
+		<a <if condition="UID gt 0">class="integral-box-con " href="{:url('integral')}"<else/>class="integral-box-con login"</if>>
+		   <img src="__TMPL__/mobilepublic/assets/images/mall/jien_ico_jinfen.png" class="integral-box-img">
+		   <div class="integral-box-text">积分明细</div>
+	   </a>
+		<if condition="cmf_get_option('award_set')['status'] eq 1">
+	   <a class="integral-box-con " href="{:url('award/index')}">
+			<img src="__TMPL__/mobilepublic/assets/images/mall/jien_ico_choujiang.png" class="integral-box-img">
+			<div class="integral-box-text">抽奖</div>
+		</a>
+		</if>
+		  <eq name="sign_status" value="1">
+			  <a <if condition="UID gt 0">class="integral-box-con " href="{:url('signin')}"<else/>class="integral-box-con login"</if>>
+				  <img src="__TMPL__/mobilepublic/assets/images/mall/jien_ico_qiandao.png" class="integral-box-img">
+				  <div class="integral-box-text">签到</div>
+			  </a>
+		  </eq>
+	</div>
+	<div class="mall-confition">
+	   <div class="mall-confition-con">
+		   <div class="mall-confition-name fl">类型：</div>
+			<div class="mall-confition-item fl">
+			  <a class="mall-confition-butn <eq name=":input(type)" value="">mall-confition-active</eq>" href="{:url('index',['price'=>input('price')])}">不限</a>
+			  <a class="mall-confition-butn <eq name=":input(type)" value="2">mall-confition-active</eq>" href="{:url('index',['type'=>2,'price'=>input('price')])}">虚拟</a>
+			  <a class="mall-confition-butn <eq name=":input(type)" value="1">mall-confition-active</eq>" href="{:url('index',['type'=>1,'price'=>input('price')])}">实物</a>
+		  </div>
+		</div>
+		
+		 <div class="mall-confition-con">
+		   <div class="mall-confition-name fl">积分：</div>
+		   <div class="mall-confition-item fl">
+			  <a class="mall-confition-butn <eq name=":input(price)" value="">mall-confition-active</eq>" href="{:url('index',['type'=>input('type')])}">不限</a>
+			  <a class="mall-confition-butn <eq name=":input(price)" value="0-100">mall-confition-active</eq>" href="{:url('index',['type'=>input('type'),'price'=>'0-100'])}">0-100</a>
+			  <a class="mall-confition-butn <eq name=":input(price)" value="101-500">mall-confition-active</eq>" href="{:url('index',['type'=>input('type'),'price'=>'101-500'])}">101-500</a>
+			  <a class="mall-confition-butn <eq name=":input(price)" value="501-2000">mall-confition-active</eq>" href="{:url('index',['type'=>input('type'),'price'=>'501-2000'])}">501-2000</a>
+			  <a class="mall-confition-butn <eq name=":input(price)" value="2001-5000">mall-confition-active</eq>" href="{:url('index',['type'=>input('type'),'price'=>'2001-5000'])}">2001-5000</a>
+			  <a class="mall-confition-butn <eq name=":input(price)" value="5000以上">mall-confition-active</eq>" href="{:url('index',['type'=>input('type'),'price'=>'5000以上'])}">5000以上</a>
+							   
+		  </div>
+		</div>
+	</div>
+	  <if condition="empty($data['really']) && empty($data['virtual'])">
+		  <div class="tradeEmpty"><i class="tradeEmptyIcon"></i><p class="tradeEmptyText">~暂无商品~</p> </div>
+		  <else/>
+		  <notempty name="data['virtual']">
+			  <div class="mall-goods">
+		   <div class="mall-goods-type">
+			   虚拟商品
+		   </div>
+		   <ul class="mall-goods-item">
+			   <volist name="data['virtual']" id="virtual">
+				  <li class="mall-goods-list fl">
+					 <a href="{:url('mall_detail',['id'=>$virtual['id']])}">
+						<img src="{:cmf_get_image_preview_url($virtual['thumbnail'])}" onerror="this.src='/static/images/empty.jpg';this.onerror=null" class="mall-goods-icon">
+						<div class="mall-goods-textbox">
+								<div class="mall-goods-name">{$virtual.good_name}</div>
+								<p class="mall-goods-info">
+								  <span class="mall-goods-num">{$virtual.price}<span>积分</span></span>
+								  <span class="score fg">剩余：<span>{$virtual.number}</span></span>
+								</p>
+					   </div>
+					 </a>
+				  </li>
+			   </volist>
+		   </ul>
+		</div>
+		  </notempty>
+		  <div class="clear"></div>
+		  <notempty name="data['really']">
+			  <div class="mall-goods mall-goods-second">
+		   <div class="mall-goods-type">
+			  实物商品
+		   </div>
+		   <ul class="mall-goods-item">
+			   <volist name="data['really']" id="really">
+				   <li class="mall-goods-list fl">
+					   <a href="{:url('mall_detail',['id'=>$really['id']])}">
+						   <img src="{:cmf_get_image_preview_url($really['thumbnail'])}" onerror="this.src='/static/images/empty.jpg';this.onerror=null" class="mall-goods-icon">
+						   <div class="mall-goods-textbox">
+							   <div class="mall-goods-name">{$really.good_name}</div>
+							   <p class="mall-goods-info">
+								   <span class="mall-goods-num">{$really.price}<span>积分</span></span>
+								   <span class="score fg">剩余：<span>{$really.number}</span></span>
+							   </p>
+						   </div>
+					   </a>
+				   </li>
+			   </volist>
+		   </ul>
+		</div>
+		  </notempty>
+		  
+	  </if>
+</div>
+  </block>
+<block name="script">
+    <script src="__STATIC__/js/layui/layui.js"></script>
+    <script src="__TMPL__/mobilepublic/assets/js/pop.lwx.min.js"></script>
+   <script>
+      $('.js-close').click(function(){
+		  try{
+			  $mt = "{:get_devices_type()}";
+			  if($mt==2){
+				  window.webkit.messageHandlers.xgsdk_finishPage.postMessage(1);
+			  }else{
+				  window.xgsdk.finishPage()
+			  }
+		  }catch (e) {
+			  return false;
+		  }
+	  })
+	  $(window).scroll(function () {
+        var h = $(this).scrollTop();
+        if (h > 140) {
+            $(".mall-confition").addClass("mall-confition-fixed");
+			
+          
+        }
+        else {
+            $(".mall-confition").removeClass("mall-confition-fixed");
+			
+			
+           
+        }
+    })
+    </script>
+
+	</block>

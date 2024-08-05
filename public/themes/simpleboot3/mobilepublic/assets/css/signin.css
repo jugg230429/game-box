@@ -1,0 +1,197 @@
+@charset "UTF-8";
+
+/*
+* @description: 积分签到
+ *@author:王奉
+* @update: name(2020/05/19)
+ */
+ html{
+	height: 100%; 
+ }
+ body{
+	 padding:0;
+	 height: 100%;
+ }
+ .main{
+	 width:100vw;
+	 height: 100vh;
+	 background: url(../images/mall/signin_bg.png) center  no-repeat;
+	 background-size:cover;
+	 padding-bottom: 0.2rem;
+
+ }
+ .clear{
+	 clear:both;
+ }
+ .back_icon {
+	display:block;
+    width: 0.939rem;
+    padding-top: 1.25rem;
+	margin: 0 0 10% 1rem;
+}
+.back_icon img{
+	width:100%;
+}
+.signin_title{
+    width: 75%;
+    margin: 0 auto 5%;
+    display: block;
+}
+.signin_main{
+	width:94%;
+	height:26.216rem;
+
+	background:#fff;
+	margin: 0 auto;
+    box-shadow:0px 0px 8px 0px rgba(204,204,204,0.6);
+    border-radius:0.86rem;
+
+
+}
+.signin_main ul{
+
+	text-align:center;
+	margin-left:2.5rem;
+}
+.signin_list{
+	width:4.61rem;
+	height:6.73rem;
+	overflow:hidden;
+	background: url(../images/mall/nosigned.png) no-repeat;
+	background-size:100% 100%;
+	text-align:center;
+	font-size:0.93rem;
+	margin:1.64rem 0.89rem 0  ;
+	
+
+}
+.signin_list:nth-of-type(1){
+	margin: 1.64rem 0.89rem 0 3.95rem;
+}
+.currency{
+	width:2.73rem;
+	height:2.5rem;
+	background: url(../images/mall/nocurrency.png) no-repeat;
+	background-size:100% 100%;
+	margin:0.5rem auto 0;
+}
+.num{
+	font-weight:bold;
+	color:#ccc;
+	font-size:1.33rem;
+}
+.signin_days{
+	color:#999;
+	margin:-0.25rem 0 0 0;
+	font-weight:bold;
+}
+.signin_active {
+	background: url(../images/mall/signed.png) no-repeat;
+	background-size:100% 100%;
+}
+.signin_active .signin_days{
+	color:#FF6C00;
+}
+.signin_active .currency{
+	background: url(../images/mall/currency.png) no-repeat;
+	background-size:100% 100%;
+}
+.signin_active .num{
+	color:#fff;
+}
+.signin_btn{
+	display:block;
+	margin:1.95rem auto 1rem;
+	width:23.24rem;
+	height:3.53rem;
+	text-align:center;
+	line-height:3.53rem;
+    background:linear-gradient(-90deg,rgba(254,98,21,1) 0%,rgba(254,130,30,1) 100%);
+    border-radius:1.79rem;
+	color:#fff;
+	font-weight:blod;
+	font-size:1.56rem;
+
+}
+.signin_disabled{
+	 background:#ccc;
+	 color:#666;
+}
+.signin_info{
+	color:#666;
+	font-size:1.01rem;
+	text-align:center;
+}
+.signin_info span{
+	color:#FF6C00;
+	font-size:1.33rem;
+}
+.signin_details{
+	width: 94%;
+	overflow:hidden;
+    background: #fff;
+    margin: 1.33rem  auto ;
+    box-shadow: 0px 0px 8px 0px rgba(204,204,204,0.6);
+    border-radius: 0.86rem;
+	font-size:1.01rem;
+	padding-bottom:1rem;
+}
+.signin_details_title{
+	text-align:center;
+	color:#FF6C00;
+	margin:1.01rem 0 ;
+	font-weight: bold;
+}
+.signin_details_text{
+	color:#666;
+	width:94%;
+	margin:0 auto;
+	line-height:1.7rem;
+
+}
+.attestation-class.layui-layer-dialog .layui-layer-content{
+	border-bottom:1px solid #EDEDED ;
+	text-align: center;
+	padding:0;
+	font-size:1.52rem;
+	color:#333;
+	height: 7rem;
+    line-height: 3rem;
+    margin-top: 0.5rem;
+}
+.attestation-class .layui-layer-btn{
+	padding:0;
+}
+.attestation-class .layui-layer-btn a{
+	width: 49%;
+    text-align: center;
+    height: 3rem;
+    line-height: 3rem;
+    border: none;
+	margin:0;
+	padding:0;
+	font-size:1.52rem;
+	border-radius: 24px;
+}
+.attestation-class .layui-layer-btn .layui-layer-btn0{
+	background:#fff;
+	color:#333;
+	border-right:1px solid #ededed;
+	border-radius: 26px 0 0 0;
+
+}
+.attestation-class .layui-layer-btn .layui-layer-btn1{
+	color:#F9780E;
+}
+@media (max-width:320px){
+	.signin_main ul{
+		margin-left:0;
+	}
+	.signin_list{
+       margin: 1.64rem 0.81rem 0;
+	}
+	 .main{
+	 
+	 height: auto;
+	 }
+}

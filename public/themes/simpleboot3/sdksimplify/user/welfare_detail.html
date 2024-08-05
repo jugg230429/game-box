@@ -1,0 +1,32 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/new_detail.css">
+</block>
+
+<block name="body">
+
+
+    <div class="new_detail_page">
+<!--        <div class="new_detail_header">-->
+<!--            <a href="javascript:history.back(-1);" class="fl">-->
+<!--                <img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon">-->
+<!--            </a>-->
+<!--            <p class="fl" style="<if condition='cmf_is_android()'>transform: translateY(-46%);</if>"></p>-->
+<!--        </div>-->
+        <div class="game_bag_down_hx clear"></div>
+        <div class="new_detail_con">
+            <div class="new_detail_con_head">
+                <p class="new_detail_con_title">{$data.post_title}</p>
+<!--                <p class="new_detail_con_time fg">{:date('Y-m-d',$data.update_time)}</p>-->
+            </div>
+
+            <div class="user_zhuce_info_con">
+                {$data.post_content}
+            </div>
+
+        </div>
+    </div>
+</block>
+<block name="script">
+
+</block>

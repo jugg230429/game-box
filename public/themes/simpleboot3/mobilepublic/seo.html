@@ -1,0 +1,53 @@
+<empty name="union_set.site_name">
+<if condition="$action_name eq index and $controller_name eq Index">
+    <title>{:seo_replace($seo['wap_index']['seo_title'],array(),'wap')}</title>
+    <meta name="keywords" content="{:seo_replace($seo['wap_index']['seo_keyword'],array(),'wap')}">
+    <meta name="description" content="{:seo_replace($seo['wap_index']['seo_description'],array(),'wap')}">
+    <elseif condition="$action_name eq game_center and $controller_name eq Game" />
+    <title>{:seo_replace($seo['wap_game_list']['seo_title'],array('game_name'=>$data['game_name']),'wap')}</title>
+    <meta name="keywords" content="{:seo_replace($seo['wap_game_list']['seo_keyword'],array(),'wap')}">
+    <meta name="description" content="{:seo_replace($seo['wap_game_list']['seo_description'],array(),'wap')}">
+    <elseif condition="$action_name eq detail and $controller_name eq Game" />
+    <title>{:seo_replace($seo['wap_game_detail']['seo_title'],array('game_name'=>$data['game_name']),'wap')}</title>
+    <meta name="keywords" content="{:seo_replace($seo['wap_game_detail']['seo_keyword'],array('game_name'=>$data['game_name'],),'wap')}">
+    <meta name="description" content="{:seo_replace($seo['wap_game_detail']['seo_description'],array('game_name'=>$data['game_name'],),'wap')}">
+    <elseif condition="($action_name eq open_game or $action_name eq open_ygame) and $controller_name eq Game" />
+    <title>{:seo_replace($seo['wap_open_game']['seo_title'],array('game_name'=>$game_name),'wap')}</title>
+    <meta name="keywords" content="{:seo_replace($seo['wap_open_game']['seo_keyword'],array('game_name'=>$game_name),'wap')}">
+    <meta name="description" content="{:seo_replace($seo['wap_open_game']['seo_description'],array('game_name'=>$game_name),'wap')}">
+    <elseif condition="$action_name eq index and $controller_name eq Gift" />
+    <title>{:seo_replace($seo['wap_gift_index']['seo_title'],array('giftbag_name'=>$data['giftbag_name']),'wap')}</title>
+    <meta name="keywords" content="{:seo_replace($seo['wap_gift_index']['seo_keyword'],array('giftbag_name'=>$data['giftbag_name'],),'wap')}">
+    <meta name="description" content="{:seo_replace($seo['wap_gift_index']['seo_description'],array('giftbag_name'=>$data['giftbag_name'],),'wap')}">
+    <elseif condition="$action_name eq detail and $controller_name eq Gift" />
+    <title>{:seo_replace($seo['wap_gift_detail']['seo_title'],array('giftbag_name'=>$data['giftbag_name']),'wap')}</title>
+    <meta name="keywords" content="{:seo_replace($seo['wap_gift_detail']['seo_keyword'],array('giftbag_name'=>$data['giftbag_name'],),'wap')}">
+    <meta name="description" content="{:seo_replace($seo['wap_gift_detail']['seo_description'],array('giftbag_name'=>$data['giftbag_name'],),'wap')}">
+    <elseif condition="$action_name eq index and $controller_name eq Article" />
+    <title>{:seo_replace($seo['wap_news_list']['seo_title'],array('giftbag_name'=>$data['giftbag_name']),'wap')}</title>
+    <meta name="keywords" content="{:seo_replace($seo['wap_news_list']['seo_keyword'],[],'wap')}">
+    <meta name="description" content="{:seo_replace($seo['wap_news_list']['seo_description'],[],'wap')}">
+    <elseif condition="$action_name eq detail and $controller_name eq Article" />
+    <title>{:seo_replace($seo['wap_news_detail']['seo_title'],array('news_title'=>$data['post_title']),'wap')}</title>
+    <meta name="keywords" content="{:seo_replace($seo['wap_news_detail']['seo_keyword'],array('news_title'=>$data['post_title'],),'wap')}">
+    <meta name="description" content="{:seo_replace($seo['wap_news_detail']['seo_description'],array('news_title'=>$data['post_title'],),'wap')}">
+    <elseif condition="$action_name eq pay and $controller_name eq Pay" />
+    <title>{:seo_replace($seo['wap_recharge']['seo_title'],array('news_title'=>$data['post_title']),'wap')}</title>
+    <meta name="keywords" content="{:seo_replace($seo['wap_recharge']['seo_keyword'],array('news_title'=>$data['post_title'],),'wap')}">
+    <meta name="description" content="{:seo_replace($seo['wap_recharge']['seo_description'],array('news_title'=>$data['post_title'],),'wap')}">
+    <elseif condition="$action_name eq index and $controller_name eq Downfile" />
+    <title>{$title}</title>
+    <meta name="keywords" content="{:seo_replace($seo['wap_index']['seo_keyword'],array(),'wap')}">
+    <meta name="description" content="{:seo_replace($seo['wap_index']['seo_description'],array(),'wap')}">
+    <elseif condition="$action_name eq index and $controller_name eq Invitation" />
+    <title>《{:cmf_get_option('app_set')['app_name']?:'游戏盒子'}》邀请好友送豪礼</title>
+    <meta name="keywords" content="{:seo_replace($seo['wap_index']['seo_keyword'],array(),'wap')}">
+    <meta name="description" content="{:seo_replace($seo['wap_index']['seo_description'],array(),'wap')}">
+    <else/>
+    <title>{:seo_replace($seo['wap_index']['seo_title'],array(),'wap')}</title>
+    <meta name="keywords" content="{:seo_replace($seo['wap_index']['seo_keyword'],array(),'wap')}">
+    <meta name="description" content="{:seo_replace($seo['wap_index']['seo_description'],array(),'wap')}">
+</if>
+<else/>
+    <title>{$union_set.site_name}</title>
+</empty>

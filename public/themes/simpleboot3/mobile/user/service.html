@@ -1,0 +1,330 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/service.css">
+</block>
+
+<block name="body">
+    <div class="trade_record_page">
+        <div class="service-contain">
+            <div class="instructions-part1">
+               <a href="javascript:back();" class="back_whiteIcon">
+<!--               <a href="{:url('user/index')}" class="back_whiteIcon">-->
+                   <img src="__TMPL__/mobilepublic/assets/images/tab_btn_banck.png" alt=""></a>
+               <div class="bottom-centerText">
+                   <p class="service-title">客服中心</p>
+                   <p class="fenge"></p>
+                   <p class="contact-text">如有紧急问题请联系在线客服</p>
+                   <p class="contact-text time-text">在线时间{:cmf_get_option('kefu_set')['pc_work_time']}</p>
+               </div>
+            </div>
+            <div class="instructions-part2">
+                <div class="contactService">联系客服</div>
+                <if condition="$union_set['qq'] or cmf_get_option('kefu_set')['pc_set_server_qq']">
+                    <div class="detailService">
+                        <div>
+                            <span class="iconContact"><img src="__TMPL__/mobilepublic/assets/images/ico-kefu.png" alt=""></span>
+
+                            <if condition="empty($union_set[qq]) and get_xgkf_info(0)">
+                                <a  style="margin-left: .5rem;" class="xgkf_aq" target="_blank">
+                                    在线客服
+                                </a>
+                            <else/>
+                                <empty name='union_set.qq'>
+                                    <span class="phoneContact">在线客服：{:cmf_get_option('kefu_set')['pc_set_server_qq']}</span>
+                                <else/>
+                                    <span class="phoneContact">在线客服：{$union_set.qq}</span>
+                                </empty>
+                            </if>
+                        </div>
+                        <if condition="empty($union_set[qq]) and get_xgkf_info(0)">
+                            <a  class="xgkf_aq" target="_blank">
+                                <span  class="contractInvite">联系我</span>
+                            </a>
+                        <else/>
+                            <empty name='union_set.qq'>
+                               <span data-value="{:cmf_get_option('kefu_set')['pc_set_server_qq']}" class="contractInvite jschatqq">联系我</span>
+                            <else/>
+                               <span data-value="{$union_set['qq']}" class="contractInvite jschatqq">联系我</span>
+                            </empty>
+                        </if>
+                    </div>
+                </if>
+
+
+                <if condition="$union_set['qq_group'] or cmf_get_option('kefu_set')['pc_qq_group']">
+                    <div class="detailService">
+                        <div>
+                            <span class="iconContact"><img src="__TMPL__/mobilepublic/assets/images/ico-qq.png" alt=""></span>
+                            <empty name='union_set.qq_group'>
+                                <span class="phoneContact">玩家Q群：{:cmf_get_option('kefu_set')['pc_qq_group']}</span>
+                            <else/>
+                                <span class="phoneContact">玩家Q群：{$union_set['qq_group']}</span>
+                            </empty>
+                        </div>
+                        <empty name='union_set.qq_group'>
+                            <a href="javascript:;" data-group="{:cmf_get_option('kefu_set')['pc_qq_group_key']}" data-url="{:cmf_get_option('kefu_set')['pc_qq_group_url']}" target="_blank" class="js_group"><span class="contractInvite">加入</span></a>
+                        <else/>
+                            <a href="javascript:;" target="_blank" data-group="{$union_set['qq_group_key']}" data-url="{$union_set['qq_group_url']}" class="js_group"><span class="contractInvite">加入</span></a>
+                        </empty>
+                    </div>
+                </if>
+
+                <if condition="$union_set['tel'] or cmf_get_option('kefu_set')['pc_set_server_tel']">
+                    <div class="detailService">
+                        <div>
+                            <span class="iconContact"><img src="__TMPL__/mobilepublic/assets/images/ico-phone.png" alt=""></span>
+                            <empty name='union_set.tel'>
+                                <span class="phoneContact">客服电话：{:cmf_get_option('kefu_set')['pc_set_server_tel']}</span>
+                            <else/>
+                                <span class="phoneContact">客服电话：{$union_set['tel']}</span>
+                            </empty>
+                        </div>
+                        <empty name='union_set.tel'>
+                            <a href="javascript:;" data-url="tel:{:cmf_get_option('kefu_set')['pc_set_server_tel']}"class="jscallphone"  data-phone="{:cmf_get_option('kefu_set')['pc_set_server_tel']}"><span class="contractInvite">拨打</span></a>
+                        <else/>
+                            <a href="javascript:;" data-url="tel:{$union_set['tel']}" class="jscallphone" data-phone="{$union_set['tel']}"> <span class="contractInvite">拨打</span></a>
+                        </empty>
+                    </div>
+                </if>
+
+                <if condition="$union_set['app_weixin'] or cmf_get_option('media_set')['pc_set_qrcode_name']">
+                    <div class="detailService">
+                        <div>
+                            <span class="iconContact"><img src="__TMPL__/mobilepublic/assets/images/ico-wechat.png" alt=""></span>
+                            <empty name='union_set.app_weixin'>
+                                <span class="phoneContact">微信公众号：{:cmf_get_option('media_set')['pc_set_qrcode_name']}</span>
+                            <else/>
+                                <span class="phoneContact">微信公众号：{$union_set['app_weixin']}</span>
+                            </empty>
+                        </div>
+                        <empty name='union_set.app_weixin'>
+                            <a href="javascript:;" class="jswxqun" data-name="{:cmf_get_option('media_set')['pc_set_qrcode_name']}" data-url="weixin://"><span class="contractInvite">进入</span></a>
+                            <else/>
+                            <a href="javascript:;" class="jswxqun" data-name="{$union_set['app_weixin']}" data-url="weixin://"><span class="contractInvite">进入</span></a>
+                        </empty>
+                    </div>
+                </if>
+
+            </div>
+            <div class="instructions-part3">
+                <div  class="contactService sameProblem">常见问题</div>
+                <div class="problemTabs">
+                    <div class="swiper-container serviceQues">
+                        <div class="swiper-wrapper">
+                            <volist name="typeLists" id="vo">
+                                <if condition="$i eq 1">
+                                    <div data-type="{$vo['id']}" class="swiper-slide tabMenuItem  active">{$vo['name']}</div>
+                                <else/>
+                                    <div data-type="{$vo['id']}" class="swiper-slide tabMenuItem">{$vo['name']}</div>
+                                </if>
+                            </volist>
+                        </div>
+
+                    </div>
+                    <!-- <volist name="typeLists" id="vo">
+                        <if condition="$i eq 1">
+                            <div data-type="{$vo['id']}" class="tabMenuItem active">{$vo['name']}</div>
+                        <else/>
+                            <div data-type="{$vo['id']}" class="tabMenuItem">{$vo['name']}</div>
+                        </if>
+                    </volist> -->
+                </div>
+                <div class="bottomDetailContainer">
+                    <ul>
+                        <li class="problemItem">
+                            <div class="problemList">
+                                <i class="blueIcon"></i>
+                                <span class="problemDetail-text">绑定手机号有什么用？</span>
+                                <i class="transformDownIcon" ></i>
+                                <i class="transformIcon"></i>
+                            </div>
+                            <div class="downDetailProblem">为了保障你的账号安全性，请尽快将账号绑定手机，以通过手机找回账号和密码，同时可以避免因为设备系统升级、恢复出厂设置等导致游戏数据丢失；还可以免费领取金币，在游戏内充值时抵扣人民币。</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script src="__STATIC__/js/layui/layui.js"></script>
+    <script src="__TMPL__/mobilepublic/assets/js/pop.lwx.min.js"></script>
+    <script>
+        // var is_app = "{$session.app_user_login|default=0}";
+        var is_app = "{$is_app}";
+        var mt ="{:get_devices_type()}";
+        var is_xgkf ="{:get_xgkf_info(0)}";
+
+        $('body').on('click','.problemItem',function() {
+            $(this).find('.downDetailProblem').css('display','block')
+            $(this).find('.transformDownIcon').css('display','none')
+            $(this).find('.transformIcon').css('display','block')
+            $('.bottomDetailContainer').css('padding-bottom','2rem')
+            $(this).addClass('problemItemOpen')
+        })
+
+        $('body').on('click','.problemItemOpen',function() {
+            $(this).find('.downDetailProblem').css('display','none')
+            $(this).find('.transformDownIcon').css('display','block')
+            $(this).find('.transformIcon').css('display','none')
+            $('.bottomDetailContainer').css('padding-bottom','0rem')
+            $(this).removeClass('problemItemOpen')
+        })
+
+        $(function () {
+
+
+            $(".xgkf_aq").click(function () {
+                var xgkf_url = "{$xgkf_url}";
+                if(is_app == 1){
+                    mt = "{:get_devices_type()}";
+                    if(mt==2){
+                        //判断溪谷客服系统
+                        if(is_xgkf ==1){
+                            window.webkit.messageHandlers.sy_app_xgkf_url.postMessage(xgkf_url);
+                        }else{
+                            window.webkit.messageHandlers.sy_small_serviceQQ.postMessage(1);
+                        }
+                    }else{
+                        window.xgsdk.sy_small_serviceQQ();
+                    }
+                }else {
+                    window.open(xgkf_url);
+                }
+            })
+
+
+
+
+
+            $('.jschatqq').click(function() {
+                var qq = $.trim($(this).attr('data-value'));
+                var u = navigator.userAgent;
+                if(is_app == 1){
+                    mt = "{:get_devices_type()}";
+                    if(mt==2){
+                        window.webkit.messageHandlers.sy_small_serviceQQ.postMessage(1);
+                    }else{
+                        // window.mengchuang.sy_small_serviceQQ();
+                        window.xgsdk.sy_small_serviceQQ();
+                    }
+                }else {
+                    var is_mobile = "{:cmf_is_mobile()}";
+                    if (is_mobile) {
+                        window.location.href="mqqwpa://im/chat?chat_type=wpa&uin="+qq+"&version=1&src_type=web";
+                    }else
+                        window.location.href="http://wpa.qq.com/msgrd?v=3&uin="+qq+"&site=qq&menu=yes";
+                    return false;
+                }
+            });
+
+            //QQ群跳转
+            $(".js_group").click(function () {
+                var group = $(this).data('group');
+                var group_url = $(this).data('href');
+                if(is_app == 1){
+                    mt = "{:get_devices_type()}";
+                    if(mt == 2 ){
+                        window.webkit.messageHandlers.chatQQGroup.postMessage(group);
+                    }else{
+                        // window.mengchuang.chatQQGroup(group);
+                        window.xgsdk.chatQQGroup(group);
+                    }
+                }
+                // window.location.href = group_url;
+                window.open(group_url);
+            });
+            $(".jscallphone").click(function () {
+                var kefu_phone = $(this).data('phone');
+                var kefu_url = $(this).data('url');
+                if(is_app == 1){
+                    mt = "{:get_devices_type()}";
+                    if(mt == 2 ){
+                        window.webkit.messageHandlers.kefuPhone.postMessage(kefu_phone.toString());
+                    }else{
+                        window.xgsdk.kefuPhone(kefu_phone);
+                    }
+                }else{
+                    // window.open(kefu_url);
+                    window.location.href = kefu_url;
+                }
+            });
+            $(".jswxqun").click(function () {
+                var wx_url = $(this).data('url');
+                var wx_name = $(this).data('name');
+                if(is_app == 1){
+                    mt = "{:get_devices_type()}";
+                    if(mt == 2 ){
+                        window.webkit.messageHandlers.launcherWX.postMessage(wx_name);
+                    }else{
+                        // window.xgsdk.launcherWX(wx_name);
+                        window.xgsdk.launcherWX();
+                    }
+                }else{
+                    // window.open(wx_url);
+                    window.location.href = wx_url;
+                }
+            });
+
+
+            var getArticleUrl = "{:url('mobile/user/serviceArticle')}";
+            $('.tabMenuItem').click(function() {
+                $(this).addClass('active').siblings().removeClass('active');
+
+                var type = $(this).attr('data-type');
+                var html = "";
+                $.post(getArticleUrl,{type:type},function (res) {
+                    html = '';
+                    html += "<ul>"
+                    $.each(res.data,function (index,ele) {
+                        html += "<li class=\"problemItem\">";
+                        html += "<div class=\"problemList\">";
+                        html += "<i class=\"blueIcon\"></i>";
+                        html += "<span class=\"problemDetail-text\">"+ele.zititle+"</span>";
+                        html += " <i class=\"transformDownIcon\" ></i>";
+                        html += "<i class=\"transformIcon\"></i>";
+                        html += "</div>";
+                        html += "<div class=\"downDetailProblem\">"+ele.content+"</div>";
+                        html += "</li>";
+                    });
+                    html += "</ul>";
+                    $(".bottomDetailContainer").html(html);
+                })
+
+            });
+
+            $('.tabMenuItem').first().click();
+
+
+        })
+        var u = navigator.userAgent;
+        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        if(isiOS) {
+           $('.phoneContact').css('padding-bottom','.2rem')
+        }
+
+        var myswipers = new Swiper('.swiper-container.serviceQues', {
+            slidesPerView:'auto',
+            
+        });
+
+        //返回
+
+        function back(){
+            try{
+                $mt = "{:get_devices_type()}";
+                if($mt==2){
+                    window.webkit.messageHandlers.xgsdk_finishPage.postMessage(1);
+                }else{
+                    window.xgsdk.finishPage()
+                }
+            }catch (e) {
+                history.go(-1);
+            }
+        }
+
+
+    </script>
+</block>

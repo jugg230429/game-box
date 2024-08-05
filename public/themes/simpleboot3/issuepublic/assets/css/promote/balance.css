@@ -1,0 +1,111 @@
+/*
+* @description: 我的平台币
+ *@author:王奉
+* @update: name(xxxx-xx-xx xx:xx)
+ */
+ .right-container {
+    background: none;
+}
+.trunk-list-table {
+    width: 100%;
+    table-layout: fixed
+}
+.trunk-list-tr {
+    height: 4.2vh;
+}
+ .td1 {
+    width: 100px;
+    color: #535875;
+    text-align: center;
+    background: #F6F7F9;
+     font-size: 14px;
+     line-height: 40px;
+}
+td {
+    border: 1px solid #E0E7EF;
+}
+.accounts {
+    padding: 0 10px;
+}
+.money {
+    color: #FF6E25;
+    font-weight: 600;
+    padding: 0 10px;
+}
+.table-scroll {
+    min-width: 100%;
+    table-layout: fixed;
+}
+/*.normal-table{
+	margin-top: 40px;
+}*/
+.table-scroll tr:first-child td{
+	border-top: 0;
+}
+.table-scroll  td:first-child{
+	border-left:0;
+}
+.top-con{
+	 border:1px solid #e3e8ec;
+	 padding:18px 0 20px 0;
+	 background:#fff;
+	 height:auto;
+	 overflow:hidden;
+	 margin-bottom:20px;
+ }
+
+ .top-con-icon{
+	 margin:0 28px 0 33px;
+ }
+ .top-con-icon-terrace{
+     margin: 0 28px 0 94px;
+}
+ .top-con-num{
+	 color:#45b0ed;
+	 font-weight:bold;
+	 font-size:36px;
+	 line-height:30px;
+	 margin-top:10px;
+ }
+ .top-con-text{
+	 color:#6a7082;
+	 font-size:12px;
+	 line-height:30px;
+ }
+ .color-blue{
+	 color:#45b0ed;
+ }
+ .btn-exchange{
+	 width:76px;
+     height:32px;
+	 line-height:32px;
+	 text-align:center;
+     background:#26c7db;
+     border-radius:3px;
+     color:#fff;
+	 margin:20px 0 0 194px;
+
+ }
+ .subchannel-select-gallery {
+    width: 280px;
+}
+.explain-txt{
+    margin-left: 17px;
+    color: #8B8CA0;
+    font-size: 14px;
+}
+.tab{
+    margin-top: 24px;
+}
+.mt30{
+    margin-top: 30px;
+}
+.my-balance .label-name{
+    width: 72px;
+}
+.beforepay,.afterpay{
+    font-weight: bold;
+}
+.can_click {
+    background-color: #26C7DE!important;
+}

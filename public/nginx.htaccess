@@ -1,0 +1,16 @@
+location / {
+    if ($request_method ~* GET) {
+        rewrite ^/channelsite$  /tg  permanent;
+        rewrite ^/channelsite/(.*?)$  /tg/$1 permanent;
+        rewrite ^/tg$  /index.php/channelsite last;
+        rewrite ^/tg/(.*?)$  /index.php/channelsite/$1 last;
+
+        rewrite ^/business$  /sw  permanent;
+        rewrite ^/business/(.*?)$  /sw/$1 permanent;
+        rewrite ^/sw$  /index.php/business last;
+        rewrite ^/sw/(.*?)$  /index.php/business/$1 last;
+    }
+        if (!-e $request_filename){
+                rewrite  ^(.*)$  /index.php?s=$1  last;   break;
+        }
+}

@@ -1,0 +1,456 @@
+<include file="public@header" />
+<style>
+    .layui-layer-content{
+    height: auto !important;
+    width: auto;
+    padding: 20px;
+}
+
+
+/* td, th {
+    padding: 0;
+    table-layout: fixed;
+    word-break: break-all;
+    word-wrap: break-word;
+} */
+
+.layui-layer-content img{
+    max-width: 800px;
+    height: auto;
+}
+.img_layui .layui-layer-content{
+    text-align: center;
+}
+.table-bordered{
+    white-space: nowrap;
+}
+</style>
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('settlement/promote_period_settlement')}">结算打款</a></li>
+            <!-- <span class="title_remark">说明：针对渠道所属用户的注册充值进行结算，充值数据是指消费到游戏的所有订单。<i class="title-mark-notice">注：确认结算后的订单不可设置不参与结算。</i></span> -->
+        </ul>
+
+        <form id="search_form" class="well form-inline  fr" method="get" action="{:url('settlement/promote_period_settlement')}" onsubmit="return check();">
+            <input type="text" class="form-control js-bootstrap-date jstime" name="start_time3" placeholder="结算周期开始时间"
+                   value="{:input('request.start_time3/s','')}" style="width: 140px;" autocomplete="off" >-
+            <input type="text" class="form-control js-bootstrap-date jstime" name="end_time3" placeholder="结算周期结束时间"
+                   value="{:input('request.end_time3/s','')}" style="width: 140px;" autocomplete="off">
+
+            <!-- <input type="text" class="form-control" name="promote_account" style="width: 120px;" value="{:input('request.promote_account/s','')}" placeholder="渠道账号"> -->
+
+            <php>$pmap = ['parent_id'=>['eq',0]]</php>
+            <select name="promote_id" id="promote_id" class="selectpicker " promote_id="{:input('promote_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+                <option value="">所属渠道</option>
+                <volist name=":get_promote_list($pmap)" id="vo">
+                    <option value="{$vo.id}" >{$vo.account}</option>
+                </volist>
+            </select>
+
+            <input type="text" class="form-control js-bootstrap-date jstime" name="start_time" placeholder="结算开始时间"
+                   value="{:input('request.start_time/s','')}" style="width: 140px;" autocomplete="off" >-
+            <input type="text" class="form-control js-bootstrap-date jstime" name="end_time" placeholder="结算结束时间"
+                   value="{:input('request.end_time/s','')}" style="width: 140px;" autocomplete="off">
+
+            <select name="remit_status" id="remit_status" class="selectpicker" style="width: 120px;">
+                <option value="">打款状态</option>
+                <option value="0" <if condition="input('remit_status') eq '0'">selected</if>>未打款</option>
+                <option value="1" <if condition="input('remit_status') eq '1'">selected</if>>已打款</option>
+            </select>
+
+            <input type="text" class="form-control js-bootstrap-date jstime" name="start_time2" placeholder="打款开始时间" value="{:input('request.start_time2/s','')}" style="width: 140px;" autocomplete="off" >-
+            <input type="text" class="form-control js-bootstrap-date jstime" name="end_time2" placeholder="打款结束时间" value="{:input('request.end_time2/s','')}" style="width: 140px;" autocomplete="off">
+
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('settlement/promote_period_settlement')}">清空</a>
+        </form>
+
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>结算信息</th>
+                    <th>渠道</th>
+                    <th>游戏实付金额</th>
+                    <th>新增注册用户</th>
+                    <!-- <th>渠道账号信息</th> -->
+                    <th>甲方分成金额(元)</th>
+                    <th>渠道分成金额(元)</th>
+                    <th>对账单</th>
+                    <th>打款状态</th>
+                    <th width="230px">打款信息</th>
+                    <th>操作</th>
+                    <th style="width:260px">备注</th>
+                </tr>
+            </thead>
+            <tbody>
+                <empty name="data_lists">
+                    <tr><td colspan="12" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <foreach name="data_lists" item="vo">
+                    <tr>
+                        <td>
+                            <p>结算单号: {$vo.order_num}</p>
+                            <p>结算周期: {$vo.period}</p>
+                            <p>结算时间: {:date('Y-m-d H:i:s',$vo.create_time)}</p>
+                        </td>
+                        <td>{$vo.promote_account}</td>
+                        <td>{$vo.total_money}</td>
+                        <td>{$vo.register_user_num}</td>
+
+                        <!-- <td>
+                            <a href="javascript:void(0);" data-promote_id="{$vo.promote_id}" class="promote_bank_account">查看账户信息</a>
+                            promote_bank_account
+                        </td> -->
+
+                        <td>{$vo.plateform_earn}</td>
+                        <td class="data_summary_bold">{$vo.promoter_earn}</td>
+                        <td>
+                            <a href="javascript:check_second_pass('{$vo['id']}');">
+                            <!-- <a href="{:url('show_detail',['period_id'=>$vo['id']])}"> -->
+                                <span class="check_second_pass">导出</span>
+                            </a>
+                        </td>
+                        <td>
+                            <if condition="$vo.is_remit eq 1">
+                                <span >已打款</span>
+                            </if>
+                            <if condition="$vo.is_remit eq 0">
+                                <span >未打款</span>
+                            </if>
+                        </td>
+                        <td>
+                            <if condition="$vo.is_remit eq 1">
+                                <p>打款时间: {:date('Y-m-d H:i:s', $vo.remit_time)}</p>
+                                <p>打款人: {$vo.operator}</p>
+                                <p>打款金额: <span style="color:#006fc4">{$vo.remit_amount}</span></p>
+                                <p>
+                                    打款方式:
+                                    <if condition="$vo.type_of_receive eq 0">银行卡</if>
+                                    <if condition="$vo.type_of_receive eq 1">支付宝</if>
+                                </p>
+                                <php>
+                                    $comma = '';
+                                    if(!empty($data['promote_receive_account']) && !empty($data['promote_receive_name'])){
+                                        $comma = ' , ';
+                                    }elseif(empty($vo['name_of_receive']) || empty($vo['accounts_of_receive'])){
+                                        $comma = '--';
+                                    }
+                                </php>
+                                <p>打款账户: {$vo.name_of_receive} {$comma} {$vo.accounts_of_receive}</p>
+                            </if>
+                            <if condition="$vo.is_remit eq 0">
+                                <span >--</span>
+                            </if>
+                        </td>
+
+                        <td>
+                            <if condition="$vo.is_remit eq 1">
+                                <a href="javascript:showBigImg('{$vo.receipt}');">
+                                    查看回执单
+                                </a>
+                            </if>
+                            <if condition="$vo.is_remit neq 1">
+                                <a href="{:url('do_remit',['id'=>$vo['id'],'is_remit'=>1,'order_num'=>$vo['order_num'],'promote_id'=>$vo['promote_id']])}">
+                                    <span >打款</span>
+                                </a>
+                            </if>
+
+                        </td>
+                        <td >
+                            <a href="javascript:;"  onclick="save_remark({$vo['id']},'{$vo[\'remark\']}')">{$vo['remark']|default="点击输入"}</a>
+                        </td>
+                    </tr>
+                    </foreach>
+                    <tr class="data_summary">
+                        <td>汇总</td>
+                        <td>--</td>
+                        <!-- <td class="data_summary_bold">{$total.total_earn}</td> -->
+                        <td>--</td>
+                        <td>{$total.total_register_user_num}</td>
+                        <td><b>{$total.total_plateform_earn}</b></td>
+                        <td class="data_summary_bold">{$total.total_promoter_earn}</td>
+                        <td>--</td>
+                        <td>--</td>
+                        <td class="data_summary_bold" style="color: #006fc4 !important">{$total.total_remit}</td>
+                        <td>--</td>
+                        <td>--</td>
+                    </tr>
+                </empty>
+            </tbody>
+        </table>
+        <div class="pagination">
+            {$page}
+           <li class="page-item"><a class="page-link" href="{:url('exp_promote_period_settlement',array_merge(['xlsname'=>'渠道周期结算表'],input()))}">导出</a></li>
+        </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script type="text/javascript" src="__STATIC__/js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+    <script type="text/javascript">
+        promote_id = $("#promote_id").attr('promote_id');
+        $("#promote_id").selectpicker('val', promote_id);
+        game_id = $("#game_id").attr('game_id');
+        $("#game_id").selectpicker('val', game_id);
+        function check(){
+            var start_date = $("input[name=start_time]").val();
+            var end_date = $("input[name=end_time]").val();
+            var start_time = (new Date(start_date).getTime())/1000;
+            var end_time = (new Date(end_date).getTime())/1000;
+            if(start_date != '' && end_date != '' && start_time > end_time){
+                layer.msg('开始时间不能大于结束时间');
+                return false;
+            }
+            // return true;
+
+            var start_date2 = $("input[name=start_time2]").val();
+            var end_date2 = $("input[name=end_time2]").val();
+            var start_time2 = (new Date(start_date2).getTime())/1000;
+            var end_time2 = (new Date(end_date2).getTime())/1000;
+            if(start_date2 != '' && end_date2 != '' && start_time2 > end_time2){
+                layer.msg('开始时间不能大于结束时间');
+                return false;
+            }
+
+            var start_date3 = $("input[name=start_time3]").val();
+            var end_date3 = $("input[name=end_time3]").val();
+            var start_time3 = (new Date(start_date3).getTime())/1000;
+            var end_time3 = (new Date(end_date3).getTime())/1000;
+            if(start_date3 != '' && end_date3 != '' && start_time3 > end_time3){
+                layer.msg('开始时间不能大于结束时间');
+                return false;
+            }
+
+            return true;
+        }
+
+        //查看推广员支付账户信息
+        $(".promote_bank_account").click(function () {
+            var promote_id = $(this).data("promote_id");
+            // layer.msg(promote_id);{:url('show_promote_bank',['promote_id'=>$vo['promote_id']])}
+            // return false;
+            $.ajax({
+                url: "{:url('   show_promote_bank')}",
+                type: "POST",
+                dataType: 'json',
+                data: {promote_id: promote_id},
+                success: function (data) {
+                    if (data.code == 1) {
+                        // var text = "游戏ID         "+game_id+"\r\n游戏名称         "+game_name+"\r\n游戏Appid        "+game_appid+"\r\n渠道ID       0\r\n渠道名称       自然注册\r\n访问密钥(access_key，用于SDK初始化参数配置)         "+data.data.mdaccess_key+"\r\nSDK地址         "+domain+"\r\n游戏key(game_key,发给CP，用于支付回调加密)        "+data.data.game_key;
+                        layer.open({
+                            title: '渠道银行参数',
+                            type: 1,
+                            skin: 'layui-layer-demo', //样式类名
+                            anim: 2,
+                            area: ['580px', 'auto'], //宽高
+                            shadeClose: true, //开启遮罩关闭
+                            // success:function(layero) {
+                            //     copy('.copy',text)
+                            // },
+                            content: "<div class='copy' data-clipboard-text=''></div><table><tr><td>渠道ID</td><td>" + data.data.promote_id + "</td></tr><tr><td>" + "渠道账号</td><td>" + data.data.promote_account + "</td></tr><tr><td>" + "银行名称</td><td>" + data.data.bank_name + "</td></tr><tr><td>" + "银行卡</td><td>" + data.data.bank_card + "</td></tr><tr><td>" + "预留银行手机号</td><td>" + data.data.bank_phone + "</td></tr><tr><td>" + "开户行(开户网点)</td><td>" + data.data.account_openin + "</td></tr><tr><td>支付宝账号</td><td>" + data.data.alipay_account + "</td></tr><tr><td>" + "真实姓名</td><td>" + data.data.real_name + "</td></tr></table>"
+                        });
+
+                    }
+                },
+                error: function () {
+                    layer.msg("错误", {icon: 2,})
+                }
+            })
+
+        });
+
+
+
+        $(function(){
+            $('.bindbut').click(function(){
+                val = $(this).val();
+                val1 = $('input[name=is_bind]').val();
+                if(val!=val1){
+                    $('input[name=is_bind]').val(val);
+                }
+            });
+            $('input[type=radio][name=jsis_bind]').change(function() {
+                $("#is_bind").val(this.value);
+                $("#search_btn").click();
+            });
+            //设置分成比例
+            $(".editTab").click(function(){
+                var that = $(this);
+                var title = that.attr("data-title");
+                var value = that.text();
+                var settlement_id = that.data('settlement_id');
+                layer.prompt({title:title,placeholder:'',formType:0},function(value,index) {
+                    if (!/^(((\d|[1-9]\d)(\.\d{1,2})?)|100|100.0|100.00)$/.test(value)) {
+                        layer.msg('输入错误，0-100之间的两位小数',{time:2000});
+                        return false;
+                    }
+                    layer.closeAll();
+                    $.ajax({
+                        url:"{:url('setratio')}",
+                        type:'post',
+                        dataType:'json',
+                        data:{settlement_id:settlement_id,value:value},
+                        success:function(res){
+                            layer.msg(res.msg);
+                            if(res.code==1){
+                                setTimeout(function () {
+                                    location.reload();
+                                },1000)
+                            }
+                        },error(){
+                            layer.msg('服务器错误');
+                        }
+                    })
+                });
+            })
+            //设置时间格式
+            dateD = "{$setdate}";
+            $('.jstime').datetimepicker({
+                language: 'zh-CN',
+                format: 'yyyy-mm-dd',
+                minView: 'month',
+                todayBtn: 0,
+                autoclose: true,
+                endDate: dateD
+            });
+        })
+        $('.chakan').click(function(){
+            var that=$(this),start = that.data('start'),end = that.data('end'),pid = that.data('pid'),gid = that.data('gid');
+            if(!start||!end||!pid||!gid){
+                layer.msg('数据错误');
+                return false;
+            }
+            layer.closeAll();
+            layer.open({
+                type: 2,
+                title: "结算状态详情",
+                shadeClose: true,
+                shade: 0.8,
+                area: ['70%', '80%'],
+                content: "{:url('detail')}?start="+start+"&end="+end+"&pid="+pid+"&gid="+gid //iframe的url
+            });
+        });
+
+        // 查看大图
+        function showBigImg(pic_url){
+            // alert(pic_url);
+            if(pic_url==undefined || pic_url=="" || pic_url==null){
+                var img = "没有上传回执单!"; //图片路径
+                layer.open({
+                // type: 1,
+                // title: false,
+                // closeBtn: 0,
+                // skin: 'layui-layer-rim', //加上边框
+                // area: ['1000px', '800px'], //宽高
+                // area: ['800px', 'auto'], //宽高
+                // scrollbar: true ,//屏蔽浏览器滚动条
+                // shade: 0.8,   //遮罩透明度
+                // skin: 'layui-layer-nobg', //没有背景色
+                // shadeClose: true,
+                // content: img,
+                top:10,
+                type: 1,
+                title: "回执单详情",
+                skin: ['layui-layer-rim' ], //加上边框
+                area: ['854px','552px'], //宽高
+                content: img
+            });
+
+            }else{
+                var img = " <img src=' "+ pic_url +"'>  "; //图片路径
+           
+            //layer
+            layer.open({
+                // type: 1,
+                // title: false,
+                // closeBtn: 0,
+                // skin: 'layui-layer-rim', //加上边框
+                // area: ['1000px', '800px'], //宽高
+                // area: ['1000px', '800px'], //宽高
+                // scrollbar: true ,//屏蔽浏览器滚动条
+                // shade: 0.8,   //遮罩透明度
+                // skin: 'layui-layer-nobg', //没有背景色
+                // shadeClose: true,
+                // content: img,
+                top:10,
+                type: 1,
+                title: "回执单详情",
+                skin: ['layui-layer-rim img_layui' ], //加上边框
+                area: ['854px','552px'], //宽高
+                content: img
+            }); }
+            // $(".layui-layer").css("border-radius", "10px");
+
+        }
+
+
+
+        //  验证二级密码
+        function check_second_pass(period_id){
+
+            // var period_url = "{:url('show_detail',['period_id'=>$period_id])}"
+            var period_url = "{:url('show_detail')}"+"?period_id="+period_id+"";
+            layer.prompt(
+                {
+                    formType: 1,
+                    title: "请输入二级密码(如果没有请设置)",
+                    value: '',
+                    placeholder:'请输入管理员二级密码'
+                }
+                , function (val) {
+                    $.ajax({
+                        url: '{:url("member/user/checkpwd")}',
+                        type: 'post',
+                        dataType: 'json',
+                        data: {'second_pwd': val},
+                        success: function (data) {
+                            if (data.code > 0) {
+                                window.location.href=period_url;
+                            } else {
+                                layer.msg(data.msg)
+                            }
+                        },
+                        error: function () {
+                            alert("错误");
+                        }
+                    });
+                });
+        }
+
+        function save_remark(id,remark) {
+            var url = "{:url('save_remark')}";
+            if(remark=='点击输入'){
+                remark = '';
+            }
+            layer.prompt({
+                formType: 3,
+                title: '输入备注',
+                value: remark,
+                placeholder:'请输入备注'
+            }, function (hits) {
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    dataType: 'json',
+                    data: {id:id,remark:hits,type:'ppst'},
+                    success: function (data) {
+                        if (data.code > 0) {
+                            layer.msg(data.msg);
+                            setTimeout(function(){
+                                self.location.reload(true);
+                            },1000);
+                        } else {
+                            layer.msg(data.msg)
+                        }
+                    },
+                    error: function () {
+                        layer.msg("服务器故障！");
+                    }
+                });
+            });
+        }
+
+    </script>
+</body>
+</html>

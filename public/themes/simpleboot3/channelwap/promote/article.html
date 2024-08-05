@@ -1,0 +1,109 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link href="__TMPL__/channelwappublic/assets/css/user_news.css" type="text/css" rel="stylesheet" />
+</block>
+<block name="body">
+    <div class="page-container">
+       <header>
+           <a href="javascript:history.back()" class="back-btn"></a>
+           <div style="width: 100%;height: 100%" class="v-middle h-middle">
+           <p class="header-title">消息中心</p>
+           </div>
+       </header>
+        <div class="page-content">
+            <div class="user-news-container">
+                <div class="user-news-list" id="articleload">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var lwx = window.lwx || {};
+        lwx.ready = true;
+        lwx.width = $(window).width();
+        lwx.height = $(window).height();
+        lwx.number = {article:1};
+        lwx.row = {article:15};
+        lwx.http = {
+            getJSON:function(url,callback){
+                $.getJSON(url + '&v=' + Date.now(),function(data){
+                    callback(data);
+                });
+            },
+            postJSON:function(url,args,callback) {
+                $.post(url + '&v=' + Date.now(), args, function(data) {
+                    callback(data);
+                },"json")
+            },
+        };
+        lwx.url ={
+            article:'{:url("Promote/get_article")}',
+        };
+        lwx.page = {
+            article:function(){
+                if(lwx.number.article) {
+                    lwx.http.getJSON(lwx.url.article+'?row='+lwx.row.article+'&page='+lwx.number.article,function(data) {
+                        var articleload = $('#articleload');
+                        var data = data.data;
+                        if(data && data.length) {
+                            var html = '';
+                            for (var i in data) {
+                                html += '<a href="'+data[i].url+'" class="news-item v-middle">';
+                                if(data[i].category_id == 4){
+                                    html += '<span class="news-tag"></span>';
+                                }else{
+                                    html += '<span class="news-information"></span>';
+                                }
+								html +='<div class="news-right">';
+                                html += '<span class="news-title">'+data[i].post_title+'</span>';
+                                html += ' <span class="news-jump"><img src="__TMPL__/channelwappublic/assets/images/news/shouyi_ico_tiaozhuan.png"></span>';
+								html +='</div>';
+                                html += '</a>';
+                            }
+                            html += '</div>';
+                            articleload.append(html);
+                            articleload.find('.jsdropload').remove();
+                            if(data.length >= lwx.row.article) {
+                                lwx.number.article++;
+                                lwx.ready = true;
+                                articleload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.article = false;
+                                articleload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                        } else {
+                            if(lwx.number.article==1){
+                                articleload.html('').append('<p class="no_invest_info jsdropload">暂无消息</p>');
+                            } else{
+                                articleload.find('.jsdropload').remove();
+                                articleload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                            lwx.number.article = false;
+                        }
+                    });
+                }
+            },
+        };
+        pageChange();
+        function pageChange(n) {
+            lwx.page.article();
+            if(lwx.number.article) {lwx.ready=true;}
+        }
+        function pageScroll(scrollTop, boxHeight, maxScrollHeight) {
+            if (scrollTop + boxHeight >= maxScrollHeight - 50) {
+                if (lwx.ready && lwx.number.article>1) {
+                    lwx.ready = false;
+                    lwx.page.article();
+                }
+            }
+        }
+        window.onscroll = function() {
+            var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+            pageScroll(scrollTop, lwx.height, $(document).height())
+        }
+    </script>
+</block>
+
+<block name="script">
+
+</block>

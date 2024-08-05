@@ -1,0 +1,364 @@
+@charset "utf-8";
+html,body{
+    color: #666666;
+    width: 100%;
+    height: 100vh!important;
+    background: #fff;
+}
+p{
+    margin: 0;
+}
+footer{
+    display: none!important;
+}
+.siteItem {
+    color: #333333;
+    font-size: 0.44rem;
+    font-family: 'PingFang SC';
+    font-weight: 500;
+}
+.reduction {
+    width: 100%;
+    font-size: 0.4rem;
+    font-family: 'PingFang SC';
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 0.2rem;
+    position: relative;
+}
+.reduction img {
+    float: right;
+    width: 5%;
+    padding-right: 0.7rem;
+}
+.securityInfo {
+    width: 91%;
+    height: 2rem;
+    background: #F0F3FC;
+    border-radius: 0.2rem;
+    font-size: 0.36rem;
+    padding: 0.2rem 0 0 0.4rem;
+    font-weight: normal;
+    margin-top: 0.2rem;
+    color: #999999!important;
+}
+.differentColor {
+    color: #666666!important;
+}
+.InfoBox {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.2rem 0.5rem 0.3rem 0.3rem;
+}
+.prescription {
+    margin-left: 0.3rem;
+}
+.confirmBox {
+    width: 100%;
+    height: 2rem;
+    box-shadow: 0px -4px 29px 0px rgba(174, 185, 190, 0.7);
+    position: fixed;
+    bottom: 0;
+}
+.submit-btn {
+    width: 90%;
+    border: none;
+    background: #26C7DB;
+    border-radius: 0.1rem;
+    height: 0.98rem;
+    font-family: 'PingFang SC';
+    font-weight: 500;
+    color: #FFFFFF;
+    font-size: 0.4rem;
+    margin: 0.28rem 0 0.2rem 0.44rem;
+}
+.submitDetail {
+    text-align: center;
+    font-family: 'PingFang SC';
+    font-weight: 500;
+    color: #999999;
+    font-size: 0.36rem;
+}
+.radioItem {
+    position: relative;
+}
+.radioItem input[type="checkbox"] {
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    visibility: hidden;
+    z-index: 100;
+}
+
+.itemIcon {
+    width: 0.4rem;
+    height: 0.4rem;
+    display: inline-block;
+    background: url('../../../channelwappublic/assets/images/common/btn_false.png') no-repeat;
+    background-size: 100% 100%;
+    vertical-align: middle;
+}
+.radioItem input[type="checkbox"]:checked+.itemIcon {
+    background-image: url('../../../channelwappublic/assets/images/common/btn_select.png');
+}
+.reduction input[type="checkbox"] {
+    opacity: 0;
+    position: absolute;
+    width: 0.4rem;
+    height: 0.4rem;
+    visibility: hidden;
+    z-index: 100;
+}
+.reduction input[type="checkbox"]:checked+.itemIcon {
+    background-image: url('../../../channelwappublic/assets/images/common/btn_select.png');
+}
+
+.form-item .chooseCard {
+    width: 2.8rem!important;
+}
+.form .form-item{
+    width: 100%;
+    height: 0.9rem;
+    margin-top: 0.5rem;
+    /*border-bottom: 0.0267rem solid #EDEEEF;*/
+    display: flex;
+    align-items: center;
+    position: relative;
+
+}
+.form-item .form-item-title{
+    width: 2.5rem;
+    height: 100%;
+    font-size: 0.4rem;
+    font-weight: bold;
+    color: #333333;
+    line-height: 1rem;
+    padding-left: 0.25rem;
+
+}
+.form-item .form-item-text{
+    width:calc(100% - 2.1333rem) ;
+    height: 100%;
+    box-sizing: border-box;
+    font-size: 0.34666rem;
+    line-height: 1rem;
+    position: relative;
+}
+.form-item .form-item-input {
+    width: 94%;
+    border: 0.0267rem solid #E0E0E0;
+    outline: none;
+    height: 100%;
+    padding-left: 0.2rem;
+    box-sizing: border-box;
+    border-radius: 3px;
+    font-size: 0.373rem;
+    box-shadow: none;
+    -webkit-appearance: none;
+    position: relative;
+}
+.form-item  .form-item-input:read-only{
+    border: none;
+    padding-left: 0;
+	color:#666;
+}
+.form-item .form-item-input::-webkit-input-placeholder{
+	color:#C0C0C4;
+}
+.form-item .form-item-input::-webkit-input-placeholder{
+	color:#C0C0C4;
+}
+.form-item .form-item-input::-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:#C0C0C4;
+}
+.form-item .form-item-input::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:#C0C0C4;
+}
+.form-item .form-item-input::-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:#C0C0C4;
+}
+.form-item-tips{
+    color: #999999;
+    font-size: 0.32rem;
+    position: absolute;
+    bottom: -0.6rem;
+    left: 0;
+    line-height: 1.2;
+}
+.form-item .submit-btn{
+    font-size: 0.4rem;
+    color: #fff;
+    background: #26c7db;
+    border-radius: 0.08rem;
+    width: 2.2rem;
+    height: 0.9rem;
+    line-height: 0.9rem;
+    text-align: center;
+    border: none;
+    margin-left: 2.8rem;
+}
+.formGrant {
+    margin-top: 0.3rem;
+    padding-left: 0.2rem;
+}
+.titleText {
+    font-family: 'PingFang SC';
+    font-weight: bold;
+    color: #333333;
+    font-size: 0.36rem;
+    margin-top: 0.2rem;
+}
+.player {
+    width: 100%;
+    height: auto;
+    margin-top: 0.3rem;
+}
+.pro_promot_search {
+    position: relative;
+    margin-left: 0.2rem;
+    width: 68%;
+}
+.pro_promot_search_input {
+    border: 1px solid #E6E4E4;
+    border-radius: 0.1rem!important;
+    width: 100%;
+    height: 0.8rem;
+    padding-left: 0.2rem;
+}
+.btn-primary {
+    position: absolute;
+    right: -6px;
+    top: 7px;
+    border: none;
+    background: #fff;
+    outline: none;
+    color: #26C7DB;
+    font-size: 0.4rem;
+}
+.clear {
+    border: 1px solid #F0F0F0;
+    margin: 0.2rem;
+}
+.pro_promot_game_check input[type="checkBox"]:checked+.itemIcon {
+    background-image: url('../../../channelwappublic/assets/images/common/btn_select.png');
+}
+.game_list {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+.pro_promot_game_con{
+    width: 25%;
+    font-size: 0.3rem;
+    color: #666;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-bottom: 0.2rem;
+}
+.all-select-btn {
+    font-size: 0.36rem;
+    color: #666;
+    padding-bottom: 0.2rem;
+}
+.fengeixan {
+    height: 0.2rem;
+    background-color: #F7F7F7;
+    padding-bottom: 0.2rem;
+}
+.save-btn {
+    border: none;
+    width: 2rem;
+    height: 0.7rem;
+    border-radius: 0.1rem;
+    background: #26C7DB;
+    color: #fff;
+    font-size: 0.36rem;
+    margin-bottom: 0.3rem;
+    margin-left: 3.5rem;
+}
+.pro_promot_game {
+    height: 4rem;
+    overflow-y: scroll
+}
+.couponList {
+    width: 100%;
+    margin-top: 0.2rem;
+}
+.coupon-dropdown{
+    font-family: 'PingFang SC';
+    font-weight: 500;
+    color: #333333;
+    font-size: 0.36rem;
+    height: 5.8rem;
+    /* height: 4rem; */
+    overflow-y: scroll
+}
+.coupon-dropdown li{
+	margin-bottom: 0.3rem
+}
+.coupon-content {
+    font-size: 0.32rem;
+    color: #999999;
+}
+.jiantouIcon {
+    float: right;
+    display: inline-block;
+    width: 0.5rem;
+    /* height: 0.3rem; */
+    margin-right: 0.3rem;
+}
+.jiantouIcon img {
+    width: 100%;
+}
+.coupon-content {
+    background: #F0F3FC;
+    border-radius: 0.2rem;
+    width: 97%;
+    margin-top: 0.2rem
+}
+.coupon-list {
+    display: flex;
+    /* justify-content: space-around; */
+    margin-right: 1.5rem;
+    padding-top: 0.3rem;
+	padding-left:0.7rem
+}
+.timing {
+    margin-left: 0.7rem;
+    margin-top: 0.2rem;
+    padding-bottom: 0.2rem;
+}
+.coupon-bottom {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 2rem;
+    background: #FFFFFF;
+    box-shadow: 0px -4px 29px 0px rgba(174, 185, 190, 0.7);
+    text-align: center;
+}
+.confirm-btn {
+    border: none;
+    width: 90%;
+    height: 1rem;
+    margin: 0.2rem 0.3rem 0.2rem 0.3rem;
+    border-radius: 0.1rem!important;
+    background: #26C7DB;
+    color: #fff;
+    font-size: 0.4rem;
+}
+.bottomText {
+    font-size: 0.36rem;
+    color: #999;
+}
+.xz{
+    transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+}

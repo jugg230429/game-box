@@ -1,0 +1,197 @@
+<include file="public@header" />
+<link href="__TMPL__/public/assets/simpleboot3/css/newGrant.css" rel="stylesheet">
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="javascript:;">发放代金券</a></li>
+    </ul>
+        <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('grant')}" method="post">
+            <fieldset>
+                <div class="tabbable">
+                    <div class="grantContainer">
+                        <div style="margin-right: 46px;">
+                            <span class="fl grantNameLabel">选择玩家：</span>
+                            <div class="mainSelectOutBox fl">
+                                <input type="text" placeholder="输入玩家账号" class="inputGameUserCount js-filter-user">
+                                <div class="bottomShowList">
+                                    <ul>
+                                        <php>$map['puid'] = 0;</php>
+                                        <volist name=":get_user_lists_info('id,account',$map)" id="vo">
+                                            <li class="showGameGrantList userList" data-user_account="{$vo.account}">
+                                                <label class="grantBoxSelectData" for="user_id_{$vo.id}">
+                                                    <input type="checkbox" class="selectBoxIcon" name="user_id[]" id="user_id_{$vo.id}" value="{$vo.id}">
+                                                    <i class="selectBoxIcon"></i>
+                                                    <span>{$vo.account}</span>
+                                                </label>
+                                            </li>
+                                        </volist>
+                                    </ul>
+                                    <empty name=":get_user_lists_info('id,account',$map)">
+                                        <div class="noHaveGamelist">~暂无数据~</div>
+                                    </empty>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="fl grantNameLabel">选择代金券：</span>
+                            <div class="mainSelectOutBox fl">
+                                <input type="text" placeholder="输入代金券名称" class="inputGameUserCount js-filter-coupon">
+                                <div class="bottomShowList">
+                                    <ul>
+                                        <volist name="coupon" id="vo">
+                                            <li class="showGameGrantList couponList" data-coupon_name="{$vo.coupon_name}">
+                                                <label class="grantDiscountData" for="coupon_id_{$vo.id}">
+                                                    <input type="radio" class="discountBoxIcon" name="coupon_id" id="coupon_id_{$vo.id}" value="{$vo.id}">
+                                                    <!--                                                    <i class="discountBoxIcon"></i>-->
+                                                    <span>{$vo.coupon_name}</span>
+                                                </label>
+                                                <div class="showDescDiscount">
+                                                    <p>券值：<span>{$vo.money}</span></p>
+                                                    <if condition="$vo['mold'] eq '游戏'">
+                                                        <p>类型：<span>{$vo['game_name']}</span></p>
+                                                    <else/>
+                                                        <p>类型：<span>{$vo['mold']}</span></p>
+                                                    </if>
+                                                    <p>时效：<span>{$vo['end_time']}</span></p>
+                                                    <p>数量：<span>{$vo['stock']}</span></p>
+                                                </div>
+                                            </li>
+                                        </volist>
+                                    </ul>
+                                    <empty name="coupon">
+                                        <div class="noHaveGamelist">~暂无数据~</div>
+                                    </empty>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grantBottomFinalBtn col-sm-5">
+                        <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9"  data-refresh="1">
+                            {:lang('SAVE')}
+                        </button>
+                        <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                    </div>
+                    <!-- <div class="tab-content">
+                        <div class="tab-pane active" id="A">
+                            <div class="form-group" >
+                                <label for="input-site-name" class="col-sm-2 control-label newLabelShow" >
+                                    选择用户：
+                                </label>
+                                <div class="col-md-4 col-sm-6">
+                                    <php>$map['puid'] = 0;</php>
+                                    <select name="user_id[]" id="user_id" class="selectpicker form-control" multiple title="请选择用户"  data-live-search="true">
+                                        <option value="">请选择用户</option>
+                                        <volist name=":get_user_lists_info('id,account',$map)" id="vo">
+                                            <option value="{$vo.id}" >{$vo.account}</option>
+                                        </volist>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group" id="coupon">
+                                <label for="input-site-name" class="col-sm-2 control-label newLabelShow" >
+                                    选择代金券：
+                                </label>
+                                <div class="col-md-4 col-sm-6">
+                                    <select name="coupon_id" id="coupon_id" class="selectpicker form-control" title="选择代金券" data-live-search="true">
+                                        <volist name="coupon" id="vo">
+                                            <option value="{$vo.id}">{$vo.coupon_name}</option>
+                                        </volist>
+                                    </select>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-1 col-sm-5">
+                                    <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9"  data-refresh="1">
+                                        {:lang('SAVE')}
+                                    </button>
+                                    <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script type="text/javascript">
+    //鼠标经过则显示下方的劵等等信息
+    $('.grantDiscountData').mouseenter(function() {
+		// setTimeout(function () {
+        //       $(this).siblings('.showDescDiscount').css('display','block')
+        // },300);
+        $(this).siblings('.showDescDiscount').css('display','block')
+        
+    })
+    $('.grantDiscountData').mouseleave(function() {
+		// setTimeout(function () {
+        //     $(this).siblings('.showDescDiscount').css('display','none')
+        // },300);
+        $(this).siblings('.showDescDiscount').css('display','none')        
+    })
+
+
+
+    $("#user_id").selectpicker('val', $('#user_id').attr('user_id'));
+    $("#coupon_id").selectpicker('val', $('#coupon_id').attr('coupon_id'));
+    function rebateadd() {
+        window.location.href = "{:url('add')}";
+    }
+    $(function () {
+        //代金券数据
+        var coupon_list={:json_encode($coupon)};
+        $('#coupon .dropdown-menu li').mouseenter(function () {
+            var that = $(this);
+            var index = that.index();
+            var data = coupon_list[index];
+            if(data.mold == '游戏'){
+                var result = '<div class="coupon-content"><p><span>卷值：</span>'+data.money+'</p><p><span>类型：</span>'+data.game_name+'</p><p><span>时效：</span>'+data.end_time+'</p><p><span>数量：</span>' + data.stock+'</p></div>';
+            }else{
+                var result = '<div class="coupon-content"><p><span>卷值：</span>'+data.money+'</p><p><span>类型：</span>'+data.mold+'</p><p><span>时效：</span>'+data.end_time+'</p><p><span>数量：</span>' + data.stock+'</p></div>';
+            }
+            that.append(result)
+        })
+        $('#coupon .dropdown-menu li').mouseleave(function () {
+            var that = $(this)
+            that.find(".coupon-content").remove()
+        });
+      /*  if($('#coupon .dropdown-menu li.active')){
+            var that = $('#coupon .dropdown-menu li.active');
+            var index = that.index();
+            var data = coupon_list[index];
+            var result = '<div class="coupon-content"><p><span>卷值：</span>'+data.coupon_val+'</p><p><span>类型：</span>'+data.coupon_val+'</p><p><span>时效：</span>'+data.coupon_val+'</p><p><span>数量：</span>' + data.coupon_val+'</p></div>';
+            that.append(result)
+        }*/
+
+
+        $(".js-filter-user").bind('input propertychange', function () {
+            var s_text = $(this).val();
+            if (typeof (s_text) == "undefined" || s_text === '' || s_text == null) {
+                $(".userList").show();
+            } else {
+                $(".userList").hide();
+                $("li[data-user_account^='" + s_text + "']").show();
+                $("li[data-user_account$='" + s_text + "']").show();
+            }
+            return false;
+        });
+
+        $(".js-filter-coupon").bind('input propertychange', function () {
+            var s_text = $(this).val();
+            if (typeof (s_text) == "undefined" || s_text === '' || s_text == null) {
+                $(".couponList").show();
+            } else {
+                $(".couponList").hide();
+                $("li[data-coupon_name^='" + s_text + "']").show();
+                $("li[data-coupon_name$='" + s_text + "']").show();
+            }
+            return false;
+        });
+
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,314 @@
+<include file="public@header"/>
+</head>
+<body>
+<script type="text/html" id="photos-item-tpl">
+    <li id="saved-image{id}">
+        <input id="photo-{id}" type="hidden" name="screenshot[]" value="{filepath}">
+        <input class="form-control" id="photo-{id}-name" type="text" name="photo_names[]" value="{name}"
+               style="width: 200px;" title="图片名称">
+        <img id="photo-{id}-preview" src="{url}" style="height:36px;width: 36px;"
+             onclick="imagePreviewDialog(this.src);">
+        <a href="javascript:(function(){$('#saved-image{id}').remove();})();">移除</a>
+    </li>
+</script>
+<div class="wrap js-check-wrap">
+
+    <div class="nav-tabs mb20">
+        <span>编辑游戏</span>
+        <span class="title_remark pb10">说明：查看和编辑游戏的基础信息、参数信息等。</span>
+    </div>
+
+    <ul class="nav nav-menu">
+        <li class="active fl nav-menu-con"><a href="#A" data-toggle="tab">基础信息</a></li>
+        <li class="fl  nav-menu-con"><a href="#F" data-toggle="tab">参数配置</a></li>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('issueh5/AdminGame/edit')}"
+          method="post">
+        <input type="hidden" name="id" value="{$data.id}" />
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>游戏名称
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" value="{$data.game_name}" readonly >
+                                <input type="hidden" name="id" value="{$data.id}">
+                            </div>
+                            <p class="help-block game_error"></p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-admin_url_password" class="col-sm-2 control-label"><span class="form-required">*</span>游戏类型:</label>
+                            <div class="col-md-3 col-sm-5">
+                                <select id="game_type_id" name="game_type_id[]" class=" selectpicker form-control " data-live-search="true" multiple title="选择游戏类型">
+                                    <option value="0" disabled>选择游戏类型</option>
+                                    <volist name=":get_game_type_all()" id="vo">
+                                        <option value="{$vo.id}" <if condition="in_array($vo['id'], $data.game_type_id)">selected</if>>{$vo.type_name}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                            <p class="help-block">最多可选3种</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_admin_email" class="col-sm-2 control-label">游戏排序：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control " name="sort" value="{$data.sort}">
+                            </div>
+                            <p class="help-block">设置游戏的显示顺序，数值越大越靠前</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">游戏首字母：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control " id="short" name="short" value="{$data.short}" placeholder="例如荒莽纪,输入HMJ">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">开发商：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control " id="dev_name" name="dev_name" value="{$data.dev_name}" placeholder="">
+                            </div>
+                        </div>
+<!--                        <div class="form-group">-->
+<!--                            <label for="input-site_analytics" class="col-sm-2 control-label">一句话描述：</label>-->
+<!--                            <div class="col-md-3 col-sm-5">-->
+<!--                                <input type="text" class="form-control" name="features" value="{$data.features}" placeholder="输入一句话简介">-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="form-group">-->
+<!--                            <label for="input-site_analytics" class="col-sm-2 control-label">游戏介绍：</label>-->
+<!--                            <div class="col-md-3 col-sm-5">-->
+<!--                                <div id="textarea_box">-->
+<!--                                    <textarea maxlength="1000" id="content" style="height: 200px;" name="introduction" class="form-control">{$data.introduction}</textarea>-->
+<!--                                    <p id="text_count_p"><span style="color: #999" id="aaa"></span></p>-->
+<!--                                </div>-->
+<!--                                &lt;!&ndash;<textarea maxlength="1000" style="height: 200px;" name="introduction" class="form-control ">{$data.introduction}</textarea>&ndash;&gt;-->
+<!--                            </div>-->
+<!--                            <p class="help-block">请用文字详细描述游戏的类型、玩法以及特色。</p>-->
+<!--                        </div>-->
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">游戏iCON：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="icon" type="hidden" name="icon" value="{$data.icon}" >
+                                <img id="icon-preview" class="upload-img"  <if condition="$data['icon']">src="{:cmf_get_image_preview_url($data['icon'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#icon');">上传</a>
+                                <a href="javascript:(function(){$('#icon-preview').attr('src','');$('#icon').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">建议尺寸200*200，圆角不要求，可直接提供方图</p>
+                        </div>
+
+
+<!--                        <div class="form-group">-->
+<!--                            <label for="input-site_analytics" class="col-sm-2 control-label">游戏推荐图：</label>-->
+<!--                            <div class="col-md-3 col-sm-5">-->
+<!--                                <input id="cover" type="hidden" name="cover" value="{$data.cover}">-->
+<!--                                <img id="cover-preview" class="upload-img"  <if condition="$data['cover']">src="{:cmf_get_image_preview_url($data['cover'])}"</if>>-->
+<!--                                <a href="javascript:uploadOneImage('图片上传','#cover');">上传</a>-->
+<!--                                <a href="javascript:(function(){$('#cover-preview').attr('src','');$('#cover').val('')})();">移除</a>-->
+<!--                            </div>-->
+<!--                            <p class="help-block">用于PC官网首页推荐游戏位展示，尺寸278x372px</p>-->
+<!--                        </div>-->
+<!--                        <div class="form-group">-->
+<!--                            <label for="input-site_analytics" class="col-sm-2 control-label">游戏截图：</label>-->
+<!--                            <div class="col-md-3 col-sm-5">-->
+<!--                                <ul id="photos" class="pic-list list-unstyled form-inline">-->
+<!--                                    <notempty name="data.screenshot">-->
+<!--                                        <php>$screenshot= explode(',',$data['screenshot']);</php>-->
+<!--                                        <foreach name="screenshot" item="vo">-->
+<!--                                            <li id="saved-image{$key}">-->
+<!--                                                <input id="photo-{$key}" type="hidden" name="screenshot[]"-->
+<!--                                                       value="{$vo}">-->
+<!--                                                <img id="photo-{$key}-preview"-->
+<!--                                                     src="{:cmf_get_image_preview_url($vo)}"-->
+<!--                                                     style="height:36px;width: 36px;"-->
+<!--                                                     onclick="parent.imagePreviewDialog(this.src);" >-->
+<!--                                                <a href="javascript:(function(){$('#saved-image{$key}').remove();})();">移除</a>-->
+<!--                                            </li>-->
+<!--                                        </foreach>-->
+<!--                                    </notempty>-->
+<!--                                </ul>-->
+<!--                                <a href="javascript:uploadMultiImage('图片上传','#photos','photos-item-tpl');"-->
+<!--                                   class="btn btn-sm btn-default">选择图片</a>-->
+<!--                            </div>-->
+<!--                            <p class="help-block">用于游戏详情页内展示，横版游戏建议尺寸16：9，640*360px及以上；竖版游戏建议尺寸9：16，640*360px及以上</p>-->
+<!--                        </div>-->
+
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">游戏素材包：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="material_url" type="hidden" name="material_url" value="{$data.material_url}" >
+                                <input id="material_url-name" value="{:get_file_name($data['material_url'])}" type="text" title="文件名称">
+                                <a href="javascript:uploadOne('文件上传','#material_url','file');">上传</a>
+                                <a id="material_url-preview" <if condition="$data['material_url']"> href="{:cmf_get_file_download_url($data['material_url'])}"</if> target="_blank">下载</a>
+                                <a href="javascript:(function(){$('#material_url-preview').attr('href','javascript:;');$('#material_url').val('');$('#material_url-name').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block"> 须为压缩包形式，用于分发后台下载推广</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">屏幕属性：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" value="1" <eq name="data.screen_type" value="1">checked</eq>  name="screen_type" >横屏
+                                </label>
+
+                                <label>
+                                    <input type="radio" value="0" <eq name="data.screen_type" value="0">checked</eq>  name="screen_type" >竖屏
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_icp" class="col-sm-2 control-label">显示状态：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="status" <eq name="data.status" value="0">checked</eq>> 关闭
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="status" <eq name="data.status" value="1">checked</eq>> 开启
+                                </label>
+                            </div>
+                            <p class="help-block">游戏对接成功后开启在渠道上架</p>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                                <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="F">
+
+                        <div class="form-group" >
+                            <label for="input-site_seo_title" class="col-sm-2 control-label">分成分发比例：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <textarea maxlength="1000" placeholder="输入0~100之前的数字" id="ff_ratio" name="ff_ratio"
+                                          onkeyup="clearNoNum(this)" class="form-control issue-textarea"  >{$data.ff_ratio}</textarea>
+                                <span class="input-sup">%</span>
+							</div>
+                            <p class="help-block"></p>
+                        </div>
+
+                        <div class="form-group" >
+                            <label for="input-site_seo_title" class="col-sm-2 control-label">CP分成比例：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <textarea maxlength="1000" placeholder="输入0~100之前的数字" id="cp_ratio" name="cp_ratio"
+                                          onkeyup="clearNoNum(this)" class="form-control issue-textarea" >{$data.cp_ratio}</textarea>
+                                 <span class="input-sup">%</span>
+							</div>
+                            <p class="help-block"></p>
+                        </div>
+
+
+                        <div class="form-group" >
+                            <label for="input-site_seo_title" class="col-sm-2 control-label">游戏登录通知地址：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <textarea maxlength="1000" placeholder="" id="login_notify_url" name="login_notify_url" class="form-control issue-textarea">{$data.login_notify_url}</textarea>
+                            </div>
+                            <p class="help-block">平台用户游戏登录时，通知CP方所用，该地址由CP方提供</p>
+                        </div>
+
+                        <div class="form-group" >
+                            <label for="input-site_seo_title" class="col-sm-2 control-label">游戏支付通知地址：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <textarea maxlength="1000" placeholder="支付时通知CP方所用的地址" id="pay_notify_url" name="pay_notify_url" class="form-control issue-textarea" >{$data.pay_notify_url}</textarea>
+                            </div>
+                            <p class="help-block">平台用户游戏充值时，通知CP方所用，该地址由CP方提供</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-banned_usernames" class="col-sm-2 control-label">游戏KEY：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="game_key" value="{$data.game_key}" placeholder="游戏支付通知时的加密key">
+                            </div>
+                            <p class="help-block">游戏支付通知时的加密key，可自由设置，长度不得超过32位字符串，设置完必须提供给CP方进行同步</p>
+                        </div>
+
+<!--                        <div class="form-group">-->
+<!--                            <label for="input-banned_usernames" class="col-sm-2 control-label">游戏支付Appid：</label>-->
+<!--                            <div class="col-md-2 col-sm-10">-->
+<!--                                <input type="text" class="form-control" name="game_pay_appid" value="{$data.game_pay_appid}" placeholder="">-->
+<!--                            </div>-->
+<!--                            <p class="help-block">使用微信支付时需要的appid，需要到微信开放平台申请创建，包括官方微信支付和威富通里的微信支付（需要删除，在支付配置里设置即可）</p>-->
+<!--                        </div>-->
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn">
+                                    {:lang('SAVE')}
+                                </button>
+                                <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript" src="__STATIC__/js/statistical_word_number.js"></script>
+<script>
+    $(function () {
+        //官方下载和第三方下载切换
+        $('input:radio[name="down_port"]').change( function() {
+            var radio = $('input:radio[name="down_port"]:checked').val();
+            if(radio == 1){
+                $('.third_address').attr('hidden',true);
+            }else{
+                $('.third_address').attr('hidden',false);
+            }
+        })
+
+        //点击不推荐取消推荐选中状态
+        $("#radio6").click(function(){
+            if(!$(this).attr('checked')){
+                $("#radio7").attr("checked",false);
+            }
+            click_ver($(this));
+        });
+
+        //点击推荐取消不推荐选中状态
+        $("#radio7").click(function(){
+            if(!$(this).attr('checked')){
+                $("#radio6").attr("checked",false);
+            }
+            click_ver($(this));
+        });
+        $("#radio8,#radio9").click(function () {
+            click_ver($(this));
+        })
+        //验证当前推荐状态选择个数
+        function click_ver(that){
+            var length = $('input[name="recommend_status[]"]:checked').length;
+            if(length>2){
+                layer.msg('最多选择两种状态');
+                that.attr("checked",false);
+            }
+        }
+
+    })
+    function clearNoNum(obj)
+
+    {
+        obj.value = obj.value.replace(/[^\d.]/g,"");
+        obj.value = obj.value.replace(/\.{2,}/g,".");
+        obj.value = obj.value.replace(/^\./g,"");
+        obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+        obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');
+    }
+    $(function () {
+        startMonitor('content', 'aaa',1000);
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+		<link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+		<link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" />
+		<include file="public@head"/>
+	</head>
+
+	<body>
+		<include file="public@nav"/>
+		<include file="public@header"/>
+		<link href="__TMPL__/public/assets/css/promote/balance.css" rel="stylesheet" />
+		<div class="trunk">
+			<div class="trunk-con">
+				<div class="right-container">
+				    <div class="top-con">
+              <img src="/themes/simpleboot3/public/assets/images/ico_money2.png" class="top-con-icon fl">
+              <div class="fl">
+                <div class="top-con-num">{$baseinfo.prepayment}</div>
+				<div class="top-con-text">
+					预付款余额
+					<if condition="$baseinfo.prepayment lt 200">
+						&nbsp;&nbsp;&nbsp;<span style="color: orange;">(当前预付款余额较低，请尽快充值。当预付款余额不足扣除分成时，支付通道则自动切换为官方)</span>
+					</if>
+				</div>
+				</div>
+              <!-- <a class="fl btn-exchange "  href="{:url(balance)}">充值</a> -->
+             </div>
+
+					<div class="normal-list">
+						<div class="trunk">
+
+							<ul class="tab ">
+								<if condition="AUTH_PAY eq 1">
+								<li class="tab-menu ">
+									<a href="{:url(prepayment)}">充值预付款</a>
+								</li>
+								</if>
+								<!-- <if condition="PID_LEVEL lt 3">
+									<li class="tab-menu ">
+										<a href="{:url('shift')}">给下级转移</a>
+									</li>
+								</if> -->
+								<li class="tab-menu tab-menu-active">
+									<a href="{:url('prepayment_record')}">预付款充值记录</a>
+								</li>
+								<li class="tab-menu">
+									<a href="{:url('prepayment_deduct_record')}">预付款扣除记录</a>
+								</li>
+
+							</ul>
+                             <span class="tagging">说明：显示当前账号预付款的充值记录</span>
+							 <div class="clear"></div>
+							<div class="tabpan">
+
+								<div class="tabpan-con tabpan-show">
+									<form action="{:url('prepayment_record')}" method="GET">
+										<div class="trunk-search clearfix fr">
+											<!-- <select id="pay_order_number" name="pay_order_number" class="tab-input js-select-gallery normal-space trunk-search-select fl" >
+												<option value="" data="0">订单号</option>
+												<volist name="alldata" id='dd'>
+													<if condition="$dd['pay_order_number'] neq '--'">
+														<option value="{$dd['pay_order_number']}" <if condition="$dd['pay_order_number'] eq input('pay_order_number')"> selected</if> data="0">{$dd['pay_order_number']}</option>
+													</if>
+												</volist>
+											</select> -->
+											<input type="text" id="order_number" class="tabpan-input" autocomplete="off" name="order_number" placeholder="订单号" value="{:input('order_number')}">
+
+											<input type="text" id="sdate" class="tabpan-input" autocomplete="off" name="start_time" placeholder="开始时间" value="{:input('start_time')}">
+											<label class="line-color">&nbsp;-&nbsp;</label>
+											<input type="text" id="edate" class="tabpan-input " name="end_time" autocomplete="off" placeholder="结束时间" value="{:input('end_time')}">
+
+											<select id="pay_way" name="pay_way" class="tab-input js-select-gallery normal-space trunk-search-select fl">
+												<option value="" data="0">充值方式</option>
+												<option value="3" <if condition="input('pay_way') eq 3"> selected </if> >支付宝</option>
+												<option value="4" <if condition="input('pay_way') eq 4"> selected </if> >微信</option>
+												<!-- <option value="2" <if condition="input('pay_way') eq 2"> selected </if> data="0">渠道充值</option> -->
+												<!-- <option value="1" <if condition="input('pay_way') eq 1"> selected </if> data="0">充值渠道</option>
+												<option value="4" <if condition="input('pay_way') eq 4"> selected </if> data="0">发放/转移</option> -->
+											</select>
+
+											<select id="pay_status" name="pay_status" class="tab-input js-select-gallery normal-space trunk-search-select fl">
+												<option value="" <if condition="input('pay_status') neq 0 and input('pay_status') neq 1"> </if> >充值状态</option>
+
+												<option value="0" <if condition="input('pay_status') === '0'"> selected </if> >下单未付款</option>
+												<option value="1" <if condition="input('pay_status') eq 1"> selected </if> >支付成功</option>
+
+											</select>
+											<a href="{:url('prepayment_record')}"><input type="button" class="submit fr normal-space btn-clear" value="清空"></a>
+											<input type="submit" class="submit fr normal-space" id="submit" value="搜索">
+										</div>
+									</form>
+									<div class="clear"></div>
+									<table class="table normal-table" id="promotecoin_table">
+										<tbody>
+											<tr>
+
+												<th>订单号</th>
+												<th>账号</th>
+												<th>时间</th>
+												<th>充值金额</th>
+												<th>充值方式</th>
+												<th>充值状态</th>
+											</tr>
+											<notempty name="data">
+												<volist name='data' id='vo'>
+													<tr>
+														<td>{$vo['pay_order_number']}</td>
+														<td>{$vo['promote_account']}</td>
+														<td>{:date('Y-m-d H:i:s',$vo['create_time'])}</td>
+														<td>{:null_to_0($vo['pay_amount'])}</td>
+														<td class="jstdcolor">
+															<if condition="$vo['pay_way'] eq 3"/>支付宝</if>
+															<if condition="$vo['pay_way'] eq 4"/>微信</if>
+														</td>
+														<td class="jstdcolor">
+															<if condition="$vo['pay_status'] eq 0"/><span style="color:red">下单未付款</span> </if>
+															<if condition="$vo['pay_status'] eq 1"/><span >充值成功</span> </if>
+														</td>
+
+													</tr>
+												</volist>
+												<!-- <tr>
+													<td>汇总</td>
+													<td>累计收入：{:null_to_0(deposit_record($alldata,1))}，累计支出：{:null_to_0(deposit_record($alldata,2))+$sum_hs}</td>
+													<td></td>
+													<td></td>
+													<td></td>
+												</tr> -->
+												<else/>
+												<!--暂无数据-->
+												<tr>
+													<td colspan="5">
+														<div class="no-data">
+															<img src="__TMPL__/public/assets/images/icon_wushujv2.png" alt=""
+																 class="no-data-img">
+															<p class="no-data-text">暂无数据</p>
+														</div>
+													</td>
+												</tr>
+											</notempty>
+										</tbody>
+									</table>
+									<notempty name="data">
+										<div class="pagenation clearfix">
+											<!-- <a download class="sch-btn" href="{:url('Export/expUser',array_merge(['id'=>7],input()))}">导出</a> -->
+											{$page}
+										</div>
+									</notempty>
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<include file="public@scripts"/>
+		<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+		<script src="__STATIC__/js/layer/layer.js"></script>
+		<script src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.js"></script>
+		<script src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+		<script>
+			$(function() {
+				$(".js-select-gallery").select2();
+				$('.jstdcolor').each(function(index,element){
+					that = $(this);
+					val = that.text();
+					if(val.indexOf("+") >= 0 ) {
+						that.css('color','#0099CC');
+					}
+					if(val.indexOf("-") >= 0 ){
+						that.css('color','#FF6600');
+					}
+				});
+			})
+
+			//			日历
+			var date = "{$setdate}";
+			$('#sdate').datetimepicker({
+				format: 'yyyy-mm-dd',
+				language: "zh-CN",
+				minView: 2,
+				autoclose: true,
+				scrollMonth: false,
+				scrollTime: false,
+				scrollInput: false,
+				endDate: date
+			});
+			$('#edate').datetimepicker({
+				format: 'yyyy-mm-dd',
+				language: "zh-CN",
+				minView: 2,
+				autoclose: true,
+				pickerPosition: 'bottom-left',
+				scrollMonth: false,
+				scrollTime: false,
+				scrollInput: false,
+				endDate: date
+			});
+
+			$('#submit').click(function() {
+				// layer.msg('开始时间必须小于等于结束时间');
+				var sdate = $('#sdate').val();
+				var edate = $('#edate').val();
+
+				if(Date.parse(sdate) > Date.parse(edate)) {
+					layer.msg('开始时间必须小于结束时间');
+					return false;
+				}
+
+			});
+
+		</script>
+	</body>
+
+</html>

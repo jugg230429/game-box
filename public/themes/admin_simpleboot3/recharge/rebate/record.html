@@ -1,0 +1,87 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li><a href="{:url('Rebate/lists')}">返利设置</a></li>
+            <li class="active"><a href="{:url('Rebate/record')}">返利记录</a></li>
+            <span class="title_remark">说明：汇总获得返利的玩家消费记录。</span>
+        </ul>
+        <form id="search_form" class="well form-inline  fr" method="get" action="{:url('Rebate/record')}" onsubmit="return check();">
+            <input type="text" class="form-control" name="user_account" style="width: 120px;" value="{:input('request.user_account/s','')}" placeholder="玩家账号">
+            <select name="game_id" id="game_id" class="selectpicker " game_id="{:input('request.game_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+                <option value="">游戏名称</option>
+                <volist name=":get_game_list('id,game_name')" id="vo">
+                    <option game-id="{$vo.id}" value="{$vo.id}" >{$vo.game_name}</option>
+                </volist>
+            </select>
+            <input type="text" class="form-control js-bootstrap-date" id="start_time" name="start_time" placeholder="开始时间"
+                   value="{:input('request.start_time/s','')}" style="width: 140px;" autocomplete="off">-
+            <input type="text" class="form-control js-bootstrap-date" id="end_time" name="end_time" placeholder="结束时间"
+                   value="{:input('request.end_time/s','')}" style="width: 140px;" autocomplete="off">
+           <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('Rebate/record')}">清空</a>
+        </form>
+        <div class="scroll-table-wrapper" style="margin-left: -10px;">
+        <table class="table table-hover table-bordered scroll-table" style="margin-left: 0px;">
+            <thead>
+                <tr>
+                    <th>订单号</th>
+                    <th>返利时间</th>
+                    <th>玩家账号</th>
+                    <th>所属渠道</th>
+                    <th>游戏名称</th>
+                    <th>充值金额</th>
+                    <th>返利比例</th>
+                    <th>返利绑币</th>
+                </tr>
+            </thead>
+            <tbody>
+                <empty name="data_lists">
+                    <tr><td colspan="8" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <foreach name="data_lists" item="vo">
+                    <tr>
+                        <php>
+                            $page_total +=$vo['pay_amount'];
+                            $page_rebate_total +=$vo['ratio_amount'];
+                        </php>
+                        <td>{$vo['pay_order_number']}</td>
+                        <td>{$vo['create_time']|date='Y-m-d H:i:s',###}</td>
+                        <td>{$vo.user_account}</td>
+                        <td>{$vo['promote_account']}</td>
+                        <td>{$vo['game_name']}</td>
+                        <td>{$vo['pay_amount']}</td>
+                        <td>{$vo['ratio']}</td>
+                        <td>{$vo['ratio_amount']}</td>
+                    </tr>
+                    </foreach>
+                     <tr class="data_summary">
+                        <td><span style="margin-right: 10px;">汇总（充值/返利）</span></td>
+                        <td colspan="14"><span>当页：{$page_total}/{$page_rebate_total} ；今日：{:null_to_0($today['total'])}/{:null_to_0($today['rtotal'])}；昨日：{:null_to_0($yestoday['total'])}/{:null_to_0($yestoday['rtotal'])}； 累计：{:null_to_0($total['total'])}/{:null_to_0($total['rtotal'])}； </span></td>
+                    </tr>
+                </empty>
+            </tbody>
+        </table>
+        </div>
+        <div class="pagination">
+            {$page}
+        </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script type="text/javascript">
+        $("#game_id").selectpicker('val', $("#game_id").attr('game_id'));
+        function check(){
+            var start_time = $("#start_time").val();
+            var end_time = $("#end_time").val();
+            if(start_time != '' && end_time != '' && start_time > end_time){
+                layer.msg('开始时间不能大于结束时间');
+                return false;
+            }
+            return true;
+        }
+
+    </script>
+</body>
+</html>

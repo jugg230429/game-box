@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+		<include file="public@head"/>
+		<style>
+			.trunk-list-tr {
+				height: 40px!important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<include file="public@nav"/>
+		<include file="public@header"/>
+		<link href="__TMPL__/public/assets/css/promote/balance.css" rel="stylesheet" />
+		<div class="trunk">
+			<div class="trunk-con">
+				<div class="right-container">
+				<div class="top-con">
+              <img src="/themes/simpleboot3/public/assets/images/ico_money2.png" class="top-con-icon fl">
+              <div class="fl">
+                <div class="top-con-num">{$baseinfo.balance_coin}</div>
+                <div class="top-con-text">平台币</div></div>
+
+
+              <a class="fl btn-exchange "  href="{:url(balance)}">充值</a>
+             </div>
+
+					<div class="normal-list">
+						<div class="trunk">
+
+							<ul class="tab">
+								<if condition="AUTH_PAY eq 1">
+								<li class="tab-menu "><a href="{:url(balance)}">充值平台币</a></li>
+								</if>
+								<li class="tab-menu tab-menu-active"><a href="{:url('shift')}">给下级转移</a></li>
+								<li class="tab-menu"><a href="{:url('record')}">平台币记录</a></li>
+
+							</ul>
+							<!--<span class="tagging">说明：显示当前账号进行平台币充值及后台对其发放平台币的记录（只记录充值成功）</span>-->
+							<div class="clear"></div>
+							<ol class="tabpan">
+
+								<li class="tabpan-con tabpan-show">
+									<div class="trunk-list" style="margin: 25px 0 20px;">
+										<table class="trunk-list-table" style="table-layout: fixed;">
+											<tbody>
+
+												<tr class="trunk-list-tr">
+													<td class="td1 nor_center">下级渠道账号</td>
+													<td rowspan="2" style="">
+														<div style="width:100%;overflow:hidden;height:100%;overflow-x:auto;">
+															<div style="height:100%;width: 100%">
+																<table class="table-scroll">
+																	<tbody>
+																		<tr class="trunk-list-tr" style="background: #F6F7F9;">
+																			<volist name="pdata" id='nn'>
+																				<td><span class="accounts">{:$nn['account']}</span></td>
+																			</volist>
+																			<empty name="pdata">
+																			<td><span class="accounts"></span></td>
+																			</empty>
+																		</tr>
+																		<tr class="trunk-list-tr">
+																			<volist name="pdata" id='bb'>
+																				<td style="border-bottom:none;"><span class="accounts">{:$bb['balance_coin']}</span></td>
+																			</volist>
+																			<empty name="pdata">
+																			<td style="border-bottom:none;"><span class="accounts"></span></td>
+																			</empty>
+																		</tr>
+																	</tbody>
+																</table>
+															</div>
+														</div>
+													</td>
+												</tr>
+												<tr>
+													<td class="td1 nor_center" >下级渠道余额</td>
+												</tr>
+											</tbody>
+										</table>
+
+									</div>
+									<from>
+										<div class="tabpan-con-con">
+											<label class="fl label-name">子渠道账号：</label>
+											<select id="promotezi" name="promotezi" class="tab-input js-select-gallery subchannel-select-gallery">
+												<empty name="pdata">
+													<option value="" data="0" balance='0.00'>请添加子渠道</option>
+												</empty>
+												<volist name="pdata" id="pz">
+													<option data="{$pz.account}" balance="{$pz.balance_coin}" value="{$pz.id}">{$pz.account}</option>
+												</volist>
+											</select>
+										</div>
+										<div class="tabpan-con-con">
+											<label class="fl label-name">子渠道余额：</label>
+											<span class="formtxt jsbalance fl">0.00</span>
+										</div>
+										<div class="tabpan-con-con">
+											<label class="fl label-name">转移数量：</label>
+											<input type="text" class="tabpan-input" name="num" id="num" placeholder=" 输入正整数">
+										</div>
+										<div class="tabpan-con-con">
+
+											<input type="submit" class="button jsbtn" value="确认" title="">
+										</div>
+									</from>
+								</li>
+							</ol>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<include file="public@scripts"/>
+		<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+		<script src="__STATIC__/js/layer/layer.js"></script>
+		<script>
+			$(function() {
+				$(".js-select-gallery").select2();
+				balance = $(this).find('option:selected').attr('balance');
+				$('.jsbalance').text(balance);
+				$('#promotezi').change(function(){
+					balance = $(this).find('option:selected').attr('balance');
+					$('.jsbalance').text(balance);
+				});
+				$('.jsbtn').click(function(){
+					pp = $('#promotezi').find('option:selected').val();
+					if(!pp){
+						layer.msg('请选择子渠道');
+	                  	return false;
+					}
+					amount = $('#num').val();
+					re = /^[1-9]\d*$/ ;
+					if(amount == ''){
+	                  	layer.msg('转移平台币数量不能为空');
+	                  	return false;
+	              	}else if(!re.test(amount)){
+	              		layer.msg('转移平台币数量错误，请输入正整数');
+	                  	return false;
+	              	}
+
+
+					layer.prompt({title: '请输入二级密码', formType: 1,placeholder:'请输入二级密码'}, function(text, index){
+						layer.close(index);
+						$.ajax({
+							type: 'POST',
+							url: "{:url('shift')}",
+							data:{"promotezi":pp,'amount':amount,'second_pwd':text},
+							async:false,
+							success:function(data){
+								if (data.code > 0){
+									layer.msg(data.msg,{time:1000},function(){
+										location.href=location.href;
+									});
+								}else{
+									layer.msg(data.msg);
+								}
+							}
+						})
+					});
+
+
+				});
+			})
+		</script>
+	</body>
+
+</html>

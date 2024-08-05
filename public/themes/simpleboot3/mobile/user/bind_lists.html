@@ -1,0 +1,42 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/my_binding_money.css">
+</block>
+
+<block name="body">
+    <div class="my-binding-money">
+        <div class="my_money_page_header">
+            <a href="javascript:history.back(-1);"><img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon"></a>
+            <p class="fl my_money_page_item">绑定平台币余额</p>
+        </div>
+        <div class="type_down__long_hx clear"></div>
+        <div class="my-money-list-box">
+            <div class="my-money-list">
+                <ul>
+                    <volist name="list" id="vo">
+                        <li class="my-money-item">
+                            <a href="javascript:;" class="game-icon-box">
+                                <img src="{:cmf_get_image_url($vo['icon'])}" alt="" class="game-icon" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                                <div class="game_type">
+                                    <img src="<eq name='vo.sdk_version' value='1'>__TMPL__/mobilepublic/assets/images/Gifts_ico_android.png<else />__TMPL__/mobilepublic/assets/images/Gifts_ico_ios.png</eq>" alt="">
+                                </div>
+                            </a>
+                            <p class="game-title">{$vo.game_name}</p>
+                            <p class="money-num">{$vo.bind_balance}</p>
+                        </li>
+                    </volist>
+                </ul>
+            </div>
+            <!--无数据-->
+            <empty name="list">
+                <div class="empty-box" >~暂无绑币~</div>
+            </empty>
+        </div>
+    </div>
+
+</block>
+<block name="script">
+    <script>
+
+    </script>
+</block>

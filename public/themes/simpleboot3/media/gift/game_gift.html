@@ -1,0 +1,162 @@
+<extend name="../mediapublic/base" />
+<!-- 主体内容 -->
+<block name="body">
+  <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/gift_bag.css">
+ <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/ydetail.css">
+
+<div class="main" <if condition="$game['groom']">style="background: url({:cmf_get_image_url($game[groom])}) no-repeat;background-size: 100% 100%;"</if>>
+     <div class="service">
+	     <div class="service-con">
+            <div class="gameCenterName">
+                {:get_game_name(input('game_id',0,'intval'))}
+            </div>
+			 <a href="{:url('game/ydetail',['game_id'=>input('game_id')])}" class="fl service-tab">服务器列表</a>
+			 <a href="javascript:;" class="fl service-tab service-tab-active">礼包列表</a>
+			 <a href="{:url('article/game_article',['game_id'=>input('game_id')])}" class="fl service-tab">资讯中心</a>
+			 <a href="{:url('pay/pay')}" class="service-link fl">用户充值</a>
+			 <a class="service-link fl" onclick="AddFavorite(window.location,document.title)" href="javascript:void(0)">收藏本页</a>
+		 </div>
+		 <div class="gift-list">
+			     <div class="service-title">游戏礼包</div>
+				 <div class="gift-list-con">
+
+			        <div class="bag_ios_con clear">
+                <!-- 有礼包 -->
+                <volist name="data" id="vo">
+                    <if condition="$vo['received'] eq 0 and $vo['remain_num'] eq 0"><php>continue;</php></if>
+                    <div class="bag_ios_con_item">
+                        <div class="fl ">
+                            <p class="bag_ios_con_item_name">{$vo.giftbag_name}</p>
+                             <div class="gift-item-con">礼包内容：{$vo.digest}</div>
+                            <p class="bag_ios_con_item_num">还剩<span> {:null_to_0($vo['remain_num']/$vo['novice_num']*100)} </span>%</p>
+                            <if condition="$vo['received'] eq 0">
+                                <div <if condition="session('member_auth') and $vo['vip'] gt session('member_auth.vip_level')">class="receive_bag fg receive_bag_disabled"<else/> class="receive_bag getgift fg" </if> data-giftbag_id="{$vo.gift_id}">领取</div>
+                                <else/>
+                                <div class="receive_bag copy fl" data-novice="{$vo.novice}">复制</div>
+                            </if>
+                        </div>
+                    </div>
+
+                </volist>
+                <div class="receive_bag_modal">
+                    <div class="receive_bag_modal_header">
+                        <span>礼包领取成功</span>
+                        <span class="close_receive_bag_modal">
+                            <img src="__STATIC__/images/delete_icon.png" alt="">
+                        </span>
+                    </div>
+                    <div class="receive_bag_modal_con">
+                        <p class="receive_bag_modal_firstline"><span class="colblack">激活码 : </span>
+                            <input readonly type="text" id="novice" class="fasfegxv" value="">
+                        </p>
+                        <p class="receive_bag_modal_secondline"><span> 可在[<a
+                                href="{:url('User/mygift')}">我的礼包</a>]中查看</span></p>
+                        <div class="receive_bag_modal_thirdline copy1"><span>复制</span></div>
+                    </div>
+                </div>
+			 </div>
+		 </div>
+	 </div>
+ </div>
+  <script src="__JS__/swiper.min.js"></script>
+   <script src="__JS__/swiper.min.js"></script>
+  <script>
+     $(document).ready(function () {
+            $('.bag_ios_con_item >a').click(function () {
+                location.href = $(this).data("href")
+            });
+            $('.copy1').click(function () {
+                event.stopPropagation();
+                var str = $("#novice").val();
+                Copy(str);
+                layer.msg("复制成功", {time: 1000, skin: 'demo-blue'});
+            })
+            $('.copy').click(function () {
+                event.stopPropagation();
+                var str = $(this).attr('data-novice');
+                Copy(str);
+                layer.msg("复制成功", {time: 1000, skin: 'demo-blue'});
+            });
+
+            // $('.receive_bag').click(function (event) {
+            //     $(this).next().show()
+            //     return false
+            //     event.stopPropagation();
+            // })
+            $('.close_receive_bag_modal').click(function () {
+                layer.closeAll()
+            })
+            //领取礼包
+        $('.getgift').click(function () {
+            event.stopPropagation();
+            var $this = $(this);
+            var login_auth = "{$session['login_auth']}";
+            if (login_auth == 1) {
+                var gift_id = $this.attr('data-giftbag_id');
+                $.ajax({
+                    type: 'post',
+                    url: '{:url("Gift/getgift")}',
+                    async: false,
+                    data: {gift_id: gift_id},
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.code == 1) {
+                            $("#novice").val(data.novice);
+                            $this.parent().find('button').text('已领取');
+                            var conss = $('.receive_bag_modal');
+                            layer.open({
+                                type: 1,
+                                title: false,
+                                closeBtn: false,
+                                area: ['325px', '191px'],
+                                offset: 'auto',
+                                content: conss,
+                                btnAlign: 'c',
+                                shadeClose: true,
+                                end: function () {
+                                    $('.receive_bag_modal').hide();
+                                    window.location.reload();
+                                }
+                            })
+                        } else {
+                            layer.msg(data.msg, {skin: 'demo-red'});
+                        }
+                    },
+                    error: function (xhr, type) {
+                        alert('服务器错误');
+                    }
+                });
+            } else {
+                var conss = $('.login_modals')
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: false,
+                    area: ['305px', '320px'],
+			        skin:'loginclass',
+                    offset: 'auto',
+                    content: conss,
+                    btnAlign: 'c',
+                    shadeClose: true,
+                    end: function () {
+                        $('.login_modals').hide()
+                    }
+                })
+            }
+        })
+        })
+
+        //复制功能
+        function Copy(str) {
+            var save = function (e) {
+                e.clipboardData.setData('text/plain', str);
+                e.preventDefault();
+            }
+            document.addEventListener('copy', save);
+            document.execCommand('copy');
+            document.removeEventListener('copy', save);
+        }
+
+
+  </script>
+</block>

@@ -1,0 +1,252 @@
+<include file="public@header"/>
+
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li <empty name=":input('type')"> class="active"</empty>><a href="{:url('user/age')}">实名认证</a></li>
+        <li <eq name=":input('type')" value="1"> class="active"</eq>><a href="{:url('user/age',['type'=>1])}">防沉迷</a></li>
+        <li><a href="{:url('wechat/index')}">公众号设置</a></li>
+        <li><a href="{:url('thirdlogin/qq_thirdparty')}">QQ</a></li>
+        <li><a href="{:url('thirdlogin/wx_thirdparty')}">微信</a></li>
+        <li><a href="{:url('user/vip_set')}">VIP设置</a></li>
+<!--        <li><a href="{:url('thirdlogin/fb_param_lists')}">脸书登录</a></li>-->
+        <empty name=":input('type')"><span class="title_remark">说明：实名认证设置分为两部分设置，①全平台的实名认证设置，②未实名认证和未满18岁的防沉迷设置</span>
+		   <else/>
+		   <span class="title_remark">说明：实名认证设置分为两部分设置，①全平台的实名认证设置，②未实名认证和未满18岁的防沉迷设置</span>
+		    </empty>
+    </ul>
+
+    <if condition="empty(input('type'))">
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('age')}" method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active">
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">提示对象：</label>
+                            <div class="col-md-6 col-sm-10" style="margin-top: 6px;">
+                                未实名认证用户
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-admin_url_password" class="col-sm-2 control-label">提示内容：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <textarea class="form-control user-input" placeholder="根据国家关于《防止未成年人沉迷网络游戏的通知》要求，平台所有玩家必须完成实名认证，否则将会被禁止进入游戏。" id="contents_off" name="config[contents_off]">{$age_data['contents_off']}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">状态：</label>
+                            <div class="col-md-6 col-sm-10">
+							<div class="fl pt7 user-input">
+								<input type="radio" class name="status" value="1" <eq name="age.status" value="1">checked="checked"</eq>> 开启
+                                <label class="ml50"></label><input type="radio" name="status" value="0" <eq name="age.status" value="0">checked="checked"</eq>> 关闭
+							</div>
+								<span  class="fl user-remarks membeuser-remarks" style="width:100%;line-height: 34px;">玩家登录SDK后判断当前账号是否已实名认证，选择开启则做提示，选择“关闭”则不提示</span>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_icp" class="col-sm-2 control-label">appcode：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="fl pt7 user-input">
+                                    <input type="text" style="width: 100%" class="form-control user-input" id="appcode" name="config[appcode]" value="{$age_data['appcode']}">
+                                </div>
+                                <span style="margin-top: 15px"  class="fl user-remarks membeuser-remarks" style="width:100%;line-height: 34px;"> 阿里云实名认证接口 控制台->云市场->appcode</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_icp" class="col-sm-2 control-label">阿里云认证状态：</label>
+                            <div class="col-md-6 col-sm-10">
+							<div class="fl pt7 user-input">
+                                <input type="radio" name="config[ali_status]" value="1" <eq name="age_data.ali_status" value="1">checked="checked"</eq>> 开启
+                                <label class="ml50"></label><input type="radio" name="config[ali_status]" value="0" <eq name="age_data.ali_status" value="0">checked="checked"</eq>> 关闭
+							</div>
+								 <span  class="fl user-remarks membeuser-remarks" style="width:100%;line-height: 34px;">选择开启则通过阿里云进行真实实名认证；选择关闭，不对用户提交的信息进行真实性判断，格式符合即可</span>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_icp" class="col-sm-2 control-label">认证次数限制：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="fl pt7 user-input">
+                                    <input type="radio" name="config[can_repeat]" value="0" <?php if(empty($age_data['can_repeat'])) echo 'checked'; ?>> 1次
+                                    <label style="margin-left: 52px;"></label>
+                                    <input type="radio" name="config[can_repeat]" value="1" <?php if($age_data['can_repeat']=='1') echo 'checked'; ?>> 不限制
+                                </div>
+                                <span  class="fl user-remarks membeuser-remarks" style="width:100%;line-height: 34px;">默认为1次，即一个身份证号只能认证一次；不限制，则一个身份证号不做次数限制，可重复认证（只针对阿里云认证，国家认证系统只允许认证一次）</span>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">实名注册：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="fl pt7 user-input">
+                                    <input type="radio" name="config[real_register_status]" value="1" <eq name="age_data.real_register_status" value="1">checked="checked"</eq>> 必填
+                                    <label style="margin-left:45px"></label>
+                                    <input type="radio" name="config[real_register_status]" value="2" <eq name="age_data.real_register_status" value="2">checked="checked"</eq>> 非必填
+                                    <label class="ml50"></label>
+                                    <input type="radio" name="config[real_register_status]" value="0" <eq name="age_data.real_register_status" value="0">checked="checked"</eq>> 关闭
+                                </div>
+                                <span  class="fl user-remarks membeuser-remarks" style="width:100%;line-height: 34px;">非必填，在PC/WAP/APP上注册时显示实名认证入口，用户可不填进行提交；必填：需填写姓名和身份证号才可提交；关闭，注册时不显示实名认证入口</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">实名充值：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="fl pt7 user-input">
+                                    <input type="radio" name="config[real_pay_status]" value="1" <eq name="age_data.real_pay_status" value="1">checked="checked"</eq>> 开启
+                                    <label class="ml50"></label><input type="radio" name="config[real_pay_status]" value="0" <eq name="age_data.real_pay_status" value="0">checked="checked"</eq>> 关闭
+                                </div>
+                                <span  class="fl user-remarks membeuser-remarks" style="width:100%;line-height: 34px;">开启状态，在SDK内充值消费时用户需实名认证；关闭状态，未实名认证也可进行充值</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-admin_url_password" class="col-sm-2 control-label">提示内容：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <textarea name="config[real_pay_msg]" type="text" class="form-control user-input" placeholder="根据国家关于《网络游戏管理暂行办法》要求，平台所有玩家必须完成实名认证后才可以进行游戏充值！">{$age_data.real_pay_msg}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <input type="hidden" name="name" value="age">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+        <else/>
+        <div>
+            <div class="describe" style="width: 100%">
+                根据《防止未成年人沉迷网络游戏的通知》要求，网络游戏企业可以对其游戏服务设置不超过1小时的游客体验模式，严格控制未成年人使用网络游戏时段、时长，每日22时至次日8时以任何形式为未成年人提供游戏服务，网络游戏企业向未成年人提供游戏服务的时长，法定节假日每日累计不得超过3小时，其他时间每日累计不得超过1.5小时。以上防沉迷功能多由游戏方实现，联运平台不建议开启防沉迷功能。
+            </div>
+        </div>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('age')}" method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active">
+                        <div class="form-group">
+                            <label for="input-site_seo_title" class="col-sm-2 control-label">提示对象：</label>
+                            <div class="col-md-6 col-sm-10" style="margin-top: 6px;">
+                                未实名认证用户，未满18岁用户
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_seo_keywords" class="col-sm-2 control-label">状态：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="pt7">
+                                    <label class="mr100"><input type="radio" name="status" value="1" <eq name="age_prevent.status" value="1">checked="checked"</eq>> 开启</label>
+                                    <label><input type="radio" name="status" value="0" <eq name="age_prevent.status" value="0">checked="checked"</eq>> 关闭</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-way" class="col-sm-2 control-label">防沉迷途径：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="pt7">
+                                    <label class="mr100"><input type="radio" name="config[way]" value="1" class="js-choose-way" <eq name="age_prevent_data['way']" value="1">checked</eq> > 官方</label>
+                                    <label><input type="radio" name="config[way]" value="2" class="js-choose-way" <neq name="age_prevent_data['way']" value="1">checked</neq> > 平台自定义</label>
+                                    <span  class="fl user-remarks remar" style="margin-left: 88px;" >官方：仅可在周五、周六、周日和法定节假日的20时至21时登录游戏，默认平台自定义</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="js-custom">
+
+                            <div class="form-group">
+                                <label for="input-site_seo_description" class="col-sm-2 control-label">提示时间1：</label>
+                                <div class="col-md-6 col-sm-10">
+                                    <input type="text" class="form-control user-input fl" id="hours_off_one" name="config[hours_off_one]" value="{$age_prevent_data['hours_off_one']}">
+                                    <span  class="fl user-remarks " >单位：小时，即玩家登录N个小时后，进行首次防沉迷提示</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="input-admin_url_password" class="col-sm-2 control-label">提示内容：</label>
+                                <div class="col-md-6 col-sm-10">
+                                    <textarea class="form-control user-input" placeholder="您已经玩了N个小时，眼睛是否不舒服？可以去户外活动一下~" id="contents_one" name="config[contents_one]">{$age_prevent_data.contents_one}</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="input-site_seo_description" class="col-sm-2 control-label">提示时间2：</label>
+                                <div class="col-md-6 col-sm-10">
+                                    <input type="text" class="form-control user-input fl" id="hours_off_two" name="config[hours_off_two]" value="{$age_prevent_data.hours_off_two}">
+                                     <span  class="fl user-remarks " >单位：小时，即玩家登录N小时以后，进行二次防沉迷提示</span>
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <label for="input-admin_url_password" class="col-sm-2 control-label">提示内容：</label>
+                                <div class="col-md-6 col-sm-10">
+                                    <textarea class="form-control user-input" placeholder="您已经持续玩了N个小时，是否头晕呢？请闭眼休息一会~" id="contents_two" name="config[contents_two]">{$age_prevent_data.contents_two}</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="input-site_seo_description" class="col-sm-2 control-label">下线时间：</label>
+                                <div class="col-md-6 col-sm-10">
+                                    <input type="text" class="form-control user-input fl" id="down_time" name="config[down_time]" value="{$age_prevent_data.down_time}">
+                                     <span  class="fl user-remarks " style="width:100%;">单位：小时，即玩家登录N小时以后，将进行强制下线，不填写则不做强制</span>
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <label for="input-site_seo_description" class="col-sm-2 control-label">恢复时间：</label>
+                                <div class="col-md-6 col-sm-10">
+                                    <input type="text" class="form-control user-input fl" id="hours_cover" name="config[hours_cover]" value="{$age_prevent_data.hours_cover}">
+                                     <span  class="fl user-remarks " >单位：小时，即玩家下线N小时以后，玩家才可再次登录游戏</span>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <input type="hidden" name="name" value="age_prevent">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn" data-refresh="0">
+                                    {:lang('SAVE')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+    </if>
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+
+<script type="text/javascript">
+
+    $(function () {
+        var choose_val = $("input[class='js-choose-way']:checked").val();
+        isShowCustom(choose_val);
+
+        $(".js-choose-way").click(function () {
+            var value = $(this).val();
+            isShowCustom(value);
+        });
+
+    });
+
+    //是否显示自定义配置
+    function isShowCustom(value) {
+        if (value == '1') {
+            $(".js-custom").hide();
+        } else {
+            $(".js-custom").show();
+        }
+    }
+
+</script>
+
+</body>
+</html>

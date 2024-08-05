@@ -1,0 +1,1013 @@
+.game_detail_page{
+    background-color:#f3f3f3;
+}
+.game_detail_page_header{
+    width: 100%;
+    height: 14rem;
+    background: url('../images/game_bg_introduction.png');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-color: #FFFFFF;
+}
+.game_detail_page_header .back_icon{
+    width: 0.74rem;
+    margin-top: 1.25rem;
+    margin-left: 1rem;
+}
+.game_detail_page_header_title{
+    font-size: 1.45rem;
+    font-weight:530;
+    width: 40%;
+    color: #FFFFFF;
+    padding-top: 0.9rem;
+    margin-left: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.game_detail_page_header .down_icon{
+    width: 28%;
+    float: right;
+	margin:1rem  1.2rem 0 0;
+}
+.collect_btn{
+	margin-right: 1.2rem;
+}
+.game_detail_page_header .collect_icon{
+	margin-right: -2rem;
+    width: 57.6%;
+    margin-top: 1rem;
+}
+.game_detail_page_header_title_info{
+    width: 94%;
+    height: 8.2rem;
+    margin-left: 3%;
+    position: absolute;
+    top: 4.5rem;
+    box-shadow:0px 0px 12px 4px rgba(206,206,206,0.4);
+    border-radius:5px;
+    background-color:#FFFFFF
+}
+.game_detai_header_info_img{
+    background-color: #e2e2e2;
+    width: 6.5rem;
+    height: 6.5rem;
+    margin-top: 0.75rem;
+    margin-left: 1rem;
+    border-radius: 10px;
+}
+.game_detai_header_info_img img{
+    width: 6.5rem;
+    height: 6.5rem;
+    border-radius: 1rem;
+}
+.game_detai_header_info_cons{
+    margin-left: 0.5rem;
+    width: auto;
+    margin-top: .75rem;
+    height: 6.5rem;
+	max-width: 16rem;
+}
+.game-detail-info-wrap {
+    display: table;
+    width: 100%;
+    height: 100%;
+}
+.game-detail-info-wrap-cell {
+    display: table-cell;
+    vertical-align: middle;
+}
+.game_detai_header_info_cons_title{
+    font-size: 1.33rem;
+    font-weight: 530;
+    margin-left: 0.4rem;
+    margin-bottom: 0.6rem;
+    width: 16rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.game_detai_header_info_cons_down{
+    color: #999;
+    font-size:0.9rem;
+    margin-top: 0.5rem;
+    margin-left: 0.4rem
+}
+.game_detai_header_info_cons_type{
+	display:inline-block;
+	float:left;
+	max-width:6rem;
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.game_detai_header_info_cons_btnground{
+    height: 1.4rem;
+    overflow: hidden;
+}
+.game_detai_header_info_cons_btnground div{
+    max-width: 3.6rem;
+    height: 1.4rem;
+    color: #fff;
+    border-radius: 5px;
+    text-align: center;
+    margin-left: 0.4rem;
+    font-size: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding-left: 0.5rem;
+    padding-right: 1rem;
+}
+
+.game_detai_header_info_cons_btnground div p{
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1rem;
+    padding-top: .2rem;
+    max-width:4.2rem;
+}
+.cons_btnground_one{
+    background-color: #72B9F0;
+}
+.cons_btnground_two{
+    background-color: #FDC36A;
+}
+.cons_btnground_three{
+    background-color: #EF918E;
+}
+.cons_down_fgx{
+    margin-left: 0.4rem;
+    margin-right: 0.4rem;
+    position: relative;
+    top: -0.05rem
+}
+.game_detail_page_remark{
+    margin-right:1.2rem;
+    font-size: 1.45rem;
+    margin-top: 3.2rem;
+    font-weight:bold;
+    color:rgba(248,163,0,1);
+}
+.game_detail_coninfo{
+    background-color: #ffffff;
+    /* height: 38.5rem; */
+    padding-left: 1rem;
+    padding-right: 1rem;
+    color: #666666;
+    font-family:SimHei,'黑体';
+    font-weight:400;
+    /* padding-right: 1rem; */
+    padding-top: 1rem;
+}
+.game_detail_coninfo_dot{
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background-color: #D4D2D2;
+    position: relative;
+    top: 0.85rem;
+}
+.game_detail_coninfo_dot1{
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background-color: #D4D2D2;
+    position: relative;
+    top: 0.7rem;
+}
+.game_detail_coninfo_right{
+    line-height:1.97rem;
+    margin-top: 0rem!important;
+    margin-bottom: 0rem!important;
+    margin-left: 1.2rem;
+    word-wrap: break-word;
+}
+.game_detail_imgground{
+    height: 17rem;
+}
+.game_detail_imgground .swiper-slide{
+    width: auto!important;
+    border-radius: 5px;
+    background-color: #e2e2e2;
+    height: 15.5rem;
+}
+.game_detail_imgground .swiper-slide img{
+    width: auto;
+    border-radius: 5px;
+    height: 15.5rem;
+}
+.game_detail_coninfo_con{
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding-bottom: 1.5rem;
+}
+.game_detail_gameopen{
+    background-color: #ffffff;
+    /* height: 60rem; */
+    padding-top: 0.1rem;
+    padding-bottom: .6rem;
+}
+.fengeshixian{
+    width: 100%;
+    height: 1rem;
+    background-color: #f3f3f3
+}
+.maybe_like{
+    background-color: white;
+    height:18rem;
+    position: relative;
+}
+.game_detail_item_titles{
+    /* margin-top: 1rem; */
+    margin-left: 1rem;
+    height: 2.5rem;
+}
+.zhanweidiv{
+    height: 1.2rem;
+}
+.game_detail_infos{
+    height: 4.3rem;
+    /*padding-left: 1rem;*/
+    width: 75%;
+}
+.game_detail_bagitem{
+    font-size: 1.3rem;
+    width: 94%;
+    margin: 0 auto;
+}
+.game_detail_item_titles img{
+    width: 6%;
+}
+.game_detail_item_titles p{
+    margin-left: 0.9rem;
+    margin-top: 0.1rem;
+	font-size:1.28rem;
+	font-weight:bold;
+}
+.game_detail_gameopen_con{
+    margin-left: 1rem;
+}
+.game_detail_gameopen_item_dot{
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background-color: #D4D2D2;
+    position:absolute;
+    top: 1.3rem;
+    margin-right: 0.1rem;
+}
+.btn_game_open{
+    text-align: center;
+    border-radius: 2rem;
+    padding: 0.3rem 1.5rem;
+    border:1px solid #018FFF;
+    color: #018FFF;
+    height: 1.4rem;
+    position: relative;
+    top: 0.3rem;
+    margin-right: 1.2rem;
+    width: 7rem;
+}
+.btn_game_open p{
+    max-width: 6.5rem;
+    padding-left: 0.2rem;
+    padding-right: 0.2rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 1.5rem;
+}
+.gameopen_item_yest .btn_game_open{
+    border-color: #AAAAAA!important;
+    color: #AAAAAA!important;
+}
+.gameopen_item_yest{
+    color: #999999!important;
+}
+.game_detail_gameopen_item .opengameinfo{
+    width:54%;
+}
+.game_detail_gameopen_item .opengameinfo span{
+    padding-left: 1rem
+}
+.game_detail_gameopen_item{
+    color: #444;
+    font-size: 13px;
+    height: 3rem;
+	line-height:3rem;
+	position:relative;
+}
+.long_fengexian{
+    width: 100%;
+    height: 1px;
+    background-color: #EDEEEF;
+}
+.game_detail_bag{
+    background-color: #ffffff
+}
+.game_detail_titles{
+    font-size: 1.1rem;
+    font-weight:bold;
+    margin-top: 0.84rem;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.game_detail_summny{
+    font-size: 12px;
+    margin-top: 0.5rem;
+    color: #999999;
+    margin-bottom: 0.2rem;
+}
+.game_detail_bag_con{
+    /*padding-left: 1rem;*/
+    font-size: 1rem;
+    color: #999999;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    padding-top: 0.1rem;
+    padding-bottom: 1rem;
+    width: 93%;
+}
+.lingqu_btn{
+    float: right;
+    width:6rem;
+    line-height:2.02rem!important;
+    box-shadow: none!important;
+    text-align: center;
+    color: #FFFFFF;
+    font-size: 13px;
+    background-color: #018FFF;
+    border-radius: 1.1rem;
+    position: relative;
+    top: 1.2rem;
+    /*margin-right:1.2rem;*/
+}
+.lingqu_btn .disabled{
+	width: 6rem;
+    height: 2rem;
+    display: block;
+    margin: -1px;
+    line-height: 2rem;
+    background-color: #ccc;
+    color: #ffffff;
+    width: 100%;
+    box-shadow: none;
+    border: 1px solid #ccc;
+    text-align: center;
+    border-radius: 1.1rem;
+    position:absolute;
+	top:0;
+	left:0;
+}
+.alone_activity_idv{
+    height: 0.9rem;
+    background-color: #FFFFFF
+}
+.gamebag_use_info{
+    color: #018FFF;
+    margin-left: 1rem
+}
+.game_detail_item_con{
+    height: 3rem;
+
+    display: table;
+    width: 94%;
+    margin: 0 auto;
+    table-layout: fixed;
+
+}
+
+.game_detail_item_con2 {
+    display: table-cell;
+    text-align: left;
+    width: auto;
+    position: relative;
+    vertical-align: middle;
+    width: 25.4rem;
+}
+
+.fuzhu_con{
+    width: 30px;
+    height: 10px;
+    position: absolute;
+    right: 100px;
+    opacity: 0;
+}
+.game_detail_item_con_btn{
+    width: 2.7rem;
+    text-align: center;
+    font-size: 10px;
+    display:table-cell;
+    vertical-align:middle;
+    color: #999999;
+}
+.game_detail_item_con_btn p{
+    line-height: 1.5rem;
+    margin: 0px;
+    padding: 0rem 0;
+    border-radius: 10px;
+    background:rgba(240,239,239,1);
+    width: 100%;
+    height: 1.5rem;
+    vertical-align: middle;
+    box-sizing: border-box;
+}
+.game_detail_item_con_title{
+    color: #222;
+    width: 24.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 12px;
+    margin-left: -0.2rem;
+    padding-left: 0.8rem;
+}
+.game_detail_item_con_title p{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+	font-size:1.1rem;
+}
+.bag_infocon_modal{
+    display: none
+}
+.bag_infocon_modal_header{
+    width: 100%;
+    height:3.34rem;
+    background-color: #E9E7E8;
+    color: #444444
+}
+.bag_infocon_modal_header p{
+    text-align: center;
+    line-height:3.34rem;
+    font-size: 14px;
+}
+.bag_infocon_modal img{
+    width: 1.2rem;
+    position: absolute;
+    top: 1.2rem;
+    right:1rem;
+}
+.game_bag_con_info{
+    font-size: 12px;
+    color: #999999;
+    width: 88%;
+    margin: auto;
+    margin-top: 0.3rem;
+    line-height: 1.5rem;
+    word-wrap: break-word;
+    /* overflow:hidden;
+    text-overflow:ellipsis;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical; */
+}
+.game_bag_con_title{
+    width: 88%;
+    font-size: 14px;
+    margin: auto;
+    margin-top: 1.3rem;
+}
+.game_detail_item_con_into{
+    float: right;
+    /*margin-right: 1.5rem;*/
+    color: #D7D7D7;
+}
+.game-detail-arrow{
+	width:0.6rem;
+}
+
+.alone_activity{
+    background-color: #ffffff
+}
+.maybe_like_firstline{
+    height: 3rem;
+    width: 94%;
+    margin: 0 auto;
+}
+.maybe_like_firstline_left{
+    font-size: 1.38rem;
+    /*margin-left: 1rem;*/
+	color:#222;
+	font-weight:bold;
+}
+.maybe_like_firstline_right{
+    font-size: 1.1rem;
+    float: right;
+    color: #999;
+	margin:0.2rem 1.5rem 0 0;
+    margin:0.2rem 0 0 0;
+}
+.maybe_like_gamecon{
+    height: 9rem;
+    width: 94%;
+    margin: 0 auto;
+}
+.maybe_like_gamecon>a {
+    width: 25%;
+    display: block;
+    float: left;
+}
+/*.other_gamecon_item{
+    margin-left:9%!important;
+}*/
+.maybe_like_gamecon_item{
+    /*margin-left: 1rem;*/
+    width: 5.2rem;
+    height: 8rem;
+    margin: 0 auto;
+    float: none;
+}
+.maybe_like_gamecon a:nth-child(1) .maybe_like_gamecon_item {
+    margin-left: 0;
+}
+.maybe_like_gamecon a:nth-child(2) .maybe_like_gamecon_item {
+    margin-left: .58rem;
+}
+.maybe_like_gamecon a:nth-child(3) .maybe_like_gamecon_item {
+    margin-right: .58rem;
+}
+.maybe_like_gamecon a:nth-child(4) .maybe_like_gamecon_item {
+    margin-right: 0;
+}
+.maybe_like_gamecon_item div{
+    width: 100%;
+    height: 5rem;
+    border-radius: 1rem;
+    background-color: #e2e2e2
+}
+.maybe_like_gamecon_item div img{
+    width: 100%;
+    height: 5rem;
+    border-radius: 1rem;
+}
+.maybe_like_gamecon_item p{
+    font-size: 13px;
+    position: relative;
+    top: 0.5rem;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.down_load_frame{
+	width: 100%;
+    background: #fff;
+    height: auto;
+    padding: 0.25rem 0;
+	position: fixed;
+    bottom: 0;
+    z-index: 999;
+}
+.down_load_btn{
+    width: 94%;
+    height: 3.4rem;
+	line-height: 3.4rem;
+    background-color: #FF8E18 ;
+    text-align: center;
+    color: #fff;
+	border-radius: 0.5rem;
+	margin-left:3%;
+	font-size:1.45rem;
+
+}
+.h5_down_load_btn{
+	width: 45%;
+	float: left;
+    margin: 0.25rem 0 0.25rem 3.3%;
+}
+.h5_down_load_btn_play{
+	background: #018fff;
+}
+.bag_open_modals{
+    display: none;
+}
+.layui-layer{
+    border-radius:8px!important;
+}
+.bag_open_modals_closeimg{
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    width: 1rem;
+}
+.bag_open_modals_firstline{
+    text-align: center;
+    margin-top: 1rem;
+    font-weight: bold;
+    font-size: 16px;
+}
+.bag_open_modals_secondline{
+    font-size: 10px;
+    text-align: center;
+    margin-top: 0.2rem;
+    color: gray
+}
+.bag_open_modals input{
+    margin-top: 1rem;
+    height: 25px!important;
+    width: 80%!important;
+    /*margin-left: 7%;*/
+    text-indent: 5rem;
+    font-size: 14px!important;
+    color: #018FFF!important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    box-shadow: none!important;
+}
+.bag_open_modals span{
+    color: gray;
+    font-size: 14px;
+    position: absolute;
+    top:1.6rem;
+    left: 10%;
+}
+.bag_open_modals_btn{
+    margin-left: 40%;
+    text-align: center;
+    margin-top: 4%;
+    width: 5.2rem;
+    border-radius: 5px;
+    height: 2.2rem;
+    line-height: 2.2rem!important;
+    background-color: #018FFF;
+    color: #ffffff;
+    font-size: 13px;
+}
+.layui-layer-page .layui-layer-content{
+    border-radius: 8px!important;
+}
+.layui-layer-hui {
+    min-width: 80px!important;
+}
+.layui-layer-hui .layui-layer-content{
+    padding: 6px 25px!important;
+}
+.bag_open_modals .tap{
+    font-size: 13px;
+    text-align: center;
+    color: gray;
+    letter-spacing: 1px
+}
+.rebate-discount-box{
+    width:100%;
+    padding: 0 3% 1.173rem;
+    box-sizing: border-box;
+    background: #ffffff;
+    margin-bottom: 0.8rem;
+
+}
+.rebate-discount-box .rebate-discount-btn{
+    display: block;
+    margin: 0 auto;
+    width: 14.2rem;
+    height: 4.617rem;
+    background: url(../images/ico_discount@2x.png)no-repeat;
+    background-size: 100% 100%;
+}
+.rebate-discount-box .rebate-coupon-btn{
+    display: block;
+    margin: 0 auto;
+    width: 14.2rem;
+    height: 4.617rem;
+    background: url(../images/ico_Coupon@2x.png)no-repeat;
+    background-size: 100% 100%;
+}
+.v-middle{display: flex;align-items: center}
+
+.discount-content-part{
+    width:100%;
+    padding: 1rem 2.1rem;
+    box-sizing: border-box;
+}
+.discount-content-part .discount-title{
+    font-size: 1.25rem;
+    color: #333333;
+    font-weight: bold;
+}
+.discount-content-part .discount-title .discount-icon{
+    height: 1.87rem;
+    width: 1.87rem;
+    margin-right: 0.12rem;
+}
+.discount-content-part .discount-title .discount-icon.rebate-icon{
+    background: url(../images/game_detail_discount/ico_back@2x.png)no-repeat;
+    background-size: 100% 100%;
+}
+.discount-content-part .discount-title .discount-icon.charge-icon{
+    background: url(../images/game_detail_discount/ico_discount@2x.png)no-repeat;
+    background-size: 100% 100%;
+}
+.discount-content-part .discount-title .discount-icon.bing-icon{
+    background: url(../images/game_detail_discount/ico_bangding@2x.png)no-repeat;
+    background-size: 100% 100%;
+}
+.discount-content-part .discount-tips{
+    font-size: 1.017rem;
+    color: #999999;
+    margin: 0.5rem 0;
+}
+.discount-otherBox  .discount-item{
+    font-size: 1.17rem;
+    color: #333333;
+    line-height: 2rem;
+}
+.discount-content-part  .discount-item .star-icon{
+    width:0.94rem;
+    height: 0.94rem;
+    background: url(../images/game_detail_discount/ico_xing@2x.png)no-repeat;
+    background-size: 100% 100%;
+    margin-right: 0.3rem;
+}
+.discount-list {
+    padding: 0;
+}
+.no-discount{
+    text-align: center;
+    padding-top: 15rem;
+    font-size: 1.3rem;
+    color: #999999;
+}
+.coupon-game-list{
+    width:100%;
+    padding-bottom:3rem;
+    box-sizing: border-box;
+}
+.coupon-game-list .coupon-game-item{
+    width:100%;
+    height: 11.9rem;
+    background: url(../images/coupon/coupons_bg_use@2x.png)no-repeat;
+    background-size: 100% 100%;
+    padding: 1rem;
+    box-sizing: border-box;
+    color: #ffffff;
+}
+.coupon-game-list .coupon-game-item.invalid{
+    background: url(../images/coupon/coupons_bg_nouse@2x.png)no-repeat;
+    background-size: 100% 100%;
+}
+.coupon-detail-box{
+    width: 100%;
+    height: 7.278rem;
+}
+.coupon-game-list .coupon-num{
+    width: 10.17rem;
+    padding-left: 1.15rem;
+    box-sizing: border-box;
+
+}
+.coupon-money{
+    font-size: 2.34rem;
+    color: #ffffff;
+}
+.coupon-use-condition{
+    margin-top: 0.5rem;
+    font-size: 0.94rem;
+    color: #ffffff;
+}
+.coupon-money>span{
+    font-size: 1.09rem;
+    color: #ffffff;
+    display: inline-block;
+    vertical-align: super;
+}
+.coupon-game-list  .divide-line{
+    margin-left: 0.4rem;
+    margin-right: 0.4rem;
+    position: relative;
+    top: -0.05rem;
+}
+.coupon-name-date .coupon-name{
+    font-size: 1.25rem;
+    width:100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.coupon-name-date .coupon-date{
+    margin-top: 0.6rem;
+    font-size: 0.94rem;
+}
+.coupon-game-item .coupon-number {
+    position: absolute;
+    display: block;
+    text-align: center;
+    font-size: 1.09rem;
+    color: #ffffff;
+    width: 6.5rem;
+    margin-top: 0.1rem;
+}
+.coupon-game-item .coupon-btn{
+    margin-left: auto;
+    width:6.5rem;
+    height: 2.347rem;
+    border-radius: 9.9rem;
+    background: #ffffff;
+    color: #FF8F18;
+    font-size:1.09rem ;
+    line-height: 2.347rem;
+    text-align: center;
+    margin-right: 1rem;
+    display: block;
+}
+.coupon-game-item .coupon-btn.no-use{
+background: rgb(255, 204, 167)
+}
+.coupon-game-item .coupon-btn.no-bg{
+    background: transparent;
+    color: #ffffff;
+    height: auto;
+}
+.coupon-game-item.invalid .coupon-btn{
+    color: #999999;
+}
+.coupon-name-date{
+    max-width: 15rem;
+}
+.coupon-game-item .coupon-scope{
+    width:100%;
+    height: 2.5rem;
+    line-height: 2.5rem;
+    font-size:0.934rem ;
+    color: #999999;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-left: 0.5rem;
+    box-sizing: border-box;
+}
+
+.swiper-box {
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+
+    background-color: black;
+    box-sizing: border-box;
+}
+.swiper-box .gameBottom {
+    width: 100%;
+    height: 100%;
+}
+.swiper-box .swiper-slide {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.swiper-box img {
+    width: 100%;
+    
+}
+.swiper-box .swiper-pagination-bullet {
+    background-color: #fff!important;
+}
+.swiper-box .swiper-container-horizontal>.swiper-pagination-bullets {
+    bottom: 5rem!important;
+}
+/* 游戏详情页面的 */
+.recharge_title {
+    margin-left: 0;
+}
+.oneDayRebate{
+    margin-left: 0.2rem;
+    font-family: 'PingFang SC';
+    font-weight: 500;
+    color: #999999;
+    font-size: 0.34rem;
+}
+.recharge {
+    margin-top: 0.5rem;
+    font-family: 'PingFang SC';
+    font-weight: 500;
+    color: #333333;
+    font-size: 0.38rem;
+}
+.recharge img {
+    width: 3%;
+    padding-right: 0.7rem;
+}
+.percent {
+    color: #FF0000;
+}
+.textRecharge {
+    color: #222222;
+}
+.chargeFenge {
+    margin: 0.6rem 0 1rem 0;
+}
+.game_detail_item_titles .vipImage {
+    width: 14%;
+}
+.game_detail_item_titles .vipText {
+    font-family: 'PingFang SC';
+    color: #999999;
+    margin-top: 0;
+}
+.game_detail_item_titles  .jiantouIcon {
+    float: right;
+    width: 2%;
+    padding-right: 0.7rem;
+    padding-top: 0.2rem;
+}
+.detailContent{
+    background: #fff;
+    padding-bottom: 1.5rem;
+    color: #666666;
+}
+.newClear {
+    padding-left: 0.9rem;
+}
+
+
+@media screen and (max-width:320px) and (orientation:portrait){
+    .game_detail_imgground .swiper-slide{
+        height: 17.3rem!important;
+    }
+    .game_detail_imgground .swiper-slide img{
+        width: 100%;
+        height: 17.3rem!important;
+    }
+    .game_bag_con_title{
+        margin-top: 1rem!important
+    }
+    .bag_infocon_modal_header{
+        height: 3rem!important;
+
+    }
+    .bag_infocon_modal_header p{
+        position: relative;
+        top: 0.7rem!important
+    }
+    .bag_open_modals span{
+        position: absolute;
+        top: 32.5%;
+    }
+    .maybe_like_firstline_right{
+        margin-right: 1rem!important;
+    }
+    .game_detail_item_con_title{
+        width: 20rem!important;
+    }
+    .game_detail_page_header{
+        height: 13rem!important;
+    }
+    .game_detail_item_con_into{
+        margin-right: 1.2rem!important;
+    }
+    .game_detail_gameopen_item .opengameinfo{
+        width: 19rem!important;
+    }
+    .game_detai_header_info_cons{
+        width: 14rem;
+    }
+    .game_detail_bag_con{
+        padding-top: 0rem!important
+    }
+    .game_detai_header_info_cons_title{
+        margin-bottom: 0.3rem!important
+    }
+    .game_detail_page_header_title_info{
+        height: 8rem;;
+    }
+    .game_detai_header_info_img{
+        background-color: #e2e2e2;
+        width: 5.5rem;
+        height: 5.5rem;
+        margin-top: 1.2rem;
+        margin-left: 0.7rem;
+    }
+    .game_detai_header_info_img img{
+        width: 5.5rem!important;
+        height: 5.5rem!important;
+    }
+    .game_detai_header_info_cons_title{
+        margin-top: 1.2rem!important;
+    }
+    .game_detai_header_info_cons_btnground div{
+        max-width:5.2rem;
+    }
+    .cons_down_fgx{
+        margin-left: 0.4rem;
+        margin-right: 0.4rem;
+    }
+    .game_detail_page_remark{
+        margin-top: 2.9rem!important
+    }
+    .game_detail_imgground{
+        height: 18rem!important;
+    }
+    
+}

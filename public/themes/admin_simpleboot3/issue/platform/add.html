@@ -1,0 +1,293 @@
+<include file="public@header"/>
+</head>
+<body>
+
+<div class="wrap js-check-wrap jskeyup">
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('Platform/lists')}">平台列表</a></li>
+        <li class="active"><a href="{:url('add')}">添加平台</a></li>
+        <span class="title_remark">说明：新增分发用户平台</span>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" action="{:url('add')}" method="post">
+
+        <div class="form-group">
+            <label for="open_user_id" class="col-sm-2 control-label"><span class="form-required">*</span>用户账号：</label>
+            <div class="col-md-3 col-sm-5">
+                <select id="open_user_id" name="open_user_id" class="selectpicker form-control" data-live-search="true">
+                    <option value="">选择用户账号</option>
+                    <volist name=":get_issue_open_user('id,account,settle_type')" id="vo">
+                        <option data-settle_type="{$vo.settle_type}" value="{$vo.id}">{$vo.account}</option>
+                    </volist>
+                </select>
+            </div>
+            <p class="help-block"></p>
+        </div>
+
+        <div class="form-group">
+            <label for="account" class="col-sm-2 control-label"><span class="form-required">*</span>平台名称：</label>
+            <div class="col-md-3 col-sm-5">
+                <input type="text" class="form-control jsmust" id="account" name="account" placeholder="">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="website" class="col-sm-2 control-label"><span class="form-required">*</span>平台网址：</label>
+            <div class="col-md-3 col-sm-5">
+                <input type="text" class="form-control jsmust" id="website" name="website" placeholder="">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">平台状态：</label>
+            <div class="col-md-3 col-sm-5">
+                <label class="radio-inline label-width" tab_id="1">
+                    <input type="radio" name="status" value="1" checked=""> 正常
+                </label>
+                <label class="radio-inline label-width" tab_id="2">
+                    <input type="radio" name="status" value="0"> 锁定
+                </label>
+            </div>
+            <p class="help-block"></p>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">平台权限：</label>
+            <div >
+                <if condition="is_buy_sy_issue()">
+                    <label class="radio-inline label-width">
+                        <input type="checkbox" name="pt_type[sy]" value="1"> 手游
+                    </label>
+                </if>
+                <if condition="is_buy_h5_issue()">
+                    <label class="radio-inline label-width">
+                        <input type="checkbox" name="pt_type[h5]" value="1"> H5
+                    </label>
+                </if>
+                <if condition="is_buy_yy_issue()">
+                    <label class="radio-inline label-width">
+                        <input type="checkbox" name="pt_type[yy]" value="1"> 页游
+                    </label>
+                </if>
+            </div>
+            <p class="help-block"></p>
+        </div>
+
+        <div id="h5-config" style="display: none">
+            <div class="form-group">
+                <label for="website" class="col-sm-2 control-label">H5客户端参数：</label>
+                <div class="col-md-3 col-sm-5">
+                    <textarea class="form-control" name="platform_config_h5" placeholder="配置参数，换行分割"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group h5_settle_type" hidden>
+                <label for="website" class="col-sm-2 control-label"><span class="form-required">*</span>H5创建订单通知地址：</label>
+                <div class="col-md-3 col-sm-5">
+                    <textarea class="form-control" name="order_notice_url_h5" placeholder="创建订单通知地址"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group h5_settle_type" hidden>
+                <label for="website" class="col-sm-2 control-label"><span class="form-required">*</span>H5支付回调通知地址：</label>
+                <div class="col-md-3 col-sm-5">
+                    <textarea class="form-control" name="pay_notice_url_h5" placeholder="支付回调通知地址"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="account" class="col-sm-2 control-label"><span class="form-required">*</span>H5控制器名称：</label>
+                <div class="col-md-3 col-sm-5">
+                    <input type="text" class="form-control" id="controller_name_h5" name="controller_name_h5" placeholder="">
+                </div>
+            </div>
+        </div>
+
+        <div id="yy-config" style="display: none">
+            <div class="form-group">
+                <label for="website" class="col-sm-2 control-label">页游客户端参数：</label>
+                <div class="col-md-3 col-sm-5">
+                    <textarea class="form-control" name="platform_config_yy" placeholder="配置参数，换行分割"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group yy_settle_type" hidden>
+                <label for="website" class="col-sm-2 control-label"><span class="form-required">*</span>页游创建订单通知地址：</label>
+                <div class="col-md-3 col-sm-5">
+                    <textarea class="form-control" name="order_notice_url_yy" placeholder="创建订单通知地址"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group yy_settle_type" hidden>
+                <label for="website" class="col-sm-2 control-label"><span class="form-required">*</span>页游支付回调通知地址：</label>
+                <div class="col-md-3 col-sm-5">
+                    <textarea class="form-control" name="pay_notice_url_yy" placeholder="支付回调通知地址"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="account" class="col-sm-2 control-label"><span class="form-required">*</span>页游控制器名称：</label>
+                <div class="col-md-3 col-sm-5">
+                    <input type="text" class="form-control" id="controller_name_yy" name="controller_name_yy" placeholder="">
+                </div>
+            </div>
+        </div>
+
+        <div id="sdk-config" style="display: none">
+
+
+            <div class="form-group">
+                <label for="sdk_config_name" class="col-sm-2 control-label"><span class="form-required">*</span>选择渠道：</label>
+                <div class="col-md-3 col-sm-5">
+                    <select id="sdk_config_name" name="sdk_config_name" class=" form-control" data-live-search="true">
+                        <option value="">选择分发渠道</option>
+                        <volist name=":getSdkConfig()" id="vo">
+                            <option value="{$key}">{$vo['name']}</option>
+                        </volist>
+                    </select>
+                </div>
+                <p class="help-block">SDK确认后不可更改</p>
+            </div>
+
+            <div class="form-group">
+                <label for="sdk_config_version" class="col-sm-2 control-label"><span class="form-required">*</span>SDK版本：</label>
+                <div class="col-md-3 col-sm-5">
+                    <select id="sdk_config_version" name="sdk_config_version" class="form-control" data-live-search="true">
+                        <option value="">选择SDK版本</option>
+                    </select>
+                </div>
+                <p class="help-block"></p>
+            </div>
+
+
+            <div class="form-group">
+                <label for="website" class="col-sm-2 control-label">手游客户端参数：</label>
+                <div class="col-md-3 col-sm-5">
+                    <textarea class="form-control" name="platform_config_sy" id="platform_config_sy" placeholder="配置参数，换行分割"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="website" class="col-sm-2 control-label">手游服务端参数：</label>
+                <div class="col-md-3 col-sm-5">
+                    <textarea class="form-control" name="service_config" id="service_config" placeholder="配置参数，换行分割"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group sy_settle_type" hidden>
+                <label for="website" class="col-sm-2 control-label"><span class="form-required">*</span>手游创建订单通知地址：</label>
+                <div class="col-md-3 col-sm-5">
+                    <textarea class="form-control" name="order_notice_url_sy" placeholder="创建订单通知地址"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group sy_settle_type" hidden>
+                <label for="website" class="col-sm-2 control-label"><span class="form-required">*</span>手游支付回调通知地址：</label>
+                <div class="col-md-3 col-sm-5">
+                    <textarea class="form-control" name="pay_notice_url_sy" placeholder="支付回调通知地址"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="account" class="col-sm-2 control-label"><span class="form-required">*</span>手游控制器名称：</label>
+                <div class="col-md-3 col-sm-5">
+                    <input type="text" class="form-control" id="controller_name_sy" name="controller_name_sy" placeholder="">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-1 col-sm-5">
+                <button type="submit" disabled class="btn btn-primary js-ajax-submit save-btn ml9">保存</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript">
+    $('.jskeyup input,select').keyup(function () {
+        change_submit_btn($('.jskeyup'), $('.jskeyup .js-ajax-submit'));
+    });
+    $('.jskeyup input,select').click(function () {
+        change_submit_btn($('.jskeyup'), $('.jskeyup .js-ajax-submit'));
+    });
+
+    $("#open_user_id").change(function () {
+        var that = $(this);
+        if(that.val() == ''){
+            $(".h5_settle_type").hide();
+            $(".sy_settle_type").hide();
+            $(".yy_settle_type").hide();
+        }else{
+            var settle_type = that.find("option:selected").data('settle_type');
+            if(settle_type == 0){
+                $(".h5_settle_type").hide();
+                $(".sy_settle_type").hide();
+                $(".yy_settle_type").hide();
+            }else{
+                $(".h5_settle_type").show();
+                $(".sy_settle_type").show();
+                $(".yy_settle_type").show();
+            }
+        }
+    })
+
+    $("[name='pt_type[sy]']").click(function () {
+        if($("[name='pt_type[sy]']").is(':checked')) {
+            $("#sdk-config").show();
+        }else{
+            $("#sdk-config").hide();
+        }
+    });
+
+    $("[name='pt_type[h5]']").click(function () {
+        if($("[name='pt_type[h5]']").is(':checked')) {
+            $("#h5-config").show();
+        }else{
+            $("#h5-config").hide();
+        }
+    });
+
+    $("[name='pt_type[yy]']").click(function () {
+        if($("[name='pt_type[yy]']").is(':checked')) {
+            $("#yy-config").show();
+        }else{
+            $("#yy-config").hide();
+        }
+    });
+
+
+    $("#sdk_config_name").on('change', function () {
+        var sdk_name = $(this).val();
+        var url = "{:url('issue/platform/getSdkVersion')}";
+        $.post(url, {sdk_name: sdk_name}, function (res) {
+
+            var option_html = "<option value=\"\">选择SDK版本</option>";
+            $(res.data.version).each(function (index, ele) {
+                option_html += '<option value="' + ele + '">' + ele + '</option>';
+            });
+            //赋值客户端参数
+            $("#platform_config_sy").val('');
+            $(res.data.param_key.client).each(function (index, ele) {
+                valueStr = $("#platform_config_sy").val() + ele + "\r\n";
+                $("#platform_config_sy").val(valueStr);
+            });
+
+            //赋值服务端参数
+            $("#service_config").val('');
+            $(res.data.param_key.server).each(function (index, ele) {
+                valueStr = $("#service_config").val() + ele + "\r\n";
+                $("#service_config").val(valueStr);
+            });
+            //赋值控制器名称
+            $("#controller_name_sy").val(res.data.controller_name);
+
+            $("#sdk_config_version").html(option_html);
+
+        });
+
+    });
+
+</script>
+</body>
+</html>

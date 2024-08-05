@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" media="all" href="__STATIC__/js/datejs/daterangepicker.css"/>
+		<include file="public@head"/>
+	</head>
+
+	<body>
+		<include file="public@nav"/>
+		<include file="public@header"/>
+		<div class="trunk">
+			<div class="trunk-con">
+				<div class="right-container">
+					<div class="normal-list">
+						<div class="trunk">
+							<div class="trunk-title">
+								<div class="location ">
+									<div class="location-container fr">当前位置：<span class="location-container-text">数据管理&gt;</span><span class="location-container-text">充值明细</span></div>
+								</div>
+								<img src="__TMPL__/public/assets/images/icon_chongzhi.png" class="fl trunk-icon">
+								<span class="title-main fl ">充值明细  </span>
+								<span class="tagging">说明：对所有渠道用户玩家产生的充值信息，进行记录的功能</span>
+							</div>
+
+							<div class="tabpan">
+
+								<div class="tabpan-con tabpan-show">
+									<form action="{:url('recharge')}">
+										<div class="trunk-search clearfix fr">
+											<input type="text" readonly style="width: 160px;" class="tabpan-input normal-space"
+												   autocomplete="off" name="rangepickdate" id="rangepickdate" placeholder="充值时间" value="{:input('rangepickdate')}">
+											<input type="text" class="tabpan-input normal-space" name="user_account" placeholder="玩家账号" value="{:input('user_account')}">
+											<input type="text" class="tabpan-input normal-space" name="pay_order_number" placeholder="订单号" value="{:input('pay_order_number')}">
+											<php>$pmap['parent_id'] = PID</php>
+											<select id="promote_id" name="promote_id" class="tab-input js-select-gallery normal-space trunk-search-smallselect fl">
+												<option value="" data="0">渠道账号</option>
+												<option value="{:PID}" <if condition="PID eq input('promote_id')"> selected</if> data="0">自己</option>
+												<volist name=":get_promote_list($pmap)" id="p">
+													<option data="" <if condition="$p['id'] eq input('promote_id')"> selected</if> value="{$p.id}">{$p.account}</option>
+												</volist>
+											</select>
+
+											<select id="game_id" name="game_id" class="tab-input js-select-gallery normal-space trunk-search-smallselect fl" >
+												<option value="" data="0">游戏名称</option>
+												<php>
+													$gmap['game_status'] = 1;
+													$game_ids = get_promote_apply_game_id(PID,1);
+													$gmap['id'] = ['in', $game_ids];
+												</php>
+												<volist name=":get_game_list('id,game_name,relation_game_id,relation_game_name',$gmap,null,'sort desc ,id desc')" id="vv">
+													<option <if condition="$vv['id'] eq input('game_id')"> selected</if> data="{$vv['game_name']}" value="{$vv['id']}">{$vv['game_name']}</option>
+												</volist>
+											</select>
+											<select name="server_id" id="server_id" class="tab-input js-select-gallery normal-space trunk-search-smallselect fl">
+												<option value="">区服名称</option>
+											</select>
+											<select id="pay_way" name="pay_way" class="tab-input js-select-gallery normal-space trunk-search-smallselect fl">
+												<option value="" data="0">充值方式</option>
+												<option value="1" <if condition="input('request.pay_way') eq 1">selected</if>>绑币</option>
+								                <option value="2" <if condition="input('request.pay_way') eq 2">selected</if>>平台币</option>
+								                <option value="3" <if condition="input('request.pay_way') eq 3">selected</if>>支付宝</option>
+								                <option value="4" <if condition="input('request.pay_way') eq 4">selected</if>>微信</option>
+											</select>
+											<select id="pay_status" name="pay_status" class="tab-input js-select-gallery normal-space trunk-search-smallselect fl">
+												<option value="">充值状态</option>
+												<option value="0" <if condition="input('request.pay_status') eq '0'">selected</if>>下单未付款</option>
+												<option value="1" <if condition="input('request.pay_status') eq 1">selected</if>>充值成功</option>
+											</select>
+											<input type="submit" class="submit fr normal-space" id="submit" value="查询">
+											<input type="hidden" id="page" name="row" value="{:input('row',10)}">
+										</div>
+									</form>
+									<div class="clear"></div>
+									<table class="table normal-table" id="promotecoin_table">
+										<tbody>
+											<tr>
+
+												<th>ID</th>
+												<th>玩家账号</th>
+												<th>订单号</th>
+												<th>游戏名称</th>
+												<th>区服</th>
+												<th>角色</th>
+												<th>等级</th>
+												<th>应付金额</th>
+												<th>实付金额</th>
+												<th>充值时间</th>
+												<th>充值方式</th>
+												<th>充值状态</th>
+												<th>充值IP</th>
+												<th>渠道账号</th>
+											</tr>
+											<if condition="(AUTH_PAY eq 1) and (AUTH_GAME eq 1)">
+											<notempty name="data_lists">
+												<volist name="data_lists" id='vo'>
+												<tr>
+													<td>{$vo.id}</td>
+													<td>{$vo.user_account}</td>
+													<td>{$vo.pay_order_number}</td>
+													<td>{:get_game_name($vo['game_id'])}</td>
+													<td>{:$vo['server_name']?$vo['server_name']:'--'}</td>
+													<td>{:$vo['game_player_name']?$vo['game_player_name']:'--'}</td>
+													<td>{:$vo['role_level']?$vo['role_level']:'--'}</td>
+													<td>{:null_to_0($vo['cost'])}</td>
+													<td>{:null_to_0($vo['pay_amount'])}</td>
+													<td>{:date('Y-m-d H:i:s',$vo['pay_time'])}</td>
+													<td>{:get_pay_way($vo['pay_way'])}</td>
+													<td>{:get_info_status($vo['pay_status'],2)}</td>
+													<td>{$vo.spend_ip}</td>
+													<td>
+														<switch name="PID_LEVEL" >
+															<case value="1">
+																{:$vo['pid']==PID?'自己':($vo['promote_level']!=3?$vo['account']:get_parent_name($vo['pid']))}
+															</case>
+															<default />{:$vo['pid']==PID?'自己':$vo['account']}
+														</switch>
+
+													</td>
+												</tr>
+												</volist>
+												<tr style="background: #f0eff5;">
+													<td>汇总</td>
+													<td></td>
+													<td></td>
+													<td></td>
+													<td></td>
+													<td></td>
+													<td></td>
+													<td style="color: #26C7DB;font-weight:bold;">￥{:null_to_0($total['scost'])}</td>
+													<td style="color: #26C7DB;font-weight:bold;">￥{:null_to_0($total['spay_amount'])}</td>
+													<td></td>
+													<td></td>
+													<td></td>
+													<td></td>
+													<td></td>
+											</tr>
+											<else/>
+												<!--暂无数据-->
+												<tr>
+													<td colspan="11" >
+													<div class="no-data">
+														<img src="__TMPL__/public/assets/images/icon_wushujv2.png"  alt="" class="no-data-img"/>
+														<p class="no-data-text">暂无数据</p>
+													</div>
+													</td>
+												</tr>
+											</notempty>
+											<else/>
+												<tr>
+													<td colspan="10" >
+														<div class="no-data">
+															<img src="__TMPL__/public/assets/images/icon_wushujv2.png"  alt="" class="no-data-img"/>
+															<p class="no-data-text">请购买充值权限和游戏权限</p>
+														</div>
+													</td>
+												</tr>
+											</if>
+										</tbody>
+									</table>
+									<if condition="(AUTH_PAY eq 1) and (AUTH_GAME eq 1)">
+									<notempty name="data_lists">
+										<!-- <div class="total">
+											<span class="fr total-con"><span  class="total-name">应付总计：</span>￥{:null_to_0($total['scost'])}</span>
+											<span class="fr total-con"><span class="total-name">实付总计：</span>￥{:null_to_0($total['spay_amount'])}</span>
+										</div> -->
+										<div class="pagenation clearfix">
+											<a download class="sch-btn" href="{:url('Export/expUser',array_merge(['id'=>4],input()))}">导出</a>
+											{$page}
+										</div>
+									</notempty>
+									</if>
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+					
+				</div>
+			</div>
+		</div>
+
+		<include file="public@scripts"/>
+		<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+		<script src="__STATIC__/js/layer/layer.js"></script>
+		<script type="text/javascript" src="__STATIC__/js/datejs/moment.min.js"></script>
+		<script type="text/javascript" src="__STATIC__/js/datejs/momentfunction.js"></script>
+		<script type="text/javascript" src="__STATIC__/js/datejs/daterangepicker.js"></script>
+		<include file="public@date_config_scripts"/>
+		<script>
+            game_id = "{:input('game_id')}";
+            server_id = "{:input('request.server_id')}";
+            var maxDate = moment().startOf('day');
+            var date_autoUpdateInput = false;
+            var start = '{$start}',end  = '{$end}';
+            $(function() {
+				$(".js-select-gallery").select2();
+                if(game_id){
+                    get_game_server(game_id);
+                }
+                $('#game_id').change(function(){
+                    gi = $("#game_id").val();
+                    get_game_server(gi);
+                });
+                $("#server_id").click(function () {
+                    if($('#game_id').val()==0 ){
+                        layer.msg('请先选择游戏');
+                        return false;
+                    }
+                    if($('#game_id').val()=='' ){
+                        layer.msg('请先选择游戏');
+                        return false;
+                    }
+                })
+			})
+			//			日历
+			var date = "{$setdate}";
+			$('#sdate').datetimepicker({
+				format: 'yyyy-mm-dd',
+				language: "zh-CN",
+				minView: 2,
+				autoclose: true,
+				scrollMonth: false,
+				scrollTime: false,
+				scrollInput: false,
+				endDate: date
+			});
+			$('#edate').datetimepicker({
+				format: 'yyyy-mm-dd',
+				language: "zh-CN",
+				minView: 2,
+				autoclose: true,
+				pickerPosition: 'bottom-left',
+				scrollMonth: false,
+				scrollTime: false,
+				scrollInput: false,
+				endDate: date
+			});
+			$('#submit').click(function() {
+				var sdate = $('#sdate').val();
+				var edate = $('#edate').val();
+				// var pid = $('#promote_id').val();
+				// var pac = $('#promote_account').val();
+				// if(pid != '' && pac != '' && pid != pac) {
+				// 	layer.msg("渠道ID与渠道账号不匹配");
+				// 	return false;
+				// }
+				if(Date.parse(sdate) > Date.parse(edate)) {
+					layer.msg('开始时间必须小于等于结束时间');
+					return false;
+				}
+//				var url = $(this).attr('url');
+//				console.log(url);
+//				var query = $('.jssearch').find('input').serialize();
+//				query += "&" + $('.jssearch').find('select').serialize();
+//				query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+//				query = query.replace(/^&/g, '');
+//				if(url.indexOf('?') > 0) {
+//					url += '&' + query;
+//				} else {
+//					url += '?' + query;
+//				}
+//				window.location.href = url;
+
+			});
+
+            function get_game_server(game_id){
+                $('#server_id').empty();
+                $('#server_id').append("<option value=''>区服名称</option>");
+                $.ajax({
+                    url:"{:url('query/get_game_server')}",
+                    type:'post',
+                    dataType:'json',
+                    data:{game_id:game_id},
+                    success:function(res){
+                        if(res.code!=1){
+                            layer.msg(res.msg);
+                        }else{
+                            option = '';
+                            $.each(res.data,function (key,value) {
+                                option+="<option value='";
+                                option+=value['server_name']+"'";
+                                if(value['server_name']==server_id){
+                                    option+="selected";
+                                }
+                                option+=" >"+value['server_name'];
+                                option+="</option>";
+                            });
+                            $('#server_id').append(option).select2();
+                        }
+                    },error(){
+                        layer.msg('服务器错误');
+                    }
+                })
+            }
+		</script>
+	</body>
+
+</html>

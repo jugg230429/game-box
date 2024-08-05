@@ -1,0 +1,607 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/index.css">
+</block>
+<block name="body">
+    <div class="indexpage">
+        <!-- 头部 -->
+        <include file="mobilepublic@header_menu" />
+        <div class="clear"></div>
+        <header>
+            <!-- 轮播图 -->
+            <div class="swiper-container one">
+                <div class="swiper-wrapper">
+                    <notempty name="$carousel">
+                    <volist name="carousel" id="vo">
+                        <div class="swiper-slide"><a href="{$vo.url}" target="{$vo.target}"><img src="{$vo.data}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null" ></a></div>
+                    </volist>
+                        <else/>
+                        <div class="swiper-slide game_list_con_item_img fl"></div>
+                    </notempty>
+                </div>
+                <if condition="count($carousel) gt 1">
+                <div class="swiper-pagination ones"></div>
+                </if>
+            </div>
+            <notempty name="gonggao">
+            <div class="news">
+			   <img src="__TMPL__/mobilepublic/assets/images/ico_news.png" class="news-icon">
+               <div id="news" class="news-con">
+                   <ul >
+                       <volist name="gonggao" id="vo">
+                           <li class="news-title"><a href="{:url('article/detail',['id'=>$vo['id']])}">{$vo.post_title}</a></li>
+                       </volist>
+                   </ul>
+              </div>
+            </div>
+            </notempty>
+        </header>
+        <div class="tabQuickEntry">
+            <if condition="cmf_get_option('wap_set')['zhuanjin'] neq '0'">
+                <div class="quickEntrybox">
+                    <a href="{:url('mobile/point/index')}" class="tabQuickitem"><img src="__TMPL__/mobilepublic/assets/images/quick entry_icon_reward.png" alt=""></a>
+                    <p>任务赚金</p>
+                </div>
+            </if>
+            <if condition="cmf_get_option('wap_set')['trade_show'] neq '0'">
+                <div class="quickEntrybox">
+                    <a href="{:url('mobile/trade/index')}" class="tabQuickitem"><img src="__TMPL__/mobilepublic/assets/images/quick entry_icon_zhjy.png" alt=""></a>
+                    <p>账号交易</p>
+                </div>
+            </if>
+            <if condition="cmf_get_option('wap_set')['coupon_center']">
+                <div class="quickEntrybox">
+                    <a href="{:url('game/coupon')}" class="tabQuickitem"><img src="__TMPL__/mobilepublic/assets/images/quick entry_icon_lqzx.png" alt=""></a>
+                    <p>领劵中心</p>
+                </div>
+            </if>
+            <if condition="cmf_get_option('mcard_set')['status']  eq '1'">
+                <div class="quickEntrybox">
+                    <a href="{:url('mobile/mcard/index')}"  class="tabQuickitem"><img src="__TMPL__/mobilepublic/assets/images/quick entry_icon_zxk.png" alt=""></a>
+                    <p>尊享卡</p>
+                </div>
+            </if>
+
+        </div>
+        <!-- 新人礼包 -->
+        <!-- <div class="newPeople">
+            <div class="radiusColor">
+                <div class="newPeople-top">
+                    <div class="textLeft">
+                        <p class="words">新人大礼包</p>
+                        <p class="wordsBottom">价值49元新人大礼包</p>
+                    </div>
+                    <div class="textRight">
+                       <div class="currentReceive">
+                        <a href="javaScript:;" >立即领取</a>
+                       </div>
+                        <p class="received">87654已领取</p>
+                    </div>
+                </div>
+                <div class="newPeople-bottom">
+                    <ul class="couponGroup">
+                        <li class="cardBox">
+                            <div class="topContent">
+                                <img src="__TMPL__/mobilepublic/assets/images/vip-gold.png" class="firstVip">
+                                <span class="card">体验卡</span>
+                            </div>
+                            <p class="timeContent">
+                                <span class="threeNum">3</span>
+                                <span>天</span>
+                            </p>
+                        </li>
+                        <li class="cardBox">
+                            <div class="coupon">代金券</div>
+                            <p class="centerNum"><span class="numberCharge">6</span><span>元</span></p>
+                            <p>满10可用</p>
+                        </li>
+                        <li class="cardBox">
+                            <div class="coupon">代金券</div>
+                            <p class="centerNum"><span class="numberCharge">10</span><span>元</span></p>
+                            <p>满30可用</p>
+                        </li>
+                        <li class="cardBox">
+                            <div class="coupon">代金券</div>
+                            <p class="centerNum"><span class="numberCharge">10</span><span>元</span></p>
+                            <p>满30可用</p>
+                        </li>
+                        <li class="cardBox">
+                            <div class="coupon">代金券</div>
+                            <p class="centerNum"><span class="numberCharge">10</span><span>元</span></p>
+                            <p>满30可用</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div> -->
+        <!-- 精品游戏推荐   MODEL:1 手游, MODEL:2 H5 -->
+        <div class="good_game_rem">
+            <div class="first_title_info">
+                <p class="fl first_title">精品游戏推荐</p>
+                <!-- 仅手游显示更多 不用的时候可以去掉 MODEL:1 手游, MODEL:2 H5, -->
+                <if condition="MODEL eq 1">
+                <!-- <span class="moreDetail">
+                    <span class="btnMore">更多</span> <img src="__TMPL__/mobilepublic/assets/images/common_btn_xiala.png" alt="" class="jiantouIcon">
+                </span> -->
+                </if>
+
+            </div>
+            <if condition="AUTH_GAME eq 1">
+            <div class="swiper-container three clear">
+                <div class="swiper-wrapper">
+                    <notempty name="$recommend_game">
+                    <volist name="recommend_game" id="rec">
+                    <div class="swiper-slide">
+                        <a href="{:url('game/detail',['game_id'=>$rec.id])}">
+                            <div class="swiper_item_con">
+                                <div class="swiper_item_img">
+                                    <img src="{$rec.icon}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                                </div>
+                                <p>{$rec.relation_game_name}</p>
+                                <notempty name="rec['tag_name'][0]">
+                                <div class="swiper_item_remark">
+                                    <button class="rem_biaoqian">{$rec['tag_name'][0]}</button>
+                                </div>
+                                </notempty>
+                            </div>
+                        </a>
+
+                    </div>
+                    </volist>
+                    <div class="swiper-slide" style="opacity: 0;">
+                            <!-- <div class="swiper_item_con">
+                            </div> -->
+                    </div>
+                    <else/>
+                        <div class="no_index_rec_hot_new_text">
+                            <p>~空空如也~</p>
+                        </div>
+                    </notempty>
+                </div>
+            </div>
+            </if>
+        </div>
+        <if condition="MODEL eq 2">
+        <!-- 最近在玩 仅H5显示 MODEL:1 手游, MODEL:2 H5, -->
+        <notempty name="play_game">
+        <div class="game_recently">
+            <div class="game_recently_title">最近在玩</div>
+            <div class="swiper-container game_recently_con">
+                <ul class="swiper-wrapper">
+                    <volist name="play_game" id="vo">
+                        <li class="fl game_recently_con swiper-slide">
+                            <a href="{:url('Game/open_game',[],false)}?game_id={$vo['game_id']}">
+                                <img src="{:cmf_get_image_url($vo['icon'])}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null" class="game_recently_icon">
+                                <div class="game_recently_name">{$vo.game_name}</div>
+                            </a>
+                        </li>
+                    </volist>
+                </ul>
+            </div>
+        </div>
+        </notempty>
+        </if>
+		<!-- 游戏列表 -->
+        <div class="game_list">
+            <div class="game_list_btns">
+                <div class="active_game_type" id="hot_game"><p>人气热门</p></div>
+                <div id="new_game"><p>最新上架</p></div>
+            </div>
+            <!-- 人气热门    -->
+            <div class="game_list_con hot_game">
+                <volist name="hot_game" id="hot" length='10'>
+                 <gt name="$key" value='0'><div class="index_fg_hx clear"></div></gt>
+                <div class="game_list_con_item clear">
+                    <a href="{:url('game/detail',['game_id'=>$hot.id])}"><div class="game_list_con_item_img fl">
+                        <img src="{$hot.icon}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                    </div>
+                    <div class="fl hot_game_info hotGameBox">
+                        <p class="hot_game_info_one">{$hot.relation_game_name}</p>
+                        <div class="hot_game_info_two_wrap">
+                        <p class="hot_game_info_two clearfix">
+                            <span class="hot_game_info_two_desc">{$hot.game_type_name}</span>
+                            <span class="hot_game_fgx">|</span>
+                            <span class="hot_game_download_num">{:get_simple_number($hot['dow_num'])}</span>
+                            <eq name="hot.sdk_version" value="3">
+                                <span>人在玩</span>
+                                <else/>
+                                <span>人下载</span>
+                                <span class="hot_game_fgx">|</span>
+                                <span><eq name="hot.down_port" value="1">{$hot.game_size}<else/>{$hot.game_size}MB</eq></span>
+                            </eq>
+                        </p>
+                        </div>
+						<div class="clear"></div>
+                        <div class="hot_game_info_three">
+                            <notempty name="$hot['tag_name'][0]"><div class="fl bq_one"><p>{$hot['tag_name'][0]}</p></div></notempty>
+                            <notempty name="$hot['tag_name'][1]"><div class="fl bq_two"><p>{$hot['tag_name'][1]}</p></div></notempty>
+                            <notempty name="$hot['tag_name'][2]"><div class="fl bq_three"><p>{$hot['tag_name'][2]}</p></div></notempty>
+                        </div>
+                    </div>
+                    </a>
+                    <eq name="hot.sdk_version" value="3">
+                        <a <eq name="session.login_auth" value="1">href="{:url('Game/open_game',[],false)}?game_id={$hot['relation_game_id']}"</eq> >
+                        <div data-href="{:url('Game/open_game',[],false)}?game_id={$hot['relation_game_id']}" class='fg hot_game_download <eq name="session.login_auth" value="0">login</eq> '>
+                            <p>去玩</p>
+                        </div>
+                        </a>
+                    <else/>
+                        <if condition="get_down_status2($hot.relation_game_id,get_devices_type()) eq true">
+                            <a class="down_game" href="javascript:;" down-id="{$hot['relation_game_id']}" down-version="{:get_devices_type()}" down-url="{:url('Downfile/down',['game_id'=>$hot['relation_game_id'],'sdk_version'=>get_devices_type()])}">
+                            <div class='fg hot_game_download '>
+                                <p>下载</p>
+                            </div>
+                            </a>
+                            <else/>
+                            <div class="fg hot_game_download hot_game_downloaded">
+                                <p>下载</p>
+                            </div>
+                        </if>
+                    </eq>
+                </div>
+                </volist>
+                <empty name="hot_game">
+                    <p class="index_no_con">~空空如也~</p>
+                </empty>
+            </div>
+
+            <!--   最新上架  -->
+            <div class="game_list_con new_game" style="display: none;">
+                <volist name="new_game" id="new" length='10'>
+                    <gt name="$key" value='0'><div class="index_fg_hx clear"></div></gt>
+                    <div class="game_list_con_item clear">
+                        <a href="{:url('game/detail',['game_id'=>$new.id])}"><div class="game_list_con_item_img fl">
+                            <img src="{$new.icon}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                        </div>
+                        <div class="fl hot_game_info">
+                            <p class="hot_game_info_one">{$new.relation_game_name}</p>
+                            <div class="hot_game_info_two_wrap">
+                            <p class="hot_game_info_two"><span>{$new.game_type_name}</span><span class="hot_game_fgx">|</span>
+                                <span class="hot_game_download_num">{:get_simple_number($new['dow_num'])}</span>
+                                <eq name="hot.sdk_version" value="3">
+                                    <span>人在玩</span>
+                                    <else/>
+                                <span>人下载</span>
+                                <span class="hot_game_fgx">|</span>
+                                <span>{$new.game_size}</span>
+                                </eq>
+                            </p>
+                            </div>
+                            <div class="hot_game_info_three">
+                                <notempty name="$new['tag_name'][0]"><div class="fl bq_one"><p>{$new['tag_name'][0]}</p></div></notempty>
+                                <notempty name="$new['tag_name'][1]"><div class="fl bq_two"><p>{$new['tag_name'][1]}</p></div></notempty>
+                                <notempty name="$new['tag_name'][2]"><div class="fl bq_three"><p>{$new['tag_name'][2]}</p></div></notempty>
+
+                            </div>
+                        </div>
+                        </a>
+                        <eq name="new.sdk_version" value="3">
+                            <a <eq name="session.login_auth" value="1">href="{:url('Game/open_game',[],false)}?game_id={$new['relation_game_id']}"</eq> >
+                            <div data-href="{:url('Game/open_game',[],false)}?game_id={$new['relation_game_id']}" class='fg hot_game_download <eq name="session.login_auth" value="0">login</eq> '>
+                                <p>去玩</p>
+                            </div>
+                            </a>
+                        <else/>
+                            <if condition="get_down_status2($new.relation_game_id,get_devices_type()) eq true">
+                                <a class="down_game"  href="javascript:;" down-id="{$new['relation_game_id']}" down-version="{:get_devices_type()}" down-url="{:url('Downfile/down',['game_id'=>$new['relation_game_id'],'sdk_version'=>get_devices_type()])}" >
+                                    <div class='fg hot_game_download '>
+                                        <p>下载</p>
+                                    </div>
+                                </a>
+                                <else/>
+                                <div class="fg hot_game_download hot_game_downloaded">
+                                    <p>下载</p>
+                                </div>
+                            </if>
+                        </eq>
+                    </div>
+                </volist>
+                <empty name="new_game">
+                    <p class="index_no_con">~空空如也~</p>
+                </empty>
+            </div>
+
+            <!-- 新游推荐 -->
+            <notempty name="$new_game_adv.data" >
+            <div class="game_list_rem_gotgame">
+                <div class="game_list_rem_gotgame_img">
+                <notempty name="$new_game_adv.data" >
+                    <a href="{$new_game_adv['url']}" target="{$new_game_adv['target']}"><img src="{$new_game_adv['data']}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null"></a>
+                </notempty>
+                </div>
+                <div>
+                    <a href="{$new_game_adv['url']}" target="{$new_game_adv['target']}">
+                    <button class="fl new_game_rem">新游推荐</button>
+                    <p class="fl game_list_rem_gotgame_title">{$new_game_adv['title']}</p>
+                    </a>
+                </div>
+            </div>
+            <volist name="new_game" id="new" >
+            <div class="index_fg_hx clear"></div>
+            <div class="game_list_con_item clear">
+                <a href="{:url('game/detail',['game_id'=>$new.id])}">
+                <div class="game_list_con_item_img fl">
+                    <img src="{$new.icon}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                </div>
+                <div class="fl hot_game_info">
+                    <p class="hot_game_info_one">{$new.relation_game_name}</p>
+                    <div class="hot_game_info_two_wrap">
+                    <p class="hot_game_info_two"><span class="hot_game_info_two_desc">{$new.game_type_name}</span><span class="hot_game_fgx">|</span>
+                        <span class="hot_game_download_num">{:get_simple_number($new['dow_num'])}</span>
+                        <eq name="hot.sdk_version" value="3">
+                            <span>人在玩</span>
+                            <else/>
+                            <span>人下载</span>
+                            <span class="hot_game_fgx">|</span>
+                            <span>{$new.game_size}</span>
+                        </eq>
+                    </p>
+                    </div>
+                    <div class="hot_game_info_three">
+                        <notempty name="$new['tag_name'][0]"><div class="fl bq_one"><p>{$new['tag_name'][0]}</p></div></notempty>
+                        <notempty name="$new['tag_name'][1]"><div class="fl bq_two"><p>{$new['tag_name'][1]}</p></div></notempty>
+                        <notempty name="$new['tag_name'][2]"><div class="fl bq_three"><p>{$new['tag_name'][2]}</p></div></notempty>
+
+                    </div>
+                </div>
+                </a>
+                <eq name="new.sdk_version" value="3">
+                    <a <eq name="session.login_auth" value="1">href="{:url('Game/open_game',[],false)}?game_id={$new['relation_game_id']}"</eq> >
+                    <div data-href="{:url('Game/open_game',[],false)}?game_id={$new['relation_game_id']}" class='fg hot_game_download <eq name="session.login_auth" value="0">login</eq> '>
+                        <p>去玩</p>
+                    </div>
+                    </a>
+                <else/>
+                    <if condition="get_down_status2($new.relation_game_id,get_devices_type()) eq true">
+                        <a  <eq name="session.login_auth" value="1">href="{:url('Downfile/down',['game_id'=>$new['relation_game_id'],'sdk_version'=>get_devices_type()])}"</eq> >
+                            <div class='fg hot_game_download  <eq name="session.login_auth" value="0">login</eq> '>
+                                <p>下载</p>
+                            </div>
+                        </a>
+                        <else/>
+                        <div class="fg hot_game_download hot_game_downloaded">
+                            <p>下载</p>
+                        </div>
+                    </if>
+                </eq>
+            </div>
+            </volist>
+            </notempty>
+            <!-- 热游推荐 -->
+            <notempty name="$hot_game_adv.data" >
+            <div class="game_list_rem_gotgame">
+                <div class="game_list_rem_gotgame_img">
+                <notempty name="$hot_game_adv.data" >
+                    <a href="{$hot_game_adv['url']}" target="{$hot_game_adv['target']}"><img src="{$hot_game_adv['data']}" alt=""></a>
+                </notempty>
+                </div>
+                <div class="title_info">
+                    <a href="{$hot_game_adv['url']}" target="{$hot_game_adv['target']}">
+                    <button class="fl new_game_rem two_new_game_rem">热游推荐</button>
+                    <p class="fl game_list_rem_gotgame_title">{$hot_game_adv['title']}</p>
+                    </a>
+                </div>
+            </div>
+            <volist name="not_recommend_game" id="not_rec" >
+            <div class="index_fg_hx clear"></div>
+            <div class="game_list_con_item clear">
+                <a href="{:url('game/detail',['game_id'=>$not_rec.id])}">
+                <div class="game_list_con_item_img fl">
+                    <img src="{$not_rec.icon}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                </div>
+                <div class="fl hot_game_info">
+                    <p class="hot_game_info_one">{$not_rec.relation_game_name}</p>
+                    <div class="hot_game_info_two_wrap">
+                    <p class="hot_game_info_two"><span class="hot_game_info_two_desc">{$not_rec.game_type_name}</span><span class="hot_game_fgx">|</span>
+                        <span class="hot_game_download_num">{:get_simple_number($not_rec['dow_num'])}</span>
+                        <eq name="not_rec.sdk_version" value="3">
+                            <span>人在玩</span>
+                        <else/>
+                            <span>人下载</span>
+                            <span class="hot_game_fgx">|</span>
+                            <span>{$not_rec.game_size}</span>
+                        </eq>
+                    </p>
+                    </div>
+                    <div class="hot_game_info_three">
+                        <notempty name="$not_rec['tag_name'][0]"><div class="fl bq_one"><p>{$not_rec['tag_name'][0]}</p></div></notempty>
+                        <notempty name="$not_rec['tag_name'][1]"><div class="fl bq_two"><p>{$not_rec['tag_name'][1]}</p></div></notempty>
+                        <notempty name="$not_rec['tag_name'][2]"><div class="fl bq_three"><p>{$not_rec['tag_name'][2]}</p></div></notempty>
+                    </div>
+                </div>
+                </a>
+                <eq name="not_rec.sdk_version" value="3">
+                    <a <eq name="session.login_auth" value="1">href="{:url('Game/open_game',[],false)}?game_id={$not_rec['relation_game_id']}"</eq> >
+                    <div data-href="{:url('Game/open_game',[],false)}?game_id={$not_rec['relation_game_id']}" class='fg hot_game_download <eq name="session.login_auth" value="0">login</eq> '>
+                        <p>去玩</p>
+                    </div>
+                    </a>
+                <else/>
+                    <if condition="get_down_status2($not_rec.relation_game_id,get_devices_type()) eq true">
+<!--                        <a  <eq name="session.login_auth" value="1">href="{:url('Downfile/down',['game_id'=>$not_rec['relation_game_id'],'sdk_version'=>get_devices_type()])}"</eq> >-->
+                        <a  <eq name="session.login_auth" value="1">href="{:url('Downfile/down',['game_id'=>$not_rec['relation_game_id'],'sdk_version'=>get_devices_type()])}"</eq> >
+                            <div class='fg hot_game_download  <eq name="session.login_auth" value="0">login</eq> '>
+                                <p>下载</p>
+                            </div>
+                        </a>
+                        <else/>
+                        <div class="fg hot_game_download hot_game_downloaded">
+                            <p>下载</p>
+                        </div>
+                    </if>
+                </eq>
+            </div>
+            </volist>
+            </notempty>
+        </div>
+        <!-- 活动公告 -->
+        <div class="game_news">
+            <div class="game_new_titles">
+                <p class="title">活动公告 <a href="{:url('article/index')}"><span>全部<span>></span></span></span></a></p>
+            </div>
+            <notempty name="$huodong">
+            <volist name="huodong" id="huodong" >
+            <div class="game_activity_new clear">
+                <a href="{:url('article/detail',['id'=>$huodong['id']])}">
+                <div class="game_activity_new_item">
+                    <div class="game_activity_new_img fl">
+                        <img src="{:cmf_get_image_url($huodong['thumbnail'])}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                    </div>
+                    <div class="fl game_activity_new_con">
+                        <p class="game_activity_new_con_one">{$huodong['post_title']}</p>
+                        <p class="game_activity_new_con_two">{:date('m-d H:i',$huodong['update_time'])}</p>
+                    </div>
+                </div>
+                </a>
+            </div>
+            </volist>
+                <else/>
+                <p class="index_no_con">~空空如也~</p>
+            </notempty>
+        </div>
+        <!-- 更多好玩游戏 -->
+        <div class="more_good_game">
+            <div class="game_new_titless">
+                <p class="more">更多好玩游戏 <a href="{:url('game/game_center')}"><span>全部<span>></span></span></span></a></p>
+                <div class="more_good_game_con">
+                    <notempty name=":get_game_type_all()">
+                    <volist name=":get_game_type_all()" id="type">
+                        <a href="{:url('game/game_center',['type_id'=>$type.id])}"><p>{$type.type_name}</p></a>
+                    </volist>
+                        <else/>
+
+
+                </div>
+				 <div class="index_no_con">~空空如也~</div>
+                    </notempty>
+                <div class="more_good_game_zwdiv clear">&nbsp;</div>
+            </div>
+        </div>
+        <!-- 底部 -->
+        <if condition="cmf_get_option('wap_set')['app_show'] eq 1">
+        <a href="{:url('downfile/download_app')}" class="download-app">
+            <img src="<if condition='$union_set[app_ico]'>{:cmf_get_image_url($union_set[app_ico])}<else/>{:cmf_get_image_url(cmf_get_option('app_set')['app_logo'])}</if>" alt="" onerror="this.src='/static/images/open_app_icon.png';this.onerror=null">
+            <div class="open-app-btn">打开APP</div>
+        </a>
+        </if>
+</div>
+</block>
+<block name="script">
+
+
+    <script>
+        $(function () {
+            $(".down_game").click(function () {
+                var down_url = $(this).attr('down-url');
+                var down_id = $(this).attr('down-id');
+                var down_version = $(this).attr('down-version');
+                //请求
+
+                $.ajax({
+                    url: "{:url('Downfile/get_ban_status')}",
+                    type: 'post',
+                    dataType: 'json',
+                    data: {game_id: down_id,type:4,sdk_version:down_version},
+                    success: function (res) {
+                        if (res.code != 1) {
+                            layer.msg(res.msg);
+                        } else {
+
+                            location.href = down_url;
+                        }
+                    }, error() {
+                        layer.msg('服务器错误');
+                    }
+                })
+            })
+        })
+    </script>
+<script>
+// 新闻滚动
+function AutoScroll(obj) {
+    $(obj).find("ul:first").animate({
+        marginTop: "-2.5rem"
+    },
+    500,
+    function() {
+        $(this).css({
+            marginTop: "0px"
+        }).find("li:first").appendTo(this);
+    });
+}
+$(document).ready(function() {
+
+
+   var titlelength=$(" .news-title").length;
+   console.log(titlelength);
+   if(titlelength>1){
+       setInterval('AutoScroll(".news-con")', 2000)
+   }
+
+});
+    var swiperr = new Swiper('.one', {
+
+        spaceBetween: 12,
+        autoplay:true,
+        pagination: {
+            el: '.ones',
+        },
+    });
+    $(function(){
+        var u = navigator.userAgent;
+        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        if(isAndroid){
+            console.log($('.more_good_game_con p').css('padding-top'))
+            $('.more_good_game_con p').prop('style','padding-top:0.1rem!important')
+            $('.more_good_game').css('padding-bottom','10rem')
+            console.log($('.more_good_game_con p').css('padding-top'))
+        }
+        if(isiOS) {
+            $('.more_good_game').css('min-height',"15rem")
+        }
+
+    })
+    var myswipers = new Swiper('.swiper-container.three', {
+        slidesPerView: 3.8,
+        spaceBetween: '3.7%',
+    });
+	 var myswipers = new Swiper('.swiper-container.type_menu_box', {
+        slidesPerView: 3.8,
+        spaceBetween: '3.7%',
+    });
+	 var myswipers = new Swiper('.swiper-container.game_recently_con', {
+        slidesPerView: 5,
+        spaceBetween: '3.7%',
+    });
+
+    $('.game_list_btns div').click(function () {
+        $('.game_list_btns div').removeClass('active_game_type')
+        $(this).addClass('active_game_type')
+    })
+
+    $('#new_game').click(function(){
+        $('.hot_game').css('display','none');
+        $('.new_game').css('display','block');
+    })
+    $('#hot_game').click(function(){
+        $('.new_game').css('display','none');
+        $('.hot_game').css('display','block');
+    })
+    $(".coupon_btn").click(function () {
+        $.ajax({
+            type:'get',
+            url:'{:url("get_user_status")}',
+            success:function (res) {
+                if(res.status!=0){
+                  window.location.href = "{:url('Coupon/index')}";
+                }else {
+                    /*layer.msg('请先登录');*/
+                   /* $(".login").click();*/
+                }
+            }
+        });
+    })
+</script>
+</block>
+

@@ -1,0 +1,95 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/update_nickname.css">
+</block>
+<block name="body">
+    <div class="update_nickname_page">
+        <div class="update_nickname_header">
+            <a href="{:url('User/set')}" class="fl">
+                <img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon">
+            </a>
+            <p >修改昵称</p>
+        </div>
+        <div class="game_bag_down_hx"></div>
+        <div class="update_nickname_con">
+            <div class="clear_text_btn">
+                <div class="warp-div">
+                    <input type="text" name="nickname" maxlength="24" data-name="{$user.nickname}" value="{$user.nickname}" class="fl">
+                    <!-- <img src="__TMPL__/mobilepublic/assets/images/common_btn_delet.png" alt="" class="clear_textzzz"> -->
+                    <div class="close-div fr" style="background: url('__TMPL__/mobilepublic/assets/images/common_btn_delet.png') no-repeat;background-size: cover"></div>
+                    <div class="clear"></div>
+                </div>
+                <p class="clear look-text">昵称为1-24个字符</p>
+            </div>
+            <div class="quedin_btn">
+                <p>确定</p>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+        // $('.clear_text_btn input[type="text"]').focus(function () {
+        //     $('.clear_textzzz').show()
+        // })
+        // $('.clear_text_btn input[type="text"]').blur(function () {
+        //     $('.clear_textzzz').hide()
+        // })
+        // $('.clear_textzzz').mousedown(function () {
+        //     $('.clear_text_btn input[type="text"]').val('')
+        //     $('.clear_textzzz').hide()
+        // })
+        $('.clear_text_btn input').focus(function () {
+            $('.clear_text_btn div.close-div').show()
+        })
+        $('.clear_text_btn input').blur(function () {
+            setTimeout(() => {
+                $('.clear_text_btn div.close-div').hide()
+            }, 100);
+
+        })
+        $('.clear_text_btn div.close-div').click(function () {
+            $('.clear_text_btn input').val('')
+        })
+
+        $('.quedin_btn').click(function () {
+            var nickname = $.trim($('input[name=nickname]').val());
+            if (nickname) {
+                var that = $(this);
+                if (nickname == $.trim(that.data('name'))) {
+                    return false;
+                }
+                if (that.hasClass('no_send')) { return false; }
+                that.addClass('no_send');
+                $.ajax({
+                    type: 'post',
+                    dataType: 'json',
+                    url: '{:url("User/nickname")}',
+                    data: { nickname: nickname },
+                    success: function (data) {
+                        that.removeClass('no_send');
+                        if (data.code == -2) {
+                            location.href="{:url('set')}";
+                        }else if (data.code == 1) {
+                            layer.msg(data.msg,{time:1000},function () {
+                                location.href="{:url('set')}";
+                            });
+                        }else{
+                            layer.msg(data.msg);
+                        }
+                    },
+                    error: function () {
+                        layer.msg('服务器故障，请稍候再试');
+                        that.removeClass('no_send');
+                    }
+                });
+
+            } else {
+                layer.msg('请输入昵称');
+            }
+
+            return false;
+        });
+
+    </script>
+</block>

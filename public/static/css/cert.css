@@ -1,0 +1,100 @@
+
+/*
+* @description: 认证样式
+ *@author:王奉
+* @update: name(xxxx-xx-xx xx:xx)
+ */
+body,
+html {
+	font-family: "Microsoft YaHei", '微软雅黑', Tahoma, Verdana, Arial, '宋体', sans-serif;
+	font-size: inherit;
+	margin: 0;
+	padding: 0;
+}
+.textc{
+	text-align: center;
+}
+.cert_img{
+	display: block;
+	width: 2rem;
+    height: 2rem;
+	margin: 5rem auto 0.7rem;
+}
+.cert_title
+{
+	font-size: 0.8rem;
+	color: #21b2e9;
+	margin-bottom: 0.35rem;
+}
+.cert_text{
+	font-size: 0.55rem;
+	color: #b1b1b1;
+}
+.cert_failtitle{
+	color: #333;
+}
+@media screen and (max-width:1240px) {
+	html {
+		font-size: 623%;
+	}
+}
+
+@media screen and (max-width:992px) {
+	html {
+		font-size: 500%;
+	}
+}
+
+@media screen and (max-width:768px) {
+	html {
+		font-size: 385%;
+	}
+}
+
+@media screen and (max-width:720px) {
+	html {
+		font-size: 362%;
+	}
+}
+
+@media screen and (max-width:660px) {
+	html {
+		font-size: 332%;
+	}
+}
+
+@media screen and (max-width:600px) {
+	html {
+		font-size: 301%;
+	}
+}
+
+@media screen and (max-width:540px) {
+	html {
+		font-size: 271%;
+	}
+}
+
+@media screen and (max-width:480px) {
+	html {
+		font-size: 241%;
+	}
+}
+
+@media screen and (max-width:420px) {
+	html {
+		font-size: 211%;
+	}
+}
+
+@media screen and (max-width:360px) {
+	html {
+		font-size: 181%;
+	}
+}
+
+@media screen and (max-width:320px) {
+	html {
+		font-size: 161%;
+	}
+}

@@ -1,0 +1,593 @@
+<include file="public@header"/>
+</head>
+<style>
+    .btn.disabled, .btn[disabled], fieldset[disabled] .btn {
+        background-color: rgb(238,238,238)!important;
+        border-color: rgb(238,238,238)!important;
+        opacity: 1;
+    }
+</style>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs mb20">
+        <li ><a href="{:url('promote/lists')}">渠道列表</a></li>
+        <li class="active"><a href="{:url('edit')}">编辑渠道</a></li>
+        <span class="title_remark">说明：查看、编辑渠道的基础信息。</span>
+        
+    </ul>
+    <ul class="nav nav-menu">
+        <li class="active fl nav-menu-con"><a href="#A" data-toggle="tab">基础信息</a></li>
+        <li class="fl  nav-menu-con"><a href="#B" data-toggle="tab">结算信息</a></li>
+        <if condition="$data['promote_level'] eq '1'">
+            <li class="fl  nav-menu-con"><a href="#C" data-toggle="tab">支付宝</a></li>
+            <li class="fl  nav-menu-con"><a href="#D" data-toggle="tab">微信（扫码/H5）</a></li>
+            <li class="fl  nav-menu-con"><a href="#E" data-toggle="tab">微信（APP）</a></li>
+        </if>
+
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" action="{:url('edit')}" method="post">
+        <div class="tabbable">
+            <div class="tab-content">
+                <div class="tab-pane active" id="A">
+                    <div class="form-group">
+                        <label for="input-name" class="col-sm-2 control-label"><span class="form-required"></span>渠道账号：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <span>{$data['account']}</span>
+                        </div>
+                        <p class="help-block">通过渠道后台注册申请或者管理后台创建的账号，用于推广平台登录</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-remark" class="col-sm-2 control-label"><span class="form-required"></span>登录密码：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <input type="text" class="form-control" id="" name="password" placeholder="******">
+                        </div>
+                        <p class="help-block">6-30位字母或数字组合</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">账号状态：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <label class="radio-inline label-width" tab_id="1">
+                                <input type="radio" name="status" value="1" <if condition="$data['status'] eq 1"> checked</if>> 开启
+                            </label>
+                            <label class="radio-inline label-width" tab_id="2">
+                                <input type="radio" name="status" value="-1" <if condition="$data['status'] eq -1"> checked</if>> 锁定
+                            </label>
+                        </div>
+                        <p class="help-block">锁定状态下，渠道账号无法登录</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">结算类型：</label>
+                        <div class="col-md-4 col-sm-6 chooseItemWidth">
+                            <label class="radio-inline label-width" tab_id="1">
+                                <input type="radio" <if condition="$data['parent_id'] gt 0">disabled</if> name="pattern" value="0" <if condition="$data['pattern'] eq 0"> checked</if>> CPS
+                            </label>
+                            <label class="radio-inline label-width" tab_id="2">
+                                <input type="radio" <if condition="$data['parent_id'] gt 0">disabled</if> name="pattern" value="1" <if condition="$data['pattern'] eq 1"> checked</if>> CPA
+                            </label>
+                        </div>
+                        <p class="help-block">渠道结算类型，子渠道默认跟随所属一级，设置后不建议随意修改</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">推广类型：</label>
+                        <div class="col-md-3 col-sm-5 changeItemWidth">
+                            <label class="radio-inline label-width" >
+                                <input type="radio" name="register_type" value="0" <if condition="$data['register_type'] eq 0"> checked</if>> 个人
+                            </label>
+                            <label class="radio-inline label-width">
+                                <input type="radio" name="register_type" value="1" <if condition="$data['register_type'] eq 1"> checked</if>> 公会
+                            </label>
+                            <label class="radio-inline label-width">
+                                <input type="radio" name="register_type" value="2" <if condition="$data['register_type'] eq 2"> checked</if>> 公众号
+                            </label>
+                            <label class="radio-inline label-width">
+                                <input type="radio" name="register_type" value="3" <if condition="$data['register_type'] eq 3"> checked</if>> 其它
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="hidden" name="old_busier_id" value="{$data['busier_id']}">
+                        <label for="input-admin_url_password" class="col-sm-2 control-label"><span class="form-required"></span>所属商务:</label>
+                        <div class="col-md-3 col-sm-5">
+                            <if condition="$data['parent_id'] neq 0"> <input type="hidden" name="busier_id" value="{$data['busier_id']}"></if>
+                            <select id="busier_id" name="busier_id" class="selectpicker form-control" data-live-search="true" <if condition="$data['parent_id'] neq 0"> disabled</if>>
+                                <option value="0">选择所属商务</option>
+                                <volist name=":get_business_lists()" id="vo">
+                                    <option value="{$vo.id}" <eq name="data.busier_id" value="$vo.id">selected</eq>>{$vo.account}</option>
+                                </volist>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input-remark" class="col-sm-2 control-label">真实姓名：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <span><if condition="$data['real_name'] eq ''">--<else/>{$data['real_name']}</if></span>
+                        </div>
+                        <!-- <p class="help-block">渠道负责人姓名</p> -->
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input-remark" class="col-sm-2 control-label">手机号：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <span><if condition="$data['mobile_phone'] eq ''">--<else/>{$data['mobile_phone']}</if></span>
+                        </div>
+                        <!-- <p class="help-block">渠道负责人手机号码</p> -->
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input-remark" class="col-sm-2 control-label">邮箱：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <input type="text" class="form-control" id="" name="email" value="{$data['email']}" placeholder="">
+                        </div>
+                        <!-- <p class="help-block">渠道邮箱地址</p> -->
+                    </div>
+                    <div class="form-group">
+                        <label for="input-remark" class="col-sm-2 control-label">渠道等级：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <span><if condition="$data['promote_level'] eq 3">三级渠道<elseif condition="$data['promote_level'] eq 2" />二级渠道<else/>一级渠道</if></span>
+                        </div>
+                        <p class="help-block">自主申请或者管理后台添加的账号为一级渠道，一级渠道后台添加的子渠道为二级，二级添加的为三级</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-remark" class="col-sm-2 control-label">注册时间：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <span><if condition="$data['create_time'] eq ''">--<else/>{:date('Y-m-d H:i:s',$data['create_time'])}</if></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-remark" class="col-sm-2 control-label">最后登录时间：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <span><if condition="$data['last_login_time'] gt 0">{:date('Y-m-d H:i:s',$data['last_login_time'])}<else/>--</if></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-remark" class="col-sm-2 control-label"><span class="form-required"></span>二级密码：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <input type="text" class="form-control" id="" name="second_pwd" <if condition="$data['second_pwd'] eq ''"> placeholder=""<else/> placeholder="******" </if> >
+                        </div>
+                        <p class="help-block">在渠道后台进行会长代充时使用</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-name" class="col-sm-2 control-label"><span class="form-required"></span>平台币余额：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <span>{$data['balance_coin']}</span>
+                        </div>
+                        <p class="help-block">渠道平台币余额，渠道平台币用于会长代充或者转移给下级渠道</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site-name" class="col-sm-2 control-label">
+                            备注：
+                        </label>
+                        <div class="col-md-3 col-sm-5">
+                            <textarea maxlength="300" name="mark1" class="form-control valid" aria-invalid="false">{$data['mark1']}</textarea>
+                        </div>
+                    </div>
+
+                    <if condition="$data['promote_level'] eq '1'">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">自定义支付通道：</label>
+                            <div class="col-md-4 col-sm-6 chooseItemWidth">
+                                <label class="radio-inline label-width" tab_id="1">
+                                    <input type="radio" name="is_custom_pay" value="0" <if condition="$data['is_custom_pay'] eq 0"> checked</if>> 关闭
+                                </label>
+                                <label class="radio-inline label-width" tab_id="2">
+                                    <input type="radio" name="is_custom_pay" value="1" <if condition="$data['is_custom_pay'] eq 1"> checked</if>> 开启
+                                </label>
+                            </div>
+                            <p class="help-block">控制渠道下玩家支付是否走自定义支付通道；开启后渠道下玩家不可使用平台币/绑币相关功能</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-name" class="col-sm-2 control-label"><span class="form-required"></span>预付款余额：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input  type="text" class="form-control user-input fl disabled" readonly name="prepayment" value="{$data['prepayment']|default='0.00'}" placeholder="0.00" style="width: 48%;">
+                                <span id="prepayment" class="table_click"><span class="table_click_text btn-click">发放</span></span>
+                                <span class="fl user-remarks">渠道预付款，当自定义支付通道时，产生充值将按照比例进行扣除预付款</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">审核子渠道APP：</label>
+                            <div class="col-md-4 col-sm-6 chooseItemWidth">
+                                <label class="radio-inline label-width" tab_id="1">
+                                    <input type="radio" name="allow_check_subbox" value="0" <if condition="$data['allow_check_subbox'] eq 0"> checked</if>> 关闭
+                                </label>
+                                <label class="radio-inline label-width" tab_id="2">
+                                    <input type="radio" name="allow_check_subbox" value="1" <if condition="$data['allow_check_subbox'] eq 1"> checked</if>> 开启
+                                </label>
+                            </div>
+                            <p class="help-block">开启后一级渠道可对子渠道后台申请的游戏盒子进行审核</p>
+                        </div>
+
+                    </if>
+
+                    <div class="form-group">
+                        <input type="hidden" name="id" value="{$data['id']}">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            <button type="submit" class="btn btn-primary js-ajax-submit save-btn">保存</button>
+                            <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane" id="B">
+
+                    <div class="form-group">
+                        <label for="input-remark" class="col-sm-2 control-label">结算方式：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <label class="label-width">
+                                <input type="radio"  onclick="change_info('zfb-div','yhk-div')"  name="settment_type" class="js-radio" checked  >支付宝
+                            </label>
+                            <label>
+                                <input type="radio" onclick="change_info('yhk-div','zfb-div')"  name="settment_type" class="js-radio">银行汇款
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="zfb-div" style="display: block">
+                        <div class="form-group">
+                            <label for="input-remark" class="col-sm-2 control-label">支付宝账号：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <span>{$data['alipay_account']}</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-remark" class="col-sm-2 control-label">支付宝真实姓名：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <span>{$data['alipay_name']}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="yhk-div" style="display: none">
+                        <div class="form-group">
+                            <label for="input-remark" class="col-sm-2 control-label">手机号：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <span>{$data['bank_phone']}</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-remark" class="col-sm-2 control-label">银行卡号：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <span>{$data['bank_card']}</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-remark" class="col-sm-2 control-label">收款银行：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <span>{$data['bank_name']}</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-remark" class="col-sm-2 control-label">持卡人：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <span>{$data['bank_account']}</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-remark" class="col-sm-2 control-label">开户网点：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <span>{$data['account_openin']}</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-remark" class="col-sm-2 control-label">开户城市：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <span>{$data['bank_area']}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="hidden" id="id" name="id" value="{$data['id']}">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            <button type="submit" class="btn btn-primary js-ajax-submit save-btn">保存</button>
+                            <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                        </div>
+                    </div>
+                </div>
+
+                <if condition="$data['promote_level'] eq '1'">
+                    <div class="tab-pane" id="C">
+                        <div class="describe" style="margin-bottom: 20px">
+                            <div>说明①：支付宝可申请电脑网站支付、手机网站支付、APP支付，根据运营需求申请对应支付方式</div>
+                            <div>说明②：H5游戏需申请当面付</div>
+                            <div>说明③：当在服务平台打包上架版游戏包时，选择第三方支付则为WAP支付，选择苹果内购则为苹果内购支付；当打包非上架版游戏包时，选择第三方支付则为WAP支付，选择苹果内购则为APP支付（android版游戏无需设置）</div>
+                        </div>
+                        <div class="clear"></div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label"><span
+                                    class="form-required"><!-- * --></span>合作伙伴身份ID（PID）</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" class="form-control fl user-input "   name="zfb[pid]"
+                                       value="{$data.zfb.pid|default=''}">
+                                <span  class="fl user-remarks l18">合作账户中心--mapi网关产品密钥--合作伙伴身份（PID）份者id，以2088开头的16位纯数字</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label"><span
+                                    class="form-required"><!-- * --></span>MD5密钥</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" class="form-control fl user-input"   name="zfb[key]"
+                                       value="{$data.zfb.key|default=''}">
+                                <span  class="fl user-remarks ">账户中心--mapi网关产品密钥--合作伙伴密钥</span>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label"><span
+                                    class="form-required"><!-- * --></span>收款帐户</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" class="form-control fl user-input"   name="zfb[account]"
+                                       value="{$data.zfb.account|default=''}">
+                                <span  class="fl user-remarks ">卖家支付宝帐户</span>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label"><span
+                                    class="form-required"><!-- * --></span>APPID</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" class="form-control fl user-input"   name="zfb[appid]"
+                                       value="{$data.zfb.appid|default=''}">
+                                <span  class="fl user-remarks ">应用APPID</span>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                支付宝公钥：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <textarea name="zfb[public_key]" class="form-control valid" aria-invalid="false">{$data['zfb']['public_key']}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                支付宝私钥：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <textarea name="zfb[private_key]" class="form-control valid" aria-invalid="false">{$data['zfb']['private_key']}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label"><span
+                                    class="form-required"><!-- * --></span>启用状态</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="fl user-input">
+                                    <label class="fl mr50 pt7"><input type="radio" name="zfb[status]" value="1" <if condition="$data['zfb']['status'] eq 1"> checked </if>> 启用</label>
+                                    <label class="fl pt7"><input type="radio" name="zfb[status]" value="0" <if condition="$data['zfb']['status'] eq 0"> checked </if>> 禁用</label>
+                                </div>
+                                <span  class="fl user-remarks  l18">
+                                        支付宝启用状态，控制多个站点内是否显示支付宝支付入口；
+                                    </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn" data-refresh="0">
+                                    {:lang('SAVE')}
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="tab-pane" id="D">
+
+                        <div class="describe">
+                            <div>说明①：微信（扫码）支付即支持pc扫码支付，wap/H5支付</div>
+                            <div>说明②：推荐在微信公众平台配置公众号，申请开通扫码支付权限</div>
+                            <div>说明③：仅申请微信（扫码）支付，不需要提供文网文</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_seo_title" class="col-sm-2 control-label">商户号</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" class="form-control user-input fl"
+                                       name="wxscan[pid]" value="{$data.wxscan.pid|default=''}">
+                                <span  class="fl user-remarks ">
+                                        微信商户号
+                                    </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_seo_title" class="col-sm-2 control-label">APPID</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" class="form-control user-input fl"
+                                       name="wxscan[appid]" value="{$data.wxscan.appid|default=''}">
+                                <span  class="fl user-remarks ">
+                                        绑定支付的APPID
+                                    </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_seo_title" class="col-sm-2 control-label">密钥KEY</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" class="form-control user-input fl"
+                                       name="wxscan[key]" value="{$data.wxscan.key|default=''}">
+                                <span  class="fl user-remarks ">
+                                        微信密钥
+                                    </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_seo_title" class="col-sm-2 control-label">启用状态：</label>
+                            <div class="col-md-8 col-sm-10">
+                                <label class="fl mr50 pt7"> <input type="radio" name="wxscan[status]" value="1" <if condition="$data['wxscan']['status'] eq 1"> checked </if>> 启用</label>
+                                <label class="fl pt7"> <input type="radio" name="wxscan[status]" value="0" <if condition="$data['wxscan']['status'] eq 0"> checked </if>> 禁用</label>
+                                <span  class="fl user-remarks ml25">
+                                        微信扫码启用状态，控制在PC官网、WAP站、SDK、推广系统官网上是否显示微信支付入口
+                                    </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn" data-refresh="0">
+                                    确定
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="tab-pane" id="E">
+
+                        <div class="describe">
+                            <div>说明①：推荐到微信开放平台申请移动应用，并且开通微信支付能力，可以在游戏内使用。</div>
+                            <!-- <div>说明②：推荐到微信开放平台申请移动应用，并且开通微信支付能力，可以在游戏内使用。</div>
+                            <div>说明③：申请微信（APP）支付，需要提供文网文</div> -->
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_seo_title" class="col-sm-2 control-label">商户号</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" class="form-control user-input fl"
+                                       name="wxapp[pid]" value="{$data.wxapp.pid|default=''}">
+                                <span  class="fl user-remarks ">
+                                        微信商户号
+                                    </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_seo_title" class="col-sm-2 control-label">APPID</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" class="form-control user-input fl"
+                                       name="wxapp[appid]" value="{$data.wxapp.appid|default=''}">
+                                <span  class="fl user-remarks ">
+                                        绑定支付的APPID
+                                    </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_seo_title" class="col-sm-2 control-label">密钥KEY</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" class="form-control user-input fl"
+                                       name="wxapp[key]" value="{$data.wxapp.key|default=''}">
+                                <span  class="fl user-remarks ">
+                                        微信密钥
+                                    </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_seo_title" class="col-sm-2 control-label">启用状态：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="fl pt7">
+                                    <input type="radio" name="wxapp[status]" value="1" <if condition="$data['wxapp']['status'] eq 1"> checked </if>> 启用<label class="mr50"></label>
+                                    <input type="radio" name="wxapp[status]" value="0" <if condition="$data['wxapp']['status'] eq 0"> checked </if>> 禁用
+                                </div>
+                                <span  class="fl user-remarks ml33">
+                                        微信APP启用状态，控制在联运APP上是否显示微信支付入口
+                                    </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn" data-refresh="0">
+                                    确定
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </if>
+
+            </div>
+        </div>
+    </form>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#prepayment").click(function () {
+            layer.prompt(
+                {
+                    formType: 1,
+                    title: "请输入二级密码(如果没有请设置)",
+                    value: '',
+                    success:function (layero, index) {
+                        layero.find('input').attr('placeholder','');
+                    }
+                }
+                , function (val) {
+                    $.ajax({
+                        url: '{:url("member/user/checkpwd")}',
+                        type: 'post',
+                        dataType: 'json',
+                        data: {'second_pwd': val},
+                        success: function (data) {
+                            if (data.code > 0) {
+                                sub_from(val);
+                            } else {
+                                layer.msg(data.msg)
+                            }
+                        },
+                        error: function () {
+                            alert("错误");
+                        }
+                    });
+                });
+        });
+    })
+
+    function sub_from(val) {
+        var second_pwd_ = val;
+        layer.prompt(
+            {
+                formType: 0,
+                title: "发放预付款金额",
+                value: '',
+                success:function (layero, index) {
+                    layero.find('input').attr('placeholder','');
+                }
+            }
+            , function (val) {
+                $id = $('#id').val();
+                $.ajax({
+                    url: '{:url("sendPrepayment")}',
+                    type: 'post',
+                    dataType: 'json',
+                    data: {'prepayment': val, 'id': $id, 'second_pwd': second_pwd_},
+                    success: function (data) {
+                        if (data.code > 0) {
+                            self.location.reload(true);
+                        } else {
+                            layer.msg(data.msg)
+                        }
+                    },
+                    error: function () {
+                        alert("服务器故障！");
+                    }
+                });
+            });
+    }
+
+    function change_info(show,hidden) {
+        //展示和隐藏
+        $("#"+show).css("display","block");//显示div
+        $("#"+hidden).css("display","none");//隐藏div
+    }
+
+</script>
+</body>
+</html>

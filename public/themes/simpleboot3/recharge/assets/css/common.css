@@ -1,0 +1,737 @@
+@charset "utf-8";
+
+/**
+* 模块样式
+* @author 鹿文学[lwx]<fyj301415926@126.com>
+*/
+html {
+    overflow: auto;
+    overflow-x: hidden;
+    font-size: 12px;
+    font-family: Tahoma,'Droid Sans Fallback','苹方','Microsoft Yahei','微软雅黑',SimHei,"黑体",Tahoma,Verdana,Arial,'宋体',sans-serif;
+    line-height: 1.4;
+	height:100%;
+	margin:0;
+	padding:0;
+}
+html,body,div,ul,li,ol,input,select,teatarea {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+img {
+    border: none;
+    vertical-align: middle;
+}
+
+ol,ul {
+    margin: 0;
+    padding: 0;
+    color: inherit;
+    list-style: none;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+body {
+    overflow: auto;
+    overflow-x: hidden;
+    margin: 0;
+    font-size: inherit;
+    -webkit-touch-callout: none;
+    -webkit-text-size-adjust: none;
+    -webkit-user-select: none;
+    -webkit-highlight: none;
+    -webkit-tap-highlight-color: transparent;
+    height: 100%;
+	  padding: 0;
+	  min-height: 100vh;
+	  width: 100vw;
+}
+
+body::-webkit-scrollbar {
+    width: 3px;
+    height: 4px;
+}
+
+body::-webkit-scrollbar-button {
+    display: none;
+    background-color: #f4f4f4;
+}
+
+body::-webkit-scrollbar-track,body::-webkit-scrollbar-track-piece {
+    background: #f4f4f4;
+}
+
+body::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: #ababab;
+}
+
+body::-webkit-scrollbar-corner {
+    background: #f4f4f4;
+}
+
+body::-webkit-scrollbar-resizer {
+    background: #ababab;
+}
+
+body {
+    scrollbar-arrow-color: #f4f4f4;
+    scrollbar-face-color: #f4f4f4;
+    scrollbar-3dlight-color: #f4f4f4;
+    scrollbar-highlight-color: #f4f4f4;
+    scrollbar-shadow-color: #f4f4f4;
+    scrollbar-darkshadow-color: #f4f4f4;
+    scrollbar-track-color: #f4f4f4;
+    scrollbar-base-color: #ababab;
+}
+
+button,input,select,textarea {
+    outline: 0;
+    font-size: inherit;
+    color: inherit;
+    font-family: 'Droid Sans Fallback','苹方','Microsoft Yahei','微软雅黑',SimHei,"黑体";
+}
+
+input[type="text"],
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+input[type="search"],
+select,
+textarea,
+button {
+    -webkit-appearance: none;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 100px white inset;
+}
+.clear {
+    zoom: 1;
+}
+
+.clear:after {
+    clear: both;
+    display: block;
+    overflow: hidden;
+    height: 0;
+    content: "";
+    font-size: 0;
+}
+
+.hidden {
+    display: none!important;
+}
+
+.table {
+    display: table;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+.tableHeadGroup {
+    display: table-header-group;
+}
+.tableRowGroup {
+    display: table-row-group;
+}
+.tableRow {
+    display: table-row;
+}
+
+.tableCell {
+    position: relative;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.ellipsis {
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: normal;
+}
+.center {
+    text-align: center;
+}
+.empty {
+    width: 100% !important;
+    height: 100% !important;
+    border-bottom: none !important;
+    font-size: .46rem;
+	color:#ccc;
+	margin-top:4rem;
+}
+.empty .tableCell {
+    text-align: center !important;
+}
+
+.lwx-layer {
+    border-radius: 0 !important;
+}
+
+body {
+    color: #212121;
+}
+
+.header,
+.footer {
+    width: 100%;
+    position: fixed;
+    left: 0;
+}
+.header {
+    height: 1.11rem;
+    top: 0;
+    color: #fff;
+}
+.header .backBtn {
+    width: 1.13rem;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+.header .backBtnIcon {
+    display: block;
+    width: .31rem;
+    height: .57rem;
+    margin: 0 auto;
+    background: url("../images/back.png") no-repeat center center /100% 100%;
+}
+.header .refresh {
+    width: 1.58rem;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: .4rem;
+}
+.header .caption {
+    width: 100%;
+    height: 100%;
+    padding: 0 1.58rem 0 1.13rem;
+    font-size: .52rem;
+}
+.footer {
+    height: 2.5rem;
+    bottom: 0;
+    background: #fff;
+}
+.footer .notice {
+    color: #949494;
+    font-size: .34rem;
+    line-height: 1;
+    margin: 0;
+    padding: .28rem 0;
+}
+.footer .btn,
+.formItem .btn {
+    display: block;
+    margin: 0 auto;
+    width: 10rem;
+    height: 1.1rem;
+    border-radius: .1rem;
+    color: #fff;
+    font-size: .42rem;
+    background: #eee;
+}
+.footer .apply {
+    background: #21B1EB;
+}
+.footer .submit {
+    background: #F9AB43;
+}
+.footer .disabled {
+    background: #ccc;
+}
+.formItem .btn {
+    height: 1.16rem;
+    border: none;
+}
+.formItem .submit {
+    background: #18B1EA;
+}
+.bottom {
+    text-align: center;
+}
+.bottom .detailBtn {
+    font-size: .42rem;
+    color: #18B1EA;
+    border-bottom: .02rem solid ;
+    display: inline-block;
+}
+.space {
+    width: 100%;
+    height: 3.8rem;
+    height: 2.93rem;
+    background: linear-gradient(9deg, rgba(255, 147, 76, .99) 0%, #FB686F 100%);
+}
+.moneyIcon::after,
+.timeIcon::after,
+.coinIcon::after,
+.plus::before {
+    font-size: .36rem;
+    color: inherit;
+    margin-left: .01rem;
+}
+.moneyIcon::after {
+    content: '元';
+}
+.timeIcon::after {
+    content: '小时';
+}
+.coinIcon::after {
+    content: '平台币';
+}
+.plus::before {
+    font-size: .41rem;
+    content: '+';
+}
+.packet {
+    width: 10rem;
+    height: 3.64rem;
+    margin: -1.82rem auto 0;
+    background: #FFFFFF;
+    box-shadow: 0 .03rem .18rem 0 rgba(153, 153, 153, 0.18);
+    border-radius: .2rem;
+    font-size: .36rem;
+    color: #999;
+    position: relative;
+}
+.withdrawContainer .packet {
+    height: 2.42rem;
+}
+.packet .money {
+    height: 2.168rem;
+    width: 100%;
+    padding-top: .502rem;
+}
+.packet .packetIcon::before {
+    content: '';
+    width: .55rem;
+    height: .46rem;
+    display: inline-block;
+    margin-right: .15rem;
+    background: url("../images/open_icon_redenvelop.png") no-repeat center center / 100% 100%;
+    vertical-align: middle;
+    margin-top: -.1rem;
+}
+.packet .money .number {
+    font-size: .72rem;
+    color: #FF4545;
+    padding-top: .18rem;
+	    font-weight: bold;
+}
+.packet .info {
+    padding-top: .124rem;
+}
+.packet .info .tableCell {
+    width: 50%;
+}
+.packet .info .number {
+    font-size: .46rem;
+    color: #222;
+	font-weight: bold;
+}
+
+.packet .withdrawBtn {
+    width: 1.6rem;
+    height: .7rem;
+    position: absolute;
+    right: 0;
+    top: .86rem;
+    background: rgba(33, 177, 235, .25);
+    border-radius: .35rem 0 0 .35rem;
+    font-size: .38rem;
+    color: #21B1EB;
+}
+.withdrawContainer .packet .withdrawBtn {
+    background: rgba(255, 69, 69, .25);
+    color: #FF4545;
+}
+.packet .withdrawBtnText::after {
+    content: '';
+    display: inline-block;
+    margin-left: .13rem;
+    width: .153rem;
+    height: .243rem;
+    background: url("../images/open_btn_tixright.png") no-repeat center center / 100% 100%;
+}
+.withdrawContainer .packet .withdrawBtnText::after {
+    background-image: url("../images/open_btn_chbright.png");
+    margin-left: .05rem;
+}
+
+.task,
+.withdraw {
+    margin-top: .28rem;
+}
+.tab {
+    height: 1rem;
+    width: 100%;
+    font-size: .42rem;
+    color: #222;
+	margin-bottom: 0.2rem;
+}
+.tabBtn {
+    width: 50%;
+}
+.tab .active {
+    color: #21B1EB;
+	font-weight:bold;
+}
+.tab .text {
+    position: relative;
+    display: inline-block;
+}
+.tab .text::after {
+    content: '';
+    width: 100%;
+    height: .08rem;
+    display: inline-block;
+    background: transparent;
+    -webkit-border-radius: .04rem;
+    -moz-border-radius: .04rem;
+    border-radius: .04rem;
+    position: absolute;
+    bottom: -.17rem;
+    left: 0;
+}
+.tab .active .text::after {
+    background: #21B1EB;
+}
+.formPart {
+    width: 10rem;
+    margin: 0 auto;
+}
+.task .pan {
+    overflow: hidden;
+    overflow-y: auto;
+    max-height: 10.77rem;
+}
+.panList {
+    display: none;
+    font-size: .38rem;
+}
+.panList:first-child {
+    display: block;
+}
+.panList li {
+    height: 1.69rem;
+    border-bottom: .02rem solid #F2F2F2;
+    padding: 0 .43rem 0 .4rem;
+}
+.panList .rewardsIcon {
+    display: block;
+    width: .88rem;
+    height: .88rem;
+    background: url("../images/open_icon_grade.png") no-repeat center center /100% 100%;
+}
+.panList .taskTitle {
+    font-size: .41rem;
+}
+.panList .taskStatus {
+    padding-top: .102rem;
+    color: #F9AB43;
+}
+.panList .number {
+    font-size: .48rem;
+    color: #FF4545;
+}
+.panList .success .taskStatus,
+.panList .success .number {
+    color: #32B67D;
+}
+.panList .tableCell.first {
+    width: 1.21rem;
+}
+.panList .tableCell.last {
+    text-align: right;
+}
+
+.withdrawList {
+    padding-top: .35rem;
+}
+.formItem {
+    position: relative;
+    height: 1.36rem;
+    font-size: .42rem;
+    padding: .1rem 0;
+}
+.formItem input::-webkit-input-placeholder {
+    color: #999;
+}
+.formItem input:-moz-placeholder {
+    color: #999;
+}
+.formItem input::-moz-placeholder {
+    color: #999;
+}
+.formItem input:-ms-input-placeholder {
+    color: #999;
+}
+.formItem .input{
+    width: 100%;
+    height: 100%;
+    padding: 0 .4rem;
+    border: none;
+    background: #F6F6F6;
+    -webkit-border-radius: .1rem;
+    -moz-border-radius: .1rem;
+    border-radius: .1rem;
+    font-weight: 500;
+}
+.formItem .suffix {
+    position: absolute;
+    right: .2rem;
+    top: 0;
+    height: 100%;
+    width: 1.89rem;
+    color: #666;
+}
+
+.formNotice {
+    font-size: .34rem;
+    color: #999;
+    padding: .132rem 0 .192rem;
+}
+.subTab {
+    margin: .2rem auto .4rem;
+}
+.subTab .tableCell {
+    width: 50%;
+    font-weight: bold;
+    color: #222;
+}
+.radioHidden {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0;
+    visibility: hidden;
+}
+.subTab .text {
+    display: inline-block;
+    -webkit-border-radius: .1rem;
+    -moz-border-radius: .1rem;
+    border-radius: .1rem;
+    background: #F6F6F6;
+    width: 4.85rem;
+    height: 1.16rem;
+    line-height: 1.16rem;
+}
+.subTab .active .text {
+    background: #21B1EB;
+    color: #fff;
+}
+.subTab .last {
+    text-align: right;
+}
+.subTab .alipayIcon::before,
+.subTab .wechatIcon::before {
+    content: '';
+    width: .54rem;
+    height: .54rem;
+    display: inline-block;
+    margin-right: .34rem;
+    vertical-align: middle;
+    background: url("../images/open_icon_alipayn.png") no-repeat center center / 100% 100%;
+}
+.subTab .wechatIcon::before {
+    background-image: url("../images/open_icon_WeChatn.png");
+}
+.subTab .active .alipayIcon::before {
+    background-image: url("../images/open_icon_alipays.png");
+}
+.subTab .active .wechatIcon::before {
+    background-image: url("../images/open_icon_WeChats.png");
+}
+.formItem .sendCode {
+    width: auto;
+    right: .4rem;
+    color: #21B1EB;
+}
+.formWarning {
+    font-size: .42rem;
+    color: #999;
+    padding: 1.24rem 0 4rem;
+    text-align: center;
+}
+.formTip {
+    font-size: .38rem;
+    color: #999;
+    padding: .014rem 0 .37rem;
+}
+.formTip .wechatAccount {
+    color: #222;
+}
+.goBinding {
+    color: #18B1EA;
+    border-bottom: .02rem solid #21B1EB;
+}
+.formItemBtn {
+    padding-top: .31rem;
+}
+
+.withdrawRecordContainer {
+    width: 100%;
+    overflow: hidden;
+    margin-top: -1.82rem;
+    background: #fff;
+}
+.aggregate {
+    height: 1.17rem;
+    font-size: .4rem;
+    color: #666;
+    width: 100%;
+    padding: 0 .41rem;
+}
+.aggregate .number {
+    color: #222;
+}
+.recordBox {
+    width: 100%;
+}
+.recordTable {
+    font-size: .38rem;
+    color: #333;
+    font-weight: 500;
+}
+.recordTable .tableCell {
+    width: 2.96rem;
+}
+.recordTable .tableCell:last-child {
+    width: 3.75rem;
+}
+.recordTableHead {
+    padding: 0 .4rem;
+    background: #F6F6F6;
+    width: 100%;
+}
+.recordTableHead .tableCell{
+    background: transparent;
+    font-size: .4rem;
+    height: .98rem;
+    color: #222;
+    font-weight: bold;
+}
+.recordTableBody {
+    padding: 0 .4rem;
+    overflow: hidden;
+    overflow-y: auto;
+}
+.recordTableBody  .table {
+    height: auto;
+}
+.recordTableBody .tableCell{
+    height: 1.08rem;
+    border-bottom: .02rem solid #F2F2F2;
+}
+.recordTableBody .tableCell:last-child {
+    color: #666;
+}
+
+.pop-caption-close img {
+    display: block;
+    margin: .22rem auto;
+}
+.layui-layer-hui .layui-layer-content {
+    padding: 12px 15px!important;
+    text-align: center;
+}
+.layui-layer {
+    border-radius: 8px!important;
+}
+.layui-layer-dialog .layui-layer-content{
+	    overflow-x: hidden !important;
+    overflow-y: auto !important;
+   
+}
+
+@media (min--moz-device-pixel-ratio: 1.5) and (max--moz-device-pixel-ratio: 2.49),
+(-webkit-min-device-pixel-ratio: 1.5) and (-webkit-max-device-pixel-ratio: 2.49),
+(min-device-pixel-ratio: 1.5) and (max-device-pixel-ratio: 2.49),
+(min-resolution: 144dpi) and (max-resolution: 239dpi),
+(min-resolution: 1.5dppx) and (max-resolution: 2.49dppx),
+(min--moz-device-pixel-ratio: 2.5),
+(-webkit-min-device-pixel-ratio: 2.5),
+(min-device-pixel-ratio: 2.5),
+(min-resolution: 240dpi),
+(min-resolution: 2.5dppx) {
+    .header .backBtnIcon {
+        background-image: url("../images/back@2x.png");
+    }
+    .packet .packetIcon::before {
+        background-image: url("../images/open_icon_redenvelop@2x.png");
+    }
+    .packet .withdrawBtnText::after {
+        background-image: url("../images/open_btn_tixright@2x.png");
+    }
+    .withdrawContainer .packet .withdrawBtnText::after {
+        background-image: url("../images/open_btn_chbright@2x.png");
+    }
+    .panList .rewardsIcon {
+        background-image: url("../images/open_icon_grade@2x.png");
+    }
+    .subTab .wechatIcon::before {
+        background-image: url("../images/open_icon_alipayn@2x.png");
+    }
+    .subTab .wechatIcon::before {
+        background-image: url("../images/open_icon_WeChatn@2x.png");
+    }
+    .subTab .active .alipayIcon::before {
+        background-image: url("../images/open_icon_alipays@2x.png");
+    }
+    .subTab .active .wechatIcon::before {
+        background-image: url("../images/open_icon_WeChats@2x.png");
+    }
+}
+
+@media screen and (min-width: 2000px) {
+    .header .backBtnIcon {
+        background-image: url("../images/back@2x.png");
+    }
+    .packet .packetIcon::before {
+        background-image: url("../images/open_icon_redenvelop@2x.png");
+    }
+    .packet .withdrawBtnText::after {
+        background-image: url("../images/open_btn_tixright@2x.png");
+    }
+    .withdrawContainer .packet .withdrawBtnText::after {
+        background-image: url("../images/open_btn_chbright@2x.png");
+    }
+    .panList .rewardsIcon {
+        background-image: url("../images/open_icon_grade@2x.png");
+    }
+    .subTab .wechatIcon::before {
+        background-image: url("../images/open_icon_alipayn@2x.png");
+    }
+    .subTab .wechatIcon::before {
+        background-image: url("../images/open_icon_WeChatn@2x.png");
+    }
+    .subTab .active .alipayIcon::before {
+        background-image: url("../images/open_icon_alipays@2x.png");
+    }
+    .subTab .active .wechatIcon::before {
+        background-image: url("../images/open_icon_WeChats@2x.png");
+    }
+}
+

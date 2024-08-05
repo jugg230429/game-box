@@ -1,0 +1,68 @@
+<include file="public@header" />
+</head>
+<body>
+
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li ><a href="{:url('user/userinfo')}">用户列表</a></li>
+        <li class="active"><a href="{:url('user/unsubscribe')}">已注销</a></li>
+        <span class="title_remark" style="color:rgb(231,76,60)"></span>
+    </ul>
+    <form id="search_form" class="well form-inline  fr" method="get" action="{:url('user/unsubscribe')}" onsubmit="return check();">
+        <input type="text" class="form-control" name="user_account" style="width: 120px;" value="{:input('request.user_account/s','')}" placeholder="玩家账号">
+
+        <input type="text" class="form-control js-bootstrap-date" name="start_time" id="start_time" placeholder="注销开始时间"
+               value="{:input('request.start_time/s','')}" style="width: 140px;" autocomplete="off">-
+        <input type="text" class="form-control js-bootstrap-date" name="end_time" id="end_time" placeholder="注销结束时间"
+               value="{:input('request.end_time/s','')}" style="width: 140px;" autocomplete="off">
+        <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+        <a class="btn btn-clear" href="{:url('user/unsubscribe')}">清空</a>
+    </form>
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th>账号ID</th>
+            <th>原账号</th>
+            <th>注销后账号</th>
+            <th>注册时间</th>
+            <th>注销时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        <empty name="data_lists">
+            <tr><td colspan="10" style="text-align: center;">暂无数据</td></tr>
+            <else/>
+            <foreach name="data_lists" item="vo">
+                <tr>
+                    <td>{$vo['user_id']}</td>
+                    <td>{$vo['user_account']}</td>
+                    <td>{$vo['user_account_alias']}</td>
+                    <td>{$vo['register_time']|date="Y-m-d H:i:s",###}</td>
+                    <td>{$vo['unsubscribe_time']|date="Y-m-d H:i:s",###}</td>
+                </tr>
+            </foreach>
+        </empty>
+        </tbody>
+    </table>
+    <div class="pagination">{$page}</div>
+</div>
+
+<script src="__STATIC__/js/admin.js"></script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+
+<script>
+
+    function check(){
+        var start_time = $("#start_time").val();
+        var end_time = $("#end_time").val();
+        if(start_time != '' && end_time != '' && start_time > end_time){
+            layer.msg('开始时间不能大于结束时间');
+            return false;
+        }
+        return true;
+    }
+
+</script>
+
+</body>
+</html>

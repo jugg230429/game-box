@@ -1,0 +1,163 @@
+.new_detail_header{
+    width: 100%;
+    height: 3.8rem;
+	line-height: 3.8rem;
+    font-size: 1.45rem;
+	position: relative;
+
+}
+.new_detail_header .back_icon{
+    width: 0.74rem;
+    margin-left: 1rem;
+	position: absolute;
+    top: 54%;
+    transform: translateY(-50%);
+}
+.new_detail_header p{
+    margin-left: 3rem;
+    width: 60%;
+	position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.new_detail_header .share{
+    width: 55%;
+}
+.game_bag_down_hx{
+    width: 100%;
+    height: 1px;
+    background-color: #F2F2F2;
+}
+.new_detail_con{
+    min-height: 100%;
+    width: 100%;
+    height: 100%;
+}
+.new_detail_con_info{
+    width: 94%;
+    margin-left: 3%;
+    font-size: 13px;
+    color: #666666;
+    margin-bottom: 1rem;
+    min-height:22rem;
+}
+.new_detail_con_info img{
+    width: 100%!important;
+    height: 100%!important;
+}
+.new_detail_gamedownload_img{
+    width: 5rem;
+    height: 5rem;
+    border-radius:.8rem;
+    -webkit-border-radius: 11px;
+    -moz-border-radius: 11px;
+    border-radius: 11px;
+    margin-top: 2rem!important;
+    background-color: #e2e2e2;
+    margin: 1rem auto;
+    overflow: hidden;
+}
+.new_detail_gamedownload_img img{
+    width: 100%;
+    height: 100%;
+    border-radius: 11px;
+    display: block;
+}
+.new_detail_con_info p{
+    line-height: 2rem;
+}
+.new_detail_con_head{
+    min-height: 4.9rem;
+}
+.new_detail_con_title{
+    font-size: 1.24rem;
+    letter-spacing: 1px;
+    font-weight:bold;
+    color:rgba(34,34,34,1);
+    /* overflow : hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical; */
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-top: 1rem;
+    min-height: 2rem;
+    line-height: 2rem;
+}
+.new_detail_con_time{
+    color: #666666;
+    font-size: 14px;
+    font-weight: 400;
+    /* margin-top: 0.5rem; */
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+    text-align: right;
+}
+.new_detail_con_info img{
+    /* max-width: 300px!important; */
+    margin: 0 auto;
+}
+.new-detail-img{
+    display: block;
+    width: 94%;
+    margin: 0.5rem auto;
+}
+.new_detail_fengexian{
+    width: 100%;
+    height: 0.62rem;
+    background-color: #f3f3f3;
+}
+.new_detail_gamedownload{
+    text-align: center;
+}
+.new_detail_gamedownload_title{
+    font-size:15px;
+    font-weight:400;
+    color:rgba(34,34,34,1);
+    margin-top: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.new_detail_gamedownload_summny{
+    font-size: 12px;
+    color: #666666;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 80%;
+    margin:auto;
+    margin-top: 0.5rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.new_detail_gamedownload_btn{
+    background-color: #018FFF;
+    margin-left: 39%;
+    margin-top: 0.8rem;
+    border-radius:4px;
+    font-size: 1.2rem;
+    color: #ffffff;
+    text-align: center;
+    width: 22.2%;
+    padding: 0.55rem 0;
+    margin-bottom: 1.5rem;
+}
+.new_detail_gamedownload_btn a p{
+    color: #ffffff;
+}
+@media screen and (max-width:320px) and (orientation:portrait){
+    .new_detail_gamedownload_img{
+        width: 4.5rem;
+        height: 4.5rem;
+        border-radius: 5px;
+        background-color: #e2e2e2;
+        margin: 1rem auto
+    }
+    .new_detail_gamedownload_img img{
+        width: 4.5rem;
+        height: 4.5rem;
+    }
+}

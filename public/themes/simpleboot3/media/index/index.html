@@ -1,0 +1,1533 @@
+<extend name="../mediapublic/base" />
+<!-- 主体内容 -->
+<block name="body">
+    <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/index.css">
+    <script src="__JS__/zeroclipboard/jquery.zclip.min.js"></script>
+    <!-- 轮播广告图 -->
+    <div class="carousel">
+
+        <php>
+            // 增加账号注册开关
+            $sdk_set = cmf_get_option('media_set');
+            $account_register_switch = (int) ($sdk_set['account_register_switch'] ?? 1); // 0 关闭 1 开启
+            $phonenum_register_switch = (int) ($sdk_set['phonenum_register_switch'] ?? 1); // 0 关闭 1 开启
+            $email_register_switch = (int) ($sdk_set['email_register_switch'] ?? 1); // 0 关闭 1 开启
+            // 获取三端显示顺序
+            $media_sort = get_media_sort();
+            $h5_sort = $media_sort['h5_sort'];
+            $sy_sort = $media_sort['sy_sort'];
+            $yy_sort = $media_sort['yy_sort'];
+            $first_show = $media_sort['first_show'];
+            $first_show_num = $media_sort['first_show_num'];
+            $total_num = $media_sort['total_num'];
+            // var_dump($first_show_num);exit;
+        </php>
+
+        <div class="layui-carousel" id="test1">
+            <div carousel-item>
+                <volist name="carousel" id="vo">
+                    <div class="car_item">
+                        <a href="{$vo.url}" target="{$vo.target}">
+                        <img src="{:cmf_get_image_url($vo['data'])}" alt="" class="lb_img" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null">
+                        </a>
+						<if condition="$vo['type'] eq 1">
+						<div class="game-box">
+						    <div class="game-box-con">
+							    <div class="game-box-con-img">
+                                    <img src="{:cmf_get_image_url($vo['game_icon'])}" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null" class="game-icon fl">
+                                    <if condition="$vo['sdk_version'] neq 4">
+                                        <div class="game-box-con-code fl">
+                                            <php>$url = url('Game/detail',['game_id'=>$vo['game_id']],true,true)</php>
+                                            <img src="{:url('qrcode', ['url' => base64_encode(base64_encode($url))])}" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null" class="">
+                                        </div>
+                                    </if>
+								</div>
+								<div class="clear"></div>
+								<div class="game-name">{$vo.relation_game_name}</div>
+								<div class="game-describe">{$vo.features}</div>
+								<a href="{$vo.url}" class="game-btn">查看详情&nbsp;&nbsp;&nbsp;<img src="__TMPL__/mediapublic/assets/images/game_arrow_right.png"></a>
+							</div>
+						</div>
+						</if>
+                    </div>
+                </volist>
+            </div>
+        </div>
+        <if condition="AUTH_USER eq 1">
+            <!--        首页登录框-->
+            <div class="login-contain-box">
+                <div class="login-content">
+                    <div class="login_modal index-login">
+                        <form class="js-ajax-form" action="{:url('User/login')}" method="post">
+                            <span class="closemodal"><img src="__STATIC__/images/login_btn_close_n.png" alt=""></span>
+                            <p class="login_username">
+							   <label class="label-name">账号</label>
+							   <input type="text"  autocomplete="off" name="account" value="" placeholder="手机号/用户名"></p>
+                            <p class="login_password">
+							    <label class="label-name">密码</label>
+							    <input type="password"  autocomplete="new-password" name="password"  value="" placeholder="密码">
+                            </p>
+                            <p class="zdlogin">
+                                <label for="zdlogin1">
+                                    <input type="checkbox" name="zdlogin" checked id="zdlogin1" value="1" class="fl" hidden>
+                                    <i class="choice-icon"></i>
+                                    <span class="remember-text">记住密码</span>
+                                </label>
+                            </p>
+                            <p class="login_botton">
+                                <button id="login_submit" class="js-ajax-submit reload-now ajax-no-reload" type="submit">登录</button>
+                            </p>
+                        </form>
+                        <div class='ml20 mt10'>
+                            <p class="fl zhuce_p">
+                                <if condition="cmf_get_option('media_set')['pc_user_allow_register'] eq 1">
+                                    <if condition="($account_register_switch eq 1) or ($phonenum_register_switch eq 1) or ($email_register_switch eq 1)">
+                                        <span class="zhuce_newuser">注册新用户</span>
+                                    </if>
+                                </if>
+                            </p>
+                            <p class="fg mg14"><span class="forget_password fg">忘记密码?</span></p>
+                        </div>
+						<div class="clear"></div>
+						<div class="login-line"></div>
+						<div class="clear"></div>
+                        <if condition="$qq_login eq 1 or $weixin_login eq 1">
+
+
+                            <div class="fl fast_login_title">快捷登录</div>
+
+
+                            <p class=" fast_login_icon fl">
+                                <if condition="$qq_login eq 1"><a  class="fast_login_qq" href="{:url('User/thirdlogin',['type'=>'qq'])}"> <img
+                                        src="__STATIC__/images/login_qq.png" alt=""></a></if>
+                                <if condition="$weixin_login eq 1"><a class="fast_login_wx" href="{:url('User/thirdlogin',['type'=>'weixin'])}"> <img
+                                        src="__STATIC__/images/login_wx.png" alt="" ></a></if>
+                                        <!-- 游客登录 -->
+                                 <span  class="fast_login_youke" > <img
+                                            src="__STATIC__/images/ico_youke.png" alt="" class="login_youke"></span></if>
+                            </p>
+                        </if>
+                    </div>
+                    <!-- 登录框变成等级显示 -->
+                    <div class="levelBox">
+                        <div class="levelInfo_modal">
+                            <span class="removeModal"></span>
+                            <div class="avatarContainer">
+                                <div class="avatarImg">
+                                    <img src="{:cmf_get_image_url($user['head_img'])}" alt="">
+                                </div>
+                                <div  class="rightInfoAccount">
+                                    <p>
+                                        <a href="{:url('media/user/userinfo')}"><span class="account-title">{$user.account}</span></a>
+                                        <a class="js-ajax-btn reload-now ajax-no-reload" href="{:url('media/user/logout')}"><span class="removeAccount">[退出]</span></a>
+                                    </p>
+                                    <span class="couponNumber">平台币：<span>{$user.balance}</span> </span>
+                                    <span class="couponNumber">&nbsp;积分：<span>{$user.point}</span></span>
+                                    <a href="{:url('media/pay/pay')}" class="rechargeCouponBtn">充值</a>
+                                </div>
+                            </div>
+                            <php>
+                                $next_level_exp = $user['cumulative'] + $next_pay;
+                                $per= round($user['cumulative']/$next_level_exp*100,2)
+                            </php>
+                            <div class="progressLevelBox">
+                                <i class="levelIocn"></i>
+                                <span class="levelVipNum">VIP<span>{$user['vip_level']}</span></span>
+                                <span class="progressLineLevel">
+                                    <span class="progressColorLine"style="width:{$per}%"></span>
+                                </span>
+                                <!-- 等级弹窗 -->
+                                <div class="checkLevelModal">
+                                    <p class="showLevelGrade">
+                                        <span>VIP等级：</span><span class="defferentLevelColor">VIP{$user['vip_level']}</span><span class="grayTextSmall">&nbsp;({$user['cumulative']}\{$next_level_exp})</span>
+                                    </p>
+                                    <if condition="$next_pay nheq false">
+                                        <p class="tipUpGradeNum">再消费<span>{$next_pay}</span>即可升级</p>
+                                    </if>
+                                </div>
+                            </div>
+                            <div class="botttomRecommend">
+                                <p class="playCurrently">最近玩过</p>
+                                <div class="playGameNameGroup">
+                                    <ul>
+                                        <volist name="play_game" id="vo">
+                                            <if condition="$vo['sdk_version'] eq 3">
+                                                <li class="gameName-item">
+                                                    <a href="{:url('media/game/open_game',['game_id'=>$vo['relation_game_id']])}" class="itemNameShow">{$vo['game_name']|default=''}</a>
+<!--                                                    <a href="javaScript:;" class="itemNameShow textCenterShow"></a>-->
+                                                    <a href="{:url('media/game/open_game',['game_id'=>$vo['relation_game_id']])}" class="itemNameShow textCenterShow grayStartGame">[开始游戏]</a>
+                                                </li>
+                                            <elseif condition="$vo['sdk_version'] eq 4" />
+                                                <li class="gameName-item">
+                                                    <a href="{:url('media/game/ydetail',['game_id'=>$vo['relation_game_id']])}" class="itemNameShow">{$vo['game_name']|default=''}</a>
+<!--                                                    <a href="javaScript:;" class="itemNameShow textCenterShow"></a>-->
+                                                    <a href="{:url('media/game/ydetail',['game_id'=>$vo['relation_game_id']])}" class="itemNameShow textCenterShow grayStartGame">[开始游戏]</a>
+                                                </li>
+                                            <else/>
+                                                <li class="gameName-item">
+                                                    <a href="{:url('media/game/detail',['game_id'=>$vo['relation_game_id']])}" class="itemNameShow">{$vo['game_name']|default=''}</a>
+<!--                                                    <a href="javaScript:;" class="itemNameShow textCenterShow"></a>-->
+                                                    <a href="{:url('media/game/detail',['game_id'=>$vo['relation_game_id']])}" class="itemNameShow textCenterShow grayStartGame">[开始游戏]</a>
+                                                </li>
+                                            </if>
+                                        </volist>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </if>
+		<div class="">
+		</div>
+
+    </div>
+    <php>$promote_id = MEDIA_PID;</php>
+    <!-- 页面固定显示 -->
+	<if condition="$recommend_game_sy or $recommend_game_h5 or $recommend_game_pc">
+    <div class="recommend-sy">
+	    <div class="layui-container">
+		<ul class="recommend-menu media_02" id="media_02">
+            <if condition="PERMI neq 1 and PERMI gt 0 and $recommend_game_h5">
+                <li id="h5_02" <if condition="$first_show_num eq 2">class="recommend-menu-con media_02_{$h5_sort} recommend-menu-active"<else />class="recommend-menu-con media_02_{$h5_sort}"</if>>
+                    <span class="recommend-menu-all">H5游戏</span>
+                    <span class="recommend-menu-part">H5</span>
+                </li>
+            </if>
+            <if condition="PERMI neq 2 and PERMI gt 0 and $recommend_game_sy">
+		        <li id="sy_02" <if condition="$first_show_num eq 1">class="recommend-menu-con media_02_{$sy_sort} recommend-menu-active"<else />class="recommend-menu-con media_02_{$sy_sort}"</if>>
+                    <span class="recommend-menu-all">手机游戏</span>
+                    <span class="recommend-menu-part">手游</span>
+                </li>
+            </if>
+            <if condition="YPERMI eq 1 and $recommend_game_pc">
+                <li id="yy_02" <if condition="$first_show_num eq 3">class="recommend-menu-con media_02_{$yy_sort} recommend-menu-active"<else />class="recommend-menu-con media_02_{$yy_sort}"</if>>
+                    <span class="recommend-menu-all">页游游戏</span>
+                    <span class="recommend-menu-part">页游</span>
+                </li>
+            </if>
+        </ul>
+		<div>
+        <if condition="PERMI neq 1 and PERMI gt 0  and $recommend_game_h5">
+            <div <if condition="$first_show_num eq 2">class="recommend-con js_tab_show"<else />class="recommend-con"</if>>
+                <ul >
+                    <volist name="recommend_game_h5" id="vo">
+                        <li class="fl recommend-sy-con js-h5Link">
+                            <a data-href="{:url('Game/hdetail',['game_id'=>$vo['id']])}" class="aLinkHref"><img src="{:cmf_get_image_url($vo['cover'])}" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null" ></a>
+                            <div class=" recommend-sy-gamebox">
+                               <div class="recommend-sy-gamebox-name">{$vo.game_name}</div>
+                               <div class="recommend-sy-gamebox-mark">
+                                 <div class="fl">{$vo.game_type_name}</div>
+                                   <div class="fg">{:get_simple_number($vo['dow_num'])}人在玩</div>
+                               </div>
+                            </div>
+                            <div class="bannerBox">
+                                <div class="banner-recommendBox">
+                                    <div class="recommendBox-item">
+                                        <img src="{$vo.qrcode}">
+                                        <p class="itemText">手机扫码去玩</p>
+                                    </div>
+                                    <ul class="recommendBtn">
+                                        <li class="goToPlay"><a href="{:url('Game/open_game')}?game_id={$vo['id']}">一键去玩</a><image src="__TMPL__/mediapublic/assets/images/btn_icon_rghit.png" /></li>
+                                        <if condition="get_weiduan_down_status($vo['relation_game_id'],1,MEDIA_PID)">
+                                        <li class="goToPlay otherColor">
+                                            <a download=""  class="down_game" href="javascript:;" down-id="{$vo['relation_game_id']}" promote_id="{$promote_id}" down-version="3" down-url="{:url('Downfile/weiduan_down',['game_id'=>$vo['relation_game_id'],'sdk_version'=>1,'promote_id'=>$promote_id])}">下载微端包</a>
+                                            <image src="__TMPL__/mediapublic/assets/images/btn_icon_download.png" />
+                                        </li>
+                                        </if>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="recommend-sy-btnbox">
+                                <a href="{:url('Game/hdetail',['game_id'=>$vo['id']])}" class="recommend-sy-btn fl" ><img src="__TMPL__/mediapublic/assets/images/icon_game.png" class="recommend-sy-btn-icon">游戏官网</a>
+                                <div class="fl recommend-sy-line">|</div>
+                                <a href="{:url('Game/hdetail',['game_id'=>$vo['id']])}" class="recommend-sy-btn fl"><img src="__TMPL__/mediapublic/assets/images/icon_gift.png" class="">领取礼包</a>
+                            </div>
+                        </li>
+                    </volist>
+                </ul>
+                <div class="clear"></div>
+                <a href="{:url('Game/game_hcenter')}" class="recommend-sy-more">更多</a>
+            </div>
+        </if>
+        <if condition="PERMI neq 2 and PERMI gt 0  and $recommend_game_sy">
+		<div <if condition="$first_show_num eq 1">class="recommend-con js_tab_show"<else />class="recommend-con"</if>>
+			<ul >
+				<volist name="$recommend_game_sy" id="vo">
+			    <li class="fl recommend-sy-con js-yeLink">
+				    <a data-href="{:url('Game/detail',['game_id'=>$vo['id']])}" class="aYeHref"><img src="{:cmf_get_image_url($vo['cover'])}" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null" ></a>
+					<div class=" recommend-sy-gamebox">
+					   <div class="recommend-sy-gamebox-name">{$vo.game_name}</div>
+					   <div class="recommend-sy-gamebox-mark">
+					     <div class="fl">{$vo.game_type_name}</div>
+                           <div class="fg"><eq name="vo.down_port" value="1">{$vo.game_size}<else/>{$vo.game_address_size}MB</eq></div>
+                       </div>
+                    </div>
+                    <div class="bannerBox">
+                        <div class="banner-recommendBox">
+                            <div class="recommendBox-item">
+                                <img src="{$vo.qrcode}">
+                                <p class="itemText">手机扫码下载</p>
+                            </div>
+                            <ul class="recommendBtn">
+                                <if condition="get_down_status2($vo['relation_game_id'],1)">
+<!--                                    <li class="androidDown "><image src="__TMPL__/mediapublic/assets/images/btn_icon_android.png" /><a download="" <if condition="$session['login_auth'] eq 0">class="login"<else />href="{:url('Downfile/down',['game_id'=>$vo['relation_game_id'],'sdk_version'=>1])}"</if>>安卓版下载</a></li>-->
+                                    <li class="androidDown "><image src="__TMPL__/mediapublic/assets/images/btn_icon_android.png" /><a download="" class="down_game" href="javascript:;" down-id="{$vo['relation_game_id']}" down-version="1" down-url="{:url('Downfile/down',['game_id'=>$vo['relation_game_id'],'sdk_version'=>1])}">安卓版下载</a></li>
+                                <else />
+                                    <!--<li class="androidDown grayDown js-phoneDown"><image src="__TMPL__/mediapublic/assets/images/btn_icon_android.png" /><a class="disabled" href="javaScript:;">安卓版下载</a></li>-->
+                                </if>
+                                <if condition="get_down_status2($vo['relation_game_id'],2)">
+<!--                                    <li class="androidDown appleDown"><image src="__TMPL__/mediapublic/assets/images/btn_icon_apple.png" /><a <if condition="$session['login_auth'] eq 0">class="login"<else />href="{:url('Downfile/down',['game_id'=>$vo['relation_game_id'],'sdk_version'=>2])}"</if>>苹果版下载</a></li>-->
+                                    <li class="androidDown appleDown"><image src="__TMPL__/mediapublic/assets/images/btn_icon_apple.png" /><a class="down_game" href="javascript:;" down-id="{$vo['relation_game_id']}" down-version="2" down-url="{:url('Downfile/down',['game_id'=>$vo['relation_game_id'],'sdk_version'=>2])}">苹果版下载</a></li>
+                                <else />
+                                    <!--<li class="androidDown appleDown grayDown js-phoneDown"><image src="__TMPL__/mediapublic/assets/images/btn_icon_apple.png" /><a class="disabled" href="javaScript:;">苹果版下载</a></li>-->
+                                </if>
+
+                            </ul>
+                        </div>
+                    </div>
+					<div class="recommend-sy-btnbox">
+					    <a href="{:url('Game/detail',['game_id'=>$vo['id']])}" class="recommend-sy-btn fl" ><img src="__TMPL__/mediapublic/assets/images/icon_game.png" class="recommend-sy-btn-icon">游戏官网</a>
+						<div class="fl recommend-sy-line">|</div>
+						<a href="{:url('Game/detail',['game_id'=>$vo['id']])}" class="recommend-sy-btn fl"><img src="__TMPL__/mediapublic/assets/images/icon_gift.png" class="">领取礼包</a>
+					</div>
+				</li>
+				</volist>
+			</ul>
+			<div class="clear"></div>
+			<a href="{:url('Game/game_center')}" class="recommend-sy-more">更多</a>
+		</div>
+        </if>
+        <if condition="YPERMI eq 1 and $recommend_game_pc">
+		<div <if condition="$first_show_num eq 3">class="recommend-con js_tab_show"<else/>class="recommend-con"</if> >
+		    <ul >
+				<volist name="recommend_game_pc" id="vo">
+			    <li class="fl recommend-sy-con">
+				    <a href="{:url('Game/ydetail',['game_id'=>$vo['id']])}"><img src="{:cmf_get_image_url($vo['cover'])}" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null" ></a>
+					<div class=" recommend-sy-gamebox">
+					   <div class="recommend-sy-gamebox-name">{$vo.game_name}</div>
+					   <div class="recommend-sy-gamebox-mark">
+					        <div class="fl">{$vo.game_type_name}</div>
+                           <div class="fg">{:get_simple_number($vo['dow_num'])}人在玩</div>
+                       </div>
+					</div>
+					<div class="recommend-sy-btnbox">
+					    <a href="{:url('Game/ydetail',['game_id'=>$vo['id']])}" class="recommend-sy-btn fl" ><img src="__TMPL__/mediapublic/assets/images/icon_game.png" class="recommend-sy-btn-icon">游戏官网</a>
+						<div class="fl recommend-sy-line">|</div>
+						<a href="{:url('Game/ydetail',['game_id'=>$vo['id']])}" class="recommend-sy-btn fl"><img src="__TMPL__/mediapublic/assets/images/icon_gift.png" class="">领取礼包</a>
+					</div>
+				</li>
+				</volist>
+			</ul>
+			<div class="clear"></div>
+			<a href="{:url('Game/game_ycenter')}" class="recommend-sy-more">更多</a>
+		</div>
+        </if>
+	    </div>
+		</div>
+	</div>
+	</if>
+	<div class="clear"></div>
+    <if condition="$sy_hot_game or $h5_hot_game or $pc_hot_game">
+   <div class="hot">
+      <div class="hot-menu">
+        <div style="width: 100%; position: relative;left: 732px;margin-top: -15px;margin-bottom: 68px;">
+            <if condition="PERMI neq 1 and PERMI gt 0  and $h5_hot_game">
+                <!-- <a class="hot-menu-con con_01 hot-menu-con-active">H5游戏</a> -->
+            <a <if condition="$first_show_num eq 2">class="hot-menu-con con_0{$h5_sort} hot-menu-con-active"<else />class="hot-menu-con con_0{$h5_sort}"</if>>H5游戏</a>
+
+            </if>
+            <if condition="PERMI neq 2 and PERMI gt 0  and $sy_hot_game">
+            <!-- <a  class="hot-menu-con con_03">手机游戏</a> -->
+            <a  <if condition="$first_show_num eq 1">class="hot-menu-con con_0{$sy_sort} hot-menu-con-active"<else />class="hot-menu-con con_0{$sy_sort}"</if>>手机游戏</a>
+
+            </if>
+            <if condition="YPERMI eq 1 and $pc_hot_game">
+            <!-- <a class="hot-menu-con con_02">网页游戏</a> -->
+            <a <if condition="$first_show_num eq 3">class="hot-menu-con con_0{$yy_sort} hot-menu-con-active"<else />class="hot-menu-con con_0{$yy_sort}"</if>>网页游戏</a>
+
+            </if>
+      </div>
+
+	  </div>
+         <!-- H5游戏 -->
+         <if condition="PERMI neq 1 and PERMI gt 0 and $h5_hot_game">
+		  <div <if condition="$first_show_num eq 2">class="hot-con js_tab_show"<else />class="hot-con"</if>>
+		     <ul class="layui-container">
+				 <volist name="h5_hot_game" id="vo" offset="0" length='3'>
+					 <li class="hot-regame fl js-h5BottomLink">
+                        <div data-href="{:url('Game/hdetail',['game_id'=>$vo['id']])}" class="hot-regame-link newH5Link"><img src="{:cmf_get_image_url($vo['hot_cover'])}" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null"  class="hot-regame-img">
+						 <img  src="__TMPL__/mediapublic/assets/images/mantle.png" class="hot-regame-mantle">
+						 <div class="hot-regame-box">
+							 <div class="hot-regame-name">{$vo.game_name}</div>
+							 <div class="hot-regame-type">{$vo.game_type_name}</div>
+							 <div class="hot-regame-describe">{$vo.features}</div>
+						 </div>
+						 <img src="{:cmf_get_image_url($vo['icon'])}" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null" class="hot-regame-icon">
+
+						 <!-- <div class="hot-regame-code">
+							 <img src="{$vo.qrcode}" class="" >
+                         </div> -->
+                            <div class="showNew-regame">
+                                <div class="newBox">
+                                    <div class="imageBox">
+                                        <img src="{$vo.qrcode}">
+                                        <p class="phoneText">手机扫码去玩</p>
+                                    </div>
+                                    <ul class="boxContent">
+                                        <li class="textContent"><a href="{:url('Game/open_game')}?game_id={$vo['id']}">一键去玩</a><image src="__TMPL__/mediapublic/assets/images/btn_icon_rghit.png" class="rightIcon"/></li>
+                                        <if condition="get_weiduan_down_status($vo['relation_game_id'],1,MEDIA_PID)">
+                                        <li class="downText">
+                                            <a download="" class="down_game" href="javascript:;" down-id="{$vo['relation_game_id']}" promote_id="{$promote_id}" down-version="3" down-url="{:url('Downfile/weiduan_down',['game_id'=>$vo['relation_game_id'],'sdk_version'=>1,'promote_id'=>$promote_id])}">下载微端包</a>
+                                            <image src="__TMPL__/mediapublic/assets/images/btn_icon_download.png"  class="downLoadIcon" />
+                                        </li>
+                                        </if>
+                                    </ul>
+                                </div>
+                            </div>
+						</div>
+					 </li>
+				 </volist>
+		 	</ul>
+		 <div class="clear"></div>
+		    <ul class="layui-container">
+				<volist name="h5_hot_game" id="vo" offset="3" >
+					<li class="hot-regame-item js-H5Item fl">
+						<a data-href="{:url('Game/hdetail',['game_id'=>$vo['id']])}" class="hot-regame-item-link itemToLink"><img src="{:cmf_get_image_url($vo['icon'])}" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null" class="fl hot-regame-item-gameicon"></a>
+						<div class="fl">
+							<div class="hot-regame-item-name">{$vo.game_name}</div>
+							<div class="hot-regame-item-type">{$vo.game_type_name}</div>
+							<div class="hot-regame-item-edition" >
+                                <img src="__STATIC__/images/content_icon_h5.png" alt="" class="">
+                            </div>
+                            <div class="newHot-regame">
+                                <div class="hotRegameBox">
+                                    <div class="hotImageBox">
+                                        <img src="{$vo.qrcode}">
+                                    </div>
+                                    <ul class="hotBoxContent">
+                                        <li class="hotText"><a href="{:url('Game/open_game')}?game_id={$vo['id']}">一键去玩</a><image src="__TMPL__/mediapublic/assets/images/btn_icon_rghit.png" class="rightIcon"/></li>
+                                        <if condition="get_weiduan_down_status($vo['relation_game_id'],1,MEDIA_PID)">
+                                        <li class="downHotText">
+                                            <a download="" class="down_game" href="javascript:;" down-id="{$vo['relation_game_id']}" promote_id="{$promote_id}" down-version="3" down-url="{:url('Downfile/weiduan_down',['game_id'=>$vo['relation_game_id'],'sdk_version'=>1,'promote_id'=>$promote_id])}">下载微端包</a>
+                                            <image src="__TMPL__/mediapublic/assets/images/btn_icon_download.png"  class="HotdownLoadIcon" />
+                                        </li>
+                                        </if>
+                                    </ul>
+                                </div>
+                           </div>
+							<div class="hot-regame-item-buttons">
+								<a href="{:url('Game/hdetail',['game_id'=>$vo['id']])}" class="hot-regame-item-btnagin fl">
+									游戏官网
+								</a>
+								<a href="{:url('Game/hdetail',['game_id'=>$vo['id']])}" class="hot-regame-item-btngift fl">
+									领取礼包
+								</a>
+                            </div>
+                        </div>
+					</li>
+				</volist>
+			</ul>
+			<div class="clear"></div>
+			<a href="{:url('Game/game_hcenter')}" class="recommend-sy-more">更多</a>
+		 </div>
+         </if>
+
+         <!-- 手机游戏 -->
+         <if condition="PERMI neq 2 and PERMI gt 0 and $sy_hot_game">
+            <div id="sy_05"  <if condition="$first_show_num eq 1">class="hot-con js_tab_show"<else />class="hot-con"</if>>
+              <ul class="layui-container">
+              <volist name="sy_hot_game" id="vo" offset="0" length='3'>
+               <li class="hot-regame fl js-phoneBottomLink">
+                   <div data-href="{:url('Game/detail',['game_id'=>$vo['id']])}" class="hot-regame-link aPhoneItem">
+                       <img src="{:cmf_get_image_url($vo['hot_cover'])}" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null"  class="hot-regame-img">
+                   <img  src="c/mantle.png" class="hot-regame-mantle">
+                   <div class="hot-regame-box">
+                      <div class="hot-regame-name">{$vo.game_name}</div>
+                      <div class="hot-regame-type">{$vo.game_type_name}</div>
+                      <div class="hot-regame-describe">{$vo.features}</div>
+                   </div>
+                   <img src="{:cmf_get_image_url($vo['icon'])}" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null" class="hot-regame-icon">
+                   <!-- <div class="hot-regame-code">
+                       <img src="{$vo.qrcode}">
+                   </div> -->
+                    <div class="showNew-regame">
+                        <div class="newBox">
+                            <div class="imageBox">
+                                <img src="{$vo.qrcode}">
+                                <p class="phoneText">手机扫码下载</p>
+                            </div>
+                            <ul class="boxContent">
+                                <if condition="get_down_status2($vo['relation_game_id'],1)">
+                                    <li class="androidText"><image src="__TMPL__/mediapublic/assets/images/btn_icon_android.png" /><a download="" class="down_game" href="javascript:;" down-id="{$vo['relation_game_id']}" down-version="1" down-url="{:url('Downfile/down',['game_id'=>$vo['relation_game_id'],'sdk_version'=>1])}">安卓版下载</a></li>
+                                <else />
+                                    <!--<li class="androidText grayDown js-downLoad"><image src="__TMPL__/mediapublic/assets/images/btn_icon_android.png" /><a class="disabled " href="javaScript:;">安卓版下载</a></li>-->
+                                </if>
+                                    <if condition="get_down_status2($vo['relation_game_id'],2)">
+                                        <li class="androidText appleText"><image src="__TMPL__/mediapublic/assets/images/btn_icon_apple.png" /><a class="down_game" href="javascript:;" down-id="{$vo['relation_game_id']}" down-version="2" down-url="{:url('Downfile/down',['game_id'=>$vo['relation_game_id'],'sdk_version'=>2])}">苹果版下载</a></li>
+                                    <else />
+                                        <!--<li class="androidText appleText grayDown js-downLoad"><image src="__TMPL__/mediapublic/assets/images/btn_icon_apple.png" /><a class="disabled" href="javaScript:;">苹果版下载</a></li>-->
+                                    </if>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+               </li>
+              </volist>
+            </ul>
+            <div class="clear"></div>
+               <ul class="layui-container">
+                   <volist name="sy_hot_game" id="vo" offset="3" >
+                  <li class="hot-regame-item fl js-phoneItem">
+                      <a data-href="{:url('Game/detail',['game_id'=>$vo['id']])}" class="hot-regame-item-link aItemPhone"><img src="{:cmf_get_image_url($vo['icon'])}" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null" class="fl hot-regame-item-gameicon"></a>
+                      <div class="fl">
+                           <a href="{:url('Game/detail',['game_id'=>$vo['id']])}"><div class="hot-regame-item-name">{$vo.game_name}</div></a>
+                           <div class="hot-regame-item-type">{$vo.game_type_name}</div>
+                            <div class="hot-regame-item-edition" >
+                                <switch name="vo.sdk_count">
+                                    <case value="2">
+                                        <img src="__TMPL__/mediapublic/assets/images/icon_andriod.png">
+                                        <img src="__TMPL__/mediapublic/assets/images/icon_ios.png">
+                                    </case>
+                                    <case value="1">
+                                        <eq name="vo.sdk_version" value="1">
+                                            <img src="__TMPL__/mediapublic/assets/images/icon_andriod.png">
+                                            <else/>
+                                            <img src="__TMPL__/mediapublic/assets/images/icon_ios.png">
+                                        </eq>
+                                    </case>
+                                </switch>
+                            </div>
+                            <div class="hot-regame-item-buttons">
+                                <a href="{:url('Game/detail',['game_id'=>$vo['id']])}" class="hot-regame-item-btnagin fl">
+                                    下载游戏
+                                </a>
+                                <a href="{:url('Game/detail',['game_id'=>$vo['id']])}" class="hot-regame-item-btngift fl">
+                                    领取礼包
+                                </a>
+                            </div>
+                            <div class="newHot-regame">
+                                <div class="hotRegameBox">
+                                    <div class="hotImageBox">
+                                        <img src="{$vo.qrcode}">
+                                    </div>
+                                    <ul class="hotBoxContent">
+                                        <if condition="get_down_status2($vo['relation_game_id'],1)">
+                                            <li class="hotAndriodText"><image src="__TMPL__/mediapublic/assets/images/btn_icon_android.png" /><a download="" class="down_game" href="javascript:;" down-id="{$vo['relation_game_id']}" down-version="1" down-url="{:url('Downfile/down',['game_id'=>$vo['relation_game_id'],'sdk_version'=>1])}">安卓版下载</a></li>
+                                            <else />
+                                            <!--<li class="hotAndriodText grayDown js-downLoad"><image src="__TMPL__/mediapublic/assets/images/btn_icon_android.png" /><a class="disabled" href="javaScript:;">安卓版下载</a></li>-->
+                                        </if>
+                                        <if condition="get_down_status2($vo['relation_game_id'],2)">
+                                            <li class="hotAndriodText hotAppleText"><image src="__TMPL__/mediapublic/assets/images/btn_icon_apple.png" /><a class="down_game" href="javascript:;" down-id="{$vo['relation_game_id']}" down-version="2" down-url="{:url('Downfile/down',['game_id'=>$vo['relation_game_id'],'sdk_version'=>2])}">苹果版下载</a></li>
+                                            <else />
+                                            <!--<li class="hotAndriodText hotAppleText grayDown js-downLoad"><image src="__TMPL__/mediapublic/assets/images/btn_icon_apple.png" /><a class="disabled" href="javaScript:;">苹果版下载</a></li>-->
+                                        </if>
+                                    </ul>
+                                </div>
+                           </div>
+                      </div>
+                  </li>
+                   </volist>
+               </ul>
+               <div class="clear"></div>
+               <a href="{:url('Game/game_center')}" class="recommend-sy-more">更多</a>
+            </div>
+            </if>
+
+            <!-- 网页游戏 -->
+         <if condition="YPERMI eq 1 and $pc_hot_game">
+             <div id="yy_05" <if condition="$first_show_num eq 3">class="hot-con js_tab_show"<else />class="hot-con"</if>>
+                 <ul class="layui-container">
+                     <volist name="pc_hot_game" id="vo" offset="0" length='3'>
+                         <li class="hot-regame fl">
+                             <a href="{:url('Game/ydetail',['game_id'=>$vo['id']])}" class="hot-regame-link"><img src="{:cmf_get_image_url($vo['hot_cover'])}" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null"  class="hot-regame-img">
+                                 <img  src="__TMPL__/mediapublic/assets/images/mantle.png" class="hot-regame-mantle">
+                                 <div class="hot-regame-box">
+                                     <div class="hot-regame-name">{$vo.game_name}</div>
+                                     <div class="hot-regame-type">{$vo.game_type_name}</div>
+                                     <div class="hot-regame-describe">{$vo.features}</div>
+                                 </div>
+                                 <img src="{:cmf_get_image_url($vo['icon'])}" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null" class="hot-regame-icon">
+
+                                 <div class="hot-regame-code">
+                                     <img src="{:cmf_get_image_url($vo['icon'])}" class="" >
+                                 </div>
+                             </a>
+                         </li>
+                     </volist>
+                 </ul>
+                 <div class="clear"></div>
+                 <ul class="layui-container">
+                     <volist name="pc_hot_game" id="vo" offset="3" >
+                         <li class="hot-regame-item fl">
+                             <a href="{:url('Game/ydetail',['game_id'=>$vo['id']])}" class="hot-regame-item-link"><img src="{:cmf_get_image_url($vo['icon'])}" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null" class="fl hot-regame-item-gameicon"></a>
+                             <div class="fl">
+                                 <div class="hot-regame-item-name">{$vo.game_name}</div>
+                                 <div class="hot-regame-item-type">{$vo.game_type_name}</div>
+                                 <div class="hot-regame-item-edition" >
+                                     <img src="__TMPL__/mediapublic/assets/images/icon_pc.png">
+                                 </div>
+                                 <div class="hot-regame-item-buttons">
+                                     <a href="{:url('Game/ydetail',['game_id'=>$vo['id']])}" class="hot-regame-item-btnagin fl">
+                                         游戏官网
+                                     </a>
+                                     <a href="{:url('Game/ydetail',['game_id'=>$vo['id']])}" class="hot-regame-item-btngift fl">
+                                         领取礼包
+                                     </a>
+                                 </div>
+                             </div>
+                         </li>
+                     </volist>
+                 </ul>
+                 <div class="clear"></div>
+                 <a href="{:url('Game/game_ycenter')}" class="recommend-sy-more">更多</a>
+             </div>
+         </if>
+		 </div>
+	  </div>
+    </if>
+     <!-- 最新开服/热门游戏 -->
+    <div class="newest">
+        <div class="layui-container">
+            <div class="new_open">
+                <div class="bluediv"></div>
+                <p class="new_open_title"><span>最新开服</span></p>
+				<div class="new-server">
+				    <div class="newtab_menu">
+                        <if condition="PERMI neq 1 and PERMI gt 0 ">
+                            <span <if condition="$first_show_num eq 2">class="newtab_menu_con fl new_{$h5_sort} newtab_menu_active new_num_{$total_num}"<else />class="newtab_menu_con fl new_{$h5_sort} new_num_{$total_num}"</if>>H5</span>
+                        </if>
+                        <if condition="PERMI neq 2 and PERMI gt 0 ">
+				       <span <if condition="$first_show_num eq 1">class="newtab_menu_con fl new_{$sy_sort} newtab_menu_active new_num_{$total_num}"<else />class="newtab_menu_con fl new_{$sy_sort} new_num_{$total_num}"</if>>手游</span>
+                        </if>
+                        <if condition="YPERMI eq 1 ">
+						<span <if condition="$first_show_num eq 3">class="newtab_menu_con fl new_{$yy_sort} newtab_menu_active new_num_{$total_num}"<else />class="newtab_menu_con fl new_{$yy_sort} new_num_{$total_num}"</if>>页游</span>
+                        </if>
+				    </div>
+				<div class="clear"></div>
+              <div>
+                  <if condition="PERMI neq 1 and PERMI gt 0 ">
+                      <div <if condition="$first_show_num eq 2">class="new-open-server js_tab_show"<else />class="new-open-server"</if>>
+                          <ul class="tab-menu">
+                              <li class="tab-menu-con tab-menu-active">今日开服</li>
+                              <li class="tab-menu-con ">即将开服</li>
+                              <li class="tab-menu-con ">已开服</li>
+                          </ul>
+                          <div class="new_open_con js_tab_show">
+                              <div class="new_open_padding">
+                                  <!-- 有开服信息时显示 -->
+                                  <div class="layui-carousel new_open_fw" id="test6" lay-filter="test7">
+                                      <div carousel-item="">
+                                          <volist name="h5_server.today" id="vo">
+                                              <div>
+                                                  <table border="0" class="new_opem_table">
+
+                                                      <tr class="new_open_table_first_tr">
+                                                          <td class="new_open_table_first_td">游戏名称</td>
+                                                          <td class="new_open_table_two_td"><span style="">区服</span></td>
+                                                          <td class="textcenter">时间</td>
+                                                      </tr>
+                                                      <volist name="vo" id="v">
+                                                          <tr class="new_open_table_other_tr">
+                                                              <td class="new_open_table_first_td"> <a href="{:url('Game/hdetail',['game_id'=>$v['relation_game_id']])}"><p>{$v['game_name']}</p></a>
+                                                              </td>
+                                                              <td class="new_open_table_two_td con"><a href="{:url('Game/hdetail',['game_id'=>$v['relation_game_id']])}"><p>{$v.server_name}</p></a>
+                                                              </td>
+                                                              <td class="open-date"><a href="{:url('Game/hdetail',['game_id'=>$v['relation_game_id']])}">{$v.start_time|date='m-d H:i',###}</a></td>
+                                                          </tr>
+                                                      </volist>
+                                                  </table>
+                                              </div>
+                                          </volist>
+                                          <empty name="h5_server.today">
+                                              <div class="no_qufu_text">暂无区服</div>
+                                          </empty>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="new_open_con">
+                              <div class="new_open_padding">
+                                  <!-- 有开服信息时显示 -->
+                                  <div class="layui-carousel new_open_fw" id="test7" lay-filter="test8">
+                                      <div carousel-item="">
+                                          <volist name="h5_server.tomorrow" id="vo">
+                                              <div>
+                                                  <table border="0" class="new_opem_table">
+                                                      <tr class="new_open_table_first_tr">
+                                                          <td class="new_open_table_first_td">游戏名称</td>
+                                                          <td class="new_open_table_two_td"><span style="">区服</span></td>
+                                                          <td class="textcenter">时间</td>
+                                                      </tr>
+                                                      <volist name="vo" id="v">
+                                                          <tr class="new_open_table_other_tr">
+                                                              <td class="new_open_table_first_td"> <a href="{:url('Game/hdetail',['game_id'=>$v['relation_game_id']])}"><p>{$v['game_name']}</p></a>
+                                                              </td>
+                                                              <td class="new_open_table_two_td con"><a href="{:url('Game/hdetail',['game_id'=>$v['relation_game_id']])}"><p>{$v.server_name}</p></a>
+                                                              </td>
+                                                              <td class="open-date"><a href="{:url('Game/hdetail',['game_id'=>$v['relation_game_id']])}">{$v.start_time|date='m-d H:i',###}</a></td>
+                                                          </tr>
+                                                      </volist>
+                                                  </table>
+                                              </div>
+                                          </volist>
+                                          <empty name="h5_server.tomorrow">
+                                              <div class="no_qufu_text">暂无区服</div>
+                                          </empty>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="new_open_con">
+                              <div class="new_open_padding">
+                                  <!-- 有开服信息时显示 -->
+                                  <div class="layui-carousel new_open_fw" id="test8" lay-filter="test9">
+                                      <div carousel-item="">
+                                          <volist name="h5_server.yestoday" id="vo">
+                                              <div>
+                                                  <table border="0" class="new_opem_table">
+                                                      <tr class="new_open_table_first_tr">
+                                                          <td class="new_open_table_first_td">游戏名称</td>
+                                                          <td class="new_open_table_two_td"><span style="">区服</span></td>
+                                                          <td class="textcenter">时间</td>
+                                                      </tr>
+                                                      <volist name="vo" id="v">
+                                                          <tr class="new_open_table_other_tr">
+                                                              <td class="new_open_table_first_td"> <a href="{:url('Game/hdetail',['game_id'=>$v['relation_game_id']])}"><p>{$v['game_name']}</p></a>
+                                                              </td>
+                                                              <td class="new_open_table_two_td con"><a href="{:url('Game/hdetail',['game_id'=>$v['relation_game_id']])}"><p>{$v.server_name}</p></a>
+                                                              </td>
+                                                              <td class="open-date"><a href="{:url('Game/hdetail',['game_id'=>$v['relation_game_id']])}">{$v.start_time|date='m-d H:i',###}</a></td>
+                                                          </tr>
+                                                      </volist>
+                                                  </table>
+                                              </div>
+                                          </volist>
+                                          <empty name="h5_server.yestoday">
+                                              <div class="no_qufu_text">暂无区服</div>
+                                          </empty>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </if>
+                  <if condition="PERMI neq 2 and PERMI gt 0 ">
+				<div <if condition="$first_show_num eq 1">class="new-open-server js_tab_show"<else />class="new-open-server"</if>>
+                    <ul class="tab-menu">
+                        <li class="tab-menu-con tab-menu-active">今日开服</li>
+                        <li class="tab-menu-con ">即将开服</li>
+                        <li class="tab-menu-con ">已开服</li>
+                    </ul>
+                    <div class="new_open_con js_tab_show">
+                        <div class="new_open_padding">
+                            <!-- 有开服信息时显示 -->
+                            <div class=" new_open_fw layui-carousel" id="test3" lay-filter="test4">
+                                <div carousel-item="">
+                                    <volist name="server.today" id="vo">
+                                        <div>
+                                            <table border="0" class="new_opem_table">
+
+                                                <tr class="new_open_table_first_tr">
+                                                    <td class="new_open_table_first_td">游戏名称</td>
+                                                    <td class="new_open_table_two_td"><span style="">区服</span></td>
+                                                    <td class="textcenter">时间</td>
+                                                </tr>
+                                                <volist name="vo" id="v">
+                                                        <tr class="new_open_table_other_tr">
+                                                            <td class="new_open_table_first_td"> <a href="{:url('Game/detail',['game_id'=>$v['relation_game_id']])}"><p>{$v['game_name']}</p></a>
+                                                            </td>
+                                                            <td class="new_open_table_two_td con"><a href="{:url('Game/detail',['game_id'=>$v['relation_game_id']])}"><p>{$v.server_name}</p></a>
+                                                            </td>
+                                                            <td class="open-date"><a href="{:url('Game/detail',['game_id'=>$v['relation_game_id']])}">{$v.start_time|date='m-d H:i',###}</a></td>
+                                                        </tr>
+                                                </volist>
+                                            </table>
+                                        </div>
+                                    </volist>
+                                    <empty name="server.today">
+                                        <div class="no_qufu_text">暂无区服</div>
+                                    </empty>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="new_open_con">
+                        <div class="new_open_padding">
+                            <!-- 有开服信息时显示 -->
+                            <div class=" new_open_fw layui-carousel" id="test4" lay-filter="test5">
+                                <div carousel-item="">
+                                    <volist name="server.tomorrow" id="vo">
+                                        <div>
+                                            <table border="0" class="new_opem_table">
+
+                                                <tr class="new_open_table_first_tr">
+                                                    <td class="new_open_table_first_td">游戏名称</td>
+                                                    <td class="new_open_table_two_td"><span style="">区服</span></td>
+                                                    <td class="textcenter">时间</td>
+                                                </tr>
+                                                <volist name="vo" id="v">
+                                                        <tr class="new_open_table_other_tr">
+                                                            <td class="new_open_table_first_td"> <a href="{:url('Game/detail',['game_id'=>$v['relation_game_id']])}"><p>{$v['game_name']}</p></a>
+                                                            </td>
+                                                            <td class="new_open_table_two_td con"><a href="{:url('Game/detail',['game_id'=>$v['relation_game_id']])}"><p>{$v.server_name}</p></a>
+                                                            </td>
+                                                            <td class="open-date"><a href="{:url('Game/detail',['game_id'=>$v['relation_game_id']])}">{$v.start_time|date='m-d H:i',###}</a></td>
+                                                        </tr>
+                                                </volist>
+                                            </table>
+                                        </div>
+                                    </volist>
+                                    <empty name="server.tomorrow">
+                                        <div class="no_qufu_text">暂无区服</div>
+                                    </empty>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="new_open_con">
+                        <div class="new_open_padding">
+                            <!-- 有开服信息时显示 -->
+                            <div class=" new_open_fw layui-carousel" id="test5" lay-filter="test6">
+                                <div carousel-item="">
+                                    <volist name="server.yestoday" id="vo">
+                                        <div>
+                                            <table border="0" class="new_opem_table">
+                                                <tr class="new_open_table_first_tr">
+                                                    <td class="new_open_table_first_td">游戏名称</td>
+                                                    <td class="new_open_table_two_td"><span style="">区服</span></td>
+                                                    <td class="textcenter">时间</td>
+                                                </tr>
+                                                <volist name="vo" id="v">
+                                                        <tr class="new_open_table_other_tr">
+                                                            <td class="new_open_table_first_td"> <a href="{:url('Game/detail',['game_id'=>$v['relation_game_id']])}"><p>{$v['game_name']}</p></a>
+                                                            </td>
+                                                            <td class="new_open_table_two_td con"><a href="{:url('Game/detail',['game_id'=>$v['relation_game_id']])}"><p>{$v.server_name}</p></a>
+                                                            </td>
+                                                            <td class="open-date"><a href="{:url('Game/detail',['game_id'=>$v['relation_game_id']])}">{$v.start_time|date='m-d H:i',###}</a></td>
+                                                        </tr>
+                                                </volist>
+                                            </table>
+                                        </div>
+                                    </volist>
+                                    <empty name="server.yestoday">
+                                        <div class="no_qufu_text">暂无区服</div>
+                                    </empty>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                  </if>
+                  <if condition="YPERMI eq 1">
+                      <div <if condition="$first_show_num eq 3">class="new-open-server js_tab_show"<else />class="new-open-server"</if>>
+                          <ul class="tab-menu">
+                              <li class="tab-menu-con tab-menu-active">今日开服</li>
+                              <li class="tab-menu-con ">即将开服</li>
+                              <li class="tab-menu-con ">已开服</li>
+                          </ul>
+                          <div class="new_open_con js_tab_show">
+                              <div class="new_open_padding">
+                                  <!-- 有开服信息时显示 -->
+                                  <div class=" new_open_fw layui-carousel" id="test10" lay-filter="test11">
+                                      <div carousel-item="">
+                                          <volist name="pc_server.today" id="vo">
+                                              <div>
+                                                  <table border="0" class="new_opem_table">
+
+                                                      <tr class="new_open_table_first_tr">
+                                                          <td class="new_open_table_first_td">游戏名称</td>
+                                                          <td class="new_open_table_two_td"><span style="">区服</span></td>
+                                                          <td class="textcenter">时间</td>
+                                                      </tr>
+                                                      <volist name="vo" id="v">
+                                                              <tr class="new_open_table_other_tr">
+                                                                  <td class="new_open_table_first_td"> <a href="{:url('Game/ydetail',['game_id'=>$v['relation_game_id']])}"><p>{$v['game_name']}</p></a>
+                                                                  </td>
+                                                                  <td class="new_open_table_two_td con"><a href="{:url('Game/ydetail',['game_id'=>$v['relation_game_id']])}"><p>{$v.server_name}</p></a>
+                                                                  </td>
+                                                                  <td class="open-date"><a href="{:url('Game/ydetail',['game_id'=>$v['relation_game_id']])}">{$v.start_time|date='m-d H:i',###}</a></td>
+                                                              </tr>
+                                                      </volist>
+                                                  </table>
+                                              </div>
+                                          </volist>
+                                          <empty name="pc_server.today">
+                                              <div class="no_qufu_text">暂无区服</div>
+                                          </empty>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="new_open_con">
+                              <div class="new_open_padding">
+                                  <!-- 有开服信息时显示 -->
+                                  <div class=" new_open_fw layui-carousel" id="test11" lay-filter="test12">
+                                      <div carousel-item="">
+                                          <volist name="pc_server.tomorrow" id="vo">
+                                              <div>
+                                                  <table border="0" class="new_opem_table">
+                                                      <tr class="new_open_table_first_tr">
+                                                          <td class="new_open_table_first_td">游戏名称</td>
+                                                          <td class="new_open_table_two_td"><span style="">区服</span></td>
+                                                          <td class="textcenter">时间</td>
+                                                      </tr>
+                                                      <volist name="vo" id="v">
+                                                              <tr class="new_open_table_other_tr">
+                                                                  <td class="new_open_table_first_td"> <a href="{:url('Game/ydetail',['game_id'=>$v['relation_game_id']])}"><p>{$v['game_name']}</p></a>
+                                                                  </td>
+                                                                  <td class="new_open_table_two_td con"><a href="{:url('Game/ydetail',['game_id'=>$v['relation_game_id']])}"><p>{$v.server_name}</p></a>
+                                                                  </td>
+                                                                  <td class="open-date"><a href="{:url('Game/ydetail',['game_id'=>$v['relation_game_id']])}">{$v.start_time|date='m-d H:i',###}</a></td>
+                                                              </tr>
+                                                      </volist>
+                                                  </table>
+                                              </div>
+                                          </volist>
+                                          <empty name="pc_server.tomorrow">
+                                              <div class="no_qufu_text">暂无区服</div>
+                                          </empty>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="new_open_con">
+                              <div class="new_open_padding">
+                                  <!-- 有开服信息时显示 -->
+                                  <div class=" new_open_fw layui-carousel" id="test13" lay-filter="test14">
+                                      <div carousel-item="">
+                                          <volist name="pc_server.yestoday" id="vo">
+                                              <div>
+                                                  <table border="0" class="new_opem_table">
+                                                      <tr class="new_open_table_first_tr">
+                                                          <td class="new_open_table_first_td">游戏名称</td>
+                                                          <td class="new_open_table_two_td"><span style="">区服</span></td>
+                                                          <td class="textcenter">时间</td>
+                                                      </tr>
+                                                      <volist name="vo" id="v">
+                                                              <tr class="new_open_table_other_tr">
+                                                                  <td class="new_open_table_first_td"> <a href="{:url('Game/ydetail',['game_id'=>$v['relation_game_id']])}"><p>{$v['game_name']}</p></a>
+                                                                  </td>
+                                                                  <td class="new_open_table_two_td con"><a href="{:url('Game/ydetail',['game_id'=>$v['relation_game_id']])}"><p>{$v.server_name}</p></a>
+                                                                  </td>
+                                                                  <td class="open-date"><a href="{:url('Game/ydetail',['game_id'=>$v['relation_game_id']])}">{$v.start_time|date='m-d H:i',###}</a></td>
+                                                              </tr>
+                                                      </volist>
+                                                  </table>
+                                              </div>
+                                          </volist>
+                                          <empty name="pc_server.yestoday">
+                                              <div class="no_qufu_text">暂无区服</div>
+                                          </empty>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </if>
+              </div>
+		   </div>
+            </div>
+
+		   <div class="hot_gift fl">
+                <div class="bluediv"></div>
+                <p class="hot_gift_title"><span >热门礼包</span>
+                </p>
+                <div class="hot_gift_con">
+                    <volist name="gift" id="vo">
+                    <div class="gift_item fl">
+                        <a  href="{:url('Gift/detail',['gift_id'=>$vo['gift_id']])}"><img src="{:cmf_get_image_url($vo['icon'])}" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null" class="gift_item_icon fl"></a>
+                        <div class="fl">
+                            <a  href="{:url('Gift/detail',['gift_id'=>$vo['gift_id']])}"> <div class="gift_item_name">{$vo.giftbag_name}</div></a>
+                            <div class="gift_item_text">{$vo.game_name}</div>
+                            <div class="gift_item_surplus">剩余<span>{:null_to_0($vo['remain_num']/$vo['novice_num']*100)}%</span></div>
+                            <if condition="$vo['received'] eq 0">
+                                <div <if condition="session('member_auth') and $vo['vip'] gt session('member_auth.vip_level')">class="gift_item_receive receive_bag_disabled"<else/> class="gift_item_receive getgift" </if> data-giftbag_id="{$vo.gift_id}">领取礼包</div>
+                            <else/>
+                                <div class="gift_item_receive copy" data-novice="{$vo.novice}">复制</div>
+                            </if>
+                        </div>
+                    </div>
+                    </volist>
+               <empty name="gift">
+                <div class="no_bag_text">
+
+                    <p>~暂无礼包~</p>
+                 </div>
+               </empty>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="layui-container">
+	    <div class="fl top2notice" >
+		    <div>
+			   <div class="top2notice-con js_tab_show" ><a href="{:url('Article/detail',['id'=>$huodong[0]['id']])}"><img src="{:cmf_get_image_url($huodong[0]['thumbnail'])}" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null"></a></div>
+                <div class="top2notice-con" ><a href="{:url('Article/detail',['id'=>$huodong[1]['id']])}"><img src="{:cmf_get_image_url($huodong[1]['thumbnail'])}" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null"></a></div>
+			</div>
+            <notempty name="huodong">
+			<div class="top2notice-text">
+                <if condition="count($huodong) eq 1">
+                    <a  class="fl top2notice-title top2notice-active">{$huodong[0]['post_title']}</a>
+                    <else/>
+                    <a class="fl top2notice-title top2notice-active">{$huodong[0]['post_title']}</a>
+                    <a class="fl top2notice-title">{$huodong[1]['post_title']}</a>
+                </if>
+			</div>
+            </notempty>
+		</div>
+		<div class="fl notice">
+		    <div class="notice_menu">
+			    <div class="notice_menu_con fl notice_menu_active">活动</div>
+				<div class="notice_menu_con fl">公告</div>
+			</div>
+			<a class="notice_more" href="{:url('Article/index')}"><img src="__TMPL__/mediapublic/assets/images/icon_add.png" class="notice_more_icon"></a>
+			<div>
+			    <div class="notice_con js_tab_show">
+                    <if condition="$huodong[2]">
+				    <a href="{:url('Article/detail',['id'=>$huodong[2]['id']])}" class="frist_title">{$huodong[2]['post_title']}</a>
+                    </if>
+                    <volist name="huodong" id="vo" offset="3">
+                    <a class="notice_title" href="{:url('Article/detail',['id'=>$vo['id']])}">
+					   <span class="fl notice_figure"></span>
+					   <div class="notice_text fl">{$vo.post_title}</div>
+					   <span class="fg notice_time">{$vo['update_time']|date='m/d',###}</span>
+					</a>
+                    </volist>
+				</div>
+				 <div class="notice_con">
+                     <if condition="$article[0]">
+				        <a href="{:url('Article/detail',['id'=>$article[0]['id']])}" class="frist_title">{$article[0]['post_title']}</a>
+                     </if>
+                     <volist name="article" id="vo" offset="1">
+                     <a class="notice_title" href="{:url('Article/detail',['id'=>$vo['id']])}">
+					   <span class="fl notice_figure"></span>
+					   <div class="notice_text fl">{$vo.post_title}</div>
+					   <span class="fg notice_time">{$vo['update_time']|date='m/d',###}</span>
+					</a>
+                     </volist>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="clear"></div>
+	<!-- 复制礼包窗口 -->
+    <div class="receive_bag_modal">
+        <div class="receive_bag_modal_header">
+            <span>礼包领取成功</span>
+            <span class="close_receive_bag_modal"><img src="__STATIC__/images/delete_icon.png" alt=""></span>
+        </div>
+        <div class="receive_bag_modal_con">
+            <p class="receive_bag_modal_firstline">
+                <span class="colblack">激活码 : </span>
+                <input type="text" id="novice" class="fasfegxv" value="">
+            </p>
+            <p class="receive_bag_modal_secondline">
+                <span>可在[<a href="{:url('User/mygift')}">我的礼包</a>]中查看</span>
+            </p>
+            <div class="">
+                <button data-novice="" class="copy1 receive_bag_modal_thirdline">复制</button>
+            </div>
+        </div>
+    </div>
+ </div>
+    </body>
+
+    <script>
+        $(function () {
+            $(".down_game").click(function () {
+                var down_url = $(this).attr('down-url');
+                var down_id = $(this).attr('down-id');
+                var down_version = $(this).attr('down-version');
+                var promote_id = $(this).attr('down-promote_id');
+                //请求
+
+                $.ajax({
+                    url: "{:url('Downfile/get_ban_status')}",
+                    type: 'post',
+                    dataType: 'json',
+                    data: {game_id: down_id,type:4,sdk_version:down_version,promote_id:promote_id},
+                    success: function (res) {
+                        if (res.code != 1) {
+                            layer.msg(res.msg);
+                        } else {
+
+                            location.href = down_url;
+                        }
+                    }, error() {
+                        layer.msg('服务器错误');
+                    }
+                })
+            })
+        })
+    </script>
+    <script>
+        // 点击等级弹窗x图标，弹窗隐藏
+        $('.removeModal').click(function() {
+            $('.levelInfo_modal').css('display','none')
+        })
+        // 用户状态
+        window.login_auth = 0;
+        $.ajax({
+            type:'get',
+            url:'{:url("get_user_status")}',
+            async:false,
+            success:function (res) {
+                if(res.status!=0){
+                    window.login_auth = 1;
+                    //登录框
+                    $('.login_modal').addClass('hide').removeClass('show');
+                    if($('.login_modal').hasClass('hide')) {
+                       $('.levelInfo_modal').css('display','block')
+                    }
+                    //免费注册
+                    mfzz = '<a href="';
+                    mfzz += '{:url("User/userinfo")}';
+                    mfzz += '">';
+                    mfzz += '<div><img src="__STATIC__/images/reg.png" alt=""><p class="sale_item_title">免费注册</p></div></a>';
+                    $('.js_mfzz').empty().append(mfzz);
+                    //实名认证
+                    smrz = '<a href="{:url(\'User/realauth\')}">\n' +
+                        '<div>\n' +
+                        '<img src="__STATIC__/images/yes.png" alt="">\n' +
+                        '<p class="sale_item_title">实名认证</p>\n' +
+                        '</div>\n' +
+                        '</a>';
+                    $('.js_smrz').empty().append(smrz);
+                    //游戏账单
+                    yxzd = '<a href="{:url(\'user/myorder\')}">\n' +
+                        '<div>\n' +
+                        '<img src="__STATIC__/images/mobile.png" alt="">\n' +
+                        '<p class="sale_item_title">游戏账单</p>\n' +
+                        '</div>'
+                        +'</a>';
+                    $('.js_yxzd').empty().append(yxzd);
+                    //修改资料
+                    xgzl = '<a href="{:url(\'user/userinfo\')}">\n' +
+                        '<div>\n' +
+                        '<img src="__STATIC__/images/pen.png" alt="">\n' +
+                        '<p class="sale_item_title">修改资料</p>\n' +
+                        '</div>\n' +
+                        '</a>'
+                    $('.js_xgzl').empty().append(xgzl);
+                    //修改密码
+                    xgmm = '<a href="{:url(\'User/password\')}">\n' +
+                        ' <div>\n' +
+                        '<img src="__STATIC__/images/password.png" alt="">\n' +
+                        '<p class="sale_item_title">修改密码</p>\n' +
+                        '</div>\n' +
+                        '</a>';
+                    $('.js_xgmm').empty().append(xgmm);
+                }
+                //登录框写入账密
+                $('.login_modal').find('input[name=account]').val(res.data.cookie_login_account);
+                $('.login_modal').find('input[name=password]').val(res.data.cookie_login_password);
+                //是否允许注册
+                if(res.data.pc_user_allow_register!=1){
+                    $('.js_allow_zz').removeClass('mianfei_zhuce');
+                }
+            }
+        })
+    </script>
+    <script>
+        $(function () {
+            // 交换位置---------- START
+            // var h5_02 = $('#h5_02'), sy_02 = $('#sy_02');
+            // var p1 = h5_02.position().top, p2 = sy_02.position().top;
+            // h5_02.animate({top:p2}, 1000); sy_02.animate({top:p1}, 1000);
+
+            // var media_02_sort = ['yy_02', 'h5_02', 'sy_02'];
+            // var media_02_new = [];
+
+            // $.each(media_02_sort, function(index, item) {
+            //     var that = $('#'+item)
+            //     media_02_new.push({id: that.attr('id'), top: that.position().top})
+            // })
+
+            //var media_02_child = $('#media_02').children();
+
+            // $.each(media_02_sort, function(index, item) {
+            //     var that = $('#'+item)
+            //     var other = $(media_02_child[index]);
+            //     // var p1 = that.position().top;
+            //     // var p2 = other.position().top;
+            //     // that.animate({top:p2}, 1000);
+            //     // other.animate({top:p1}, 1000)
+            // })
+            // $.each($('#media_02').children(), function(index, item) {
+            //     console.log(item)
+            //     console.log(index)
+            //     var that = $(item)
+            //     if (that.attr('id') != media_02_sort[index]) {
+            //         var other = $('#'+media_02_sort[index]);
+            //         var p1 = that.position().top;
+            //         var p2 = other.position().top;
+            //         that.animate({top:p2}, 1000);
+            //         other.animate({top:p1}, 1000)
+            //     }
+            // })
+
+
+            // exchange(h5_02,sy_02);
+            // function exchange(a,b){
+            //     var n = a.next(), p = b.prev();
+            //     b.insertBefore(n);
+            //     a.insertAfter(p);
+            // };
+
+            // 交换位置---------- END
+            // var media_02_sort = ['yy_02', 'h5_02', 'sy_02']
+            // var media_02 = $('#media_02');
+            // var media_02_child = media_02.children()
+            // var media_02_new = []
+            // $.each(media_02_child, function(index, item) {
+
+            // })
+            // 跳转
+            $('.js-h5Link').click(function() {
+                var e = event || window.event
+                var target = e.target
+                if($(target).is('a[download]') || ($(target).is('li') && $(target).children('a[download]'))) {
+
+                }else {
+                    window.location.href = $(this).children('a').attr('data-href')
+                }
+
+            })
+            $('.js-phoneLink').click(function() {
+                var e = event || window.event
+                var target = e.target
+                if($(target).is('a[download]') || ($(target).is('li') && $(target).children('a[download]'))) {
+
+                }else {
+                    window.location.href = $(this).children('a').attr('data-href')
+                }
+
+            })
+            $('.js-yeLink').click(function() {
+                var e = event || window.event
+                var target = e.target
+                if($(target).is('a[download]') || ($(target).is('li') && $(target).children('a[download]'))) {
+
+                }else {
+                    window.location.href = $(this).children('a').attr('data-href')
+                }
+
+            })
+            $('.js-h5BottomLink').click(function() {
+                var e = event || window.event
+                var target = e.target
+                if($(target).is('a[download]') || ($(target).is('li') && $(target).children('a[download]'))) {
+
+                }else {
+                    window.location.href = $(this).children('div').attr('data-href')
+                }
+
+
+            })
+            $('.js-H5Item').click(function(event) {
+                var e = event || window.event
+                var target = e.target
+                if($(target).is('a[download]') || ($(target).is('li') && $(target).children('a[download]'))) {
+
+                }else {
+                    window.location.href = $(this).children('a').attr('data-href')
+                }
+
+            })
+            $('.js-phoneBottomLink').click(function() {
+                var e = event || window.event
+                var target = e.target
+                if($(target).is('a[download]') || ($(target).is('li') && $(target).children('a[download]'))) {
+
+                }else {
+                    window.location.href = $(this).children('div').attr('data-href')
+                }
+            })
+            $('.js-phoneItem').click(function() {
+                var e = event || window.event
+                var target = e.target
+                if($(target).is('a[download]') || ($(target).is('li') && $(target).children('a[download]'))) {
+
+                }else {
+                    window.location.href = $(this).children('a').attr('data-href')
+                }
+
+            })
+
+            $('.js-downLoad').click(function() {
+                return false
+            })
+
+            $('.js-phoneDown').click(function() {
+                return false
+            })
+
+
+
+            $('.new_open_fw .layui-carousel-ind li').html('<div class="zhanweidivs"></div>')
+            $('.getgift').click(function () {
+                event.stopPropagation();
+                var $this = $(this);
+                var login_auth = "{$session['login_auth']}";
+                if (login_auth == 1) {
+                    var gift_id = $this.attr('data-giftbag_id');
+                    $.ajax({
+                        type: 'post',
+                        url: '{:url("Gift/getgift")}',
+                        async: false,
+                        data: {gift_id: gift_id},
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data.code == 1) {
+                                $("#novice").val(data.novice);
+                                $this.parent().find('button').text('已领取');
+                                var conss = $('.receive_bag_modal');
+                                layer.open({
+                                    type: 1,
+                                    title: false,
+                                    closeBtn: false,
+                                    area: ['325px', '191px'],
+                                    offset: 'auto',
+                                    content: conss,
+                                    btnAlign: 'c',
+                                    shadeClose: true,
+                                    end: function () {
+                                        $('.receive_bag_modal').hide();
+                                        window.location.reload();
+                                    }
+                                })
+                            } else {
+                                layer.msg(data.msg, {skin: 'demo-red'});
+                            }
+                        },
+                        error: function (xhr, type) {
+                            alert('服务器错误');
+                        }
+                    });
+                } else {
+                    var conss = $('.login_modals')
+                    layer.open({
+                        type: 1,
+                        title: false,
+                        closeBtn: false,
+                        area: ['305px', '320px'],
+			            skin:'loginclass',
+                        offset: 'auto',
+                        content: conss,
+                        btnAlign: 'c',
+                        shadeClose: true,
+                        end: function () {
+                            $('.login_modals').hide()
+                        }
+                    })
+                }
+            })
+            $('.copy1').click(function () {
+                var str = $("#novice").val();
+                Copy(str);
+                layer.msg("复制成功", { time: 1000 });
+            })
+            $('.copy').click(function () {
+                var str = $(this).attr('data-novice');
+                Copy(str);
+                layer.msg("复制成功", { time: 1000 });
+            })
+            function Copy(str) {
+                var save = function (e) {
+                    e.clipboardData.setData('text/plain', str);
+                    e.preventDefault();
+                }
+                document.addEventListener('copy', save);
+                document.execCommand('copy');
+                document.removeEventListener('copy', save);
+            }
+            // 底部切换
+
+			// var newtablength=parseInt($(".newtab_menu_con").length);
+			// var width=(parseFloat(1/newtablength))*100;
+
+			  // $.each($(".newtab_menu_con"), function (index, item) {
+			  //     $(item).css({left: index * width+'%', width: width +'%'})
+              //     if (index == newtablength-1) {
+              //         $(item).css({'border-top-right-radius': '5px', 'border-bottom-right-radius': '5px'})
+              //     }
+              //     if(index==0){
+              //         $(item).css({'border-top-left-radius': '5px', 'border-bottom-left-radius': '5px'})
+              //     }
+              // })
+
+
+			// console.log(width+"%");
+            // $(".recommend-menu-con:first").addClass("recommend-menu-active");
+			// $(".recommend-con:first").addClass("js_tab_show");
+            // $(".hot-menu-con:first").addClass("hot-menu-con-active");
+			// $(".hot-con:first").addClass("js_tab_show");
+			// $(".newtab_menu_con:first").addClass("newtab_menu_active");
+			// $(".new-open-server").eq(0).addClass("js_tab_show");
+
+			$(".top2notice-title").click(function(){
+			   var index=$(this).index();
+			    $(this).addClass("top2notice-active").siblings().removeClass("top2notice-active");
+			   $(".top2notice-con").eq(index).addClass("js_tab_show").siblings().removeClass("js_tab_show");
+			})
+			$(".recommend-menu-con").click(function(){
+			    var index=$(this).index();
+			    $(this).addClass("recommend-menu-active").siblings().removeClass("recommend-menu-active");
+			    $(".recommend-con").eq(index).addClass("js_tab_show").siblings().removeClass("js_tab_show");
+			})
+			//热门手游H5切换
+			$(".hot-menu-con").click(function(){
+			   var index=$(this).index();
+			    $(this).addClass("hot-menu-con-active").siblings().removeClass("hot-menu-con-active");
+			   $(".hot-con").eq(index).addClass("js_tab_show").siblings().removeClass("js_tab_show");
+			})
+            // 公告切换
+			$(".notice_menu_con").click(function(){
+			var index=$(this).index();
+			     $(this).addClass("notice_menu_active").siblings().removeClass("notice_menu_active");
+				 $(".notice_con").eq(index).addClass("js_tab_show").siblings().removeClass("js_tab_show");
+
+
+			})
+            //最新开服切换
+			$(".newtab_menu_con").click(function(){
+			   var index=$(this).index();
+			   $(this).addClass("newtab_menu_active").siblings().removeClass("newtab_menu_active");
+			   $(".new-open-server").eq(index).addClass("js_tab_show").siblings().removeClass("js_tab_show");
+			})
+			$(".tab-menu-con").click(function(){
+			   var index=$(this).index();
+			   $(this).addClass("tab-menu-active").siblings().removeClass("tab-menu-active");
+			   $(".js_tab_show .new_open_con").eq(index).addClass("js_tab_show").siblings().removeClass("js_tab_show");
+			})
+        })
+        layui.use('carousel', function () {
+            var carousel = layui.carousel;
+            carousel.render({
+                elem: '#test1'
+                , width: '100%'
+                , height: '680px'
+                , arrow: 'always'
+            });
+        });
+        layui.use('carousel', function () {
+            var carousel = layui.carousel;
+            carousel.render({
+                elem: '#test3'
+                , width: '100%'
+                , height: '310px'
+                , arrow: 'none'
+                , indicator: 'outside'
+                , autoplay: false
+                , interval: '4000'
+            });
+        });
+		layui.use('carousel', function () {
+            var carousel = layui.carousel;
+            carousel.render({
+                elem: '#test4'
+                , width: '100%'
+                , height: '310px'
+                , arrow: 'none'
+                , indicator: 'outside'
+                , autoplay: false
+                , interval: '4000'
+            });
+        });
+		layui.use('carousel', function () {
+            var carousel = layui.carousel;
+            carousel.render({
+                elem: '#test5'
+                , width: '100%'
+                , height: '310px'
+                , arrow: 'none'
+                , indicator: 'outside'
+                , autoplay: false
+                , interval: '4000'
+            });
+        });
+		layui.use('carousel', function () {
+            var carousel = layui.carousel;
+            carousel.render({
+                elem: '#test6'
+                , width: '100%'
+                , height: '310px'
+                , arrow: 'none'
+                , indicator: 'outside'
+                , autoplay: false
+                , interval: '4000'
+            });
+        });
+		layui.use('carousel', function () {
+            var carousel = layui.carousel;
+            carousel.render({
+                elem: '#test7'
+                , width: '100%'
+                , height: '310px'
+                , arrow: 'none'
+                , indicator: 'outside'
+                , autoplay: false
+                , interval: '4000'
+            });
+        });
+		layui.use('carousel', function () {
+            var carousel = layui.carousel;
+            carousel.render({
+                elem: '#test8'
+                , width: '100%'
+                , height: '310px'
+                , arrow: 'none'
+                , indicator: 'outside'
+                , autoplay: false
+                , interval: '4000'
+            });
+        });layui.use('carousel', function () {
+            var carousel = layui.carousel;
+            carousel.render({
+                elem: '#test10'
+                , width: '100%'
+                , height: '310px'
+                , arrow: 'none'
+                , indicator: 'outside'
+                , autoplay: false
+                , interval: '4000'
+            });
+            carousel.render({
+                elem: '#test11'
+                , width: '100%'
+                , height: '310px'
+                , arrow: 'none'
+                , indicator: 'outside'
+                , autoplay: false
+                , interval: '4000'
+            });
+            carousel.render({
+                elem: '#test13'
+                , width: '100%'
+                , height: '310px'
+                , arrow: 'none'
+                , indicator: 'outside'
+                , autoplay: false
+                , interval: '4000'
+            });
+        });
+        $('.close_receive_bag_modal').click(function () {
+            layer.closeAll()
+        })
+        var prev_btn=document.getElementsByClassName('layui-carousel-arrow')[0];
+        var next_btn=document.getElementsByClassName('layui-carousel-arrow')[1];
+        if(prev_btn){
+            prev_btn.classList.add("prev_btn");
+        }
+        if(next_btn){
+            next_btn.classList.add("next_btn");
+        }
+        $(".fast_login_youke").click(function(){
+            $(".").css("display","block")
+        })
+    </script>
+</block>

@@ -1,0 +1,304 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/select2.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/new_select2.css" type="text/css" />
+    <link href="__TMPL__/channelwappublic/assets/css/channel.css" type="text/css" rel="stylesheet" />
+    <link href="__TMPL__/channelwappublic/assets/css/support.css" type="text/css" rel="stylesheet" />
+    <link href="__TMPL__/channelwappublic/assets/css/white.css" type="text/css" rel="stylesheet" />
+    <link href="__TMPL__/channelwappublic/assets/css/recharge.css" type="text/css" rel="stylesheet" />
+</block>
+<block name="body">
+    <div class="page-container profit-exchange-container">
+        <header>
+            <a href="javascript:history.back(-1);" class="back-btn"></a>
+            <div style="width: 100%;height: 100%" class="v-middle h-middle">
+                <p class="header-title">模拟器白名单</p>
+            </div>
+        </header>
+        <div class="topModal">
+
+            <div class="clear playerModal">
+                <div class="fl">全部允许：</div>
+                <div class="form-item-text">
+                    <label class="label-choose js_choose">
+                        <input type="radio" name="all_allow" class="radio-choose <?php if(get_promote_allow_simulator(PID)=='1') echo 'checked'; ?>" value="1" <?php if(get_promote_allow_simulator(PID)=='1') echo 'checked'; ?> >
+                        <i class="label-choose-i <?php if(get_promote_allow_simulator(PID)=='1') echo 'current'; ?>"></i>
+                        <span>是</span>
+                    </label>
+                    <label class="label-choose js_choose">
+                        <input type="radio" name="all_allow" class="radio-choose <?php if(get_promote_allow_simulator(PID)=='0') echo 'checked'; ?>" value="0" <?php if(get_promote_allow_simulator(PID)=='0') echo 'checked'; ?>>
+                        <i class="label-choose-i <?php if(get_promote_allow_simulator(PID)=='0') echo 'current'; ?>"></i>
+                        <span>否</span>
+                    </label>
+                </div>
+<!--                <button class="saveAllow">确认</button>-->
+            </div>
+
+            <div class="all_allow_block" hidden>
+                <div class="clear gameModal" style="margin-top:30px">
+                    <div class="fl">游戏名称：</div>
+                    <div class="fl rightGameItem">
+                        <ul>
+                            <volist name="game_lists" id="vo">
+                                <li>{$vo['game_name']}</li>
+                            </volist>
+                        </ul>
+                    </div>
+                    <div class="scrollBar">
+
+                    </div>
+
+                </div>
+                <div class="clear playerModal">
+                <div class="fl">玩家ID：</div>
+                <div class="fl countBox">
+                    <textarea name="ids" id="ids" placeholder="每行一个玩家ID" class="playerCount"></textarea>
+                </div>
+                <button class="addBtn">加入白名单</button>
+            </div>
+            </div>
+
+
+
+
+        </div>
+        <div class="all_allow_block" hidden>
+            <div class="fenge"></div>
+            <div class="page-content">
+            <div class="search-box">
+
+                <php>
+                    $field = "id,account";
+                    $where = [];
+                    $where['promote_id'] = PID;
+                    $where['is_simulator'] = 1;
+                </php>
+
+                <div class="search-item changeSearchWidth">
+                    <select id="user_account" name="user_account" class="select_gallery searchItem" data-placeholder="玩家账号">
+                        <option value="0">玩家账号</option>
+                        <volist name=":get_user_lists_info($field,$where)" id="p">
+                            <option value="{$p.account}">{$p.account}</option>
+                        </volist>
+                    </select>
+                </div>
+                <div class="search-item changeSearchWidth">
+                    <select id="user_id" name="user_id" class="select_gallery searchItem" data-placeholder="玩家ID">
+                        <option value="0">玩家ID</option>
+                        <volist name=":get_user_lists_info($field,$where)" id="p">
+                            <option value="{$p.id}">{$p.id}</option>
+                        </volist>
+                    </select>
+                </div>
+            </div>
+            <div class="table-box">
+                <table>
+                    <tbody>
+                    <tr class="table-title">
+                        <th><label class="checked"><input class="check-all" type="checkbox"><i class="check-icon"></i></label></th>
+                        <th>玩家ID</th>
+                        <th>玩家账号</th>
+                        <th >登录时间</th>
+                        <th >操作</th>
+                    </tr>
+                    </tbody>
+                    <tbody id="summaryload">
+                        <volist name="user_lists" id="vo">
+                            <tr>
+                                <td>
+                                    <label class="checked" style="display:block;">
+                                        <input class="ids" type="checkbox" value="{$vo['id']}">
+                                        <i class="check-icon"></i>
+                                    </label>
+                                </td>
+                                <td>{$vo['id']}</td>
+                                <td>{$vo['account']}</td>
+                                <td>{$vo['login_time']|date="Y-m-d H:i",###}</td>
+                                <td><a class="remove" data-id="{$vo['id']}" href="javascript:;">移除</a></td>
+                            </tr>
+                        </volist>
+                    </tbody>
+                </table>
+                <input type="button" class="btn-calc fl remove" value="移除" >
+                <input type="button" class="btn-calc fl all-remove" value="一键全部移除" >
+            </div>
+        </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/select2.min.js"></script>
+    <script>
+         $(function () {
+            $(".select_gallery").select2({
+                minimumResultsForSearch: -1
+            });
+
+
+             $(".addBtn").click(function () {
+                 var url = "{:url('Simulator/addUser')}";
+                 var ids = $("#ids").val().split('\n');
+                 $.post(url, {ids: ids}, function (res) {
+                     if (res.code == 0) {
+                         layer.msg(res.msg);
+                         return false;
+                     }
+                     layer.msg(res.msg);
+                     setTimeout(function () {
+                         location.reload();
+                     }, 1000)
+                 });
+                 return false;
+             });
+
+
+             $(document).on('click','.remove',function () {
+                 var url = "{:url('Simulator/removeUser')}";
+                 var id = $(this).attr('data-id');
+
+                 if (!id) {
+                     that = $(this);
+                     ids = $('.ids');
+                     id = [];
+                     ids.each(function (index, element) {
+                         if ($(this).prop('checked')) {
+                             id.push($(this).val());
+                         }
+                     });
+                     if (id.length=='0') {
+                         layer.msg('请至少选择一条数据');
+                         return false;
+                     }
+                 }
+
+                 $.post(url, {id: id}, function (res) {
+                     if (res.code == 0) {
+                         layer.msg(res.msg);
+                         return false;
+                     }
+                     layer.msg(res.msg);
+                     setTimeout(function () {
+                         location.reload();
+                     }, 1000)
+                 });
+             });
+
+             $(".all-remove").click(function () {
+                 var url = "{:url('Simulator/removeAllUser')}";
+                 $.post(url, function (res) {
+                     if (res.code == 0) {
+                         layer.msg(res.msg);
+                         return false;
+                     }
+                     layer.msg(res.msg);
+                     setTimeout(function () {
+                         location.reload();
+                     }, 1000)
+                 });
+             });
+
+
+             $(".searchItem").change(function () {
+                 var url = "{:url('Simulator/getUserLists')}";
+                 var user_account = $("#user_account").val();
+                 var user_id = $("#user_id").val();
+
+                 $.post(url,{user_account:user_account,user_id:user_id},function (res) {
+
+                     var data = res.data.data;
+                     var html = "";
+                     $.each(data,function (index,ele) {
+                         html += "<tr>\n" +
+                             "<td>"+ele.id+"</td>\n" +
+                             "<td>"+ele.account+"</td>\n" +
+                             "<td>"+ele.login_time_text+"</td>\n" +
+                             "<td><a class=\"remove\" data-id=\""+ele.id+"\" href=\"javascript:;\">移除</a></td>\n" +
+                             "</tr>"
+                     });
+
+                     $("#summaryload").html(html);
+                 });
+             });
+
+             $('.rightGameItem').scroll(function() {
+            $('.scrollBar').css('display','none');
+            });
+
+
+        })
+    </script>
+    <script>
+
+        $(function () {
+
+            $('.js_choose').click(function(){
+                that = $(this);
+                input = that.children('.radio-choose');
+                i = that.children('.label-choose-i');
+                $('.label-choose-i').removeClass('current');
+                i.addClass('current');
+                $('input[name=all_allow]').removeAttr('checked');
+                $('input[name=all_allow]').removeClass('checked');
+                input.attr('checked','checked').addClass('checked');
+                block_show();
+                changeType();
+            });
+
+            //全选
+            $(".check-all").click(function() {
+                $('.ids').prop("checked", this.checked);
+            });
+            $(".ids").click(function() {
+                var option = $(".ids");
+                option.each(function(i) {
+                    if(!this.checked) {
+                        $(".check-all").prop("checked", false);
+                        return false;
+                    } else {
+                        $(".check-all").prop("checked", true);
+                    }
+                });
+            });
+
+        });
+
+
+        block_show();
+
+        function block_show(){
+            var all_allow = $(".checked").val();
+            if(all_allow=='1'){
+                $(".all_allow_block").hide();
+            }else{
+                $(".all_allow_block").show();
+            }
+        }
+
+        var times = 0;
+        function changeType(){
+            if(times==0){
+                times = 1;
+                var all_allow = $(".checked").val();
+                var save_allow_url = "{:url('channelwap/simulator/saveAllAllow')}";
+                $.post(save_allow_url, {all_allow: all_allow}, function (res) {
+                    layer.msg(res.msg);
+                    if (res.code == 0) {
+                        times = 0;
+                        return false;
+                    }
+                    setTimeout(function () {
+                        location.reload();
+                    }, 2000)
+                });
+
+            }
+
+            return false;
+
+        }
+
+
+
+    </script>
+</block>

@@ -1,0 +1,126 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('datamanage/cointransfer')}">平台币转移记录</a></li>
+            <span class="title_remark">说明：一级给二级、二级给三级渠道转移平台币的记录</span>
+        </ul>
+        <form id="search_form" class="well form-inline fr" method="get" action="{:url('datamanage/cointransfer')}" onsubmit="return check();">
+            <php>$map['promote_level'] < 3;</php>
+            <select name="promote_id" id="promote_id"  class="selectpicker" data-live-search="true" data-size="8" promote_id="{:input('request.promote_id','')}">
+                <option value="">转移渠道</option>
+                <volist name=":get_promote_list($map)" id="vo">
+                    <option promote-id="{$vo.id}" value="{$vo.id}">{$vo.account}</option>
+                </volist>
+            </select>
+            <select name="source_id" id="source_id" class="selectpicker"  data-size="8" source_id="{:input('request.source_id','')}">
+                <option value="">被转移渠道</option>
+            </select>
+            <input type="text" class="form-control js-bootstrap-date" id="start_time" name="start_time" placeholder="转移开始时间"
+                   value="{:input('request.start_time/s','')}" style="width: 140px;" autocomplete="off">-
+            <input type="text" class="form-control js-bootstrap-date" id="end_time" name="end_time" placeholder="转移结束时间"
+                   value="{:input('request.end_time/s','')}" style="width: 140px;" autocomplete="off">
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('datamanage/cointransfer')}">清空</a>
+        </form>
+        <table class="table table-hover table-bordered">
+            <thead >
+                <tr>
+                    <th>转移渠道</th>
+                    <th>被转移渠道</th>
+                    <th>转移数量</th>
+                    <th>转移时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                <empty name="data_lists">
+                    <tr><td colspan="4" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <foreach name="data_lists" item="vo">
+                    <tr>
+                        <td>{:get_promote_name($vo['promote_id'])}</td>
+                        <td>{:get_promote_name($vo['source_id'])}</td>
+                        <td>{:null_to_0($vo['num'])}</td>
+                        <td>{:date('Y-m-d H:i:s',$vo['create_time'])}</td>
+                    </tr>
+                    </foreach>
+                     <tr class="data_summary">
+                        <td><span style="margin-right: 10px;">汇总</span></td>
+                        <td colspan="3"><span>今日转移：{:null_to_0($today['total'])} ；昨日转移：{:null_to_0($yestoday['total'])} ； 累计转移：{:null_to_0($total['total'])}</span></td>
+                    </tr>
+                </empty>
+            </tbody>
+        </table>
+        <div class="pagination">
+            {$page}
+        </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script type="text/javascript">
+        source_id = $("#source_id").attr('source_id');
+        promote_id = $("#promote_id").attr('promote_id');
+        $("#promote_id").selectpicker('val', promote_id);
+       if(promote_id){
+           $.ajax({
+               url: "{:url('Datamanage/get_child_promote')}",
+               type: "post",
+               data:{promote_id:promote_id},
+               dataType: "json",
+               success: function (data) {
+                   $('#source_id').empty();
+                   $('#source_id').append("<option value=''>被转移渠道</option>");
+                   var option = '';
+                   $.each(data.data,function (key,value) {
+                       option+="<option value='";
+                       option+=value['id']+"'";
+                       if(value['id']==source_id){
+                           option+="selected";
+                       }
+                       option+=" >"+value['account'];
+                       option+="</option>";
+                   });
+                   $('#source_id').append(option).selectpicker('refresh');
+               }
+           });
+       }
+        $(function () {
+            $("#promote_id").change(function () {
+                var id = $(this).val();
+                $.ajax({
+                    url: "{:url('Datamanage/get_child_promote')}",
+                    type: "post",
+                    data:{promote_id:id},
+                    dataType: "json",
+                    success: function (data) {
+                        $('#source_id').empty();
+                        $('#source_id').append("<option value=''>被转移渠道</option>");
+                        var option = '';
+                        $.each(data.data,function (key,value) {
+                            option+="<option value='";
+                            option+=value['id']+"'";
+                            if(value['id']==source_id){
+                                option+="selected";
+                            }
+                            option+=" >"+value['account'];
+                            option+="</option>";
+                        });
+                        $('#source_id').append(option).selectpicker('refresh');
+                    }
+                });
+            })
+        })
+
+        function check(){
+            var start_time = $("#start_time").val();
+            var end_time = $("#end_time").val();
+            if(start_time != '' && end_time != '' && start_time > end_time){
+                layer.msg('开始时间不能大于结束时间');
+                return false;
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>

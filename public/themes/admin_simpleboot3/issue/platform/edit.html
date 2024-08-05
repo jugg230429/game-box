@@ -1,0 +1,238 @@
+<include file="public@header"/>
+</head>
+<body>
+
+<div class="wrap js-check-wrap jskeyup">
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('Platform/lists')}">平台列表</a></li>
+        <li class="active"><a >编辑平台</a></li>
+        <span class="title_remark"></span>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" action="{:url('edit')}" method="post">
+        <input type="hidden" name="id" value="{$info['id']}" />
+        <div class="form-group">
+            <label for="open_user_id" class="col-sm-2 control-label"><span class="form-required">*</span>用户账号：</label>
+            <div class="col-md-3 col-sm-5">
+                <select id="open_user_id" disabled name="open_user_id" class="selectpicker form-control" data-live-search="true">
+                    <option value="0">选择用户账号</option>
+                    <volist name=":get_issue_open_user('id,account,settle_type')" id="vo">
+                        <option data-settle_type="{$vo.settle_type}" value="{$vo.id}" <?php if($info['open_user_id']==$vo['id']) echo 'selected'; ?> >{$vo.account}</option>
+                    </volist>
+                </select>
+            </div>
+            <p class="help-block"></p>
+        </div>
+
+        <div class="form-group">
+            <label for="account" class="col-sm-2 control-label"><span class="form-required">*</span>平台名称：</label>
+            <div class="col-md-3 col-sm-5">
+                <div class="user-input fl" id="account">{$info['account']}</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="website" class="col-sm-2 control-label"><span class="form-required">*</span>平台网址：</label>
+            <div class="col-md-3 col-sm-5">
+                <div class="user-input fl" id="website">{$info['website']}</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">平台状态：</label>
+            <div class="col-md-3 col-sm-5">
+                <label class="radio-inline label-width" tab_id="1">
+                    <input type="radio" name="status" value="1" <?php if($info['status']=='1') echo 'checked'; ?>> 正常
+                </label>
+                <label class="radio-inline label-width" tab_id="2">
+                    <input type="radio" name="status" value="0" <?php if($info['status']=='0') echo 'checked'; ?>> 锁定
+                </label>
+            </div>
+            <p class="help-block"></p>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">平台权限：</label>
+            <div >
+
+                <div class="col-md-3 col-sm-5">
+                    <div class="user-input fl">{:get_issue_type($info['pt_type'])}</div>
+                </div>
+
+
+<!--                <label class="radio-inline label-width">-->
+<!--                    <input type="checkbox" name="pt_type[sy]" value="1" <?php if($info['pt_type']=='0' || $info['pt_type']=='2') echo 'checked'; ?> > 手游-->
+<!--                </label>-->
+<!--                <label class="radio-inline label-width">-->
+<!--                    <input type="checkbox" name="pt_type[h5]" value="1" <?php if($info['pt_type']=='0' || $info['pt_type']=='1') echo 'checked'; ?>> H5-->
+<!--                </label>-->
+            </div>
+            <p class="help-block"></p>
+        </div>
+
+        <if condition="$info['pt_type'] eq 0 or $info['pt_type'] eq 1 or $info['pt_type'] eq 3 or $info['pt_type'] eq 5">
+            <div id="h5-config" >
+                <div class="form-group">
+                    <label for="website" class="col-sm-2 control-label">H5客户端参数：</label>
+                    <div class="col-md-3 col-sm-5">
+                        <textarea class="form-control" name="platform_config_h5" placeholder="配置参数，换行分割">{$info['platform_config_h5']}</textarea>
+                    </div>
+                </div>
+
+                <div class="form-group h5_settle_type" hidden>
+                    <label for="website" class="col-sm-2 control-label"><span class="form-required">*</span>H5创建订单通知地址：</label>
+                    <div class="col-md-3 col-sm-5">
+                        <textarea class="form-control" name="order_notice_url_h5" placeholder="创建订单通知地址">{$info.order_notice_url_h5}</textarea>
+                    </div>
+                </div>
+
+                <div class="form-group h5_settle_type" hidden>
+                    <label for="website" class="col-sm-2 control-label"><span class="form-required">*</span>H5支付回调通知地址：</label>
+                    <div class="col-md-3 col-sm-5">
+                        <textarea class="form-control" name="pay_notice_url_h5" placeholder="支付回调通知地址">{$info.pay_notice_url_h5}</textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="controller_name_h5" class="col-sm-2 control-label"><span class="form-required">*</span>H5控制器名称：</label>
+                    <div class="col-md-3 col-sm-5">
+                        <input type="text" class="form-control jsmust" id="controller_name_h5" name="controller_name_h5" value="{$info['controller_name_h5']}" placeholder="">
+                    </div>
+                </div>
+            </div>
+        </if>
+
+
+        <if condition="$info['pt_type'] eq 0 or $info['pt_type'] eq 4 or $info['pt_type'] eq 5 or $info['pt_type'] eq 7">
+            <div id="yy-config" >
+            <div class="form-group">
+                <label for="website" class="col-sm-2 control-label">页游客户端参数：</label>
+                <div class="col-md-3 col-sm-5">
+                    <textarea class="form-control" name="platform_config_yy" placeholder="配置参数，换行分割">{$info['platform_config_yy']}</textarea>
+                </div>
+            </div>
+
+            <div class="form-group yy_settle_type" hidden>
+                <label for="website" class="col-sm-2 control-label"><span class="form-required">*</span>页游创建订单通知地址：</label>
+                <div class="col-md-3 col-sm-5">
+                    <textarea class="form-control" name="order_notice_url_yy" placeholder="创建订单通知地址">{$info['order_notice_url_yy']}</textarea>
+                </div>
+            </div>
+
+            <div class="form-group yy_settle_type" hidden>
+                <label for="website" class="col-sm-2 control-label"><span class="form-required">*</span>页游支付回调通知地址：</label>
+                <div class="col-md-3 col-sm-5">
+                    <textarea class="form-control" name="pay_notice_url_yy" placeholder="支付回调通知地址">{$info['pay_notice_url_yy']}</textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="account" class="col-sm-2 control-label"><span class="form-required">*</span>页游控制器名称：</label>
+                <div class="col-md-3 col-sm-5">
+                    <input type="text" class="form-control" id="controller_name_yy" value="{$info['controller_name_yy']}" name="controller_name_yy" placeholder="">
+                </div>
+            </div>
+        </div>
+        </if>
+
+        <php>
+            $sdkConfig = config('sdk_config.'.$info['sdk_config_name']);
+        </php>
+
+        <if condition="$info['pt_type'] eq 0 or $info['pt_type'] eq 2 or $info['pt_type'] eq 3 or $info['pt_type'] eq 6">
+
+
+
+            <div class="form-group">
+                <label for="sdk_config_name" class="col-sm-2 control-label"><span class="form-required">*</span>SDK配置：</label>
+                <div class="col-md-3 col-sm-5">
+                    <select id="sdk_config_name" name="sdk_config_name" disabled class=" form-control" data-live-search="true">
+                        <option>{$sdkConfig['name']}</option>
+                    </select>
+                </div>
+                <p class="help-block">SDK确认后不可更改</p>
+            </div>
+
+            <div class="form-group">
+                <label for="sdk_config_version" class="col-sm-2 control-label"><span class="form-required">*</span>SDK版本：</label>
+                <div class="col-md-3 col-sm-5">
+                    <select id="sdk_config_version" name="sdk_config_version" class="form-control" data-live-search="true">
+                        <volist name="sdkConfig['version']" id="vo">
+                            <option value="{$vo}" <?php if($info['sdk_config_version']==$vo) echo 'selected'; ?> >{$vo}</option>
+                        </volist>
+                    </select>
+                </div>
+                <p class="help-block"></p>
+            </div>
+
+
+            <div class="form-group">
+                <label for="website" class="col-sm-2 control-label">手游客户端参数：</label>
+                <div class="col-md-3 col-sm-5">
+                    <textarea class="form-control" name="platform_config_sy" placeholder="配置参数，换行分割">{$info['platform_config_sy']}</textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="website" class="col-sm-2 control-label">手游服务端参数：</label>
+                <div class="col-md-3 col-sm-5">
+                    <textarea class="form-control" name="service_config"
+                              placeholder="配置参数，换行分割">{$info['service_config']}</textarea>
+                </div>
+            </div>
+
+            <div class="form-group sy_settle_type" hidden>
+                <label for="website" class="col-sm-2 control-label"><span class="form-required">*</span>手游创建订单通知地址：</label>
+                <div class="col-md-3 col-sm-5">
+                    <textarea class="form-control" name="order_notice_url_sy" placeholder="创建订单通知地址">{$info.order_notice_url_sy}</textarea>
+                </div>
+            </div>
+
+            <div class="form-group h5_settle_type" hidden>
+                <label for="website" class="col-sm-2 control-label"><span class="form-required">*</span>手游支付回调通知地址：</label>
+                <div class="col-md-3 col-sm-5">
+                    <textarea class="form-control" name="pay_notice_url_sy" placeholder="支付回调通知地址">{$info.pay_notice_url_sy}</textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="controller_name_sy" class="col-sm-2 control-label"><span class="form-required">*</span>手游控制器名称：</label>
+                <div class="col-md-3 col-sm-5">
+                    <input type="text" class="form-control jsmust" id="controller_name_sy" name="controller_name_sy"
+                           value="{$info['controller_name_sy']}" placeholder="">
+                </div>
+            </div>
+
+        </if>
+
+        <div class="form-group">
+            <div class="col-sm-offset-1 col-sm-5">
+                <button type="submit" disabled class="btn btn-primary js-ajax-submit save-btn ml9">保存</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var settle_type = $("#open_user_id").find("option:selected").data('settle_type');
+        if(settle_type == 0){
+            $(".h5_settle_type").hide();
+            $(".sy_settle_type").hide();
+            $(".yy_settle_type").hide();
+        }else{
+            $(".h5_settle_type").show();
+            $(".sy_settle_type").show();
+            $(".yy_settle_type").show();
+        }
+        change_submit_btn($('.jskeyup'), $('.jskeyup .js-ajax-submit'));
+
+        $('.jskeyup input,select').keyup(function () {
+            change_submit_btn($('.jskeyup'), $('.jskeyup .js-ajax-submit'));
+        });
+        $('.jskeyup input,select').click(function () {
+            change_submit_btn($('.jskeyup'), $('.jskeyup .js-ajax-submit'));
+        });
+    })
+</script>
+</body>
+</html>

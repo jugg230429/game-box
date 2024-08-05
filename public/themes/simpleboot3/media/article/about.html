@@ -1,0 +1,61 @@
+<extend name="../mediapublic/base"/>
+<!-- 主体内容 -->
+<block name="body">
+    <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/user_protocol.css">
+
+    <if condition="$union_set">
+
+        <div class="footernav_html">
+            <div class="layui-container mt20">
+                <div class="footernav_con_left fl">
+                    <volist name="lists" id="vo">
+                        <a href="{:url('Article/about',['id'=>$vo['id']])}">
+                            <div class="footernav_con_left_item <if condition='$id eq $vo[id]'>active_footernavcon</if>">
+                                <div class="fl <if condition='$id eq $vo[id]'>active_footernav</if>"></div>
+                                <p>{$vo.title}</p>
+                            </div>
+                        </a>
+                    </volist>
+                </div>
+                <div class="footernav_con_right fl">
+                    <p class="footernav_con_right_title">{$data.title}</p>
+                    <div class="footernav_con_right_con">
+                        {:htmlspecialchars_decode($data['content'])}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <else/>
+
+
+        <div class="footernav_html">
+            <div class="layui-container mt20">
+                <div class="footernav_con_left fl">
+                    <volist name="lists.data" id="vo">
+                        <a href="{:url('Article/about',['id'=>$vo['id']])}">
+                            <div class="footernav_con_left_item <if condition='$id eq $vo[id]'>active_footernavcon</if>">
+                                <div class="fl <if condition='$id eq $vo[id]'>active_footernav</if>"></div>
+                                <p>{$vo.post_title}</p>
+                            </div>
+                        </a>
+                    </volist>
+                </div>
+                <div class="footernav_con_right fl">
+                    <p class="footernav_con_right_title">{$data.post_title}</p>
+                    <div class="footernav_con_right_con">
+                        {$data.post_content}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </if>
+
+
+
+
+
+
+</block>

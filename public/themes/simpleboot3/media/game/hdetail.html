@@ -1,0 +1,1179 @@
+<extend name="../mediapublic/base" />
+<block name="body">
+    <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/game.css">
+    <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/game_detail.css">
+    <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/jquery.vm-carousel.css">
+    <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/swiper.min.css">
+    <script src="__JS__/swiper.min.js"></script>
+    <script src="__JS__/jquery.vm-carousel.js"></script>
+    <!-- 图片 -->
+    <div class="game_details_img">
+        <notempty name="data.groom">
+            <img src="{:cmf_get_image_url($data['groom'])}" alt="">
+        </notempty>
+    </div>
+    <div class="layui-container">
+        <div class="game_detail_mid">
+            <div class="game_detail_left fl" style="height:auto">
+                <!-- 游戏简介 -->
+                <div class="game_detail_summry">
+                    <p class="game_detail_item_title">游戏简介</p>
+                    <div class="game_detail_hx"></div>
+                    <div class="game_detail_con">
+                        <div class="game_detail_con_img fl">
+                            <div class="game-img">
+                                <img src="{:cmf_get_image_url($data['icon'])}" alt="" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null">
+                            </div>
+                        </div>
+                        <div class="game_detail_con_infos fl">
+                            <div class="fl">
+                                <div class="game_detail_con_firstline">
+                                    <p class="game_detail_con_title fl">{$data.game_name}</p>
+                                    <p class="game_detail_con_type over-hide fl"><span>{$data.game_type_name}</span> <span class="line-style">|</span>
+                                        <if condition="$data.sdk_version eq 3">
+                                           {:get_simple_number($data['dow_num'])}人在玩
+                                            <else/>
+                                           <eq name="data.down_port" value="1">{$data.game_size}<else/>{$data.game_address_size}MB</eq>
+                                        </if>
+                                    </p>
+                                </div>
+                                <div class="game_detail_con_secondline clear">
+                                    <div style="white-space:nowrap;" class="game_detail_con_remark fl">
+                                        <p class="fl">评分：</p>
+                                        <div class="howremark fl">
+                                            <div class="kongzhiimg" style="width:{$data.game_score*10.4}%"><img
+                                                    src="__STATIC__/images/ico_star.png" alt=""></div>
+                                        </div>
+                                    </div>
+                                    <p class="game_detail_con_banben fl">
+                                        <span style="margin-left:4px;">版本：</span>
+                                        <eq name="data.sdk_type" value="2">
+                                            <img src="__STATIC__/images/content_ico_andriod.png" alt="">
+                                            <img src="__STATIC__/images/content_ico_IOS.png" alt=""
+                                                style="padding-bottom: 2px">
+                                            <else />
+                                            <if condition="$data['sdk_version'] eq 1">
+                                                <img src="__STATIC__/images/content_ico_andriod.png" alt="">
+                                                <elseif condition="$data['sdk_version'] eq 2" />
+                                                <img src="__STATIC__/images/content_ico_IOS.png" alt="">
+                                                <else />
+                                                 <img src="__STATIC__/images/content_icon_h5.png" alt="">
+                                            </if>
+                                        </eq>
+                                    </p>
+                                </div>
+                            </div>
+                            <eq name="data.sdk_version" value="3">
+                                <!-- H5 -->
+                                <div class="fl game_box">
+                                    <div class="fl">
+                                        <p class=" game_box__button_ios">
+                                            <a href="{:url('Game/open_game',[],false)}?game_id={$data['relation_game_id']}">
+                                                <span>去玩</span>
+                                            </a>
+                                        </p>
+                                        <if condition="get_weiduan_down_status($data['relation_game_id'],1,MEDIA_PID)">
+                                            <p class=" game_box__button_andriod ">
+                                                <php>$promote_id = MEDIA_PID;</php>
+                                                <a class="down_game" download="" data-game_id="{$data['relation_game_id']}" data-sdk_version="3" data-promote_id="{$promote_id}"
+                                                <if condition="$session['login_auth'] eq 0">
+                                                    class="login"
+                                                <else />
+                                                    data-down_url="{:url('Downfile/weiduan_down',['game_id'=>$data['relation_game_id'],'sdk_version'=>1,'promote_id'=>$promote_id])}"
+                                                </if>>
+                                                    <span>下载微端包</span>
+                                                </a>
+                                            </p>
+                                            <else />
+                                            <!--<p class="game_box__button_andriod disabled">-->
+                                                <!--<a><span>下载微端包</span></a>-->
+                                            <!--</p>-->
+                                        </if>
+
+                                    </div>
+                                    <div class="game_box_code fl">
+                                        <img src="{:url('Index/qrcode',['url'=>base64_encode(base64_encode($data['url']))])}" class="game_box_code_img" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null">
+                                        <div class="game_box_code_line"></div>
+									</div>
+                                    <div class="fg game_box_text">手机扫码去玩</div>
+                                </div>
+                            <else/>
+                                <!-- 手游 -->
+                                <div class="fl game_box">
+                                    <div class="fl">
+                                        <if condition="get_down_status2($data['relation_game_id'],1)">
+                                            <p class="game_box__button_ios"><a download="" href="{:url('Downfile/down',['game_id'=>$data['relation_game_id'],'sdk_version'=>1])}">
+                                                <img src="__STATIC__/images/Bulletwindow_btn_andriod.png" alt=""><span>安卓版下载</span></a>
+                                            </p>
+                                        <else />
+                                            <!--<p class="game_box__button_ios disabled"><a href="javascript:;">-->
+                                                <!--<img src="__STATIC__/images/Bulletwindow_btn_andriod.png" alt=""><span>安卓版下载</span></a>-->
+                                            <!--</p>-->
+                                        </if>
+                                        <if condition="get_down_status2($data['relation_game_id'],2)">
+                                            <p class="game_box__button_andriod"><a <if condition="$session['login_auth'] eq 0">class="login"<else />href="{:url('Downfile/down',['game_id'=>$data['relation_game_id'],'sdk_version'=>2])}"</if>>
+                                                <img src="__STATIC__/images/Bulletwindow_btn_ios.png" alt=""><span>苹果版下载</span></a>
+                                            </p>
+                                        <else />
+                                            <!--<p class="game_box__button_andriod disabled"><a href="javascript:;">-->
+                                                <!--<img src="__STATIC__/images/Bulletwindow_btn_ios.png" alt=""><span>苹果版下载</span></a>-->
+                                            <!--</p>-->
+                                        </if>
+                                    </div>
+                                    <div class="game_box_code fl">
+                                        <img src="{:url('Index/qrcode',['url'=>base64_encode(base64_encode($data['url']))])}" class="game_box_code_img" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null">
+                                        <div class="game_box_code_line"></div>
+                                    </div>
+                                    <div class="fg game_box_text">手机扫码下载</div>
+                                </div>
+                            </eq>
+
+
+                            <div class="game_detail_con_infos_ms">
+                                <p>{$data.features}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 游戏折扣 -->
+                <div class="game_detail_discount">
+                    <div class="v-middle discount-menu">
+                        <a href="javascript:;" class="discount-item active">
+                            <p class="game_detail_item_title">折扣返利</p>
+                        </a>
+                        <a href="javascript:;" class="discount-item">
+                            <p class="game_detail_item_title">优惠券</p>
+                        </a>
+                    </div>
+                    <div class="game-discount-detail">
+                        <div class="discount-tab rebate-discount-box ">
+                            <if condition="!$rebate1 and !$rebate2 and !$rebate3 and !$discount1 and !$discount2 and !$discount3 and !$balance1 and !$balance2 and !$balance3">该游戏暂无折扣返利</if>
+                            <div <if condition="!$rebate1 and !$rebate2 and !$rebate3">style="display: none;"</if> class="rebate-discount charge-rebate" >
+                                <span class="discount-tag v-middle">
+                                    <i class="tag-icon"></i>
+                                    充值返利
+                                </span>
+                                <p class="discount-tag-title">单日单笔充值返利，不可累计 (充值后自动发放绑币)</p>
+                                <!--安卓版-->
+                                <notempty name="rebate1">
+                                <div class="discount-list-and">
+                                    <p class="discount-title-and">安卓版</p>
+                                    <ul class="discount-list">
+                                        <if condition="empty($rebate1['status'])">
+                                            <li class="discount-item v-middle">
+                                                <i class="star-icon"></i>
+                                                充值返利{$rebate1['ratio']}%
+                                            </li>
+                                            <else/>
+                                            <volist name="rebate1.money" id="vo" key="key">
+                                                <li class="discount-item v-middle">
+                                                    <i class="star-icon"></i>
+                                                    充值{$vo}元及以上，返利{$rebate1['ratio'][$key-1]}%
+                                                </li>
+                                            </volist>
+                                        </if>
+                                    </ul>
+                                </div>
+                                </notempty>
+                                <!--苹果版-->
+                                <notempty name="rebate2">
+                                <div class="discount-list-ios">
+                                    <p class="discount-title-ios">苹果版</p>
+                                    <ul class="discount-list">
+                                        <if condition="empty($rebate2['status'])">
+                                            <li class="discount-item v-middle">
+                                                <i class="star-icon"></i>
+                                                充值返利{$rebate2['ratio']}%
+                                            </li>
+                                            <else/>
+                                            <volist name="rebate2.money" id="vo" key="key">
+                                                <li class="discount-item v-middle">
+                                                    <i class="star-icon"></i>
+                                                    充值{$vo}元及以上，返利{$rebate2['ratio'][$key-1]}%
+                                                </li>
+                                            </volist>
+                                        </if>
+                                    </ul>
+                                </div>
+                                </notempty>
+                                <notempty name="rebate3">
+                                    <div class="discount-list-ios">
+                                        <ul class="discount-list">
+                                            <if condition="empty($rebate3['status'])">
+                                                <li class="discount-item v-middle">
+                                                    <i class="star-icon"></i>
+                                                    充值返利{$rebate3['ratio']}%
+                                                </li>
+                                                <else/>
+                                                <volist name="rebate3.money" id="vo" key="key">
+                                                    <li class="discount-item v-middle">
+                                                        <i class="star-icon"></i>
+                                                        充值{$vo}元及以上，返利{$rebate3['ratio'][$key-1]}%
+                                                    </li>
+                                                </volist>
+                                            </if>
+                                        </ul>
+                                    </div>
+                                </notempty>
+                            </div>
+                            <div <if condition="!$discount1 and !$discount2 and !$discount3">style="display: none;"</if> class="rebate-discount charge-discount" >
+                                <span class="discount-tag v-middle">
+                                    <i class="tag-icon"></i>
+                                    充值折扣
+                                </span>
+                                <p class="discount-tag-title">单笔充值折扣</p>
+                                <notempty name="discount1">
+                                <div class="discount-list-and">
+                                    <p class="discount-title-and">安卓版</p>
+                                    <ul class="discount-list">
+                                        <if condition="$discount1['first_discount']">
+                                            <li class="discount-item v-middle">
+                                                <i class="star-icon"></i>
+                                                首充{$discount1['first_discount']}折
+                                            </li>
+                                        </if>
+                                        <if condition="$discount1['continue_discount']">
+                                            <li class="discount-item v-middle">
+                                                <i class="star-icon"></i>
+                                                续充{$discount1['continue_discount']}折
+                                            </li>
+                                        </if>
+                                </ul>
+                                </div>
+                                </notempty>
+                                <notempty name="discount2">
+                                <div class="discount-list-ios">
+                                    <p class="discount-title-ios">苹果版</p>
+                                    <ul class="discount-list">
+                                        <if condition="$discount2['first_discount']">
+                                            <li class="discount-item v-middle">
+                                                <i class="star-icon"></i>
+                                                首充{$discount2['first_discount']}折
+                                            </li>
+                                        </if>
+                                        <if condition="$discount2['continue_discount']">
+                                            <li class="discount-item v-middle">
+                                                <i class="star-icon"></i>
+                                                续充{$discount2['continue_discount']}折
+                                            </li>
+                                        </if>
+                                    </ul>
+                                </div>
+                                </notempty>
+                                <notempty name="discount3">
+                                    <div class="discount-list-ios">
+                                        <ul class="discount-list">
+                                            <if condition="$discount3['first_discount']">
+                                                <li class="discount-item v-middle">
+                                                    <i class="star-icon"></i>
+                                                    首充{$discount3['first_discount']}折
+                                                </li>
+                                            </if>
+                                            <if condition="$discount3['continue_discount']">
+                                                <li class="discount-item v-middle">
+                                                    <i class="star-icon"></i>
+                                                    续充{$discount3['continue_discount']}折
+                                                </li>
+                                            </if>
+                                        </ul>
+                                    </div>
+                                </notempty>
+                            </div>
+                            <div <if condition="!$bind_discount1 and !$bind_discount2 and !$bind_discount3">style="display: none;"</if> class="rebate-discount bing-rebate " >
+                                <span class="discount-tag v-middle">
+                                    <i class="tag-icon"></i>
+                                    绑币折扣
+                                </span>
+                                <p class="discount-tag-title">单笔绑币折扣</p>
+                                <if condition="$bind_discount1">
+                                <div class="discount-list-and">
+                                    <p class="discount-title-and">安卓版</p>
+                                    <ul class="discount-list">
+                                        <if condition="$bind_discount1['first_discount']">
+                                            <li class="discount-item v-middle">
+                                                <i class="star-icon"></i>
+                                                首充绑定平台币{$bind_discount1.first_discount}折
+                                            </li>
+                                        </if>
+                                        <if condition="$bind_discount1['continue_discount']">
+                                            <li class="discount-item v-middle">
+                                                <i class="star-icon"></i>
+                                                续充绑定平台币{$bind_discount1.continue_discount}折
+                                            </li>
+                                        </if>
+
+                                    </ul>
+                                </div>
+                                </if>
+                                <if condition="$bind_discount2">
+                                <div class="discount-list-ios">
+                                    <p class="discount-title-ios">苹果版</p>
+                                    <ul class="discount-list">
+                                        <if condition="$bind_discount2['first_discount']">
+                                            <li class="discount-item v-middle">
+                                                <i class="star-icon"></i>
+                                                首充绑定平台币{$bind_discount2.first_discount}折
+                                            </li>
+                                        </if>
+                                        <if condition="$bind_discount2['continue_discount']">
+                                            <li class="discount-item v-middle">
+                                                <i class="star-icon"></i>
+                                                续充绑定平台币{$bind_discount2.continue_discount}折
+                                            </li>
+                                        </if>
+                                    </ul>
+                                </div>
+                                </if>
+                                <if condition="$bind_discount3">
+                                    <div class="discount-list-ios">
+                                        <ul class="discount-list">
+                                            <if condition="$bind_discount3['first_discount']">
+                                                <li class="discount-item v-middle">
+                                                    <i class="star-icon"></i>
+                                                    首充绑定平台币{$bind_discount3.first_discount}折
+                                                </li>
+                                            </if>
+                                            <if condition="$bind_discount3['continue_discount']">
+                                                <li class="discount-item v-middle">
+                                                    <i class="star-icon"></i>
+                                                    续充绑定平台币{$bind_discount3.continue_discount}折
+                                                </li>
+                                            </if>
+                                        </ul>
+                                    </div>
+                                </if>
+                            </div>
+                        </div>
+                        <div class="discount-tab" style="display: none">
+                            <div class="coupon-game-list">
+                                <if condition="$coupon">
+                                <ul  class="v-middle" style="flex-wrap: wrap">
+                                    <volist name="coupon" id="vo">
+                                        <li class="coupon-game-item ">
+                                            <div class="coupon-detail-box v-middle">
+                                                <div class="coupon-num">
+                                                    <p class="coupon-money"><span>￥</span>{$vo.money}</p>
+                                                    <p class="coupon-use-condition"><if condition="$vo['limit_money']">满{$vo['limit_money']}可使用<else/>无门槛</if></p>
+                                                </div>
+                                                <div class="coupon-name-date">
+                                                    <div class="coupon-name">{$vo.coupon_name}</div>
+                                                    <div class="coupon-date">{$vo.start_time|date='y.m.d',###}-<empty name="vo.end_time">永久<else/>{$vo.end_time|date='y.m.d',###}</empty></div>
+                                                </div>
+                                                <div style="margin-left: auto">
+                                                <empty name="vo.receive_status">
+
+                                                        <a href="javascript:;" data-id="{$vo.id}" class="coupon-btn receive_btn">
+                                                            领取
+                                                        </a>
+                                                        <if condition="!$vo['login_status']"><a href="javascript:;" class="coupon-number" >剩余{$vo.limit_num}次</a></if>
+                                                        <else/>
+                                                        <a href="javascript:;" class="coupon-btn no-use disabled">
+                                                            未使用
+                                                        </a>
+
+
+                                                </empty>
+                                                </div>
+                                            </div>
+                                            <div class="coupon-scope">
+                                                适用于<if condition="$vo['mold'] eq 0">全部游戏<else/>《{$vo["coupon_game"]}》</if>
+                                            </div>
+                                        </li>
+                                    </volist>
+                                </ul>
+                                <else/>
+                                    该游戏暂无福利
+                                </if>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- vip表 -->
+                <if condition="!empty($data['vip_table_pic'])">
+                    <div class="vipTable">
+                        <a href="#" class="vipGo" onclick="chakanImg()"><p><span class="vipStyle">VIP表</span>《{$data['game_name']}》VIP表 <span class="rightHref" style="float: right;">&gt;</span></p> </a>
+                    </div>
+                    <div class="seeVip" hidden>
+                        <div class="vip_bj">
+                            <div class="vip_img">
+                                <img src="{:cmf_get_image_url($data['vip_table_pic'])}">
+                            </div>
+                        </div>
+                    </div>
+                </if>
+                <!-- 游戏截图 -->
+                <div class="game_detail_images">
+                    <p class="game_detail_item_title">游戏截图</p>
+                    <div class="game_detail_hx"></div>
+                    <div class="game_detail_goodimg">
+                        <div style="width:100%;height:24px"></div>
+                        <notempty name="data.screenshot">
+                        <div class="swiper-container lunboimgli">
+                            <div class="swiper-wrapper">
+                                <volist name="data.screenshot" id="vo">
+                                    <div class="swiper-slide">
+                                        <li><img src="{:cmf_get_image_url($vo)}" alt="" onerror="this.src='__STATIC__/images/empty2.jpg';this.onerror=null"></li>
+                                    </div>
+                                </volist>
+                            </div>
+                            <!-- 如果需要分页器 -->
+                            <div class="swiper-pagination"></div>
+                        </div>
+                            <!-- 如果需要导航按钮 -->
+                            <if condition="count($data['screenshot']) gt 0">
+                                <div class="swiper-button-prev"></div>
+                                <div class="swiper-button-next"></div>
+                            </if>
+                            <else/>
+                            <div class="swiper-container lunboimgli">
+                                <div class="swiper-wrapper">
+                                        <div class="swiper-slide">
+                                            <li><img src="{:cmf_get_image_url($vo)}" alt="" onerror="this.src='__STATIC__/images/empty2.jpg';this.onerror=null"></li>
+                                        </div>
+                                </div>
+                            </div>
+                        </notempty>
+                        <div style="width:100%;height:24px"></div>
+                        <div class="carousel_imgs_hx"></div>
+                        <div class="goodgame_img_con">
+                            <p>{$data.introduction}</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- 游戏开服 -->
+                <if condition="$server1 or $server2 or $server3">
+                    <div class="game_detail_open_infos">
+                        <p class="game_detail_item_title">游戏开服</p>
+                        <div class="game_detail_hx"></div>
+                        <div class="game_detail_open">
+                            <if condition="$data['sdk_version'] eq 3">
+                                <div class="game_detail_open_and fl">
+                                    <div class="game_detail_open_and_icon fl">
+                                        <img src="__STATIC__/images/content_icon_h5.png" alt="">
+                                    </div>
+                                    <div class="game_detail_open_and_con fl">
+                                        <div class="clear item_lists_and">
+                                            <volist name="server3" id="vo">
+                                                <div class="game_detail_open_line <if condition="date('Ymd',$vo['start_time']) eq date('Ymd')">today</if>">
+                                                <div class="game_detail_open_dot fl"></div>
+                                                <div>
+                                                    <p class="game_detail_open_firstcol">{$vo.server_name}</p>
+                                                    <p class="game_detail_open_secondcol fl">
+                                                        {$vo.start_time|date='m-d',###}</p>
+                                                    <p class="game_detail_open_thirdcol">
+                                                        {$vo.start_time|date='H:i',###}</p>
+                                                    <if condition="date('Ymd',$vo['start_time']) eq date('Ymd')">
+                                                        <span class="game_detail_open_firstlycol">今日</span>
+                                                    </if>
+                                                </div>
+                                            </div>
+                                            </volist>
+                                        </div>
+                                    </div>
+                                </div>
+                            <else/>
+                                <div class="game_detail_open_and fl">
+                                    <div class="game_detail_open_and_icon fl">
+                                        <img src="__STATIC__/images/commom_ico_Andriod.png" alt="">
+                                    </div>
+                                    <div class="game_detail_open_and_con fl">
+                                        <div class="clear item_lists_and">
+                                            <volist name="server1" id="vo">
+                                                <div class="game_detail_open_line <if condition="date('Ymd',$vo['start_time']) eq date('Ymd')">today</if>">
+                                                    <div class="game_detail_open_dot fl"></div>
+                                                    <div>
+                                                        <p class="game_detail_open_firstcol">{$vo.server_name}</p>
+                                                        <p class="game_detail_open_secondcol fl">
+                                                            {$vo.start_time|date='m-d',###}</p>
+                                                        <p class="game_detail_open_thirdcol">
+                                                            {$vo.start_time|date='H:i',###}</p>
+                                                        <if condition="date('Ymd',$vo['start_time']) eq date('Ymd')">
+                                                            <span class="game_detail_open_firstlycol">今日</span>
+                                                        </if>
+                                                    </div>
+                                                </div>
+                                            </volist>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="game_detail_open_ios fl">
+                                    <div class="game_detail_open_ios_icon fl"><img
+                                            src="__STATIC__/images/commom_ico_IOS.png" alt=""></div>
+                                    <div class="game_detail_open_ios_con fl">
+                                        <div class="clear item_lists_ios">
+                                            <volist name="server2" id="vo">
+                                                <div class="game_detail_open_line">
+                                                    <div class="game_detail_open_dot fl"></div>
+                                                    <div>
+                                                        <p class="game_detail_open_firstcol">{$vo.server_name}</p>
+                                                        <p class="game_detail_open_secondcol fl">
+                                                            {$vo.start_time|date='m-d',###}</p>
+                                                        <p class="game_detail_open_thirdcol">
+                                                            {$vo.start_time|date='H:i',###}</p>
+                                                        <if condition="date('Ymd',$vo['start_time']) eq date('Ymd')">
+                                                            <span class="game_detail_open_firstlycol">今日</span>
+                                                        </if>
+                                                    </div>
+                                                </div>
+                                            </volist>
+                                        </div>
+                                    </div>
+                                </div>
+                                </if>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </if>
+                <!-- 游戏礼包 -->
+                <if condition="!empty($gift)">
+                    <div class="game_detail_item_bag clear">
+                        <div>
+                            <p class="game_detail_item_title fl">游戏礼包</p>
+                        </div>
+                        <div class="game_detail_hx clear"></div>
+						<div class="game_detail_box">
+                        <volist name="$gift" id="vo">
+                            <div class="game_detail_bag">
+                                <div>
+                                    <a href="{:url('Gift/detail',['gift_id'=>$vo['gift_id']])}">
+                                        <p class="game_detail_bag_title">{$vo.giftbag_name}</p>
+                                        <p class="game_detail_bag_con">
+                                            礼包内容：{$vo.digest}
+                                        </p>
+                                    </a>
+                                    <div class="game_detail_bag_attr">
+                                        <p class="fl" style="width:185px"><span class="fl">剩余<i>：</i></span><span
+                                                class="game_detail_bag_shengyu fl">{:null_to_0($vo['remain_num']/$vo['novice_num']*100)}%</span>
+                                            <if condition="strpos($vo['giftbag_version'],'1') nheq false">
+                                                <img src="__STATIC__/images/content_ico_andriod.png" alt="">
+                                            </if>
+                                            <if condition="strpos($vo['giftbag_version'],'2') nheq false">
+                                                <img src="__STATIC__/images/content_ico_IOS.png" alt="" style="padding-bottom: 2px">
+                                            </if>
+                                            <if condition="strpos($vo['giftbag_version'],'3') nheq false">
+                                                <img src="__STATIC__/images/content_icon_h5.png" alt="" style="padding-bottom: 2px">
+                                            </if>
+                                        </p>
+                                        <if condition="$vo['received'] eq 0">
+                                            <div <if condition="$vo['vip'] gt session('member_auth.vip_level') and session('member_auth')">class="game_detail_bag_lingqu_disabled fl "<else/>class="game_detail_bag_lingqu fl "</if>
+                                                 data-giftbag_id="{$vo.gift_id}">领取</div>
+                                            <else />
+                                            <div class="game_detail_bag_fuzhi fl copy1"
+                                                 data-novice="{$vo.novice}">复制</div>
+                                        </if>
+                                    </div>
+                                </div>
+                            </div>
+                        </volist>
+					 </div>
+                    </div>
+                    <!-- 领取礼包弹窗 -->
+                    <div class="receive_bag_modal">
+                        <div class="receive_bag_modal_header">
+                            <span>礼包领取成功</span>
+                            <span class="close_receive_bag_modal">
+                                <img src="__STATIC__/images/delete_icon.png" alt=""></span>
+                        </div>
+                        <div class="receive_bag_modal_con">
+                            <p class="receive_bag_modal_firstline"><span class="colblack">激活码 : </span>
+                                <input readonly type="text" id="novice" class="fasfegxv"
+                                    value="FH2893YR38T8T33YR38459TY853GY341">
+                            </p>
+                            <p class="receive_bag_modal_secondline"><span> 可在[<a
+                                        href="{:url('User/mygift')}">我的礼包</a>]中查看</span></p>
+                            <div class="receive_bag_modal_thirdline copy"><span>复制</span> </div>
+                        </div>
+                    </div>
+                </if>
+                <!-- 独家活动 -->
+                <if condition="$article">
+                <div class="game_detail_item_onlyact clear">
+                    <p class="game_detail_item_title">独家活动</p>
+                    <div class="game_detail_hx"></div>
+                    <div class="game_detail_onlyact">
+                        <div class="game_detail_onlyact_con">
+                            <div class="game_detail_onlyact_ios">
+                                <volist name="article" id="vo">
+                                    <div class="game_detail_onlyact_item">
+                                        <div class="fl btnactivity">{:get_category_name($vo['category_id'])}</div>
+                                        <a href="{:url('Article/detail',['id'=>$vo['id']])}">
+                                            <p class="onlyact_title fl"> {$vo.post_title}</p>
+                                            <p class="into_onlyact fl">></p>
+                                        </a>
+                                    </div>
+                                </volist>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </if>
+            </div>
+            <div class="game_detail_right fl ml26">
+                <notempty name="hot_game">
+                    <!-- 热门游戏 -->
+                    <div>
+                        <p class="game_detail_item_title fl">热门游戏</p><img src="__STATIC__/images/hot_ico_hot.png" alt="" class="fl hot_img">
+                        <div class="game_detail_hx clear"></div>
+                        <div class="game_detail_hotgame">
+                            <volist name="hot_game" id="vo" key="k">
+                                <div class="game_detail_hotgame_item">
+                                    <div>
+                                        <if condition="$k eq 1">
+                                            <div class="after_hover">
+                                                <div class="after_hover_">
+                                                <div class="game_detail_hotgame_first fl"><span>{$k}</span></div>
+                                                <div class="fl game_detail_hotgame_imgs one">
+                                                    <notempty name="vo.icon">
+                                                        <img src="{:cmf_get_image_url($vo['icon'])}" alt="">
+                                                    </notempty>
+                                                </div>
+
+                                                <div class="fl hotgame_cons">
+                                                    <p class="clear game_detail_hotgame_first_title">{$vo.game_name}</p>
+                                                    <p class="clear game_detail_hotgame_first_con">{$vo.game_type_name}
+                                                    </p>
+                                                </div>
+                                                    <div class="fl btn_download">
+                                                        <a href="{:url('Game/hdetail',['game_id'=>$vo['id']])}"><eq name="vo.sdk_version" value="3">去玩<else/>下载游戏</eq></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="before_hover">
+                                                <div class="before_hover_">
+                                                    <div class="game_detail_hotgame_first fl"><span>{$k}</span></div>
+                                                    <div class="fl game_detail_hotgame_second_title">{$vo.game_name}</div>
+                                                    <div class="fl btn_download">
+                                                        <a href="{:url('Game/hdetail',['game_id'=>$vo['id']])}"> <eq name="vo.sdk_version" value="3">去玩<else/>下载游戏</eq></a>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <elseif condition="$k eq 2" />
+                                            <div class="after_hover">
+                                                <div class="after_hover_">
+                                                <div class="game_detail_hotgame_second fl"><span>{$k}</span></div>
+                                                <div class="fl game_detail_hotgame_imgs">
+                                                    <notempty name="vo.icon"><img src="{:cmf_get_image_url($vo['icon'])}" alt="" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null"></notempty>
+                                                    <!--<div class="game_detail_hotgame_type fl">
+                                                        <eq name="vo.sdk_version" value="1">
+                                                            <img src="__STATIC__/images/user_ico_android.png" alt="">
+                                                            <else />
+                                                            <img src="__STATIC__/images/user_ico_IOS.png" alt="">
+                                                        </eq>
+                                                    </div>-->
+                                                </div>
+                                                <div class="fl hotgame_cons">
+                                                    <p class="clear game_detail_hotgame_first_title">{$vo.game_name}</p>
+                                                    <p class="clear game_detail_hotgame_first_con">{$vo.game_type_name}</p>
+                                                </div>
+                                                    <div class="fl btn_download">
+                                                        <a href="{:url('Game/hdetail',['game_id'=>$vo['id']])}"> <eq name="vo.sdk_version" value="3">去玩<else/>下载游戏</eq></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="before_hover">
+                                                <div class="before_hover_">
+                                                <div class="game_detail_hotgame_second fl"><span>{$k}</span></div>
+                                                <div class="fl game_detail_hotgame_second_title">{$vo.game_name}</div>
+                                                    <div class="fl btn_download">
+                                                        <a href="{:url('Game/hdetail',['game_id'=>$vo['id']])}"> <eq name="vo.sdk_version" value="3">去玩<else/>下载游戏</eq></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <elseif condition="$k eq 3" />
+                                            <div class="after_hover">
+                                                <div class="after_hover_">
+                                                <div class="game_detail_hotgame_third fl"><span>{$k}</span></div>
+                                                <div class="fl game_detail_hotgame_imgs">
+                                                    <notempty name="vo.icon"><img src="{:cmf_get_image_url($vo['icon'])}" alt="" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null"></notempty>
+                                                    <!--<div class="game_detail_hotgame_type fl">
+                                                        <eq name="vo.sdk_version" value="1">
+                                                            <img src="__STATIC__/images/user_ico_android.png" alt="">
+                                                            <else />
+                                                            <img src="__STATIC__/images/user_ico_IOS.png" alt="">
+                                                        </eq>
+                                                    </div>-->
+                                                </div>
+
+                                                <div class="fl hotgame_cons">
+                                                    <p class="clear game_detail_hotgame_first_title">{$vo.game_name}</p>
+                                                    <p class="clear game_detail_hotgame_first_con">{$vo.game_type_name}
+                                                    </p>
+                                                </div>
+                                                    <div class="fl btn_download">
+                                                        <a href="{:url('Game/hdetail',['game_id'=>$vo['id']])}"> <eq name="vo.sdk_version" value="3">去玩<else/>下载游戏</eq></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="before_hover">
+                                                <div class="before_hover_">
+                                                <div class="game_detail_hotgame_third fl"><span>{$k}</span></div>
+                                                <div class="fl game_detail_hotgame_third_title">{$vo.game_name}</div>
+                                                <div class="fl btn_download">
+                                                    <a href="{:url('Game/hdetail',['game_id'=>$vo['id']])}"> <eq name="vo.sdk_version" value="3">去玩<else/>下载游戏</eq></a>
+                                                </div>
+                                                </div>
+                                            </div>
+                                            <else />
+                                            <div class="after_hover">
+                                                <div class="after_hover_">
+                                                <div class="game_detail_hotgame_other fl"><span>{$k}</span></div>
+                                                <div class="fl game_detail_hotgame_imgs">
+                                                    <notempty name="vo.icon"><img src="{:cmf_get_image_url($vo['icon'])}" alt=""></notempty>
+                                                    <!--<div class="game_detail_hotgame_type fl">
+                                                        <eq name="vo.sdk_version" value="1">
+                                                            <img src="__STATIC__/images/user_ico_android.png" alt="">
+                                                            <else />
+                                                            <img src="__STATIC__/images/user_ico_IOS.png" alt="">
+                                                        </eq>
+                                                    </div>-->
+                                                </div>
+
+                                                <div class="fl hotgame_cons">
+                                                    <p class="clear game_detail_hotgame_first_title">{$vo.game_name}</p>
+                                                    <p class="clear game_detail_hotgame_first_con">{$vo.game_type_name}</p>
+                                                </div>
+                                                    <div class="fl btn_download">
+                                                        <a href="{:url('Game/hdetail',['game_id'=>$vo['id']])}"> <eq name="vo.sdk_version" value="3">去玩<else/>下载游戏</eq></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="before_hover">
+                                                <div class="before_hover_">
+                                                <div class="game_detail_hotgame_other fl"><span>{$k}</span></div>
+                                                <div class="fl game_detail_hotgame_other_title">{$vo.game_name}</div>
+                                                    <div class="fl btn_download">
+                                                        <a href="{:url('Game/hdetail',['game_id'=>$vo['id']])}"> <eq name="vo.sdk_version" value="3">去玩<else/>下载游戏</eq></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </if>
+
+                                    </div>
+                                    <!--<div class="game_detail_hotgame_hx clear"></div>-->
+                                </div>
+                            </volist>
+                        </div>
+                    </div>
+                </notempty>
+                <notempty name="gonglue" id="vo">
+
+				   <!-- 游戏攻略 -->
+                    <div class="">
+                        <p class="game_detail_item_title flex">
+                            <span class="title-text">游戏攻略</span>
+                            <a href="{:url('Article/index',['category_id'=>5])}" class="more" title="更多">更多<span class="more-icon"></span></a>
+                        </p>
+                        <div class="game_detail_hx"></div>
+                        <div class="game_detail_gameraiders">
+                            <volist name="gonglue" id="vo" key="k">
+                                    <a href="{:url('Article/detail',['id'=>$vo['id']])}" class="game_detail_gameraiders_item <if condition="$k eq 1">active</if>">
+
+                                    <if condition="$k eq 1">
+                                        <div class="game_gonlue_after">
+                                            <div class="game_detail_gameraiders_first fl">
+                                                <div>
+                                                    <img src="{:cmf_get_image_url($vo['thumbnail'])}" alt="" class="fl" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null">
+                                                    <div class="gameraiders_first fl">{$k}</div>
+                                                </div>
+                                                <div class="fl">
+                                                    <div class="clear gameraiders_first_con">{$vo.post_title}</div>
+                                                    <div class="clear fg lookmore">查看详情</div>
+                                                </div>
+                                                <div class="game_detail_gameraiders_hx_other clear"></div>
+                                            </div>
+                                        </div>
+                                        <div class="game_gonlue_before">
+                                            <div class="game_detail_gameraiders_other clear">
+                                                <div class="gameraiders_one fl">{$k}</div>
+                                                <div class="fl gameraiders_other_title">{$vo.post_title}</div>
+                                                <div class="game_detail_gameraiders_hx_other clear"></div>
+                                            </div>
+                                        </div>
+                                        <elseif condition="$k eq 2" />
+                                        <div class="game_gonlue_after">
+                                            <div class="game_detail_gameraiders_first fl">
+                                                <div>
+                                                    <img src="{:cmf_get_image_url($vo['thumbnail'])}" alt="" class="fl">
+                                                    <div class="gameraiders_two fl">{$k}</div>
+                                                </div>
+                                                <div class="fl">
+                                                    <div class="clear gameraiders_first_con">{$vo.post_title}</div>
+                                                    <div class="clear fg lookmore">查看详情</div>
+                                                </div>
+                                                <div class="game_detail_gameraiders_hx_other clear"></div>
+                                            </div>
+                                        </div>
+                                        <div class="game_gonlue_before">
+                                            <div class="game_detail_gameraiders_other clear">
+                                                <div class="gameraiders_second fl">{$k}</div>
+                                                <div class="fl gameraiders_other_title">{$vo.post_title}</div>
+                                                <div class="game_detail_gameraiders_hx_other clear"></div>
+                                            </div>
+                                        </div>
+                                        <elseif condition="$k eq 3" />
+                                        <div class="game_gonlue_after">
+                                            <div class="game_detail_gameraiders_first fl">
+                                                <div>
+                                                    <img src="{:cmf_get_image_url($vo['thumbnail'])}" alt="" class="fl">
+                                                    <div class="gameraiders_three fl">{$k}</div>
+                                                </div>
+                                                <div class="fl">
+                                                    <div class="clear gameraiders_first_con">{$vo.post_title}</div>
+                                                    <div class="clear fg lookmore">查看详情</div>
+                                                </div>
+                                                <div class="game_detail_gameraiders_hx_other clear"></div>
+                                            </div>
+                                        </div>
+                                        <div class="game_gonlue_before">
+                                            <div class="game_detail_gameraiders_other clear">
+                                                <div class="gameraiders_third fl">{$k}</div>
+                                                <div class="fl gameraiders_other_title">{$vo.post_title}</div>
+                                                <div class="game_detail_gameraiders_hx_other clear"></div>
+                                            </div>
+                                        </div>
+                                        <else />
+                                        <div class="game_gonlue_after">
+                                            <div class="game_detail_gameraiders_first fl">
+                                                <div>
+                                                    <img src="{:cmf_get_image_url($vo['thumbnail'])}" alt="" class="fl">
+                                                    <div class="gameraiders_other_after fl">{$k}</div>
+                                                </div>
+                                                <div class="fl">
+                                                    <div class="clear gameraiders_first_con">{$vo.post_title}</div>
+                                                    <div class="clear fg lookmore">查看详情</div>
+                                                </div>
+                                                <div class="game_detail_gameraiders_hx_other clear"></div>
+                                            </div>
+                                        </div>
+                                        <div class="game_gonlue_before">
+                                            <div class="game_detail_gameraiders_other">
+                                                <div class="fl gameraiders_other">{$k}</div>
+                                                <div class="fl gameraiders_other_title">{$vo.post_title}</div>
+                                                <div class="game_detail_gameraiders_hx_other clear"></div>
+                                            </div>
+                                        </div>
+                                    </if>
+
+                               </a>
+                            </volist>
+
+                        </div>
+                    </div>
+                </notempty>
+            </div>
+        </div>
+    </div>
+    <script>
+        // 隐藏折扣和优惠券入口
+        var discount_show = "{$discount_show_status}";
+        var coupon_show = "{$coupon_show_status}";
+        if(discount_show == 0 && coupon_show == 1){
+            $('.discount-tab').eq(1).show().siblings('.discount-tab').hide();
+            $('.discount-menu a').eq(1).addClass("active").siblings().removeClass("active")
+            $('.discount-menu a').eq(0).hide();
+			 $('.discount-menu a').eq(1).css("margin-left","0");
+        }else if(discount_show == 1 && coupon_show == 1){
+            $('.discount-menu a').eq(1).show();
+        }else if(discount_show == 1 && coupon_show == 0){
+            $('.discount-menu a').eq(1).hide();
+        }else{
+            $('.discount-tab').eq(0).hide();
+            $('.discount-tab').eq(1).hide();
+            $('.discount-menu a').eq(1).hide();
+            $('.discount-menu a').eq(0).hide();
+        }
+
+        $(function () {
+            $('.discount-menu a').click(function () {
+                var index = $(this).index();
+                var that =  $(this);
+                $('.discount-tab').eq(index).show().siblings('.discount-tab').hide();
+                that.addClass("active").siblings().removeClass("active")
+            });
+
+            //折扣返利
+           /* var discount_height=$('.rebate-discount-box').height();
+            $('.rebate-discount-box .rebate-discount').innerHeight(discount_height);*/
+            let and_len=$('.item_lists_and').height()
+            let ios_len=$('.item_lists_ios').height()
+            console.log(and_len,ios_len)
+            if(and_len!==null&&ios_len!==null){
+                if(and_len>ios_len){
+                    $('.item_lists_ios').height($('.item_lists_and').height())
+                }
+                if(and_len<ios_len){
+                    $('.item_lists_and').height($('.item_lists_ios').height())
+                }
+            }
+            $('.copy').click(function () {
+                var str = $("#novice").val();
+                Copy(str);
+                layer.msg("复制成功", { time: 1000,skin:'demo-blue' });
+            })
+            $('.copy1').click(function () {
+                var str = $(this).attr('data-novice');
+                Copy(str);
+                layer.msg("复制成功", { time: 1000,skin:'demo-blue' });
+            });
+            if ($('.active_gamebag').text().indexOf('安卓') > -1) {
+                $('.game_detail_bag_ios').hide()
+                $('.game_detail_bag_android').show()
+            } else {
+                $('.game_detail_bag_ios').show()
+                $('.game_detail_bag_android').hide()
+            }
+            //领取优惠券
+            $(".receive_btn").click(function () {
+                var coupon_id = $(this).data('id');
+                $.ajax({
+                    type: 'post',
+                    url: '{:url("game/getcoupon")}',
+                    async: false,
+                    data: { coupon_id: coupon_id },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.code == 1) {
+                           layer.msg(data.msg);
+                           setTimeout(function () {
+                               window.location.reload();
+                           },1500);
+                        } else {
+                            layer.msg(data.msg);
+                        }
+                    },
+                    error: function (xhr, type) {
+                        alert('服务器错误');
+                    }
+                });
+            })
+        })
+        // 游戏下载悬浮框 样式
+        $('.game_detail_down').hover(function () {
+            $(this).find(".game_detail_down_modal").toggle()
+            /*if($('.game_detail_openbag').length===0){
+                $(this).next().show()
+            }else{
+                $(this).next().next().show()
+            }*/
+
+        })
+       /* $(".game_detail_down_modal").hover(function () {
+            $(this).show()
+        }, function () {
+            $(this).hide()
+        })*/
+        // 轮播
+        var mySwipera = new Swiper('.lunboimgli', {
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+           initialSlide:0,
+            slidesPerView: "auto",
+            spaceBetween: 10,
+            // 如果需要前进后退按钮
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+
+        })
+        // jQuery(function ($) {
+        //     $('.vmcarousel-normal').vmcarousel({
+        //         centered: false,
+        //         start_item: 0,
+        //         autoplay: false,
+        //         infinite: false,
+        //         dont_cut: true,
+        //     });
+        // })
+        //  游戏礼包 苹果、安卓版
+        $('#game_detail_bag_ios').click(function () {
+            $('#game_detail_bag_ios').addClass('active_gamebag')
+            $('.game_detail_bag_ios').show()
+            $('.game_detail_bag_android').hide()
+            if ($('#game_detail_bag_android').hasClass('active_gamebag')) {
+                $('#game_detail_bag_android').removeClass('active_gamebag')
+            }
+
+        })
+        $('#game_detail_bag_android').click(function () {
+            $('#game_detail_bag_android').addClass('active_gamebag')
+            $('.game_detail_bag_ios').hide()
+            $('.game_detail_bag_android').show()
+            if ($('#game_detail_bag_ios').hasClass('active_gamebag')) {
+                $('#game_detail_bag_ios').removeClass('active_gamebag')
+            }
+        })
+        $('.toggle_activity_and').click(function () {
+            $('.toggle_activity_and').addClass('active_activity')
+            $(".game_detail_onlyact_ios").hide()
+            $(".game_detail_onlyact_and").show()
+            if ($('.toggle_activity_ios').hasClass('active_activity')) {
+                $('.toggle_activity_ios').removeClass('active_activity')
+            }
+        })
+        $('.toggle_activity_ios').click(function () {
+            $('.toggle_activity_ios').addClass('active_activity')
+            $(".game_detail_onlyact_ios").show()
+            $(".game_detail_onlyact_and").hide()
+            if ($('.toggle_activity_and').hasClass('active_activity')) {
+                $('.toggle_activity_and').removeClass('active_activity')
+            }
+        })
+        $('.game_detail_openbag').click(function () {
+            $('html,body').animate({ scrollTop: 1200 }, 'slow');
+        })
+        $('.game_detail_bag_lingqu').click(function () {
+            var $this = $(this);
+            var login_auth = "{$session['login_auth']}";
+            if (login_auth == 1) {
+                var gift_id = $this.attr('data-giftbag_id');
+                $.ajax({
+                    type: 'post',
+                    url: '{:url("Gift/getgift")}',
+                    async: false,
+                    data: { gift_id: gift_id },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.code == 1) {
+                            $("#novice").val(data.novice);
+                            $this.parent().find('button').text('已领取');
+                            var conss = $('.receive_bag_modal')
+                            layer.open({
+                                type: 1,
+                                title: false,
+                                closeBtn: false,
+                                area: ['325px', '191px'],
+                                offset: 'auto',
+                                content: conss,
+                                btnAlign: 'c',
+                                shadeClose: true,
+                                end: function () {
+                                    $('.receive_bag_modal').hide();
+                                    window.location.reload();
+                                }
+                            })
+                        } else {
+                            layer.msg(data.msg);
+                        }
+                    },
+                    error: function (xhr, type) {
+                        alert('服务器错误');
+                    }
+                });
+            } else {
+                var conss = $('.login_modals')
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: false,
+                    area: ['305px', '320px'],
+			        skin:'loginclass',
+                    offset: 'auto',
+                    content: conss,
+                    btnAlign: 'c',
+                    shadeClose: true,
+                    end: function () {
+                        $('.login_modals').hide()
+                    }
+                })
+            }
+        })
+        $('.game_detail_gameraiders_item').hover(function () {
+            $(this).addClass("active").siblings(".game_detail_gameraiders_item").removeClass("active")
+        },function () {
+            $(this).removeClass("active");
+        });
+       /* $('.game_detail_gameraiders_item').hover(function () {
+            $(this).children('.game_gonlue_before').hide()
+            $(this).children('.game_gonlue_after').show()
+        }, function () {
+            $(this).children('.game_gonlue_before').show()
+            $(this).children('.game_gonlue_after').hide()
+        })*/
+        $('.close_receive_bag_modal').click(function () {
+            layer.closeAll()
+        })
+        $('.game_detail_hotgame_item:first-child').addClass("active");
+        $('.game_detail_hotgame_item').hover(function () {
+            $(this).addClass("active").siblings(".game_detail_hotgame_item").removeClass("active")
+        });
+     /*   $('.game_detail_hotgame_item').hover(function () {
+            console.log($(this))
+            $(this).next().css('margin-top','40px')
+            $(this).children().children('.before_hover').hide()
+            $(this).children().children('.after_hover').show()
+            $(this).children().children('.btn_download').css('margin-top','20px')
+            if($(this).children().children().children('.game_detail_hotgame_first').length!==0){
+                console.log('1')
+            }
+            if($(this).children().children().children('.game_detail_hotgame_second').length!==0){
+                console.log('2')
+            }
+            if($(this).children().children().children('.game_detail_hotgame_third').length!==0){
+                console.log('3')
+            }
+            if($(this).children().children().children('.game_detail_hotgame_other').length!==0){
+                console.log('other')
+            }
+        }, function () {
+            $(this).next().css('margin-top','0px')
+            $(this).children().children('.after_hover').hide()
+            $(this).children().children('.before_hover').show()
+            $(this).children().children('.btn_download').css('margin-top','0px')
+
+        })*/
+        //复制功能
+        function Copy(str) {
+            var save = function (e) {
+                e.clipboardData.setData('text/plain', str);
+                e.preventDefault();
+            }
+            document.addEventListener('copy', save);
+            document.execCommand('copy');
+            document.removeEventListener('copy', save);
+        }
+
+    </script>
+
+
+    <script>
+
+        function chakanImg(){
+            $(".seeVip").css("display","block");
+        }
+        $(".seeVip").click(function(){
+            $(".seeVip").css("display","none")
+        })
+
+        $(function () {
+            $(".down_game").click(function () {
+                var down_url = $(this).attr('data-down_url');
+                var game_id = $(this).attr('data-game_id');
+                var down_version = $(this).attr('data-sdk_version');
+                var promote_id = $(this).attr('data-promote_id');
+                //请求
+                $.ajax({
+                    url: "{:url('Downfile/get_ban_status')}",
+                    type: 'post',
+                    dataType: 'json',
+                    data: {game_id: game_id,type:4,sdk_version:down_version,promote_id:promote_id},
+                    success: function (res) {
+                        if (res.code != 1) {
+                            layer.msg(res.msg);
+                        } else {
+                            location.href = down_url;
+                        }
+                    }, error() {
+                        layer.msg('服务器错误');
+                    }
+                })
+            })
+        })
+    </script>
+
+
+</block>

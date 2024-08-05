@@ -1,0 +1,23 @@
+/*尊享卡*/
+.mcardcon{
+	width:80%;
+}
+.mcard{
+	width:23%;
+	float:left;
+	position:relative;
+}
+.pt7 .mcard:first-child{
+    margin-left: 4%;
+}
+.mcard-input{
+	width:100%;
+}
+.mycard-tip{
+	position: absolute;
+    right: 10px;
+    top: 5px;
+}
+.mcard-line{
+    line-height: 32px;
+}

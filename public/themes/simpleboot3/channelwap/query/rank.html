@@ -1,0 +1,171 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/new_select2.css" type="text/css" />
+    <link href="__TMPL__/channelwappublic/assets/css/query.css" type="text/css" rel="stylesheet" />
+    <style>
+        .table-box tr th,.table-box tr td{
+            text-align: center;
+        }
+    </style>
+</block>
+<block name="body">
+    <div class="page-container profit-exchange-container">
+        <header class="rank-header">
+            <div style="width: 100%;height: 100%" class="v-middle h-middle">
+                <p class="header-title titleDetail" data-url="{:url('query/summary')}">数据汇总</p>
+                <empty name="baseinfo.pattern">
+                    <p class="header-title titleDetail" data-url="{:url('query/recharge')}">充值明细</p>
+                    <else/>
+                    <p class="header-title titleDetail" data-url="{:url('query/register')}">注册明细</p>
+                </empty>
+                <p class="header-title titleDetail" data-url="{:url('query/role')}">角色查询</p>
+                <p class="header-title titleDetail" data-url="{:url('query/arpu')}">ARPU</p>
+                <p class="header-title active titleDetail" data-url="{:url('query/rank')}">排行榜</p>
+            </div>
+        </header>
+        <div class="page-content">
+            <div class="ranking-date-menu">
+                <a href="javascript:;" class="active">今日</a>
+                <a href="javascript:;">近7天</a>
+                <a href="javascript:;">近30天</a>
+            </div>
+            <div class="ranking-date-tab">
+                <div class="ranking-data-box">
+                    <div class="table-box">
+                        <table>
+                            <tr class="table-title">
+                                <th>排名</th>
+                                <th>渠道名称</th>
+                                <empty name="baseinfo.pattern">
+                                    <th>总付费</th>
+                                    <else/>
+                                    <th>总注册</th>
+                                </empty>
+                            </tr>
+                            <volist name="data1" id="vo">
+                                <tr >
+                                    <if condition="$key eq 0">
+                                        <td><span class="rank-goldmedal-first"></span></td>
+                                        <elseif condition="$key eq 1" />
+                                        <td><span class="rank-goldmedal-second"></span></td>
+                                        <elseif condition="$key eq 2" />
+                                        <td><span class="rank-goldmedal-third"></span></td>
+                                        <else/>
+                                        <td class="rank-goldmedal-otherNum">{$key+1}</td>
+                                    </if>
+                                    <td><span class="rank-name">{$vo.promote_account}</span></td>
+                                    <td><span class="rank-num"><empty name="baseinfo.pattern">{$vo.total_pay}<else/>{$vo.count_new_register_user}</empty></span></td>
+                                </tr>
+                            </volist>
+                            <empty name="data1">
+                                <tr>
+                                    <td colspan="3">
+                                        <!--无数据-->
+                                        <div class="rank-nodata nodata">暂无排行</div>
+                                    </td>
+                                </tr>
+                            </empty>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="ranking-date-tab" style="display: none">
+                <div class="ranking-data-box">
+                    <div class="table-box">
+                        <table>
+                            <tr class="table-title">
+                                <th>排名</th>
+                                <th>渠道名称</th>
+                                <empty name="baseinfo.pattern">
+                                    <th>总付费</th>
+                                    <else/>
+                                    <th>总注册</th>
+                                </empty>
+                            </tr>
+                            <volist name="data7" id="vo">
+                                <tr>
+                                    <if condition="$key eq 0">
+                                        <td><span class="rank-goldmedal-first"></span></td>
+                                        <elseif condition="$key eq 1" />
+                                        <td><span class="rank-goldmedal-second"></span></td>
+                                        <elseif condition="$key eq 2" />
+                                        <td><span class="rank-goldmedal-third"></span></td>
+                                        <else/>
+                                        <td class="rank-goldmedal-otherNum">{$key+1}</td>
+                                    </if>
+                                    <td><span class="rank-name">{$vo.promote_account}</span></td>
+                                    <td><span class="rank-num"><empty name="baseinfo.pattern">{$vo.total_pay}<else/>{$vo.count_new_register_user}</empty></span></td>
+                                </tr>
+                            </volist>
+                            <empty name="data7">
+                                <tr>
+                                    <td colspan="3" >
+                                        <!--无数据-->
+                                        <div class="rank-nodata nodata">暂无排行</div>
+                                    </td>
+                                </tr>
+                            </empty>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="ranking-date-tab" style="display: none">
+                <div class="ranking-data-box">
+                    <div class="table-box">
+                        <table>
+                            <tr class="table-title">
+                                <th>排名</th>
+                                <th>渠道名称</th>
+                                <empty name="baseinfo.pattern">
+                                    <th>总付费</th>
+                                    <else/>
+                                    <th>总注册</th>
+                                </empty>
+                            </tr>
+                            <volist name="data30" id="vo">
+                                <tr>
+                                    <if condition="$key eq 0">
+                                        <td><span class="rank-goldmedal-first"></span></td>
+                                        <elseif condition="$key eq 1" />
+                                        <td><span class="rank-goldmedal-second"></span></td>
+                                        <elseif condition="$key eq 2" />
+                                        <td><span class="rank-goldmedal-third"></span></td>
+                                        <else/>
+                                        <td class="rank-goldmedal-otherNum">{$key+1}</td>
+                                    </if>
+                                    <td><span class="rank-name">{$vo.promote_account}</span></td>
+                                    <td><span class="rank-num"><empty name="baseinfo.pattern">{$vo.total_pay}<else/>{$vo.count_new_register_user}</empty></span></td>
+                                </tr>
+                            </volist>
+                            <empty name="data30">
+                                <tr>
+                                    <td colspan="3" class="rank">
+                                        <!--无数据-->
+                                        <div class="rank-nodata nodata">暂无排行</div>
+                                    </td>
+                                </tr>
+                            </empty>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script>
+        $(function () {
+            //点击tab
+            $('.header-title').click(function () {
+                location.href=$(this).data("url");
+            });
+            $('.ranking-date-menu a').click(function () {
+                $(this).addClass("active").siblings().removeClass("active");
+                var index = $(this).index();
+                $('.ranking-date-tab').eq(index).show().siblings(".ranking-date-tab").hide();
+            });
+        })
+    </script>
+</block>

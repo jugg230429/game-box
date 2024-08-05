@@ -1,0 +1,343 @@
+<include file="public@header" />
+</head>
+<body>
+<style>
+    .bootstrap-select:not([class*="col-"]):not([class*="form-control"]):not(.input-group-btn) {
+        width: 120px;
+    }
+    .layui-equipment-num .layui-layer-content{
+        padding: 20px;
+    }
+    .f2{
+        float: left;
+    position: relative;
+    left:444px;
+    top: -26px;
+    color: #999;
+    font-size: 12px;
+
+}
+.user-remarks {
+    margin-left: -109px !important;
+    }
+    .user-input {
+    margin-top: 5px;
+}
+.g_neirong{
+    width: 100%;
+    height:360px;
+    padding-top:10px;
+    margin-bottom:20px;
+}
+.lei{
+    float: left;
+    width: 320px;
+    margin-left: 20px;
+}
+.wenzi{
+    color:#222222;float: left;font-size: 14px;font-weight: 400;line-height: 32px;
+    margin-left: 10px;
+    margin-right: 10px;
+    
+}
+.pinci{
+    float: left;
+    width: 110px;
+}
+.biaozhu{
+    width: 428px;
+    height: 30px;
+    line-height: 30px;
+    background: #F9F9F9;
+    border-radius: 3px;
+    margin-left: 110px;
+    /* margin-top: 10px; */
+    float: left;
+    padding-left: 10px;
+    font-size: 12px;
+font-family: Microsoft YaHei;
+font-weight: 400;
+color: #ACB6C0;
+margin-bottom:20px;
+}
+.p_wap{
+    padding: 11px 20px 0px 30px;
+    background-color: #fff;
+}
+.edit_bottom{
+float: right;
+/* margin-top: 20px; */
+margin-right: 20px;
+}
+.edit_bottom .pro_promot_btn_cancel1 {
+    width: 76px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    border-radius: 3px;
+    cursor: pointer;
+    background: #DEDEDE;
+    color: #FFFFFF;
+}
+.edit_bottom .pro_promot_btn_confirm1 {
+    width: 76px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    border-radius: 3px;
+    cursor: pointer;
+    background: rgb(0, 111, 196);
+    color: rgb(255, 255, 255);
+}
+.save-btn {
+    margin-left: 5.6%;
+    width: 76px;
+    height: 32px;}
+    .return-btn{
+        margin-left: 5.6%;
+    width: 76px;
+    height: 32px;
+    }
+    .anniu{
+        width: 100%;float: right;display: flex;justify-content: flex-end;
+    }
+    body{
+        background-color: #fff;
+    }
+    .moreChoose{
+        float: left;
+    width: 460px;
+    margin-left: 20px;
+    }
+.qx{
+    width: 76px;
+    height: 32px;
+    text-align: center;
+    border-radius: 3px;
+    cursor: pointer;
+    background: #DEDEDE;
+    color: #FFFFFF;
+}
+.submit_save{
+    width: 76px;
+    height: 32px;
+    margin-right: 10px;
+    font-size: 14px;
+}
+</style>
+    <div class="p_wap js-check-wrap">
+      
+        <form class="form-horizontal js-ajax-form margin-top-20" id="follow_remind_form" role="form" action="" method="POST">
+            <div class="g_neirong">
+                <div class="tab-content">
+                    <div class="tab-pane active">
+
+                        <div class="form-group" style="margin-top:-15px;">
+                            <label for="input-site-name" class="control-label" style="float: left;margin-left: 18px;margin-top: 10px;font-weight: bold;">
+                               跟进提醒：
+                            </label>
+                            <div class="lei col-md-3 col-sm-5">
+                            <label class="label-width">
+                                <input type="radio"  name="follow_remind_switch" <eq name="data.follow_remind_switch" value="1">checked</eq> value="1">开启
+                            </label>
+                            <label>
+                                <input type="radio"  name="follow_remind_switch" <eq name="data.follow_remind_switch" value="0">checked</eq> value="0">关闭
+                            </label>
+                        </div>
+                        </div>
+                        <!-- <div class="form-group" style="margin-top:-15px;">
+                            <label for="input-site-name" class="control-label" style="float: left;margin-left: 18px;
+                            margin-top: 10px;">
+                               跟进提醒：
+                            </label>
+                            <div class="lei col-md-3 col-sm-5" style="margin-left: 28px;">
+                                <label class="label-width">
+                                    <input type="radio" value="1"  name="follow_remind_switch">开启
+                                </label>
+                                <label>
+                                    <input type="radio" value="0"  name="follow_remind_switch" checked>关闭
+                                </label>
+                            </div>
+                            <p class="help-block game_error"></p>
+                        </div> -->
+                        <div class="form-group" style="margin-top:-15px;">
+                            <label for="input-site-name" class="control-label" style="float: left;margin-left: 18px;margin-top: 10px;">
+                               提醒方式：
+                            </label>
+                            <div class="lei col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio"  name="remind_type" <eq name="data.remind_type" value="1">checked</eq> value="1">手机短信
+                                </label>
+                                    <!-- <label class="ml50"></label> -->
+                                    <label>
+                                    <input type="radio"  name="remind_type" <eq name="data.remind_type" value="2">checked</eq> value="2">邮箱短信
+                                </label>
+                                </div>
+                                <span class="fl user-remarks"></span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="input-html_cache_on" class="control-label"  style="float: left;margin-left: 18px;">提醒对象：</label>
+                            <div class="moreChoose col-md-3 col-sm-5">
+                                <select name="admin_id[]" id="admin_id" class="selectpicker form-control " data-none-selected-text="全部" multiple data-actions-box="true" data-live-search="true" data-size="8" style="width: 300px;" title="选择管理员账号">
+                                    <volist name=":get_admin_list()" id="vo">
+                                        <option admin-id="{$vo.id}" value="{$vo.id}" <if condition="in_array($vo['id'], $data.remind_admin_ids)">selected</if>>{$vo.account}</option>
+                                    </volist>
+                                </select>
+                                <span class="fl f2">可多选</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-html_cache_on" class="control-label" style="float: left;margin-left: 18px;margin-top: 10px;">登录停留：</label>
+                            
+                                    <span class="wenzi" style="margin-left:40px">未登录超过</span>
+                                    <div class="pinci">
+                                    <input type="text"  name="not_login_days" value="{$data.not_login_days}" style="width:110px;border: 1px solid #DDDDDD;" class="btn" placeholder="输入天数" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+                                    </div>
+                                    <span class="wenzi">
+                                    天后</span>
+                                    <!-- <div class="pinci">
+                                    <input type="text" class="form-control js-bootstrap-date" name="not_login_remind_time" id="not_login_remind_time" placeholder="选择时间" value="{:input('request.not_login_remind_time/s','')}" style="width: 110px;border: 1px solid #DDDDDD;" autocomplete="off">
+                                    </div> -->
+                                    <!-- <input type="number"  name="not_login_remind_time" value="{$data.not_login_remind_time}"> -->
+                                    <!-- <span class="wenzi" style="margin-left:20px">
+                                    提醒
+                                    </span> -->
+                                    <!-- <span>
+                                        玩家【未登录】时间超过【{$data.not_login_days}天】后，次日【{$data.not_login_remind_time}】提醒员工
+                                    </span> -->
+                              
+                                <span class="fl user-remarks"></span>
+                         
+                        </div>
+                        <div class="biaozhu">玩家【未登录】时间超过【N天】后，次日【09:00】提醒员工</div>
+                        <!-- {$data.not_login_days} -->
+
+                        <div class="form-group" style="float: left;">
+                            <label for="input-html_cache_on" class="" style="float: left;margin-left: 18px;margin-top: 10px;">付费停留：</label>
+                            
+                            <span class="wenzi" style="margin-left:40px">未付费超过</span>
+                                <div class="pinci">
+                                    <input type="text"  name="not_recharge_days" value="{$data.not_recharge_days}" class="btn" style="width: 110px;border: 1px solid #DDDDDD;" placeholder="输入天数" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+                                </div>
+                                <span class="wenzi">天后</span>
+                                    <!-- <div class="pinci">
+                                        <input type="text" class="form-control js-bootstrap-date" name="not_recharge_remind_time" id="not_recharge_remind_time" placeholder="选择时间" value="{:input('request.not_recharge_remind_time/s','')}" style="width: 110px;" autocomplete="off">
+                                    </div> -->
+                                    <!-- <span class="wenzi" style="margin-left:20px">
+                                    提醒
+                                    </span> -->
+                                </div>
+                                <span class="fl user-remarks"></span>
+                            </div>
+                            <!-- {$data.not_recharge_days} -->
+                            <div class="biaozhu">玩家【未付费】时间超过【N天】后，次日【09:00】提醒员工</div>
+                        </div>
+                        <input type="hidden" name="id" value="{$data.id}">
+                        <div class="form-group">
+                           <div class="anniu">
+                                <button class="btn btn-default return-btn close_layer qx" href="javascript:;" style="float: left;margin-right: 10px;">取消</button>
+
+                                <!-- <button class="btn btn-primary js-ajax-submit save-btn submit_save" data-refresh="1" style="margin-right: 15px;">
+                                    保存aaa
+                                </button> -->
+                                <a href="javascript:;" class="btn btn-xs btn-primary submit_save">保存</a>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <!-- <script type="text/javascript" src="__STATIC__/js/datejs/daterangepicker.js"></script> -->
+    <!-- <script type="text/javascript" src="__STATIC__/js/datejs/moment.min.js"></script> -->
+    <!-- <script type="text/javascript" src="__STATIC__/js/datejs/momentfunction.js"></script> -->
+    <!-- <script type="text/javascript" src="__STATIC__/js/datejs/daterangepicker.js"></script>    -->
+    <script type="text/javascript" src="__STATIC__/js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+
+    <script>
+        $(".close_layer").click(function(){
+            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+            parent.layer.close(index);  // 关闭layer
+        });
+
+        $(".save_follow_remind").click(function(){
+            // alert('保存');
+            // var form_data = $("#follow_remind_form").serializeArray();
+            // var form_data = $("#follow_remind_form").serialize();
+
+            // $.ajax({
+            //         url: "{:url('user/editFollowRemind')}",
+            //         type: 'POST',
+            //         dataType: 'json',
+            //         async: true,
+            //         data: {form_data:form_data},
+            //         success: function (data) {
+            //             if(data.code > 0){
+                            
+            //             }
+            //         },
+            //         error: function () {
+            //             layer.msg("系统繁忙,请稍后再试！");
+            //         }
+            //     });
+            
+        });
+        
+        $("#not_login_remind_time").datetimepicker({
+            // format: 'hh:mm',
+            // locale: moment.locale('zh-cn')
+            language: 'zh-CN',
+            format: 'hh:ii',
+            // timeFormat: "HH:mm",
+            // minView: 'hour',
+            startView:0,
+            todayBtn: 0,
+            autoclose: true,
+        });
+
+        $("#not_recharge_remind_time").datetimepicker({
+            // format: 'hh:mm',
+            // locale: moment.locale('zh-cn')
+            language: 'zh-CN',
+            format: 'hh:ii',
+            // timeFormat: "HH:mm",
+            // minView: 'hour',
+            startView:0,
+            todayBtn: 0,
+            autoclose: true,
+        });
+
+        $(".submit_save").click(function(){
+            var params = jQuery("#follow_remind_form").serialize();
+            params = decodeURIComponent(params,true);
+            $.ajax({
+                url:"{:url('user/editFollowRemind')}",
+                type:'post',
+                data:params,
+                success:function(res){
+                    if(res.code==1){
+                        layer.msg(res.msg,{time:1000},function(){
+                            // location.href= "{:url('lists')}";
+                            // 关闭当前ifram
+                            var index = parent.layer.getFrameIndex(window.name);  
+                            parent.layer.close(index);
+                            window.parent.location.reload(); 
+                        })
+                    }else{
+                        layer.msg(res.msg,{time:1500})
+                    }
+                },error:function(){
+                    layer.msg('系统繁忙，请稍后再试');
+                }
+            })
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<div class="header_first_line js_login_info">
+    <if condition="WAP_MODEL eq 3">
+    <div class="header_menubox fl">
+        <div class="header_menubox_menu header_menubox_menu_sy  fl <if condition='MODEL eq 1'>header_menubox_active</if>">
+
+			<div class="fl header_menubox_icon"></div><span class="fl">手游</span>
+        </div>
+        <div class="header_menubox_menu fl header_menubox_menu_h5 <if condition='MODEL eq 2'>header_menubox_active_h5</if>">
+			<div class="fl header_menubox_icon"></div><span class="fl">H5</span>
+        </div>
+    </div>
+    </if>
+    <div class="js_logined hide">
+        <!-- 已登录-->
+        <div class="" style="float: right;margin: .2rem 1rem 0 0;position: relative;">
+            <div class="sear_icon_box"><img src="__TMPL__/mobilepublic/assets/images/nav-search.png" alt="" class="sear_icon"></div>
+            <input type="text" class="form-control into_search_page" autocomplete="new-password" placeholder="搜索游戏"></div>
+    </div>
+    <div class="js_nologin">
+        <!-- 未登录 -->
+        <div style="float: right;margin: .2rem 1rem 0 0;position: relative;">
+            <div class="sear_icon_box"><img src="__TMPL__/mobilepublic/assets/images/nav-search.png" alt="" class="sear_icon"></div>
+            <input type="text" class="form-control into_search_page " autocomplete="new-password" placeholder="搜索游戏"></div>
+    </div>
+</div>
+<if condition="$controller_name neq 'Gift'">
+<div class=" swiper-container type_menu_box">
+    <ul class="swiper-wrapper">
+        <li class="fl type_menu_box_con swiper-slide <if condition='$controller_name eq Index and $action_name eq index'>type_menu_box_active</if>"><a href="{:url('Index/index',['sdkmodel'=>input('sdkmodel')])}"><if condition="MODEL eq 1">手游<else/>H5</if></a></li>
+        <if condition="cmf_get_option('wap_set')['category_show'] neq '0'">
+            <li class="fl type_menu_box_con swiper-slide <if condition='$controller_name eq Game and $action_name eq game_center'>type_menu_box_active</if>"><a href="{:url('Game/game_center')}">分类</a></li>
+        </if>
+		<if condition="cmf_get_option('wap_set')['discount_show'] neq '0'">
+        <li class="fl type_menu_box_con  swiper-slide <if condition='$controller_name eq Game and $action_name eq discount_game'>type_menu_box_active</if>"><a href="{:url('Game/discount_game')}">折扣</a></li>
+        </if>
+        <if condition="cmf_get_option('wap_set')['server_show'] neq '0'">
+            <li class="fl type_menu_box_con  swiper-slide <if condition='$controller_name eq Game and $action_name eq server_lists'>type_menu_box_active</if>"><a href="{:url('Game/server_lists')}">开服</a></li>
+        </if>
+        <if condition="cmf_get_option('wap_set')['rank_show'] neq '0'">
+            <li class="fl type_menu_box_con swiper-slide <if condition='$controller_name eq Game and $action_name eq rank_lists'>type_menu_box_active</if>"><a href="{:url('Game/rank_lists')}">排行</a></li>
+        </if>
+       
+    </ul>
+</div>
+<div style="height:7rem;"></div>
+</if>
+<if condition="WAP_MODEL eq 3">
+<script>
+    $(".header_menubox_menu").click(function(){
+        var index=$(this).index();
+        if($(this).hasClass('header_menubox_active')){
+            return false;
+        }else{
+            var model = 'sy';
+            var sdkmodel = 0;
+            if(index == 1){
+                model = 'h5';
+                sdkmodel = 1;
+            }
+            var url = window.location.href;
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: '{:url("changemodel")}',
+                data: {model:model},
+                success: function (data) {
+                    window.location.href =changeURLArg(url,'sdkmodel',sdkmodel);
+                },
+                error: function () {
+                    layer.msg('服务器故障，请稍候再试');
+                }
+            });
+        }
+    })
+	$(function(){
+	    var myswipers = new Swiper('.swiper-container.type_menu_box', {
+        slidesPerView: 3.8,
+        spaceBetween: '3.7%',
+        });
+	})
+
+    function changeURLArg(url,arg,arg_val){
+        var pattern=arg+'=([^&]*)';
+        var replaceText=arg+'='+arg_val;
+        if(url.match(pattern)){
+            var tmp='/('+ arg+'=)([^&]*)/gi';
+            tmp=url.replace(eval(tmp),replaceText);
+            return tmp;
+        }else{
+            if(url.match('[\?]')){
+                return url+'&'+replaceText;
+            }else{
+                return url+'?'+replaceText;
+            }
+        }
+        return url+'\n'+arg+'\n'+arg_val;
+    }
+</script>
+</if>
+<script>
+    $(function () {
+	    if ( $(".header_menubox").length >0 ) {
+             $(".header_first_line input").css("width","13.5rem");
+			  $(".header_first_line input").show();
+        } 
+		else{
+		    $(".header_first_line input").css("width","28rem");
+			
+			$(".sear_icon_box").parent().css({"float":"left","margin":"0.2rem 0 0 1rem"});
+			 $(".header_first_line input").show();
+		}
+        // 跳转搜索页
+        $('.into_search_page').click(function (event) {
+            document.activeElement.blur();
+            event.preventDefault();
+            location.href = "{:url('game/search')}";
+        })
+    })
+</script>

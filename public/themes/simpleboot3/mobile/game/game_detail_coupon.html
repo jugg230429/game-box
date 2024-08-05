@@ -1,0 +1,98 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__JS__/layui/css/layui.css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/discount_game.css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/game_detail.css">
+</block>
+
+<block name="body">
+    <div class="discount_lists_page">
+        <div class="discount_lists_header">
+            <a href="javascript:;" onclick="history.back()"><img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon"></a>
+            <p class="discount-list-title">领取代金券</p>
+        </div>
+        <div class="type_down__long_hx clear"></div>
+        <if condition="$coupon">
+        <!--代金券列表-->
+        <div class="coupon-game-tab">
+            <div class="coupon-game-list" >
+                <ul>
+                    <volist name="coupon" id="vo">
+                        <li class="coupon-game-item ">
+                            <div class="coupon-detail-box v-middle">
+                                <div class="coupon-num">
+                                    <p class="coupon-money"><span>￥</span>{$vo.money}</p>
+                                    <p class="coupon-use-condition"><if condition="$vo['limit_money']">满{$vo['limit_money']}可使用<else/>无门槛</if></p>
+                                </div>
+                                <div class="coupon-name-date">
+                                    <div class="coupon-name">{$vo.coupon_name}</div>
+                                    <div class="coupon-date">{$vo.start_time|date='y.m.d',###}-<empty name="vo.end_time">永久<else/>{$vo.end_time|date='y.m.d',###}</empty></div>
+                                </div>
+                                <empty name="vo.receive_status">
+                                    <div style="margin-left: auto">
+                                    <a href="javascript:;" data-id="{$vo.id}" class="coupon-btn receive_btn">
+                                        领取
+                                    </a>
+                                    <a href="javascript:;" class="coupon-number">
+                                        剩余{$vo.limit_num}次
+                                    </a>
+                                    </div>
+                                    <else/>
+                                    <a href="javascript:;" class="coupon-btn no-use disabled">
+                                        未使用
+                                    </a>
+                                </empty>
+                            </div>
+                            <div class="coupon-scope">
+                                适用于<if condition="$vo['mold'] eq 0">全部游戏<else/>《{$vo["coupon_game"]}》</if>
+                            </div>
+                        </li>
+                    </volist>
+                </ul>
+            </div>
+            <div class="no-data" style="display: none" >
+                <img src="__TMPL__/mobilepublic/assets/images/icon_wushujv.png" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                <p>~空空如也~</p>
+            </div>
+        </div>
+        <else/>
+        <!--暂无福利-->
+            <div class="no-discount">
+                <p>该游戏暂无代金券</p>
+            </div>
+        </if>
+    </div>
+</block>
+<block name="script">
+    <script src="__TMPL__/mobilepublic/assets/js/drop.js"></script>
+    <script src="__STATIC__/js/layui/layui.js"></script>
+    <script>
+        $(function () {
+            //领取优惠券
+            $(".receive_btn").click(function () {
+                var coupon_id = $(this).data('id');
+                $.ajax({
+                    type: 'post',
+                    url: '{:url("game/getcoupon")}',
+                    async: false,
+                    data: { coupon_id: coupon_id },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.code == 1) {
+                            layer.msg(data.msg);
+                            setTimeout(function () {
+                                window.location.reload();
+                            },1500);
+                        } else {
+                            layer.msg(data.msg);
+                        }
+                    },
+                    error: function (xhr, type) {
+                        alert('服务器错误');
+                    }
+                });
+            })
+        });
+
+    </script>
+</block>

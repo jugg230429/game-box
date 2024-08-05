@@ -1,0 +1,96 @@
+<include file="public@header"/>
+</head>
+<body>
+<style>
+    .form-group .input-suffix {
+        position: absolute;
+        right: 25px;
+        top: 7px;
+    }
+</style>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="javascript:;">编辑会长代充折扣</a></li>
+    </ul>
+
+    <div class="describe">
+        <p>注意①：设置对象为全部渠道，设置折扣则代表该渠道代充时可享受的独立折扣。</p>
+        <p>注意②：统一折扣代表该游戏下全部渠道可享受的代充折扣；当设置单个渠道折扣时，会长代充折扣以设置的渠道折扣值为准。</p>
+    </div>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('aedit')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>游戏名称：
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <select  class="selectpicker form-control" >
+                                    <option value="{$data.game_id}">{$data.game_name}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>渠道账号：
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <select class="selectpicker form-control" >
+                                    <option value="{$data.promote_id}">{$data.promote_account}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">统一首充折扣：</label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" disabled value="{$data.game_discount}" class="form-control" min="1" max="10" onkeyup="value=value.replace(/^(\d*\.?\d{0,2}).*/,'$1')" >
+                                <span class="input-suffix">折</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">统一续充折扣：</label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" disabled value="{$data.game_continue_discount}" class="form-control" min="1" max="10" onkeyup="value=value.replace(/^(\d*\.?\d{0,2}).*/,'$1')" >
+                                <span class="input-suffix">折</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">渠道首充折扣：</label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" value="{$data.promote_discount_first}" class="form-control" min="1" max="10" onkeyup="value=value.replace(/^(\d*\.?\d{0,2}).*/,'$1')"  name="promote_discount_first"  >
+                                <span class="input-suffix">折</span>
+                            </div>
+                            <p class="help-block">对某游戏某玩家的首次会长代充折扣值进行设置，1 ≤ 折扣值 ≤ 10.00</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">渠道续充折扣：</label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" value="{$data.promote_discount_continued}" class="form-control" min="1" max="10" onkeyup="value=value.replace(/^(\d*\.?\d{0,2}).*/,'$1')"  name="promote_discount_continued"  >
+                                <span class="input-suffix">折</span>
+                            </div>
+                            <p class="help-block">对某游戏某玩家的非首次会长代充折扣值进行设置，1 ≤ 折扣值 ≤ 10.00</p>
+                        </div>
+                        <div class="promote_list" hidden>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <input type="hidden" name="id" value="{$data.id}">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                                <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

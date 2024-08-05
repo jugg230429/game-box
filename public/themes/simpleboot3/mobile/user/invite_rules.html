@@ -1,0 +1,61 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__JS__/layui/css/layui.css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/invite_friends.css">
+</block>
+
+<block name="body">
+    <div class="invite_rules_page">
+        <div class="invite_rules_header">
+            <a href="javascript:;" onclick="history.go(-1)"><img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon"></a>
+            <p class="invite_rules_title">邀请规则</p>
+
+        </div>
+        <!--<div class="type_down__long_hx clear"></div>-->
+        <div class="invite-rules-content">
+            <if condition="$reg_award or $sp_award ">
+            <p class="title">
+                邀请奖励：
+            </p>
+            </if>
+            <if condition="$reg_award or $sp_award">
+            <p>你的奖励：</p>
+            <notempty name="reg_award">
+                <p>· 好友手机号注册成功，您将获得<empty name="reg_award.limit_money">无门槛<else/>满{$reg_award.limit_money}减</empty>{$reg_award.money}元代金券</p>
+            </notempty>
+            <notempty name="sp_award">
+                <p>· <notempty name="sp_award.spend_limit">好友累计游戏内实际充值满{$sp_award.spend_limit}元，</notempty>您将获得<empty name="sp_award.limit_money">无门槛<else/>满{$sp_award.limit_money}减</empty>{$sp_award.money}元代金券。</p>
+            </notempty>
+            </if>
+            <if condition="$other_award">
+            <p>好友的奖励：</p>
+            <p>注册后将获得价值{:array_sum(array_column($other_award,'money'))}元的新人大礼包(内含
+                <volist name="other_award" id="vo">
+                    <empty name="vo.limit_money">无门槛<else/>满{$vo.limit_money}减</empty>{$vo.money}元代金券
+                    <if condition="$i neq count($other_award)">、</if>
+                </volist>
+                )。</p>
+            </if>
+            <p class="title">
+                限制条件：
+            </p>
+            <p>1、每个有效邀请可获得一次注册和充值奖励</p>
+            <p>2、被邀请好友须为首次通过手机号注册</p>
+            <p>3、每天最多可成功邀请10个好友，超过10个记为无效邀请</p>
+            <p>4、少数游戏无法使用代金券，请以实际情况为准</p>
+            <p>5、任何利用不正当手段刷奖励的行为，本平台有权进行封号处理，并将视情况追究法律责任</p>
+            <p>6、本平台享有该活动最终解释权</p>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script src="__TMPL__/mobilepublic/assets/js/drop.js"></script>
+    <script src="__STATIC__/js/layui/layui.js"></script>
+    <script>
+        $(function () {
+
+
+        });
+
+    </script>
+</block>

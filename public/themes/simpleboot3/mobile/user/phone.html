@@ -1,0 +1,460 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/user_bind.css">
+    <link rel="stylesheet" href="__STATIC__/verify/css/verify.css">
+</block>
+<block name="body">
+    <div class="user_bind_page">
+        <if condition="$phone eq ''">
+            <!-- 未绑定 第二步 绑定 -->
+            <div class="bind_box_wrap nobind js-bind_second" style="display:block;">
+                <div class="user_bind_header">
+                    <a href="javascript:;" class="fl" id="back">
+                        <img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon">
+                    </a>
+                    <p >绑定手机</p>
+                </div>
+                <div class="game_bag_down_hx"></div>
+                <div class="user_bind_con">
+                    <div class="clear_text_btn">
+                        <div class="warp-div">
+                            <input type="text" name="phone" maxlength="30" placeholder="11位手机号"  class="fl txt">
+                            <div class="close-div fr" style="background: url('__TMPL__/mobilepublic/assets/images/common_btn_delet.png') no-repeat;background-size: cover"></div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                    <div class="clear_text_btn">
+                        <div class="warp-div">
+                            <div class="geetest_box">
+                                <div class="geetest-heart"><span></span></div>
+                                <a href="javascript:;" id="verify_pop2" class="verify_pop2">点击按钮进行验证</a>
+                                <a href="javascript:;" id="verify_refresh2" class="geetest-refresh">
+                                    <img src="__TMPL__/mobilepublic/assets/images/refresh.png" >
+                                </a>
+                                <input type="hidden" name="verify_pop2_tag">
+                                <input type="hidden" name="verify_pop2_token">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="clear_text_btn code-input-wrapper">
+                        <div class="warp-div code-input">
+                            <input type="text" name="code" maxlength="30" placeholder="验证码"  class="fl txt">
+                            <div class="clear"></div>
+                        </div>
+                        <a href="javascript:;" class="js_get_code_btn get_code_btn">获取验证码</a>
+                    </div>
+                    <p class="clear space"></p>
+                    <div class="quedin_btn disabled">
+                        <p>确定</p>
+                    </div>
+
+                    <p class="clear bind_notice">手机停用？<a  href="javascript:;" id="kefuQQ">联系客服&gt</a></p>
+
+                </div>
+            </div>
+            <!-- 未绑定 第三步 成功 -->
+            <div class="bind_box_wrap js-bind_third">
+                <div class="user_bind_header">
+                    <a href="{:url('set')}" class="fl">
+                        <img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon">
+                    </a>
+                    <p >绑定成功</p>
+                </div>
+                <div class="game_bag_down_hx"></div>
+                <div class="user_bind_con">
+
+                    <div class="bind_success">
+                        <img src="__TMPL__/mobilepublic/assets/images/pic_Binding.png" >
+                        <p class="bind_success_title">绑定成功！</p>
+                        <span class="bind_success_notice">该手机号可用于找回密码</span>
+                    </div>
+
+                    <div class="bind_success_back_btn">
+                        <if condition="input('small_id')">
+                            <p><a href="{:url('trade/transaction',['small_id'=>input('small_id')])}">返回</a></p>
+                        <else/>
+                            <p><a href="{:url('set')}">返回</a></p>
+                        </if>
+
+                    </div>
+
+                </div>
+            </div>
+        <else/>
+        <!-- 已绑定 第一步 展示 -->
+        <div class="bind_box_wrap js-bind_first" style="display: block">
+            <div class="user_bind_header">
+                <a href="{:url('set')}" class="fl">
+                    <img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon">
+                </a>
+                <p >绑定手机号</p>
+            </div>
+            <div class="game_bag_down_hx"></div>
+            <div class="user_bind_con">
+
+                <div class="bind_phone">
+                    <p class="bind_phone_title">您绑定的手机号：{:hideStar($phone)}</p>
+                    <span class="bind_phone_notice">绑定手机号后，您可以通过手机号找回密码，同时提高账户安全性，如需更换手机号请先解绑手机号</span>
+                </div>
+
+                <div class="bind_phone_btn">
+                    <p>解绑手机号</p>
+                </div>
+
+            </div>
+        </div>
+        <!-- 已绑定 第二步 验证 -->
+        <div class="bind_box_wrap js-bind_second">
+            <div class="user_bind_header">
+                <a href="" class="fl">
+                    <img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon js-close-pop">
+                </a>
+                <p >验证原手机</p>
+            </div>
+            <div class="game_bag_down_hx"></div>
+            <div class="user_bind_con">
+                <div class="clear_text_btn">
+                    <div class="warp-div">
+                        <input type="text" name="" maxlength="30" value="{:hideStar($phone)}" placeholder="11位手机号" disabled  class="fl txt2">
+                        <input type="hidden" name="phone" maxlength="30" value="{$phone}" placeholder="11位手机号"  class="fl">
+                        <div class="clear"></div>
+                    </div>
+                </div>
+
+                <div class="clear_text_btn">
+                    <div class="warp-div">
+                        <div class="geetest_box">
+                            <div class="geetest-heart"><span></span></div>
+                            <a href="javascript:;" id="verify_pop2" class="verify_pop2">点击按钮进行验证</a>
+                            <a href="javascript:;" id="verify_refresh2" class="geetest-refresh">
+                                <img src="__TMPL__/mobilepublic/assets/images/refresh.png" >
+                            </a>
+                            <input type="hidden" name="verify_pop2_tag">
+                            <input type="hidden" name="verify_pop2_token">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="clear_text_btn code-input-wrapper">
+                    <div class="warp-div code-input">
+                        <input type="text" name="code" maxlength="30" placeholder="验证码"  class="fl txt2">
+                        <div class="clear"></div>
+                    </div>
+                    <a href="javascript:;" class="get_code_btn"><p>获取验证码</p></a>
+                </div>
+                <p class="clear space"></p>
+                <div class="quedin_btn disabled">
+                    <p>确定</p>
+                </div>
+                <p class="clear bind_notice">手机停用？<a  href="javascript:;" id="kefuQQ">联系客服&gt</a></p>
+            </div>
+        </div>
+        </if>
+    </div>
+
+</block>
+<block name="script">
+    <script>
+        is_xgkf ="{:get_xgkf_info(0)}";
+        xgkf_url = "{:get_xgkf_info(1)}";
+        $('#back').click(function () {
+            try {
+                window.mengchuang.goBack();
+            }catch (e) {
+                history.back(-1);
+            }
+        })
+        $('#kefuQQ').click(function(){
+            $mt = "{:get_devices_type()}";
+            if(is_xgkf == 1){
+                if($mt==2){
+                    try{
+                        window.webkit.messageHandlers.sy_app_xgkf_url.postMessage(xgkf_url);
+                    }catch (e) {
+                        window.open(xgkf_url);
+                        return false;
+                    }
+                }else{
+                    window.open(xgkf_url);
+                }
+            }else{
+                try{
+                    if($mt==2){
+                        window.webkit.messageHandlers.sy_small_serviceQQ.postMessage(1);
+                    }else{
+                        window.mengchuang.sy_small_serviceQQ();
+                    }
+                }catch(e){
+                    $kefuQQ = "{$kefuQQ}";
+                    window.location.href = "mqqwpa://im/chat?chat_type=wpa&uin="+$kefuQQ+"&version=1&src_type=web&web_src=oicqzone.com";
+                }
+            }
+        })
+        var verify2 = false;
+        $('.clear_text_btn input').focus(function () {
+            $('.clear_text_btn div.close-div').show()
+        })
+        $('.clear_text_btn input').blur(function () {
+            setTimeout(() => {
+                $('.clear_text_btn div.close-div').hide()
+            }, 100);
+
+        })
+        $('.clear_text_btn div.close-div').click(function () {
+            $('.clear_text_btn input').val('')
+        })
+        // 检测
+        $('.warp-div .txt').keyup(function() {
+            var that = $(this),val=$.trim(that.val()),parent=that.closest('.user_bind_con');
+            parent.find('.txt').each(function(i,n) {
+                if (parent.find(n).val().length<1) {parent.find('.quedin_btn').addClass('disabled');return false;}
+                else {parent.find('.quedin_btn').removeClass('disabled');}
+            });
+        })
+        function check_password(password)
+        {
+            var pres = false;
+            $.ajax({
+                url:"{:checkPassword}",
+                type:'post',
+                data:{password:password},
+                async:false,
+                success:function (res) {
+                    if(res.code!=1){
+                        layer.msg(res.msg);
+                    }else{
+                        pres = true;
+                    }
+                }
+            })
+            return pres;
+        }
+        var counttime=60
+        var can_click=true
+        //未绑定
+        layero = $('.nobind');
+        //人机验证
+        layero.find('#verify_pop2').on('click', function (e) {
+            if($('body').find('.pop-caption-box').length>0) {return false;}
+            //回调函数
+            window.caption_callback_function = function(tag,token){
+                layero.find('#verify_pop2').off('click').text('验证成功');
+                $('input[name=verify_pop2_tag]').val(tag);
+                $('input[name=verify_pop2_token]').val(token);
+            }
+            url = "{:url('user/caption/verify_pop')}"
+            $.get(url, function (html) {
+                $('.pop-caption-box').remove();
+                $('body').append(html);
+            });
+            return false;
+        })
+        layero.find('#verify_refresh2').on('click', function (e) {
+            $('input[name=verify_pop2_tag]').val('');
+            $('input[name=verify_pop2_token]').val('');
+            layero.find('#verify_pop2').off('click').on('click',function(){
+                //回调函数
+                window.caption_callback_function = function(tag,token){
+                    layero.find('#verify_pop2').off('click').text('验证成功');
+                    $('input[name=verify_pop2_tag]').val(tag);
+                    $('input[name=verify_pop2_token]').val(token);
+                }
+                url = "{:url('user/caption/verify_pop')}"
+                $.get(url, function (html) {
+                    $('body').append(html);
+                });
+                return false;
+            }).text('点击按钮进行验证');
+            return false;
+        });
+        $('.js_get_code_btn').click(function(){
+            var account = layero.find('input[name=phone]').val();
+            if (account) {
+                verify_pop2_tag = $('input[name=verify_pop2_tag]').val();
+                verify_pop2_token = $('input[name=verify_pop2_token]').val();
+                if(verify_pop2_tag==''||verify_pop2_token==''){
+                    layer.msg('请先进行验证');
+                    return false;
+                }
+                var that = $(this);
+                if (that.hasClass('no_send')) {return false;}
+                reg = "{:$phone?3:4}"
+                $.ajax({
+                    type: 'post',
+                    dataType: 'json',
+                    url:'{:url("User/sendSms")}',
+                    data:{account:"{:session('member_auth.account')}",phone:account,verify_token:verify_pop2_token,verify_tag:verify_pop2_tag,reg:reg},
+                    success:function (data) {
+                        if(data.code==1){
+                            clock(that);
+                            layer.msg(data.msg);
+                        }else{
+                            layer.msg(data.msg);
+                            $("#getcaptcha").click();
+                        }
+                    },
+                    error:function () {
+                        layer.msg('服务器故障，请稍候再试');
+                    }
+                });
+            } else {
+                layer.msg('请输入手机号');
+                return false;
+            }
+            return false;
+        })
+        layero.find('.quedin_btn').click(function () {
+            if($(this).hasClass("disabled")){return false}
+            var small_id = "{:input('small_id',0)}";
+            //绑定手机
+            $.ajax({
+                url:"{:url('phone')}",
+                type:'post',
+                data:{password:$.trim($('input[name=password]').val()),phone:$.trim(layero.find('input[name=phone]').val()),verify_tag:$.trim($('input[name=verify_pop2_tag]').val()),verify_token:$.trim($('input[name=verify_pop2_token]').val()),code:$.trim(layero.find('input[name=code]').val()),small_id:small_id},
+                success:function(res){
+                    if(res.code!=1){
+                        layer.msg(res.msg);
+                        return false;
+                    }else{
+                        var third = $('.js-bind_third').html();
+                        layer.open({
+                            type: 1,
+                            skin: 'layer_bind_box',
+                            area: ['100%', '100%'],
+                            title: false,
+                            closeBtn: 0,
+                            content: third,
+                        });
+                        return false;
+                    }
+                }
+            })
+        });
+        //已绑定
+        $('.bind_phone_btn').click(function(){
+            $('.js-bind_second').show();
+            var layero = $('.js-bind_second');
+            layero.find('.js-close-pop').on('click', function (e) {
+                $('.js-bind_second').hide();
+            });
+                    //人机验证
+                   /* layero.find('#verify_pop2').on('click', function (e) {
+                        if ($('body').find('.pop-caption-box').length > 0) {
+                            return false;
+                        }
+                        //回调函数
+                        window.caption_callback_function = function (tag, token) {
+                            layero.find('#verify_pop2').off('click').text('验证成功');
+                            $('input[name=verify_pop2_tag]').val(tag);
+                            $('input[name=verify_pop2_token]').val(token);
+
+                        }
+                        url = "{:url('user/caption/verify_pop')}"
+                        $.get(url, function (html) {
+                            $('body').append(html);
+                        });
+                        return false;
+                    })*/
+                    layero.find('#verify_refresh2').on('click', function (e) {
+                        $('input[name=verify_pop2_tag]').val('');
+                        $('input[name=verify_pop2_token]').val('');
+                        layero.find('#verify_pop2').off('click').on('click', function () {
+                            //回调函数
+                            window.caption_callback_function = function (tag, token) {
+                                layero.find('#verify_pop2').off('click').text('验证成功');
+                                $('input[name=verify_pop2_tag]').val(tag);
+                                $('input[name=verify_pop2_token]').val(token);
+
+                            }
+                            url = "{:url('user/caption/verify_pop')}"
+                            $.get(url, function (html) {
+                                $('body').append(html);
+                            });
+                            return false;
+                        }).text('点击按钮进行验证');
+                        return false;
+                    });
+                    layero.find('.get_code_btn').click(function(){
+                        var account = layero.find('input[name=phone]').val();
+                        if (account) {
+                            verify_pop2_tag = $('input[name=verify_pop2_tag]').val();
+                            verify_pop2_token = $('input[name=verify_pop2_token]').val();
+                            if(verify_pop2_tag==''||verify_pop2_token==''){
+                                layer.msg('请先进行验证');
+                                return false;
+                            }
+                            var that = $(this);
+                            if (that.hasClass('no_send')) {return false;}
+                            reg = "{:$phone?3:4}"
+                            $.ajax({
+                                type: 'post',
+                                dataType: 'json',
+                                url:'{:url("User/sendSms")}',
+                                data:{account:"{:session('member_auth.account')}",phone:account,verify_token:verify_pop2_token,verify_tag:verify_pop2_tag,reg:reg},
+                                success:function (data) {
+                                    if(data.code==1){
+                                        clock(that);
+                                        layer.msg(data.msg);
+                                    }else{
+                                        layer.msg(data.msg);
+                                        $("#getcaptcha").click();
+                                    }
+                                },
+                                error:function () {
+                                    layer.msg('服务器故障，请稍候再试');
+                                }
+                            });
+                        } else {
+                            layer.msg('请输入手机号');
+                            return false;
+                        }
+                        return false;
+                    })
+                    layero.find('.quedin_btn').click(function () {
+                        if($(this).hasClass("disabled")){return false}
+                        //绑定手机
+                        $.ajax({
+                            url:"{:url('phone')}",
+                            type:'post',
+                            data:{is_unbind:1,password:$.trim($('input[name=password]').val()),phone:$.trim(layero.find('input[name=phone]').val()),verify_tag:$.trim($('input[name=verify_pop2_tag]').val()),verify_token:$.trim($('input[name=verify_pop2_token]').val()),code:$.trim(layero.find('input[name=code]').val())},
+                            success:function(res){
+                                if(res.code!=1){
+                                    layer.msg(res.msg);
+                                    return false;
+                                }else{
+                                    layer.msg(res.msg);
+                                    setTimeout("location.href=location.href",500);
+                                }
+                            }
+                        })
+                    });
+                    // 检测
+                    layero.find('.warp-div .txt2').keyup(function() {
+                        var that = $(this),val=$.trim(that.val()),parent=that.closest('.user_bind_con');
+                        parent.find('.txt2').each(function(i,n) {
+                            if (parent.find(n).val().length<1) {parent.find('.quedin_btn').addClass('disabled');return false;}
+                            else {parent.find('.quedin_btn').removeClass('disabled');}
+                        });
+                    })
+        })
+        //验证码刷新
+        $("#getcaptcha").click(function(event) {
+            this.src = "{:url('User/set_captcha')}?"+Math.random();
+        });
+        // 倒计时
+        function clock(that) {
+            console.log(that);
+            var t = 60;
+            that.addClass('no_send');
+            that.html('<p>正在发送(' + t + ')</p>');
+            var a = setInterval(function () {
+                t--;
+                that.html('<p>正在发送(' + t + ')</p>');
+                t>0 || (that.html('获取验证码'),that.removeClass('no_send'), clearInterval(a))
+            }, 1000);
+            return a;
+        }
+
+    </script>
+</block>

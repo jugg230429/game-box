@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+		<link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+		<link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+		<include file="public@head"/>
+	</head>
+
+	<body>
+		<include file="public@nav"/>
+		<include file="public@header"/>
+		<div class="trunk">
+			<div class="trunk-con">
+				<div class="right-container">
+					<div class="normal-list">
+						<div class="trunk">
+							<div class="trunk-title">
+								<div class="location ">
+									<div class="location-container fr">当前位置：<span class="location-container-text">子渠道结算&gt;</span><span class="location-container-text"> 收益提现</span></div>
+								</div>
+								<img src="__TMPL__/public/assets/images/icon_normal_shouyitiixian.png" class="fl trunk-icon">
+								<span class="title-main fl ">收益提现</span>
+                                <span class="tagging">说明：子渠道提交收益提现申请的记录</span>
+							</div>
+
+							<div class="tabpan">
+
+								<div class="tabpan-con tabpan-show">
+									<input type="button" class="btn-calc fl jssettlement" value="通过" >
+									<input type="button" class="btn-calc fl bg-26c jspaid" value="打款" >
+									<form action="{:url('son_withdrawal')}" method="get">
+										<div class="trunk-search clearfix fr">
+											<php>$pmap['parent_id'] = PID;</php>
+											<select id="promote_id" name="promote_id" class="tab-input js-select-gallery normal-space trunk-search-select fl">
+												<option value="" data="0">渠道账号</option>
+												<volist name=":get_promote_list($pmap)" id="p">
+													<option data="" <if condition="$p['id'] eq input('promote_id')"> selected</if> value="{$p.id}">{$p.account}</option>
+												</volist>
+											</select>
+											<input type="text" class="tabpan-input normal-space" name="widthdraw_number" style="width: 120px;" value="{:input('request.widthdraw_number/s','')}" placeholder="提现单号">
+
+											<select id="status" name="status" class="tab-input js-select-gallery normal-space trunk-search-select fl">
+												<option value="">提现状态</option>
+												<option value="1" <if condition="input('status') eq '1'">selected</if>>已通过</option>
+												<option value="0" <if condition="input('status') eq '0'">selected</if>>待审核</option>
+												<option value="2" <if condition="input('status') eq '2'">selected</if>>已驳回</option>
+												<option value="3" <if condition="input('status') eq '3'">selected</if>>已打款</option>
+											</select>
+
+											<input type="button" url="{:url('son_withdrawal')}" class="submit fr normal-space btn-clear" value="清空">
+											<input type="submit" class="submit fr normal-space" id="submit" value="搜索">
+											
+											<input type="hidden" id="page" name="row" value="{:input('row',10)}">
+										</div>
+									</form>
+									<div class="clear"></div>
+									<table class="table normal-table" id="promotecoin_table">
+										<tbody>
+											<tr>
+												<th><label class="checked"><input class="check-all" type="checkbox"><i class="check-icon"></i></label></th>
+												<th>提现单号</th>
+												<th>提现金额</th>
+												<th>子渠道账号</th>
+												<th>申请时间</th>
+												<th>提现状态</th>
+												<th>审核时间</th>
+												<th>操作</th>
+												
+											</tr>
+											<notempty name="data_lists">
+												<volist name="data_lists" id="vo">
+													<tr>
+														<php>$page_total +=$vo['sum_money'];</php>
+														<td class="jsid"><label class="checked">
+															<input type="checkbox" <if condition="$vo['status'] eq 3">disabled</if> class="js-check ids" name="ids[]" value="{$vo.id}"  >
+															<i <if condition="$vo['status'] eq 3">style="background-color: #eee;"</if> class="check-icon"></i>
+														</label></td>
+														<td>{$vo.widthdraw_number}</td>
+														<td><span style="color: orange;">{:null_to_0($vo['sum_money'])}</span></td>
+														<td>{:get_promote_name($vo['promote_id'])}</td>
+														<td>{:date('Y-m-d H:i:s',$vo['create_time'])}</td>
+														<td>
+															<if condition="$vo['status'] eq 1">
+																<span class="label label-success">已通过</span>
+																<elseif condition="$vo['status'] eq 2"/>
+																<span class="label label-danger">已驳回</span>
+																<elseif condition="$vo['status'] eq 3"/>
+																<span class="label label-success">已打款</span>
+																<else/>
+																<span class="label label-warning">待审核</span>
+															</if>
+
+														</td>
+														<td>{:$vo['audit_time']?date('Y-m-d H:i:s',$vo['audit_time']):'--'}</td>
+														<td>
+															<if condition="$vo['status'] eq 1">
+																<a href="javascript:void(0);" url="{:url('paid',['id'=>$vo['id']])}" style="color: #26c7db;" class="js-ajax-dialog-btn">打款</a>
+																<elseif condition="$vo['status'] eq 2"/>
+																-
+																<elseif condition="$vo['status'] eq 0"/>
+																<a href="javascript:void(0);" url="{:url('changeSettlementStatus',['ids'=>$vo['id'],'status'=>1])}" style="color: #26c7db;" class="js-ajax-dialog-btn">通过</a>
+																<a href="javascript:void(0);" url="{:url('changeSettlementStatus',['ids'=>$vo['id'],'status'=>2])}" style="color: #26c7db;" class="js-ajax-dialog-btn">驳回</a>
+																<else />
+																已打款
+															</if>
+														</td>
+													</tr>
+												</volist>
+													<tr class="data_summary">
+														<td><span style="margin-right: 10px;">汇总(元) </span></td>
+														<td colspan="8"><span>今日提现：{:null_to_0($today)} ； 昨日提现：{:null_to_0($yestoday)} ；当页提现：{:null_to_0($page_total)} ； 累计提现：{:null_to_0($total)}</span></td>
+													</tr>
+											<else/>
+												<!--暂无数据-->
+												<tr>
+													<td colspan="8">
+														<div class="no-data">
+															<img src="__TMPL__/public/assets/images/icon_wushujv2.png" alt="" class="no-data-img" />
+															<p class="no-data-text">暂无数据</p>
+														</div>
+													</td>
+												</tr>
+											</notempty>
+										</tbody>
+									</table>
+									<notempty name="data_lists">
+									<div class="pagenation clearfix">
+										{$page}
+									</div>
+									</notempty>
+									<div class="clear"></div>
+									
+								</div>
+
+							</div>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+
+		<include file="public@scripts"/>
+		<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+		<script src="__STATIC__/js/layer/layer.js"></script>
+		<script src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.js"></script>
+		<script src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+		<script>
+			$(function() {
+				$(".js-select-gallery").select2();
+			})
+            $(".btn-clear").click(function () {
+                var url = $(this).attr('url');
+                location.href = url;
+            })
+			//全选
+			$(".check-all").click(function() {
+				var option = $(".ids");
+				that = $(this);
+				option.each(function(i) {
+					if(!this.disabled){
+						this.checked = that.prop('checked');
+					}
+				});
+			});
+			$(".ids").click(function() {
+				var option = $(".ids");
+				option.each(function(i) {
+					if(!this.checked) {
+						$(".check-all").prop("checked", false);
+						return false;
+					} else {
+						$(".check-all").prop("checked", true);
+					}
+				});
+			});
+			//设置分成比例
+            $(".editTab").click(function(){
+                var that = $(this);
+                var type = that.parent().prevAll('.cooptab').children('.cooperation').find('option:selected').val();
+                var title = that.attr("data-title");
+                layer.prompt({title:title,formType:0},function(value,index) {
+                    if (!/^(((\d|[1-9]\d)(\.\d{1,2})?)|100|100.0|100.00)$/.test(value)) {
+                        layer.msg('输入错误，0-100之间的两位小数',{time:2000});
+                        return false;
+                    }
+                    that.attr('value',value);
+                    rr = 'data-'+that.attr('data-type');
+                    var settle_total = that.parent().nextAll('.settle_total');
+                    settle_total.attr(rr,value);
+                    layer.closeAll();
+                    settle_total_fun(settle_total,type,settle_total.attr('data-ratio'),settle_total.attr('data-money'),that.parent().prevAll('.jstotal').text(),that.parent().prevAll('.user').text());
+                });
+            })
+            //设置分成方式
+            $('.cooperation').change(function(){
+                var that = $(this);
+                var type = that.find('option:selected').val();
+                var settle_total = that.parent().nextAll('.settle_total');
+                settle_total_fun(settle_total,type,settle_total.attr('data-ratio'),settle_total.attr('data-money'),that.parent().prevAll('.jstotal').text(),that.parent().prevAll('.user').text());
+            });
+            //计算结算金额
+            function settle_total_fun(e,type,ratio,money,total,user){
+                num = type=='CPS'?(ratio/100).toFixed(2):money;
+                totals = type=='CPS'?(total*num).toFixed(2):(user*num).toFixed(2);
+                e.text(totals);
+                var jsid = e.prevAll('.jsid').find('.js-check');
+                jsidval = jsid.attr('data-game_id')+','+type+','+totals+','+total+','+user+','+ratio+','+money;
+                jsid.val(jsidval);
+            }
+			//			日历
+			var date = "{$setdate}";
+			$('#sdate').datetimepicker({
+				format: 'yyyy-mm-dd',
+				language: "zh-CN",
+				minView: 2,
+				autoclose: true,
+				scrollMonth: false,
+				scrollTime: false,
+				scrollInput: false,
+				endDate: date
+			});
+			$('#edate').datetimepicker({
+				format: 'yyyy-mm-dd',
+				language: "zh-CN",
+				minView: 2,
+				autoclose: true,
+				pickerPosition: 'bottom-left',
+				scrollMonth: false,
+				scrollTime: false,
+				scrollInput: false,
+				endDate: date
+			});
+
+			$('#submit').click(function() {
+				var sdate = $('#sdate').val();
+				var edate = $('#edate').val();
+				// var promote_id = $('#promote_id').val();
+				// if(!promote_id){
+				// 	layer.msg('请选择子渠道');
+				// 	return false;
+				// }
+				if(Date.parse(sdate) > Date.parse(edate)) {
+					layer.msg('开始时间必须小于等于结束时间');
+					return false;
+				}
+
+			});
+			//批量通过
+            $('.jssettlement').click(function(){
+                that = $(this);
+                ids = $('.ids');
+                value = '';
+                ids.each(function(index,element){
+                    if($(this).prop('checked')){
+                        value = value+$(this).val()+',';
+                    }
+                });
+                value = value.substr(0,value.length-1);
+                if(!value){
+                    layer.msg('请选择要操作的数据');
+                    return false;
+                }
+                $.ajax({
+                    type:'post',
+                    url:"{:url('changeSettlementStatus')}",
+                    data:{ids:value,status:1},
+                    success:function(res){
+                        layer.msg(res.msg,{time:1000},function(){
+                            location.href = location.href;
+                        });
+                    },error:function(){
+                        layer.msg('服务器错误，请稍后再试');
+                    }
+                });
+            });
+            //批量打款
+            $('.jspaid').click(function(){
+                that = $(this);
+                ids = $('.ids');
+                value = '';
+                ids.each(function(index,element){
+                    if($(this).prop('checked')){
+                        value = value+$(this).val()+',';
+                    }
+                });
+                value = value.substr(0,value.length-1);
+                if(!value){
+                    layer.msg('请选择要操作的数据');
+                    return false;
+                }
+                $.ajax({
+                    type:'post',
+                    url:"{:url('paid')}",
+                    data:{id:value,status:3},
+                    success:function(res){
+                        layer.msg(res.msg,{time:1000},function(){
+                            location.href = location.href;
+                        });
+                    },error:function(){
+                        layer.msg('服务器错误，请稍后再试');
+                    }
+                });
+            });
+			$(".js-ajax-dialog-btn").click(function () {
+				var url = $(this).attr('url');
+				$.ajax({
+					type:'post',
+					url:url,
+					success:function(res){
+						layer.msg(res.msg,{time:1000},function(){
+							location.href = location.href;
+						});
+					},error:function(){
+						layer.msg('服务器错误，请稍后再试');
+					}
+				});
+			})
+		</script>
+	</body>
+
+</html>

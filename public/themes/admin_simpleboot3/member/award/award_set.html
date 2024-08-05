@@ -1,0 +1,146 @@
+<include file="public@header"/>
+</head>
+
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('Point/task')}">积分任务</a></li>
+        <li><a href="{:url('Point/shop')}">积分商品</a></li>
+        <li><a href="{:url('Point/shop_record')}">兑换记录</a></li>
+        <li><a href="{:url('Award/lists')}">抽奖奖品</a></li>
+        <li><a href="{:url('Award/record')}">中奖记录</a></li>
+        <li class="active"><a href="{:url('Award/award_set')}">抽奖设置</a></li>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('sitePost')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>抽奖消耗扣分：
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" name="user_point" value="{$data.user_point}" class="form-control"  />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>每日积分抽奖上限：
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" name="draw_limit" value="{$data.draw_limit}" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" class="form-control"  />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>每日免费抽奖：
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" name="free_draw" value="{$data.free_draw}" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" class="form-control"  />
+                            </div>
+                        </div>
+                        <div class="form-group rebate-item">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">VIP额外：</label>
+                            <div class="col-md-4 col-sm-6 v-middle" style="width:31.5%">
+                                <span style="position: relative;width: 47%">
+                                    <input  name="vip_level[]" value="{$data.vip_level[0]}" style="width: 100%" onkeyup="this.value = this.value.replace(/\D|^0/g, '');" class="form-control js-money">
+                                </span>
+
+                                <span class="line"></span>
+                                <span style="position: relative;width: 47%">
+                                    <input  name="count[]" value="{$data.count[0]}" style="width: 100%" onkeyup="this.value = this.value.replace(/\D|^0/g, '');" class="form-control js-rebate" >
+                                    <span class="input-suffix">次</span>
+                                </span>
+                                <div class="dynamic-btn rebate-dynamic-btn" style="margin-left: 6px">
+                                    <span class="rebate-add-btn js-rebate-add-btn">+</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="rebate-list" >
+                            <volist name="data.vip_level" id="vo" key="key" offset="1">
+                                <div class="form-group rebate-item">
+                                    <label for="input-site_analytics" class="col-sm-2 control-label js-rank">返利档位{$key}</label>
+                                    <div class="col-md-4 col-sm-6 v-middle" >
+                                            <span style="position: relative;width: 47%">
+                                                <input value="{$vo}"  name="vip_level[]" style="width: 100%" onkeyup="this.value = this.value.replace(/\D|^0/g, '');" class="form-control js-money" >
+                                            </span>
+                                        <span class="line"></span>
+                                        <span style="position: relative;width: 47%">
+                                                <input value="{$data['count'][$key-1]}"  name="count[]" style="width: 100%" onkeyup="this.value = this.value.replace(/\D|^0/g, '');" min="1" max="100" class="form-control js-rebate" >
+                                                <span class="input-suffix">次</span>
+                                            </span>
+                                        <div class="dynamic-btn rebate-dynamic-btn">
+                                            <span class="rebate-del-btn js-rebate-del-btn">×</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </volist>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_icp" class="col-sm-2 control-label">状态：</label>
+                            <div class="col-md-4 col-sm-6">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="status" <eq name="data.status" value="1">checked="checked"</eq>> 开启
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="status" <eq name="data.status" value="0">checked="checked"</eq>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block" style="margin-top: 3px;">关闭时抽奖入口隐藏</p>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <input type="hidden" name="set_type" value="{$name}">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                                <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script>
+    $(function () {
+        //动态添加返利档位
+        var add_one = function () {
+            $('.js-rebate-add-btn').unbind('click');
+            $('.js-rebate-add-btn').click(function () {
+                var tr = $(this).closest('.rebate-item');
+                var parent = $('#rebate-list') ;
+                var html ='<div class="form-group rebate-item"> <label for="input-site_analytics" class="col-sm-2 control-label js-rank">VIP</label> <div class="col-md-4 col-sm-6 v-middle" style="width:31.5%" > <span style="position: relative;width: 47%"> <input  name="vip_level[]" style="width: 100%" onkeyup="this.value = this.value.replace(/\\D|^0/g, \'\');" class="form-control js-money" ></span> <span class="line"></span> <span style="position: relative;width: 47%"> <input  name="count[]" style="width: 100%" onkeyup="this.value = this.value.replace(/\\D|^0/g, \'\');" class="form-control js-rebate"  > <span class="input-suffix">次</span> </span> <div class="dynamic-btn rebate-dynamic-btn" style="margin-left:6px"> <span class="rebate-del-btn js-rebate-del-btn">×</span> </div> </div> </div>'
+                parent.append(html);
+                re_bind();
+            })
+        };
+        var remove_li = function () {
+            $('.js-rebate-del-btn').unbind('click');
+            $('.js-rebate-del-btn').click(function () {
+                var parent = $(this).closest('.rebate-item');
+                parent.remove();
+                re_bind();
+            })
+        };
+        var add_flag = function () {
+            $('#rebate-list .rebate-item').each(function (index, element) {
+                $(this).find('.js-rank').text("VIP:");
+            })
+        };
+        var re_bind = function () {
+            add_one();
+            remove_li();
+            add_flag();
+        };
+        re_bind();
+    })
+
+</script>
+</body>
+</html>

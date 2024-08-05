@@ -1,0 +1,263 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/award.css">
+</block>
+<block name="body">
+<a href="javascript:history.back(-1);" class="fl"><img src="__TMPL__/mobilepublic/assets/images/back_2.png" alt="" class="fl back_icon"></a>
+<img src="__TMPL__/mobilepublic/assets/images/award/title.png" class="title-img">
+   <div class="draw" id="lottery">
+	<div>
+		<div>
+			<div class="<if condition='$award[0][stock] eq 0'>nogood</if> item award_{$award[0]['id']} lottery-unit lottery-unit-0 <if condition='$award[0][type] eq 5'>nulldraw</if>" data-award="0">
+				<div class="img">
+					<img src="{:cmf_get_image_url($award[0]['cover'])}" alt="">
+				</div>
+				<span class="name">{$award[0]['name']}</span>
+			</div>
+			
+			<div class="<if condition='$award[0][stock] eq 0'>nogood</if> item award_{$award[1]['id']} lottery-unit lottery-unit-1 <if condition='$award[1][type] eq 5'>nulldraw</if>" data-award="1">
+				<div class="img">
+					<img src="{:cmf_get_image_url($award[1]['cover'])}" alt="">
+				</div>
+				<span class="name">{$award[1]['name']}</span>
+			</div>
+			
+			<div class="<if condition='$award[0][stock] eq 0'>nogood</if> item award_{$award[2]['id']} lottery-unit lottery-unit-2 <if condition='$award[2][type] eq 5'>nulldraw</if>" data-award="2">
+				<div class="img">
+					<img src="{:cmf_get_image_url($award[2]['cover'])}" alt="">
+				</div>
+				<span class="name">{$award[2]['name']}</span>
+			</div>
+		</div>
+
+		<div>
+			<div class="<if condition='$award[0][stock] eq 0'>nogood</if> item award_{$award[3]['id']} lottery-unit lottery-unit-7 <if condition='$award[3][type] eq 5'>nulldraw</if>" data-award="7">
+				<div class="img">
+					<img src="{:cmf_get_image_url($award[3]['cover'])}" alt="">
+				</div>
+				<span class="name">{$award[3]['name']}</span>
+			</div>
+
+			<div class="">
+				<a <if condition="UID gt 0">class="draw-btn"<else/>class="draw-btn login"</if> href="javascript:">剩余次数<span class="js-frequency">{$award_count}</span></a>
+			</div>
+
+			<div class="<if condition='$award[0][stock] eq 0'>nogood</if> item award_{$award[4]['id']} lottery-unit lottery-unit-3 <if condition='$award[4][type] eq 5'>nulldraw</if>" data-award="3">
+				<div class="img">
+					<img src="{:cmf_get_image_url($award[4]['cover'])}" alt="">
+				</div>
+				<span class="name">{$award[4]['name']}</span>
+			</div>
+		</div>
+		
+		<div>
+			<div class="<if condition='$award[0][stock] eq 0'>nogood</if> item award_{$award[5]['id']} lottery-unit lottery-unit-6 <if condition='$award[5][type] eq 5'>nulldraw</if>" data-award="6">
+				<div class="img">
+					<img src="{:cmf_get_image_url($award[5]['cover'])}" alt="">
+				</div>
+				<span class="name">{$award[5]['name']}</span>
+			</div>
+
+			<div class="<if condition='$award[0][stock] eq 0'>nogood</if> item award_{$award[6]['id']} lottery-unit lottery-unit-5 <if condition='$award[6][type] eq 5'>nulldraw</if>" data-award="5">
+				<div class="img">
+					<img src="{:cmf_get_image_url($award[6]['cover'])}" alt="">
+				</div>
+				<span class="name">{$award[6]['name']}</span>
+			</div>
+
+			<div class="<if condition='$award[0][stock] eq 0'>nogood</if> item award_{$award[7]['id']} lottery-unit lottery-unit-4 <if condition='$award[7][type] eq 5'>nulldraw</if>" data-award="4">
+				<div class="img">
+					<img src="{:cmf_get_image_url($award[7]['cover'])}" alt="">
+				</div>
+				<span class="name">{$award[7]['name']}</span>
+			</div>
+		</div>
+	</div>
+</div>
+<div>
+    <div class="rule">活动规则</div>
+	<div class="rule-text">
+	     <p>1.每天免费抽奖{:cmf_get_option('award_set')['free_draw']}次。</p>
+         <p>2.消耗{:cmf_get_option('award_set')['user_point']}积分可增加一次抽奖机会，每天最多可参与{:cmf_get_option('award_set')['draw_limit']}次。</p>
+         <p>3.抽奖奖池内容会不定期更换。</p>
+         <p>4.VIP用户有额外免费抽奖次数奖励。</p>
+                            
+	</div>
+</div>
+
+<script type="text/javascript">
+	var award_id = '';
+    var award_count = "{$award_count}";
+$(function(){
+
+    if(award_count == 0){
+        $(".draw-btn").addClass('disabled');
+	}
+     var w=$('.draw .item').width();
+     $('.draw .item').css("height",w);
+	 $('.draw .draw-btn').css("height",w);
+	
+})
+var lottery = {
+	index: -1,    //当前转动到哪个位置，起点位置
+	count: 0,     //总共有多少个位置
+	timer: 0,     //setTimeout的ID，用clearTimeout清除
+	speed: 20,    //初始转动速度
+	times: 0,     //转动次数
+	cycle: 50,    //转动基本次数：即至少需要转动多少次再进入抽奖环节
+	prize: -1,    //中奖位置
+	init: function(id) {
+		if ($('#' + id).find('.lottery-unit').length > 0) {
+			$lottery = $('#' + id);
+			$units = $lottery.find('.lottery-unit');
+			this.obj = $lottery;
+			this.count = $units.length;
+			$lottery.find('.lottery-unit.lottery-unit-' + this.index).addClass('active');
+			
+		};
+	},
+	roll: function() {
+		var index = this.index;
+		var count = this.count;
+		var lottery = this.obj;
+		$(lottery).find('.lottery-unit.lottery-unit-' + index).removeClass('active');
+		index += 1;
+		if (index > count - 1) {
+			index = 0;
+			
+		};
+		$(lottery).find('.lottery-unit.lottery-unit-' + index).addClass('active');
+		this.index = index;
+
+		return false;
+	},
+	stop: function(index) {
+		this.prize = index;
+		return false;
+		
+	}
+	
+	   
+};
+
+function roll() {
+	lottery.times += 1;
+	lottery.roll(); //转动过程调用的是lottery的roll方法，这里是第一次调用初始化
+	
+	if (lottery.times > lottery.cycle + 10 && lottery.prize == lottery.index) {
+	
+		clearTimeout(lottery.timer);
+		var winlottery=$(".active .name").text();
+		if($(".active").hasClass("nulldraw")){
+		    layer.msg("谢谢惠顾");
+		
+		}
+		else{
+		   layer.msg("恭喜您获得"+winlottery);
+		}
+		var frequency=$(".js-frequency").text();
+		if(frequency==0){
+		   $(".draw-btn").addClass("disabled");
+		}
+		lottery.prize = -1;
+		lottery.times = 0;
+		click = false;
+	} else {
+		if (lottery.times < lottery.cycle) {
+			lottery.speed -= 10;
+				
+		} else if (lottery.times == lottery.cycle) {
+			//var index = Math.random() * (lottery.count) | 0; //静态演示，随机产生一个奖品序号，实际需请求接口产生
+			var index = $("#lottery").find('.award_'+award_id).data('award');
+			lottery.prize = index;
+			
+            	
+		} else {
+			if (lottery.times > lottery.cycle + 10 && ((lottery.prize == 0 && lottery.index == 7) || lottery.prize == lottery.index + 1)) {
+				lottery.speed += 110;
+			} else {
+				lottery.speed += 20;
+			}
+			
+		}
+		if (lottery.speed < 40) {
+			lottery.speed = 40;
+		};
+		
+		lottery.timer = setTimeout(roll, lottery.speed); //循环调用
+		
+	}
+	
+	return false;
+	
+}
+
+var click = false;
+window.onload = function(){
+	$('.draw-btn').click(function() {
+	    if(award_count == 0){
+	        layer.msg('抽奖次数已用完');
+	        return false;
+		}
+        if (click) { //click控制一次抽奖过程中不能重复点击抽奖按钮，后面的点击不响应
+            return false;
+        }
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            async: false,
+            url: '{:url("Award/draw",true,true)}',
+            success: function (data) {
+                console.log(data);
+                if (data.code == 1) {
+                    award_id = data.award_id;
+                    draw();
+                }else{
+                    layer.msg(data.msg);
+                    return false;
+				}
+            },
+            error: function () {
+                layer.msg('服务器故障，请稍候再试');
+                return false;
+            }
+        });
+
+	});
+
+	function draw() {
+	    if(award_id == ''){
+	        return false;
+		}
+        lottery.init('lottery');
+        var frequency;
+        frequency=$(".js-frequency").text();
+		if(frequency>0){
+			frequency--;
+			$(".js-frequency").text(frequency);
+
+			lottery.speed = 100;
+			roll(); //转圈过程不响应click事件，会将click置为false
+			click = true; //一次抽奖完成后，设置click为true，可继续抽奖
+			
+			return false;
+			
+			if(frequency==0){
+				$(this).addClass("disabled");
+			}
+		}
+		else{
+			$(this).addClass("disabled");
+		}
+    }
+};
+</script>
+</block>
+<block name="script">
+
+
+<script>
+
+</script>
+</block>
+

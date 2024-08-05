@@ -1,0 +1,57 @@
+<extend name="../issuepublic/base"/>
+
+<block name="css">
+    <link href="__TMPL__/issuepublic/assets/css/public.css" rel="stylesheet"/>
+    <link href="__TMPL__/issuepublic/assets/css/game_library.css" rel="stylesheet"/>
+</block>
+
+<block name="body">
+
+    <div class="trunk">
+        <div class="page-container">
+            <div class="banner-box">
+                <img src="__TMPL__/issuepublic/assets/images/youxiku.png" class="banner-img">
+            </div>
+        </div>
+        <div class="page-part-box">
+            <div class="H5-game-box">
+                <div class="part-title">H5游戏</div>
+                <div class="part-game-list">
+                    <volist name="h5List" id="vo">
+                        <a href="javascript:;" class="game-item">
+                            <div class="game-icon-box">
+                                <img src="{:cmf_get_image_url($vo['icon'])}"  onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null">
+                            </div>
+                            <p class="game-name">{$vo['game_name']}</p>
+                        </a>
+                    </volist>
+                </div>
+            </div>
+            <div class="sy-game-box" style="margin-top: -13px;margin-bottom: 60px">
+                <div class="part-title">手机游戏</div>
+                <div class="part-game-list">
+                    <volist name="syList" id="vo">
+                        <a href="javascript:;" class="game-item">
+                            <div class="game-icon-box">
+                                <img src="{:cmf_get_image_url($vo['icon'])}" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null">
+                            </div>
+                            <p class="game-name">{$vo['game_name']}</p>
+                        </a>
+                    </volist>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+    $(function(){
+	    var imgArr = $(".game-icon-box img");
+        for(var i=0;i<imgArr.length;i++){
+            var src=imgArr.eq(i).attr("src")
+            if (src ==""||src==null){
+
+                imgArr.eq(i).attr("src", "/static/images/empty.jpg");
+            }
+        }
+	})
+</script>
+</block>

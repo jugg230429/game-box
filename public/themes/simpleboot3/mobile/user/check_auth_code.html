@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="frontend" content="Robin">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <title>授权验证</title>
+    <meta name="apple-mobile-web-app-title" content="{:cmf_get_option('wap_set')['screen_app_name']}">
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="{:cmf_get_image_url(cmf_get_option('wap_set')['wap_app_icon'])}">
+</head>
+<body>
+
+<block name="body"></block>
+
+<script src="__JS__/layer/mobile/layer.js"></script>
+<script src="__JS__/layui/layui.all.js"></script>
+<block name='script'></block>
+<script>
+    var status = "{$status}";
+    try{
+        $mt = "{:get_devices_type()}";
+        if($mt==2){
+            window.webkit.messageHandlers.xgsdk_finishPage.postMessage(1);
+        }else{
+            window.xgsdk.finishPage()
+        }
+    }catch (e) {
+        layer.msg('授权失败');
+    }
+</script>
+</body>
+</html>

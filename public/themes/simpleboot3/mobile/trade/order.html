@@ -1,0 +1,240 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/trade_record.css">
+
+</block>
+
+<block name="body">
+    <div class="trade_record_page">
+        <div class="trade_record_header">
+            <a href="javascript:;" onclick="history.go(-1)"><img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon"></a>
+            <p class="trade-record-title">确认订单</p>
+        </div>
+        <div class="type_down__long_hx clear"></div>
+        <div class="record-info-contain">
+            <div class="order-content-box">
+                <div class="trumpet-base-info">
+                    <div class="game-info-box v-middle">
+                        <img src="{:cmf_get_image_url($data['icon'])}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null" class="trumpet-game-icon">
+                        <div class="game-info">
+                            <p class="game-name">{$data.game_name}</p>
+                            <p class="game-account">小号：{$data.small_account}</p>
+                            <p class="account-price">￥<span>{$data.money}</span></p>
+                        </div>
+                    </div>
+                    <div style="position: relative">
+                        <div class="trumpet-server v-middle">
+                            <i class="server-icon"></i>
+                            <p ><span>区&nbsp;服</span>{$data.server_name}</p>
+                        </div>
+                        <div class="trumpet-consume v-middle">
+                            <i class="consume-icon"></i>
+                            <p ><span>累计消费(元)</span>{$data.cumulative}</p>
+                        </div>
+                        <div class="trumpet-day v-middle">
+                            <i class="day-icon"></i>
+                            <p ><span>创建天数</span>{$data.days}天</p>
+                        </div>
+                        <notempty name="data.password">
+                        <div class="trumpet-password v-middle">
+                            <i class="pw-icon"></i>
+                            <p ><span>二级密码</span>购买商品可见</p>
+                        </div>
+                        </notempty>
+                        <i class="official-img"></i>
+                    </div>
+                </div>
+                <div class="pay-status-box">
+                    <div class="pay-money-box">
+                        <div class="select-pty-pay v-middle" >
+                            <label class="v-middle">
+                                <input type="checkbox" name="is_balance" id="is_balance" class="saleRuleCheckBtn">
+                                <i class="saleRuleCheckIcon"></i>
+                                <span>您当前可用平台币</span>
+                            </label>
+                            <span class="ptb-num">￥{:null_to_0($user.balance)}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="pay-way-box">
+                    <div class="select-pay-way">
+                        <!-- <if condition="pay_type_status('zfb') eq 1 && !cmf_is_wechat()" > -->
+                        <if condition="pay_type_status('zfb') eq 1" >
+                        <div class="select-pay-item v-middle">
+                            <label class="v-middle">
+                                <input type="radio" name="pay_way" value="1" class="saleRuleCheckBtn" checked>
+                                <i class="select-pay-icon"></i>
+                                <i class="zfb-icon"></i>
+                                <span>支付宝</span>
+                            </label>
+                        </div>
+                        </if>
+                        <if condition="pay_type_status('wxscan') eq 1">
+                        <div class="select-pay-item v-middle">
+                            <label class=" v-middle">
+                                <input type="radio" <if condition="cmf_is_wechat()">checked</if> name="pay_way" value="2" class="saleRuleCheckBtn">
+                                <i class="select-pay-icon"></i>
+                                <i class="wx-icon"></i>
+                                <span>微信</span>
+                            </label>
+                        </div>
+                        </if>
+                    </div>
+                    <div class="pay-tips">
+                        <p class="title">温馨提示</p>
+                        <p>
+                            商品信息已通过本平台审核，因时间造成的排行榜、称号、装备到期等变化，不视为信息失实；
+                        </p>
+                        <p>
+                            购买后，角色小号自动转入您的平台账号下，选择对应的小号登录游戏即可查看；
+                        </p>
+                        <p>
+                            交易过程仅变更小号的所有权，卖方将无法通过其他途径找回，请放心购买；
+                        </p>
+                        <p>
+                            商品一经购买<span style="color: #F45D5D">不支持退货</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!--<div class="occupy"></div>-->
+
+            </div>
+
+        </div>
+    </div>
+    <div class="footer-fixed-box">
+        <a href="javascript:;" class="confirm-btn js-confirm">确认支付</a>
+    </div>
+    <div class="pop"></div>
+</block>
+<block name="script">
+    <script src="__STATIC__/js/layui/layui.js"></script>
+    <script src="__TMPL__/mobilepublic/assets/js/pop.lwx.min.js"></script>
+    <script>
+        var isok =  true;
+        $(function () {
+            $('.select-pay-item input').change(function () {
+                var check = $(this).prop("checked");
+                if(check){
+                    $(this).closest(".select-pay-item").siblings(".select-pay-item").find("input").prop("checked",false)
+                }else {
+                    $(this).prop("checked",true);
+                    $(this).closest(".select-pay-item").siblings(".select-pay-item").find("input").prop("checked",false)
+                }
+            });
+
+            $('.js-confirm').click(function () {
+                if(isok == false){return false;}
+                isok = false;
+                var is_balance = 0;
+                if($('#is_balance').is(':checked')){
+                    is_balance = 1;
+                }
+                
+                var transaction_id = "{:input('transaction_id')}";
+                var pay_way = $("input[name='pay_way']:checked").val();
+                var balance = "{$user.balance}";
+                var money = "{$data.money}";
+                var is_wechat = "{:cmf_is_wechat()}";
+                var is_company_weixin = "{:cmf_is_company_wechat()}";
+                var user_id = "{$user.id}";
+                if(is_wechat==0 || is_company_weixin == 1){
+                    $.ajax({
+                        type: 'post',
+                        dataType: 'json',
+                        url: '{:url("buy")}',
+                        data: { is_balance: is_balance,pay_way:pay_way,transaction_id:transaction_id},
+                        async:false,
+                        success: function (data) {
+                            isok = true;
+                            if(data.status == 4){
+                                //苹果app内微信支付走APP支付
+                                window.webkit.messageHandlers.wxAppPay.postMessage(data);
+                            }else{
+                                if (data.code == 1) {
+                                    //支付返回信息统一跳转,如是支付宝支付,再行判断wap和APP(只有安卓)
+                                    if(data.data.ali_app == 1){
+                                        //支付宝APP支付-通知安卓
+                                        window.mengchuang.appaliapppay(data.data.arg);//安卓
+                                        return false;
+                                    }
+                                    //其他URL跳转的
+                                    window.location.href = data.url;
+                                }else{
+                                    layer.msg(data.msg);
+                                }
+                            }
+                        },
+                        error: function () {
+                            isok = true;
+                            layer.msg('服务器故障，请稍候再试');
+                            that.removeClass('no_send');
+                        }
+                    });
+                }else if(is_balance ==1 && balance>money){
+                    $.ajax({
+                        type: 'post',
+                        dataType: 'json',
+                        url: '{:url("buy")}',
+                        data: { is_balance: is_balance,pay_way:pay_way,transaction_id:transaction_id},
+                        async:false,
+                        success: function (data) {
+                            isok = true;
+                            if (data.code == 1) {
+                                //支付返回信息统一跳转,如是支付宝支付,再行判断wap和APP(只有安卓)
+                                if(data.data.ali_app == 1){
+                                    //支付宝APP支付-通知安卓
+                                    window.xgsdk.appaliapppay(data.data.arg);//安卓
+                                    return false;
+                                }
+                                //其他URL跳转的
+                                window.location.href = data.url;
+                            }else{
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            isok = true;
+                            layer.msg('服务器故障，请稍候再试');
+                            that.removeClass('no_send');
+                        }
+                    });
+                }else{
+                    var generateHideElement = function (name, value) {
+                        var tempInput = document.createElement("input");
+                        tempInput.type = "hidden";
+                        tempInput.name = name;
+                        tempInput.value = value;
+                        return tempInput;
+                        }
+                    var form = document.createElement("form");
+                    document.body.appendChild(form);
+                    var jData = generateHideElement("is_balance", is_balance),
+                        jsongroups = generateHideElement("pay_way", pay_way),
+                        cacheKey = generateHideElement("transaction_id", transaction_id),
+                        weixin_pay_type = generateHideElement("weixin_pay_type", 2);
+                        user_id = generateHideElement("user_id", user_id);
+                    form.appendChild(jData);
+                    form.appendChild(jsongroups);
+                    form.appendChild(cacheKey);
+                    form.appendChild(weixin_pay_type);
+                    
+                    // 判断是微信支付还是支付宝支付 pay_way=1(支付宝) 2 (微信支付)
+                    if(pay_way == 1){
+                        form.appendChild(user_id);
+                        form.method = "GET";
+                        form.action = '{:url("mobile/User/alipay3")}';
+                        form.submit();
+                    }else{
+                        form.method = "post";
+                        form.action = '{:url("api/Pay/get_wx_code",[],"","",true)}';
+                        form.submit();
+                    }
+                }
+                return false;
+            })
+        });
+
+    </script>
+</block>

@@ -1,0 +1,366 @@
+<include file="public@header" />
+<style>
+    .layui-layer-prompt .layui-layer-content {
+    padding: 20px 20px 0px 20px;
+}
+label.fl.label-name {
+    width: 110px;
+}
+input.payment_money:focus{
+    border-color: #66afe9;
+    outline: 0
+}
+input, button, select, textarea {
+    /* width:70%; */
+    font-family: inherit;
+    font-size: inherit;
+    /* line-height: inherit; */
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333333;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    line-height: 23px;
+}
+</style>
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('settlement/promote_withdraw')}">收益提现</a></li>
+            <span class="title_remark">说明：渠道提交收益提现申请的记录，后台审批操作</span>
+        </ul>
+        <form id="search_form" class="well form-inline fr" method="get" action="{:url('promote_withdraw')}">
+
+            <select name="promote_id" id="promote_id" class="selectpicker " promote_id="{:input('request.promote_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+                <option value="">渠道账号</option>
+                <volist name=":get_promote_list()" id="vo">
+                    <option value="{$vo.id}" >{$vo.account}</option>
+                </volist>
+            </select>
+
+            <input type="text" class="form-control" name="widthdraw_number" style="width: 180px;" value="{:input('request.widthdraw_number/s','')}" placeholder="提现单号">
+            <select name="status" id="status" class="form-control" style="width: 120px;">
+                <option value="">提现状态</option>
+                <option value="1" <if condition="input('status') eq '1'">selected</if>>已通过</option>
+                <option value="0" <if condition="input('status') eq '0'">selected</if>>待审核</option>
+                <option value="2" <if condition="input('status') eq '2'">selected</if>>已驳回</option>
+                <option value="3" <if condition="input('status') eq '3'">selected</if>>已打款</option>
+            </select>
+
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('promote_withdraw')}">清空</a>
+            <a class="btn btn-export js-ajax-dialog-btn-xz" data-msg="确定导出吗？" href="{:url('Export/expUser',array_merge(['id'=>5,'xlsname'=>'推广提现'],input()))}">导出</a>
+        </form>
+        <form class="js-ajax-form" action="" method="post">
+        <div class="table-actions position" style="margin-left: -10px;">
+            <button class="btn btn-success   js-ajax-submit mtb17" type="submit" data-style="margin-top:23px"
+                    data-action="{:url('changeStatus',['status'=>1])}" data-subcheck="true" data-msg="您确定审核吗？">
+                通过
+            </button>
+            <a class="btn btn-warning" id="batch_payment" data-subcheck="true">
+                打款
+            </a>
+            <button class="btn btn-danger   js-ajax-submit mtb17" type="submit" data-style="margin-top:23px"
+                    data-action="{:url('changeStatus',['status'=>2])}" data-subcheck="true" data-msg="您确定驳回吗？">
+                驳回
+            </button>
+
+        </div>
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th width="9">
+
+                                <input type="checkbox" id="all-checkbox" class="table-item-checkbox js-check-all" data-direction="x" data-checklist="js-check-x">
+                                <label for="all-checkbox" class=""></label>
+                        </th>
+                        <th>提现信息</th>
+                        <th>提现金额</th>
+                        <th>提现手续费</th>
+                        <th>打款金额</th>
+                        <th>渠道账号</th>
+<!--                        <th>申请时间</th>-->
+                        <th>提现状态</th>
+                        <th>审核时间</th>
+                        <th>打款方式</th>
+                        <th>打款信息</th>
+                        <th>操作</th>
+                        <th width="150px">备注</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <empty name="data_lists">
+                        <tr><td colspan="12" style="text-align: center;">暂无数据</td></tr>
+                    <else/>
+                        <foreach name="data_lists" item="vo">
+                        <tr>
+                            <php>$page_total +=$vo['sum_money'];</php>
+                            <td>
+                                <input type="checkbox" id="ids-checkbox{$vo.id}" pay-price="<php>echo null_to_0($vo['sum_money'])-null_to_0($vo['fee'])</php>" data-promote_id="{$vo['promote_id']}" class="table-item-checkbox js-check" <if condition="$vo.status gt 1" >disabled</if> data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
+                                       value="{$vo.id}" >
+                                <label for="ids-checkbox{$vo.id}" class=""></label>
+                            </td>
+                            <td>
+                                提现单号：{$vo.widthdraw_number}<br/>
+                                提现时间：{:date('Y-m-d H:i:s',$vo['create_time'])}
+                            </td>
+                            <td><span style="color: orange;">{:null_to_0($vo['sum_money'])}</span></td>
+                            <td><span style="color: orange;">{:null_to_0($vo['fee'])}</span></td>
+                            <td><span style="color: orange;">{:null_to_0($vo['sum_money']-$vo['fee'])}</span></td>
+                            <td>{:get_promote_name($vo['promote_id'])}</td>
+                            <td>
+                                <if condition="$vo['status'] eq 1">
+                                    <span class="label " style="color: #3FAD46;font-size:14px">已通过</span>
+                                <elseif condition="$vo['status'] eq 2"/>
+                                    <span class="label" style="color:#d9534f;font-size:14px">已驳回</span>
+                                <elseif condition="$vo['status'] eq 3"/>
+                                    <span class="label" style="color: #3FAD46;font-size:14px">已打款</span>
+                                <else/>
+                                    <span class="label" style="color: #f0ad4e;font-size:14px">待审核</span>
+                                </if>
+
+                            </td>
+                            <td>{:$vo['audit_time']?date('Y-m-d H:i:s',$vo['audit_time']):'--'}</td>
+                            <td>{:$vo['status']==3?($vo['withdraw_type']!=0?($vo['withdraw_type']==1?'手动':'自动'):'--'):'--'}</td>
+                            <td>
+                                <if condition="$vo['status'] eq '3'">
+                                    打款方式：<if condition="$vo['withdraw_way'] eq 1">支付宝<else/>银行卡</if><br/>
+                                    {$vo.payment_account} ,{$vo.payment_name}<br/>
+                                    实际打款金额：{$vo.payment_money}
+                                <else/>
+                                    --
+                                </if>
+                            </td>
+                            <td>
+                                <if condition="$vo['status'] eq 1">
+<!--                                    <a href="{:url('paid',['ids'=>$vo['id']])}" class="js-ajax-dialog-btn">打款</a>-->
+                                    <a href="javascript:;" onclick="payment_info({$vo['id']},{$vo['promote_id']}, 1,<php>echo null_to_0($vo['sum_money'])-null_to_0($vo['fee'])</php> )" >打款</a>
+                                <elseif condition="$vo['status'] eq 2"/>
+                                    -
+                                <elseif condition="$vo['status'] eq 0"/>
+                                    <a href="{:url('changeStatus',['ids'=>$vo['id'],'status'=>1])}" class="js-ajax-dialog-btn">通过</a>
+                                    <a href="{:url('changeStatus',['ids'=>$vo['id'],'status'=>2])}" class="js-ajax-dialog-btn">驳回</a>
+                                <else />
+                                    已打款
+                                </if>
+                            </td>
+                            <td><a href="javascript:;"  onclick="save_remark({$vo['id']},'{$vo[\'remark\']}')">{$vo['remark']|default="点击输入"}</a></td>
+                        </tr>
+                        </foreach>
+                        <tr class="data_summary">
+                            <td colspan="2"><span style="margin-right: 10px;">汇总</span></td>
+                            <td colspan="10"><span>今日提现：{:null_to_0($today)} ； 昨日提现：{:null_to_0($yestoday)} ；当页提现：{:null_to_0($page_total)}元 ； 累计提现：{:null_to_0($total)}元</span></td>
+                        </tr>
+                    </empty>
+                </tbody>
+            </table>
+        </form>
+        <div class="pagination">{$page}
+        </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script type="text/javascript">
+        promote_id = $("#promote_id").attr('promote_id');
+        $("#promote_id").selectpicker('val', promote_id);
+
+
+        //是否开启自动打款
+        var withdraw_type = "{:cmf_get_option('ptb_cash_out_set')['pay_type']}";
+
+        $("#batch_payment").click(function () {
+            var ids = [];
+            $.each($("input[name='ids[]']:checked"), function (i) {
+                ids.push({"id":$(this).val(),"promote_id":$(this).attr('data-promote_id'),"pay_price":$(this).attr('pay-price')})
+            });
+            if (ids.length == 0) {
+                layer.msg('请至少选择一项');
+                return false;
+            }
+            var times2 = ids.length + 1;
+            $.each(ids,function (index,ele) {
+                payment_info(ele.id,ele.promote_id, times2,ele.pay_price);
+            });
+
+        });
+
+        function payment_info(_id,promote_id, times,pay_price) {
+
+            if(withdraw_type=='1'){
+                is_hidden = '';
+            }else{
+                is_hidden = 'hidden';
+            }
+
+            //获取渠道的打款信息
+            $.ajax({
+                url: "{:url('get_promote_payment_info')}",
+                type: 'POST',
+                dataType: 'json',
+                data: {promote_id: promote_id},
+                success: function (data) {
+                    if(data.code != 1){
+                        layer.msg(data.msg);
+                        return false;
+                    }
+                    info = data.data;
+                    layer.open({
+                        type: 7,
+                        closeBtn: false,
+                        area: '500px',
+                        shift: 5,
+                        shadeClose: false,
+                        content:    '<div class=" layui-layer-page layui-layer-prompt layer-anim" id="layui-layer" type="page" times="9" showtime="0" contype="string" >' +
+                            '<div id="" class="layui-layer-content">' +
+                            '<label class="fl label-name">打款金额(元)：</label>'+
+                            '<input style="margin-left: 0px;width:70%;" type="text" class="payment_money" name="payment_money" onkeyup="value=value.replace(/^\\D*(\\d*(?:\\.\\d{0,2})?).*$/g,\'$1\')" class="layui-layer-input" value="'+parseFloat(pay_price).toFixed(2)+'">' +
+                            '</div>' +
+                            '<div id="" class="layui-layer-content">' +
+                            '<label class="fl label-name">打款方式：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>'+
+                            '<label style="margin-right: 22px;">\n' +
+                            '<input type="radio" class="inp_radio" value="1" name="payment_type_'+_id+'" checked onclick="change_payment_info('+_id+')"> 支付宝' +
+                            '</label>\n' +
+                            '<label >\n' +
+                            '<input type="radio" class="inp_radio" value="3" name="payment_type_'+_id+'" onclick="change_payment_info('+_id+')"> 银行卡' +
+                            '</label>' +
+                            '</div>' +
+
+                            '<div class="layui-layer-content withdraw_type_'+_id+' '+is_hidden+'">' +
+                            '<label class="fl label-name">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>'+
+                            '<label style="margin-right: 22px;">\n' +
+                            '<input type="radio" class="inp_radio" value="2" name="withdraw_type_'+_id+'" checked> 自动打款' +
+                            '</label>\n' +
+                            '<label >\n' +
+                            '<input type="radio" class="inp_radio" value="1" name="withdraw_type_'+_id+'"  > 手动打款' +
+                            '</label>' +
+                            '</div>' +
+
+                            '<div class="payment_zfb_'+_id+'">'+
+                                '<div id="" class="layui-layer-content">' +
+                                '<label class="fl label-name">支付宝账号：&nbsp;&nbsp;&nbsp;&nbsp;</label>'+
+                                '<label>'+info.alipay_account+'</label>'+
+                                '</div>' +
+                                '<div id="" class="layui-layer-content">' +
+                                '<label class="fl label-name">支付宝姓名：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>'+
+                                '<label>'+info.alipay_name+'</label>'+
+                                '</div>' +
+                            '</div>'+
+                            '<div class="payment_bank_'+_id+'" hidden >'+
+                                '<div id="" class="layui-layer-content">' +
+                                '<label class="fl label-name">银行卡号：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>'+
+                                '<label>'+info.bank_card+'</label>'+
+                                '</div>' +
+                                '<div id="" class="layui-layer-content">' +
+                                '<label class="fl label-name">持卡人：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>'+
+                                '<label>'+info.bank_account+'</label>'+
+                                '</div>' +
+                                '<div id="" class="layui-layer-content">' +
+                                '<label class="fl label-name">收款银行：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>'+
+                                '<label>'+info.bank_name+'</label>'+
+                                '</div>' +
+                            '</div>'+
+                            '<div class="layui-layer-btn layui-layer-btn-">' +
+                            '<a class="layui-layer-btn0 confirm-btn" onclick="save_payment_info($(this),'+_id+','+promote_id+','+times+')">确定</a>' +
+                            '<a class="layui-layer-btn1">取消</a>' +
+                            '</div>' +
+                            '</div>'
+                    });
+                },
+                error: function () {
+                }
+            });
+        }
+
+
+        function change_payment_info(_id) {
+
+            var payment_type = $('input:radio[name="payment_type_' + _id + '"]:checked').val();
+            if (payment_type == 1) {
+                $(".payment_zfb_" + _id + "").show();
+                $(".withdraw_type_" + _id + "").show();
+                $(".payment_bank_" + _id + "").hide();
+            } else {
+                $(".payment_zfb_" + _id + "").hide();
+                $(".withdraw_type_" + _id + "").hide();
+                $(".payment_bank_" + _id + "").show();
+            }
+        }
+
+        var times3 = 0; // 计数执行了几次
+        function save_payment_info(that,id,promote_id,times) {
+            var payment_type= that.parent().parent().find('input:radio[name="payment_type_'+id+'"]:checked').val();
+            var withdraw_type= that.parent().parent().find('input:radio[name="withdraw_type_'+id+'"]:checked').val();
+            var payment_money = that.parent().parent().find(".payment_money").val();
+
+            if(payment_money == '' || isNaN(payment_money)){
+                layer.msg('请输入打款金额');
+                return false
+            }
+
+            if (payment_type == '' || payment_type == undefined) {
+                layer.msg('请选择打款类型');
+                return false;
+            }
+
+            $.ajax({
+                url: "{:url('paid')}",
+                type: 'POST',
+                dataType: 'json',
+                data: {ids: id,payment_type:payment_type,payment_money:payment_money,promote_id:promote_id,withdraw_type:withdraw_type},
+                success: function (data) {
+                    layer.msg(data.msg);
+                    if(times == 1){
+                        setTimeout('window.location.reload()',1500);
+                    }
+                    if(times > 1){
+                        times3 ++;
+                    }
+                    if(times3 == times - 1){
+                        setTimeout('window.location.reload()',1500);
+                    }
+
+                },
+                error: function () {
+                }
+            });
+        }
+        function save_remark(id,remark) {
+            var url = "{:url('save_remark')}";
+            if(remark=='点击输入'){
+                remark = '';
+            }
+            layer.prompt({
+                formType: 3,
+                title: '输入备注',
+                value: remark,
+                placeholder:'请输入备注'
+            }, function (hits) {
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    dataType: 'json',
+                    data: {id:id,remark:hits,type:'pww'},
+                    success: function (data) {
+                        if (data.code > 0) {
+                            layer.msg(data.msg);
+                            setTimeout(function(){
+                                self.location.reload(true);
+                            },1000);
+                        } else {
+                            layer.msg(data.msg)
+                        }
+                    },
+                    error: function () {
+                        layer.msg("服务器故障！");
+                    }
+                });
+            });
+        }
+
+
+    </script>
+</body>
+</html>

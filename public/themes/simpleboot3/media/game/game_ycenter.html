@@ -1,0 +1,120 @@
+<extend name="../mediapublic/base" />
+<!-- 主体内容 -->
+<block name="body">
+    <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/game_ycenter.css">
+    <div class="game_page">
+      	<div class="banner">
+	     <div class="wrap">
+	         <div class="bannner-title">
+			      <span class="bannner-title-name">热门推荐</span>
+		     </div>
+			 <ul>
+				 <volist name="recommend_game" id="vo">
+					 <li class="banner-game fl">
+						<a target="_blank" href="{:url('game/ydetail',['game_id'=>$vo['id']])}" class="banner-game-link"> <img src="{:cmf_get_image_url($vo['hot_cover'])}" class="banner-game-img" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null">
+						 <img src="{:cmf_get_image_url($vo['icon'])}" class="banner-game-icon" onerror="this.src='__STATIC__/images/empty3.png';this.onerror=null">
+						 <div class="banner-box">
+							 <div class="banner-box-name">{$vo.game_name}</div>
+							 <div class="banner-box-type">{$vo.game_type_name}</div>
+							 <div class="banner-box-text">{$vo.features}</div>
+						 </div>
+						 </a>
+					 </li>
+				 </volist>
+				 <empty name="recommend_game">
+<!--                    <li class="banner-game fl">-->
+<!--					     <img src="{:cmf_get_image_url($vo['hot_cover'])}" class="banner-game-img" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null">-->
+<!--						 <img src="{:cmf_get_image_url($vo['icon'])}" class="banner-game-icon" onerror="this.src='__STATIC__/images/empty3.png';this.onerror=null">-->
+<!--						 <div class="banner-box">-->
+<!--							 <div class="banner-box-name">{$vo.game_name}</div>-->
+<!--							 <div class="banner-box-type">{$vo.game_type_name}</div>-->
+<!--							 <div class="banner-box-text">{$vo.features}</div>-->
+<!--						 </div>-->
+
+<!--	                  </li>-->
+				 </empty>
+			 </ul>
+		 </div>
+	  </div>
+      <div class="wrap">
+	     <div class="fl gamelist">
+		     <div class="bluediv fl"></div>
+			 <div class="gamelis-ttitle fl">游戏列表</div>
+			 <!--<div class="fg gamesearch">-->
+                <!--<span></span>-->
+                <!--<label for="search" class="search_label"><input type="text" name="game_name" value="" id="" placeholder="" autocomplete="off" onfocus="this.placeholder=''">-->
+                <!--<button type="submit" class="search_icon"><img src="__STATIC__/images/ico_seach.png" alt=""></button></label>-->
+                <!--<div class="" id=""></div>-->
+             <!--</div>-->
+			 <div class="clear"></div>
+			 <div class="gamescreen_con_second_line clear">
+                    <p class="gamescreen_con_title fl">游戏类型：</p>
+                    <div class="game-type-list fl">
+                            <div class="other-game-type fl">
+								<a href="{:url('Game/game_ycenter',['sdk_version'=>input('sdk_version'),'short'=>input('short')])}"
+								   class="alls bluecolors ml-20 fl <if condition='empty(input(game_type_id))'>type_active</if>"><span>不限</span></a>
+								<volist name="game_type" id="vo">
+									<a href="{$vo.url}"
+									   class="<if condition='input(game_type_id) eq $vo[id]'>type_active</if> bluecolors gamescreen_con_type fl">
+										<p>{$vo.type_name}</p>
+									</a>
+								</volist>
+                            </div>
+                        </div>
+                    </div>
+			 <volist name="data" id="vo">
+				 <div class="game-box">
+					<a href="{:url('game/ydetail',['game_id'=>$vo['relation_game_id']])}" target="_blank">
+					<img src="{:cmf_get_image_url($vo['hot_cover'])}" class="game-box-img fl"  onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null">
+					 <div class="fl">
+						 <div class="game-box-name">{$vo.game_name}</div>
+						 <div>
+							 <span class="game-box-tag">{$vo.game_type_name}</span>
+						 </div>
+						 <div class="game-box-describe">
+							 {$vo.features}
+						 </div>
+					 </div>
+					 <div class="fg">
+						 <a href="{:url('game/ydetail',['game_id'=>$vo['relation_game_id']])}" class="game-box-gamebtn">进入游戏</a>
+						 <a href="{:url('gift/game_gift',['game_id'=>$vo['relation_game_id']])}" class="game-box-giftbtn">领取礼包</a>
+					 </div>
+					</a>
+				 </div>
+			 </volist>
+			 <empty name="data">
+                  <div class="no-data">暂无游戏</div>
+			 </empty>
+             <div id="page1" class="gamelistpage">
+		     <notempty name="data">
+			    {$page}
+		    </notempty>
+	       </div>
+		 </div>
+		 <!-- ss -->
+		 <div class="fg new-open">
+		      <div class="bluediv fl"></div>
+			 <div class="gamelis-ttitle fl">最新开服</div>
+			 <div class="clear"></div>
+			 <div class="new-open-box">
+			    <div class="new-open-box-title">
+				    <div class="new-open-box-name fl">游戏名称</div>
+				    <div class="new-open-box-area fl">区服</div>
+				    <div class="new-open-box-time fl">时间</div>
+				</div>
+				 <volist name="server" id="vo">
+					 <a class="new-open-box-item" href="{:url('game/ydetail',['game_id'=>$vo['relation_game_id']])}" target="_blank">
+						 <div class="new-open-box-name fl">{$vo.game_name}</div>
+						 <div class="new-open-box-area fl">{$vo.server_name}</div>
+						 <div class="new-open-box-time fl">{:date('m-d/H:i',$vo['start_time'])}</div>
+					 </a>
+				 </volist>
+				 <empty name="server">
+                     <div class="no-data">暂无游戏</div>
+			     </empty>
+			 </div>
+		 </div>
+	  </div>
+    </div>
+
+</block>

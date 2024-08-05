@@ -1,0 +1,48 @@
+<script type="text/javascript">
+
+    $(function () {
+        $("#game_name").change(function () {
+            var platform_id = $(this).val()
+            if (platform_id && platform_id != '0') {
+
+                location.href = setParame(location.href, 'platform_id', platform_id);
+                //location.href = location.href + '?platform_id=' + platform_id
+            }
+        });
+
+
+        $('.jspagerow').change(function(){
+            value = $('.jspagerow option:selected').attr('vv');
+            $('#page').remove();
+            $('#submit').append('<input type="hidden" id="page" name="row" value="'+value+'">');
+            $('#submit').click();
+        });
+        // 分页
+        $(".page-item").wrapAll("<div class='fr jspageitem'></div>");
+        var $one_li = $(".jspagerow");
+        var $two_li = $(".jspageitem");
+        $two_li.insertBefore($one_li);
+
+    })
+
+
+    //为url字符串添加、修改参数
+    function setParame(url, paramName, replaceWith) {
+        if (url.indexOf(paramName) > -1) {
+            var re = eval('/(' + paramName + '=)([^&]*)/gi');
+            url = url.replace(re, paramName + '=' + replaceWith);
+        } else {
+            var paraStr = paramName + '=' + replaceWith;
+
+            var idx = url.indexOf('?');
+            if (idx < 0)
+                url += '?';
+            else if (idx >= 0 && idx != url.length - 1)
+                url += '&';
+            url = url + paraStr;
+        }
+        return url;
+    }
+
+</script>
+

@@ -1,0 +1,172 @@
+[
+    {
+        "name": "clue/socket-raw",
+        "version": "v1.5.0",
+        "version_normalized": "1.5.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/clue/php-socket-raw.git",
+            "reference": "089ffa05fa75bdc4e919aac44bbc435b3ef640ef"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/clue/php-socket-raw/zipball/089ffa05fa75bdc4e919aac44bbc435b3ef640ef",
+            "reference": "089ffa05fa75bdc4e919aac44bbc435b3ef640ef",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
+        },
+        "require": {
+            "ext-sockets": "*",
+            "php": ">=5.3"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^9.3 || ^5.7 || ^4.8.35"
+        },
+        "time": "2020-11-27T13:16:18+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Socket\\Raw\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Christian Lück",
+                "email": "christian@clue.engineering"
+            }
+        ],
+        "description": "Simple and lightweight OOP wrapper for PHP's low-level sockets extension (ext-sockets).",
+        "homepage": "https://github.com/clue/php-socket-raw",
+        "keywords": [
+            "Socket",
+            "client",
+            "datagram",
+            "dgram",
+            "icmp",
+            "ipv6",
+            "server",
+            "stream",
+            "tcp",
+            "udg",
+            "udp",
+            "unix"
+        ],
+        "funding": [
+            {
+                "url": "https://clue.engineering/support",
+                "type": "custom"
+            },
+            {
+                "url": "https://github.com/clue",
+                "type": "github"
+            }
+        ]
+    },
+    {
+        "name": "google/protobuf",
+        "version": "v3.17.3",
+        "version_normalized": "3.17.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/protocolbuffers/protobuf-php.git",
+            "reference": "ae9282cf11dd2933b7e71a611f9590f07d53d3f3"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/ae9282cf11dd2933b7e71a611f9590f07d53d3f3",
+            "reference": "ae9282cf11dd2933b7e71a611f9590f07d53d3f3",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
+        },
+        "require": {
+            "php": ">=5.5.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": ">=4.8.0"
+        },
+        "suggest": {
+            "ext-bcmath": "Need to support JSON deserialization"
+        },
+        "time": "2021-06-08T14:59:41+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Google\\Protobuf\\": "src/Google/Protobuf",
+                "GPBMetadata\\Google\\Protobuf\\": "src/GPBMetadata/Google/Protobuf"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "description": "proto library for PHP",
+        "homepage": "https://developers.google.com/protocol-buffers/",
+        "keywords": [
+            "proto"
+        ]
+    },
+    {
+        "name": "xingwenge/canal_php",
+        "version": "v1.0.3",
+        "version_normalized": "1.0.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/xingwenge/canal-php.git",
+            "reference": "96f30d50fbce5b7da9b536145fdf21bee4214a0e"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/xingwenge/canal-php/zipball/96f30d50fbce5b7da9b536145fdf21bee4214a0e",
+            "reference": "96f30d50fbce5b7da9b536145fdf21bee4214a0e",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
+        },
+        "require": {
+            "clue/socket-raw": "^1.4",
+            "google/protobuf": "^3.8",
+            "php": ">=5.6"
+        },
+        "time": "2019-07-30T04:05:20+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Com\\Alibaba\\Otter\\Canal\\Protocol\\": "src/protocol/Com/Alibaba/Otter/Canal/Protocol/",
+                "GPBMetadata\\": "src/protocol/GPBMetadata/",
+                "xingwenge\\canal_php\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "xingwenge",
+                "email": "470703808@qq.com"
+            }
+        ],
+        "description": "connect canal server via php client."
+    }
+]

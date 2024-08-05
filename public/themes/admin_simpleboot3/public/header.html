@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <!-- Set render engine for 360 browser -->
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- HTML5 shim for IE8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <![endif]-->
+
+
+    <link href="__TMPL__/public/assets/themes/{:cmf_get_admin_style()}/bootstrap.min.css" rel="stylesheet">
+    <link href="__TMPL__/public/assets/simpleboot3/css/simplebootadmin.css" rel="stylesheet">
+    <link href="__STATIC__/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        form .input-order {
+            margin-bottom: 0px;
+            padding: 0 2px;
+            width: 42px;
+            font-size: 12px;
+        }
+
+        form .input-order:focus {
+            outline: none;
+        }
+
+        .table-actions {
+            margin-top: 5px;
+            margin-bottom: 5px;
+            padding: 0px;
+        }
+
+        .table-list {
+            margin-bottom: 0px;
+        }
+
+        .form-required {
+            color: red;
+            position: absolute;
+            left: 5px;
+            top: 37%;
+        }
+        .mailer-test .form-required {
+            top: 15%;
+        }
+        .mailer-test .form-horizontal .control-label {
+            width: 30%;
+        }
+
+        .btn.disabled, .btn[disabled], fieldset[disabled] .btn {
+            background-color: #999;
+            border-color: #999;
+        }
+
+        .btn.disabled:hover, .btn[disabled]:hover, fieldset[disabled] .btn:hover {
+            background-color: #999;
+            border-color: #999;
+        }
+
+
+        /*新加*/
+        .dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
+            background-color: #1E91FF;
+        }
+
+        .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+            background-color: #1E91FF;
+        }
+
+        tbody > .data_summary {
+            background-color: #e6e6e6;
+        }
+
+    </style>
+    <script type="text/javascript">
+        //全局变量
+        var GV = {
+            ROOT: "__ROOT__/",
+            WEB_ROOT: "__WEB_ROOT__/",
+            JS_ROOT: "static/js/",
+            APP: '{$Request.module}'/*当前应用名*/
+        };
+        var saveAsImage = 'http://{:$_SERVER["HTTP_HOST"]}__TMPL__/public/assets/images/data_btn_download_n.png';
+    </script>
+    <script src="__TMPL__/public/assets/js/jquery-1.10.2.min.js"></script>
+    <script src="__STATIC__/js/wind.js"></script>
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/bootstrap-select.css">
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script src="__TMPL__/public/assets/js/bootstrap.min.js"></script>
+    <script src="__TMPL__/public/assets/js/bootstrap-select.js"></script>
+    <script src="__TMPL__/public/assets/js/defaults-zh_CN.js"></script>
+    <link rel="stylesheet" type="text/css" media="all" href="__STATIC__/js/datejs/daterangepicker.css"/>
+    <script type="text/javascript" src="__STATIC__/js/datejs/moment.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/js/datejs/daterangepicker.js"></script>
+    <script>
+        btn_tijiao_load_img_id = 0;
+        Wind.css('artDialog');
+        Wind.css('layer');
+        $(function () {
+            $("[data-toggle='tooltip']").tooltip({
+                container: 'body',
+                html: true,
+            });
+            $("li.dropdown").hover(function () {
+                $(this).addClass("open");
+            }, function () {
+                $(this).removeClass("open");
+            });
+            $('.pagination .jspagerow').change(function () {
+                value = $('.pagination .jspagerow option:selected').attr('vv');
+                $('#page').remove();
+                $('#search_form').append('<input type="hidden" id="page" name="row" value="' + value + '">');
+                $('#search_btn').click();
+            });
+
+            $("body").bind("keydown", function (event) {
+                if (event.keyCode == 116) {
+                    event.preventDefault(); //阻止默认刷新
+                    //location.reload();
+                    //采用location.reload()在火狐下可能会有问题，火狐会保留上一次链接
+                    location = location;
+                }
+            })
+        });
+
+        var unSelected = "#acb6c0";
+        var selected = "#2C3E50";
+        $(function () {
+            $("select").css("color", unSelected);
+            $("option").css("color", selected);
+            $("select").change(function () {
+                var selItem = $(this).val();
+                if (selItem == $(this).find('option:first').val()) {
+                    $(this).css("color", unSelected);
+                } else {
+                    $(this).css("color", selected);
+                }
+            });
+        })
+
+    </script>
+    <script>
+        // 更改button状态
+        function change_submit_btn(consa, registe_btn) {
+            j = 0;
+            consa.find('input,select').each(function (i, n) {
+                that = $(this);
+                that.hasClass('jsmust')&&!that.val()?registe_btn.prop('disabled',true):j++;
+            });
+            if(j==consa.find('input,select').length){
+                registe_btn.prop('disabled',false);
+            }
+        }
+    </script>
+    </script>
+    <if condition="APP_DEBUG">
+        <style>
+        #think_page_trace_open {
+        z-index: 9999;
+    }
+    </style>
+    </if>

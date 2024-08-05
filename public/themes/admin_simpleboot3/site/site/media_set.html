@@ -1,0 +1,489 @@
+<include file="public@header"/>
+<style>
+input[type="checkbox"] {
+    margin: 4px 0 0;
+    margin-top: 1px \9;
+    line-height: normal;
+    width: 20PX;
+    height: 20px;
+    border:1px solid #ddd !important;
+    position: relative;
+    top: 2px;
+
+}
+.zhengchang{
+    top: -3px;
+    position: relative;
+    font-size: 12px;
+    color: #333;
+}
+</style>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#A" data-toggle="tab">站点配置</a></li>
+        <li><a href="#C" data-toggle="tab">导航配置</a></li>
+        <span class="title_remark">说明：对官网导航名称进行自定义编辑</span>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('sitePost')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">网站标题：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control"  name="pc_set_title"
+                                       value="{$data.pc_set_title|default=''}">
+                            </div>
+                            <p class="help-block">网站各页面默认统一显示该标题，在SEO设置页对每页面进行单独设置后，则显示SEO设置内容</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">公安备案号：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="pc_set_for_the_record"
+                                       value="{$data.pc_set_for_the_record|default=''}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">公安备案地址：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="public_security_organ_link"
+                                       value="{$data.public_security_organ_link|default=''}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">增值电信业务经营许可证：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="pc_set_telecom_license"
+                                       value="{$data.pc_set_telecom_license|default=''}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">网络文化经营许可证：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="pc_set_license"
+                                       value="{$data.pc_set_license|default=''}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">ICP备案号：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="pc_set_for_the_record_icp"
+                                       value="{$data.pc_set_for_the_record_icp|default=''}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">ICP备案地址：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="icp_organ_link"
+                                       value="{$data.icp_organ_link|default='http://www.beian.gov.cn/portal/index.do'}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">官网版权信息设置：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="pc_set_copyright"
+                                       value="{$data.pc_set_copyright|default=''}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">网站描述：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="pc_set_meta_desc"
+                                       value="{$data.pc_set_meta_desc|default=''}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">游戏提示：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <textarea class="form-control" name="pc_game_prompt">{$data.pc_game_prompt|default=''}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">网站静态化：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="pc_cache"
+                                       value="{$data.pc_cache|default='0'}">
+                            </div>
+                            <p class="help-block">静态化缓存时间，单位秒,0表示关闭，相比于动态化网页，搜索引擎更易于抓取静态化状态</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">用户注册：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="pc_user_allow_register" <eq name='data.pc_user_allow_register' value='1'>checked="checked"</eq>> 开启
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="pc_user_allow_register" <eq name='data.pc_user_allow_register' value='0'>checked="checked"</eq>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制PC官网是否开放用户注册，选择禁止时，官网上不显示注册入口</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">网站LOGO：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="pc_set_logo" type="hidden" name="pc_set_logo" value="{$data.pc_set_logo}" >
+                                <img id="pc_set_logo-preview" class="upload-img" <if condition="$data['pc_set_logo']">src="{:cmf_get_image_preview_url($data['pc_set_logo'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#pc_set_logo');">上传</a>
+                                <a href="javascript:(function(){$('#pc_set_logo-preview').attr('src','');$('#pc_set_logo').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">用于PC官网导航栏展示，尺寸180 * 56px</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">网站ICO图标：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="pc_set_ico" type="hidden" name="pc_set_ico" value="{$data.pc_set_ico}" >
+                                <img id="pc_set_ico-preview" class="upload-img" <if condition="$data['pc_set_ico']">src="{:cmf_get_image_preview_url($data['pc_set_ico'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#pc_set_ico');">上传</a>
+                                <a href="javascript:(function(){$('#pc_set_ico-preview').attr('src','');$('#pc_set_ico').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">尺寸16*16px</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">公众号名称：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="pc_set_qrcode_name"
+                                       value="{$data.pc_set_qrcode_name|default=''}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">二维码图片：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="pc_set_qrcode" type="hidden" name="pc_set_qrcode" value="{$data.pc_set_qrcode}" >
+                                <img id="pc_set_qrcode-preview" class="upload-img" <if condition="$data['pc_set_qrcode']">src="{:cmf_get_image_preview_url($data['pc_set_qrcode'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#pc_set_qrcode');">上传</a>
+                                <a href="javascript:(function(){$('#pc_set_qrcode-preview').attr('src','');$('#pc_set_qrcode').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">尺寸360*360px</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">网站底部LOGO：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="pc_set_logo_foot" type="hidden" name="pc_set_logo_foot" value="{$data.pc_set_logo_foot}" >
+                                <img id="pc_set_logo_foot-preview" class="upload-img" <if condition="$data['pc_set_logo_foot']">src="{:cmf_get_image_preview_url($data['pc_set_logo_foot'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#pc_set_logo_foot');">上传</a>
+                                <a href="javascript:(function(){$('#pc_set_logo_foot-preview').attr('src','');$('#pc_set_logo_foot').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">用于PC官网底部栏展示，尺寸218 * 130px</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">账号注册：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="account_register_switch" <eq name='data.account_register_switch' value='1'>checked="checked"</eq>> 开启
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="account_register_switch" <eq name='data.account_register_switch' value='0'>checked="checked"</eq>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制PC官网内是否显示“账号注册”入口</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">手机注册：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="phonenum_register_switch" <eq name='data.phonenum_register_switch' value='1'>checked="checked"</eq>> 开启
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="phonenum_register_switch" <eq name='data.phonenum_register_switch' value='0'>checked="checked"</eq>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制PC官网内是否显示“手机号注册”入口</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">邮箱注册：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="email_register_switch" <eq name='data.email_register_switch' value='1'>checked="checked"</eq>> 开启
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="email_register_switch" <eq name='data.email_register_switch' value='0'>checked="checked"</eq>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制PC官网内是否显示“邮箱注册”入口</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">游戏排序top1：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="game_sort_top1" <eq name='data.game_sort_top1' value='1'>checked="checked"</eq>> 手游
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="2" name="game_sort_top1" <eq name='data.game_sort_top1' value='2'>checked="checked"</eq>> H5
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="3" name="game_sort_top1" <eq name='data.game_sort_top1' value='3'>checked="checked"</eq>> 页游
+                                </label>
+
+                            </div>
+                            <p class="help-block">控制PC官网首页、一级导航优先展示所选游戏类型</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">游戏排序top2：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="game_sort_top2" <eq name='data.game_sort_top2' value='1'>checked="checked"</eq>> 手游
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="2" name="game_sort_top2" <eq name='data.game_sort_top2' value='2'>checked="checked"</eq>> H5
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="3" name="game_sort_top2" <eq name='data.game_sort_top2' value='3'>checked="checked"</eq>> 页游
+                                </label>
+
+                            </div>
+                            <p class="help-block">控制PC官网首页、一级导航优先展示所选游戏类型</p>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <input type="hidden" name="set_type" value="{$name}">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="C">
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">官网首页：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="pc_navigation_index"
+                                       value="{$data.pc_navigation_index|default=''}">
+                            </div>
+                            <p class="help-block" style="float:left">可输入新名称，清空状态则显示默认名称</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">手游：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="pc_navigation_sy"
+                                       value="{$data.pc_navigation_sy|default=''}">
+                            </div>
+                            <label class="status-width" style="width: 100px; float:left;">
+                                <input type="hidden" name="pc_navigation_sy_status" value="0">
+                                <input type="checkbox"  class="inp_radio changeColor defaultInput" value="1"
+                                <?php if($data['pc_navigation_sy_status']!='0') echo 'checked';?> name="pc_navigation_sy_status">
+                                <span class="zhengchang">正常显示</span>
+                            </label>
+                            <p class="help-block">可输入新名称，如“游戏”；清空状态则显示默认名称</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">H5：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="pc_navigation_h5"
+                                       value="{$data.pc_navigation_h5|default=''}">
+                            </div>
+                            <label class="status-width" style="width: 100px; float:left;">
+                                <input type="hidden" name="pc_navigation_h5_status" value="0">
+                                <input type="checkbox"  class="inp_radio changeColor defaultInput" value="1"
+                                <?php if($data['pc_navigation_h5_status']!='0') echo 'checked';?> name="pc_navigation_h5_status">
+                                <span class="zhengchang">正常显示</span>
+                            </label>
+                            <p class="help-block">可输入新名称，如“游戏”；清空状态则显示默认名称</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">页游：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="pc_navigation_yy"
+                                       value="{$data.pc_navigation_yy|default=''}">
+                            </div>
+                            <label class="status-width" style="width: 100px; float:left;">
+                                <input type="hidden" name="pc_navigation_yy_status" value="0">
+                                <input type="checkbox"  class="inp_radio changeColor defaultInput" value="1"
+                                <?php if($data['pc_navigation_yy_status']!='0') echo 'checked';?> name="pc_navigation_yy_status">
+                                <span class="zhengchang">正常显示</span>
+                            </label>
+                            <p class="help-block">可输入新名称，如“游戏”；清空状态则显示默认名称</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">礼包中心：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="pc_navigation_gift"
+                                       value="{$data.pc_navigation_gift|default=''}">
+                            </div>
+                            <label class="status-width" style="width: 100px; float:left;">
+                                <input type="hidden" name="pc_navigation_gift_status" value="0">
+                                <input type="checkbox" class="inp_radio changeColor defaultInput" value="1"
+                                <?php if($data['pc_navigation_gift_status']!='0') echo 'checked';?> name="pc_navigation_gift_status">
+                                <span class="zhengchang">正常显示</span>
+                            </label>
+                            <p class="help-block">可输入新名称，如“礼包”；清空状态则显示默认名称</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">充值中心：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="pc_navigation_spend"
+                                       value="{$data.pc_navigation_spend|default=''}">
+                            </div>
+                            <label class="status-width" style="width: 100px; float:left;">
+                                <input type="hidden" name="pc_navigation_spend_status" value="0">
+                                <input type="checkbox" class="inp_radio changeColor defaultInput" value="1"
+                                <?php if($data['pc_navigation_spend_status']!='0') echo 'checked';?> name="pc_navigation_spend_status">
+                                <span class="zhengchang">正常显示</span>
+                            </label>
+                            <p class="help-block">可输入新名称，如“充值”；清空状态则显示默认名称</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">用户中心：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="pc_navigation_user"
+                                       value="{$data.pc_navigation_user|default=''}">
+                            </div>
+                            <label class="status-width" style="width: 100px; float:left;">
+                                <input type="hidden" name="pc_navigation_user_status" value="0">
+                                <input type="checkbox" class="inp_radio changeColor defaultInput" value="1"
+                                <?php if($data['pc_navigation_user_status']!='0') echo 'checked';?> name="pc_navigation_user_status">
+                                <span class="zhengchang">正常显示</span>
+                            </label>
+                            <p class="help-block">可输入新名称，如“用户”；清空状态则显示默认名称</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">资讯中心：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="pc_navigation_info"
+                                       value="{$data.pc_navigation_info|default=''}">
+                            </div>
+                            <label class="status-width" style="width: 100px; float:left;">
+                                <input type="hidden" name="pc_navigation_info_status" value="0">
+                                <input type="checkbox" class="inp_radio changeColor defaultInput" value="1"
+                                <?php if($data['pc_navigation_info_status']!='0') echo 'checked';?> name="pc_navigation_info_status">
+                                <span class="zhengchang">正常显示</span>
+                            </label>
+                            <p class="help-block">可输入新名称，如“资讯”；清空状态则显示默认名称</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">客服中心：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="pc_navigation_service"
+                                       value="{$data.pc_navigation_service|default=''}">
+                            </div>
+                            <label class="status-width" style="width: 100px; float:left;">
+                                <input type="hidden" name="pc_navigation_service_status" value="0">
+                                <input type="checkbox" class="inp_radio changeColor defaultInput" value="1"
+                                <?php if($data['pc_navigation_service_status']!='0') echo 'checked';?> name="pc_navigation_service_status">
+                                <span class="zhengchang">正常显示</span>
+                            </label>
+                            <p class="help-block">可输入新名称，如“帮助”；清空状态则显示默认名称</p>
+                        </div>
+
+<!--                        <div class="form-group">-->
+<!--                            <label for="input-site_adminstyle" class="col-sm-2 control-label">客服中心：</label>-->
+<!--                            <div class="col-md-3 col-sm-5">-->
+<!--                                <input type="text" class="form-control" name="pc_navigation_kefu"-->
+<!--                                       value="{$data.pc_navigation_kefu|default=''}">-->
+<!--                            </div>-->
+<!--                            <p class="help-block">可输入新名称，如“帮助”；清空状态则显示默认名称</p>-->
+<!--                        </div>-->
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">客户端：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="pc_navigation_client"
+                                       value="{$data.pc_navigation_client|default=''}">
+                            </div>
+                            <label class="status-width" style="width: 100px; float:left;">
+                                <input type="hidden" name="pc_navigation_client_status" value="0">
+                                <input type="checkbox" class="inp_radio changeColor defaultInput" value="1"
+                                <?php if($data['pc_navigation_client_status']!='0') echo 'checked';?> name="pc_navigation_client_status">
+                                <span class="zhengchang">正常显示</span>
+                            </label>
+                            <p class="help-block">可输入新名称，如“溪谷手游”；清空状态则显示默认名称</p>
+                        </div>
+
+
+
+<!--                        <div class="form-group">-->
+<!--                            <label for="input-site_adminstyle" class="col-sm-2 control-label">客户端显示状态：</label>-->
+<!--                            <div class="col-md-3 col-sm-5">-->
+<!--                                <label class="label-width">-->
+<!--                                    <input type="radio" class="inp_radio" value="1" name="pc_navigation_show_status" <eq name='data.pc_navigation_show_status' value='1'>checked="checked"</eq>> 开启-->
+<!--                                </label>-->
+<!--                                <label class="label-width">-->
+<!--                                    <input type="radio" class="inp_radio" value="0" name="pc_navigation_show_status" <eq name='data.pc_navigation_show_status' value='0'>checked="checked"</eq>> 关闭-->
+<!--                                </label>-->
+<!--                            </div>-->
+<!--                            <p class="help-block">如没有官方联运APP选择隐藏</p>-->
+<!--                        </div>-->
+
+
+                        <div class="form-group">
+                            <label for="input-support" class="col-sm-2 control-label">技术支持显示状态：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="support_show_status" <eq name='data.support_show_status' value='1'>checked="checked"</eq>> 显示
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="support_show_status" <eq name='data.support_show_status' value='0'>checked="checked"</eq>> 隐藏
+                                </label>
+                            </div>
+                            <p class="help-block"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <input type="hidden" name="set_type" value="{$name}">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script>
+    $("#create_group").click(function() {
+        layer.open({
+            type: 2,
+            title: '生成交流群地址',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['840px', '613px'],
+            content: ["{:url('creat_group')}"], //iframe的url，no代表不显示滚动条
+        });
+    });
+
+    $('.save-btn').click(function(){
+        var game_sort_top1 = $("input[ name='game_sort_top1']:checked ").val();
+        var game_sort_top2 = $("input[ name='game_sort_top2']:checked ").val();
+        if(game_sort_top1 == game_sort_top2){
+            layer.msg('游戏排序不可重复');
+            return false;
+        }
+    });
+</script>
+</body>
+</html>

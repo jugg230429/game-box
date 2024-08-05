@@ -1,0 +1,69 @@
+<include file="public@header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="{:url('rbac/index')}">{:lang('ADMIN_RBAC_INDEX')}</a></li>
+			<!-- <li><a href="{:url('rbac/roleAdd')}">{:lang('ADMIN_RBAC_ROLEADD')}</a></li> -->
+			<span class="title_remark">说明：可以对不同的管理员账号进行角色权限设置</span>
+		</ul>
+		<form id="search_form" class="well form-inline margin-top-20" method="get" action="{:url('Rbac/index')}" style="display: none;">
+
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+        </form>
+		<form action="{:url('Rbac/listorders')}" method="post" >
+			<div class="table-actions position" style="margin-left: -10px;">
+				<a href="{:url('rbac/roleAdd')}" class="btn btn-success  mtb17">添加角色</a>
+			</div>
+			<table class="table table-hover table-bordered table-disabled">
+				<thead>
+					<tr>
+						<th width="40">ID</th>
+						<th align="left">{:lang('ROLE_NAME')}</th>
+						<th align="left">{:lang('ROLE_DESCRIPTION')}</th>
+						<th width="60" align="left">{:lang('STATUS')}</th>
+						<th width="200">{:lang('ACTIONS')}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<foreach name="roles" item="vo">
+					<tr>
+						<td>{$vo.id}</td>
+						<td>{$vo.name}</td>
+						<td>{$vo.remark}</td>
+						<td>
+							<if condition="$vo['status'] eq 1">
+								<span class="label label-success">已启用</span>
+							<else />
+								<span class="label label-danger">已禁用</span>
+							</if>
+						</td>
+						<td>
+							<if condition="$vo['id'] eq 1">
+								<span class="disabled">{:lang('ROLE_SETTING')}</span>
+								<!-- <a href="javascript:openIframeDialog('{:url('rbac/member',array('id'=>$vo['id']))}','成员管理');">成员管理</a> | -->
+								<span class="disabled">{:lang('EDIT')}</span>
+								<span class="disabled">{:lang('DELETE')}</span>
+							<else />
+								<a class="" href="{:url('Rbac/authorize',array('id'=>$vo['id']))}">{:lang('ROLE_SETTING')}</a>
+								<!-- <a href="javascript:openIframeDialog('{:url('rbac/member',array('id'=>$vo['id']))}','成员管理');">成员管理</a>| -->
+								<a class="" href="{:url('Rbac/roleedit',array('id'=>$vo['id']))}">{:lang('EDIT')}</a>
+								<a class="js-ajax-delete" class="" href="{:url('Rbac/roledelete',array('id'=>$vo['id']))}">{:lang('DELETE')}</a>
+							</if>
+						</td>
+					</tr>
+					</foreach>
+				</tbody>
+			</table>
+			<div class="pagination">{$page}</div>
+		</form>
+	</div>
+	<script src="__STATIC__/js/admin.js"></script>
+	<script>
+		$('.addRole').click(function() {
+			window.location.href = '/admin/rbac/index'
+		})
+	</script>
+</body>
+</html>
+

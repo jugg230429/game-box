@@ -1,0 +1,55 @@
+<extend name="../recharge/common" />
+
+<block name="body">
+    <div class="container withdrawRecordContainer">
+        <div class="record">
+            <div class="aggregate" id="aggregate">
+                <span class="table">
+                    <span class="tableCell">累计提现：<span class="number moneyIcon">{$total}</span></span>
+                </span>
+            </div>
+            <div class="recordTable">
+                <div class="recordTableHead" id="recordHead">
+                    <span class="table">
+                        <span class="tableCell">金额</span>
+                        <span class="tableCell">途径</span>
+                        <span class="tableCell">状态</span>
+                        <span class="tableCell">时间</span>
+                    </span>
+                </div>
+                <div class="recordTableBody" id="recordList">
+                    <span class="table">
+                        <volist name="data" id="vo">
+                         <span class="tableRow">
+                            <span class="tableCell">{$vo.money}</span>
+                            <span class="tableCell"><empty name="vo.type">兑换<else/>提现</empty></span>
+                            <span class="tableCell">{:get_info_status($vo['status'],33)}</span>
+                            <span class="tableCell">{$vo['create_time']|date='Y-m-d H:i:s',###}</span>
+                        </span>
+                        </volist>
+                    </span>
+                    <empty name="data">
+                        <div class="empty">
+                            <span class="table">
+                                <span class="tableCell">暂无数据</span>
+                            </span>
+                        </div>
+                    </empty>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+<script>
+    $(function () {
+        $('#recordList').height($(window).height() - $('.header').outerHeight() - $('#aggregate').outerHeight() - $('#recordHead').outerHeight());
+        $('#refresh').remove();
+        $('#backBtn').off('click').on('click', function () {
+           parent.window.withdrawRecordClose();
+           return false;
+        });
+    });
+</script>
+</block>

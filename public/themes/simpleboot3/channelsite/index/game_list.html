@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<include file="public@head"/>
+		<link href="__TMPL__/public/assets/css/common.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/game_list.css" rel="stylesheet" />
+
+	</head>
+
+	<body>
+		<header>
+			<include file="public@indexheader"/>
+		</header>
+		<div class="banner">
+			<div class="inner">
+				<a href="{:url('index/index')}" class="qqbtn">马上加入</a>
+			</div>
+		</div>
+		<div class="clear"></div>
+		<div class="condition">
+			<div class="inner">
+				<div class="page-condition">
+					<div class="trunk-table">
+						<div class="trunk-row clearfix">
+				            <div class="trunk-cell trunk-cell-first">游戏类型：</div>
+				            <div class="trunk-cell trunk-cell-last">
+			              		<div>
+									<a class="trunk-item <empty name=':input("gt")'>active</empty>" href="{:url('game_list',array('dt'=>input('dt')))}">不限</a>
+									<volist name=":get_game_type_all()" id="vo">
+										<a class="trunk-item topNameChange <eq name=':input("gt")' value='$vo.id'>active</eq>" href="{:url('game_list',array('gt'=>$vo['id'],'dt'=>input('dt')))}">{$vo.type_name}</a>
+									</volist>
+								</div>
+				            </div>
+			          	</div>
+						<div class="trunk-row clearfix">
+				            <div class="trunk-cell trunk-cell-first">运营平台：</div>
+			            	<div class="trunk-cell trunk-cell-last">
+			              		<a class="trunk-item <empty name=':input("dt")'>active</empty>" href="{:url('game_list',array('gt'=>input('gt')))}">不限</a>
+			              		<a class="trunk-item  <eq name=':input("dt")' value='1'>active</eq>" href="{:url('game_list',array('gt'=>input('gt'),'dt'=>1))}">Android</a>
+			              		<a class="trunk-item  <eq name=':input("dt")' value='2'>active</eq>" href="{:url('game_list',array('gt'=>input('gt'),'dt'=>2))}">ios</a>
+								<a class="trunk-item  <eq name=':input("dt")' value='3'>active</eq>" href="{:url('game_list',array('gt'=>input('gt'),'dt'=>3))}">H5</a>
+								<a class="trunk-item  <eq name=':input("dt")' value='4'>active</eq>" href="{:url('game_list',array('gt'=>input('gt'),'dt'=>4))}">网游</a>
+				            </div>
+			          	</div>
+					</div>
+				</div>
+				<notempty name="data_lists">
+				<div class="trunk-list clearfix">
+					<volist name="data_lists" id="vo">
+						<div class="game-trunk-con fl">
+							<img src="{:cmf_get_image_preview_url($vo['icon'])}"  class="trunk-img fl"  onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null"/>
+							<div class="fl">
+								<div class="trunk-name">
+									{$vo.relation_game_name}
+								</div>
+								<div class="trunk-type">{$vo.game_type_name}</div>
+								<if condition="strpos($vo['sdk_version'],'1')!==false">
+									<img src="__TMPL__/public/assets/images/announcement_ico_android.png" class="trunk-icon" />
+								</if>
+								<if condition="strpos($vo['sdk_version'],'2')!==false">
+									<img src="__TMPL__/public/assets/images/announcement_ico_ios.png"  class="trunk-icon"/>
+								</if>
+								<if condition="strpos($vo['sdk_version'],'3')!==false">
+									H5
+								</if>
+								<if condition="strpos($vo['sdk_version'],'4')!==false">
+									PC
+								</if>
+							</div>
+						</div>
+					</volist>
+				</div>
+				<div class="clearfix"></div>
+				<div class="indexpagenation clearfix">
+				<div class="page">
+					{$page}
+				</div>
+				</div>
+				<else/>
+					<div  class="nodata">暂无游戏</div>
+				</notempty>
+			</div>
+		</div>
+
+	<!--footer-->
+		<include file="public@index_footer"/>
+	</body>
+	<script src="__TMPL__/public/assets/js/jquery-1.11.1.min.js"></script>
+	<script>
+			$('.jspagerow').attr('style','display: none;');
+	</script>
+
+</html>

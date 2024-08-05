@@ -1,0 +1,988 @@
+<include file="public@header"/>
+</head>
+<style>
+    .recomendStatus input[type="checkbox"] {
+        opacity: 0;
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        z-index: 100;
+    }
+    .simulatorStatus input[type="checkbox"] {
+        opacity: 0;
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        z-index: 100;
+    }
+    .checkedIcon {
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        background-image: url('__TMPL__/public/assets/images/ico-duoxuan-n.png') ;
+        background-size: 100% 100%;
+        vertical-align: middle;
+        margin-bottom: 1px;
+        margin-right: 2px;
+    }
+    .recomendStatus input[type="checkbox"]:checked+.checkedIcon {
+        background-image: url('__TMPL__/public/assets/images/ico-duoxuan-s.png');
+    }
+    .simulatorStatus input[type="checkbox"]:checked+.checkedIcon {
+        background-image: url('__TMPL__/public/assets/images/ico-duoxuan-s.png');
+    }
+    #material_url-name{
+		height: 32px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+	}
+</style>
+<body>
+<script type="text/html" id="photos-item-tpl">
+    <li id="saved-image{id}">
+        <input id="photo-{id}" type="hidden" name="screenshot[]" value="{filepath}">
+        <input class="form-control" id="photo-{id}-name" type="text" name="photo_names[]" value="{name}"
+               style="width: 200px;" title="图片名称">
+        <img id="photo-{id}-preview" src="{url}" style="height:36px;width: 36px;"
+             onclick="imagePreviewDialog(this.src);">
+        <a href="javascript:(function(){$('#saved-image{id}').remove();})();">移除</a>
+    </li>
+</script>
+<div class="wrap js-check-wrap">
+    <div class="nav-tabs mb20">
+        <span>添加游戏</span>
+		<span class="title_remark pb10">说明：查看和编辑游戏的基础信息、参数信息等。</span>
+    </div>
+
+    <ul class="nav nav-menu">
+        <li class="active fl nav-menu-con"><a href="#A" data-toggle="tab">基础信息</a></li>
+        <li class="fl  nav-menu-con"><a href="#F" data-toggle="tab">折扣配置</a></li>
+        <li class="fl  nav-menu-con"><a href="#H" data-toggle="tab">实名认证</a></li>
+        <li class="fl  nav-menu-con"><a href="#J" data-toggle="tab">封禁设置</a></li>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('yadd')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>游戏名称
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control  " name="game_name" id="game_name" value="" placeholder="请输入游戏名称" onkeyup="checkGameName()">
+                                <input type="hidden"  name="game_appid" value="{:generate_game_appid()}">
+                            </div>
+                            <p class="help-block game_error"></p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-admin_url_password" class="col-sm-2 control-label"><span class="form-required">*</span>游戏接口:</label>
+                            <div class="col-md-3 col-sm-5">
+                                <select id="interface_id" name="interface_id" class="form-control">
+                                    <option value="0">选择游戏接口</option>
+                                    <volist name=":get_interface_all('id,name')" id="vo">
+                                        <option value="{$vo.id}">{$vo.name}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-admin_url_password" class="col-sm-2 control-label"><span class="form-required">*</span>游戏类型:</label>
+                            <div class="col-md-3 col-sm-5">
+                                <select id="game_type_id" name="game_type_id[]" class="selectpicker form-control" data-live-search="true" multiple title="选择游戏类型">
+                                    <option value="0" disabled>选择游戏类型</option>
+                                    <volist name=":get_game_type_all()" id="vo">
+                                        <option value="{$vo.id}">{$vo.type_name}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                            <p class="help-block">最多可选3种</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_icp" class="col-sm-2 control-label">游戏分发：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="issue" checked="checked"> 不支持
+                                </label>
+
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="issue" > 支持
+                                </label>
+                            </div>
+                            <p class="help-block">CP对接扫码支付方式才能支持分发功能</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_icp" class="col-sm-2 control-label">支付模式：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="sue_pay_type"> 分发支付
+                                </label>
+
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="sue_pay_type"  checked="checked"> 平台支付
+                                </label>
+                            </div>
+                            <p class="help-block">本平台无法提供游戏支付入口请选择分发支付，可支持本平台支付的请选择平台支付</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_icp" class="col-sm-2 control-label">上架状态：</label>
+
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="game_status"> 下架
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="game_status" checked="checked"> 上架
+                                </label>
+                            </div>
+                            <p class="help-block">设置该游戏是否在各个站点上进行显示</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_icp" class="col-sm-2 control-label">渠道独占：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="only_for_promote" checked="checked"> 通用游戏
+                                </label>
+
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio visible_only_to_promote" value="1" name="only_for_promote"> 指定渠道
+                                </label>
+
+                            </div>
+                            <p class="help-block">通用游戏: 全站显示; 指定渠道: 仅选定的渠道后台-申请游戏列表显示, 渠道可进行推广</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_icp" class="col-sm-2 control-label">测试状态：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="test_game_status" checked="checked"> 正常
+                                </label>
+
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="test_game_status"> 测试中
+                                </label>
+                            </div>
+                            <p class="help-block">设置该游戏是否处于测试阶段,测试中时PC官网、WAP站、APP内不显示该游戏，但可以正常进入游戏</p>
+                        </div>
+
+                        <div class="form-group recomendStatus">
+                            <label for="input-site_icp" class="col-sm-2 control-label">推荐状态：</label>
+                            <div class="col-md-3 col-sm-5">
+
+                                <label for="radio6" class="status-width " style="margin-right:10px">
+                                    <input type="checkbox" id="radio6" class="inp_radio changeColor defaultInput" value="0" name="recommend_status[]">
+                                    <i class="checkedIcon"></i>
+                                    <span>不推荐</span>
+                                </label>
+
+                                <label for="radio7" class="status-width " style="margin-right:10px">
+                                    <input type="checkbox" id="radio7" class="inp_radio changeColor" value="1" name="recommend_status[]" checked="checked">
+                                    <i class="checkedIcon"></i>
+                                    <span>推荐</span>
+                                </label>
+                                <label for="radio8" class="status-width " style="margin-right:10px">
+                                    <input type="checkbox" id="radio8" class="inp_radio changeColor" value="2" name="recommend_status[]" >
+                                    <i class="checkedIcon"></i>
+                                    <span>热门</span>
+                                </label>
+
+                                <label for="radio9" class="status-width ">
+                                    <input type="checkbox" id="radio9" class="inp_radio changeColor" value="3" name="recommend_status[]" >
+                                    <i class="checkedIcon"></i>
+                                    <span>最新</span>
+                                </label>
+                            </div>
+                            <p class="help-block">设置游戏的推荐类型，更改此游戏在网站所属的板块，最多可同时选2种</p>
+                        </div>
+
+                        <!-- 添加VIP表(图)和CP -->
+                        <!-- <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">VIP表：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="vip_table_pic" type="hidden" name="vip_table_pic" >
+                                <img id="vip_table_pic-preview" class="upload-img" >
+                                <a href="javascript:uploadOneImage('图片上传','#vip_table_pic');" class="btn btn-sm btn-default">上传图片</a>
+                                <a href="javascript:(function(){$('#vip_table_pic-preview').attr('src','');$('#vip_table_pic').val('')})();">移除</a>
+                            </div>
+                            <p></p>
+                            <p class="help-block">建议图片宽度为720px，用于游戏详情页内展示</p>
+                        </div> -->
+
+
+
+                        <div class="form-group game">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>所属CP：
+                            </label>
+                            <div class="col-md-2 col-sm-3">
+                                <select name="cp_id" id="cp_id"  class="selectpicker user-input" data-live-search="true" >
+                                    <option value="">选择CP商</option>
+                                    <volist name=":get_cp_list('id,cp_name')" id="vo">
+                                        <option value="{$vo.id}" >{$vo.cp_name}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_icp" class="col-sm-2 control-label">严控游戏：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="is_control"> 是
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="is_control" checked="checked"> 否
+                                </label>
+
+                            </div>
+                            <p class="help-block">是：推广后台显示严控标识，告知渠道该游戏不可设置折扣返利；</p>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">CP游戏真实id：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control  " name="cp_game_id" value="" placeholder="" >
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label"><span class="form-required">*</span>游戏币名称：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control  " name="currency_name" value="" placeholder="如元宝、金币" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label"><span class="form-required">*</span>游戏币充值比例：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control  " name="currency_ratio" value="1" placeholder="如100">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_admin_email" class="col-sm-2 control-label">游戏排序：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control  " name="sort" value="" placeholder="请输入游戏排序，如1">
+                            </div>
+                            <p class="help-block">设置游戏的显示顺序，数值越大越靠前</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">在玩人数：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control  " name="dow_num" value="0" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">游戏评分：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control  " name="game_score" value="" placeholder="输入游戏评分，1-10">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">游戏首字母：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control  " id="short" name="short" value="" placeholder="例如荒莽纪,输入HMJ">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">一句话描述：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control  " name="features" value="" placeholder="输入一句话简介">
+                            </div>
+                            <p class="help-block">一句话介绍游戏，文字长度最好15字符以内</p>
+                        </div>
+<!--                        <div class="form-group">-->
+<!--                            <label for="input-site_analytics" class="col-sm-2 control-label">开发商：</label>-->
+<!--                            <div class="col-md-3 col-sm-5">-->
+<!--                                <input type="text" class="form-control  " name="dev_name" value="" >-->
+<!--                            </div>-->
+<!--                        </div>-->
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">游戏介绍：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <div id="textarea_box">
+                                    <textarea maxlength="1000" id="content" style="height: 200px;" name="introduction" class="form-control"></textarea>
+                                    <p id="text_count_p"><span style="color: #999" id="aaa"></span></p>
+                                </div>
+
+                            </div>
+                            <p class="help-block">请用文字详细描述游戏的类型、玩法以及特色。</p>
+                        </div>
+						 <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">游戏标签：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control  tag-input fl" name="tag_name_one" value="" placeholder=" 如：全网首发">
+								<input type="text" class="form-control  tag-input tag-midinput fl" name="tag_name_two" value="" >
+								<input type="text" class="form-control  tag-input fl" name="tag_name_three" value="" >
+                            </div>
+                            <p class="help-block"> 最多可添加3个标签，每标签内建议最多不超过6个字符 </p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">游戏iCON：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="icon" type="hidden" name="icon" >
+                                <img id="icon-preview" class="upload-img">
+                                <a href="javascript:uploadOneImage('图片上传','#icon');" class=" btn btn-sm btn-default">上传图标</a>
+                                <a href="javascript:(function(){$('#icon-preview').attr('src','');$('#icon').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">建议尺寸200*200，圆角不要求，可直接提供方图</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">游戏素材包：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="material_url" type="hidden" name="material_url" >
+                                <input id="material_url-name" type="text" title="文件名称">
+                                <a href="javascript:uploadOne('文件上传','#material_url','file');" class="a-upload">上传素材</a>
+                                <a id="material_url-preview" target="_blank">下载</a>
+                                <a href="javascript:(function(){$('#material_url-preview').attr('href','javascript:;');$('#material_url').val('');$('#material_url-name').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">需为压缩包形式，用于渠道后台下载推广</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">推荐封面图：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="cover" type="hidden" name="cover" >
+                                <img id="cover-preview" class="upload-img" >
+                                <a href="javascript:uploadOneImage('图片上传','#cover');" class="btn btn-sm btn-default">上传图片</a>
+                                <a href="javascript:(function(){$('#cover-preview').attr('src','');$('#cover').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">用于PC官网首页推荐游戏位展示，尺寸278x372px</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">热门封面图：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="hot_cover" type="hidden" name="hot_cover" >
+                                <img id="hot_cover-preview" class="upload-img" >
+                                <a href="javascript:uploadOneImage('图片上传','#hot_cover');" class="btn btn-sm btn-default">上传图片</a>
+                                <a href="javascript:(function(){$('#hot_cover-preview').attr('src','');$('#hot_cover').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">用于PC官网首页热门游戏位展示，尺寸386x272px</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">游戏截图：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <ul id="photos" class="pic-list list-unstyled form-inline">
+                                </ul>
+                                <a href="javascript:uploadMultiImage('图片上传','#photos','photos-item-tpl');"
+                                   class="btn btn-sm btn-default">上传图片</a>
+                            </div>
+                            <p class="help-block">用于游戏详情页内展示，横版游戏建议尺寸16：9，640*360px及以上；竖版游戏建议尺寸9：16，360*640px及以上</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">选择区服页背景图：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="groom" type="hidden" name="groom" >
+                                <img id="groom-preview" class="upload-img">
+                                <a href="javascript:uploadOneImage('图片上传','#groom');" class="btn btn-sm btn-default">上传图片</a>
+                                <a href="javascript:(function(){$('#groom-preview').attr('src','');$('#groom').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">用于选择区服页内展示，尺寸1920*950px</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">游戏加载图：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="load_cover" type="hidden" name="load_cover" >
+                                <img id="load_cover-preview" class="upload-img">
+                                <a href="javascript:uploadOneImage('图片上传','#load_cover');" class="btn btn-sm btn-default">上传图片</a>
+                                <a href="javascript:(function(){$('#load_cover-preview').attr('src','');$('#load_cover').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">用于加载进入游戏时展示，建议尺寸1920*880px</p>
+                        </div>
+
+                        <div class="form-group rebate-itemkf">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">溪谷指定客服1：</label>
+                            <div class="col-md-2 col-sm-5" style="width: 23%;">
+                                <input type="text" class="form-control" name="xg_kf_url[]" value="" >
+                            </div>
+
+                            <div class="add-dynamic-btn" style="margin-top:7px !important;margin-left: 0px;">
+                                <span class="rebate-add-btnkf js-rebate-add-btnkf">+</span>
+                            </div>
+
+                            <p class="help-block" style="position: absolute;left: 638px;">输入溪谷客服系统上的指定客服人员链接，需接入溪谷客服系统，<a href="https://www.vlsdk.com/online.html" target="_blank">去接入></a></p>
+
+
+                        </div>
+                        <div id="rebate-listkf" > </div>
+
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                                <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="F">
+                        <div class="form-group">
+                            <label for="input-banned_usernames" class="col-sm-2 control-label" style="width:12%"><span class="form-required">*</span>渠道推广CPS分成比例：</label>
+                            <div class="col-md-3 col-sm-5 pr" style="padding-left: 0;width: 24%;">
+                                <input type="text" class="form-control" onkeyup="clearNoNum(this)" onblur="clearNoNum(this)" name="ratio" value="0" placeholder="输入0-100之间的数字"><span class="form_unit input-sup">%</span>
+                            </div>
+                            <p class="help-block">此处比例为推广结算时CPS模式的分成比例</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-banned_usernames" class="col-sm-2 control-label" style="width:12%"><span class="form-required">*</span>渠道推广CPA注册单价：</label>
+                            <div class="col-md-3 col-sm-5 pr" style="padding-left: 0;width: 24%;">
+                                <input type="text" class="form-control" onkeyup="clearNoNum(this)" onblur="clearNoNum(this)" name="money" value="0" placeholder="请输入大于0的数字"><span class="form_unit input-sup">元</span>
+                            </div>
+                            <p class="help-block">此处比例为推广结算时CPA模式的注册单价</p>
+                        </div>
+                        <div class="form-group" >
+                            <label for="input-banned_usernames" class="col-sm-2 control-label">绑币充值首充折扣比例：</label>
+                            <div class="col-md-3 col-sm-5 pr">
+                                <input type="text" class="form-control" onkeyup="clearNoNum(this)" onblur="clearNoNum(this)" name="bind_recharge_discount" value="10" placeholder="请输入0-10之间的数字"><span class="input-sup">折</span>
+                            </div>
+                            <p class="help-block">设置该游戏的玩家充值绑币的首充折扣比例</p>
+                        </div>
+                        <div class="form-group" >
+                            <label for="input-banned_usernames" class="col-sm-2 control-label">绑币充值续充折扣比例：</label>
+                            <div class="col-md-3 col-sm-5 pr">
+                                <input type="text" class="form-control" onkeyup="clearNoNum(this)" onblur="clearNoNum(this)" name="bind_continue_recharge_discount" value="10" placeholder="请输入0-10之间的数字"><span class="input-sup">折</span>
+                            </div>
+                            <p class="help-block">设置该游戏的玩家充值绑币的续充折扣比例</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-banned_usernames" class="col-sm-2 control-label">会长代充首充折扣比例：</label>
+                            <div class="col-md-3 col-sm-5 pr">
+                                <input type="text" class="form-control" onkeyup="clearNoNum(this)" onblur="clearNoNum(this)" name="discount" value="10" placeholder="请输入0-10之间的数字"><span class="form_unit input-sup">折</span>
+                            </div>
+                            <p class="help-block">设置该游戏的统一代充首充折扣比例，一级渠道为玩家代充时可享受对应折扣</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-banned_usernames" class="col-sm-2 control-label">会长代充续充折扣比例：</label>
+                            <div class="col-md-3 col-sm-5 pr">
+                                <input type="text" class="form-control" onkeyup="clearNoNum(this)" onblur="clearNoNum(this)" name="continue_discount" value="10" placeholder="请输入0-10之间的数字"><span class="form_unit input-sup">折</span>
+                            </div>
+                            <p class="help-block">设置该游戏的统一代充续充折扣比例，一级渠道为玩家代充时可享受对应折扣</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-first_support_num" class="col-sm-2 control-label">新增扶持额度：</label>
+                            <div class="col-md-3 col-sm-5 pr">
+                                <input type="text" class="form-control" onkeyup="clearNoNum(this)" onblur="clearNoNum(this)" name="first_support_num" value="" placeholder=""><span class="form_unit input-sup">元宝/钻石</span>
+                            </div>
+                            <p class="help-block">每个渠道首次申请扶持的最高额度，如3280，即渠道首次申请该游戏下某区服的最高额度为3280，同一游戏下不同区服同样适用</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-following_support_rate" class="col-sm-2 control-label">后续扶持比例：</label>
+                            <div class="col-md-3 col-sm-5 pr">
+                                <input type="text" class="form-control" onkeyup="clearNoNum(this)" onblur="clearNoNum(this)" name="following_support_rate" value="" placeholder=""><span class="form_unit input-sup">%</span>
+                            </div>
+                            <p class="help-block" style="line-height: 1.2;margin-top: 3px;">渠道申请后续扶持的比例值，建议100.00%，如：渠道下某游戏的玩家累计总充值100.00，则该渠道的后续扶持申请累计额度为10000.00（注：单次额度不能超过每区服下单个最高玩家充值金额）</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="support_introduction" class="col-sm-2 control-label">扶持规则：</label>
+                            <div class="col-md-3 col-sm-5 pr">
+                                <textarea class="form-control" name="support_introduction" rows="10" id="support_introduction" placeholder=""></textarea>
+                            </div>
+                            <p class="help-block" style="line-height: 1.2;margin-top: 9px;"></p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-admin_url_password" class="col-sm-2 control-label">渠道推广限制等级:</label>
+                            <div class="col-md-3 col-sm-5">
+                                <select id="promote_level_limit" name="promote_level_limit" class=" selectpicker form-control " data-live-search="true">
+                                    <php>$levels = cmf_get_option('promote_level_set')?:[]</php>
+                                    <option value="0" >请选择渠道限制等级</option>
+                                    <volist name="levels" id="vo">
+                                        <option value="{$vo.level}">{$vo.level_name}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                            <p class="help-block">推广等级未达标的渠道则不可申请推广，已申请的则自动清除作废</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">推广说明：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <div id="textarea_box2">
+                                    <textarea maxlength="1000" id="content2" style="height: 200px;" name="promote_declare" class="form-control"></textarea>
+                                    <p id="text_count_p2"><span style="color: #999" id="aaa2"></span></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                                <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="H">
+                        <div class="form-group">
+                            <label for="input-banned_usernames" class="col-sm-2 control-label">实名途径：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label style="margin-right: 22px;">
+                                    <input type="radio" class="inp_radio" value="2" name="age_type" > 国家新闻出版署防沉迷系统
+                                </label>
+                                <label >
+                                    <input type="radio" class="inp_radio" value="1" name="age_type" checked> 平台自有防沉迷系统
+                                </label>
+                            </div>
+                            <p class="help-block">默认本平台，选择国家认证则需输入CP商授权本平台的参数</p>
+                        </div>
+                        <div class="form-group ageType2" style="display:none">
+                            <label for="input-banned_usernames" class="col-sm-2 control-label">appId：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="age_appid" value=""  placeholder="appid">
+                            </div>
+                        </div>
+                        <div class="form-group ageType2" style="display:none">
+                            <label for="input-banned_usernames" class="col-sm-2 control-label">buzId：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="age_bizid" value=""  placeholder="buzId">
+                            </div>
+                        </div>
+                        <div class="form-group ageType2" style="display:none">
+                            <label for="input-banned_usernames" class="col-sm-2 control-label">secretKey：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="age_key" value=""  placeholder="secretKey">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn">
+                                    {:lang('SAVE')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="J">
+
+                        <div class="form-group ">
+                            <label for="input-user_pass" class="col-sm-2 control-label"><span class="form-required"></span>渠道：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <select id="ban_promote_ids" name="ban_arr[ban_promote_ids][]" class="form-control user-input selectpicker fl" data-live-search="true" data-width="50%" multiple>
+                                    <option disabled>请选择渠道</option>
+                                    <volist name=":game_head_promote_list(0)" id="vo">
+                                        <option value="{$vo.promote_id}" >{$vo.account}</option>
+                                    </volist>
+
+                                </select>
+                                <span  class="fl user-remarks">选择需要封禁的渠道,可多选</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group ">
+                            <label for="input-user_pass" class="col-sm-2 control-label"><span class="form-required"></span>玩家账号：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <textarea name="ban_arr[ban_user_ids]" class="form-control" rows="10" style="width: 50%" placeholder="输入要封禁的用户账号,一行一个"></textarea>
+                                <span  class="fl user-remarks"></span>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label for="input-user_pass" class="col-sm-2 control-label"><span class="form-required"></span>设备码：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <textarea name="ban_arr[ban_devices]" rows="10" class="form-control  user-input fl" placeholder="输入要封禁的设备编码,一行一个"></textarea>
+                                <span  class="fl user-remarks">输入要封禁的设备编码,一行一个</span>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label for="input-user_pass" class="col-sm-2 control-label"><span class="form-required"></span>IP：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <textarea name="ban_arr[ban_ips]" rows="10" class="form-control  user-input fl" placeholder="输入要封禁的IP地址,一行一个"></textarea>
+                                <span  class="fl user-remarks">输入要封禁的IP地址,一行一个</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                封禁时间：
+                            </label>
+                            <div class="col-md-4 col-sm-6" style="width:27.1%">
+                                <input type="text" class="form-control js-bootstrap-datetime fl" name="ban_arr[ban_start_time]" id="ban_start_time" style="width:45%;" value="" autocomplete="off" placeholder="封禁开始时间,不填表示永久">
+                                <span class="fl to-span">至</span>
+                                <input type="text" class="form-control js-bootstrap-datetime fl" name="ban_arr[ban_end_time]" id="ban_end_time" style="width: 45%;" value="" autocomplete="off" placeholder="封禁结束时间,不填表示永久">
+
+                            </div>
+                        </div>
+
+                        <div class="form-group recomendStatus">
+                            <label for="input-site_icp" class="col-sm-2 control-label">封禁内容：</label>
+                            <div class="col-md-6 col-sm-5">
+                                <label for="radio6" class=" " style="margin-right:15px" >
+                                    <input type="checkbox" id="ban_type1" class="inp_radio changeColor defaultInput" value="1" name="ban_arr[ban_types][]"  >
+                                    <i class="checkedIcon"></i>
+                                    <span>禁止登录</span>
+                                </label>
+
+                                <label for="radio7" class=" " style="margin-right:15px">
+                                    <input type="checkbox" id="ban_type2" class="inp_radio changeColor" value="2" name="ban_arr[ban_types][]"  >
+                                    <i class="checkedIcon"></i>
+                                    <span>禁止注册</span>
+                                </label>
+                                <label for="radio8" class=" " style="margin-right:15px">
+                                    <input type="checkbox" id="ban_type3" class="inp_radio changeColor" value="3" name="ban_arr[ban_types][]"  >
+                                    <i class="checkedIcon"></i>
+                                    <span>禁止充值</span>
+                                </label>
+
+                                <label for="radio9" class="  ">
+                                    <input type="checkbox" id="ban_type4" class="inp_radio changeColor" value="4" name="ban_arr[ban_types][]"  >
+                                    <i class="checkedIcon"></i>
+                                    <span>禁止下载</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                                <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<div class="pro_promot" style="display: none;" id="newProModal">
+    <form action="{:url('Game/save_visible_only_to_promote22')}" id="ajaxForm" method="post">
+        <input type="hidden" name="game_id" id="id" value="">
+        <input type="hidden" name="game_type" value="yy">
+        <div class="promoteModal">
+            <div class="promoteModal-header">
+                <div class="modalheader-ttile fl">
+                    <div class="fl headerTitleName">指定渠道</div>
+                    （仅选中的后台显示该游戏）
+                </div>
+                <div class="fr btnCloseModal"><img src="__TMPL__/public/assets/images/btn_close_pop.png" alt=""></div>
+            </div>
+            <div class="promoteModal-body">
+                <div style="padding-left:27px">
+                    <span class="mainTextSame">游戏名称：</span>
+                    <span class="gameNameShowText"></span>
+                </div>
+                <div class="promoteChooseAllInfo">
+                    <div>
+                        <span class="mainTextSame fl">渠道：</span>
+                        <div class="fl" style="margin-left: 2px;">
+                            <a href="javaScript:;" class="firstChooseNum defferentTextColor firstNumCurrent js-show-all">全部</a>
+                            <a href="javaScript:;" class="firstChooseNum js-screen" key="ABCD">ABCD</a>
+                            <a href="javaScript:;" class="firstChooseNum js-screen" key="EFGH">EFGH</a>
+                            <a href="javaScript:;" class="firstChooseNum js-screen" key="IJKL">IJKL</a>
+                            <a href="javaScript:;" class="firstChooseNum js-screen" key="MNOP">MNOP</a>
+                            <a href="javaScript:;" class="firstChooseNum js-screen" key="QRST">QRST</a>
+                            <a href="javaScript:;" class="firstChooseNum js-screen" key="UVWX">UVWX</a>
+                            <a href="javaScript:;" class="firstChooseNum js-screen" key="YZ">YZ</a>
+                        </div>
+                    </div>
+                    <div>
+                        <input type="text" class="inputSearchContent" placeholder="输入渠道名称">
+                        <button class="searchButtonPromote">搜索</button>
+                    </div>
+                </div>
+                <div class="promoteGameSelect">
+
+                </div>
+            </div>
+            <div class="promoteModal-footer">
+                <div class="fl footerAllCheckBtn">
+                    <label class="" for="">
+                        <input type="checkbox" class="checkBoxIcon" id="jsgamecheckall">
+                        <i class="checkBoxIcon"></i>
+                        <span class="mainTextSame" >全选</span>
+                    </label>
+                </div>
+                <div class="fl">
+                    <button class="cancelModalBtn">取消</button>
+                    <button class="confirmModalBtn">确定</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript" src="__STATIC__/js/statistical_word_number.js"></script>
+<link href="__TMPL__/public/assets/simpleboot3/css/game.css" rel="stylesheet">
+<script src="__STATIC__/js/ajaxForm.js"></script>
+
+<script>
+    $(function () {
+        //动态添加溪谷客服档位
+        var add_onekf = function () {
+            $('.js-rebate-add-btnkf').unbind('click');
+            $('.js-rebate-add-btnkf').click(function () {
+                var tr = $(this).closest('.rebate-itemkf');
+                var parent = $('#rebate-listkf') ;
+                var html = '<div class="form-group rebate-itemkf">\n' +
+                    '                                    <label for="input-site_analytics" class="col-sm-2 control-label sp_text">溪谷指定客服2：</label>\n' +
+                    '                                    <div class="col-md-2 col-sm-5" style="width:23%;">\n' +
+                    '                                        <input type="text" class="form-control" name="xg_kf_url[]" value="" >\n' +
+                    '                                    </div>\n' +
+                    '                                    <div class="dynamic-btn" style="position:static;width:auto;margin-top:5px;">\n' +
+                    '                                        <span class="rebate-del-btn js-rebate-del-btnkf">-</span>\n' +
+                    '                                    </div>\n' +
+                    '                                </div>';
+                parent.append(html);
+                re_bindkf();
+            })
+        };
+        var remove_likf = function () {
+            $('.js-rebate-del-btnkf').unbind('click');
+            $('.js-rebate-del-btnkf').click(function () {
+                var parent = $(this).closest('.rebate-itemkf');
+                parent.remove();
+                re_bindkf();
+            })
+        };
+        var add_flagkf = function () {
+            $('#rebate-listkf .rebate-itemkf').each(function (index, element) {
+                $(this).find('.sp_text').text("溪谷指定客服"+(index+2)+":");
+            })
+        };
+        var re_bindkf = function () {
+            add_onekf();
+            remove_likf();
+            add_flagkf();
+        };
+        re_bindkf();
+    })
+
+</script>
+<script>
+    $(function () {
+        //点击不推荐取消推荐选中状态
+        $("#radio6").click(function(){
+            if(!$(this).attr('checked')){
+                $("#radio7").attr("checked",false);
+            }
+            click_ver($(this));
+        });
+        //实名认证系统切换
+        $('input:radio[name="age_type"]').change( function() {
+            var type = $('input:radio[name="age_type"]:checked').val();
+            if(type == 1){
+                $('.ageType2').css('display','none');
+            }else if(type == 2){
+                $('.ageType2').css('display','block');
+            }
+        });
+        //点击推荐取消不推荐选中状态
+        $("#radio7").click(function(){
+            if(!$(this).attr('checked')){
+                $("#radio6").attr("checked",false);
+            }
+            click_ver($(this));
+        });
+        $("#radio8,#radio9").click(function () {
+            click_ver($(this));
+        })
+        //验证当前推荐状态选择个数
+        function click_ver(that){
+            var length = $('input[name="recommend_status[]"]:checked').length;
+            if(length>2){
+                layer.msg('最多选择两种状态');
+                that.attr("checked",false);
+            }
+        }
+
+    })
+    function checkGameName(){
+        var game_name = $("#game_name").val();
+        $('#game_name_copy').val(game_name);
+        $.ajax({
+            async: false,
+            url:"{:url('checkGameName')}",
+            type:"POST",
+            dataType:"json",
+            data:{game_name:game_name,sdk_version:4},
+            success:function(result){
+                if(result.status == 1){
+                    $('.game_error').text('');
+                    $('.game_error').text(result.msg);
+                    $('#short').val('');
+                }else{
+                    $('.game_error').text('');
+                    $('#short').val(result.short);
+                }
+            },
+            error:function(){
+                layer.msg('服务器异常');
+            }
+        });
+    }
+    function clearNoNum(obj)
+
+    {
+        obj.value = obj.value.replace(/[^\d.]/g,"");
+        obj.value = obj.value.replace(/\.{2,}/g,".");
+        obj.value = obj.value.replace(/^\./g,"");
+        obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+        obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');
+    }
+    $(function () {
+        startMonitor('content', 'aaa',1000);
+
+        // 设置指定渠道可见 2021-6-2 14:17:32 by wjd------------------START
+        $(".visible_only_to_promote").click(function(){
+            // alert('aaa');
+            //获取游戏列表
+            var url = "{:url('Game/visible_only_to_promote22')}";
+            // var id = $(this).attr('data-id'); // "input[type='password']"
+            // var id = $("input[name='id']").val(); // "input[type='password']"
+            var id = -1; // "input[type='password']"
+            var game_type = 'yy';
+            // alert(id);
+            // return false;
+            $.post(url,{id:id,game_type:game_type},function(res){
+                if(res.code==1){
+                    var promote_list = res.promote_list;
+                    var game_info = res.game;
+                    $('.gameNameShowText').html(game_info.game_name);
+                    pids = '';
+                    if(game_info['promote_ids2']){
+                        pids=game_info['promote_ids2'].split(","); //字符分割
+                    }
+                    var lis = [];
+                    $.each(promote_list,function(index,ele){
+                        if(pids == ''){
+                            lis.push('<label class="promoteSelectLabel short-'+ele.short+'" id="'+ele.account+'">' +
+                                '<input type="checkbox" value="'+ele.id+'" name="promote_ids[]" class="checkBoxIcon jsgameid ">' +
+                                '<i class="checkBoxIcon"></i>' +
+                                '<span class="mainTextSame limitTextStyle">'+ele.account+'</span>' +
+                                '<i class="overTextStyle">'+ele.account+'</i>' +
+                                '</label>');
+                        }else{
+                            if($.inArray(ele.id.toString(), pids)!=-1){
+                                lis.push('<label class="promoteSelectLabel short-'+ele.short+'" id="'+ele.account+'">' +
+                                    '<input type="checkbox" value="'+ele.id+'" name="promote_ids[]" checked="checked" class="checkBoxIcon jsgameid">' +
+                                    '<i class="checkBoxIcon"></i>' +
+                                    '<span class="mainTextSame limitTextStyle">'+ele.account+'</span>' +
+                                    '<i class="overTextStyle">'+ele.account+'</i>' +
+                                    '</label>');
+                            }else{
+                                lis.push('<label class="promoteSelectLabel short-'+ele.short+'" id="'+ele.account+'">' +
+                                    '<input type="checkbox" value="'+ele.id+'" name="promote_ids[]" class="checkBoxIcon jsgameid">' +
+                                    '<i class="checkBoxIcon"></i>' +
+                                    '<span class="mainTextSame limitTextStyle">'+ele.account+'</span>' +
+                                    '<i class="overTextStyle">'+ele.account+'</i>' +
+                                    '</label>');
+                            }
+                        }
+                    });
+                    $(".promoteGameSelect").html(lis.join(''));
+                    $("#id").val(res.game.id);
+                    $("#newProModal").css("display","block");
+                    $('.promoteModal').css('display','block')
+                    jsgameid();
+
+                }else{
+                    layer.msg('请求失败');
+                }
+            });
+        });
+
+        //保存修改
+        $(".confirmModalBtn").click(function(){
+            $("#ajaxForm").ajaxSubmit(function(res){
+                layer.msg(res.msg);
+                // location.reload();
+                $(".pro_promot").hide();
+            });
+            return false;
+        });
+        $("#jsgamecheckall").click(function(){
+            $('.promoteGameSelect').find(".jsgameid:visible").prop("checked",this.checked);
+        });
+
+        //点击取消按钮，弹窗关闭
+        $('.cancelModalBtn').click(function(){
+            $('.pro_promot').css('display','none');
+            return false;
+        });
+
+        $('.btnCloseModal').click(function() {
+            $('.pro_promot').css('display','none');
+            return false;
+        });
+
+        //全部显示
+        $(".js-show-all").click(function () {
+            $(this).addClass('firstNumCurrent').siblings().removeClass('firstNumCurrent')
+            $(".promoteSelectLabel").show();
+            return false;
+        });
+        //筛选条件
+        $(".js-screen").click(function () {
+            $(this).addClass('firstNumCurrent').siblings().removeClass('firstNumCurrent')
+            var keys = $(this).attr("key");
+            var keyArr = keys.split("");
+            $(".promoteSelectLabel").hide();
+            keyArr.forEach(function (ele) {
+                $(".short-" + ele + "").show();
+            });
+            return false;
+        });
+
+        //搜索
+        $('.searchButtonPromote').click(function () {
+            var content = $(".inputSearchContent").val();
+            if (content == '') {
+                $(".promoteSelectLabel").show();
+                return false;
+            }
+            $(".promoteSelectLabel").hide();
+            $("label[id*=" + content + "]").show();
+            return false;
+        });
+        // 全选及全选反选 功能  @author  zwm  date 20180604
+        function jsgameid(){
+            $(".jsgameid").click(function(){
+                var option = $(this).closest('ul').find(".jsgameid"),
+                    checkall = $(this).closest('ul').siblings('.jsgamecheckallbox').find('.jsgamecheckall');
+                option.each(function(i){
+                    if(!this.checked){
+                        checkall.prop("checked", false);
+                        return false;
+                    }else{
+                        checkall.prop("checked", true);
+                    }
+                });
+            });
+        }
+
+        // 设置指定渠道可见 2021-6-2 14:17:32 by wjd------------------END
+    })
+
+
+    $(".choose_game_user").click(function () {
+        $(".game_user_list").show();
+        $(".ban_user").show();
+    })
+    //
+    $('#game_type_id').change(function () {
+        var selectedOptions = $('#game_type_id option:selected');
+        if (selectedOptions.length >=3) {
+            layer.msg('最多可以选择三个!');
+            //选择除了第一个元素 和被选中的 都处于禁止选择状态
+            $("#game_type_id").parent().find(".dropdown-menu ul li:not(:first):not(.selected)").addClass("disabled");
+            return false;
+        }
+        else {
+            $("#game_type_id").parent().find(".dropdown-menu ul li:not(:first):not(.selected)").removeClass("disabled");
+        }
+    })
+
+</script>
+</body>
+</html>

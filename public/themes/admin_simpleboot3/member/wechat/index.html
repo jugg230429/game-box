@@ -1,0 +1,89 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('user/age')}">实名认证</a></li>
+        <li><a href="{:url('user/age',['type'=>1])}">防沉迷</a></li>
+        <li class="active"><a href="{:url('wechat/index')}">公众号设置</a></li>
+        <li><a href="{:url('thirdlogin/qq_thirdparty')}">QQ</a></li>
+        <li><a href="{:url('thirdlogin/wx_thirdparty')}">微信</a></li>
+        <li><a href="{:url('user/vip_set')}">VIP设置</a></li>
+<!--        <li><a href="{:url('thirdlogin/fb_param_lists')}">脸书登录</a></li>-->
+        <span class="title_remark">说明：用于配置微信公众号参数，实现微信内打开WAP站时自动登录微信号及微信付款。</span>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('save_tool')}" method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active">
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">接口URL：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" class="form-control user-input fl" value="{$wechat_url}">
+								 <span  class="fl user-remarks ">请将此地址复制到微信公众平台接口URL项</span>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="input-admin_url_password" class="col-sm-2 control-label">微信APPID：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" name="config[appid]" value="{$wechat_data['appid']}" class="form-control user-input fl" >
+								 <span  class="fl user-remarks ">请与微信公众平台开发者凭据AppId保持一致</span>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">微信AppSecret：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" name="config[appsecret]" value="{$wechat_data['appsecret']}" class="form-control user-input fl">
+								 <span  class="fl user-remarks ">请与微信公众平台开发者凭据AppSecret保持一致</span>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">微信Token：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" name="config[token]" value="{$wechat_data['token']}" class="form-control user-input fl">
+								 <span  class="fl user-remarks ">请与微信公众平台Token保持一致</span>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">消息加密KEY：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" name="config[key]" value="{$wechat_data['key']}" class="form-control user-input fl">
+								<span class="fl user-remarks ">请与微信公众平台EncodingAESKey保持一致（消息加解密密钥）</span>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">开启状态：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="fl pt7 user-input">
+                                    <input type="radio" name="status" value="1" <eq name="wechat['status']" value="1">checked="checked"</eq>> 开启
+                                    <label  class="mr100"></label>
+                                    <input type="radio" name="status" value="0" <eq name="wechat['status']" value="0">checked="checked"</eq>> 关闭
+                                </div>
+                                <span  class="fl user-remarks membeuser-remarks mt-10">微信内分享及自动登录开关</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <input type="hidden" name="name" value="wechat">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

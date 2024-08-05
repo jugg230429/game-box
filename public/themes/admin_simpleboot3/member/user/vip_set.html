@@ -1,0 +1,102 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('user/age')}">实名认证</a></li>
+        <li><a href="{:url('user/age',['type'=>1])}">防沉迷</a></li>
+        <li><a href="{:url('wechat/index')}">公众号设置</a></li>
+        <li><a href="{:url('thirdlogin/qq_thirdparty')}">QQ</a></li>
+        <li><a href="{:url('thirdlogin/wx_thirdparty')}">微信</a></li>
+        <li class="active"><a href="{:url('user/vip_set')}">VIP设置</a></li>
+<!--        <li><a href="{:url('thirdlogin/fb_param_lists')}">脸书登录</a></li>-->
+        <span class="title_remark">说明：自定义设置用户VIP等级标准，用于区分不同付费等级用户。</span>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('sitePost')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">VIP 1最低消费金额：</label>
+                            <div class="col-md-4 col-sm-6 v-middle" >
+                                <span style="position: relative;width: 47%">
+                                    <input value="{$data.vip[0]}"  name="vip[]" style="width: 100%" onkeyup="this.value = this.value.replace(/\D|^0/g, '');" class="form-control js-money" >
+                                    <span class="input-suffix">元</span>
+                                </span>
+                                <div class="dynamic-btn">
+                                    <span class="rebate-add-btn js-rebate-add-btn">+</span>
+                                </div>
+                            </div>
+                            <p class="help-block ml40">用户在游戏内消费(统计所有支付方式)可达到VIP 1的最低金额，如100.00，其下同理</p>
+                        </div>
+                        <div id="vip-list" >
+                            <volist name="data.vip" id="vo" key="key" offset="1">
+                                <div class="form-group rebate-item">
+                                    <label for="input-site_analytics" class="col-sm-2 control-label js-rank">VIP {$key}最低消费金额：</label>
+                                    <div class="col-md-4 col-sm-6 v-middle" >
+                                            <span style="position: relative;width: 47%">
+                                                <input value="{$vo}"  name="vip[]" style="width: 100%" onkeyup="this.value = this.value.replace(/\D|^0/g, '');" class="form-control js-money"  >
+                                                <span class="input-suffix">元</span>
+                                            </span>
+                                        <div class="dynamic-btn">
+                                            <span class="rebate-del-btn js-rebate-del-btn">×</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </volist>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <input type="hidden" name="set_type" value="{$name}">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script>
+    $(function () {
+        //动态添加返利档位
+        var add_one = function () {
+            $('.js-rebate-add-btn').unbind('click');
+            $('.js-rebate-add-btn').click(function () {
+                var tr = $(this).closest('.rebate-item');
+                var parent = $('#vip-list') ;
+                var html ='<div class="form-group rebate-item"> <label for="input-site_analytics" class="col-sm-2 control-label js-rank">VIP</label> <div class="col-md-4 col-sm-6 v-middle" > <span style="position: relative;width: 47%"> <input  name="vip[]" style="width: 100%" onkeyup="this.value = this.value.replace(/\\D|^0/g, \'\');" class="form-control js-money" > <span class="input-suffix">元</span> </span><div class="dynamic-btn"> <span class="rebate-del-btn js-rebate-del-btn">×</span> </div> </div> </div>'
+                parent.append(html);
+                re_bind();
+            })
+        };
+        var remove_li = function () {
+            $('.js-rebate-del-btn').unbind('click');
+            $('.js-rebate-del-btn').click(function () {
+                var parent = $(this).closest('.rebate-item');
+                parent.remove();
+                re_bind();
+            })
+        };
+        var add_flag = function () {
+            $('#vip-list .rebate-item').each(function (index, element) {
+                $(this).find('.js-rank').text("VIP "+(index+2)+'最低消费金额：');
+            })
+        };
+        var re_bind = function () {
+            add_one();
+            remove_li();
+            add_flag();
+        };
+        re_bind();
+    })
+
+</script>
+</body>
+</html>

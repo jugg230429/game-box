@@ -1,0 +1,1898 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="baidu-site-verification" content="l18xwLxEKU">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="renderer" content="webkit">
+
+  <script src="__JS__/jquery-1.11.1.min.js"></script>
+  <script src="__TMPL__/mediapublic/assets/js/frontend.js"></script>
+
+  <link href="<if condition='$union_set[pc_icon]'>{:cmf_get_image_url($union_set['pc_icon'])}<else/>{:cmf_get_image_url(cmf_get_option('media_set')['pc_set_ico'])}</if>" type="image/x-icon" rel="shortcut icon">
+  <if condition="$action_name eq index and $controller_name eq Index">
+    <title>{:seo_replace($seo['media_index']['seo_title'],array(),'media','title')}</title>
+    <meta name="keywords" content="{:seo_replace($seo['media_index']['seo_keyword'],array(),'media','keywords')}">
+    <meta name="description" content="{:seo_replace($seo['media_index']['seo_description'],array(),'media','description')}">
+    <elseif condition="($action_name eq game_center or $action_name eq game_hcenter or $action_name eq game_ycenter) and $controller_name eq Game" />
+    <title>{:seo_replace($seo['media_game_list']['seo_title'],array('game_name'=>$data['game_name']),'media','title')}</title>
+    <meta name="keywords" content="{:seo_replace($seo['media_game_list']['seo_keyword'],array(),'media','keywords')}">
+    <meta name="description" content="{:seo_replace($seo['media_game_list']['seo_description'],array(),'media','description')}">
+    <elseif condition="($action_name eq detail or $action_name eq hdetail or $action_name eq ydetail) and $controller_name eq Game" />
+    <title>{:seo_replace($seo['media_game_detail']['seo_title'],array('game_name'=>$data['game_name']),'media','title')}</title>
+    <meta name="keywords"
+          content="{:seo_replace($seo['media_game_detail']['seo_keyword'],array('game_name'=>$data['game_name'],),'media','keywords')}">
+    <meta name="description"
+          content="{:seo_replace($seo['media_game_detail']['seo_description'],array('game_name'=>$data['game_name'],),'media','description')}">
+    <elseif condition="($action_name eq open_game or $action_name eq open_ygame) and $controller_name eq Game" />
+    <title>{:seo_replace($seo['media_open_game']['seo_title'],array('game_name'=>$game_name),'media','title')}</title>
+    <meta name="keywords"
+          content="{:seo_replace($seo['media_open_game']['seo_keyword'],array('game_name'=>$game_name),'media','keywords')}">
+    <meta name="description"
+          content="{:seo_replace($seo['media_open_game']['seo_description'],array('game_name'=>$game_name),'media','description')}">
+    <elseif condition="$action_name eq gift and $controller_name eq Gift" />
+    <title>{:seo_replace($seo['media_gift_index']['seo_title'],array('giftbag_name'=>$data['giftbag_name']),'media','title')}
+    </title>
+    <meta name="keywords"
+          content="{:seo_replace($seo['media_gift_index']['seo_keyword'],array('giftbag_name'=>$data['giftbag_name'],),'media','keywords')}">
+    <meta name="description"
+          content="{:seo_replace($seo['media_gift_index']['seo_description'],array('giftbag_name'=>$data['giftbag_name'],),'media','description')}">
+    <elseif condition="$action_name eq detail and $controller_name eq Gift" />
+    <title>{:seo_replace($seo['media_gift_detail']['seo_title'],array('giftbag_name'=>$data['giftbag_name'],'game_name'=>$data['game_name']),'media','title')}
+    </title>
+    <meta name="keywords"
+          content="{:seo_replace($seo['media_gift_detail']['seo_keyword'],array('giftbag_name'=>$data['giftbag_name'],'game_name'=>$data['game_name']),'media','keywords')}">
+    <meta name="description"
+          content="{:seo_replace($seo['media_gift_detail']['seo_description'],array('giftbag_name'=>$data['giftbag_name'],'game_name'=>$data['game_name']),'media','description')}">
+    <elseif condition="$action_name eq index and $controller_name eq Article" />
+    <title>{:seo_replace($seo['media_news_list']['seo_title'],array('giftbag_name'=>$data['giftbag_name']),'media','title')}
+    </title>
+    <meta name="keywords" content="{:seo_replace($seo['media_news_list']['seo_keyword'],[],'media','keywords')}">
+    <meta name="description" content="{:seo_replace($seo['media_news_list']['seo_description'],[],'media','description')}">
+    <elseif condition="$action_name eq detail and $controller_name eq Article" />
+    <title>{:seo_replace($seo['media_news_detail']['seo_title'],array('news_title'=>$data['post_title']),'media','title')}
+    </title>
+    <meta name="keywords"
+          content="{:seo_replace($seo['media_news_detail']['seo_keyword'],array('news_title'=>$data['post_title'],),'media','keywords')}">
+    <meta name="description"
+          content="{:seo_replace($seo['media_news_detail']['seo_description'],array('news_title'=>$data['post_title'],),'media','description')}">
+    <elseif condition="$action_name eq pay and $controller_name eq Pay" />
+    <title>{:seo_replace($seo['media_recharge']['seo_title'],array('news_title'=>$data['post_title']),'media','title')}</title>
+    <meta name="keywords"
+          content="{:seo_replace($seo['media_recharge']['seo_keyword'],array('news_title'=>$data['post_title'],),'media','keywords')}">
+    <meta name="description"
+          content="{:seo_replace($seo['media_recharge']['seo_description'],array('news_title'=>$data['post_title'],),'media','description')}">
+    <else />
+    <title>{:seo_replace($seo['media_index']['seo_title'],array(),'media','title')}</title>
+    <meta name="keywords" content="{:seo_replace($seo['media_index']['seo_keyword'],array(),'media','keywords')}">
+  </if>
+  <meta name="frontend" content="Robin">
+
+  <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/public.css">
+  <link rel="stylesheet" href="__JS__/layui/css/layui.css">
+  <script src="__JS__/layui/layui.all.js"></script>
+  <script src="__JS__/public.js"></script>
+
+  <script>
+    url = "{:url('Index/get_auth')}";
+    send_sms_url = "{:url('User/send_sms')}";
+    send_email_url = "{:url('User/send_email')}";
+    forget_url = "{:url('User/checkForgetName')}";
+    forget_sms_url = "{:url('User/checkForgetPhone')}";
+    forget_email_url = "{:url('User/checkForgetEmail')}";
+    is_blank = "{$is_blank|default=0}";
+    //全局变量
+    var GV = {
+      ROOT: "/",
+      WEB_ROOT: "/",
+      JS_ROOT: "static/js/"
+    };
+  </script>
+  <style>
+    .show {
+      display: block;
+      text-align: center !important;
+      width: 100% !important
+    }
+
+    .hide {
+      display: none;
+      text-align: center !important;
+      width: 100% !important
+    }
+
+    #embed-captcha {
+      width: 304px;
+    }
+    .can_click{
+      background:rgb(1, 143, 255);
+    }
+    .geetest-refresh {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: 36px;
+    }
+    .geetest-refresh img{
+      width: 22px;
+      height: 22px;
+    }
+	.loginclass .layui-layer-content{
+	   background: rgb(249, 249, 249);
+	   border-radius:5px;
+	   box-shadow:0px 0px 20px 0px rgba(86,157,236,0.2);
+	}
+  .fg a.act.act_1{
+
+    left:0px;
+  }
+  .fg a.act.act_2{
+
+    left:72px;
+  }
+  .fg a.act.act_3{
+    left:144px;
+  }
+  .act {
+    position: absolute !important;
+    left: 0px;
+}
+.all{
+  position: relative;
+    /* margin-right: 216px; */
+}
+
+  </style>
+  <block name="css"></block>
+</head>
+
+<body>
+<php>
+  // 增加账号注册开关
+  $sdk_set = cmf_get_option('media_set');
+  $account_register_switch = (int) ($sdk_set['account_register_switch'] ?? 1); // 0 关闭 1 开启
+  $phonenum_register_switch = (int) ($sdk_set['phonenum_register_switch'] ?? 1); // 0 关闭 1 开启
+  $email_register_switch = (int) ($sdk_set['email_register_switch'] ?? 1); // 0 关闭 1 开启
+  $pc_navigation_spend = empty($sdk_set['pc_navigation_user'])?'用户':$sdk_set['pc_navigation_user'];
+  // 获取三端显示顺序
+  $media_sort = get_media_sort();
+  $h5_sort = $media_sort['h5_sort'];
+  $sy_sort = $media_sort['sy_sort'];
+  $yy_sort = $media_sort['yy_sort'];
+  $first_show = $media_sort['first_show'];
+  $first_show_num = $media_sort['first_show_num'];
+  $total_num = $media_sort['total_num'];
+  $nav_num = $media_sort['nav_num'];
+  // var_dump($first_show_num);exit;
+</php>
+<div class="indexpage">
+  <if condition="!(($action_name eq open_game or $action_name eq open_ygame) and $controller_name eq Game)">
+  <!-- 头部导航栏 -->
+
+  <header class="header">
+    <div class="top">
+	   <div class="top-con">
+	   <a  class="tn-tab fl js-home homepage"><em class="homepage-icon"></em>设为首页</a>
+	   <a class="fl tn-tab collect" onclick="AddFavorite(window.location,document.title)" href="javascript:void(0)"><em class="collect-icon"></em>加入收藏</a>
+	   <if condition="AUTH_USER eq 1">
+          <div class="fg" style="width: 360px;">
+
+            <p>
+              <!-- 登录注册 -->
+
+            <p id="total_login" style="text-align: right;float: right;">
+
+			<span class="login">登录</span>
+              <if condition="cmf_get_option('media_set')['pc_user_allow_register'] eq 1">
+                <if condition="($account_register_switch eq 1) or ($phonenum_register_switch eq 1) or ($email_register_switch eq 1)">
+                  <span class="line">|</span><span class="zhuce">注册</span>
+                </if>
+              </if>
+            </p>
+            <div id="total_auth" class="people_info hide"  style="width: 360px;text-align: right;">
+              <p class="login_out fg"><p class="login_out fg">[<a class="js-ajax-btn reload-now ajax-no-reload" href="{:url('User/logout')}">退出</a>]</p></p>
+              <p class="username fg"><a href="{:url('User/userinfo')}" class="user_account"></a></p>
+              <img src="" alt="" class="fg">
+
+            </div>
+            </p>
+			  <!-- <if condition="$union_set">
+              <div class="fg welcome" style="width: 50%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">欢迎来到{$union_set['app_weixin']}!</div>
+              <else/>
+			<div class="fg welcome" style="width: 50%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">欢迎来到{:cmf_get_option('media_set')['pc_set_qrcode_name']}!</div>
+            </if> -->
+          </div>
+        </if>
+	   </div>
+	</div>
+    <div class="layui-container">
+      <div class="layui-row">
+        <div class="fl nav_logo">
+          <a href="{:url('Index/index')}">
+		      <img src="<if condition='$union_set[pc_logo]'>{:cmf_get_image_url($union_set['pc_logo'])}<else/>{:cmf_get_image_url(cmf_get_option('media_set')['pc_set_logo'])}</if>"
+                  alt="" ></a>
+        </div>
+        <div class="fg search">
+            <span></span>
+            <label for="search" class="search_label"><input type="text" name="game_name" value="{:input('game_name')}" id="search"
+                                       placeholder="输入关键词" autocomplete="off" onfocus="this.placeholder=''" >
+                <button type="button" class="search_icon"><img src="__STATIC__/images/ico_seach.png"
+                                                               alt=""></button></label>
+            <div class="inputdowndiv" id="inputdowndiv">
+            </div>
+        </div>
+
+        <div class="fg" style="margin-right:50px;">
+          <nav class="nav">
+            <a href="{:url('Index/index')}">
+              <li <if condition="$controller_name eq 'Index'">class="active"</if>><if
+                    condition="cmf_get_option('media_set')['pc_navigation_index']">
+              {:cmf_get_option('media_set')['pc_navigation_index']}
+              <else />首页</if>
+              </li>
+            </a>
+            <div class="all" style="width:{$nav_num*72}px">
+            <if condition="AUTH_GAME eq 1 and PERMI gt 0 and PERMI neq 2">
+
+              <if condition="cmf_get_option('media_set')['pc_navigation_sy_status'] neq '0'">
+                <a href="{:url('Game/game_center')}" class="act act_{$sy_sort}">
+                  <li <if condition="$controller_name eq 'Game' and ($action_name eq 'game_center' or $action_name eq 'detail')">class="active"</if>><if
+                        condition="cmf_get_option('media_set')['pc_navigation_sy']">
+                  {:cmf_get_option('media_set')['pc_navigation_sy']}
+                  <else />手游</if>
+                  </li>
+                </a>
+              </if>
+            </if>
+
+            <if condition="AUTH_GAME eq 1 and PERMI gt 0 and PERMI neq 1">
+
+              <if condition="cmf_get_option('media_set')['pc_navigation_h5_status'] neq '0'">
+                <a href="{:url('Game/game_hcenter')}" class="act act_{$h5_sort}">
+                  <li <if condition="$controller_name eq 'Game' and ($action_name eq 'game_hcenter' or $action_name eq 'hdetail')">class="active"</if>>
+                  <if condition="cmf_get_option('media_set')['pc_navigation_h5']">
+                    {:cmf_get_option('media_set')['pc_navigation_h5']}
+                  <else />
+                    H5
+                  </if>
+                  </li>
+                </a>
+              </if>
+
+            </if>
+
+            <if condition="YPERMI eq 1">
+
+              <if condition="cmf_get_option('media_set')['pc_navigation_yy_status'] neq '0'">
+                <a href="{:url('Game/game_ycenter')}"  class="act act_{$yy_sort}">
+                  <li <if condition="$controller_name eq 'Game' and ($action_name eq 'game_ycenter' or $action_name eq 'ydetail')">class="active"</if>>
+                  <if condition="cmf_get_option('media_set')['pc_navigation_yy']">
+                    {:cmf_get_option('media_set')['pc_navigation_yy']}
+                  <else />
+                    页游
+                  </if>
+                  </li>
+                </a>
+              </if>
+
+            </if>
+          </div>
+
+
+            <if condition="cmf_get_option('media_set')['pc_navigation_gift_status'] neq '0'">
+              <a href="{:url('Gift/gift')}">
+                <li <if condition="$controller_name eq 'Gift'">class="active"</if>><if
+                      condition="cmf_get_option('media_set')['pc_navigation_gift']">
+                {:cmf_get_option('media_set')['pc_navigation_gift']}
+                <else />礼包</if>
+                </li>
+              </a>
+            </if>
+
+            <if condition="cmf_get_option('media_set')['pc_navigation_spend_status'] neq '0'">
+              <if condition="AUTH_PAY eq 1">
+                <a href="{:url('Pay/pay')}">
+                  <li <if condition="$controller_name eq 'Pay'">class="active"</if>><if
+                        condition="cmf_get_option('media_set')['pc_navigation_spend']">
+                  {:cmf_get_option('media_set')['pc_navigation_spend']}
+                  <else />充值</if>
+                  </li>
+                </a>
+              </if>
+            </if>
+
+            <a hidden href="{:url('Discount/index')}">
+              <li <if condition="$controller_name eq 'Discount'">class="active"</if>>
+              折扣
+              </li>
+            </a>
+
+            <if condition="AUTH_USER eq 1">
+              <if condition="cmf_get_option('media_set')['pc_navigation_user_status'] neq '0'">
+              <span class="js_usermune">
+                <a class="login" href="javascript:;" style="color: #333;">
+                  <li>
+                    <if condition="cmf_get_option('media_set')['pc_navigation_user']">
+                      {:cmf_get_option('media_set')['pc_navigation_user']}
+                      <else />用户</if>
+                  </li>
+                </a>
+              </span>
+              </if>
+            </if>
+
+            <if condition="cmf_get_option('media_set')['pc_navigation_info_status'] neq '0'">
+            <a href="{:url('Article/index')}">
+              <li <if condition="$controller_name eq 'Article' and !in_array($action_name,['about'])">class="active"</if>><if
+                    condition="cmf_get_option('media_set')['pc_navigation_info']">
+              {:cmf_get_option('media_set')['pc_navigation_info']}
+              <else />资讯</if>
+              </li>
+            </a>
+            </if>
+
+            <if condition="cmf_get_option('media_set')['pc_navigation_service_status'] neq '0'">
+              <a href="{:url('Service/index')}">
+                <li <if condition="$controller_name eq 'Service'">class="active"</if>>
+                <if condition="cmf_get_option('media_set')['pc_navigation_service']">
+                  {:cmf_get_option('media_set')['pc_navigation_service']}
+                <else />
+                  客服
+                </if>
+                </li>
+              </a>
+            </if>
+
+            <if condition="cmf_get_option('media_set')['pc_navigation_client_status']">
+              <a href="{:url('download/index')}" target="_blank">
+               <li>
+                 <if condition="cmf_get_option('media_set')['pc_navigation_client']">
+                  {:cmf_get_option('media_set')['pc_navigation_client']}
+                 <else />
+                   客户端
+                 </if>
+               </li>
+              </a>
+            </if>
+
+          </nav>
+        </div>
+
+      </div>
+    </div>
+  </header>
+  </if>
+  <!-- 主体内容 -->
+  <block name="body"></block>
+  <if condition="AUTH_USER eq 1">
+    <!-- 登录弹窗 -->
+   <div class="login_modals" >
+                        <form class="js-ajax-form" action="{:url('User/login')}" method="post">
+                            <span class="closemodals"><img src="__STATIC__/images/login_btn_close_n.png" alt=""></span>
+                            <p class="login_username">
+							   <label class="label-name">账号</label>
+							   <input type="text"  autocomplete="off" name="account" value="" placeholder="手机号/用户名"></p>
+                            <p class="login_password">
+							    <label class="label-name">密码</label>
+							    <input type="password"  autocomplete="new-password" name="password"  value="" placeholder="密码">
+                            </p>
+                            <p class="zdlogin">
+                                <label for="zdlogin">
+                                    <input type="checkbox" name="zdlogin" checked id="zdlogin" value="1" class="fl" hidden>
+                                    <i class="choice-icon"></i>
+                                    <span class="remember-text">记住密码</span>
+                                </label>
+                            </p>
+                            <p class="login_botton">
+                                <button id="login_submit" class="js-ajax-submit reload-now ajax-no-reload" type="submit">登录</button>
+                            </p>
+                        </form>
+                        <div class='ml20 mt10'>
+                            <p class="fl zhuce_p">
+                                <if condition="cmf_get_option('media_set')['pc_user_allow_register'] eq 1">
+                                  <if condition="($account_register_switch eq 1) or ($phonenum_register_switch eq 1) or ($email_register_switch eq 1)">
+                                    <span class="zhuce_newuser">注册新用户</span>
+                                  </if>
+                                </if>
+                            </p>
+                            <p class="fg mg14"><span class="forget_password fg">忘记密码?</span></p>
+                        </div>
+						<div class="clear"></div>
+						<div class="login-line"></div>
+						<div class="clear"></div>
+
+                        <if condition="$qq_login eq 1 or $weixin_login eq 1">
+
+
+                            <div class="fl fast_login_title">快捷登录</div>
+
+
+                            <p class=" fast_login_icon fl">
+                                <if condition="$qq_login eq 1"><a  class="fast_login_qq" href="{:url('User/thirdlogin',['type'=>'qq','gid'=>input('game_id'),'pid'=>input('pid')])}"> <img
+                                        src="__STATIC__/images/login_qq.png" alt=""></a></if>
+                                <if condition="$weixin_login eq 1"><a class="fast_login_wx" href="{:url('User/thirdlogin',['type'=>'weixin','gid'=>input('game_id'),'pid'=>input('pid')])}"> <img
+                                        src="__STATIC__/images/login_wx.png" alt="" ></a></if>
+                            </p>
+                        </if>
+                    </div>
+<!-- 注册弹窗 -->
+<div class="register-box">
+  <div class="zhuce_modal" id="zhucemodal">
+    <p class="zhucemodal_title">用户注册 <span><img src="__STATIC__/images/delete_icon.png" alt=""></span></p>
+
+    <div class="zhuce_type">
+      <if condition="($phonenum_register_switch eq 1)">
+        <div class="fl zhuce_type_item">
+          <p class="active_zhuce_type_title">手机注册</p>
+        <div class="zhuce_type_hx active_zhuce_type"></div>
+        </div>
+      </if>
+
+      <if condition="($account_register_switch eq 1)">
+        <div class="fl zhuce_type_item">
+          <p>账号注册</p>
+        <div class="zhuce_type_hx"></div>
+        </div>
+      </if>
+
+      <if condition="($email_register_switch eq 1)">
+        <div class="fl zhuce_type_item">
+          <p>邮箱注册</p>
+        <div class="zhuce_type_hx"></div>
+        </div>
+      </if>
+
+    </div>
+    <div class="zhuce_fengexian"></div>
+    <div class="zhuce_mobile_con">
+      <form class="js-ajax-form" action="{:url('User/register')}" method="post">
+        <div class="zhuce_phone zhuce_modal_item clear mt25">
+          <p class="fl zhuce_modal_item_label">手机号</p>
+          <input type="text" name="account" id="register_phone" placeholder="输入11位手机号" class="long_input_text fl">
+          <span class="error_text ml120"></span>
+        </div>
+        <div class="zhuce_phone zhuce_modal_item clear">
+          <p class="fl">&nbsp;</p>
+          <div class="zhuce_phone_slide">
+            <div class="geetest_box">
+              <div class="geetest-heart"><span></span></div>
+              <a href="javascript:;" id="verify_pop2">点击按钮进行验证</a>
+              <a href="javascript:;" id="verify_refresh2" class="geetest-refresh">
+                <img src="__TMPL__/mediapublic/assets/images/refresh.png" >
+              </a>
+              <input type="hidden" class="verify_tag" name="verify_tag">
+              <input type="hidden" class="verify_token" name="verify_token">
+            </div>
+          </div>
+        </div>
+        <div class="zhuce_phone zhuce_modal_item clear">
+          <p class="fl zhuce_modal_item_label">短信验证码</p>
+          <input type="text" name="code" id="register_code" placeholder="短信验证码" class="duan_input_text fl">
+          <div class="fl getyanzhengma">获取验证码</div>
+          <span class="error_text ml120"></span>
+        </div>
+        <div class="zhuce_phone zhuce_modal_item clear">
+          <p class="fl zhuce_modal_item_label">密码</p>
+          <input type="password" name="password" id="register_password" placeholder="6-15位字母或数字组合"
+                 class="long_input_text fl">
+          <span class="error_text ml120 clear"></span>
+        </div>
+        <div class="zhuce_phone zhuce_modal_item clear">
+          <p class="fl zhuce_modal_item_label">确认密码</p>
+          <input type="password" name="repassword" id="register_repassword" placeholder="确认密码"
+                 class="long_input_text fl">
+          <span class="error_text ml120 clear"></span>
+        </div>
+        <div hidden class="auth_phone zhuce_modal_item clear mt25">
+          <p class="fl">姓名</p><input type="text" name="real_name" maxlength="25" placeholder="请输入真实姓名" id="phone_realname"
+                                     class="long_input_text">
+          <span class="error_text ml120"></span>
+        </div>
+        <div hidden class="auth_phone zhuce_modal_item clear">
+          <p class="fl">身份证号</p><input type="text" name="idcard" maxlength="18" placeholder="请输入身份证号码" id="phone_idcard"
+                                       class="long_input_text">
+          <span class="error_text ml120"></span>
+        </div>
+        <div class="zhuce_phone agree_user_pro">
+          <label>
+            <input type="checkbox" checked name="agreement" value="1" class="fl mobile_yzm" hidden>
+            <i class="choice-icon"></i>
+            <p>我已阅读并同意<span><a target="_blank" href="{:url('article/about',['id'=>27])}">《{$portal['post_title']}》</a><a target="_blank" href="{:url('article/about',['id'=>16])}">《{$portal['post_title_yinsi']}》</a></span></p>
+          </label>
+        </div>
+        <div class=" agree_zhuce_btn">
+          <input type="hidden" name="register_type" value="2">
+          <if condition="get_user_config_info('age')['real_register_status'] gt 0">
+            <button hidden class="btn_submit auth_phone js-ajax-submit" type="submit" disabled>接受协议并注册</button>
+            <button class="btn auth_phone_btn" type="button" disabled>下一步</button>
+            <else/>
+            <button class="js-ajax-submit auth_phone_btn" type="submit" disabled>接受协议并注册</button>
+          </if>
+        </div>
+      </form>
+      <p class="zhuce_modal_tap">已有账号，<span>立即登录</span></p>
+    </div>
+    <div class="zhuce_zhanghao_con">
+      <form class="js-ajax-form" action="{:url('User/register',['gid'=>input('game_id'),'pid'=>input('pid')])}" method="post">
+        <div class="zhuce_name zhuce_modal_item clear mt25">
+          <p class="fl">账号</p><input type="text" name="account" placeholder="6-15位字母或数字组合" id="register_phone1"
+                                     class="long_input_text">
+          <span class="error_text ml120"></span>
+        </div>
+        <div class="zhuce_name zhuce_modal_item clear">
+          <p class="fl">密码</p><input type="password" name="password" id="register_password1" placeholder="6-15位字母或数字组合"
+                                     class="long_input_text">
+          <span class="error_text ml120"></span>
+        </div>
+        <div class="zhuce_name zhuce_modal_item clear">
+          <p class="fl">确认密码</p><input type="password" name="repassword" id="register_repassword1" placeholder="确认密码" class="long_input_text">
+          <span class="error_text ml120"></span>
+        </div>
+        <div class="zhuce_name zhuce_modal_item clear">
+          <p class="fl">&nbsp;</p>
+          <div class="zhuce_name_slide">
+            <div class="geetest_box">
+              <div class="geetest-heart"><span></span></div>
+              <a href="javascript:;" id="verify_pop1">点击按钮进行验证</a>
+              <a href="javascript:;" id="verify_refresh1" class="geetest-refresh">
+                <img src="__TMPL__/mediapublic/assets/images/refresh.png" >
+              </a>
+              <input type="hidden" class="verify_tag" name="verify_tag">
+              <input type="hidden" class="verify_token" name="verify_token">
+            </div>
+          </div>
+        </div>
+        <div class="zhuce_name agree_user_pro">
+          <label>
+            <input type="checkbox" checked name="agreement" value="1" class="fl" hidden>
+            <i class="choice-icon"></i>
+            <p>我已阅读并同意<span><a target="_blank" href="{:url('article/about',['id'=>27])}">《{$portal['post_title']}》</a><a target="_blank" href="{:url('article/about',['id'=>16])}">《{$portal['post_title_yinsi']}》</a></span></p>
+          </label>
+        </div>
+        <div hidden class="auth_name zhuce_modal_item clear mt25">
+          <p class="fl">姓名</p><input type="text" name="real_name" maxlength="25" placeholder="请输入真实姓名" id="register_realname"
+                                     class="long_input_text">
+          <span class="error_text ml120"></span>
+        </div>
+        <div hidden class="auth_name zhuce_modal_item clear ">
+          <p class="fl">身份证号</p><input type="text" name="idcard" maxlength="18" id="register_idcard" placeholder="请输入身份证号码" class="long_input_text">
+          <span class="error_text ml120"></span>
+        </div>
+        <div class=" agree_zhuce_btn2">
+          <input type="hidden" name="register_type" value="1">
+          <if condition="get_user_config_info('age')['real_register_status']  gt 0">
+            <button hidden class="btn_submit auth_name js-ajax-submit" type="submit" disabled>接受协议并注册</button>
+            <button class="btn auth_name_btn" type="button" disabled>下一步</button>
+          <else/>
+            <button class="js-ajax-submit auth_name_btn" type="submit" disabled>接受协议并注册</button>
+          </if>
+        </div>
+      </form>
+      <p class="zhuce_modal_tap ">已有账号，<span>立即登录</span></p>
+    </div>
+    <div class="zhuce_email_con">
+      <form class="js-ajax-form" action="{:url('User/register')}" method="post">
+        <div class="zhuce_email zhuce_modal_item clear mt25">
+          <p class="fl zhuce_modal_item_label">邮箱地址</p>
+          <input type="text" name="account" id="register_email" placeholder="输入邮箱" class="long_input_text fl">
+          <span class="error_text ml120"></span>
+        </div>
+        <div class="zhuce_email zhuce_modal_item clear">
+          <p class="fl zhuce_modal_item_label">验证码</p>
+          <input type="text" name="code" id="register_email_code" placeholder="验证码" class="duan_input_text fl">
+          <div class="fl getyanzhengma_email">获取验证码</div>
+          <span class="error_text ml120"></span>
+        </div>
+        <div class="zhuce_email zhuce_modal_item clear">
+          <p class="fl zhuce_modal_item_label">密码</p>
+          <input type="password" name="password" id="register_email_password" placeholder="6-15位字母或数字组合"
+                 class="long_input_text fl">
+          <span class="error_text ml120 clear"></span>
+        </div>
+        <div class="zhuce_email zhuce_modal_item clear">
+          <p class="fl zhuce_modal_item_label">确认密码</p>
+          <input type="password" name="repassword" id="register_email_repassword" placeholder="确认密码"
+                 class="long_input_text fl">
+          <span class="error_text ml120 clear"></span>
+        </div>
+        <div hidden class="auth_email zhuce_modal_item clear mt25">
+          <p class="fl">姓名</p><input type="text" name="real_name" maxlength="25" placeholder="请输入真实姓名" id="email_realname"
+                                     class="long_input_text">
+          <span class="error_text ml120"></span>
+        </div>
+        <div hidden class="auth_email zhuce_modal_item clear ">
+          <p class="fl">身份证号</p><input type="text" name="idcard" placeholder="请输入身份证号码" maxlength="18" id="email_idcard"
+                                       class="long_input_text">
+          <span class="error_text ml120"></span>
+        </div>
+        <div class="zhuce_email agree_user_pro">
+          <label>
+            <input type="checkbox" checked name="agreement" value="1" class="fl email_yzm" hidden>
+            <i class="choice-icon"></i>
+            <p>我已阅读并同意<span><a target="_blank" href="{:url('article/about',['id'=>27])}">《{$portal['post_title']}》</a><a target="_blank" href="{:url('article/about',['id'=>16])}">《{$portal['post_title_yinsi']}》</a></span></p>
+          </label>
+        </div>
+        <div class="agree_zhuce_btn3">
+          <input type="hidden" name="register_type" value="3">
+          <if condition="get_user_config_info('age')['real_register_status']  gt 0">
+            <button hidden class="btn_submit auth_email js-ajax-submit" type="submit" disabled>接受协议并注册</button>
+            <button class="btn auth_email_btn" type="button" disabled>下一步</button>
+            <else/>
+            <button class="js-ajax-submit auth_email_btn" type="submit" disabled>接受协议并注册</button>
+          </if>
+        </div>
+      </form>
+      <p class="zhuce_modal_tap">已有账号，<span>立即登录</span></p>
+    </div>
+  </div>
+</div>
+
+<!-- 找回密码弹窗 1-->
+<div class="retrieve_pwd_modal">
+  <p class="retrieve_pwd_title">找回密码<span><img src="__STATIC__/images/delete_icon.png" alt=""></span></p>
+  <div class="retrieve_pwd_summny">
+    <p class="fl onecol active_pwd_col">输入账号 <span>></span></p>
+    <p class="fl twocol">短信验证 <span>></span></p>
+    <p class="fl threecol ">设置密码</p>
+  </div>
+  <div class="retrieve_pwd_username">
+    <input type="text" id="forget_account" placeholder="账号">
+  </div>
+  <div class="retrieve_pwd_onclickbtn">
+    <p>确定</p>
+  </div>
+  <p class="zhuce_modal_tap ">已有账号，<span>立即登录</span></p>
+</div>
+<!-- 找回密码弹窗 2-->
+<div class="retrieve_pwd_algin_modal" id="forget">
+  <p class="retrieve_pwd_title">找回密码<span><img src="__STATIC__/images/delete_icon.png" alt=""></span></p>
+  <div class="retrieve_pwd_summny">
+    <p class="fl onecol active_pwd_col">输入账号 <span>></span></p>
+    <p class="fl twocol active_pwd_col">短信验证 </p>
+    <p class="fl threecol"><span class="gieagf">></span>设置密码</p>
+  </div>
+  <div class="retrieve_pwd_username">
+    <input type="text" id="forget_phone" placeholder="绑定手机号">
+  </div>
+  <div class="retrieve_pwd_username">
+    <div class="retrieve_pwd_slide">
+      <div class="geetest_box">
+        <div class="geetest-heart"><span></span></div>
+        <a href="javascript:;" id="verify_pop3">点击按钮进行验证</a>
+        <a href="javascript:;" id="verify_refresh3" class="geetest-refresh">
+          <img src="__TMPL__/mediapublic/assets/images/refresh.png" >
+        </a>
+        <input type="hidden" class="verify_tag" name="verify_tag">
+        <input type="hidden" class="verify_token" name="verify_token">
+      </div>
+    </div>
+  </div>
+  <div class="retrieve_pwd_yzm">
+    <input type="text" id="forget_code" placeholder="验证码" class="fl">
+    <div class="getyam_btn fl">
+      <p>获取验证码</p>
+    </div>
+  </div>
+  <div class="retrieve_pwd_algin_onclickbtn clear">
+    <p>确定</p>
+  </div>
+  <p class="toggle_forgetpwd_email">短信用不了? <span>邮箱找回></span></span></p>
+</div>
+<!-- 邮箱找回密码 -->
+<div class="retrieve_pwd_email_modal" id="forget_ema">
+  <p class="retrieve_pwd_title">找回密码<span><img src="__STATIC__/images/delete_icon.png" alt=""></span></p>
+  <div class="retrieve_pwd_summny">
+    <p class="fl onecol active_pwd_col">输入账号 <span>></span></p>
+    <p class="fl twocol active_pwd_col mt5">邮箱验证 </p>
+    <p class="fl threecol"><span class="gieagf">></span>设置密码</p>
+  </div>
+  <div class="retrieve_pwd_username">
+    <input type="text" id="forget_email" placeholder="绑定邮箱号">
+  </div>
+  <div class="retrieve_pwd_yzm">
+    <input type="text" id="forget_email_code" placeholder="验证码" class="fl">
+    <div class="getyam_btns fl">
+      <p>获取验证码</p>
+    </div>
+  </div>
+  <div class="retrieve_pwd_algin_onclickbtns clear">
+    <p>确定</p>
+  </div>
+  <p class="toggle_forgetpwd_mobile">邮箱用不了? <span>短信找回></span></span></p>
+</div>
+<!--短信 找回密码弹窗 3-->
+<div class="retrieve_pwd_last_modal">
+  <form class="js-ajax-form" action="{:url('User/forget_password')}" method="post">
+    <p class="retrieve_pwd_title">找回密码<span><img src="__STATIC__/images/delete_icon.png" alt=""></span></p>
+    <div class="retrieve_pwd_summny">
+      <p class="fl onecol active_pwd_col">输入账号 <span>></span></p>
+      <p class="fl twocol active_pwd_col">短信验证 <span>></span></p>
+      <p class="fl threecol active_pwd_col mt5">设置密码</p>
+    </div>
+    <div class="retrieve_pwd_username">
+      <input type="password" name="password" placeholder="新密码（6-15位字母或数字组合）">
+    </div>
+    <div class="retrieve_pwd_username">
+      <input type="password" name="repassword" placeholder="确认新密码">
+    </div>
+    <div class="retrieve_pwd_last_onclickbtn clear">
+      <input type="hidden" name="code_type" value="phone">
+      <button class="js-ajax-submit" type="submit">确定</button>
+    </div>
+  </form>
+</div>
+<!-- 邮箱 找回密码弹窗 3-->
+<div class="retrieve_pwd_last_modals">
+  <form class="js-ajax-form" action="{:url('User/forget_password')}" method="post">
+    <p class="retrieve_pwd_title">找回密码<span><img src="__STATIC__/images/delete_icon.png" alt=""></span></p>
+    <div class="retrieve_pwd_summny">
+      <p class="fl onecol active_pwd_col">输入账号 <span>></span></p>
+      <p class="fl twocol active_pwd_col">邮箱验证 <span>></span></p>
+      <p class="fl threecol active_pwd_col mt5">设置密码</p>
+    </div>
+    <div class="retrieve_pwd_username">
+      <input type="password" name="password" placeholder="新密码（6-15位字母或数字组合）">
+    </div>
+    <div class="retrieve_pwd_username">
+      <input type="password" name="repassword" placeholder="确认新密码">
+    </div>
+    <div class="retrieve_pwd_last_onclickbtn clear">
+      <input type="hidden" name="code_type" value="email">
+      <button class="js-ajax-submit" type="submit">确定</button>
+    </div>
+  </form>
+</div>
+</if>
+<if condition="!(($action_name eq open_game or $action_name eq open_ygame) and $controller_name eq Game)">
+<!-- 页面右侧悬浮框 -->
+<div class="hover_modal">
+  <div class="hover_modal_item1">
+    <img src="__STATIC__/images/to_sale.png" alt="">
+    <p>客服</p>
+  </div>
+  <div class="hover_modal_item2">
+    <img src="__STATIC__/images/to_wx.png" alt="">
+    <p>微信</p>
+  </div>
+  <div class="hover_modal_item3">
+    <a href="javascript:;">
+      <img src="__STATIC__/images/to_qq.png" alt="">
+      <p>QQ</p>
+    </a>
+
+  </div>
+  <div class="hover_modal_item4">
+    <img src="__STATIC__/images/to_top.png" alt="">
+  </div>
+  <div class="comment">
+    <div class="right_hover_tel">
+      <img src="__STATIC__/images/right_hover_tel.png" alt="" class="fl"><p class="fl">
+      <if condition='$union_set[tel]'>{$union_set['tel']}
+        <else />{:cmf_get_option('kefu_set')['pc_set_server_tel']}</if>
+    </p> </div>
+  </div>
+  <div class="comment2">
+    <p class="right_hover_wx"><img
+            src="<if condition='$union_set[qrcode]'>{:cmf_get_image_url($union_set['qrcode'])}<else/>{:cmf_get_image_url(cmf_get_option('media_set')['pc_set_qrcode'])}</if>"
+            alt="" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null"/>
+    <p class="guanzhupub">关注<span class="xiguruanjianpub">
+            <if condition='$union_set[app_weixin]'>{$union_set['app_weixin']}
+              <else />{:cmf_get_option('media_set')['pc_set_qrcode_name']}</if>
+          </span>公众号</p>
+    </p>
+  </div>
+  <div class="comment3">
+    <p class="right_hover_qq">
+
+      <if condition="empty($union_set[qq]) and get_xgkf_info(0)">
+        <a  class="xgkf_aq" target="_blank">
+          在线客服
+        </a>
+      <else/>
+        <img src="__STATIC__/images/right_hover_qq.png" alt="">
+        <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=<if condition='$union_set[qq]'>{$union_set['qq']}<else/>{:cmf_get_option('kefu_set')['pc_set_server_qq']}</if>&amp;site=qq&amp;menu=yes"
+           target="_blank">
+          <if condition='$union_set[qq]'>
+            {$union_set['qq']}
+            <else />
+            {:cmf_get_option('kefu_set')['pc_set_server_qq']}</if>
+        </a>
+      </if>
+    </p>
+  </div>
+</div>
+<!-- 游客登录-->
+<div class="youkePop">
+  <p class="retrieve_pwd_title1">设置登录密码
+    <!-- <span><img src="__STATIC__/images/delete_icon.png" alt=""></span> -->
+  </p>
+  <div class="retrieve_pwd_username1">
+    <div class="div1">
+    <p class="nei-text">账号</p>
+    <input type="text" id="zhanghao" class="zhanghao" value="11111111">
+    <img src="/themes/simpleboot3/mobilepublic/assets/images/common_btn_delet.png" alt="" class="clear_texts1 fristclear_texts" style="display: none;">
+    </div>
+    <div class="div1">
+      <p class="nei-text">密码</p>
+      <input type="text" id="mimma" class="mima" value="11111111" placeholder="6-15位字母或数字">
+      <img src="/themes/simpleboot3/mobilepublic/assets/images/common_btn_delet.png" alt="" class="clear_texts1 fristclear_texts" style="display: none;">
+   </div>
+  </div>
+  <div class="retrieve_pwd_onclickbtn1">
+    <p>注册</p>
+  </div>
+</div>
+<!-- 底部 -->
+<div class="game_detail_footer clear">
+  <footer class="footer">
+    <notempty name="links">
+    <div class="footer_link">
+	    <div class="fl">友情链接</div>
+		<div class="fl footer_link_con">
+            <volist name="links" id="vo">
+                <a target="_blank" href="{$vo.link_url}" class="footer_link_link">{$vo.title}</a>
+            </volist>
+		</div>
+	</div>
+      <div class="footer_nav_hx"></div>
+    </notempty>
+    <div class="footer_con tuiguangFooter">
+      <div class="footer_logo_img fl">
+        <img class="footer_logo"
+             src="<if condition='$union_set[pc_ft_logo]'>{:cmf_get_image_url($union_set['pc_ft_logo'])}<else/>{:cmf_get_image_url(cmf_get_option('media_set')['pc_set_logo_foot'])}</if>"
+             alt="" >
+      </div>
+
+      <div class="first_con fl ml48"></div>
+      <notempty name="articleLists">
+        <div class="breadnav fl">
+          <volist name="articleLists" id="vo">
+            <a target="_blank" href="{:url('Article/about',['id'=>$vo['id']])}">
+              <p class="first_nav_con newNav_con_items">{$vo['title']}</p>
+            </a>
+          </volist>
+        </div>
+      <else/>
+        <div class="breadnav fl">
+          <a target="_blank" href="{:url('Article/about')}">
+            <p class="first_nav_con">关于我们</p>
+          </a>
+          <p class="footer_nav_fh">|</p>
+          <a target="_blank" href="{:url('Article/about',['id'=>12])}">
+            <p class="footer_nav_con">商务合作</p>
+          </a>
+
+          <p class="footer_nav_fh">|</p>
+          <a target="_blank" href="{:url('Article/about',['id'=>28])}">
+            <p class="footer_nav_con">合作伙伴</p>
+          </a>
+
+          <p class="footer_nav_fh">|</p>
+          <a target="_blank" href="{:url('Article/supervise')}">
+            <p class="footer_nav_con">家长监督</p>
+          </a>
+          <!-- <p class="footer_nav_fh">|</p>
+                <p class="footer_nav_con">客服帮助</p> -->
+
+          <if condition="!empty(cmf_get_option('media_set')['support_show_status'])">
+            <p class="footer_nav_fh">|</p>
+            <a class="linkxigu" href="https://www.vlsdk.com/" target="_blank">
+              <p class="footer_nav_con">技术支持</p>
+            </a>
+          </if>
+
+          <p class="footer_nav_fh">|</p>
+          <a target="_blank" href="{:url('Article/about',['id'=>18])}">
+            <p class="last_nav_con">企业招聘</p>
+          </a>
+      </div>
+      </notempty>
+
+      <if condition="$union_set">
+
+        <div class="infos">
+          <p>
+            <span><img src="__TMPL__/mediapublic/assets/images/public_shield.png" ></span>
+            <span><empty name="union_set.pc_set_for_the_record">{:cmf_get_option('media_set')['pc_set_for_the_record']}<else />{$union_set['pc_set_for_the_record']}</empty></span>
+              <span style="margin-left:50px"><empty name="union_set.pc_set_telecom_license">{:cmf_get_option('media_set')['pc_set_telecom_license']}<else />{$union_set['pc_set_telecom_license']}</empty></span>
+          </p>
+          <p>
+              <span><empty name="union_set.pc_set_license">{:cmf_get_option('media_set')['pc_set_license']}<else />{$union_set['pc_set_license']}</empty></span>
+
+            <if condition="!empty(cmf_get_option('media_set')['icp_organ_link'])">
+                <span style="margin-left:50px"><a target="_blank" style="color: rgba(255,255,255,0.3);" href="{:cmf_get_option('media_set')['icp_organ_link']}"><empty name="union_set.pc_set_for_the_record_icp">{:cmf_get_option('media_set')['pc_set_for_the_record_icp']}<else />{$union_set['pc_set_for_the_record_icp']}</empty></a></span>
+            <else/>
+                <span style="margin-left:50px"><a target="_blank" style="color: rgba(255,255,255,0.3);" href="http://www.beian.gov.cn/portal/index.do"><empty name="union_set.pc_set_for_the_record_icp">{:cmf_get_option('media_set')['pc_set_for_the_record_icp']}<else />{$union_set['pc_set_for_the_record_icp']}</empty></a></span>
+            </if>
+
+
+            <!-- <span style="margin-left:50px"><a target="_blank" style="color: rgba(255,255,255,1);" href="http://www.beian.gov.cn/portal/index.do">{$union_set['pc_set_for_the_record_icp']}</a></span> -->
+
+          </p>
+            <p><empty name="union_set.pc_set_copyright">{:cmf_get_option('media_set')['pc_set_copyright']}<else />{$union_set['pc_set_copyright']}</empty></p>
+        </div>
+
+      <else/>
+        <div class="infos">
+          <p>
+            <span><img src="__TMPL__/mediapublic/assets/images/public_shield.png" ></span>
+
+            <if condition="!empty(cmf_get_option('media_set')['public_security_organ_link'])">
+              <span style="margin-left:0px"><a target="_blank" style="color: rgba(255,255,255,0.3);" href="{:cmf_get_option('media_set')['public_security_organ_link']}">{:cmf_get_option('media_set')['pc_set_for_the_record']}</a></span>
+            <else/>
+              <span>{:cmf_get_option('media_set')['pc_set_for_the_record']}</span>
+            </if>
+
+            <span style="margin-left:50px">{:cmf_get_option('media_set')['pc_set_telecom_license']}</span>
+          </p>
+
+          <p>
+            <span>{:cmf_get_option('media_set')['pc_set_license']}</span>
+            <if condition="!empty(cmf_get_option('media_set')['icp_organ_link'])">
+              <span style="margin-left:50px"><a target="_blank" style="color: rgba(255,255,255,0.3);" href="{:cmf_get_option('media_set')['icp_organ_link']}">{:cmf_get_option('media_set')['pc_set_for_the_record_icp']}</a></span>
+            <else/>
+              <span style="margin-left:50px"><a target="_blank" style="color: rgba(255,255,255,0.3);" href="http://www.beian.gov.cn/portal/index.do">{:cmf_get_option('media_set')['pc_set_for_the_record_icp']}</a></span>
+            </if>
+
+          </p>
+          <p>{:cmf_get_option('media_set')['pc_set_copyright']}</p>
+        </div>
+      </if>
+    </div>
+    <!-- 修改后的 -->
+    <div class="reportBottomDetail">
+      <div class="reportCenterInfo">
+        <a href=" https://www.12377.cn/" target="_blank"><i class="safeInternet safeGameIcon"></i> 中国互联网举报中心 </a>
+        <a href="http://www.cyberpolice.cn/wfjb/" target="_blank"><i class="breakingLaw safeGameIcon"></i> 网络违法举报中心 </a>
+        <a href="https://www.12321.cn/" target="_blank"><i class="rubbishInfo safeGameIcon"></i> 垃圾信息举报中心</a>
+        <a href="javaScript:;"  id="goToRefer"><i class="gameCheckPlatform safeGameIcon"></i> 已接入中宣部网络游戏防沉迷实名认证系统</a>
+        <a href="https://www.game12315.com/" target="_blank"><i class="gameReportCenter safeGameIcon"></i> 中国网络游戏投诉平台</a>
+      </div>
+    </div>
+    <div class="footer_nav_hx"></div>
+    <p class="footer_nav_news">{:cmf_get_option('media_set')['pc_game_prompt']}</p>
+  </footer>
+</div>
+</if>
+</div>
+</body>
+<script src="__JS__/wind.js"></script>
+  <script>
+    // 首页，鼠标放上去显示全部
+    $(".nav li").hover(function () {
+      var title_val= $(this).text();
+      $(this).attr("title",title_val);
+    });
+    $(".fg .js_usermune li").hover(function () {
+      var title_val1= $(this).text();
+      $(this).attr("title",title_val1);
+    });
+  // var title_val=$('.act').text();
+  // $(".act").attr("title",title_val);
+    $('#goToRefer').click(function() {
+       open_new_window('https://wlc.nppa.gov.cn/fcm_company/index.html#/login?redirect=%2F')
+      //window.location.href = 'https://wlc.nppa.gov.cn/fcm_company/index.html#/login?redirect=%2F'
+    })
+
+    function open_new_window(full_link)
+    {
+        window.open('javascript:window.name;', '<script>location.replace("'+full_link+'")<\/script>');
+    }
+
+
+      var is_real_auth = "{:get_user_config_info('age')['real_register_status']}";
+      var phone_is_phone = false;
+      var phone_is_yzm = false;
+      var phone_is_pwd = false;
+      var phone_is_aginpwd = false;
+      var phone_is_agree = true;
+      var phone_is_z_yam = false;
+
+      var user_is_username = false;
+      var user_is_userpwd = false;
+      var user_is_useragreepwd = false;
+      var user_is_yzm = false;
+      if(is_real_auth == 1 ){
+          var phone_is_real_name = false;
+          var phone_is_idcard = false;
+          var user_is_real_name = false;
+          var user_is_idcard = false;
+          var email_is_real_name = false;
+          var email_is_idcard = false;
+      }else{
+          var phone_is_real_name = true;
+          var phone_is_idcard = true;
+          var user_is_real_name = true;
+          var user_is_idcard = true;
+          var email_is_real_name = true;
+          var email_is_idcard = true;
+      }
+      var email_is_email = false;
+      var email_is_yzm = false;
+      var email_is_pwd = false;
+      var email_is_agree = true;
+      var email_is_aginpwd = false;
+    //普通号注册智能验证
+    $('#verify_pop1').on('click',function(){
+      if($('body').find('.pop-caption-box').length>0) {return false;}
+      user_is_yzm = false;
+      //回调函数
+      window.caption_callback_function = function(tag,token){
+        $('#verify_pop1').off('click').text('验证成功');
+        $('#verify_pop1').siblings('.verify_tag').val(tag);
+        $('#verify_pop1').siblings('.verify_token').val(token);
+        user_is_yzm = true;
+        if (user_is_username && user_is_userpwd && user_is_useragreepwd && user_is_yzm) {
+            $('.agree_zhuce_btn2 .auth_name_btn').addClass('can_click')
+            $('.agree_zhuce_btn2 .auth_name_btn').prop('disabled', false)
+            if(user_is_real_name && user_is_idcard) {
+                $('.agree_zhuce_btn2 .btn_submit').addClass('can_click')
+                $('.agree_zhuce_btn2 .btn_submit').prop('disabled', false)
+            }else{
+                $('.agree_zhuce_btn2 .btn_submit').removeClass('can_click')
+                $('.agree_zhuce_btn2 .btn_submit').prop('disabled', true)
+            }
+        } else {
+            $('.agree_zhuce_btn2 .auth_name_btn').removeClass('can_click')
+            $('.agree_zhuce_btn2 .auth_name_btn').prop('disabled', true)
+        }
+      }
+      url = "{:url('user/caption/verify_pop')}"
+      $.get(url, function (html) {
+        $('body').append(html);
+      });
+      return false;
+    })
+    $('#verify_refresh1').click(function () {
+      $('#verify_pop1').siblings('.verify_tag').val('');
+      $('#verify_pop1').siblings('.verify_token').val('');
+      $('#verify_pop1').off('click').on('click',function(){
+        if($('body').find('.pop-caption-box').length>0) {return false;}
+        user_is_yzm = false;
+        //回调函数
+        window.caption_callback_function = function(tag,token){
+          $('#verify_pop1').off('click').text('验证成功');
+          $('#verify_pop1').siblings('.verify_tag').val(tag);
+          $('#verify_pop1').siblings('.verify_token').val(token);
+          user_is_yzm = true;
+          if (user_is_username && user_is_userpwd && user_is_useragreepwd && user_is_yzm) {
+            $('.agree_zhuce_btn2 .auth_name_btn').addClass('can_click')
+            $('.agree_zhuce_btn2 .auth_name_btn').prop('disabled', false)
+          } else {
+            $('.agree_zhuce_btn2 .auth_name_btn').removeClass('can_click')
+            $('.agree_zhuce_btn2 .auth_name_btn').prop('disabled', true)
+          }
+        }
+        url = "{:url('user/caption/verify_pop')}"
+        $.get(url, function (html) {
+          $('body').append(html);
+        });
+        return false;
+      }).text('点击按钮进行验证');
+      return false;
+    });
+    //手机号注册智能验证
+    $('#verify_pop2').on('click',function(){
+      if($('body').find('.pop-caption-box').length>0) {return false;}
+      //回调函数
+      phone_is_z_yam = false;
+      window.caption_callback_function = function(tag,token){
+        $('#verify_pop2').off('click').text('验证成功');
+        $('#verify_pop2').siblings('.verify_tag').val(tag);
+        $('#verify_pop2').siblings('.verify_token').val(token);
+        phone_is_z_yam = true;
+        if (phone_is_phone && phone_is_yzm && phone_is_pwd && phone_is_aginpwd && phone_is_agree && phone_is_z_yam) {
+          $('.agree_zhuce_btn .auth_phone_btn').addClass('can_click')
+          $('.agree_zhuce_btn .auth_phone_btn').prop('disabled', false)
+        } else {
+          $('.agree_zhuce_btn .auth_phone_btn').removeClass('can_click')
+          $('.agree_zhuce_btn .auth_phone_btn').prop('disabled', true)
+        }
+      }
+      url = "{:url('user/caption/verify_pop')}"
+      $.get(url, function (html) {
+        $('body').append(html);
+      });
+      return false;
+    })
+    $('#verify_refresh2').click(function () {
+      $('#verify_pop2').siblings('.verify_tag').val('');
+      $('#verify_pop2').siblings('.verify_token').val('');
+      $('#verify_pop2').off('click').on('click',function(){
+        if($('body').find('.pop-caption-box').length>0) {return false;}
+        //回调函数
+        phone_is_z_yam = false;
+        window.caption_callback_function = function(tag,token){
+          $('#verify_pop2').off('click').text('验证成功');
+          $('#verify_pop2').siblings('.verify_tag').val(tag);
+          $('#verify_pop2').siblings('.verify_token').val(token);
+          phone_is_z_yam = true;
+          if (phone_is_phone && phone_is_yzm && phone_is_pwd && phone_is_aginpwd && phone_is_agree && phone_is_z_yam) {
+            $('.agree_zhuce_btn .auth_phone_btn').addClass('can_click')
+            $('.agree_zhuce_btn .auth_phone_btn').prop('disabled', false)
+          } else {
+            $('.agree_zhuce_btn .auth_phone_btn').removeClass('can_click')
+            $('.agree_zhuce_btn .auth_phone_btn').prop('disabled', true)
+          }
+        }
+        url = "{:url('user/caption/verify_pop')}"
+        $.get(url, function (html) {
+          $('body').append(html);
+        });
+        return false;
+      }).text('点击按钮进行验证');
+      return false;
+    });
+    //忘记密码智能验证
+    $('#verify_pop3').on('click',function(){
+      if($('body').find('.pop-caption-box').length>0) {return false;}
+      //回调函数
+      window.caption_callback_function = function(tag,token){
+        $('#verify_pop3').off('click').text('验证成功');
+        $('#verify_pop3').siblings('.verify_tag').val(tag);
+        $('#verify_pop3').siblings('.verify_token').val(token);
+      }
+      url = "{:url('user/caption/verify_pop')}"
+      $.get(url, function (html) {
+        $('body').append(html);
+      });
+      return false;
+    })
+    $('#verify_refresh3').click(function () {
+      $('#verify_pop3').siblings('.verify_tag').val('');
+      $('#verify_pop3').siblings('.verify_token').val('');
+      $('#verify_pop3').off('click').on('click',function(){
+        if($('body').find('.pop-caption-box').length>0) {return false;}
+        //回调函数
+        window.caption_callback_function = function(tag,token){
+          $('#verify_pop3').off('click').text('验证成功');
+          $('#verify_pop3').siblings('.verify_tag').val(tag);
+          $('#verify_pop3').siblings('.verify_token').val(token);
+        }
+        url = "{:url('user/caption/verify_pop')}"
+        $.get(url, function (html) {
+          $('body').append(html);
+        });
+        return false;
+      }).text('点击按钮进行验证');
+      return false;
+    });
+  $(document).ready(function () {
+    function changezhucebtn() {
+      if (phone_is_phone && phone_is_yzm && phone_is_pwd && phone_is_aginpwd  && phone_is_z_yam) {
+        $('.auth_phone_btn').addClass('can_click');
+        $('.auth_phone_btn').prop('disabled', false);
+        if(phone_is_real_name && phone_is_idcard) {
+            $('.agree_zhuce_btn .btn_submit').addClass('can_click')
+            $('.agree_zhuce_btn .btn_submit').prop('disabled', false)
+        }else{
+            $('.agree_zhuce_btn .btn_submit').removeClass('can_click')
+            $('.agree_zhuce_btn .btn_submit').prop('disabled', true)
+        }
+      } else {
+        $('.agree_zhuce_btn .btn_submit').removeClass('can_click')
+        $('.agree_zhuce_btn .btn_submit').prop('disabled', true)
+      }
+    }
+    function changezhucebtns() {
+      //console.log(user_is_username, user_is_userpwd, user_is_useragreepwd)
+      if (user_is_username && user_is_userpwd && user_is_useragreepwd  && user_is_yzm) {
+        $('.auth_name_btn').addClass('can_click');
+        $('.auth_name_btn').prop('disabled', false);
+        if(user_is_real_name && user_is_idcard){
+            $('.agree_zhuce_btn2 .btn_submit').addClass('can_click');
+            $('.agree_zhuce_btn2 .btn_submit').prop('disabled', false);
+        }else{
+            $('.agree_zhuce_btn2 .btn_submit').removeClass('can_click');
+            $('.agree_zhuce_btn2 .btn_submit').prop('disabled', true);
+        }
+      } else {
+        $('.agree_zhuce_btn2 button').removeClass('can_click');
+        $('.agree_zhuce_btn2 button').prop('disabled', true);
+      }
+    }
+      function changezhucebtn_email() {
+          //console.log(email_is_email, email_is_yzm, email_is_pwd,email_is_agree,email_is_aginpwd)
+          if (email_is_email && email_is_yzm && email_is_pwd && email_is_agree && email_is_aginpwd) {
+              $('.auth_email_btn').addClass('can_click');
+              $('.auth_email_btn').prop('disabled', false);
+              if(email_is_real_name && email_is_idcard) {
+                  $('.agree_zhuce_btn3 .btn_submit').addClass('can_click')
+                  $('.agree_zhuce_btn3 .btn_submit').prop('disabled', false)
+              }else{
+                  $('.agree_zhuce_btn3 .btn_submit').removeClass('can_click')
+                  $('.agree_zhuce_btn3 .btn_submit').prop('disabled', true)
+              }
+          } else {
+              $('.agree_zhuce_btn3 button').removeClass('can_click')
+              $('.agree_zhuce_btn3 button').prop('disabled', true)
+          }
+      }
+      $(".auth_name_btn").click(function () {
+          var $this = $(this);
+          if($this.text() == "下一步"){
+              $(".auth_name").show();
+              $(".zhuce_name").hide();
+              $this.text("上一步").addClass("pre-step-style");
+              $('.zhuce_zhanghao_con .zhuce_modal_tap').hide()
+          }else if($this.text() == "上一步"){
+              $(".auth_name").hide();
+              $(".zhuce_name").show();
+              $this.text("下一步").removeClass('pre-step-style');
+              $('.zhuce_zhanghao_con .zhuce_modal_tap').show()
+          }
+      })
+
+      $(".auth_phone_btn").click(function () {
+          var $this = $(this);
+          if($this.text() == "下一步"){
+              $(".auth_phone").show();
+              $(".zhuce_phone").hide();
+              $this.text("上一步").addClass("pre-step-style");
+              $('.zhuce_mobile_con .zhuce_modal_tap').hide()
+          }else if($this.text() == "上一步"){
+              $(".auth_phone").hide();
+              $(".zhuce_phone").show();
+              $this.text("下一步").removeClass('pre-step-style');
+              $('.zhuce_mobile_con .zhuce_modal_tap').show()
+          }
+      })
+      $(".auth_email_btn").click(function () {
+          var $this = $(this);
+          if($this.text() == "下一步"){
+              $(".auth_email").show();
+              $(".zhuce_email").hide();
+              $this.text("上一步").addClass("pre-step-style");
+              $('.zhuce_email_con .zhuce_modal_tap').hide()
+          }else if($this.text() == "上一步"){
+              $(".auth_email").hide();
+              $(".zhuce_email").show();
+              $this.text("下一步").removeClass('pre-step-style');
+              $('.zhuce_email_con .zhuce_modal_tap').show()
+          }
+      })
+    $('.mobile_yzm').change(function () {
+      if ($('.mobile_yzm').prop('checked')) {
+        phone_is_agree = true
+        changezhucebtn()
+      } else {
+        phone_is_agree = false
+        changezhucebtn()
+      }
+    })
+
+    $('.email_yzm').change(function () {
+        if ($('.email_yzm').prop('checked')) {
+            email_is_agree = true;
+            changezhucebtn_email();
+        } else {
+            email_is_agree = false;
+            changezhucebtn_email();
+        }
+    })
+    //验证码刷新
+    $("#getcaptcha,#getcaptcha2").click(function(event) {
+        this.src = "{:url('User/set_captcha')}?"+Math.random();
+    });
+    $('.zhuce_zhanghao_con').hide();
+    $('.zhuce_email_con').hide();
+    // 处理搜索框效果
+    $('#search').bind("input propertychange", function (event) {
+      $("#inputdowndiv").hide();
+      var game_name = $("#search").val();
+      $("#inputdowndiv").html('');
+      if (game_name == '') {
+        return false;
+      }
+
+      $.ajax({
+        url: "{:url('Index/search')}",
+        type: 'post',
+        dataType: 'json',
+        async: false,
+        data: { game_name: game_name },
+        success: function (res) {
+          if (res.code == 1) {
+              var html = '';
+              $.each(res.data, function (i, item) {
+                if ((item.game_name).includes(game_name)) {
+                  var reg = new RegExp(game_name, "g")
+                  item.game_name = (item.game_name).replace(reg, '<span>' + game_name + '</span>')
+                  html += '<a href="' + item.url + '"><p class="fl">' + item.game_name + '</p></a>';
+                } else {
+                  html += '<a href="' + item.url + '"><p class="fl">' + item.game_name + '</p></a>';
+                }
+              });
+              $("#inputdowndiv").html(html);
+              $("#inputdowndiv").show();
+          }
+        }
+      })
+
+    });
+    $('#register_phone').bind('input propertychange', function () {
+      var $this = $(this);
+      if ($this.val()) {
+        $.ajax({
+          url: "{:url('User/checkRegisterName')}",
+          type: 'post',
+          dataType: 'json',
+          data: { account: $this.val(), register_type: 2 },
+          success: function (res) {
+            if (res.code != 1) {
+              $this.parent().find('.error_text').text(res.msg);
+              phone_is_phone = false
+              changezhucebtn()
+            } else {
+              phone_is_phone = true
+              changezhucebtn()
+              $this.parent().find('.error_text').text('');
+            }
+          }, error: function () {
+            phone_is_phone = false
+            changezhucebtn()
+            layer.msg('服务器错误');
+          }
+        })
+      }
+    })
+    $('#phone_realname').bind('input propertychange', function () {
+        var $this = $(this);
+        var reg = /^[\u4E00-\u9FA5]+$/;
+        if ($this.val()) {
+            if ($this.val().length > 25 || $this.val().length < 2 || reg.test($this.val()) == false) {
+                phone_is_real_name = false
+                changezhucebtn()
+                $this.parent().find('.error_text').text('姓名格式错误');
+            } else {
+                phone_is_real_name = true
+                changezhucebtn()
+                $this.parent().find('.error_text').text('');
+            }
+        }else{
+            if(is_real_auth == 2){
+                phone_is_real_name = true
+                changezhucebtns()
+                $this.parent().find('.error_text').text('');
+            }
+        }
+    })
+    $('#phone_idcard').bind('input propertychange', function () {
+        var $this = $(this);
+        if ($this.val()) {
+            if ($this.val().length > 18 || $this.val().length < 15) {
+                phone_is_idcard = false
+                changezhucebtn()
+                $this.parent().find('.error_text').text('证件号码错误');
+            } else {
+                phone_is_idcard = true
+                changezhucebtn()
+                $this.parent().find('.error_text').text('');
+            }
+        }else{
+            if(is_real_auth == 2){
+                phone_is_idcard = true
+                changezhucebtns()
+                $this.parent().find('.error_text').text('');
+            }
+        }
+    })
+    $('#register_code').bind('input propertychange', function () {
+      var $this = $(this);
+      if ($this.val()) {
+        if ($this.val().length == 6) {
+          $this.parent().find('.error_text').text('');
+          phone_is_yzm = true
+          changezhucebtn()
+        } else {
+          phone_is_yzm = false
+          changezhucebtn()
+          $this.parent().find('.error_text').text('请输入正确的验证码');
+        }
+      }
+    })
+    $("#register_phone1").bind('input propertychange', function () {
+      var $this = $(this);
+      if ($this.val()) {
+        $.ajax({
+          url: "{:url('User/checkRegisterName')}",
+          type: 'post',
+          dataType: 'json',
+          data: { account: $this.val(), register_type: 1 },
+          success: function (res) {
+            if (res.code != 1) {
+              user_is_username = false
+              changezhucebtns()
+              $this.parent().find('.error_text').text(res.msg);
+            } else {
+              user_is_username = true
+              changezhucebtns()
+              $this.parent().find('.error_text').text('');
+            }
+          }, error: function () {
+            user_is_username = false
+            changezhucebtns()
+            layer.msg('服务器错误');
+          }
+        })
+      }
+    })
+    $("#captcha2").bind('input propertychange', function () {
+          var $this = $(this);
+          if ($this.val()) {
+              $this.parent().find('.error_text').text('');
+              email_is_yzm = true
+              changezhucebtn_email()
+          }
+      })
+
+    $('#register_password1').bind('input propertychange', function () {
+      var $this = $(this);
+      if ($this.val()) {
+        if ($this.val().length > 15 || $this.val().length < 6) {
+          user_is_userpwd = false
+          changezhucebtns()
+          $this.parent().find('.error_text').text('6-15位字母或数字组合');
+        } else {
+          user_is_userpwd = true
+          changezhucebtns()
+          $this.parent().find('.error_text').text('');
+        }
+      }
+    })
+    $('#register_password').bind('input propertychange', function () {
+      var $this = $(this);
+      if ($this.val()) {
+        if ($this.val().length > 15 || $this.val().length < 6) {
+          phone_is_pwd = false
+          changezhucebtn()
+          $this.parent().find('.error_text').text('6-15位字母或数字组合');
+        } else {
+          phone_is_pwd = true
+          changezhucebtn()
+          $this.parent().find('.error_text').text('');
+        }
+      }
+    })
+    $('#register_repassword').bind('input propertychange', function () {
+      var $this = $(this);
+      if ($this.val()) {
+        if ($this.val().length > 15 || $this.val().length < 6) {
+          $this.parent().find('.error_text').text('6-15位字母或数字组合');
+          phone_is_aginpwd = false
+          changezhucebtn()
+        } else if ($this.val() != $("#register_password").val()) {
+          phone_is_aginpwd = false
+          changezhucebtn()
+          $this.parent().find('.error_text').text('两次输入的密码不一致');
+        } else {
+          phone_is_aginpwd = true
+          changezhucebtn()
+          $this.parent().find('.error_text').text('');
+        }
+      }
+    })
+    $('#register_repassword1').bind('input propertychange', function () {
+      var $this = $(this);
+      if ($this.val()) {
+        if ($this.val().length > 15 || $this.val().length < 6) {
+          user_is_useragreepwd = false
+          changezhucebtns()
+          $this.parent().find('.error_text').text('6-15位字母或数字组合');
+        } else if ($this.val() != $("#register_password1").val()) {
+          user_is_useragreepwd = false
+          changezhucebtns()
+          $this.parent().find('.error_text').text('两次输入的密码不一致');
+        } else {
+          user_is_useragreepwd = true
+          changezhucebtns()
+          $this.parent().find('.error_text').text('');
+        }
+      }
+    })
+      $('#register_realname').bind('input propertychange', function () {
+          var $this = $(this);
+          var reg = /^[\u4E00-\u9FA5]+$/;
+          if ($this.val()) {
+              if ($this.val().length > 25 || $this.val().length < 2 || reg.test($this.val()) == false) {
+                  user_is_real_name = false
+                  changezhucebtns()
+                  $this.parent().find('.error_text').text('姓名格式错误');
+              } else {
+                  user_is_real_name = true
+                  changezhucebtns()
+                  $this.parent().find('.error_text').text('');
+              }
+          }else{
+              if(is_real_auth == 2){
+                  user_is_real_name = true
+                  changezhucebtns()
+                  $this.parent().find('.error_text').text('');
+              }
+          }
+      })
+      $('#register_idcard').bind('input propertychange', function () {
+          var $this = $(this);
+          if ($this.val()) {
+              if ($this.val().length > 18 || $this.val().length < 15) {
+                  user_is_idcard = false
+                  changezhucebtns()
+                  $this.parent().find('.error_text').text('证件号码错误');
+              } else {
+                  user_is_idcard = true
+                  changezhucebtns()
+                  $this.parent().find('.error_text').text('');
+              }
+          }else{
+              if(is_real_auth == 2){
+                  user_is_idcard = true
+                  changezhucebtns()
+                  $this.parent().find('.error_text').text('');
+              }
+          }
+      })
+    $('#register_email_code').bind('input propertychange', function () {
+        var $this = $(this);
+        if ($this.val()) {
+            if ($this.val().length == 6) {
+                $this.parent().find('.error_text').text('');
+                email_is_yzm = true;
+                changezhucebtn_email();
+            } else {
+                email_is_yzm = false;
+                changezhucebtn_email();
+                $this.parent().find('.error_text').text('请输入正确的验证码');
+            }
+        }
+    })
+      $("#register_email").bind('input propertychange', function () {
+          var $this = $(this);
+          if ($this.val()) {
+              $.ajax({
+                  url: "{:url('User/checkRegisterName')}",
+                  type: 'post',
+                  dataType: 'json',
+                  data: { account: $this.val(), register_type: 3 },
+                  success: function (res) {
+                      if (res.code != 1) {
+                          email_is_email = false;
+                          changezhucebtn_email();
+                          $this.parent().find('.error_text').text(res.msg);
+                      } else {
+                          email_is_email = true;
+                          changezhucebtn_email();
+                          $this.parent().find('.error_text').text('');
+                      }
+                  }, error: function () {
+                      email_is_email = false;
+                      changezhucebtn_email();
+                      layer.msg('服务器错误');
+                  }
+              })
+          }
+      })
+      $('#register_email_password').bind('input propertychange', function () {
+          var $this = $(this);
+          if ($this.val()) {
+              if ($this.val().length > 15 || $this.val().length < 6) {
+                  email_is_pwd = false;
+                  changezhucebtn_email();
+                  $this.parent().find('.error_text').text('6-15位字母或数字组合');
+              } else {
+                  email_is_pwd = true;
+                  changezhucebtn_email();
+                  $this.parent().find('.error_text').text('');
+              }
+          }
+      })
+
+      $('#register_email_repassword').bind('input propertychange', function () {
+          var $this = $(this);
+          if ($this.val()) {
+              if ($this.val().length > 15 || $this.val().length < 6) {
+                  $this.parent().find('.error_text').text('6-15位字母或数字组合');
+                  email_is_aginpwd = false;
+                  changezhucebtn_email();
+              } else if ($this.val() != $("#register_email_password").val()) {
+                  email_is_aginpwd = false;
+                  changezhucebtn_email();
+                  $this.parent().find('.error_text').text('两次输入的密码不一致');
+              } else {
+                  email_is_aginpwd = true;
+                  changezhucebtn_email();
+                  $this.parent().find('.error_text').text('');
+              }
+          }
+      })
+      $('#email_realname').bind('input propertychange', function () {
+          var $this = $(this);
+          var reg = /^[\u4E00-\u9FA5]+$/;
+          if ($this.val()) {
+              if ($this.val().length > 25 || $this.val().length < 2 || reg.test($this.val()) == false) {
+                  email_is_real_name = false
+                  changezhucebtn_email()
+                  $this.parent().find('.error_text').text('姓名格式错误');
+              } else {
+                  email_is_real_name = true
+                  changezhucebtn_email()
+                  $this.parent().find('.error_text').text('');
+              }
+          }else{
+              if(is_real_auth == 2){
+                  email_is_real_name = true
+                  changezhucebtn_email()
+                  $this.parent().find('.error_text').text('');
+              }
+          }
+      })
+      $('#email_idcard').bind('input propertychange', function () {
+          var $this = $(this);
+          if ($this.val()) {
+              if ($this.val().length > 18 || $this.val().length < 15) {
+                  email_is_idcard = false
+                  changezhucebtn_email()
+                  $this.parent().find('.error_text').text('证件号码错误');
+              } else {
+                  email_is_idcard = true
+                  changezhucebtn_email()
+                  $this.parent().find('.error_text').text('');
+              }
+          }else{
+              if(is_real_auth == 2){
+                  email_is_idcard = true
+                  changezhucebtn_email()
+                  $this.parent().find('.error_text').text('');
+              }
+          }
+      })
+    $('.hover_modal_item1').hover(function () {
+      $('.hover_modal_item1 img').attr('src', '__STATIC__/images/to_sale_hover.png')
+      $('.hover_modal_item1').css('background-color', '#018FFF')
+      $('.hover_modal_item1 p').css('color', 'white')
+      $('.comment').show()
+    }, function () {
+      $('.hover_modal_item1 img').attr('src', '__STATIC__/images/to_sale.png')
+      $('.hover_modal_item1').css('background-color', 'white')
+      $('.hover_modal_item1 p').css('color', '#222222')
+      $('.comment').hide()
+    })
+    $(".xgkf_aq").click(function () {
+      // var uid = '';
+      // var name = '';
+      // var avatar = '';
+      // if(window.login_auth == 1){
+      //   uid = user_session_json.login_user_id;
+      //   name = user_session_json.login_account;
+      //   avatar = user_session_json.login_head_img;
+      // }
+      var xgkf_ = "{:get_xgkf_info(1)}";
+     // window.open( xgkf_+"&uid="+uid+"&name="+name+"&avatar="+avatar);
+     window.open( xgkf_);
+    })
+    $('.hover_modal_item2').hover(function () {
+      $('.hover_modal_item2 img').attr('src', '__STATIC__/images/to_wx_hover.png')
+      $('.hover_modal_item2').css('background-color', '#018FFF')
+      $('.hover_modal_item2 p').css('color', 'white')
+      $('.comment2').show()
+    }, function () {
+      $('.hover_modal_item2 img').attr('src', '__STATIC__/images/to_wx.png')
+      $('.hover_modal_item2').css('background-color', 'white')
+      $('.hover_modal_item2 p').css('color', '#222222')
+      $('.comment2').hide()
+    })
+    $('.hover_modal_item3').hover(function () {
+      $('.hover_modal_item3 img').attr('src', '__STATIC__/images/to_qq_hover.png')
+      $('.hover_modal_item3').css('background-color', '#018FFF')
+      $('.hover_modal_item3 p').css('color', 'white')
+      $('.comment3').show()
+    }, function () {
+      $('.hover_modal_item3 img').attr('src', '__STATIC__/images/to_qq.png')
+      $('.hover_modal_item3').css('background-color', 'white')
+      $('.hover_modal_item3 p').css('color', '#222222')
+      $('.comment3').hide()
+    })
+    $('.hover_modal_item4').hover(function () {
+      $('.hover_modal_item4 img').attr('src', '__STATIC__/images/to_top_hover.png')
+      $('.hover_modal_item4').css('background-color', '#018FFF')
+      $('.hover_modal_item4 p').css('color', 'white')
+    }, function () {
+      $('.hover_modal_item4 img').attr('src', '__STATIC__/images/to_top.png')
+      $('.hover_modal_item4 img').attr('src', '__STATIC__/images/to_top.png')
+      $('.hover_modal_item4').css('background-color', 'white')
+      $('.hover_modal_item4 p').css('color', '#222222')
+    })
+
+      //下一步
+      $('.js-next-step.can_click').click(function () {
+          $('.zhuce_mobile_part1').hide();
+          $('.zhuce_mobile_part2').show();
+      });
+      $('.js-next-step1.can_click').click(function () {
+          $('.zhuce_zhanghao_part1').hide();
+          $('.zhuce_zhanghao_part2').show();
+      });
+      $('.js-next-step2.can_click').click(function () {
+          $('.zhuce_email_part1').hide();
+          $('.zhuce_email_part2').show();
+      });
+    //上一步
+      $('.js-pre-step').click(function () {
+          $('.zhuce_mobile_part2').hide();
+          $('.zhuce_mobile_part1').show();
+      })
+      $('.js-pre-step1').click(function () {
+          $('.zhuce_zhanghao_part2').hide();
+          $('.zhuce_zhanghao_part1').show();
+      })
+      $('.js-pre-step2').click(function () {
+          $('.zhuce_email_part2').hide();
+          $('.zhuce_email_part1').show();
+      })
+
+    $('button.js-ajax-submit').on('click', function (e) {
+
+      var $form = $(this).closest('.js-ajax-form');
+      var url = $form.attr('action');
+      var form_data = $form.serializeArray();
+      $.post(url, form_data, function (res) {
+        if (res.code == 0) {
+          layer.msg(res.msg);
+          return false;
+        }
+        layer.msg(res.msg);
+        if (res.url) {
+          setTimeout(function () {
+            location.href = res.url;
+          }, 1000);
+        } else {
+          setTimeout(function () {
+            location.reload();
+          }, 1000);
+        }
+      });
+      return false;
+    });
+
+
+    $('a.js-ajax-btn').on('click', function (e) {
+      var url = $(this).attr('href');
+      $.get(url, function (res) {
+        if (res.code == 0) {
+          layer.msg(res.msg);
+          return false;
+        }
+        layer.msg(res.msg);
+        setTimeout(function () {
+          location.reload();
+        }, 1000);
+      })
+    })
+
+
+  })
+</script>
+<script>
+    window.login_auth = 0;
+  $.ajax({
+    type:'get',
+    url:'{:url("get_user_status")}',
+    success:function (res) {
+      if(res.status!=0){
+          window.login_auth= 1;
+        $('.register-box').remove();//移除注册弹窗
+        user_session_json = res.data;
+        //登录信息
+        $('#total_login').addClass('hide');
+        $('#total_auth').removeClass('hide');
+        $('#total_auth').find('img').attr('src',user_session_json.login_head_img);
+        $('#total_auth').find('.user_account').text(user_session_json.login_account);
+
+        usermenu_nav = "{$pc_navigation_spend}";
+
+        //用户导航菜单//静态化
+        usermenu = '<a href="{:url(\'User/userinfo\')}">\n' +
+                '                  <li  class="';
+        if(res.data.menu_controller_name=='user'){
+          usermenu+='active';
+        }
+        usermenu +='">\n' +
+                '                    '+usermenu_nav+'' +
+                '                  </li>\n' +
+                '                </a>';
+        $('.js_usermune').empty().append(usermenu);
+      }
+      var login_account = res.data.cookie_login_account;
+      var login_password = res.data.cookie_login_password;
+      var last_login_account = res.data.cookie_last_login_account;
+      //登录弹窗
+      $('.login_modals').find('input[name=account]').val(res.data.cookie_login_account);
+      $('.login_modals').find('input[name=password]').val(res.data.cookie_login_password);
+      $('#forget_account').val(res.data.cookie_login_account);
+      if(last_login_account == login_account && login_password != null&&window.login_auth!=1){
+          //自动登录
+          //$("#login_submit").trigger("click")
+          $("#login_submit").click();
+      }
+    }
+  })
+  $('.js-home').click(function() {
+			SetHome(window.location.href);
+		});
+		//设为首页
+		function SetHome(url) {
+			if(document.all) {
+				document.body.style.behavior = 'url(#default#homepage)';
+				document.body.setHomePage(url);
+			} else {
+				alert("您好,您的浏览器不支持自动设置页面为首页功能,请您手动在浏览器里设置该页面为首页!");
+			}
+		}
+		//加入收藏
+     function AddFavorite(sURL, sTitle) {
+      sURL = encodeURI(sURL);
+     try{
+          window.external.addFavorite(sURL, sTitle);
+     }catch(e) {
+    try{
+          window.sidebar.addPanel(sTitle, sURL, "");
+     }catch (e) {
+       alert("加入收藏失败，请使用Ctrl+D进行添加,或手动在浏览器里进行设置。");
+     }
+}
+}
+
+// 模拟点击事件 模拟点击 手机号注册/账号注册/邮箱注册
+$(function(){
+
+  var account_register_switch = "{$account_register_switch}";
+  var phonenum_register_switch = "{$phonenum_register_switch}";
+  var email_register_switch = "{$email_register_switch}";
+  setTimeout(function () {
+    $('.zhuce_type_item').eq(0).click(); // 模拟点击
+  },100);
+  $('.zhuce_mobile_con').hide()
+  $('.zhuce_zhanghao_con').hide()
+  $('.zhuce_email_con').hide()
+
+  if(account_register_switch == 1){
+
+  }
+
+});
+// input 右侧x号 点击清除
+$('body').on('focus', 'input[type=text],input[type=password],input[type=number]', function() {
+
+$(this).siblings('.clear_texts1').show()
+
+return false;
+});
+$('body').on('blur', 'input[type=text],input[type=password],input[type=number]', function() {
+$(this).siblings('.clear_texts1').hide()
+return false;
+});
+$('body').on('mousedown', '.clear_texts1', function() {
+$(this).hide().siblings('input').val('').focus();
+parent = $(this).closest('.jsclear').data('value');
+if(parent!=undefined){
+    change_but = "{$if_next}">0?'registered_modal_next_btn':'registered_modal_pub_btn';
+    if(parent='registered_modal_real'){
+        change_but = 'registered_modal_pub_btn';
+    }
+    change_submit_btn($('.'+parent),$('.'+parent).find('.'+change_but))
+}
+return false;
+});
+
+// $(function() {
+//   var nav = $('.all')
+//   var wid = 0
+//   $.each(nav.find('.act'),function(index,item) {
+//     wid += $(item).width()*1
+//   })
+//   nav.css('width',wid)
+// })
+
+</script>
+</html>
+<block name='script'></block>

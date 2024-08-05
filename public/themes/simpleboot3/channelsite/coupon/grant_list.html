@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<include file="public@head"/>
+		<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/promote/mychlid.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+	</head>
+	<style>
+		.normal-table label.checked input[type="checkbox"] {
+			position: absolute;
+			clip: rect(0, 0, 0, 0);
+		}
+
+		.normal-table .check-icon {
+			display: inline-block;
+			width: 16px;
+			height: 16px;
+			margin: -3px auto;
+		}
+
+		.normal-table label.checked input[type="checkbox"]+.check-icon {
+			background: url('__TMPL__/public/assets/images/icon_weixuan.png') no-repeat;
+			background-color: #fff;
+		}
+
+		.normal-table label.checked input[type="checkbox"]:checked+.check-icon {
+			background: url('__TMPL__/public/assets/images/icon_xuanzhong.png') no-repeat;
+			background-color: #fff;
+		}
+	</style>
+	<body>
+		<include file="public@nav"/>
+		<include file="public@header"/>
+		<div class="trunk">
+			<div class="trunk-con">
+				<div class="right-container">
+					<div class="normal-list">
+						<div class="trunk">
+							<div class="trunk-title">
+								<div class="location ">
+									<div class="location-container fr">当前位置：<span class="location-container-text">我的收益&gt;</span><span class="location-container-text">代金券发放记录</span></div>
+								</div>
+								<img src="__TMPL__/public/assets/images/promote/icon_normal_zhanghu.png" class="fl trunk-icon">
+								<span class="title-main fl "> 发放记录 </span>
+								<span class="tagging">说明：渠道为玩家发放代金券及使用情况的记录。</span>
+							</div>
+							<div class="tabpan">
+								<div class="tabpan-con tabpan-show mychlid-tabcon">
+									<a href="{:url('grant')}" class="add-btn fl"><i class="add-coupon"></i><span>发放</span></a>
+									<a href="javascript:;" data-href="{:url('recovery')}" class="add-btn js_recovery fl"><i class="add-coupon"></i><span>回收</span></a>
+									<form action="{:url('grant_list')}">
+										<div class="trunk-search clearfix fr">
+											<input type="text" name="coupon_name" class="tabpan-input" placeholder="代金券名称" value="{:input('coupon_name')}">
+											<select id="limit_money" name="limit_money" class="tab-input js-select-gallery normal-space trunk-search-select fl">
+												<option value="" >使用条件</option>
+												<option value="0" <if condition="input('limit_money') heq '0'"> selected</if> data="0">无门槛</option>
+												<option data="" <if condition="input('limit_money') eq 1"> selected</if> value="1">满减</option>
+											</select>
+											<select id="game_id" name="game_id" class="tab-input js-select-gallery normal-space  fl trunk-search-select">
+												<option value="" data="0">选择游戏</option>
+												<php>
+													$gmap['game_status'] = 1;
+													$gmap['sdk_version'] = ['lt',4];
+												</php>
+												<volist name=":get_game_list('relation_game_id,relation_game_name,sdk_version',$gmap,'relation_game_id','sort desc ,id desc')" id="vv">
+													<option <if condition="$vv['relation_game_id'] eq input('game_id')"> selected</if> value="{$vv['relation_game_id']}">{$vv['relation_game_name']}<if condition="$vv['sdk_version'] eq 3">(H5)</if></option>
+												</volist>
+											</select>
+											<input type="submit" class="submit fr normal-space" id="submit" value="查询">
+										</div>
+									</form>
+									<div class="clear"></div>
+
+									<table class="table normal-table" id="promotecoin_table" >
+										<tbody>
+											<tr class="odd">
+												<th><label class="checked"><input class="check-all" type="checkbox"><i class="check-icon"></i></label></th>
+												<th>玩家账号</th>
+												<th>代金券名称</th>
+												<th>游戏名称</th>
+												<th>优惠金额</th>
+												<th>扣除金额</th>
+												<th>使用条件</th>
+												<th>发放时间</th>
+												<th>使用时间</th>
+												<th>订单金额</th>
+												<th>实付金额</th>
+												<th>状态</th>
+												<th>操作</th>
+											</tr>
+											<empty name="data_lists">
+												<tr>
+													<td colspan="12">
+														<div class="no-data">
+															<img src="/themes/simpleboot3/public/assets/images/icon_wushujv2.png" alt="" class="no-data-img">
+															<p class="no-data-text">暂无数据</p>
+														</div>
+													</td>
+												</tr>
+											<else/>
+												<volist name="data_lists" id="vo">
+													<tr>
+														<td>
+															<label class="checked">
+																<if condition="($vo['end_time'] lt time() and $vo['end_time'] neq 0) or $vo['status'] eq 1 or $vo['is_delete'] eq 1 ">
+																	<!-- <input class="ids" name="ids[]" type="checkbox" disabled value="{$vo['id']}"><i class="check-icon"></i> -->
+																	
+																<else/>
+																<input class="ids" name="ids[]" type="checkbox" value="{$vo['id']}"><i class="check-icon"></i>
+																	
+																</if>
+															</label>
+														</td>
+														<td>{$vo.user_account}</td>
+														<td>{$vo.coupon_name}</td>
+														<td>{$vo.game_name}</td>
+														<td>{$vo['money']}</td>
+														<td>{$vo['deduct_amount']}</td>
+														<td><empty name="vo.limit_money">无门槛<else/>满减：满{$vo.limit_money}</empty></td>
+														<td>{$vo['create_time']|date="Y-m-d H:i:s",###}</td>
+														<td><empty name="vo.update_time">--<else/>{$vo['update_time']|date="Y-m-d H:i:s",###}</empty></td>
+														<td><eq name="vo.cost" value="0.00">--<else/>{$vo.cost}</eq></td>
+														<td><eq name="vo.pay_amount" value="0.00">--<else/>{$vo.pay_amount}</eq></td>
+														<td><eq name="vo.is_delete" value="1">已回收<else/><if condition="$vo['status'] eq 1">已使用<elseif condition="($vo['end_time'] lt time()) and $vo['end_time'] gt 0"/>已过期<else/>未使用</if></eq></td>
+														<td>
+															<if condition="$vo['status'] eq 0 and ($vo['end_time'] gt time() or $vo['end_time'] eq 0 ) and $vo['is_delete'] eq 0">
+																<a href="{:url('recovery',['ids'=>$vo['id']])}" class="js-ajax-delete" data-msg="确定回收后，相关代金券将会被删除，用户将无法使用。">回收</a>
+																<else/><span class="tLine">--</span>
+															</if>
+														</td>
+													</tr>
+												</volist>
+												<tr style="background: #f0eff5;">
+													<td>汇总</td>
+													<td></td>
+													<td></td>
+													<td></td>
+													<td></td>
+													<td class="green">{$total.totaldeduct}</td>
+													<td></td>
+													<td></td>
+													<td></td>
+													<td class="green">{$total.totalcost}</td>
+													<td class="green">{$total.total}</td>
+													<td></td>
+													<td></td>
+												</tr>
+											</empty>
+										</tbody>
+									</table>
+									<notempty name="data_lists">
+									<div class="pagenation clearfix">
+										{$page}
+									</div>
+									</notempty>
+								</div>
+								<div class="couponConfirmBox">
+									<div class="couponTextBox">
+										<p>确定回收后，相关代金券将会被删除，</p>
+										<p>用户将无法使用。</p>
+										<div class="pop-btn-box">
+											<a class="buttonConfirm">确定</a>
+											<a class="buttonCancel">取消</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<include file="public@scripts"/>
+		<script type="text/javascript">
+            //全局变量
+            var GV = {
+                ROOT: "__ROOT__/",
+                WEB_ROOT: "__WEB_ROOT__/",
+                JS_ROOT: "static/js/",
+                APP: '{$Request.module}'/*当前应用名*/
+            };
+		</script>
+		<script src="__STATIC__/js/wind.js"></script>
+		<script src="__TMPL__/public/assets/js/frontend.js"></script>
+		<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+		<script src="__STATIC__/js/layer/layer.js"></script>
+		<script>
+
+			$(function(){
+				$(".js-select-gallery").select2();
+				$(".jseditbtn").click(function(){
+					that = $(this);
+					$.ajax({
+						type: 'POST',
+	                  	url: "{:url('changeStatus')}" ,
+	                  	data:{"zid":that.data('id'),'value':that.data('status')},
+	                  	async:false,
+	                  	dataType:'json',
+						success:function(data){
+							if (data.code > 0){
+								layer.msg(data.msg,{time:1000},function(){
+									location.href= location.href;
+								})
+							}
+							else{
+								layer.msg(data.msg,{time:1000});
+							}
+						}
+					})
+				})
+				$(".js_recovery").click(function () {
+					var ids = $('.ids');
+					var coupon_id = '0';
+					ids.each(function(index,element){
+                        if($(this).prop('checked')){
+                            coupon_id = coupon_id+','+$(this).val();
+                        }
+                    });
+					if(coupon_id == 0){
+                        layer.msg('请选择代金券');
+                        return false;
+                    }
+					$('.couponConfirmBox').css('display','block').find('.buttonConfirm').attr('href',$(this).attr('href'))
+                })
+				$('.buttonConfirm').click(function() {
+					var that = $(this);
+					var url = that.data('href');
+					var ids = $('.ids');
+					var coupon_id = '0';
+					ids.each(function(index,element){
+                        if($(this).prop('checked')){
+                            coupon_id = coupon_id+','+$(this).val();
+                        }
+                    });
+                    $.ajax({
+                        type: 'POST',
+                        url: "{:url('recovery')}" ,
+                        data:{"ids":coupon_id},
+                        async:false,
+                        dataType:'json',
+                        success:function(data){
+                            if (data.code > 0){
+                                layer.msg(data.msg,{time:1000},function(){
+                                    location.href= location.href;
+                                })
+                            }
+                            else{
+                                layer.msg(data.msg,{time:1000});
+                            }
+                        }
+                    })
+				})
+				$('.buttonCancel').click(function() {
+					$('.couponConfirmBox').css('display','none')
+				})
+                //			全选
+                $(".check-all").click(function() {
+                    $('.ids').prop("checked", this.checked);
+                });
+                $(".ids").click(function() {
+                    var option = $(".ids");
+                    option.each(function(i) {
+                        if(!this.checked) {
+                            $(".check-all").prop("checked", false);
+                            return false;
+                        } else {
+                            $(".check-all").prop("checked", true);
+                        }
+                    });
+                });
+			})
+		</script>
+		<style type="text/css">
+			.green{color: #26C7DB !important;font-weight: bold;}
+		</style>
+	</body>
+
+</html>

@@ -1,0 +1,64 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="javascript:;">新增QQ登录(SDK)参数</a></li>
+        <span class="title_remark">说明：用来配置相关SDK在QQ登录时所需要的参数</span>
+
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" action="{:url('add_qq')}" method="post">
+        <div class="form-group">
+            <label for="input-name" class="col-sm-2 control-label"><span class="form-required">*</span>游戏名称：</label>
+            <div class="col-md-6 col-sm-10 form-select">
+                <select name="game_id" id="game_id" class="selectpicker  " game_id="{:input('request.game_id')}" data-live-search="true" style="width: 420px;">
+                    <option value="">游戏名称</option>
+                    <volist name=":get_game_list('id,game_name')" id="vo">
+                        <option game-id="{$vo.id}" value="{$vo.id}" >{$vo.game_name}</option>
+                    </volist>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input-name" class="col-sm-2 control-label"><span class="form-required">*</span>APP ID：</label>
+            <div class="col-md-6 col-sm-10">
+                <input type="text" class="form-control user-input fl" id="openid" name="openid">
+				<span  class="fl user-remarks ">网站应用AppID</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input-name" class="col-sm-2 control-label"><span class="form-required">*</span>APP Key：</label>
+            <div class="col-md-6 col-sm-10">
+                <input type="text" class="form-control add_qq  user-input fl" id="key" name="key">
+				<span  class="fl user-remarks ">应用注册成功后分配的Key</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="form-required">&nbsp;</span>启用状态：</label>
+            <div class="col-md-6 col-sm-10">
+                <div class="user-input fl">
+                <label class="radio-inline mr100">
+                    <input type="radio" name="status" value="0"> 禁用
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="status" value="1" checked> 启用
+                </label>
+                </div>
+                <span class="fl user-remarks ">QQ登录启用状态，控制对应游戏的SDK内是否显示QQ登录入口</span>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-1 col-sm-10">
+                <button type="submit" class="btn btn-primary js-ajax-submit save-btn">确定</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script>
+    game_id = $("#game_id").attr('game_id');
+    $("#game_id").selectpicker('val', game_id);
+</script>
+</body>
+</html>

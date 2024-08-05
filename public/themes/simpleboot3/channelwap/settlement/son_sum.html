@@ -1,0 +1,221 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/select2.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/new_select2.css" type="text/css" />
+    <link href="__TMPL__/channelwappublic/assets/css/channel.css" type="text/css" rel="stylesheet" />
+</block>
+<block name="body">
+    <div class="page-container profit-exchange-container">
+        <header>
+            <a href="javascript:history.back(-1);" class="back-btn"></a>
+            <div style="width: 100%;height: 100%" class="v-middle h-middle">
+                <p class="header-title">结算汇总</p>
+            </div>
+
+        </header>
+        <div class="page-content">
+            <div class="search-box">
+                <div class="search-item">
+                    <select id="promote_id" class="select_gallery" data-placeholder="渠道账号">
+                        <option value="0">渠道账号</option>
+                        <volist name=":get_song_promote_lists(PID)" id="p">
+                            <option <if condition="$p['id'] eq input('promote_id')">selected</if> value="{$p.id}">{$p.account}</option>
+                        </volist>
+                    </select>
+                </div>
+            </div>
+            <div class="table-box">
+                <table>
+                    <tbody>
+                    <tr class="table-title">
+                        <th>渠道账号</th>
+                        <empty name="baseinfo.pattern">
+                            <th>总充值</th>
+                        <else/>
+                            <th>总注册</th>
+                        </empty>
+                        <th>已结算佣金</th>
+                        <th style="">已发放佣金(提现/兑换)</th>
+                    </tr>
+                    <tr class="total">
+                        <td>汇总:</td>
+                        <td class="total1"></td>
+                        <td class="total_settlement"></td>
+                        <td><span style="color: #FFB22B" class="total_yongjin"></span><span class="total_zi"></span></td>
+                    </tr>
+                    </tbody>
+                    <tbody id="summaryload">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/select2.min.js"></script>
+    <script>
+        $(function () {
+            $(".select_gallery").select2({
+                minimumResultsForSearch: -1
+            });
+        })
+    </script>
+    <script>
+        var itemIndex = 0;
+        var promote_id = 0;
+        var lwx = window.lwx || {};
+        var pid_level = {:PID_LEVEL};
+        var pattern = {$baseinfo.pattern};
+        lwx.ready = true;
+        lwx.width = $(window).width();
+        lwx.height = $(window).height();
+        lwx.number = {summary:1};
+        lwx.row = {summary:15};
+        lwx.http = {
+            getJSON:function(url,callback){
+                $.getJSON(url + '&v=' + Date.now(),function(data){
+                    callback(data);
+                });
+            },
+            postJSON:function(url,args,callback) {
+                $.post(url + '&v=' + Date.now(), args, function(data) {
+                    callback(data);
+                },"json")
+            },
+        };
+        lwx.url ={
+            summary:'{:url("Settlement/get_son_sum")}',
+        };
+        lwx.page = {
+            summary:function(){
+                if(lwx.number.summary) {
+                    lwx.http.getJSON(lwx.url.summary+'?row='+lwx.row.summary+'&page='+lwx.number.summary+'&promote_id='+promote_id,function(data) {
+                        var hotload = $('#summaryload');
+                        $(".total").show();
+                        var total = data.total;
+                        if(pattern == 0){
+                            if(total.totalamount == null){
+                                total.totalamount = 0;
+                            }
+                            $(".total1").text(total.totalamount);
+                        }else{
+                            if(total.totalreg == null){
+                                total.totalreg = 0;
+                            }
+                            $(".total1").text(total.totalreg);
+                        }
+                        var total_fenchen = 0;
+                        if(pid_level == 1){
+                            if(total.totalmoney2 == null){
+                                total.totalmoney2 = 0;
+                            }
+                            total_fenchen = total.totalmoney2;
+                        }else{
+                            if(total.totalmoney3 == null){
+                                total.totalmoney3 = 0;
+                            }
+                            total_fenchen = total.totalmoney3;
+                        }
+                        $(".total_settlement").text(total_fenchen);
+                        if(total.withdraw == null){
+                            total.withdraw = 0;
+                        }
+                        if(total.exchange == null){
+                            total.exchange = 0;
+                        }
+                        $(".total_yongjin").text(parseFloat(total.withdraw)+parseFloat(total.exchange));
+                        $(".total_zi").text('('+total.withdraw+'/'+total.exchange+')');
+                        var sum = data.sum;
+                        var data = data.data.data;
+                        if(data && data.length) {
+                            var html = '';
+                            for (var i in data) {
+                                html += '<tr>';
+                                html += '<td>'+data[i].promote_account+'</td>';
+                                if(pattern == 0){
+                                    html += '<td>'+data[i].totalamount+'</td>';
+                                }else{
+                                    html += '<td>'+data[i].totalreg+'</td>';
+                                }
+                                if(pid_level == 1){
+                                    html += '<td>'+data[i].totalmoney2+'</td>';
+                                }else{
+                                    html += '<td>'+data[i].totalmoney3+'</td>';
+                                }
+                                var withdraw = sum[data[i]['promote_id']+'_1'];
+                                var exchange = sum[data[i]['promote_id']+'_2'];
+                                if(withdraw == undefined){
+                                    withdraw = 0;
+                                }else{
+                                    withdraw = withdraw.money;
+                                }
+                                if(exchange == undefined){
+                                    exchange = 0;
+                                }else{
+                                    exchange = exchange.money;
+                                }
+                                html += '<td><span style="color: #FFB22B">'+(parseFloat(withdraw)+parseFloat(exchange))+'</span>('+withdraw+'/'+exchange+')</td>';
+                                html += '</tr>';
+
+                            }
+                            hotload.append(html);
+                            hotload.find('.jsdropload').remove();
+                            if(data.length >= lwx.row.summary) {
+                                lwx.number.summary++;
+                                lwx.ready = true;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.summary = false;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                        } else {
+                            if(lwx.number.summary==1){
+                                $(".total").hide();
+                                hotload.html('').append('<p class="no_invest_info jsdropload">~空空如也~</p>');
+                            } else{
+                                hotload.find('.jsdropload').remove();
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                            lwx.number.summary = false;
+                        }
+                    });
+                }
+            }
+        };
+        pageChange();
+        function pageChange() {
+            lwx.page.summary();
+        }
+        function pageScroll(scrollTop, boxHeight, maxScrollHeight) {
+            if (scrollTop + boxHeight >= maxScrollHeight - 50) {
+                if (lwx.ready) {
+                    lwx.ready = false;
+                    lwx.page.summary();
+                }
+            }
+        }
+        window.onscroll = function() {
+            var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+            pageScroll(scrollTop, lwx.height, $(document).height())
+        }
+        $(function () {
+            $('.game-menu-box a').click(function () {
+                $(this).addClass("active").siblings().removeClass("active");
+                var index = $(this).index();
+                $('.menu-tab').eq(index).show().siblings(".menu-tab").hide();
+                itemIndex = index;
+                location.hash = index;
+            });
+            $("#promote_id").change(function () {
+                promote_id = $("#promote_id").val();
+                $("#summaryload").empty();
+                lwx.number.summary = 1;
+                pageChange();
+            })
+        })
+        $(window).on("hashchange", function() {
+            pageChange();
+        });
+    </script>
+</block>

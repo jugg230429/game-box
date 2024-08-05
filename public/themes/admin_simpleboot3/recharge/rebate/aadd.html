@@ -1,0 +1,150 @@
+<include file="public@header"/>
+</head>
+<body>
+<style>
+    .form-group .input-suffix {
+        position: absolute;
+        right: 25px;
+        top: 7px;
+    }
+    .disabled-input{
+        background: transparent!important;
+        padding-left: 0;
+        border: none;
+        margin-top: -6px;
+    }
+</style>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="javascript:;">新增会长代充折扣</a></li>
+    </ul>
+
+    <div class="describe">
+        <p>注意①：设置对象为全部渠道，设置折扣则代表该渠道代充时可享受的独立折扣。</p>
+        <p>注意②：统一折扣代表该游戏下全部渠道可享受的代充折扣；当设置单个渠道折扣时，会长代充折扣以设置的渠道折扣值为准。</p>
+    </div>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('aadd')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>游戏名称：
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <select name="game_id" id="game_id" class="selectpicker form-control" data-live-search="true">
+                                    <option value="0">请选择游戏</option>
+                                    <volist name="game_list" id="vo">
+                                        <option value="{$vo.id}" discount="{$vo.discount}" continue_discount="{$vo.continue_discount}">{$vo.game_name}<if condition="$vo.sdk_version eq 3">（H5）</if></option>
+                                    </volist>
+                                </select>
+                                <input type="hidden" name="game_name" id="game_name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>渠道账号：
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <select name="promote_id[]" id="promote_id" class="selectpicker form-control" data-live-search="true" multiple title="请选择渠道">
+                                    <option value="0">请选择渠道</option>
+                                </select>
+                            </div>
+                            <p class="help-block">可多选</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label"><span class="form-required">*</span>统一首充折扣：</label>
+                            <div class="col-md-4 col-sm-6  mt-7">
+                                <span class="input-suffix" style="top: 0;left: 3%;"><span class="show_discount">10.00</span>折</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label"><span class="form-required">*</span>统一续充折扣：</label>
+                            <div class="col-md-4 col-sm-6  mt-7">
+                                <span class="input-suffix" style="top: 0;left: 3%;"><span class="show_continue_discount">10.00</span>折</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label"><span class="form-required">*</span>渠道首充折扣：</label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" value="" class="form-control" min="1" max="10" onkeyup="value=value.replace(/^(\d*\.?\d{0,2}).*/,'$1')"  name="promote_discount_first"  >
+                                <span class="input-suffix">折</span>
+                            </div>
+                            <p class="help-block">对某游戏某玩家的首次会长代充折扣值进行设置，1 ≤ 折扣值 ≤ 10.00</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label"><span class="form-required">*</span>渠道续充折扣：</label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" value="" class="form-control" min="1" max="10" onkeyup="value=value.replace(/^(\d*\.?\d{0,2}).*/,'$1')"  name="promote_discount_continued"  >
+                                <span class="input-suffix">折</span>
+                            </div>
+                            <p class="help-block">对某游戏某玩家的非首次会长代充折扣值进行设置，1 ≤ 折扣值 ≤ 10.00</p>
+                        </div>
+                        <div class="promote_list" hidden>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                                <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script>
+    $(function () {
+        $('#game_id').change(function() {
+            var $this = $(this);
+            var discount = $("#game_id").find("option:selected").attr('discount');
+            if(discount == '' || discount == undefined){
+                discount = '10.00';
+            }
+            var continue_discount = $("#game_id").find("option:selected").attr('continue_discount');
+            if(continue_discount == '' || continue_discount == undefined){
+                continue_discount = '10.00';
+            }
+            $(".show_discount").html(discount);
+            $(".show_continue_discount").html(continue_discount);
+            var game_id = $("#game_id").find("option:selected").val();
+            if(game_id > 0){
+                $("#game_name").val($("#game_id").find("option:selected").text());
+                var url = "{:url('Rebate/ajaxGetGamePromote')}";
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    dataType: 'JSON',
+                    data: {game_id:game_id},
+                    success: function (data) {
+                        $('#promote_id').empty();
+                        $('#promote_id').append("<option  value='' disabled>请选择渠道</option>");
+                        var option = '';
+                        $.each(data,function (key,value) {
+                            option+="<option  value='"+value.promote_id+"'>"+value.account+"</option>";
+                        });
+                        $('#promote_id').append(option).selectpicker('refresh');
+
+                    },
+                    error: function () {
+                        layer.msg('网络错误');
+                    }
+                });
+            }else{
+                $("#game_name").val('');
+                $(".show_discount").html('10.00');
+                $(".show_continue_discount").html('10.00');
+            }
+        });
+    })
+
+</script>
+</body>
+</html>

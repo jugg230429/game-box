@@ -1,0 +1,46 @@
+<div class="inner ">
+	<php>
+		$promote_id_tmp = PID;
+		$promote_level_tmp = PID_LEVEL;
+		$promote_union_set = get_promote_union_set($promote_id_tmp, $promote_level_tmp);
+		// flag 标记 是否走渠道配置的站点信息 0: 走系统配置的站点信息 1: 走推广员配置的站点信息
+		$flag = 0;
+		if(!empty($promote_union_set)){
+			$flag = 1;
+		}
+
+	</php>
+	<div class="logo fl">
+		<a href="{:url('Index/index')}">
+			<if condition="$flag eq 1 and $promote_union_set['website_logo']">
+				<img style="border-radius: 10px;" src="{:cmf_get_image_preview_url($promote_union_set['website_logo'])}" alt="logo" class="logo-img fl" onerror="this.src='__TMPL__/public/assets/images/promote/empty.jpg';this.onerror=null" >
+			</if>
+			<if condition="$flag eq 0 and $promote_set['ch_set_logo']">
+				<img style="border-radius: 10px;" src="{:cmf_get_image_preview_url($promote_set['ch_set_logo'])}" alt="logo" class="logo-img fl" onerror="this.src='__TMPL__/public/assets/images/promote/empty.jpg';this.onerror=null" >
+			</if>
+
+			<!-- <img src="{:cmf_get_image_preview_url($promote_set['ch_set_logo'])}" alt="logo" class="logo-img fl" onerror="this.src='__TMPL__/public/assets/images/promote/empty.jpg';this.onerror=null" > -->
+		</a>
+
+	</div>
+	<ul class="header-nav">
+		<php>$action = request()->action()</php>
+		<li class="header-nav-con">
+			<a href="{:url('index/index')}" target="_self" class="header-nav-con-link "><span class="<if condition='$action eq "index" or $action eq "register_doc"'> active</if> header-nav-con-link-text">首页</span></a>
+		</li>
+		<if condition="AUTH_GAME eq 1">
+			<li class="header-nav-con">
+				<a href="{:url('index/game_list')}" target="_self" class="header-nav-con-link "><span class="<if condition='$action eq "game_list"'> active</if> header-nav-con-link-text">全部应用</span></a>
+			</li>
+		</if>
+		<li class="header-nav-con">
+			<a href="{:url('index/notice')}" target="_self" class="header-nav-con-link "><span class="<if condition='$action eq "notice" or $action eq "notice_details"'> active</if> header-nav-con-link-text">开服公告</span></a>
+		</li>
+		<li class="header-nav-con">
+			<a href="{:url('index/about')}" target="_self" class="header-nav-con-link "><span class="<if condition='$action eq "about"'> active</if> header-nav-con-link-text">关于我们</span></a>
+		</li>
+		<li class="header-nav-con">
+			<a href="{:url('index/service')}" target="_self" class="header-nav-con-link "><span class="<if condition='$action eq "service"'> active</if> header-nav-con-link-text">帮助中心</span></a>
+		</li>
+	</ul>
+</div>

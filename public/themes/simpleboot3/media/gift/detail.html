@@ -1,0 +1,364 @@
+<extend name="../mediapublic/base"/>
+<block name="body">
+    <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/bag_detail.css">
+    <style>
+        html{height: 100%}
+    </style>
+    <!-- 礼包详情 -->
+    <div class="bag_detail layui-container">
+        <div class="fl bag_detail_left">
+            <div class="clear hot_bag">
+                <div class="hot_bag_header">
+                    <div class="fl hot_bag_sx"></div>
+                    <p class="fl hot_bag_title">热门礼包</p>
+                </div>
+                <div class="hot_bag_hascon">
+                    <!-- 有礼包时显示 -->
+                    <div>
+                        <volist name="gift" id="vo">
+                            <div class="hot_bag_item clear">
+                                <a href="{:url('Gift/detail',['gift_id'=>$vo['gift_id']])}" class="fl">
+                                <div class="hot_bag_item_img fl">
+                                    <notempty name="vo.icon"><img src="{:cmf_get_image_url($vo['icon'])}" alt="" class="gift_hot_bag_title" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null"></notempty>
+                                </div>
+                                </a>
+
+                                <div class="hot_bag_item_con fl">
+                                    <a href="{:url('Gift/detail',['gift_id'=>$vo['gift_id']])}">
+                                    <p class="clear hot_bag_item_title">{$vo.giftbag_name}</p>
+                                    <p class="clear hot_bag_item_comm">还剩<span>{:null_to_0($vo['remain_num']/$vo['novice_num']*100)}</span>%
+
+									</p>
+                                    </a>
+                                </div>
+                                <if condition="$vo['received'] eq 0">
+                                    <div <if condition="session('member_auth') and $vo['vip'] gt session('member_auth.vilp_evel')"> class="hot_bag_lq_btn fg hot_bag_lq_btn_disabled" <else/> class="hot_bag_lq_btn fg getgift" </if> data-giftbag_id="{$vo.gift_id}">
+                                        领取礼包
+                                    </div>
+                                <else/>
+                                    <div class="hot_bag_lq_btn fg copy"  data-novice="{$vo.novice}">
+                                        复制
+                                    </div>
+                                </if>
+
+                            </div>
+                            <div class="hot_bag_hx"></div>
+                        </volist>
+                    </div>
+                    <!-- 无礼包时显示 -->
+                    <empty name="gift">
+                        <div class="no_bag_text">
+                            <p>暂无礼包</p>
+                            <div class="hot_bag_hx"></div>
+                        </div>
+                    </empty>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="fl bag_detail_right">
+            <div class="bag_detail_right_first">
+                <p class="bag_detail_right_title"><a href="{:url('Index/index')}">平台首页</a>><a href="{:url('Gift/gift')}">礼包中心</a>><span>礼包详情</span></p>
+                <div class="bag_right_infos">
+                    <div class="fl bag_right_img">
+                        <notempty name="data.icon">
+                            <img src="{:cmf_get_image_url($data['icon'])}" alt="" class="bag_titleimg" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null">
+                        </notempty>
+                    </div>
+
+                    <div class="fl bag_firstline">
+                        <p class="bag_right_title">{$data.relation_game_name}{$data.giftbag_name}</p>
+                        <p class="bag_right_sy">还剩<span>{:null_to_0($data['remain_num']/$data['novice_num']*100)}</span>%
+                            <span>
+                            <if condition="strpos($data['giftbag_version'],'1') nheq false">
+                                <img src="__STATIC__/images/content_ico_andriod.png" alt="">
+                            </if>
+                            <if condition="strpos($data['giftbag_version'],'2') nheq false">
+                                <img src="__STATIC__/images/content_ico_IOS.png" alt="" style="padding-bottom: 2px">
+                            </if>
+                            <if condition="strpos($data['giftbag_version'],'3') nheq false">
+                                <img src="__STATIC__/images/content_icon_h5.png" alt="" style="height: 13px;width: 13px;">
+                            </if>
+                            <if condition="strpos($data['giftbag_version'],'4') nheq false">
+                                <img src="__STATIC__/images/content_icon_pc.png" alt="" style="height: 13px;width: 13px;">
+                            </if>
+                            </span>
+						</p>
+                        <div>
+                            <if condition="$data['received'] eq 0">
+                                <div <if condition="session('member_auth') and $data['vip'] gt session('member_auth.vilp_evel')"> class="fl bag_right_btn bag_right_btn_disabled" <else/> class="fl bag_right_btn getgift"</if>data-giftbag_id="{$data.gift_id}"><span>马上领取</span></div>
+                            <else/>
+                                <div class="fl bag_right_btn copy" data-novice="{$data.novice}"><span>复制</span></div>
+                            </if>
+                            <if condition="$data['giftbag_version'] lt 3">
+                                <div class="fl bag_right_btn_download ml26"><span>下载游戏</span></div>
+                            </if>
+                            <if condition="$data['h5_id']">
+                                <div class="fl ml26 bag_right_btn"><a href="{:url('Game/open_game')}?game_id={$data.h5_id}"><span>去玩</span></a></div>
+                            </if>
+                            <if condition="$data['pc_id']">
+                                <div class="fl ml26 bag_right_btn"><a href="{:url('Game/ydetail')}?game_id={$data.pc_id}"><span>去玩</span></a></div>
+                            </if>
+                        </div>
+                    <if condition="$data['giftbag_version'] lt 3">
+                        <!-- 下载弹窗 -->
+                        <div class="game_item_down_modal">
+                            <div class="zhanweidivs"></div>
+                            <div class="fl">
+                                <if condition="$gameinfo['sdk_type'] eq 2">
+                                        <if condition="get_down_status2($gameinfo['relation_game_id'],2)">
+                                                <p class="down_modal_button_ios"><a download="" <if condition="$session['login_auth'] eq 0">class="login"<else/>href="{:url('Downfile/down',['game_id'=>$gameinfo['relation_game_id'],'sdk_version'=>2])}"</if> ><img src="__STATIC__/images/Bulletwindow_btn_ios.png" alt=""><span>苹果版下载</span></a></p>
+                                        <else/>
+                                        <!--<p class="down_modal_button_ios" style="background-color:#e2e2e2!important"><a href="javascript:;"><img src="__STATIC__/images/Bulletwindow_btn_ios.png" alt=""><span>苹果版下载</span></a></p>-->
+                                        </if>
+                                        <if condition="get_down_status2($gameinfo['relation_game_id'],1)">
+                                            <p class="down_modal_button_andriod"><a download="" <if condition="$session['login_auth'] eq 0">class="login"<else/>href="{:url('Downfile/down',['game_id'=>$gameinfo['relation_game_id'],'sdk_version'=>1])}"</if>><img src="__STATIC__/images/Bulletwindow_btn_andriod.png" alt=""><span>安卓版下载</span></a></p>
+                                        <else/>
+                                        <!--<p class="down_modal_button_andriod" style="background-color:#e2e2e2!important"><a href="javascript:;"><img src="__STATIC__/images/Bulletwindow_btn_andriod.png" alt=""><span>安卓版下载</span></a></p>-->
+                                        </if>
+                                <else/>
+                                    <if condition="$gameinfo['sdk_verison'] eq 1">
+                                            <if condition="get_down_status2($gameinfo['relation_game_id'],1)">
+                                                <p class="down_modal_button_andriod"><a download="" <if condition="$session['login_auth'] eq 0">class="login"<else/>href="{:url('Downfile/down',['game_id'=>$gameinfo['relation_game_id'],'sdk_version'=>1])}"</if>><img src="__STATIC__/images/Bulletwindow_btn_andriod.png" alt=""><span>安卓版下载</span></a></p>
+                                            <else/>
+                                            <!--<p class="down_modal_button_andriod" style="background-color:#e2e2e2!important"><a href="javascript:;"><img src="__STATIC__/images/Bulletwindow_btn_andriod.png" alt=""><span>安卓版下载</span></a></p>-->
+                                            </if>
+                                    <else/>
+                                            <if condition="get_down_status2($gameinfo['relation_game_id'],2)">
+                                                <p class="down_modal_button_ios"><a download="" <if condition="$session['login_auth'] eq 0">class="login"<else/>href="{:url('Downfile/down',['game_id'=>$gameinfo['relation_game_id'],'sdk_version'=>2])}"</if>><img src="__STATIC__/images/Bulletwindow_btn_ios.png" alt=""><span>苹果版下载</span></a></p>
+                                            <else/>
+                                            <!--<p class="down_modal_button_ios" style="background-color:#e2e2e2!important"><a href="javascript:;"><img src="__STATIC__/images/Bulletwindow_btn_ios.png" alt=""><span>苹果版下载</span></a></p>-->
+                                            </if>
+                                    </if>
+                                </if>
+                            </div>
+                            <div class="down_modal_qrcode">
+                                <img src="{:url('Index/qrcode',['url'=>base64_encode(base64_encode($gameinfo['url']))])}" alt="">
+                                <p>手机扫码下载</p>
+                            </div>
+                        </div>
+                    </if>
+                        <!-- 领取礼包弹窗 -->
+                        <div class="receive_bag_modal">
+                            <div class="receive_bag_modal_header">
+                                <span>礼包领取成功</span>
+                                <span class="close_receive_bag_modal">
+                                    <img src="__STATIC__/images/delete_icon.png" alt="">
+                                </span>
+                            </div>
+                            <div class="receive_bag_modal_con">
+                                <p class="receive_bag_modal_firstline"><span class="colblack">激活码 : </span>
+                                    <input readonly type="text" id="novice" class="fasfegxv" value="">
+                                </p>
+                                <p class="receive_bag_modal_secondline"><span> 可在[<a href="{:url('User/mygift')}">我的礼包</a>]中查看</span></p>
+                                <div class="receive_bag_modal_thirdline copy1"><span>复制</span> </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fl">
+                        <if condition="$session['login_auth'] eq 1">
+                            <p class="baglists"><a href="{:url('User/myGift')}"><img src="__STATIC__/images/conmon_icon_gift.png" alt=""> 礼包领取记录</a></p>
+                        <else/>
+                            <p class="baglists"><a href="javascript:;" class="login"><img src="__STATIC__/images/conmon_icon_gift.png" alt=""> 礼包领取记录</a></p>
+                        </if>
+
+                    </div>
+
+                    <!-- 礼包介绍 -->
+                    <div class="bag_know clear">
+                        <p>礼包介绍</p>
+                        <div class="bule_hx"></div>
+                        <div class="long_gray_hx"></div>
+                        <div class="bag_know_con">
+                            <!-- 有内容时显示 -->
+                            <p class="bag_know_con_item_title">使用期限</p>
+                            <p class="bag_know_con_item_con">有效期：{:show_time($data.start_time)} 至 {:show_time($data.end_time)}</p>
+                            <p class="bag_know_con_item_title">兑换资格</p>
+                            <p class="bag_know_con_item_con">{$data.competence|default='全部玩家可用'}</p>
+                            <notempty name="data.digest">
+                            <p class="bag_know_con_item_title">礼包内容</p>
+                            <p class="bag_know_con_item_con">{$data.digest}</p>
+                            </notempty>
+                            <notempty name="data.desribe">
+                                <p class="bag_know_con_item_title">使用说明</p>
+                                <p class="bag_know_con_item_con">{$data.desribe}</p>
+                            </notempty>
+                            <notempty name="data.notice">
+                                <p class="bag_know_con_item_title">注意事项</p>
+                                <p class="bag_know_con_item_con">{$data.notice}</p>
+                            </notempty>
+                        </div>
+                    </div>
+                    <notempty name="othergift">
+                    <div class="usertooguanzhu">
+                        <p>兑换的用户还关注 </p>
+                        <div class="bule_hx"></div>
+                        <div class="long_gray_hx"></div>
+                        <div class="usertoo_con">
+                            <volist name="othergift" id="vo">
+                                <div class="usertoo_item">
+                                    <a href="{:url('Gift/detail',['gift_id'=>$vo['gift_id']])}" class="fl">
+                                    <div class="usertoo_item_img fl">
+                                        <notempty name="vo.icon"><img src="{:cmf_get_image_url($vo['icon'])}" alt="" class="ao_guanzhu" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null"></notempty>
+                                    </div>
+                                    </a>
+
+                                    <div class="usertoo_item_con fl">
+                                        <a href="{:url('Gift/detail',['gift_id'=>$vo['gift_id']])}">
+                                        <p class="usertoo_item_title">{$vo.giftbag_name}</p>
+                                        <p class="usertoo_item_sy">还剩<span> {:null_to_0($vo['remain_num']/$vo['novice_num']*100)} </span>%</p>
+
+                                        </a>
+                                        <if condition="$vo['received'] eq 0">
+                                            <div <if condition="session('member_auth') and $vo['vip'] gt session('member_auth.vilp_evel')">class="lq_bag_btn lq_bag_btn_disabled"<else/> class="lq_bag_btn getgift" </if>data-giftbag_id="{$vo.gift_id}">
+                                                领取礼包
+                                            </div>
+                                            <else/>
+                                            <div class="lq_bag_btn copy"  data-novice="{$vo.novice}">
+                                                复制
+                                            </div>
+                                        </if>
+                                    </div>
+                                </div>
+                            </volist>
+                        </div>
+                    </div>
+                    </notempty>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+    $(function () {
+
+        var bagH =  $('.bag_detail').height() + $('header').height() + $('footer').height() ;
+        var htmlH = $("html").height();
+        bagH >= htmlH ?'':$('footer.footer').css('bottom',0);
+        window.onresize = function () {
+            let bagH =  $('.bag_detail').height() + $('header').height() + $('footer').height() ;
+            let htmlH = $("html").height();
+            bagH >= htmlH ?$('footer.footer').css('bottom','auto'):$('footer.footer').css('bottom',0);
+        };
+        var Sys = {};
+         var ua = navigator.userAgent.toLowerCase();
+         var s;
+          (s = ua.match(/msie ([\d.]+)/)) ? Sys.ie = s[1] :
+          (s = ua.match(/firefox\/([\d.]+)/)) ? Sys.firefox = s[1] :
+          (s = ua.match(/chrome\/([\d.]+)/)) ? Sys.chrome = s[1] :
+          (s = ua.match(/opera.([\d.]+)/)) ? Sys.opera = s[1] :
+          (s = ua.match(/version\/([\d.]+).*safari/)) ? Sys.safari = s[1] : 0;
+
+        //  if (Sys.ie){}
+        //  if (Sys.firefox){}
+         if (Sys.chrome||Sys.firefox){
+             $('.gift_hot_bag_type').css('left','-16.5px')
+         }
+        //  if (Sys.opera){}
+        //  if (Sys.safari)
+        $('.copy1').click(function () {
+            var str = $("#novice").val();
+            Copy(str);
+            layer.msg("复制成功", { time: 1000,skin:'demo-blue' });
+        })
+        $('.copy').click(function () {
+            var str = $(this).attr('data-novice');
+            Copy(str);
+            layer.msg("复制成功", { time: 1000,skin:'demo-blue' });
+        });
+        // 下载游戏 悬浮框样式
+        $('.bag_right_btn_download').hover(function () {
+            $(this).parent().next().show()
+        }, function () {
+            $(this).parent().next().hide()
+        })
+        $('.game_item_down_modal').hover(function () {
+            $(this).show()
+        }, function () {
+            $(this).hide()
+        })
+
+        // 关闭礼包领取
+        $('.close_receive_bag_modal').click(function () {
+            layer.closeAll()
+        })
+        //  兑换的用户还关注  悬浮样式
+        $('.usertoo_item').hover(function () {
+            console.log($(this).children().children())
+            $(this).children().children('.lq_bag_btn').show()
+            $(this).children().children().children('.usertoo_item_sy').hide()
+        }, function () {
+            $(this).children().children('.lq_bag_btn').hide()
+            $(this).children().children().children('.usertoo_item_sy').show()
+        })
+        //领取礼包
+        $('.getgift').click(function () {
+            var $this = $(this);
+            var login_auth = "{$session['login_auth']}";
+            if(login_auth == 1){
+                var gift_id = $this.attr('data-giftbag_id');
+                $.ajax({
+                    type: 'post',
+                    url: '{:url("Gift/getgift")}',
+                    async: false,
+                    data: {gift_id: gift_id},
+                    dataType: 'json',
+                    success: function(data) {
+                        if(data.code == 1) {
+                            $("#novice").val(data.novice);
+                            $this.parent().find('button').text('已领取');
+                            var conss = $('.receive_bag_modal');
+                            layer.open({
+                                type: 1,
+                                title: false,
+                                closeBtn: false,
+                                area: ['320px', '195px'],
+                                offset: 'auto',
+                                content: conss,
+                                btnAlign: 'c',
+                                shadeClose: true,
+                                end: function () {
+                                    $('.receive_bag_modal').hide();
+                                    window.location.reload();
+                                }
+                            })
+                        }else {
+                            layer.msg(data.msg,{skin: 'demo-red'});
+                        }
+                    },
+                    error: function(xhr, type) {
+                        alert('服务器错误');
+                    }
+                });
+            }else{
+                var conss = $('.login_modals')
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: false,
+                    area: ['305px', '320px'],
+			        skin:'loginclass',
+                    offset: 'auto',
+                    content: conss,
+                    btnAlign: 'c',
+                    shadeClose: true,
+                    end: function () {
+                        $('.login_modals').hide()
+                    }
+                })
+            }
+        })
+    })
+    //复制功能
+    function Copy(str) {
+        var save = function(e) {
+            e.clipboardData.setData('text/plain', str);
+            e.preventDefault();
+        }
+        document.addEventListener('copy', save);
+        document.execCommand('copy');
+        document.removeEventListener('copy', save);
+    }
+
+</script>
+</block>

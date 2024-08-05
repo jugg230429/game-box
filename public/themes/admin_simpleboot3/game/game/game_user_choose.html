@@ -1,0 +1,224 @@
+<link href="__TMPL__/public/assets/simpleboot3/css/game.css" rel="stylesheet">
+<style>
+    .ban_user{display:flex;align-items:center;justify-content:center;top: 0px;
+    left: 0px;}
+    .pro_promot_main1{width:1160px;border-radius:5px;height:auto;overflow:hidden;position:static;left:50%;top:25%;margin-left:0;}
+    .pro_promot_title1{height:49px;width:100%;line-height:49px;background:#e6e6e6;border-bottom:1px solid #dddddd}
+    .pro_promot_btn1{width:100%;height:52px;display:flex;align-items:center;justify-content:center;background:#E6E6E6;margin:0;position:relative}
+    .pro_promot_btn_cancel1{background:#BCBCBC;color:#FFFFFF}
+    .pro_promot_btn_confirm1,.pro_promot_btn_cancel1{margin-right:26px}
+    .pro_promot_game{min-height:300px;max-height:500px;margin:-20px 0 0 0 !important;}
+    .pro_promot_game_con{width:115px;margin: 2px;}
+    .omission1{max-width:80px}
+    .game_list1{margin-left:100px;list-style:none;width:auto}
+    .pro_promot_game_check1:disabled + label{border:none}
+    .pro_promot_game_check1:disabled + label:before{content:"";width:15px;height:15px;display:block;background:url("__TMPL__/public/assets/images/btn_nochoose.png")}
+    .pro_promot_btn1 .all-select-btn1{position:absolute;left:100px}
+
+    .pro_promot_select_tab_item1 {
+        font-size: 14px;
+        margin: 0 10px;
+        line-height: 29px;
+        color: #393b6b;
+    }
+    .pro_promot_select_tab_item1.active {
+        color: #8895f3;
+    }
+    .pro_promot_search_input1 {
+        width: 180px;
+        margin-right: 10px;
+        height: 29px;
+        line-height: 29px;
+    }
+    .pro_promot_search_btn1 {
+        height: 29px;
+        line-height: 28px;
+        padding: 0 6px;
+        display: inline-block;
+    width: 58px;
+    height: 30px;
+    background: #006FC4;
+    border-radius: 3px;
+    color: #fff;
+    border: none;
+    text-align: center;
+    }
+    .pro_promot_game {
+        padding-top: 30px;
+    }
+    .ban_user{
+    position: fixed;
+    inset: 0px;
+    width: 100%;
+    height: 100%;
+    background: rgba(39, 49, 69, 0.3);
+    z-index: 19891015;
+    }
+    .pro_promot_btn1 {
+    width: 100%;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    align-items: center;
+    background: #E6E6E6;
+    margin: 0;
+    position: relative;
+    bottom: 6px;
+}
+.pro_promot_btn_confirm1, .pro_promot_btn_cancel1 {
+    width: 76px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    border-radius: 3px;
+    cursor: pointer;
+    background: rgb(0, 111, 196);
+    color: rgb(255, 255, 255);
+}
+
+.pro_promot_btn_cancel1 {
+    background: #BCBCBC;
+    color: #FFFFFF;
+}
+.h {
+    margin-right: 26px !important;
+}
+.pro_promot_game_check1 {
+    background-color: white;
+    border: 1px solid rgb(106, 112, 130);
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 12px;
+    border-radius: 3px;
+    margin: 0 !important;
+}
+.fh{
+    margin-top: 6px;
+    margin-left: 5px;
+}
+
+</style>
+<div class="ban_user " >
+    <div class="pro_promot_main1">
+        <div class="pro_promot_title1">
+            <div class="fl pro_promot_title_text">
+                <div class="fl pro_promot_title_bigtext">选择游戏玩家</div></div>
+            <div class="pro_promot_close fr"><img src="__TMPL__/public/assets/images/btn_close_pop.png"></div>
+        </div>
+        <div class="pro_promot_con">
+            <div class="pro_promot_select_title fl">选择玩家：</div>
+            <div class="pro_promot_select_tab fl fh">
+                <a href="javascript:;" class="firstChooseNum js-screen js-pst ">全部</a>
+                <a href="javaScript:;" class="firstChooseNum js-screen firstNumCurrent" key="ABCD">ABCD</a>
+                <a href="javaScript:;" class="firstChooseNum js-screen" key="EFGH">EFGH</a>
+                <a href="javaScript:;" class="firstChooseNum js-screen" key="IJKL">IJKL</a>
+                <a href="javaScript:;" class="firstChooseNum js-screen" key="MNOP">MNOP</a>
+                <a href="javaScript:;" class="firstChooseNum js-screen" key="QRST">QRST</a>
+                <a href="javaScript:;" class="firstChooseNum js-screen" key="UVWX">UVWX</a>
+                <a href="javaScript:;" class="firstChooseNum js-screen" key="YZ">YZ</a>
+            </div>
+            <div class="pro_promot_search fr" style="margin-right:20px ;">
+                <input type="text" name="key" id="key" class="pro_promot_search_input1 form-control fl" placeholder="输入玩家帐号">
+                <input type="text" name="key2" id="key2" class="pro_promot_search_input1 form-control fl" placeholder="输入渠道账号">
+                <input type="button" class="btn btn-primary pro_promot_search_btn1 fl" id="psi" value="搜索">
+            </div>
+            <div class="clear"></div>
+            <div class="pro_promot_game">
+                <ul id="promote_list" class="z_clearfix game_list1">
+                    <volist name="game_user_list" id="vo">
+                        <li class="fl pro_promot_game_con" >
+                            <input type="checkbox" <if condition="in_array($vo['id'],$ban_user_ids)">checked</if> data-check="0"  value="{$vo.id}" name="ban_arr[ban_user_ids][]" class="fl pro_promot_game_check1 jsgameid" id="gameCheck{$vo.id}" />
+                            <label for="gameCheck{$vo.id}" class="fl"></label>
+                            <span class="fl pro_promot_game_name omission1" title="{$vo.account}" title2="{$vo.promote_account}">{$vo.account}</span>
+                        </li>
+                    </volist>
+                </ul>
+            </div>
+
+        </div>
+        <div class="pro_promot_btn1">
+            <div class="all-select-btn1">
+                <input type="checkbox" class="fl pro_promot_game_check1 jsgameid" id="all-select" />
+                <label for="all-select" class="fl"></label>
+                <span class="fl pro_promot_game_name omission1" >全选</span>
+            </div>
+            <div class="fl pro_promot_btn_cancel1 pro_promot_close h">取消</div>
+            <div class="fr pro_promot_btn_confirm1 h">确定</div>
+        </div>
+    </div>
+</div>
+<script>
+    //保存修改
+    $(".pro_promot_btn_confirm1").click(function(){
+        $(".ban_user").css("display","none");
+    });
+
+    //关闭弹窗
+    $(".pro_promot_close").click(function(){
+        $(".ban_user").css("display","none");
+    });
+    //全选
+    $('#all-select').click(function () {
+        if(this.checked){
+            $(".pro_promot_game_check1:checkbox").prop("checked",true)
+        }else{
+            $(".pro_promot_game_check1:checkbox").prop("checked",false)
+        }
+    });
+    // 渠道展示切换
+    $('.js-pst').on('click', function () {
+        $(this).addClass('active').siblings().removeClass('active');
+        $('#promote_list li').show().find('input').prop('disabled', false);
+        return false;
+    });
+
+    $(".js-screen").click(function () {
+        $(this).addClass('firstNumCurrent').siblings().removeClass('firstNumCurrent')
+        var keys = $(this).attr("key");//大写
+        if(keys != ''){
+            zimushaixuan(keys);
+        }
+    });
+
+    zimushaixuan("ABCD");
+    function zimushaixuan(keys){
+        var keys2 = keys.toLowerCase();//小写
+        var keyArr = keys.split("");
+        var keyArr2 = keys2.split("");
+        $(".promoteSelectLabel").hide();
+        $('#promote_list li').hide().find('input').prop('disabled', true);
+        keyArr.forEach(function (ele) {
+            $('#promote_list li span[title^="'+ele+'"]').siblings('input').prop('disabled', false).closest('li').show();
+        });
+        keyArr2.forEach(function (ele2) {
+            $('#promote_list li span[title^="'+ele2+'"]').siblings('input').prop('disabled', false).closest('li').show();
+        });
+        return false;
+    }
+
+
+    // 搜索
+    $('#psi').on('click', function () {
+        var key = $.trim($('#key').val());
+        var key2 = $.trim($('#key2').val());
+        if (key && key2) {
+            $('#promote_list li').hide().find('input').prop('disabled', false);
+            $('#promote_list li span[title*="'+key+'"][title2*="'+key2+'"]').siblings('input').prop('disabled', false).closest('li').show();
+            // $('#promote_list li span[title2*="'+key2+'"]').siblings('input').prop('disabled', false).closest('li').show();
+        }else if(key=='' && key2){
+            $('#promote_list li').show().find('input').prop('disabled', false);
+            $('#promote_list li').hide().find('input').prop('disabled', true);
+            $('#promote_list li span[title2*="'+key2+'"]').siblings('input').prop('disabled', false).closest('li').show();
+        }else if(key && key2==''){
+            $('#promote_list li').show().find('input').prop('disabled', false);
+            $('#promote_list li').hide().find('input').prop('disabled', true);
+            $('#promote_list li span[title*="'+key+'"]').siblings('input').prop('disabled', false).closest('li').show();
+        }else{
+            $('#promote_list li').show().find('input').prop('disabled', false);
+        }
+        return false;
+    });
+</script>

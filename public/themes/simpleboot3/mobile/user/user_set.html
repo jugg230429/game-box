@@ -1,0 +1,338 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/user_set.css">
+</block>
+<block name="body">
+
+    <div class="user_set_page">
+        <div class="user_set_header">
+            <a href="{:url('User/index')}" class="fl">
+                <img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon">
+            </a>
+            <p class="fl">账号设置</p>
+        </div>
+        <div class="game_bag_down_hx"></div>
+        <p class="userset_item_title">资料信息</p>
+        <div class="game_bag_down_hx"></div>
+        <p class="userset_item_con">账号
+            <span class="fg username">{$user.account}</span>
+        </p>
+        <div class="game_bag_down_hx"></div>
+        <p class="userset_item_con">
+		   <a href="javascript:uploadHeadPortrait('头像','#head_img');" class="userset_item_con_a">头像
+               <input id="head_img" type="hidden" name="head_img" >
+               <img src="__TMPL__/mobilepublic/assets/images/common_btn_into.png" alt="" class="into_icon fg">
+               <img class="fg headpic" id="head_img-preview" src="{:cmf_get_image_url($user['head_img'])}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+            </a>
+        </p>
+        <div class="game_bag_down_hx"></div>
+        <a href="{:url('User/nickname')}">
+            <p class="userset_item_con">昵称
+                <img src="__TMPL__/mobilepublic/assets/images/common_btn_into.png" alt="" class="into_icon fg">
+                <span class="fg nickname">{$user.nickname} </span>
+            </p>
+        </a>
+        <div class="game_bag_down_hx"></div>
+        <a href="javascript:;" class="js-user-qq-update">
+            <p class="userset_item_con">QQ
+                <img src="__TMPL__/mobilepublic/assets/images/common_btn_into.png" alt="" class="into_icon fg">
+                <empty name="user.qq">
+                    <span class="fg default">未添加</span>
+                <else/>
+                    <span class="fg qq">{$user.qq}</span>
+                </empty>
+            </p>
+        </a>
+		<div class="game_bag_down_hx"></div>
+		<a href="{:url('User/user_address')}">
+            <p class="userset_item_con">收货地址
+                <img src="__TMPL__/mobilepublic/assets/images/common_btn_into.png" alt="" class="into_icon fg">
+                <if condition="empty($user['receive_address'])">
+                <span class="fg address">未添加</span>
+                    <else/>
+                    <span class="fg address"></span>
+                </if>
+            </p>
+        </a>
+        <div class="game_bag_down_hx"></div>
+        <div class="userset_fengexian"></div>
+        <p class="userset_item_title">安全信息</p>
+        <div class="game_bag_down_hx"></div>
+        <a href="{:url('User/phone')}">
+        <p class="userset_item_con">手机绑定
+            <notempty name="user.phone">
+            <!-- 已绑定 -->
+                <img src="__TMPL__/mobilepublic/assets/images/common_btn_into.png" alt="" class="into_icon fg">
+            <span class="fg mobile">{:hideStar($user['phone'])} </span>
+            <else />
+            <!-- 未绑定 -->
+                <img src="__TMPL__/mobilepublic/assets/images/common_btn_into.png" alt="" class="into_icon fg">
+            <span class="fg intorenzheng1">未绑定</span>
+
+            </notempty>
+        </p>
+        </a>
+        <div class="game_bag_down_hx"></div>
+        <a href="{:url('User/email')}">
+        <p class="userset_item_con">邮箱绑定
+            <notempty name="user.email">
+            <!-- 已绑定 -->
+                <img src="__TMPL__/mobilepublic/assets/images/common_btn_into.png" alt="" class="into_icon fg">
+            <span class="fg email">{:hideStar($user['email'])}</span>
+            <else />
+            <!-- 未绑定 -->
+                <img src="__TMPL__/mobilepublic/assets/images/common_btn_into.png" alt="" class="into_icon fg">
+            <span class="fg intorenzheng2">未绑定
+            </span>
+
+            </notempty>
+        </p>
+        </a>
+        <div class="game_bag_down_hx"></div>
+        <a href="{:url('User/realname')}">
+            <p class="userset_item_con">实名认证
+                <if condition="!empty($user['real_name']) and !empty($user['idcard']) ">
+                <!-- 已认证 -->
+				<img src="__TMPL__/mobilepublic/assets/images/common_btn_into.png" alt="" class="into_icon fg">
+                <span class="fg readly" style="margin-right: 3%">{$user['real_name']}，{:substr($user['idcard'],0,1)}****************{:substr($user['idcard'],-1)}</span>
+                <else />
+                <!-- 未认证 -->
+                <img src="__TMPL__/mobilepublic/assets/images/common_btn_into.png" alt="" class="into_icon fg">
+                <span class="fg intorenzheng3">去认证</span>
+                </if>
+            </p>
+        </a>
+        <div class="game_bag_down_hx"></div>
+        <a href="{:url('User/password')}">
+            <p class="userset_item_con">修改登录密码
+                <img src="__TMPL__/mobilepublic/assets/images/common_btn_into.png" alt="" class="into_icon fg">
+            </p>
+        </a>
+        <div class="game_bag_down_hx"></div>
+        <if condition="$unsub_status neq 0" >
+            <a href="javascript:;" id="cancel_unsub">
+                <p class="userset_item_con">取消注销
+                    <img src="__TMPL__/mobilepublic/assets/images/common_btn_into.png" alt="" class="into_icon fg">
+                </p>
+            </a>
+        <else/>
+            <a href="javascript:;" id="unsubscribe">
+                <p class="userset_item_con">注销账号
+                    <img src="__TMPL__/mobilepublic/assets/images/common_btn_into.png" alt="" class="into_icon fg">
+                </p>
+            </a>
+        </if>
+
+        <div class="game_bag_down_hx"></div>
+        <div class="downbtns js-logout">
+            <p>退出登录</p>
+        </div>
+    </div>
+
+    <!-- 注销账号的弹窗 -->
+    <div class="outBackBox">
+        <div class="cancellationBox">
+            <img src="__TMPL__/mobilepublic/assets/images/icon_zxzh.png" alt="" class="withdrawImg">
+            <p class="confrimDeleteText">确认注销账户？</p>
+            <p class="tipDelete">注销后账号数据、账户余额等将全部清空作废，请确认无误后再注销！</p>
+            <div>
+                <a href="javascript:;" class="bottomCancelBtn confirmCancel">确认注销</a>
+                <a href="javascript:;" class="bottomCancelBtn waitMoment">我再想想</a>
+            </div>
+            <br/>
+            <div><span class="yhzxxy" style="color: #018FFF;">《{$zhguxiao_title}》</span></div>
+        </div>
+    </div>
+    <!-- 注销验证 -->
+    <div class="yanzhengBox" style="display: none">
+        <div class="cellBox">
+            <img src="/themes/simpleboot3/mobilepublic/assets/images/common_btn_close_n.png" alt="" class="close_login_modal">
+            <p class="yz-title">注销验证</p>
+            <p class="yz-xinxi" data-type="0" data-phone="">已向182****3727发送验证码，请注意查收</p>
+            <div class="y-input">
+                <form method="">
+                <input type="text" id="verifyCode" name="account" autocomplete="off" class="y-yzm" value="" placeholder="验证码">
+                </form>
+            </div>    
+            <div>
+                <div href="javascript:;" class="confir">确认</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 注销成功后提示的弹窗 -->
+    <div class="successCancel">
+        <div class="cancelTipBox">
+            <div class="confrimDeleteText">注销申请成功</div>
+            <div class="tipDelete">
+                您的注销申请已提交，7天内可登录账号进行取消操作，超期不可取消
+            </div>
+            <div>
+                <a href="javascript:;" class="bottomCancelBtn waitMoment knowFinalBtn">我知道了</a>
+            </div>
+        </div>
+    </div>
+
+</block>
+<block name="script">
+    <script>
+        var qq_url = "{:url('bind_qq')}";
+        var bind_phone = "{$bindPhone|default=0}";
+    </script>
+<script src="__STATIC__/js/wind.js"></script>
+<script src="__TMPL__/mobilepublic/assets/js/frontend.js"></script>
+    <script src="__TMPL__/mobilepublic/assets/js/public.js"></script>
+<script>
+    function uploadHeadPortrait(dialog_title, input_selector, extra_params, app) {
+        openUploadDialog(dialog_title, function (dialog, files) {
+            $(input_selector).val(files[0].filepath);
+            $(input_selector + '-preview').attr('src', files[0].preview_url);
+
+            $(input_selector + '-name').val(files[0].name);
+            $(input_selector + '-name-text').text(files[0].name);
+            var head_img = files[0].filepath;
+            $.ajax({
+                type:'post',
+                dataType:'json',
+                url:'{:url("User/headImg")}',
+                data:{head_img:head_img},
+                success:function (data) {
+                    if(data.code==1) {
+                        layer.msg(data.msg);
+                    }
+                },error:function () {
+                    layer.msg('服务器故障，请稍候再试');
+                }
+            });
+
+        }, extra_params, 0, 'image', app);
+    }
+
+    $(function () {
+       $('.js-logout').click(function () {
+           var that=$(this);
+           if (that.hasClass('no_send')) {return false;}
+           that.addClass("no_send");
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: '{:url("User/logout")}',
+                data:'',
+                success: function (data) {
+                    layer.msg(data.msg);
+                    if (data.code == 1) {
+                        setTimeout(function () {
+                            location.href = '{:url("User/index")}';
+                        },1000);
+                    }
+                },
+                error: function () {
+                    layer.msg('服务器故障，请稍候再试');
+                    that.removeClass('no_send');
+                }
+            });
+           return false;
+       });
+
+        $("#unsubscribe").click(function () {
+            $('.outBackBox').show()
+        });
+        $('.waitMoment').click(function() {
+            $('.outBackBox').hide()
+        })
+        $('.knowFinalBtn').click(function() {
+            $('.successCancel').hide();
+            location.reload();
+        })
+         // 确认注销
+        $('.confirmCancel').click(function() {
+            $('.outBackBox').hide();
+            if(bind_phone == 1){
+                var $url = "{:url('mobile/user/verifyUnsub')}";
+                $.post($url,function (res) {
+                    console.log(res);
+                    if(res.code == 1){
+                        $(".yanzhengBox").css("display","block");
+                        $(".yz-xinxi").text(res.msg);
+                        $(".yz-xinxi").attr('data-type',res.data.type);
+                        $(".yz-xinxi").attr('data-phone',res.data.phone);
+                    }else{
+                        layer.msg(res.msg);
+                    }
+                })
+            }else{
+                var url = "{:url('mobile/user/unsubscribe')}";
+                $.post(url, function (res) {
+                    if (res.code == 1) {
+                        $('.successCancel').show()
+                    }else{
+                        layer.msg(res.msg);
+                    }
+                });
+            }
+        })
+
+        $("#cancel_unsub").click(function () {
+            //询问框
+            var url = "{:url('mobile/user/cancelUnsub')}";
+            $.post(url, function (res) {
+                layer.msg(res.msg);
+                if (res.code == 1) {
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
+                }
+            });
+        });
+    });
+    // 注销验证框
+    $(".cellBox .close_login_modal").click(function() {
+        $(".yanzhengBox").css("display","none")
+    })
+    $(".cellBox .confir").click(function() {
+        var code = $('#verifyCode').val();
+        var type = $('.yz-xinxi').attr('data-type');
+        var phone = $('.yz-xinxi').attr('data-phone');
+        if(code == ''){
+            layer.msg('请输入验证码');
+            return false;
+        }
+        if(phone == ''){
+            layer.msg('手机号获取失败，请重新注销');
+            return false;
+        }
+        var url = "{:url('mobile/user/verifyCode')}";
+        $.post(url,{code:code,type:type,phone:phone},function (res) {
+            console.log(res);
+            if(res.code == 1){
+                $(".yanzhengBox").hide();
+                var unsub_url = "{:url('mobile/user/unsubscribe')}";
+                $.post(unsub_url, function (res) {
+                    if (res.code == 1) {
+                        $('.successCancel').show()
+                    }else{
+                        layer.msg(res.msg);
+                        return false;
+                    }
+                });
+            }else{
+                layer.msg(res.msg);
+                return false;
+            }
+        });
+    })
+
+    $('.yhzxxy').click(function(){
+        var userinfo_modal=layer.open({
+            skin:'no-border-radius',
+            type: 2,
+            title: false,
+            shadeClose: false,
+            closeBtn: 0,
+            shade: 0.1,
+            area: ['100%', '100%'],
+            content: "{:url('User/unsubscribe_protocol')}"
+        });
+    })
+</script>
+</block>

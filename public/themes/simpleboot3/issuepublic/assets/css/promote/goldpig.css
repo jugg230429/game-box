@@ -1,0 +1,143 @@
+/**
+ * 金猪充值样式
+ * @author 王奉
+ */
+/* common */
+html{overflow:auto;overflow-x:hidden;line-height:1.4;color:#333;font-size:625%;font-family:SimHei,'黑体';}
+img{border:none;vertical-align:middle;}
+ol,ul{margin:0;padding:0;list-style:none;color:inherit;}
+a{color:inherit;text-decoration:none;}
+body{overflow:auto;font-size:inherit;overflow-x:hidden;margin:0;background:#EDEDED;-webkit-touch-callout:none;-webkit-text-size-adjust:none;-webkit-user-select:none;-webkit-highlight:none;-webkit-tap-highlight-color:transparent;}
+body::-webkit-scrollbar{width:3px;height:4px;}
+body::-webkit-scrollbar-button{display:none;background-color:#f4f4f4;}
+body::-webkit-scrollbar-track,body::-webkit-scrollbar-track-piece{background:#f4f4f4;}
+body::-webkit-scrollbar-thumb{border-radius:4px;background:#ababab;}
+body::-webkit-scrollbar-corner{background:#f4f4f4;}
+body::-webkit-scrollbar-resizer{background:#ababab;}
+body{scrollbar-arrow-color:#f4f4f4;scrollbar-face-color:#f4f4f4;scrollbar-3dlight-color:#f4f4f4;scrollbar-highlight-color:#f4f4f4;scrollbar-shadow-color:#f4f4f4;scrollbar-darkshadow-color:#f4f4f4;scrollbar-track-color:#f4f4f4;scrollbar-base-color:#ababab;}
+.clearfix,.pop-clear{zoom:1;}
+.clearfix:after,.pop-clear:after{clear:both;display:block;overflow:hidden;height:0;content:"";font-size:0;}
+.inner{position:relative;margin:0 auto;max-width:1242px;}
+.hidden{display:none!important;}
+button,input,select,textarea{outline:0;font-size:inherit;font-family:inherit;}
+.table {display:table;width:100%;height:100%;border:0;border-spacing:0;border-collapse:collapse;}
+.table-row {display:table-row;}
+.table-cell,.tcell {display:table-cell;position:relative;vertical-align:middle;}
+
+.tab-panel {display:none;}
+.tab-panel.active {display:block;}
+
+.circle{position:absolute;display:inline-block;width:0.22rem;height:0.22rem;max-width:22px;max-height:22px;border-radius:100%;background:#ff3228;}
+.font {position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;text-align:center;}
+.start-game-position {height:1.68rem;}
+
+.pig-body {max-width:640px;margin:0 auto;}
+
+/* header */
+.header{position:fixed;top:0;left:0;z-index:99;width:100%;height:1.32rem;max-height:132px;background:#18b1ea;color:#fff;}
+.header .caption,.header .wrap{position:relative;height:100%;}
+.header .caption{overflow:hidden;text-align:center;text-overflow:ellipsis;white-space:nowrap;font-size:.54rem;}
+.header .hbtn{position:absolute;top:0;height:100%;}
+.header .left{left:0;}
+.header .right{right:0;}
+.occupy{height:1.32rem;max-height:132px;}
+.header.hidden~.occupy{display:none;}
+.header .caption {margin:0 16.2%;}
+.header .arrow-left {width:16%;}
+.header .arrow-left img{margin-left:.4rem;width:0.38rem;margin-top:-4%;}
+.header .word {font-size:0.48rem;display:inline-block;margin-left:1%;}
+.header .user-logout img,.header .user-unbind img,.user-del img{width:0.66rem;height:0.66rem;vertical-align:baseline;display:block;}
+.header .user-mege img {width:100%;height:100%;vertical-align:baseline;display:block;}
+.header .user-logout,.header .user-unbind,.user-del {margin-right:0.6rem;}
+.header .user-mege {margin-right:2.06rem;}
+.header .user-mege .picwrap {position:relative;width:0.78rem;height:0.66rem;display:block;}
+.user-index {background:transparent;background:url(../../images/nav_bg.png) center top no-repeat;background-size:100% auto;overflow:hidden;}
+.user-index~.occupy{display:none;}
+.header .user-mege .picwrap .circle {top:-0.12rem;right:-0.12rem;}
+.header .user-del .deltxt {font-size:0.48rem;display:none;}
+
+
+/** 金猪支付 */
+.pig-page {background:#FFF;height:100%;height:100vh;}
+.pig-box {border-top:.08rem solid rgb(232,232,232);}
+.pig-recharge-money {font-size:0.42rem;color:rgb(59,59,59);background:#FFF;padding:0.28rem 0.32rem 0;}
+.pig-recharge-money .pig-recharge-money-number {color:rgb(90,156,255);}
+
+.pig-pay-way-title {font-size:.42rem;color:rgb(59,59,59);background:#FFF;padding:0.32rem 0.32rem 0;}
+.pig-pay-way {padding:0.1rem 0.42rem 0.5rem;background:#FFF;clear:both;overflow:hidden;}
+.pig-pay-way>div {float:left;width:25%;padding:0.18rem 0 0.1rem;}
+.pig-pay-way .pig-pay-icon {width:1.4rem;height:1.4rem;display:block;margin:0 auto;background-position:center center;background-repeat:no-repeat;background-size:100% 100%;}
+.pig-pay-way .pig-pay-icon-alipay {background-image:url(../../images/pig/alipay.png);}
+.pig-pay-way .pig-pay-icon-tenpay {background-image:url(../../images/pig/tenpay.png);}
+.pig-pay-way .pig-pay-icon-wechatscan {background-image:url(../../images/pig/wechatscan.png);}
+.pig-pay-way .pig-pay-icon-wechat {background-image:url(../../images/pig/wechat.png);}
+.pig-pay-way .pig-pay-icon-easyown {background-image:url(../../images/pig/easyown.png);}
+.pig-pay-way .pig-pay-icon-unicom {background-image:url(../../images/pig/unicom.png);}
+.pig-pay-way .pig-pay-icon-telecom {background-image:url(../../images/pig/telecom.png);}
+.pig-pay-way .pig-pay-icon-junka {background-image:url(../../images/pig/junka.png);}
+
+.pig-pay-way .payContentSubed .pig-pay-icon-alipay {background-image:url(../../images/pig/alipay_selected.png);}
+.pig-pay-way .payContentSubed .pig-pay-icon-tenpay {background-image:url(../../images/pig/tenpay_selected.png);}
+.pig-pay-way .payContentSubed .pig-pay-icon-wechatscan {background-image:url(../../images/pig/wechatscan_selected.png);}
+.pig-pay-way .payContentSubed .pig-pay-icon-wechat {background-image:url(../../images/pig/wechat_selected.png);}
+.pig-pay-way .payContentSubed .pig-pay-icon-easyown {background-image:url(../../images/pig/easyown_selected.png);}
+.pig-pay-way .payContentSubed .pig-pay-icon-unicom {background-image:url(../../images/pig/unicom_selected.png);}
+.pig-pay-way .payContentSubed .pig-pay-icon-telecom {background-image:url(../../images/pig/telecom_selected.png);}
+.pig-pay-way .payContentSubed .pig-pay-icon-junka {background-image:url(../../images/pig/junka_selected.png);}
+
+.pig-pay-way>div p {text-align:center;font-size:0.28rem;color:rgb(86,86,86);margin:0;padding-top:0.2rem;}
+
+
+.pig-pay-money-title {display:none;font-size:.42rem;color:rgb(59,59,59);background:#FFF;padding:0.28rem 0.32rem 0;border-top:.08rem solid rgb(232,232,232);}
+.pig-pay-money {display:none;padding:0.28rem 0.5rem 0.5rem;background:#FFF;clear:both;overflow:hidden;}
+.pig-pay-money>a {display:block;margin:.2rem 0.35rem 0;float:left;border-radius:0.1rem;width:2.08rem;height:1rem;font-size:0.42rem;color:#333;border:.01rem solid rgb(214,214,214);text-align:center;line-height:1rem;}
+.pig-pay-money .moneySelected {color:#FFF;background:rgb(90,156,255);border-color:rgb(90,156,255);}
+
+.pig-recharge-user {display:none;background:#FFF;padding:0.1rem 0.62rem;}
+.pig-recharge-user .userCard {}
+.pig-recharge-user .pig-recharge-password {padding-top:0.2rem;}
+.pig-recharge-user input {width:95%;padding:0 0 0 5%;height:1.58rem;line-height:1.58rem;border-radius:0.1rem;border:0.02rem solid rgb(90,156,255);background:rgb(255,255,255);font-size:0.44rem;color:rgb(64,140,255);}
+
+.pig-recharge-user input::-webkit-input-placeholder {color:rgb(153,153,153);}
+.pig-recharge-user input::-ms-input-placeholder {color:rgb(153,153,153);}
+.pig-recharge-user input:-moz-placeholder {color:rgb(153,153,153);}
+.pig-recharge-user input::-moz-placeholder {color:rgb(153,153,153);}
+
+.pic-recharge-butn {padding:0.32rem 0.62rem;}
+.pic-recharge-butn input {width:100%;border-radius:0.1rem;background:#18b1ea;color:#FFF;font-size:0.5rem;height:1.51rem;line-height:1.51rem;-webkit-appearance:none;border:none;}
+
+
+@media screen and (max-width:1240px) {
+  html{font-size:623%;}
+}
+@media screen and (max-width:992px) {
+  html{font-size:500%;}
+}
+@media screen and (max-width:768px) {
+  html{font-size:385%;}
+}
+@media screen and (max-width:720px) {
+  html{font-size:362%;}
+}
+@media screen and (max-width:660px) {
+  html{font-size:332%;}
+	.header .arrow-left img{margin-top:-10%;}
+}
+@media screen and (max-width:600px) {
+  html{font-size:301%;}
+}
+@media screen and (max-width:540px) {
+  html{font-size:271%;}
+}
+@media screen and (max-width:480px) {
+  html{font-size:241%;}
+}
+@media screen and (max-width:420px) {
+  html{font-size:211%;}
+}
+@media screen and (max-width:360px) {
+  html{font-size:181%;}
+}
+@media screen and (max-width:320px) {
+  html{font-size:161%;}
+}

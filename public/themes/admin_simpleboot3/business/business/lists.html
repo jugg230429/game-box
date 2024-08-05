@@ -1,0 +1,106 @@
+<include file="public@header" />
+<link href="__TMPL__/public/assets/simpleboot3/css/pro_promote.css" rel="stylesheet">
+</head>
+<body>
+    <div class="wrap js-check-wrap" >
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('business/lists')}">商务列表</a></li>
+            <!-- <li><a href="{:url('add')}">添加商务</a></li> -->
+            <span class="title_remark">说明：类似于商务角色，可发展多个工会下线，可统一查询旗下工会的数据。</span>
+        </ul>
+        <a href="{:url('add')}" class="btn btn-success" style="margin-top:20px;margin-left: -10px;">新增</a>
+        <form id="search_form" class="well form-inline fr" method="get" action="{:url('lists')}">
+            <select name="busier_id" id="busier_id" class="selectpicker bs-select-hidden" busier_id="{:input('request.busier_id')}" data-size="8" data-live-search="true" style="width: 100px;">
+                <option value="">商务ID</option>
+                <volist name=":get_business_lists()" id="vo">
+                    <option game-id="{$vo.id}" value="{$vo.id}" >{$vo.id}</option>
+                </volist>
+            </select>
+            <select name="account" id="account" class="selectpicker bs-select-hidden" account="{:input('request.account')}" data-live-search="true" data-size="8" style="width: 100px;">
+                <option value="">商务账号</option>
+                <volist name=":get_business_lists()" id="vo">
+                    <option value="{$vo.account}" >{$vo.account}</option>
+                </volist>
+            </select>
+            <input type="text" class="form-control js-bootstrap-date" name="start_time" id="start_time" placeholder="开始时间"
+                   value="{:input('request.start_time/s','')}" style="width: 120px;" autocomplete="off">-
+            <input type="text" class="form-control js-bootstrap-date" name="end_time" id="end_time" placeholder="结束时间"
+                   value="{:input('request.end_time/s','')}" style="width: 120px;" autocomplete="off">
+            <input type="submit" class="btn btn-search" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('lists')}">清空</a>
+        </form>
+        <form class="js-ajax-form" action="" method="post">
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>商务专员账号</th>
+                        <th>姓名</th>
+                        <th>手机号</th>
+                        <th>QQ</th>
+                        <th>推广渠道</th>
+                        <th>总注册</th>
+                        <th>总充值</th>
+                        <th>创建时间</th>
+                        <th>状态</th>
+                        <th width="130">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <empty name="data_lists">
+                        <tr><td colspan="11" style="text-align: center;">暂无数据</td></tr>
+                    <else/>
+                        <foreach name="data_lists" item="vo">
+                        <tr>
+                            <td>{$vo['id']}</td>
+                            <td>{$vo['account']}</td>
+                            <td>{$vo.real_name}</td>
+                            <td>{$vo['mobile_phone']}</td>
+                            <td>{$vo['qq']}</td>
+                            <td><a href="javascript:void(0);" class="promote_lists" data-id="{$vo.id}"><empty name="vo.promote_ids">0<else/>{:count(explode(',',$vo['promote_ids']))}</empty></a></td>
+                            <td>{$vo['total_register']}</td>
+                            <td>{$vo['total_pay']}</td>
+                            <td>{:date('Y-m-d H:i:s',$vo['create_time'])}</td>
+                            <td>
+                                <span <if condition="$vo['status'] eq 1"> class="label" style="color: #3FAD46;font-size:14px"<elseif condition="$vo['status'] eq 0">class="label " style="color: #f0ad4e;font-size:14px" <else/>class="label"  style="color:#d9534f;font-size:14px"</if>>{:get_info_status($vo['status'],10)}</span>
+                            </td>
+                            <td>
+                                <if condition="$vo['status'] neq  0">
+                                    <a href="{:url('edit',['id'=>$vo['id']])}">编辑</a>
+                                </if>
+                                <a href="{:url('changeStatus',['ids'=>$vo['id'],'status'=>$vo['status']])}" class="js-ajax-dialog-btn">{:get_info_status($vo['status'],11)}</a>
+                            </td>
+                        </tr>
+                        </foreach>
+                    </empty>
+                </tbody>
+            </table>
+        </form>
+        <div class="pagination" style="padding-bottom: 50px">{$page}
+
+        </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script type="text/javascript">
+        busier_id = $("#busier_id").attr('busier_id');
+        account = $("#account").attr('account');
+        $("#busier_id").selectpicker('val', busier_id);
+        $("#account").selectpicker('val', account);
+        //打开弹窗
+        $(function () {
+            $(".promote_lists").click(function () {
+                var business_id = $(this).data('id');
+                layer.open({
+                    type: 2,
+                    title: "推广员列表",
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['1062px', '80%'],
+                    content: "{:url('get_business_promote_ids')}?business_id="+business_id //iframe的url
+                });
+            });
+        });
+    </script>
+</body>
+</html>

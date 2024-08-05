@@ -1,0 +1,1033 @@
+<include file="public@header" />
+</head>
+<body>
+<style>
+    .bootstrap-select:not([class*="col-"]):not([class*="form-control"]):not(.input-group-btn) {
+        width: 120px;
+    }
+    .layui-equipment-num .layui-layer-content{
+        padding: 20px;
+    }
+    #search_form{
+        width:86% !important;
+    }
+    .edit_all{
+    position: fixed;
+    inset: 0px;
+    width: 100%;
+    height: 100%;
+    background: rgba(39, 49, 69, 0.3);
+    z-index: 19891015;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0px;
+}
+.edit_content{
+	width: 684px;
+	height: 474px;
+	border-radius: 5px;
+	/* overflow: hidden; */
+	position: static;
+	left: 50%;
+	top: 25%;
+	margin-left: 0;
+	background-color: #fff;
+}
+.edit_all .pro_promot_title1 {
+    height: 45px;
+    width: 100%;
+    line-height: 45px;
+    background: #ffffff;
+    border-radius: 5px;
+    border-bottom: 1px solid #F2F3F7;
+}
+.edit_all .pro_promot_title_bigtext {
+    font-size: 15px;
+    font-family: 'Microsoft YaHei';
+    font-weight: bold;
+    color: #333333;
+    line-height: 48px;
+    margin: 0 0 0 20px;
+}
+.edit_all .pro_promot_close {
+    margin-right: 20px;
+}
+.edit_neirong{
+    width: 100%;
+    height: 360px;
+    /* background-color: burlywood; */
+}
+.edit_bottom{
+float: right;
+/* margin-top: 20px; */
+margin-right: 20px;
+}
+.edit_bottom .pro_promot_btn_cancel1 {
+    width: 76px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    border-radius: 3px;
+    cursor: pointer;
+    background: #DEDEDE;
+    color: #FFFFFF;
+}
+.edit_bottom .pro_promot_btn_confirm1 {
+    width: 76px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    border-radius: 3px;
+    cursor: pointer;
+    background: rgb(0, 111, 196);
+    color: rgb(255, 255, 255);
+}
+.form-group{
+    margin-left:30px ;
+    margin-top:15px ;
+}
+.j_input{
+    width:390px;
+    float: left;
+    margin-left: 20px;
+}
+.count_p{
+    position: relative;
+    margin: 0;
+    bottom: 5px;
+    right: 55px;
+    top: 7px;
+
+}
+.g_neirong{
+    width: 100%;
+    height:360px;
+    /* background-color: burlywood; */
+    padding-top:10px;
+    margin-bottom:20px;
+}
+.edit_neirong .form-group{
+    width: 100%;
+    float: left;
+}
+
+.lei{
+    float: left;
+    width: 320px;
+    margin-left: 20px;
+}
+.wenzi{
+    color:#222222;float: left;font-size: 14px;font-weight: 400;line-height: 32px;
+    margin-left: 10px;
+    margin-right: 10px;
+    
+}
+.pinci{
+    float: left;
+    width: 110px;
+}
+.edit_neirong .form-group {
+margin-top:0px !important;
+}
+.edit_neirong .control-label{
+margin-top:10px;
+}
+.g_neirong .form-group{
+    width: 100%;
+    float: left;
+}
+.g_neirong  .control-label{
+margin-top:10px;
+}
+.biaozhu{
+    width: 428px;
+    height: 30px;
+    line-height: 30px;
+    background: #F9F9F9;
+    border-radius: 3px;
+    margin-left: 164px;
+    /* margin-top: 10px; */
+    float: left;
+    padding-left: 10px;
+    font-size: 12px;
+font-family: Microsoft YaHei;
+font-weight: 400;
+color: #ACB6C0;
+}
+
+
+body .layerdemo{
+	border-radius: 5px;
+	color:black;
+    overflow: hidden;
+
+}
+.layui-layer-title {
+  
+    background-color: #fff !important;
+    border-radius: 2px 2px 0 0;
+}
+
+
+.topAll1{
+ 
+    display: -webkit-box;
+    /* display: flex; */
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    -webkit-box-align: start;
+    align-items: flex-start;
+    white-space: nowrap;
+    width: 100%;
+    overflow-x: scroll;
+    height: 200px;
+    padding-top:20px;
+    align-items: center;
+}
+.intention{
+    display: none;
+    max-width: 1750px;
+    display: -webkit-box;
+    display: flex;
+    position: relative;
+    z-index: 2;
+}
+.small-item{
+    z-index: 10;
+    position: relative;
+    padding: 8px 0;
+    -webkit-box-flex: 1;
+    flex: 1;
+    min-width: 160px;
+}
+.topAll1 .circle {
+    content: "";
+    position: absolute;
+    width: 1px;
+    height: 89px;
+    border-right: 1px dashed #48A4EA;
+    bottom: 100%;
+    top: calc(100% - 28px);
+    left: 68px;
+    /* -webkit-transform: translateX(-50%); */
+    /* transform: translateX(-50%); */
+    z-index: -1;
+}
+.item{
+    position: relative;
+}
+.item-inner {
+    background: #f6fbff;
+    border-radius: 2px;
+    border: 1px solid #1890ff;
+    padding: 8px 0;
+    color: #1890ff;
+    font-size: 14px;
+    min-width: 93px;
+    max-width: 138px;
+    line-height: 20px;
+    display: -webkit-box;
+    /* display: flex; */
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    z-index: 1;
+    white-space: normal;
+    text-align: center;
+}
+.line {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 1px;
+    /* background: #cde0f2; */
+    z-index: -10;
+    border-bottom: 1px dashed #48A4EA;
+}
+
+.topAll1 .no-intention .line:first-child  {
+    /* width: calc(100% - 68px); */
+    left: 68px;
+}
+.topAll1 .no-intention .line:first-child:before  {
+    left: -4.5px;
+}
+.topAll1 .no-intention .line:before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    left: 65px;
+    top: -3.5px;
+    border-radius: 50%;
+    background: #f0f8ff;
+    border: 1px solid #48A4EA;
+}
+
+.no-intention .item-inner {
+
+    color: #fff;
+    background: #006FC4;
+}
+.no-intention .line:last-child  {
+    background: #fff;
+}
+.intention .small-item:last-child  .line{
+    display: none;
+}
+.no-intention{
+    margin-top: 38px;
+}
+@media (min-width: 1920px) {
+    .intention .small-item{
+    min-width: 220px;
+}
+}  
+@media (min-width: 1600px) {
+    .intention .small-item{
+    min-width: 220px;
+}
+}  
+@media (min-width: 1500px) {
+    .intention .small-item{
+    min-width: 220px;
+}
+}  
+.layui-layer-title{
+    font-weight: bold;
+}
+.description{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 400px;
+    width: 400px;
+}
+</style>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('user/setUserStage')}">添加阶段</a></li>
+            <!-- <span class="title_remark" style="color:rgb(231,76,60)">说明：记录所有已设置阶段管理的玩家数据，按照评分倒序展示。</span> -->
+        </ul>
+        <empty name="data_lists">
+            
+        <else/>
+
+        <div class="topAll1">
+            <div class="intention">
+                <foreach name="userStageReverse" item="vo">
+                    <div class="item small-item">
+                        <i class="circle item"></i> 
+                        <div class="item-inner">{$vo.name}</div> 
+                        <div class="line"></div>
+                    </div>
+                </foreach>
+            </div>
+            <div class="no-intention intention">
+                <for start="0" end="$numbers2" step="1" name="i">
+                    <div class="item hide-name small-item ">
+                        <div class="line"></div>
+                    </div>
+                </for>
+                
+
+                
+                <div class="item small-item "><div class="item-inner ">{$lastStage.name}</div> <div class="line"></div></div>
+            </div>
+                
+        </div>
+        </empty>
+
+            
+        <div class="table-actions position fl" >
+            <a id="add_stage" class="edit btn btn-Sz  mtb17" data-action="add_stage" href="javascript:;" >
+                添加
+            </a>
+        </div>
+        <div class="scroll-table-wrapper">
+        <table class="table table-hover table-bordered scroll-table" style="margin-left:0px;">
+            <thead>
+                <tr>
+                    <!-- <th><input type="checkbox" id="all-checkbox" class="table-item-checkbox js-check-all" data-direction="x" data-checklist="js-check-x"><label for="all-checkbox" class=""></label></th> -->
+                    <th>排序</th>
+                    <th>玩家阶段</th>
+                    <th>阶段描述</th>
+                    <th>跟进提醒</th>
+                    <th>操作</th>
+                    
+                    <!-- <th>
+                        <a href="javascript:changesort('balance');">平台币余额
+                        <if condition="input('request.sort_type') eq 'balance' and input('request.sort') eq 2">
+                            ▼
+                            <elseif condition="input('request.sort_type') eq 'balance' and input('request.sort') eq 3"/>
+                            ▲
+                            <else/>
+                            <img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+                        </if>
+                        </a>
+                    </th> -->
+                    <!-- <th>
+                        <a href="javascript:changesort('gold_coin');">金币
+                            <if condition="input('request.sort_type') eq 'gold_coin' and input('request.sort') eq 2">
+                                ▼
+                            <elseif condition="input('request.sort_type') eq 'gold_coin' and input('request.sort') eq 3"/>
+                                ▲
+                            <else/>
+                                <img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+                            </if>
+                        </a>
+                    </th> -->
+                </tr>
+            </thead>
+            <tbody>
+                <empty name="data_lists">
+                    <tr><td colspan="23" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <foreach name="data_lists" item="vo">
+                    <tr>
+                        <td>
+                            <if condition="$vo.upper eq 1">
+                                <a href="javascript:;" class="upper_btn" data-id="{$vo.id}">
+                                    <i class="icon_left blue_top"></i>
+                                </a>
+                            <else/>
+                                <i class="icon_left grey_top"></i>
+                            </if>
+
+                            <if condition="$vo.down eq 1">
+                                <a href="javascript:;"  class="down_btn" data-id="{$vo.id}">
+                                    <i class="icon_left blue_bottom"></i>
+                                </a>
+                            <else/>
+                                <i class="icon_left grey_bottom"></i>
+                            </if>
+                           
+                        </td>
+                        <td>{$vo.name}</td>
+                        <td class="description" title="{$vo.description}">{$vo.description}</td>
+                        <td>
+                            <if condition="!empty($vo.follow_remind)">
+                                <p><i class="yes green_yes"></i>未登录：超过<span class="st">【{$vo.follow_remind.not_login_days}天】</span>停留，次日<span class="st">【9:00】</span>提醒</p>
+                                <p><i class="yes green_yes"></i>未付费：超过<span class="st">【{$vo.follow_remind.not_recharge_days}天】</span>停留，次日<span class="st">【9:00】</span>提醒</p>
+                            <else/>
+                                <p>---</p> 
+                                <p>---</p> 
+                            </if>
+                            
+                        </td>
+
+                        <td style="cursor: pointer">
+                            <span class="caozuo edit" data-action="edit_stage" data-stage_id="{$vo.id}">编辑</span> 
+                            <span class="caozuo delete" data-stage_id="{$vo.id}" data-stage_name="{$vo.name}">删除</span>
+                            <!-- <span class="caozuo tixing" data-stage_id="{$vo.id}" >跟进提醒</span> -->
+                            <span class="caozuo new_follow_remind" data-stage_id="{$vo.id}" >跟进提醒</span>
+                        </td>
+                        <!-- <td style="cursor: pointer">
+                            <span class="change_user_score" data-user-id="{$vo.id}" style="color:#006fc4;text-decoration: underline;">{$vo.user_score}</span>
+                        </td>
+                        <td>{:get_promote_name($vo['promote_id'])}</td>
+                        <td>{:date('Y-m-d H:i:s',$vo['register_time'])}</td>
+                        <td style="cursor: pointer">
+                            <span class="change_userstage_remark" data-user-id="{$vo.id}" style="color:#006fc4;">{$vo.user_stage_remark}</span>
+                        </td> -->
+                      
+                    </tr>
+                    
+                    </foreach>
+                </empty>
+            </tbody>
+        </table>
+        </div>
+        <div class="pagination">
+            {$page}
+           <!-- <li class="page-item"><a class="page-link" href="{:url('Export/expUser',array_merge(['id'=>1,'xlsname'=>'玩家_玩家列表'],input()))}">导出</a></li> -->
+        </div>
+        <!-- 编辑阶段 -->
+        <div class="z-edit" hidden>
+            <div class="edit_all">
+                <div class="edit_content">
+                    <div class="pro_promot_title1">
+                        <div class="fl pro_promot_title_text">
+                            <div class="fl pro_promot_title_bigtext">添加/编辑</div></div>
+                        <div class="pro_promot_close fr"><img src="__TMPL__/public/assets/images/btn_close_pop.png" class="img_close"></div>
+                    </div>
+                    <div class="edit_neirong">
+                        <form class=" js-ajax-form margin-top-20" role="form" action="" method="post">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label for="input-site-name" class="col-sm-2 control-label">
+                                        <span class="form-required">*</span>阶段名称：
+                                    </label>
+                                    <div class="j_input">
+                                        <input id="title" type="text" class="form-control" name="name" value="" placeholder="请输入阶段名称">
+                                        <input type="hidden" name="id" value="{$data.id}" >
+                                    </div>
+                                    <p class="help-block game_error"></p>
+                                    <span class="count_p"><span style="color: #999" id="titleCount">0/10</span></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="input-site-name" class="col-sm-2 control-label">
+                                       阶段描述：
+                                    </label>
+                                    <div class="j_input">
+                                        <div id="textarea_box">
+                                            <textarea maxlength="1000" id="title2" style="height: 80px;" name="description" class="form-control" placeholder="请输入描述内容">{$data.description}</textarea>
+                                            <p id="text_count_p"><span style="color: #999"></span></p>
+                                        </div>
+                                        <!--<textarea maxlength="1000" style="height: 200px;" name="introduction" class="form-control ">{$data.introduction}</textarea>-->
+                                    </div>
+                                    <p class="help-block game_error"></p>
+                                    <span id="titleCount2" class="count_p" style="top:57px;"><span style="color: #999" class="one_hundred_limit">0/100</span></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="input-site-name" class="col-sm-2 control-label">
+                                        <span class="form-required">*</span>玩家评分：
+                                    </label>
+                                    <div class="j_input">
+                                        <input id="title" type="text" oninput="value=value.toString().match(/^\d+(?:\.\d{0,1})?/)" class="form-control" name="user_score" value="" placeholder="请输入玩家评分">
+                                        <!-- <input type="hidden" name="id" value="{$data.id}" > -->
+                                    </div>
+                                    <p class="help-block game_error"></p>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="input-site-name" class="col-sm-2 control-label">
+                                       累计消费：
+                                    </label>
+                                    <div class="lei">
+                                        <input type="text" id="total_consume" class="form-control" name="total_consume" value=""  placeholder="输入金额下限值" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+                                    </div>
+                                    <span class="wenzi">元及以上</span>
+                                    <p class="help-block game_error"></p>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="input-site-name" class="col-sm-2 control-label">
+                                       消费频次：
+                                    </label>
+                                    <span class="wenzi" style="margin-left:20px">近</span>
+                                    <div class="pinci">
+                                        <input type="text" class="form-control" name="consume_day" value=""  placeholder="输入天数" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+                                    </div>
+                                    <span class="wenzi">天内消费</span>
+                                    <div class="pinci">
+                                        <input type="text" class="form-control" name="consume_times" value=""  placeholder="输入次数" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+                                    </div>
+                                    <span class="wenzi">次及以上</span>
+                                    <p class="help-block game_error"></p>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="input-site-name" class="col-sm-2 control-label">
+                                       活跃情况：
+                                    </label>
+                                    <span class="wenzi" style="margin-left:20px">近</span>
+                                    <div class="pinci">
+                                        <input type="text" class="form-control" name="active_day" value="" placeholder="输入天数" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+                                    </div>
+                                    <span class="wenzi">天内活跃</span>
+                                    <div class="pinci">
+                                        <input type="text" class="form-control" name="active_times" value=""  placeholder="输入次数" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+                                    </div>
+                                    <span class="wenzi">次及以上</span>
+                                    <p class="help-block game_error"></p>
+                                </div>
+                                <!-- <div class="form-group">
+                                    <label for="input-site-name" class="control-label" style="float: left;margin-left: 18px;
+                                    margin-top: 10px;">
+                                        玩家进阶方式：
+                                    </label>
+                                    <div class="lei col-md-3 col-sm-5" style="margin-left: 8px;">
+                                        <label class="label-width">
+                                            <input type="radio" value="1" id="radio1"  name="upgrade_type">自动进入
+                                        </label>
+                                        <label>
+                                            <input type="radio" value="2" id="radio2"  name="upgrade_type" checked>手动添加
+                                        </label>
+                                    </div>
+                                    <p class="help-block game_error"></p>
+                                </div> -->
+                               
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div class="edit_bottom">
+                        <input type="hidden" name="stage_action" value="" >
+                        <div class="fl pro_promot_btn_cancel1 pro_promot_close qvxiao">取消</div>
+                        <div class="fr pro_promot_btn_confirm1 h submit_stage">确定</div>
+                    </div>
+                </div>
+               
+
+                </div>
+            </div>
+        </div>
+        <!-- 跟进提醒 -->
+        <!-- <div class="z-tixing" hidden>
+            <div class="edit_all">
+                <div class="edit_content">
+                    <div class="pro_promot_title1">
+                        <div class="fl pro_promot_title_text">
+                            <div class="fl pro_promot_title_bigtext">跟进提醒</div></div>
+                        <div class="pro_promot_close fr"><img src="__TMPL__/public/assets/images/btn_close_pop.png" class="img_close"></div>
+                    </div>
+                    <div class="g_neirong">
+                        <form class=" js-ajax-form margin-top-20" role="form" action="" method="post">
+                            <fieldset>
+                                <div class="form-group" style="margin-top:-15px;">
+                                    <label for="input-site-name" class="control-label" style="float: left;margin-left: 18px;
+                                    margin-top: 10px;">
+                                       跟进提醒：
+                                    </label>
+                                    <div class="lei col-md-3 col-sm-5" style="margin-left: 28px;">
+                                        <label class="label-width">
+                                            <input type="radio" value="1"  name="follow_remind_switch">开启
+                                        </label>
+                                        <label>
+                                            <input type="radio" value="0"  name="follow_remind_switch" checked>关闭
+                                        </label>
+                                    </div>
+                                    <p class="help-block game_error"></p>
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-site-name" class="control-label" style="float: left;margin-left: 18px;
+                                    margin-top: 10px;">
+                                       提醒方式：
+                                    </label>
+                                    <div class="lei col-md-3 col-sm-5" style="margin-left: 28px;">
+                                        <label class="label-width">
+                                            <input type="radio" value="1"  name="remind_type" checked>手机短信
+                                        </label>
+                                        <label>
+                                            <input type="radio" value="2"  name="remind_type" >邮箱短信
+                                        </label>
+                                    </div>
+                                    <p class="help-block game_error"></p>
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-site-name" class="col-sm-2 control-label">
+                                       登录停留：
+                                    </label>
+                                    <span class="wenzi" style="margin-left:20px">未登录超过</span>
+                                    <div class="pinci">
+                                        <input type="text" class="form-control" value="" readonly placeholder="输入天数">
+                                        <input type="hidden" name="id" value="{$data.id}" >
+                                    </div>
+                                    <span class="wenzi">天后，次日</span>
+                                    <div class="pinci">
+                                        <input type="text" class="form-control" value="" readonly placeholder="选择时间">
+                                        <input type="hidden" name="id" value="{$data.id}" >
+                                    </div>
+                                    <span class="wenzi">提醒</span>
+                                    <p class="help-block game_error"></p>
+                                   
+                                </div>
+                                <div class="biaozhu">玩家【未登录】时间超过【N天】后，次日【09:00】提醒员工</div>
+                                <div class="form-group">
+                                    <label for="input-site-name" class="col-sm-2 control-label">
+                                       付费停留：
+                                    </label>
+                                    <span class="wenzi" style="margin-left:20px">未付费超过</span>
+                                    <div class="pinci">
+                                        <input type="text" class="form-control" value="" readonly placeholder="输入天数">
+                                        <input type="hidden" name="id" value="{$data.id}" >
+                                    </div>
+                                    <span class="wenzi">天后，次日</span>
+                                    <div class="pinci">
+                                        <input type="text" class="form-control" value="" readonly placeholder="选择时间">
+                                        <input type="hidden" name="id" value="{$data.id}" >
+                                       
+                                    </div>
+                                    <span class="wenzi">提醒</span> <i class="time"></i>
+                                    <p class="help-block game_error"></p>
+                                   
+                                </div>
+                                <div class="biaozhu">玩家【未付费】时间超过【N天】后，次日【09:00】提醒员工</div>
+                              
+                            </fieldset>
+                         </form>
+                    </div>
+                    <div class="edit_bottom">
+                        <div class="fl pro_promot_btn_cancel1 pro_promot_close f_close">取消</div>
+                        <div class="fr pro_promot_btn_confirm1 h">确定</div>
+                    </div>
+                </div>
+               
+
+                </div>
+            </div>
+        </div> -->
+        <!-- 删除玩家 -->
+        <div class="de" hidden>
+        <div class="delete_all">
+            <div class="delete_content">
+                <div class="pro_promot_close Hclose"><img src="__TMPL__/public/assets/images/icon_top/close.png" style="width: 12px;height:12px;"></div>
+                <div class="content_center">
+                    <div class="delete_sty"><img src="__TMPL__/public/assets/images/icon_top/icon_tishi_delete.png" style="width: 14px;height:14px;margin-right: 10px;">删除</div>
+                    <div class="neirong">
+                        <p> <span class="user_num"></span></p>
+                    </div>
+                    <div class="confir">
+                        <button class="con confirm_delete">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script>
+     
+        // this follows by lvhui 2021-7-30 15:45:58 
+        //点击关闭 弹框隐藏
+        $(".Hclose img").click(function(){
+            $(".de").css("display","none")
+        })
+        //点击删除 弹框出现
+        var stage_id2 = 0; // stage_id
+        var user_num = 0; // 此阶段下的用户数量
+        $(".delete").click(function(){
+            // $(".de").css("display","block")
+            $(".de").show("slow");
+            var that = $(this);
+            stage_id2 = that.attr("data-stage_id");
+            var stage_name = that.attr("data-stage_name");
+            // alert(stage_id);
+            $.ajax({
+                url: "{:url('user/deleteStage')}",
+                type: 'POST',
+                dataType: 'json',
+                async: true,
+                data: {id:stage_id2},
+                success: function (data) {
+                    user_num = data.data.stage_user_num;
+                    var tmp_remind_text = '';
+                    if(user_num > 0){
+                        tmp_remind_text = "【"+ stage_name +"】下还有" + user_num + "个玩家，暂时无法删除";
+                    }else{
+                        tmp_remind_text = "【"+ stage_name +"】下还有" + user_num + "个玩家，点击确定进行删除";
+                    }
+                    $('.user_num').text(tmp_remind_text)
+                    // layer.msg(data.msg);
+                },
+                error: function () {
+                    layer.msg("系统繁忙,请稍后再试！");
+                }
+            });
+        })
+
+        //点击确定删除执行删除操作
+        $(".confirm_delete").click(function(){
+            // $(".de").css("display","block")
+            // alert(stage_id2);
+            // alert(user_num);
+            if(user_num > 0){
+                $(".de").hide("slow");
+                return false
+            }
+            // return false;
+            $(".de").hide("slow");
+            // alert(stage_id);
+            $.ajax({
+                url: "{:url('user/doDeleteStage')}",
+                type: 'POST',
+                dataType: 'json',
+                async: true,
+                data: {id:stage_id2},
+                success: function (data) {
+                    layer.msg(data.msg);
+                    setTimeout(function(){
+                        window.location = "{:url('user/setUserStage')}";
+                    },2000);
+                },
+                error: function () {
+                    layer.msg("系统繁忙,请稍后再试！");
+                }
+            });
+
+        })
+
+        //点击编辑 
+        var stage_id = 0;
+        $(".edit").click(function(){
+            // $(".z-edit").css("display","block")
+            $(".z-edit").show("slow");
+            var that = $(this);
+            var stage_action = that.attr("data-action");  // add_stage, edit_stage
+            $('input[name="stage_action"]').val(stage_action);
+            if(stage_action == "add_stage"){
+                $('input[name="name"]').val("");
+                $('textarea[name="description"]').val("");
+                $('input[name="total_consume"]').val("");
+                $('input[name="consume_day"]').val("");
+                $('input[name="consume_times"]').val("");
+                $('input[name="active_day"]').val("");
+                $('input[name="active_times"]').val("");
+
+                $("#titleCount").text("0 / 10");
+                $("#titleCount2").text("0 / 100");
+            }
+
+            if(stage_action == "edit_stage"){
+                stage_id = that.attr("data-stage_id");
+                $.ajax({
+                    url: "{:url('user/editStage')}",
+                    type: 'GET',
+                    dataType: 'json',
+                    async: true,
+                    data: {id:stage_id},
+                    success: function (data) {
+                        if(data.code > 0){
+                            $('input[name="name"]').val(data.data.name);
+                            $('textarea[name="description"]').val(data.data.description);
+                            $('input[name="total_consume"]').val(data.data.total_consume);
+                            $('input[name="consume_day"]').val(data.data.consume_day);
+                            $('input[name="consume_times"]').val(data.data.consume_times);
+                            $('input[name="active_day"]').val(data.data.active_day);
+                            $('input[name="active_times"]').val(data.data.active_times);
+                            $('input[name="user_score"]').val(data.data.user_score);
+                            // var upgrade_type = $('input[name="upgrade_type"]').val();
+                            // $('input[name="upgrade_type"]:checked').val();
+                            var upgrade_type = data.data.upgrade_type;
+
+                            if(upgrade_type == 1){
+                                $("#radio1").prop("checked", true);
+                                $("#radio2").prop("checked", false);
+                            }
+                            if(upgrade_type == 2){
+                                $("#radio1").prop("checked", false);
+                                $("#radio2").prop("checked", true);
+                            }
+                            $("#titleCount").text($("#title").val().length + "/ 10");
+                            $("#titleCount2").text($("#title2").val().length + "/ 100");
+                        }
+                    },
+                    error: function () {
+                        layer.msg("系统繁忙,请稍后再试！");
+                    }
+                });
+            }
+            
+        })
+        // 提交编辑 / 添加
+        $('.submit_stage').click(function(){
+            var stage_action = $('input[name="stage_action"]').val();
+            var name = $('input[name="name"]').val();
+            var description = $('textarea[name="description"]').val();
+            var total_consume = $('input[name="total_consume"]').val();
+            var consume_day = $('input[name="consume_day"]').val();
+            var consume_times = $('input[name="consume_times"]').val();
+            var active_day = $('input[name="active_day"]').val();
+            var active_times = $('input[name="active_times"]').val();
+            // var upgrade_type = $('input[name="upgrade_type"]').val();
+            var upgrade_type = $('input[name="upgrade_type"]:checked').val();
+            var user_score = $('input[name="user_score"]').val();
+            if(user_score <= 0){
+                layer.msg('玩家评分不能为空!');
+                return false;
+            }
+            if(user_score > 10){
+                layer.msg('玩家评分不能大于10!');
+                return false;
+            }
+            
+            if(stage_action == "add_stage"){  // 添加阶段
+                if(name.length == 0){
+                    layer.msg('阶段名称不能为空!');
+                    return false;
+                }
+                
+                $.ajax({
+                    url: "{:url('user/addStage')}",
+                    type: 'post',
+                    dataType: 'json',
+                    async: true,
+                    data: {name:name, description:description, total_consume:total_consume, consume_day:consume_day, consume_times:consume_times, active_day:active_day, active_times:active_times, upgrade_type:upgrade_type, user_score:user_score},
+                    success: function (data) {
+                        layer.msg(data.msg);
+                        setTimeout(function(){
+                            // self.location.reload(true);
+                            window.location = "{:url('user/setUserStage')}";
+                        },2000);
+                        
+                    },
+                    error: function () {
+                        layer.msg("系统繁忙,请稍后再试！");
+                    }
+                });
+            }
+            if(stage_action == "edit_stage"){  // 编辑阶段
+                if(name.length == 0){
+                    layer.msg('阶段名称不能为空!');
+                    return false;
+                }
+
+                $.ajax({
+                    url: "{:url('user/editStage')}",
+                    type: 'post',
+                    dataType: 'json',
+                    async: true,
+                    data: {id:stage_id, name:name, description:description, total_consume:total_consume, consume_day:consume_day, consume_times:consume_times, active_day:active_day, active_times:active_times, upgrade_type:upgrade_type, user_score:user_score},
+                    success: function (data) {
+                        layer.msg(data.msg);
+                        setTimeout(function(){
+                            // self.location.reload(true);
+                            window.location = "{:url('user/setUserStage')}";
+                        },2000);
+                        
+                    },
+                    error: function () {
+                        layer.msg("系统繁忙,请稍后再试！");
+                    }
+                });
+            }
+        });
+        $(".img_close").click(function(){
+            $(".z-edit").css("display","none")
+        })
+        $(".qvxiao").click(function(){
+            $(".z-edit").css("display","none")
+        })
+        //跟进提醒
+        //点击编辑 
+        $(".tixing").click(function(){
+            // $(".z-tixing").css("display","block")
+            $(".z-tixing").show("slow");
+
+        })
+        $(".img_close").click(function(){
+            $(".z-tixing").css("display","none")
+        })
+        $(".f_close").click(function(){
+            $(".z-tixing").css("display","none")
+        })
+
+        // 新 跟进提醒 wjd
+        $(".new_follow_remind").click(function(){
+            // href="{:url('user/addUserStage')}"
+            // var user_id = $("#id").val();
+            stage_id = $(this).attr('data-stage_id');
+            layer.open({
+                type: 2,
+                title: "跟进提醒",
+                shadeClose: true,
+                shade: 0.8,
+                skin: 'layerdemo',
+                area: ['684px', '500px'],
+                // content: "{:url('user_bind_balance')}?user_id="+user_id //iframe的url
+                content: "{:url('user/editFollowRemind')}?id="+stage_id //iframe的url
+            });
+        });
+
+        $(".upper_btn").click(function(){
+            var that = $(this);
+            var stage_id = that.attr("data-id");
+            if(stage_id > 0){
+                $.ajax({
+                    url: "{:url('user/changeStageOrder')}",
+                    type: 'POST',
+                    dataType: 'json',
+                    async: true,
+                    data: {id:stage_id,type:"upper"},
+                    success: function (data) {
+                        layer.msg(data.msg);
+                        setTimeout(function(){
+                            location.reload();
+                            // window.location = "{:url('user/setUserStage')}";
+                        },2000);
+                    },
+                    error: function () {
+                        layer.msg("系统繁忙,请稍后再试！");
+                    }
+                });
+            }
+
+        });
+        $(".down_btn").click(function(){
+            var that = $(this);
+            var stage_id = that.attr("data-id");
+            if(stage_id > 0){
+                $.ajax({
+                    url: "{:url('user/changeStageOrder')}",
+                    type: 'POST',
+                    dataType: 'json',
+                    async: true,
+                    data: {id:stage_id,type:"down"},
+                    success: function (data) {
+                        layer.msg(data.msg);
+                        setTimeout(function(){
+                            location.reload();
+                            // window.location = "{:url('user/setUserStage')}";
+                        },2000);
+                    },
+                    error: function () {
+                        layer.msg("系统繁忙,请稍后再试！");
+                    }
+                });
+            }
+        });
+        
+        // 限制输入框中的数字
+        // $("#titleCount").text("还可以输入" + (12 - $("#title").val().length) + "个字");
+        // $(".ten_limit").keyup(function() {
+        //     var that = $(this);
+        //     var length_ten = $('input[name="name"]').val();
+        //     if (length_ten.length > 12) {
+        //         $('input[name="name"]').val($('input[name="name"]').val().substring(0, 12));
+        //     }
+        //     that.text("还可以输入" + (12 - $('input[name="name"]').val().length) + "个字");
+        // });
+
+        var flag = false
+        $("#title").keyup(function(event) {
+            var that = $(this)
+            var val = that.val()
+            var event = event || window.event
+            var code = event.keyCode || event.which
+            // if (code == 229) {
+            //     flag = true
+            // }
+            if (code == 13 || code == 32) {
+                if ($("#title").val().length > 10) {
+                    $("#title").val($("#title").val().substring(0, 10));
+                }
+            }
+            $("#titleCount").text($("#title").val().length + "/ 10");
+        });
+        $("#title").blur(function(){
+            if ($("#title").val().length > 10) {
+                $("#title").val($("#title").val().substring(0, 10));
+            }
+            $("#titleCount").text($("#title").val().length + "/ 10");
+        });
+        
+        $("#title2").keyup(function() {
+            if ($("#title2").val().length > 100) {
+                $("#title2").val($("#title2").val().substring(0, 100));
+            }
+            $("#titleCount2").text($("#title2").val().length + "/ 100");
+        });
+        $("#title2").blur(function(){
+            if ($("#title2").val().length > 100) {
+                $("#title2").val($("#title").val().substring(0, 100));
+            }
+            $("#titleCount2").text($("#title2").val().length + "/ 100");
+        });
+
+        // $("#total_consume").keyup(function() {
+        //     if ($("#total_consume").val() < 1) {
+        //         $("#total_consume").val(0);
+        //     }
+        // });
+
+
+    </script>
+</body>
+</html>

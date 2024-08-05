@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+
+		<link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+		<link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+
+		<link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" />
+		<include file="public@head"/>
+	</head>
+	<body>
+		<include file="public@nav"/>
+		<include file="public@header"/>
+		<div class="trunk">
+			<div class="trunk-con">
+				<div class="right-container">
+					<div class="normal-list">
+						<div class="trunk">
+						<div class="record">
+
+							<ul class="nav-tabs" >
+                                <li class="nav-tabs-con fl <empty name=':input(type)'>nav-tabs-active</empty>">
+                                    <a href="{:url('myserver_foreshow')}" class="nav-link">今日开服</a>
+								</li>
+                                <li class="nav-tabs-con <eq name=':input(type)' value='1'>nav-tabs-active</eq> fl">
+                                    <a href="{:url('myserver_foreshow',['type'=>1])}" class="nav-link">新服预告</a>
+								</li>
+								<php>
+									$tmp_type = input('type');
+								</php>
+							    <!-- <li class="nav-tabs-con <eq name=':input(type)' value='2'>nav-tabs-active</eq> fl">
+                                    <a href="{:url('myserver_foreshow',['type'=>2])}" class="nav-link">不参与结算订单</a><span class="tagging">说明：针对渠道所属用户的注册充值进行结算，充值数据是指消费到游戏的所有订单。</span><span class="tagging color-orange">注：确认结算后的订单不可设置不参与结算。</span>
+								</li> -->
+                            </ul>
+                         </div>
+							<div class="tabpan">
+
+								<div class="tabpan-con tabpan-show">
+									<form action="{:url('myserver_foreshow')}" method="get">
+										<div class="trunk-search clearfix fr">
+											<php>
+												 // $map[''] = $promote_id;
+											</php>
+
+											<!-- <select id="game_id" name="game_id" class="tab-input js-select-gallery normal-space trunk-search-select fl">
+												<option value="" data="0">游戏名称</option>
+												<volist name=":get_promote_apply_game_info($promote_id)" id="vo">
+													<option game-id="{$vo.game_id}" value="{$vo.game_id}" <if condition="$vo['game_id'] eq input('game_id')"> selected</if>>{$vo.game_name}</option>
+												</volist>
+											</select>
+
+											<select id="server_id" name="server_id" class="tab-input js-select-gallery normal-space trunk-search-select fl">
+												<option value="" data="0">js填充区服信息</option>
+												
+											</select> -->
+
+											<select id="game_id" name="game_id" class="tab-input js-select-gallery normal-space trunk-search-smallselect fl" >
+												<option value="" data="0">游戏名称</option>
+												
+												<volist name=":get_promote_apply_game_info($promote_id)" id="vv">
+													<option <if condition="$vv['game_id'] eq input('game_id')"> selected</if> data="{$vv['game_name']}" value="{$vv['game_id']}">{$vv['game_name']}</option>
+												</volist>
+											</select>
+
+											<!-- 根据上面游戏的选择 查出区服列表 -->
+											<select id="server_id" name="server_id" class="tab-input js-select-gallery normal-space trunk-search-smallselect fl" >
+												<option value="">区服</option>
+											</select>
+
+											<if condition="$tmp_type == 1">
+												<input type="text" id="sdate" class="tabpan-input" autocomplete="off" name="start_time" placeholder="开服时间" value="{:input('start_time')}">
+											</if>
+
+											<!-- <label class="line-color">&nbsp;-&nbsp;</label> -->
+											<!-- <input type="text" id="edate" class="tabpan-input " name="end_time" autocomplete="off" placeholder="注册结束时间" value="{:input('end_time')}"> -->
+
+											<input type="hidden" name="type" value="{:input('type')}">
+											<!-- <input type="button" url="{:url('myserver_foreshow',['type'=>input('type')])}" class="submit fr normal-space btn-clear"  value="清空"> -->
+											<a href="{:url('myserver_foreshow',['type'=>input('type')])}"><input type="button" class="submit fr normal-space btn-clear" value="清空"></a>
+											<input type="submit" class="submit fr normal-space" id="submit" value="搜索">
+											<input type="hidden" id="page" name="row" value="{:input('row',10)}">
+										</div>
+									</form>
+									<div class="clear"></div>
+									<table class="table normal-table" id="promotecoin_table">
+										<tbody>
+											<tr>
+												<th>游戏名称</th>
+												<th>区服</th>
+												<th>开服时间</th>
+												<th>游戏类型</th>
+											</tr>
+											<notempty name="data_lists">
+												<volist name="data_lists" id="vo">
+													<tr>
+														<td>{$vo.game_name|default='-'}</td>
+														<td>{$vo.server_name}</td>
+														<td>{:date('Y-m-d H:i:s',$vo.start_time)}</td>
+														<td>{$vo.game_type_name}</td> 
+													</tr>
+												</volist>
+													
+											<else/>
+												<!--暂无数据-->
+												<tr>
+													<td colspan="10">
+														<div class="no-data">
+															<img src="__TMPL__/public/assets/images/icon_wushujv2.png" alt="" class="no-data-img" />
+															<p class="no-data-text">暂无数据</p>
+														</div>
+													</td>
+												</tr>
+											</notempty>
+										</tbody>
+									</table>
+									<notempty name="data_lists">
+									<div class="pagenation clearfix">
+										{$page}
+									</div>
+									</notempty>
+									<div class="clear"></div>
+
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<include file="public@scripts"/>
+		<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+		<script src="__STATIC__/js/layer/layer.js"></script>
+		<!-- <script type="text/javascript" src="__STATIC__/js/datejs/moment.min.js"></script>
+		<script type="text/javascript" src="__STATIC__/js/datejs/momentfunction.js"></script>
+		<script type="text/javascript" src="__STATIC__/js/datejs/daterangepicker.js"></script> -->
+
+		<script src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.js"></script>
+		<script src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+
+		<!-- <include file="public@date_config_scripts"/> -->
+		<script>
+	
+			$(".js-ajax-dialog-btn").click(function () {
+			    if(confirm('确定要操作吗？')){
+                    var url = $(this).attr('url');
+                    $.ajax({
+                        type:'post',
+                        url:url,
+                        success:function(res){
+                            layer.msg(res.msg,{time:1000},function(){
+                                location.href = location.href;
+                            });
+                        },error:function(){
+                            layer.msg('服务器错误，请稍后再试');
+                        }
+                    });
+				}
+            })
+            //设置分成比例
+            
+			game_id = "{:input('game_id')}";
+            server_id = "{:input('request.server_id')}";
+			// sever_name = "{:input('sever_name')}";
+			// alert(sever_name);
+
+			$(function() {
+				$(".js-select-gallery").select2();
+
+				if(game_id){
+					get_game_server(game_id);
+					// alert(game_id);
+                }
+                $('#game_id').change(function(){
+                    gi = $("#game_id").val();
+                    get_game_server(gi);
+                });
+                $("#server_id").click(function () {
+                    if($('#game_id').val()==0 ){
+                        layer.msg('请先选择游戏');
+                        return false;
+                    }
+                    if($('#game_id').val()=='' ){
+                        layer.msg('请先选择游戏');
+                        return false;
+                    }
+                })
+			});
+			
+			//获取区服列表
+			function get_game_server(game_id){
+                $('#server_id').empty();
+                $('#server_id').append("<option value=''>区服名称</option>");
+                $.ajax({
+                    url:"{:url('get_server')}",
+                    type:'post',
+                    dataType:'json',
+                    data:{game_id:game_id},
+                    success:function(res){
+                        if(res.code!=1){
+                            layer.msg(res.msg);
+                        }else{
+                            option = '';
+                            $.each(res.data,function (key,value) {
+                                option+="<option value='";
+                                option+=value['id']+"'";
+                                if(value['id']==server_id){
+                                    option+="selected";
+                                }
+                                option+=" >"+value['server_name'];
+                                option+="</option>";
+                            });
+                            $('#server_id').append(option).select2();
+                        }
+                    },error(){
+                        layer.msg('服务器错误');
+                    }
+                })
+            }
+			//			日历
+			var date = "{$setdate}";
+			var myDate = new Date;
+			var tmp_year = myDate.getFullYear(); //获取当前年
+			var tmp_mon = myDate.getMonth() + 1; //获取当前月
+			var tmp_date = myDate.getDate(); // 日
+			var d_date_string = ""+tmp_year+"-"+tmp_mon+"-"+tmp_date+"";
+			// alert(d_date_string);
+			$('#sdate').datetimepicker({
+				format: 'yyyy-mm-dd',
+				language: "zh-CN",
+				minView: 2,
+				autoclose: true,
+				scrollMonth: false,
+				scrollTime: false,
+				scrollInput: false,
+				startDate: d_date_string,
+				endDate: date
+			});
+			$('#edate').datetimepicker({
+				format: 'yyyy-mm-dd',
+				language: "zh-CN",
+				minView: 2,
+				autoclose: true,
+				pickerPosition: 'bottom-left',
+				scrollMonth: false,
+				scrollTime: false,
+				scrollInput: false,
+				endDate: date
+			});
+
+            $(".check-all").click(function() {
+                $('.ids').prop("checked", this.checked);
+            });
+            $(".ids").click(function() {
+                var option = $(".ids");
+                option.each(function(i) {
+                    if(!this.checked) {
+                        $(".check-all").prop("checked", false);
+                        return false;
+                    } else {
+                        $(".check-all").prop("checked", true);
+                    }
+                });
+            });
+
+			$('#submit').click(function() {
+				var sdate = $('#sdate').val();
+				var edate = $('#edate').val();
+				var pid = $('#promote_id').val();
+				var pac = $('#promote_account').val();
+
+				if(Date.parse(sdate) > Date.parse(edate)) {
+					layer.msg('开始时间必须小于等于结束时间');
+					return false;
+				}
+				// var url = $(this).attr('url');
+				// console.log(url);
+				// var query = $('.jssearch').find('input').serialize();
+				// query += "&" + $('.jssearch').find('select').serialize();
+				// query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+				// query = query.replace(/^&/g, '');
+				// if(url.indexOf('?') > 0) {
+				// 	url += '&' + query;
+				// } else {
+				// 	url += '?' + query;
+				// }
+				// window.location.href = url;
+
+			});
+
+		</script>
+	</body>
+
+</html>

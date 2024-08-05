@@ -1,0 +1,101 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('task')}">试玩任务</a></li>
+        <li><a href="{:url('record')}">试玩列表</a></li>
+        <li><a href="{:url('withdraw')}">提现记录</a></li>
+        <li class="active"><a href="javascript:;">提现设置</a></li>
+        <span class="title_remark">说明：针对玩家的提现操作进行设置</span>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('sitePost')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">最低手续费：</label>
+                            <div class="col-md-3 col-sm-5 pr">
+                                <input type="text" class="form-control"  name="limit_money"
+                                       value="{$data.limit_money}"><span class="input-sup">元</span>
+                            </div>
+                            <p class="help-block">如1，则手续费不足1元时按照1元收取</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">提现手续费：</label>
+                            <div class="col-md-3 col-sm-5 pr">
+                                <input type="text" class="form-control" value="{$data.payment_fee}" name="payment_fee"><span class="input-sup">%</span>
+                            </div>
+                            <p class="help-block">用户进行提现需要扣除的手续费，如：10%，用户提现￥100.00，平台将收取￥10.00的手续费</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">单笔最高提现金额：</label>
+                            <div class="col-md-3 col-sm-5 pr">
+                                <input type="text" class="form-control" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" value="{$data.limit_cash}" name="limit_cash" placeholder="如500"><span class="input-sup">元</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">单日最高提现次数：</label>
+                            <div class="col-md-3 col-sm-5 pr">
+                                <input type="text" class="form-control" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" value="{$data.limit_count}" name="limit_count" placeholder="如3"><span class="input-sup">次</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">打款方式：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="pay_type" <empty name='data.pay_type'>checked="checked"</empty>> 手动
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="pay_type" <eq name='data.pay_type' value='1'>checked="checked"</eq>> 自动
+                                </label>
+                            </div>
+                            <p class="help-block">默认选中手动</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">支付宝提现：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="alipay_show" <neq name='data.alipay_show' value='0'>checked="checked"</neq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="alipay_show" <if condition="$data['alipay_show'] heq '0'">checked="checked"</if>>关闭
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">微信提现：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="weixin_show" <neq name='data.weixin_show' value='0'>checked="checked"</neq>> 开启
+                                </label>
+                                <label  class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="weixin_show" <if condition="$data['weixin_show'] heq '0'">checked="checked"</if>> 关闭
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <input type="hidden" name="set_type" value="{$name}">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

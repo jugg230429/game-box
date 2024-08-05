@@ -1,0 +1,310 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/select2.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/new_select2.css" type="text/css" />
+    <link href="__TMPL__/channelwappublic/assets/css/set.css" type="text/css" rel="stylesheet" />
+    <link href="__TMPL__/channelwappublic/assets/css/ydui.css" type="text/css" rel="stylesheet" />
+</block>
+<block name="body">
+    <div class="page-container profit-exchange-container">
+        <header>
+            <a href="javascript:history.back(-1);" class="back-btn"></a>
+            <p class="siteItem accountSet">账户设置</p>
+        </header>
+        <div class="v-middle h-middle tabSwitch">
+            <p class="header-title active">基本信息</p>
+            <p class="header-title ">支付宝信息</p>
+            <p class="header-title ">结算账户信息</p>
+        </div>
+
+        <div class="page-content-box">
+            <div class="profit-exchange-content">
+                <div class="exchange-tab">
+                <form action="" id="ajaxForm1" method="post">
+                    <div class="form">
+                        <div class="form-item" style="margin-top: 0.3rem">
+                            <div class="form-item-title accountNumber">账号：</div>
+                            <div class="form-item-text">
+                                {$data.account}
+                            </div>
+                        </div>
+                        <div class="form-item" style="margin-top: 0.3rem">
+                            <div class="form-item-title"><span class="req">*</span>联系人：</div>
+                            <div class="form-item-text">
+                                <input type="text" class="tabpan-input" name="real_name" maxlength="25" id="real_name" value="{$data.real_name}" placeholder="2-25个字符">
+                            </div>
+                        </div>
+                        <div class="form-item">
+                            <div class="form-item-title"><span class="req">*</span>联系电话：</div>
+                            <div class="form-item-text">
+                                <input type="text" class="tabpan-input" name="mobile_phone" id="mobile_phone" maxlength="11"  value="{$data.mobile_phone}" placeholder="请输入手机号">
+                            </div>
+                        </div>
+                        <div class="form-item emailItem">
+                            <div class="form-item-title accountNumber emailNumber"><span class="req">*</span>邮箱：</div>
+                            <div class="form-item-text">
+                                <input type="text" class="tabpan-input" name="email" id="email" data-suffix="@qq.com" data-mail="" value="{$data.email}" placeholder="请输入邮箱" >
+                            </div>
+                        </div>
+                        <div class="form-item">
+                            <input type="hidden" name="tab" value="1">
+                            <div class="submit-btn js_submit">确认</div>
+                        </div>
+                    </div>
+                </form>
+                </div>
+                <div class="exchange-tab" style="display: none">
+                    <form action="" id="ajaxForm2" method="post">
+                    <div class="form">
+                        <div class="explain">用于结算打款，请确认填写无误。</div>
+                        <div class="form-item" style="margin-top: 0.3rem">
+                            <div class="form-item-title"><span class="req">*</span>支付宝账号：</div>
+                            <div class="form-item-text">
+                                <input type="text" class="tabpan-input" name="alipay_account" id="alipay_account" value="{$data.alipay_account}" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-item" style="margin-top: 0.3rem">
+                            <div class="form-item-title"><span class="req">*</span>支付宝姓名：</div>
+                            <div class="form-item-text">
+                                <input type="text" class="tabpan-input" name="alipay_name" id="alipay_name" value="{$data.alipay_name}" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-item">
+                            <input type="hidden" name="tab" value="5">
+                            <div class="submit-btn js_submit withdraw-submit-btn">确认</div>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+                <div class="exchange-tab" style="display: none">
+                    <form action="" id="ajaxForm3" method="post">
+                        <div class="form">
+                            <div class="explain">用于结算打款，请确认填写无误。</div>
+                            <div class="form-item">
+                                <label class="fl form-item-title payInfoTitle"><span class="req">*</span>手机号:</label>
+                                <input type="text" class="tabpan-input inputInfo" name="bank_phone" id="bank_phone" value="{$data.bank_phone}" maxlength="25"  placeholder="银行预留手机号">
+                            </div>
+                            <div class="form-item">
+                                <label class="fl form-item-title payInfoTitle"><span class="req">*</span>银行卡号:</label>
+                                <input type="text" maxlength="19" class="tabpan-input inputInfo" name="bank_card" id="bank_card" value="{$data.bank_card}" placeholder="输入卡号">
+                            </div>
+
+                            <div class="form-item">
+                                <label class="fl form-item-title payInfoTitle"><span class="req">*</span>收款银行:</label>
+                                <!-- <select id="bank_name" name="bank_name" style="width: 280px;"></select> -->
+                                <select id="bank_name" name="bank_name"  class="select_gallery search-select  bankSelection" style="width:100%;">
+                                    <option value="0">收款银行</option>
+                                </select>
+                            </div>
+
+                            <div class="form-item ">
+                                <label class="fl form-item-title payInfoTitle"><span class="req">*</span>持卡人:</label>
+                                <input type="text" class="tabpan-input inputInfo" name="bank_account" id="bank_account" maxlength="25" value="{$data.bank_account}" placeholder="持卡人姓名，2-25个字符">
+                            </div>
+                            <div class="form-item type1">
+                                <label class="fl form-item-title countryPay"><span class="req"></span>开户城市:</label>
+                                <!-- <select id="province" name="province" class="areaselect1 select_gallery js-select-gallery"></select> -->
+                                <!-- <div class="search-item  col-5">
+                                    <select id="province" name="province"  class="select_gallery search-select  bankSelection js-select-gallery" data-placeholder="" style="display:none;">
+                                        <option value="0">开户城市</option>
+                                    </select>
+                                </div>
+                                <div class="search-item  col-4">
+                                    <select id="city" name="city"  class="select_gallery search-select  bankSelection js-select-gallery" data-placeholder="" style="display:none;">
+                                    </select>
+                                </div>
+
+                                <div class="search-item  col-5">
+                                    <select id="county" name="county"  class="select_gallery search-select  bankSelection js-select-gallery" data-placeholder="" style="display:none;">
+                                    </select>
+                                </div>
+                                 -->
+                                 <div class="formInput flex cityChoose" id="city">
+                                    <input type="hidden" id="province" name="province" class="flex" value="{$data['bank_area']['0']}">
+                                    <input type="hidden" id="city" name="city" class="flex"  value="{$data['bank_area']['1']}">
+                                    <input type="hidden" id="county" name="county" class="flex"  value="{:end($data['bank_area'])}">
+                                    <empty name="data['bank_area']">
+                                        <div class="areaShow default js-show">省份 城市 区县</div>
+                                    <else/>
+                                        <div class="areaShow js-show">{:implode(' ',$data['bank_area'])}</div>
+                                    </empty>
+                                </div>
+
+                               
+                                <!-- <select id="city" name="city" class="areaselect2 select_gallery js-select-gallery" style="width: 90px;"></select>
+                                <select id="county" name="county" class="areaselect3 select_gallery js-select-gallery" style="width: 90px;"></select> -->
+                            </div>
+                            <div class="form-item type1">
+                                <label class="fl form-item-title payInfoTitle"><span class="req">*</span>开户网点:</label>
+                                <input type="text" class="tabpan-input inputInfo" name="account_openin" id="account_openin" value="{$data.account_openin}" placeholder="开户网点">
+                            </div>
+                            <div class="form-item">
+                                <input type="hidden" name="tab" value="2">
+                                <div class="submit-btn js_submit withdraw-submit-btn  payButton">确认</div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script src="__TMPL__/channelwappublic/assets/js/mail_suffix.js"></script>
+    <!-- <script src="__TMPL__/channelwappublic/assets/js/area.js"></script> -->
+    <script src="__TMPL__/channelwappublic/assets/js/bank.js"></script>
+    <script src="__TMPL__/channelwappublic/assets/js/ydui.citys.js"></script>
+    <script src="__TMPL__/channelwappublic/assets/js/ydui.js"></script>
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/select2.min.js"></script>
+    <script>
+        $(function () {
+            var $target = $('#city');
+                $target.citySelect();
+
+                $target.on('click', function (event) {
+                    event.stopPropagation();
+                    $target.citySelect('open');
+                });
+
+                $target.on('done.ydui.cityselect', function (ret) {
+                    var val = ret.provance + ' ' + ret.city + ' ' + ret.area;
+                    if(val){
+                        $(this).find('#province').val(ret.provance);
+                        $(this).find('#city').val(ret.city);
+                        $(this).find('#county').val(ret.area);
+                        $(this).find('.js-show').removeClass('default').text(val);
+                    } else {
+                        $(this).find('input').val('');
+                        $(this).find('.js-show').addClass('default').text('省份 城市 区县');
+                    }
+                });
+            //加载页面判断
+            var path = location.pathname;
+            var path_index = path.indexOf('type');
+            var type = path.substring(path_index+5,path_index+6);
+            $('.header-title').eq(type).addClass("active").siblings(".header-title").removeClass("active");
+            $('.exchange-tab').eq(type).show().siblings().hide();
+            //点击tap
+            $('.header-title').click(function () {
+                var that = $(this);
+                that.addClass("active").siblings(".header-title").removeClass("active");
+                var index = that.index();
+                $('.exchange-tab').eq(index).show().siblings().hide()
+            })
+        })
+        $(".js_submit").click(function () {
+            var form = $(this).parents('form');
+            $(".js_submit").attr('disabled',true);
+            $.ajax({
+                type: 'post',
+                url: '{:url("do_set")}',
+                data: form.serialize(),
+                async: false,
+                success: function (res) {
+                    layer.msg(res.msg);
+                    $(".js_exchange").attr('disabled',false);
+                },
+                error: function () {
+                    $(".js_exchange").attr('disabled',false);
+                    layer.msg('服务器错误，请稍后再试');
+                }
+            });
+        })
+
+        //邮箱
+        function add_mail_suffix(that) {
+            var suffix = $(that).data('suffix');
+            var input = $(that).closest('.mail_suffix').prev();
+            if(input.attr('data-mail').length > 0) {
+                input.val(input.attr('data-mail') + suffix);
+            }
+        }
+        $('#email').focus(function() {
+            var val = $.trim($(this).val());
+            if(val) {
+                var index = val.indexOf('@');
+                if(index > -1) {
+                    var suffix = val.substring(index);
+                    val = val.substring(0, index);
+                    $(this).val(val).attr('data-suffix', suffix).attr('data-mail', val);
+                }
+            }
+            var html = '<ul class="mail_suffix">';
+            for(var item in mail_suffix) {
+                html += '<li onclick="add_mail_suffix(this)" data-suffix="' + mail_suffix[item] + '">' + mail_suffix[item] + '</li>';
+            }
+
+            html += '</ul>';
+            $(this).after(html);
+            $('body').click(function(event) {
+                var e = event || window.event;
+                var target = e.target || e.srcElement;
+
+                if($(target).attr('id') != 'email' && $(target).attr('class') != 'mail_suffix') {
+                    $('.mail_suffix').remove();
+                }
+                return false;
+            });
+            return false;
+        }).blur(function(event) {
+            var e = event || window.event;
+            var target = e.target || e.srcElement;
+            var that = $(this);
+            if($(target).attr('id') == 'email' && $(target).attr('class') == 'mail_suffix') {
+                $('.mail_suffix').remove();
+            }
+            if(that.attr('data-mail')) {
+                var data_mail_index = that.attr('data-mail').indexOf('@');
+                if(data_mail_index > -1) {
+                    var data_mail = that.attr('data-mail');
+                    that.val(data_mail);
+                    that.attr('data-mail', data_mail.substring(0, data_mail_index));
+                    that.attr('data-suffix', data_mail.substring(data_mail_index));
+                } else {
+                    that.val(that.attr('data-mail') + that.attr('data-suffix'));
+                }
+
+            }
+            return false;
+        }).keyup(function() {
+            var val = $.trim($(this).val());
+            if(val.length > 64) {
+                val = val.substr(0, 64);
+                $(this).val(val);
+            }
+            $(this).attr('data-mail', val);
+
+            return false;
+        });
+        // $(".js-select-gallery").select2();
+        // _init_area("province", "city", "county");
+
+        // var pro="{:$data['bank_area']['0']?:'省'}";
+        // var city="{:$data['bank_area']['1']?:'市'}";
+        // var are="{:end($data['bank_area'])?:'区/县'}";
+        // // 默认选中
+        // $("#select2-province-container").text(pro);
+        // $("#select2-city-container").text(city);
+        // $("#select2-county-container").text(are);
+        // $('#province').val(pro);
+        // $('#province').change(function(){
+        //     $("#select2-city-container").text('市');
+        //     $("#select2-county-container").text('区/县');
+        // });
+        // $('#city').val(pro);
+        // $('#county').val(pro);
+        //				银行选择
+        var data_bank_name = '{$data["bank_name"]}';
+        var bank_name = '<option value="">选择银行</option>';
+        // console.log(bank);
+        for(var bn in bank) {
+            if(data_bank_name == bank[bn]) {
+                bank_name += '<option value="' + bank[bn] + '" selected>' + bank[bn] + '</option>';
+            } else {
+                bank_name += '<option value="' + bank[bn] + '">' + bank[bn] + '</option>';
+            }
+        }
+        $('#bank_name').html(bank_name).select2();
+    </script>
+</block>

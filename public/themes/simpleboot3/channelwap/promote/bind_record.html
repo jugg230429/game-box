@@ -1,0 +1,227 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/LCalendar.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/select2.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/new_select2.css" type="text/css" />
+    <link href="__TMPL__/channelwappublic/assets/css/recharge.css" type="text/css" rel="stylesheet" />
+    <link href="__TMPL__/channelwappublic/assets/css/swiper-bundle.min.css" type="text/css" rel="stylesheet" />
+</block>
+<block name="body">
+    <div class="page-container profit-exchange-container">
+        <header>
+            <a href="javascript:history.back(-1);" class="back-btn"></a>
+            <div style="width: 100%;height: 100%" class="v-middle h-middle">
+                <p class="header-title">代充记录</p>
+            </div>
+        </header>
+        <div class="page-content">
+            <div class="search-box">
+                <div class="search-item col-4">
+                    <input type="text" class="input-date" id="user_account" placeholder="玩家账号" value="{:input('user_account')}">
+                </div>
+                <div class="search-item  col-4">
+                    <input type="text" class="input-date btn-date" readonly name="start_time" id="start_time" placeholder="开始时间" value="" autocomplete="off">
+					
+                </div>
+                <div class="search-item  col-4">
+                    <input type="text" class="input-date btn-date" readonly name="end_time" id="end_time" placeholder="结束时间" value="" autocomplete="off">
+                </div>
+            </div>
+            <div class="newBox">
+                <div class="swiper-container" >
+                    <div class="swiper-wrapper" >
+                    <div class="swiper-slide" style="width: 1000px;">
+                        <div class="table-box">
+                            <table>
+                                <tbody>
+                                <tr class="table-title">
+                                    <th>游戏名称</th>
+                                    <th>玩家账号</th>
+                                    <th>代充金额</th>
+                                    <th>实付金额</th>
+                                    <th>折扣比例</th>
+                                    <th>代充时间</th>
+                                    <th>支付方式</th>
+                                </tr>
+                                <tr class="total">
+                                    <td>汇总：</td>
+                                    <td></td>
+                                    <td class="scost"></td>
+                                    <td class="spay_amount"></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                </tbody>
+                                <tbody id="recordload"> 
+                                </tbody>
+                            </table>
+                        </div>
+                </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/select2.min.js"></script>
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/LCalendar.min.js"></script>
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/swiper-bundle.min.js"></script>
+    <script>
+        $(function () {
+
+            $(".select_gallery").select2({
+                minimumResultsForSearch: -1
+            });
+            var swiper = new Swiper('.swiper-container', {
+                slidesPerView: 'auto',
+                freeMode: true,
+                mousewheel: true,
+            });
+			
+            //时间插件
+            var start_calendar = new LCalendar();
+            start_calendar.init({
+                'trigger': '#start_time', //标签id
+                'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+                'minDate': (new Date().getFullYear() - 3) + '-' + 1 + '-' + 1, //最小日期
+                'maxDate': (new Date().getFullYear() + 3) + '-' + 12 + '-' + 31 //最大日期
+            });
+            var end_calendar = new LCalendar();
+            end_calendar.init({
+                'trigger': '#end_time', //标签id
+                'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+                'minDate': (new Date().getFullYear() - 3) + '-' + 1 + '-' + 1, //最小日期
+                'maxDate': (new Date().getFullYear() + 3) + '-' + 12 + '-' + 31 //最大日期
+            })
+        })
+    </script>
+    <script>
+        var itemIndex = 0;
+        var user_account = '';
+        var start_time = '';
+        var end_time = '';
+        var lwx = window.lwx || {};
+        lwx.ready = true;
+        lwx.width = $(window).width();
+        lwx.height = $(window).height();
+        lwx.number = {record:1};
+        lwx.row = {record:15};
+        lwx.http = {
+            getJSON:function(url,callback){
+                $.getJSON(url + '&v=' + Date.now(),function(data){
+                    callback(data);
+                });
+            },
+            postJSON:function(url,args,callback) {
+                $.post(url + '&v=' + Date.now(), args, function(data) {
+                    callback(data);
+                },"json")
+            },
+        };
+        lwx.url ={
+            record:'{:url("Promote/get_bind_record")}',
+        };
+        lwx.page = {
+            record:function(){
+                if(lwx.number.record) {
+                    lwx.http.getJSON(lwx.url.record+'?row='+lwx.row.record+'&page='+lwx.number.record+'&user_account='+user_account+'&start_time='+start_time+'&end_time='+end_time,function(data) {
+                        var hotload = $('#recordload');
+                        $(".total").show();
+                        var total = data.total;
+                        if(total.scost == null){
+                            total.scost = '';
+                        }
+                        $(".scost").text(total.scost);
+                        if(total.spay_amount == null){
+                            total.spay_amount = '';
+                        }
+                        $(".spay_amount").text(total.spay_amount);
+                        var data = data.data;
+                        if(data && data.length) {
+                            var html = '';
+                            for (var i in data) {
+                                html += '<tr>';
+                                html += '<td>'+data[i].game_name+'</td>'
+                                html += '<td>'+data[i].user_account+'</td>';
+                                html += '<td>'+data[i].cost+'</td>';
+                                html += '<td>'+data[i].pay_amount+'</td>';
+                                html += '<td>'+data[i].discount+'折'+'</td>';
+                                html += '<td>'+data[i].pay_time+'</td>';
+                                html += '<td>'+data[i].pay_way+'</td>';
+                                html += '</tr>';
+                            }
+                            hotload.append(html);
+                            hotload.find('.jsdropload').remove();
+                            if(data.length >= lwx.row.record) {
+                                lwx.number.record++;
+                                lwx.ready = true;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.record = false;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                        } else {
+                            if(lwx.number.record==1){
+                                $(".total").hide();
+                                hotload.html('').append('<p class="no_invest_info jsdropload">~空空如也~</p>');
+                            } else{
+                                hotload.find('.jsdropload').remove();
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                            lwx.number.record = false;
+                        }
+                    });
+                }
+            }
+        };
+        pageChange();
+        function pageChange() {
+            lwx.page.record();
+        }
+        function pageScroll(scrollTop, boxHeight, maxScrollHeight) {
+            if (scrollTop + boxHeight >= maxScrollHeight - 50) {
+                if (lwx.ready) {
+                    lwx.ready = false;
+                    lwx.page.record();
+                }
+            }
+        }
+        window.onscroll = function() {
+            var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+            pageScroll(scrollTop, lwx.height, $(document).height())
+        }
+        $(function () {
+            $('.game-menu-box a').click(function () {
+                $(this).addClass("active").siblings().removeClass("active");
+                var index = $(this).index();
+                $('.menu-tab').eq(index).show().siblings(".menu-tab").hide();
+                itemIndex = index;
+                location.hash = index;
+            });
+            $("#user_account").bind('input porpertychange',function(){
+                user_account = $("#user_account").val();
+                $("#recordload").empty();
+                lwx.number.record = 1;
+                pageChange();
+            });
+            $("#start_time").bind('input porpertychange',function(){
+                start_time = $("#start_time").val();
+                $("#recordload").empty();
+                lwx.number.record = 1;
+                pageChange();
+            });
+            $("#end_time").bind('input porpertychange',function(){
+                end_time = $("#end_time").val();
+                $("#recordload").empty();
+                lwx.number.record = 1;
+                pageChange();
+            });
+        })
+        $(window).on("hashchange", function() {
+            pageChange();
+        });
+    </script>
+</block>

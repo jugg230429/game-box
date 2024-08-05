@@ -1,0 +1,283 @@
+<include file="public@header" />
+<style>
+    li {
+        list-style: none;
+    }
+    .checkDetailBox{
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(51, 51, 51, .3);
+        display: none;
+        z-index: 9;
+    }
+    .scaleImgBox{
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(51, 51, 51, .3);
+        display: none;
+        z-index: 10;
+        overflow: hidden;
+    }
+    .feedBackContainer{
+        width: 800px;
+        height: 470px;
+        background: #fff;
+        border-radius: 5px;
+        margin-left: 20%;
+        margin-top: 10%;
+        text-align: center;
+    }
+    .titleTopDetail{
+        height: 50px;
+        background: #aaa;
+        padding: 16px 20px 16px 20px;
+        border-radius:5px 5px 0 0
+    }
+    .title-name{
+        font-size: 16px;
+        font-weight: bold;
+        color: #333333;
+    }
+    .bottomModal{
+        padding: 25px 20px 0 20px;
+    }
+    .descFirstText{
+        margin-bottom: 35px;
+    }
+    .blueText{
+        font-size: 14px;
+        font-weight: bold;
+        color: #006FC4;
+    }
+    .contentDesc {
+        font-size: 14px;
+        color: #333333;
+        line-height: 30px;
+    }
+    .itemImgShow{
+        width: 108px;
+        height: 192px;
+        background: #3A77C7;
+        border-radius: 5px;
+        margin-right: 20px;
+    }
+    .itemImgShow img {
+        width: 100%;
+        height: 100%;
+        border-radius: 5px;
+    }
+    .btn-group .dropdown-menu{
+        margin-left: -65px;
+    } 
+    .need_check_img {
+        display: inline-block;
+        height: 100%;
+    }
+    .close_guanbi {
+        position: absolute;
+        top: -40px;
+        right: -40px;
+        width: 80px;
+        height: 80px;
+        cursor: pointer;
+        border-radius: 50%;
+        background-color: rgba(0,0,0,.5);
+    }
+    .mainCloseIcon {
+        display: block;
+        width: 12px;
+        height: 12px;
+        position: relative;
+        top: 51px;
+        left: 20px;
+    }
+</style>
+</head>
+<body>
+
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="{:url('user/feedback')}">投诉反馈</a></li>
+    </ul>
+
+    <form id="search_form" class="well form-inline fr" method="get" action="{:url('user/feedback')}" onsubmit="return check();">
+
+        <input type="text" class="form-control" name="user_account" style="width: 120px;" value="{:input('user_account/s','')}" placeholder="玩家账号">
+        <input type="text" class="form-control" name="game_name" style="width: 120px;" value="{:input('game_name/s','')}" placeholder="游戏名称">
+
+        <select name="report_type" id="report_type" class="selectpicker " data-live-search="true" data-size="8" style="width: 100px;">
+            <option value="">举报类型</option>
+            <option value="色情内容" <?php if(input('report_type')=='色情内容') echo 'selected'; ?>>色情内容</option>
+            <option value="暴力内容" <?php if(input('report_type')=='暴力内容') echo 'selected'; ?>>暴力内容</option>
+            <option value="反动内容" <?php if(input('report_type')=='反动内容') echo 'selected'; ?>>反动内容</option>
+            <option value="侵犯版权" <?php if(input('report_type')=='侵犯版权') echo 'selected'; ?>>侵犯版权</option>
+            <option value="携带病毒" <?php if(input('report_type')=='携带病毒') echo 'selected'; ?>>携带病毒</option>
+            <option value="恶意扣费" <?php if(input('report_type')=='恶意扣费') echo 'selected'; ?>>恶意扣费</option>
+            <option value="含有不良插件" <?php if(input('report_type')=='含有不良插件') echo 'selected'; ?>>含有不良插件</option>
+            <option value="无法安装或重启" <?php if(input('report_type')=='无法安装或重启') echo 'selected'; ?>>无法安装或重启</option>
+            <option value="其他" <?php if(input('report_type')=='其他') echo 'selected'; ?>>其他</option>
+        </select>
+        <input type="text" class="form-control js-bootstrap-date" name="start_time" id="start_time" placeholder="反馈开始时间"
+               value="{:input('request.start_time/s','')}" style="width: 140px;" autocomplete="off">-
+        <input type="text" class="form-control js-bootstrap-date" name="end_time" id="end_time" placeholder="反馈结束时间"
+               value="{:input('request.end_time/s','')}" style="width: 140px;" autocomplete="off">
+        <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+        <a class="btn btn-clear" href="{:url('user/feedback')}">清空</a>
+    </form>
+
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>反馈时间</th>
+            <th>玩家账号</th>
+            <th width="100px">手机型号</th>
+            <th width="100px">游戏名称</th>
+            <th>联系QQ</th>
+            <th width="240px">联系电话</th>
+            <th>举报类型</th>
+            <th width="100px">投诉详情</th>
+            <th width="260px">备注</th>
+        </tr>
+        </thead>
+        <tbody>
+        <php>$user_statuses=array("0"=>'已锁定',"1"=>'正常');</php>
+        <empty name="data_lists">
+            <tr><td colspan="10" style="text-align: center;">暂无数据</td></tr>
+            <else/>
+            <volist name="data_lists" id="vo">
+                <tr>
+                    <td>{$vo.id}</td>
+                    <td>{:date('Y-m-d H:i:s',$vo['create_time'])}</td>
+                    <td>{$vo.user_account}</td>
+                    <td>{$vo.mobile_type}</td>
+                    <td>{$vo.game_name}</td>
+                    <td>{$vo.qq}</td>
+                    <td>{$vo.tel}</td>
+                    <td>{$vo.report_type}</td>
+                    <td><a href="javascript:;" class="view" data-remark="{$vo.remark}" data-images='{$vo.images}'>查看</a></td>
+                    <td><a href="javascript:;" class="hits" data-id="{$vo['id']}">{$vo['admin_remark']|default="点击输入"}</a></td>
+                </tr>
+            </volist>
+        </empty>
+        </tbody>
+    </table>
+    <div class="pagination">
+        {$page}
+    </div>
+    <!-- 查看弹窗 -->
+    <div class="checkDetailBox">
+        <div class="feedBackContainer">
+            <div class="titleTopDetail">
+                <div class="fl title-name">投诉详情</div>
+                <div class="fr closeBtn"><img src="__TMPL__/public/assets/images/btn_close_pop.png" alt=""></div>
+            </div>
+            <div class="bottomModal">
+                <div class="descFirstText">
+                    <p class="blueText">描述：</p>
+                    <div class="contentDesc"></div>
+                </div>
+                <div>
+                    <p class="blueText">截图：</p>
+                    <div>
+                       <ul class="image_lists" style="display: flex;align-items: center;">
+                           
+                       </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 点击图片查看大图效果 -->
+    <div class="scaleImgBox">
+        <div class="feedBackContainer">
+            <div class="close_guanbi">
+                <img src="__TMPL__/public/assets/images/pro_promot_close.png" alt="" class="mainCloseIcon">
+            </div>
+            <img src="" alt="" class="need_check_img">
+        </div>
+    </div>  
+</div>
+
+
+<script src="__STATIC__/js/admin.js"></script>
+<script>
+
+    $(function () {
+
+        $(".hits").click(function () {
+            var id = $(this).attr('data-id');
+            var url = "{:url('feedbackRemark')}";
+            num = $.trim($(this).text());
+            if(num=='点击输入'){
+                num = '';
+            }
+            layer.prompt({
+                formType: 3,
+                title: '输入备注',
+                value: num,
+                placeholder:'请输入备注'
+            }, function (hits) {
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    dataType: 'json',
+                    data: {id:id,admin_remark:hits},
+                    success: function (data) {
+                        if (data.code > 0) {
+                            layer.msg(data.msg);
+                            setTimeout(function(){
+                                self.location.reload(true);
+                            },1000);
+                        } else {
+                            layer.msg(data.msg)
+                        }
+                    },
+                    error: function () {
+                        layer.msg("服务器故障！");
+                    }
+                });
+            });
+        });
+
+
+        $(".view").click(function () {
+            var remark = $(this).attr('data-remark'); // 描述
+            var images = $(this).attr('data-images');
+            images = eval('(' + images + ')');// 截图列表
+            $(".contentDesc").text(remark);
+            var imagesHtml = "";
+            $.each(images, function (index, ele) {
+                imagesHtml += "<li class=\"itemImgShow\" ><img src=\" " + ele + " \" alt=\"\" class=\"demo_img_check\"></li>";
+            });
+            $(".image_lists").html(imagesHtml);
+            $('.checkDetailBox').css('display', 'block');
+            return false;
+
+        });
+        $('.closeBtn').click(function() {
+            $('.checkDetailBox').css('display','none')
+        })
+        
+        $('body').on('click','.demo_img_check',function() {
+            var href = $(this).attr('src')
+            $('.need_check_img').attr('src',href)
+            $(".scaleImgBox").show()
+        })
+
+        $('.close_guanbi').click(function() {
+            $(".scaleImgBox").hide()
+        })
+        
+    })
+
+</script>
+
+</body>
+</html>

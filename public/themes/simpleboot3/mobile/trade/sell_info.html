@@ -1,0 +1,318 @@
+
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/mui.min.css">
+    <link rel="stylesheet" href="__JS__/layui/css/layui.css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/trade_record.css">
+    <style>
+        body{
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .trade_record_page{
+            width: 100vw;
+            height: calc(100vh - 4rem);
+            overflow: auto;
+            /*-webkit-overflow-scrolling: touch;*/
+        }
+        .record-info-contain {
+           padding-bottom: 0;
+
+        }
+    </style>
+</block>
+
+<block name="body">
+    <div class="trade_record_page">
+        <div class="trade_record_header">
+            <a href="{:url('trade/record')}">
+<!--        <a href="javascript:history.back()">-->
+                <img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon"></a>
+            <p class="trade-record-title">订单详情</p>
+
+        </div>
+        <div class="type_down__long_hx clear"></div>
+        <div class="record-info-contain">
+            <!--<div class="order-num-box v-middle">-->
+                <!--<span>订单编号：{$data.order_number}</span>-->
+                <!--<a href="javascript:;" class="copy-btn js-copy" data-clipboard-text="{$data.order_number}">复制编号</a>-->
+            <!--</div>-->
+            <div class="order-content-box">
+                <div class="trumpet-base-info">
+                    <div class="game-info-box v-middle">
+                        <img src="{:cmf_get_image_url($data['icon'])}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null" class="trumpet-game-icon">
+                        <div class="game-info">
+                            <p class="game-name">{$data.game_name}</p>
+                            <p class="game-account">小号：{$data.small_account}</p>
+                            <p class="account-price">￥<span>{$data.money}</span></p>
+                        </div>
+                    </div>
+                    <div style="position: relative">
+                    <div class="trumpet-server v-middle">
+                        <i class="server-icon"></i>
+                        <p ><span>区服</span>{$data.server_name}</p>
+                    </div>
+                    <div class="trumpet-consume v-middle">
+                        <i class="consume-icon"></i>
+                        <p ><span>累计消费(元)</span>{$data.cumulative}</p>
+                    </div>
+                    <div class="trumpet-day v-middle" style="margin-bottom: 0">
+                        <i class="day-icon"></i>
+                        <p ><span>创建天数</span>{$data.days}天</p>
+                    </div>
+                    <if condition="$data['password']">
+                        <div class="trumpet-password v-middle">
+                            <i class="pw-icon"></i>
+                            <p ><span>二级密码</span>{$data['password']}</p>
+                        </div>
+                    </if>
+                        <switch name="data.status">
+                            <case value="-1"><i class="official-img checked"></i></case>
+                            <case value="0"><i class="official-img no-check"></i></case>
+                            <case value="1"><i class="official-img checked"></i></case>
+                            <case value="2"><i class="official-img no-pass"></i></case>
+                            <case value="3"><i class="official-img checked"></i></case>
+                            <default />
+                        </switch>
+                    </div>
+                </div>
+                <div class="trumpet-detail-info">
+                    <div class="trumpet-detail-box">
+                        <div class="v-middle">
+                            <p class="title">小号详情</p>
+                            <p class="tips">如描述与截图有出入，请以截图为准</p>
+                        </div>
+                        <div class="trumpet-detail-content">
+                            <p class="trumpet-detail-text">{$data.title}</p>
+                            <p style="color: #999999;font-size: 1.09rem;margin-top: 0.5rem">{$data.dec}</p>
+                            <div class="game-pic-list">
+                                <ul class="v-top ">
+                                    <volist name="data.screenshot" id="vo">
+                                        <li class="game-pic-item">
+                                            <img src="{:cmf_get_image_url($vo)}" data-preview-src="" data-preview-group="1" />
+                                        </li>
+                                    </volist>
+                                </ul>
+                                <empty name="data.screenshot">
+                                    <div class="no-game-pic" >等待截图上传中~</div>
+                                </empty>
+                            </div>
+                            <div class="publication-date">
+                                发布日期：{$data.create_time|date='m月d日 H:i',###}
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer-fixed-box">
+        <!--买号-立即支付-->
+        <a data-value="<empty name='union_set.qq'>{:cmf_get_option('kefu_set')['pc_set_server_qq']}<else />{$union_set['qq']}</empty>" href="javascript:;" class="btn_qq jschatqq" > <img src="__TMPL__/mobilepublic/assets/images/trade/write_bar_btn_service@2x.png" alt="" style="width: 1.956rem;margin-left: 1.486rem"></a>
+        <switch name="data.status">
+            <case value="-1">
+                <a href="javascript:;" class="cancel-btn jscancel" data-id="{$data.id}">取消出售</a>
+                <a href="javascript:;" class="edit-btn js-edit-price" data-id="{$data.id}" >改价</a>
+            </case>
+            <case value="0">
+                <a href="javascript:;" class="cancel-btn jscancel" data-id="{$data.id}">取消出售</a>
+                <a href="{:url('edit',['id'=>$data['id']])}" class="edit-btn ">去修改</a>
+            </case>
+            <case value="1">
+                <a href="javascript:;" class="cancel-btn jscancel" data-id="{$data.id}">取消出售</a>
+                <a href="javascript:;" class="edit-btn js-edit-price" data-id="{$data.id}" >改价</a>
+            </case>
+            <case value="2">
+                <a href="javascript:;" class="cancel-btn jscancel" data-id="{$data.id}">取消出售</a>
+                <a href="{:url('edit',['id'=>$data['id']])}" class="edit-btn ">去修改</a>
+            </case>
+            <case value="3">
+                <if condition="get_down_status2($data.relation_game_id,get_devices_type()) eq true">
+                    <a <eq name="session.app_user_login" value="1">style="display:none;"</eq> class="download-btn" href="{:url('Downfile/down',['game_id'=>$data['relation_game_id'],'sdk_version'=>get_devices_type()])}">下载</a>
+                    <else/>
+                    <a <eq name="session.app_user_login" value="1">style="display:none;"</eq> class="download-btn disabled">下载</a>
+                </if>
+                <a href="javascript:;" class="edit-btn disabled">角色已卖出</a>
+            </case>
+            <case value="4">
+                <a href="javascript:;" class="again-btn" style="background: #D6D6D6;color: #FFFFFF;">已下架</a>
+<!--                <a href="javascript:;" class="again-btn js-again-sale" data-url="{:url('edit',['id'=>$data['id']])}">重新上架</a>-->
+            </case>
+        </switch>
+    </div>
+    <div class="pop"></div>
+</block>
+<block name="script">
+    <script src="__STATIC__/js/layui/layui.js"></script>
+    <script src="__TMPL__/mobilepublic/assets/js/pop.lwx.min.js"></script>
+    <script src="__TMPL__/mobilepublic/assets/js/mui.min.js"></script>
+    <script src="__TMPL__/mobilepublic/assets/js/mui.zoom.js"></script>
+    <script src="__TMPL__/mobilepublic/assets/js/mui.previewimage.js"></script>
+    <script>
+        is_xgkf ="{:get_xgkf_info(0)}";
+        xgkf_url = "{:get_xgkf_info(1)}";
+        $(function () {
+            //复制订单编号
+            copy( $('.js-copy').attr('data-clipboard-text'),$('.js-copy'));
+            //图片查看
+            mui.previewImage();
+            mui('body').on('click','a',function(){
+                window.top.location.href=this.href;
+            });
+            $('.jschatqq').click(function() {
+                var qq = $.trim($(this).attr('data-value'));
+                var u = navigator.userAgent;
+                $mt = "{:get_devices_type()}";
+                if(is_xgkf == 1){
+
+                    try{
+                        if($mt==2){
+                            window.webkit.messageHandlers.sy_app_xgkf_url.postMessage(xgkf_url);
+                        }else{
+                            window.open(xgkf_url);
+                        }
+                    }catch (e) {
+                        window.open(xgkf_url);
+                        return false;
+                    }
+                }else{
+                    try{
+                        if($mt==2){
+                            window.webkit.messageHandlers.sy_small_serviceQQ.postMessage(1);
+                        }else{
+                            window.mengchuang.sy_small_serviceQQ();
+                        }
+                    }catch (e) {
+                        var is_mobile = "{:cmf_is_mobile()}";
+                        if (is_mobile) {
+                            window.location.href="mqqwpa://im/chat?chat_type=wpa&uin="+qq+"&version=1&src_type=web";
+                        }else
+                            window.location.href="http://wpa.qq.com/msgrd?v=3&uin="+qq+"&site=qq&menu=yes";
+                        return false;
+                    }
+                }
+            });
+            //取消出售
+            $('.jscancel').click(function () {
+                var id = $(this).data('id');
+                var popwin =$(".pop").pop();
+                popwin.addClass('pop-cancel').open(300,'<div class="cancel-box"><div class="cancel-content"><p class="title">取消出售</p><p>取消出售后，小号将转回您的账号如登录未见小号，请点悬浮球切换 </p></div><div class="del_btn_box z_clearfix v-middle"><a href="javascript:;" class="cancel_btn">取消</a><a href="javascript:;" class="confirm_btn">确定</a></div></div>');
+
+                popwin.find('.cancel_btn').click(function() {
+                    popwin.close();
+                    return false;
+                });
+                popwin.find('.confirm_btn').click(function() {
+                    $.ajax({
+                        type: 'post',
+                        dataType: 'json',
+                        url: '{:url("cancel_sell")}',
+                        data: { id: id},
+                        success: function (data) {
+                            layer.msg(data.msg,{time: 2500});
+                            if (data.code == 1) {
+                                setTimeout(function () {
+                                    window.location.reload();
+                                }, 2500);
+                            }
+                        },
+                        error: function () {
+                            layer.msg('服务器故障，请稍候再试');
+                            that.removeClass('no_send');
+                        }
+                    });
+                    return false;
+                });
+            });
+            //重新上架
+            $('.js-again-sale').click(function () {
+                var url = $(this).data('url');
+                var popwin =$(".pop").pop();
+                popwin.addClass('pop-cancel').open(300,'<div class="cancel-box"><div class="cancel-content"><p class="title">重新上架</p><p>需修改后重新提交审核才能上架，是否确定修改 </p></div><div class="del_btn_box z_clearfix v-middle"><a href="javascript:;" class="cancel_btn">取消</a><a href="javascript:;" class="confirm_btn">确定</a></div></div>');
+
+                popwin.find('.cancel_btn').click(function() {
+                    popwin.close();
+                    return false;
+                });
+                popwin.find('.confirm_btn').click(function() {
+                    window.location.href = url;
+                    return false;
+                });
+            });
+            //改价
+            $('.js-edit-price').click(function () {
+                var id = $(this).data('id');
+                var min_price_set = 0;
+                var min_price = "{:cmf_get_option('transaction_set')['min_price']}";
+                var min_dfee = "{:cmf_get_option('transaction_set')['min_dfee']}";
+                if(min_price == ''){
+                    min_price = 0;
+                }
+                if(min_dfee == ''){
+                    min_dfee = 0;
+                }
+                min_price_set = parseFloat(min_price) + parseFloat(min_dfee);
+                var popwin=$(".pop").pop();
+                popwin.addClass('pop-price').open(300,'<div class="edit-price-box"><a href="javascript:;" class="js-cancel "><img src="__TMPL__/mobilepublic/assets/images/trade/common_btn_close_n.png" class="cancel-img"></a><div class="edit-price-content"><p class="title">请输入改价的金额</p><input class="edit-input" id="price" type="text" placeholder="设置售价，最低'+min_price_set+'元"></div><div class="del_btn_box z_clearfix v-middle"><a href="javascript:;" class="cancel_btn js-cancel">取消</a><a href="javascript:;" class="confirm_btn" style="color: #018FFF">确认修改</a></div></div>');
+                popwin.find('input').keyup(function() {
+                    var val=$(this).val();
+                    val2=val.replace(/^\D*(\d*(?:\.\d{0,6})?).*$/g, '$1');
+                    $(this).val(val2);
+                });
+                popwin.find('.js-cancel').click(function() {
+                    popwin.close();
+                    return false;
+                });
+                popwin.find('.confirm_btn').click(function() {
+                    var price = $("#price").val();
+                    if(price < min_price_set){
+                        layer.msg("最低售价"+min_price_set+"元");
+                        return false;
+                    }
+                    $.ajax({
+                        type: 'post',
+                        dataType: 'json',
+                        url: '{:url("set_sell_price")}',
+                        data: { id: id,price:price},
+                        success: function (data) {
+                            layer.msg(data.msg,{time: 2500});
+                            if (data.code == 1) {
+                                setTimeout(function () {
+                                    window.location.reload();
+                                }, 2500);
+                            }
+                        },
+                        error: function () {
+                            layer.msg('服务器故障，请稍候再试');
+                            that.removeClass('no_send');
+                        }
+                    });
+                    return false;
+                });
+            });
+        });
+
+        function copy(str,that){
+            text = str;
+            var clipboard = new Clipboard('.js-copy',{
+                text: function() {
+                    return text;
+                }
+            });
+            clipboard.on('success', function(e) {
+                 layer.msg('<p>已复制</p>');
+                e.clearSelection();
+                clipboard.destroy();
+            });
+            clipboard.on('error', function(e) {
+                layer.msg('此浏览器不支持此操作，请长按礼包码复制');
+            })
+        }
+    </script>
+</block>

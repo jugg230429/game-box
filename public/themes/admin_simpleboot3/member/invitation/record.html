@@ -1,0 +1,73 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('record')}">邀请奖励</a></li>
+            <li><a href="{:url('award')}">奖励设置</a></li>
+        </ul>
+        <form id="search_form" class="well form-inline  fr" method="get" action="{:url('record')}">
+            <input type="text" class="form-control" name="user_account" style="width: 120px;" value="{:input('request.user_account/s','')}" placeholder="邀请人账号">
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('record')}">清空</a>
+        </form>
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>邀请人ID</th>
+                    <th>邀请人账号</th>
+                    <th>被邀请人数</th>
+                    <th>注册奖励</th>
+                    <th>充值奖励</th>
+                    <th>详情</th>
+                </tr>
+            </thead>
+            <tbody>
+                <empty name="data_lists">
+                    <tr><td colspan="6" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <foreach name="data_lists" item="vo">
+                    <tr>
+                        <td>{$vo.id}</td>
+                        <td>{$vo.user_account}</td>
+                        <td>{$vo.account_num}</td>
+                        <td>{$vo['register_num']/$vo['account_num']}</td>
+                        <td>{$vo['spend_num']/$vo['account_num']}</td>
+                        <td><a class="show" data-msg="{$vo.invitation_account}" href="javascript:;">详情</a></td>
+                    </tr>
+                    </foreach>
+                    <tr class="data_summary">
+                        <td>汇总</td>
+                        <td></td>
+                        <td>{$totalaccount}</td>
+                        <td>{$totalregister}</td>
+                        <td>{$totalspend}</td>
+                        <td></td>
+                    </tr>
+                </empty>
+            </tbody>
+        </table>
+        <div class="pagination">{$page}</div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script>
+        $(function () {
+            $(".show").click(function () {
+                var content = '<p style="padding: 20px;height: auto; max-width: 800px;word-wrap: break-word;">'+$(this).data('msg')+'</p>'
+                layer.open({
+                    type: 1,
+                    skin: 'layui-equipment-num', //样式类名
+                    closeBtn: 1, //不显示关闭按钮
+                    title:'邀请账号',
+                    anim: 2,
+                    area: ['auto', 'auto'],
+                    shadeClose: true, //开启遮罩关闭
+                    content: content
+                });
+            })
+
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,313 @@
+<include file="public@header" />
+<script type="text/javascript" src="__STATIC__/js/datejs/momentfunction.js"></script>
+<link href="__TMPL__/public/assets/simpleboot3/css/question.css" rel="stylesheet">
+<link rel="stylesheet" href="/themes/admin_simpleboot3/public/assets/js/laydate.css" id="layuicss-laydate">
+<link rel="stylesheet" href="__JS__/layui/css/layui.css">
+<style>
+	.table tr{
+		height:38px;
+	}
+	.table > thead > tr > th{
+		padding: 0 0 0 20px;
+		vertical-align: middle;
+		line-height: 20px;
+	}
+
+	.table > tbody > tr > td{
+		padding: 0 8px 0 20px;
+		color: #3E475D;
+	}
+
+	.table td, .table th {
+		min-width:100px;
+	}
+	.table-wrap {
+    margin: 0 27px 0 28px !important;
+}
+#test {
+    position: relative;
+    top: 2px;
+}
+</style>
+</head>
+
+<body>
+<link href="__TMPL__/public/assets/simpleboot3/css/survey.css" rel="stylesheet">
+
+<div class="wrap survey-wrap">
+	<div class="survey-background">
+	<ul class="nav nav-tabs survey-equate">
+
+		<li class="">
+			<a href="{:url('user/register_retain',['rangepickdate'=>input('rangepickdate'),'game_id'=>input('game_id')])}">新增用户留存</a>
+		</li>
+		<li class="active">
+			<a href="{:url('user/active_retain',['rangepickdate'=>input('rangepickdate'),'game_id'=>input('game_id')])}">活跃用户留存</a>
+		</li>
+		<li class="">
+			<a href="{:url('user/device_retain',['rangepickdate'=>input('rangepickdate'),'game_id'=>input('game_id')])}">激活设备留存</a>
+		</li>
+
+	</ul>
+	<form id="search_form" class="fl search-form survey-search-form" method="get" action="{:url('user/active_retain')}" onsubmit="return check();">
+		<span class="form-cell-wrap n-position">
+			<input type="text" name="datetime" class="laydate-input-ico01" id="test" placeholder="开始时间-结束时间" value="{:input('datetime')}" autocomplete="off">
+		<!-- <input type="text" class="form-time-control calendar" name="rangepickdate" id="rangepickdate" style="width: 220px;" value="" readonly placeholder="请选择日期"> -->
+		</span>
+		<span class="form-cell-wrap">
+			<select name="game_id" id="game_id" class="selectpicker gameChangeWidth changeInput fl " game_id="{:input('game_id')}"
+				data-live-search="true" data-size="8" style="width: 100px;">
+			<option value="">全部游戏</option>
+			<volist name=":get_game_list('id,game_name')" id="vo">
+				<option game-id="{$vo.id}" value="{$vo.id}" <if condition="input('game_id') eq $vo['id']">selected</if>>{$vo.game_name}</option>
+			</volist>
+		</select>
+		</span>
+
+		<input type="hidden" name="row" value="">
+		<input type="hidden" name="sort" id="sort" value="">
+		<input type="hidden" name="sort_type" id="sort_type" value="">
+		<span class="form-cell-wrap">
+		<input type="submit" class="btn btn-primary primaryBtn" id="search_btn" value="搜索" />
+		</span>
+		<span class="form-cell-wrap">
+		<a class="btn btn-clear" href="{:url('user/active_retain')}">清空</a>
+	</span>
+		<span class="form-cell-wrap">
+			<php>$exportgame = trim(get_game_name(input('game_id')))?get_game_name(input('game_id')).'_':'';</php>
+		<a class="btn btn-export js-ajax-dialog-btn-xz" data-msg="确定导出吗？" href="{:url('Export/expUser',array_merge(['id'=>6,'action'=>request()->action(),'xlsname'=>'活跃用户留存_'.$exportgame.''.$start.'至'.$end],input()))}">导出</a>
+	</span>
+	</form>
+		<div class="question_wrapper">
+	<div class="question flowBtn">
+		<i class="question_mark">?</i>
+		<ul class="question_content">
+			<li class="question_title">数据说明</li>
+			<li class="question_list">
+				<span>N天后留存率</span>
+				<span>某日新增的玩家/设备中，在该日的N天后，还有进行游戏的玩家/设备比例。例如：6.4的新增用户为100，这100中有40人在6.5再次打开游戏，6.1的1天后留存率=40/100=40%</span>
+			</li>
+
+		</ul>
+	</div>
+	</div>
+	<div class="clear"></div>
+	<div id="newwusers" class="echarts-form survey-chart"></div>
+		<div class="table-wrap">
+	<div class="inerRetainTable" style="width:100%;overflow:auto;margin:0 auto;max-height:500px;padding-left: 10px;">
+	<table class="table table-hover table-bordered analysis-table n-table">
+		<thead>
+		<tr>
+			<th>时间</th>
+			<th>活跃用户
+				<div class="question_">
+					<i class="question_mark">?</i>
+					<div class="question_content">
+						<ul class="question_content_box">
+							<li class="question_list">
+								<span class="title">活跃用户</span>
+								<span class=""> 登录游戏的用户数（含新老用户，累计时去重）</span>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</th>
+			<volist name=":json_decode($keys,true)" id="kk">
+				<if condition="$key gt 0">
+					<th>{$kk}
+						<div class="question_ last">
+							<i class="question_mark">?</i>
+							<div class="question_content">
+								<ul class="question_content_box">
+									<li class="question_list">
+										<span class="title">活跃用户</span>
+										<span class=""> 当日的活跃用户在{$kk}再次登录的数量及占比</span>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</th>
+				</if>
+			</volist>
+		</tr>
+		</thead>
+		<tbody>
+		<empty name="data_lists">
+			<tr><td colspan="8" style="text-align: center;">暂无数据</td></tr>
+			<else/>
+			<!--颜色组合-->
+			<volist name="$data_lists" id="vo">
+				<tr class="js-trrow">
+					<td style="width: 230px;">{$vo.time}</td>
+					<td>{$vo.count_active_user}</td>
+					<volist name=":json_decode($keys,true)" id="kk">
+						<if condition="$key gt 0">
+							<td class="textr">
+								<if condition="$vo['active_count_next'.$key] gt 0">
+									<a href="javascript:;" style="color: #333333;" class="detail" data-url="{:url('user_detail',['date'=>$vo['time'],'game_id'=>input('game_id'),'data'=>$vo['active_same'.$key]])}">
+										<div>{$vo['active_count_next'.$key]}</div>
+										<div class="jscount" data-value="{:substr($vo['active_next'.$key],0,'-1');}">{$vo['active_next'.$key]}</div>
+									</a>
+								<else/>
+									<div>{$vo['active_count_next'.$key]}</div>
+									<div class="jscount" data-value="{:substr($vo['active_next'.$key],0,'-1');}">{$vo['active_next'.$key]}</div>
+								</if>
+							</td>
+						</if>
+					</volist>
+				</tr>
+			</volist>
+		</empty>
+		</tbody>
+	</table>
+	</div>
+	<div class="pagination analysis-pagination survey-pagination">
+		<li class="form-control form-record jstdrow">共0条记录</li>
+
+	</div>
+	</div>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script src="__STATIC__/js/echarts-all.js"></script>
+<script src="__TMPL__/public/assets/js/user_retain/function.js"></script>
+<script src="/themes/admin_simpleboot3/public/assets/js/laydate.js"></script>
+<script type="text/javascript">
+	$('.jstdrow').text('共'+$('.js-trrow').length+'条记录');
+	window.setranges = {
+		'昨日': getYesterday(),
+		'过去3天': getLastNumDays(3),
+		'过去7天': getLast7Days(1),
+		'过去14天': getLast7Days(2),
+		'过去30天': getLast30Days(),
+		'过去8周': getLastWeekDays(8),
+		'过去12周': getLastWeekDays(12),
+		'所有': getBegin(),
+	}
+	add_color();
+	//时间插件 默认时间
+	var start = '{$start}',end = '{$end}';
+	var keys = '{$keys}';
+	var nextdata = '{$nextdata}';
+	function check() {
+		layer.load(1);
+		var jsdate = $("#rangepickdate").val();
+		datearr = jsdate.split('至');
+		var start_time = datearr[0];
+		var end_time = datearr[1];
+		if(start_time != '' && end_time != '' && start_time > end_time) {
+			layer.msg('开始时间不能大于结束时间');
+			return false;
+		}
+		return true;
+	}
+	function add_color(){
+		var colorarr = new Array('bg-869','bg-f0f','bg-e1e','bg-edd','bg-d1d','bg-d8c','bg-c1c','bg-eod','bg-9fa','bg-e8e');
+		jscount = $('.jscount');
+		jscount.each(function(index,element){
+			that = $(this);
+			value = that.data('value');
+			if(value>=30){
+				value = value.toString();
+				first = value.substr(0,1);
+				color = colorarr[first];
+				that.parent('td').addClass(color);
+			}else{
+				return ;
+			}
+		});
+	}
+	$('.detail').click(function () {
+		url = $(this).data('url');
+		user_detail(url);
+	});
+	// 基于准备好的dom，初始化echarts实例
+	var myChart = echarts.init(document.getElementById('newwusers'));
+	option = {
+
+		title: {
+
+			textStyle: {
+				fontSize: 14,
+				fontWeight: 'normal',
+				color: '#393B6B' // 主标题文字颜色
+			},
+
+		},
+		grid:{
+				x: '4%', //相当于距离左边效果:padding-left
+
+			},
+		tooltip: {
+			trigger: 'axis'
+		},
+
+		calculable: true,
+		xAxis: [{
+			type: 'category',
+			boundaryGap: false,
+			data: JSON.parse( keys ),
+
+		}],
+		yAxis: [{
+			type: 'value',
+			axisLabel: {
+				formatter: '{value}%'
+			}
+		}],
+		series: [{
+			name: '所有用户',
+			type: 'line',
+			itemStyle: {
+				normal: {
+					color: '#41a6ed',
+					lineStyle: {
+						color: '#41a6ed'
+					}
+				}
+			},
+			data: JSON.parse( nextdata ),
+		}]
+	};
+	myChart.setOption(option);
+    //经过表头字段热区时出现？
+    $(".question_").click(function () {
+        $(this).find(".question_content").toggleClass("open")
+    });
+    $("tr th").mouseover(function () {
+        $(this).find(".question_").addClass("on");
+    });
+    $("tr th").mouseout(function () {
+        $(this).find(".question_").removeClass("on");
+        $(this).find(".question_content").removeClass("open")
+    });
+
+	 //定义接收本月的第一天和最后一天
+	 var startDate1=new Date(new Date().setDate(1));
+        var endDate1=new Date(new Date(new Date().setMonth(new Date().getMonth()+1)).setDate(0));
+        //定义接收上个月的第一天和最后一天
+        var startDate2=new Date(new Date(new Date().setMonth(new Date().getMonth()-1)).setDate(1));
+        var endDate2=new Date(new Date().setDate(0));
+        laydate.render({
+            elem: '#test',
+            type: 'date',
+            range: '~',
+            format: 'yyyy-M-d',
+            //max:'2018-1-15',//可选最大日期（当然如果加个这上，那扩展的那几个快捷选择时间按扭的值就得判断处理一下了）
+            //min:'2018-1-15',//可选最小日期（当然如果加个这上，那扩展的那几个快捷选择时间按扭的值就得判断处理一下了）
+            extrabtns: [
+                {id: 'today', text: '今天', range: [new Date(), new Date()]},
+                {id: 'lastday-7', text: '过去7天', range: [new Date(new Date().setDate(new Date().getDate()-7)), new Date(new Date().setDate(new Date().getDate()-1))]},
+                {id: 'lastday-30', text: '过去30天', range: [new Date(new Date().setDate(new Date().getDate()-30)), new Date(new Date().setDate(new Date().getDate()-1))]},
+                {id: 'yesterday', text: '昨天', range: [new Date(new Date().setDate(new Date().getDate()-1)), new Date(new Date().setDate(new Date().getDate()-1))]},
+                {id: 'thismonth', text: '本月', range: [startDate1,endDate1]},
+                {id: 'lastmonth', text: '上个月', range: [startDate2,endDate2]}
+            ],
+            done: function(val, stdate, ovdate){
+                //当确认选择时间后调用这里
+            }
+        });
+</script>
+</body>
+
+</html>

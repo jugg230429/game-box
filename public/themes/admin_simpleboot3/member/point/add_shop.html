@@ -1,0 +1,228 @@
+<include file="public@header"/>
+</head>
+
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="javascript:;">添加商品</a></li>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('add_shop')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label for="input-site_icp" class="col-sm-2 control-label">属性：</label>
+                            <div class="col-md-4 col-sm-6">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="2" name="type" checked="checked"> 虚拟
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="type"> 实物
+                                </label>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>商品名称：
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" name="good_name" value="" class="form-control"  />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>所需积分：
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" name="price" value="{$data.price}" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" class="form-control"  />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>商品数量：
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" name="number" value="{$data.number}" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" class="form-control"  />
+                            </div>
+                        </div>
+<!--                        <div class="form-group">-->
+<!--                            <label for="input-site-name" class="col-sm-2 control-label">-->
+<!--                                VIP等级：-->
+<!--                            </label>-->
+<!--                            <div class="col-md-4 col-sm-6">-->
+<!--                                <input type="text" name="vip_grade" value="{$data.vip_grade}" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" class="form-control"  />-->
+<!--                            </div>-->
+<!--                            <p class="help-block">如1，表示VIP1及以上玩家才可兑换</p>-->
+<!--                        </div>-->
+                        <div class="form-group rebate-item">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">VIP折扣：</label>
+                            <div class="col-md-4 col-sm-6 v-middle" style="width:31%">
+                                <span style="width: 32px">VIP</span>
+                                <span style="position: relative;width: 47%">
+                                    <input  name="vip_level[]" style="width: 100%" onkeyup="this.value = this.value.replace(/\D|^0/g, '');" class="form-control js-money" placeholder="如3">
+                                </span>
+
+                                <span class="line"></span>
+                                <span style="position: relative;width: 47%">
+                                    <input  name="vip_discount[]" style="width: 100%" onkeyup="value=value.replace(/^(\d*\.?\d{0,2}).*/,'$1')" min="1" max="100" class="form-control js-rebate" placeholder="折扣值，1-100.00"  >
+                                    <span class="input-suffix">%</span>
+                                </span>
+                                <div class="dynamic-btn rebate-dynamic-btn" style="margin-left: 15px;">
+                                    <span class="rebate-add-btn js-rebate-add-btn">+</span>
+                                </div>
+                            </div>
+                            <p class="help-block" style="position:relative;left:37px;z-index: -1;">设置折扣值后对应VIP等级及以上的玩家可以折扣积分值来进行兑换</p>
+                        </div>
+                        <div id="rebate-list" >
+
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>可兑换数量：
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" name="limit" value="1" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" class="form-control"  />
+                            </div>
+                            <p class="help-block">每玩家最多可兑换的个数</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">使用说明：</label>
+                            <div class="col-md-4 col-sm-6">
+                                <div id="">
+                                    <textarea maxlength="1000" id="instructions" style="height: 200px;" name="instructions" class="form-control"></textarea>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">兑换声明：</label>
+                            <div class="col-md-4 col-sm-6">
+                                <div id="">
+                                    <textarea maxlength="1000" id="exchange_statement" style="height: 200px;" name="exchange_statement" class="form-control"></textarea>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                商品详情：
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <script type="text/plain" id="content" name="good_info"></script>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                优先级：
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" name="sort" value="0" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" class="form-control"  />
+                            </div>
+                        </div>
+                        <div class="form-group form-group-control">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                               封面图
+                            </label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="fl form-input-control">
+                                    <div>
+
+                                        <input id="thumbnail" type="hidden" name="thumbnail" value="">
+                                        <img id="thumbnail-preview" class="upload-img">
+                                        <a href="javascript:uploadOneImage('图片上传','#thumbnail');" class="btn btn-sm btn-default">上传图片</a>
+                                        <a href="javascript:(function(){$('#thumbnail-preview').attr('src','');$('#thumbnail').val('')})();">移除</a>
+                                        <!--<input type="hidden" name="post[thumbnail]" id="thumbnail" value="">
+                                        <a href="javascript:uploadOneImage('图片上传','#thumbnail');">
+                                            <img src="__TMPL__/public/assets/images/default-thumbnail.png"
+                                                 id="thumbnail-preview"
+                                                 width="135px" style="cursor: pointer" />
+                                        </a>
+                                        <input type="button" class="btn btn-sm btn-cancel-thumbnail" value="取消图片">-->
+                                    </div>
+                                </div>
+                                <span class="fl form-remarks" style="margin-top: 14px;">尺寸600*404px</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label">状态：</label>
+                            <div class="col-md-4 col-sm-6 v-middle" >
+                                <label class="label-width">
+                                    <input type="radio" name="status" class="inp_radio" value="1" checked="checked"> 开启
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" name="status" class="inp_radio" value="0" > 关闭
+                                </label>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                                <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript">
+    //编辑器路径定义
+    var editorURL = GV.WEB_ROOT;
+</script>
+<script type="text/javascript" src="__STATIC__/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="__STATIC__/js/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript">
+    editorcontent = new baidu.editor.ui.Editor({initialFrameHeight:500});
+    editorcontent.render('content');
+    try {
+        editorcontent.sync();
+    } catch (err) {
+    }
+</script>
+<script>
+    $(function () {
+        //动态添加返利档位
+        var add_one = function () {
+            $('.js-rebate-add-btn').unbind('click');
+            $('.js-rebate-add-btn').click(function () {
+                var tr = $(this).closest('.rebate-item');
+                var parent = $('#rebate-list') ;
+                var html ='<div class="form-group rebate-item"> <label for="input-site_analytics" class="col-sm-2 control-label js-rank"></label> <div class="col-md-4 col-sm-6 v-middle"  style="width:31%"><span style="width: 32px">VIP</span> <span style="position: relative;width: 47%"> <input  name="vip_level[]" style="width: 100%" onkeyup="this.value = this.value.replace(/\\D|^0/g, \'\');" class="form-control js-money" placeholder="如3" ></span> <span class="line"></span> <span style="position: relative;width: 47%"> <input  name="vip_discount[]" style="width: 100%" onkeyup="value=value.replace(/^(\\d*\\.?\\d{0,2}).*/,\'$1\')" min="1" max="100" class="form-control js-rebate" placeholder="折扣值，1-100.00"  > <span class="input-suffix">%</span> </span> <div class="dynamic-btn rebate-dynamic-btn"  style="margin-left: 15px;"> <span class="rebate-del-btn js-rebate-del-btn">×</span> </div> </div> </div>'
+                parent.append(html);
+                re_bind();
+            })
+        };
+        var remove_li = function () {
+            $('.js-rebate-del-btn').unbind('click');
+            $('.js-rebate-del-btn').click(function () {
+                var parent = $(this).closest('.rebate-item');
+                parent.remove();
+                re_bind();
+            })
+        };
+        var add_flag = function () {
+            $('#rebate-list .rebate-item').each(function (index, element) {
+                $(this).find('.js-rank').text("");
+            })
+        };
+        var re_bind = function () {
+            add_one();
+            remove_li();
+            add_flag();
+        };
+        re_bind();
+    })
+
+</script>
+</body>
+</html>

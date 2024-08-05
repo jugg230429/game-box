@@ -1,0 +1,19 @@
+<div id="new_czinfobg" style="display: block;">
+	<div id="czerrots" class="czerrots">
+		<div class="qrcz_ts">
+			<h1 class="qrcz_title"><span>请在新打开的支付页面上完成付款充值！</span><a href="javascript:void(0);" id="czinfobox_close3" class="qrcz_close">close</a></h1>
+			<ul class="czinfobox_con">
+				<li class="tscon1 czinfobox_con_con">付款前请不要关闭或刷新此窗口。</li>
+			</ul>
+			<span class="qrtjBtn">
+				<a href="javascript:getresult();">查看充值结果</a>
+				<a href="/media.php?s=/Service/index.html" target="_blank">付款遇到问题</a><a href="javascript:closeresult();">返回</a>
+			</span>
+		</div>
+	</div>
+</div>
+<script>
+	$("#czinfobox_close3").click(function() {
+		$("#new_czinfobg").hide();
+	})
+</script>

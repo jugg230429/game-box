@@ -1,0 +1,151 @@
+<extend name="../recharge/common" />
+
+<block name="body">
+    <div class="container withdrawContainer">
+        <div class="packet">
+            <div class="money">
+                <span class="table">
+                    <span class="tableCell">
+                        <div class="itemTitle packetIcon center">可提现金额</div>
+                        <div class="number moneyIcon center" id="money">{$user.tplay_cash}</div>
+                    </span>
+                </span>
+            </div>
+            <a href="javascript:;" class="withdrawBtn" id="taskBtn" data-url="{:url('withdraw')}">
+                <span class="table"><span class="tableCell center"><span class="withdrawBtnText">拆红包</span></span></span></span>
+            </a>
+        </div>
+        <div class="withdraw">
+            <div class="tab table js-tab">
+                <a href="javascript:;" data-id="#cash" class="js-tabItem tabBtn tableCell center active"><span class="text">提现</span></a>
+                <a href="javascript:;" data-id="#coin" class="js-tabItem tabBtn tableCell center"><span class="text">兑换平台币</span></a>
+            </div>
+            <div class="pan">
+                <form class="panList withdrawList" id="cash" action="{:url('do_withdraw')}">
+                    <div class="formPart formItem">
+                        <input type="text" class="input" onkeyup="value=value.replace(/^(\d*\.?\d{0,2}).*/,'$1')" name="money" placeholder="输入提现金额">
+                        <a href="javascript:;" class="suffix js-all">
+                            <span class="table"><span class="tableCell">全部提现</span></span>
+                        </a>
+                    </div>
+                    <p class="formPart formNotice">最低提现金额<span id="amount">{:$limit_money?:1}</span>元<gt name="fee">，手续费<span id="charge">{$fee}</span>%</gt><gt name="config.limit_cash">，单笔提现最高{$config.limit_cash}元</gt><gt name="config.limit_count">，每日提现最多{$config.limit_count}次</gt></p>
+                    <div class="formPart subTab table js-tab">
+                        <if condition="$config['alipay_show'] neq '0'">
+                        <label data-id="#alipay" class="js-tabItem tableCell first active"><input class="radioHidden" type="radio" name="pay_way" checked value="1"><span class="text alipayIcon center">支付宝</span></label>
+                        </if>
+                        <if condition="$config['weixin_show'] neq '0'">
+                        <label data-id="#wechat" class="js-tabItem tableCell last"><input class="radioHidden" type="radio" name="pay_way" value="2"><span class="text wechatIcon center">微信</span></label>
+                        </if>
+                    </div>
+                    <div class="pan">
+                        <if condition="$config['alipay_show'] neq '0'">
+                        <div class="panList" id="alipay">
+                            <div class="formPart formItem">
+                                <input type="text" class="input" name="alipay_account" id="account" placeholder="输入支付宝账号">
+                            </div>
+                        </div>
+                        </if>
+                        <if condition="$config['weixin_show'] neq '0'">
+                            <div class="panList" id="wechat">
+                            <empty name="config.pay_type">
+                                <div class="formPart formItem">
+                                    <input type="text" class="input" name="money_account" id="" placeholder="输入微信号">
+                                </div>
+                            <else/>
+                                <empty name="user.openid">
+                                    <div class="formPart formWarning">您还未绑定微信无法提现</div>
+                                <else/>
+                                    <div class="formPart formTip">您已绑定微信号<span class="wechatAccount">{$user.wx_nickname}</span>，可提现至该微信号内</div>
+                                </empty>
+                            </empty>
+                            </div>
+                        </if>
+                    </div>
+                    <div class="formPart formItem">
+                        <input type="password" class="input" name="password" placeholder="输入支付密码">
+                    </div>
+                    <div class="formPart formItem formItemBtn">
+                        <input type="button" class="btn submit js_submit" value="确认提现" >
+                    </div>
+                </form>
+                <form class="panList withdrawList" id="coin" action="{:url('do_exchange')}">
+                    <div class="formPart formItem">
+                        <input type="text" class="input" name="money" placeholder="输入兑换金额">
+                        <a href="javascript:;" class="suffix js-all">
+                            <span class="table"><span class="tableCell">全部兑换</span></span>
+                        </a>
+                    </div>
+                    <div class="formPart formItem">
+                        <input type="password" class="input" name="password" placeholder="输入支付密码">
+                    </div>
+                    <div class="formPart formItem formItemBtn">
+                        <input type="button" class="btn submit js_submit" value="确认提现" >
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="bottom">
+            <a href="javascript:;" class="detailBtn" id="detailBtn" data-url="{:url('withdraw_record')}">提现明细</a>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+<script>
+    var isbind = true;
+    var weixin_id = "{$user.openid|default=''}";
+    var limit_money = "{$limit_money|default=0}";
+    var tixian_type = "{$config.pay_type}";
+    var exchangeurl = "";
+    var cashurl = "";
+    if(limit_money == '0'){
+        limit_money = 1;
+    }
+    if(weixin_id == ''){
+        isbind = false;
+    }
+    $(function () {
+        $('.js-all').on('click', function () {
+            var money = $('#money').text();
+            if (money > limit_money) {
+                $(this).siblings('.input').val(money);
+            } else {
+                layer.msg('最低提现金额'+limit_money+'元');
+            }
+            return false;
+        });
+        $.each(document.querySelectorAll('.subTab .js-tabItem'),function (index,item) {
+            item.addEventListener('click', function (e) {
+                $(this).find('input').prop('checked',true);
+                $(this).siblings().find('input').prop('checked',false);
+            })
+        })
+        document.querySelector('.subTab .js-tabItem.last').addEventListener('click', function (e) {
+            e.preventDefault();
+            $(this).closest('form').find('.formItemBtn').show();
+            if (!isbind && tixian_type == 1) {
+                $(this).closest('form').find('.formItemBtn').hide();
+            }
+        }, false);
+        $(".js_submit").click(function () {
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: $(this).closest('form').attr('action'),
+                data: $(this).closest('form').serialize(),
+                success: function (response) {
+                     parent.parent.layer.msg(response.msg);
+                    if(response.code == 1){
+                        setTimeout(function () {
+                            window.location.reload();
+                        },1000)
+                    }
+                },
+                error: function () {
+                    parent.parent.layer.msg('服务器故障，请稍候再试...');
+                }
+            });
+        })
+    });
+</script>
+</block>

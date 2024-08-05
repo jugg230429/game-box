@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="__TMPL__/issuepublic/assets/css/promote/select2.min.css" rel="stylesheet" />
+    <link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+    <link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" media="all" href="__STATIC__/js/datejs/daterangepicker.css"/>
+    {:widget('issue/Management/css')}
+</head>
+
+<body>
+<!--左侧导航栏-->
+{:widget('issue/Management/left')}
+
+<!--头部-->
+{:widget('issue/Management/header')}
+
+<div class="trunk">
+
+    <div class="trunk-con">
+        <div class="right-container">
+            <div class="normal-list">
+                <div class="trunk">
+                    <ul class="tab">
+                        <li class="tab-menu "><a href="{:url('issue/Currency/index')}">联运币充值</a></li>
+                        <li class="tab-menu "><a href="{:url('issue/Currency/orders')}">充值记录</a></li>
+                        <li class="tab-menu tab-menu-active"><a href="{:url('issue/Currency/withdraw')}">提现记录</a></li>
+                    </ul>
+
+                    <div class="tabpan">
+
+                        <div class="tabpan-con tabpan-show">
+                            <form action="{:url('issue/management/game')}">
+                                <div class="trunk-search clearfix fr">
+                                    <select id="game_id" name="game_id" class="tab-input js-select-gallery normal-space trunk-search-smallselect fl" >
+                                        <option value="" data="0">游戏名称</option>
+                                        <volist name=":get_game_list('id,game_name,relation_game_id,relation_game_name',$gmap,null,'sort desc ,id desc')" id="vv">
+                                            <option <if condition="$vv['id'] eq input('game_id')"> selected</if> data="{$vv['game_name']}" value="{$vv['id']}">{$vv['game_name']}</option>
+                                        </volist>
+                                    </select>
+                                    <input type="submit" class="submit fr normal-space" id="submit" value="查询">
+                                    <input type="hidden" id="page" name="row" value="{:input('row',10)}">
+                                </div>
+                            </form>
+                            <div class="clear"></div>
+                            <table class="table normal-table" id="promotecoin_table">
+                                <tbody>
+                                <tr>
+                                    <th>订单号</th>
+                                    <th>提现金额</th>
+                                    <th>提现方式</th>
+                                    <th>到账账号</th>
+                                    <th>状态</th>
+                                    <th>充值时间</th>
+                                    <th>驳回原因</th>
+                                </tr>
+                                <notempty name="gameLists">
+                                    <volist name="gameLists" id='vo'>
+                                        <tr>
+                                            <td><img src="{:cmf_get_image_url($vo['icon'])}" width="25px" /></td>
+                                            <td>{$vo.game_name}</td>
+                                            <td>{$vo.create_time}</td>
+                                            <td>{$vo.ff_ratio}</td>
+                                            <empty name="$vo['material_url']">
+                                                <td>--</td>
+                                                <else/>
+                                                <td><a style="color: rgb(38,199,219)" href="{:cmf_get_image_url($vo['material_url'])}" download="">下载</a></td>
+                                            </empty>
+                                            <empty name="vo['apply_id']">
+                                                <td>--</td>
+                                                <td>--</td>
+                                                <td>未申请</td>
+                                                <td><a href="javascript:;" class="js-apply" id-data="{$vo['id']}" style="color: rgb(38,199,219)">申请</a></td>
+                                                <else/>
+                                                <if condition="$vo['apply_status'] eq 1">
+
+                                                    <td>
+                                                        <a href="javascript:;" class="view-callback" data-sdk_version="{$vo['sdk_version']}"
+                                                           data-apply_id="{$vo.apply_id}" data-game_name="{$vo['game_name']}" style="color: rgb(38,199,219)">查看</a>
+                                                    </td>
+                                                    <td>
+                                                        <a href="javascript:;" class="view-config" data-apply_id="{$vo.apply_id}"
+                                                           data-game_name="{$vo['game_name']}" style="color: rgb(38,199,219)">配置</a>
+                                                    </td>
+                                                    <td>联运中</td>
+                                                    <td>--</td>
+
+                                                    <else/>
+                                                    <td>--</td>
+                                                    <td>--</td>
+                                                    <td>待审核</td>
+                                                    <td>--</td>
+                                                </if>
+
+
+                                            </empty>
+                                        </tr>
+                                    </volist>
+                                    <else/>
+                                    <!--暂无数据-->
+                                    <tr>
+                                        <td colspan="10" >
+                                            <div class="no-data">
+                                                <img src="__TMPL__/issuepublic/assets/images/icon_wushujv2.png"  alt="" class="no-data-img"/>
+                                                <p class="no-data-text">暂无数据</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </notempty>
+                                </tbody>
+                            </table>
+                            <notempty name="gameLists">
+                                <div class="pagenation clearfix">
+                                    {$gameLists->render()}
+                                </div>
+                            </notempty>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script src="__TMPL__/issuepublic/assets/js/promote/jquery-1.11.1.min.js"></script>
+<script src="__TMPL__/issuepublic/assets/js/promote/common.js"></script>
+<script src="__TMPL__/issuepublic/assets/js/promote/select2.min.js"></script>
+<script>
+    $(function() {
+        $(".js-select-gallery").select2();
+    })
+</script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script src="__STATIC__/js/ajaxForm.js"></script>
+{:widget('issue/Management/footer')}
+
+</body>
+
+</html>

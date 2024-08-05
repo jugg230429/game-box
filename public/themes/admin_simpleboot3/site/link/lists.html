@@ -1,0 +1,57 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('lists')}">友情链接</a></li>
+            <!-- <li><a href="{:url('add')}">新增友链</a></li> -->
+        </ul>
+        <div class="table-actions position" style="margin-left: -10px;">
+            <a href="{:url('add')}" class="btn btn-success  mtb17">新增友链</a>
+        </div>  
+        <form id="search_form" class="well form-inline  fr" method="get" action="{:url('lists')}">
+            <input type="text" class="form-control" placeholder="标题" name="title" style="width: 200px;"
+                   value="{:input('title')}">&nbsp;&nbsp;
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('lists')}">清空</a>
+        </form>
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>标题</th>
+                    <th>链接</th>
+                    <th>状态</th>
+                    <th>添加时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <empty name="data_lists">
+                    <tr><td colspan="6" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <foreach name="data_lists" item="vo">
+                    <tr>
+                        <td>{$vo['id']}</td>
+                        <td>{$vo.title}</td>
+                        <td>{$vo.link_url}</td>
+                        <td><a href="{:url('setstatus',['id'=>$vo['id'],'status'=>$vo['status']])}" class="js-ajax-dialog-btn"><span <if condition="$vo['status'] eq 1"> class="label label-success"<else/>class="label label-danger"</if>>{$vo['status_name']}</span></a></td>
+                        <td>{$vo['create_time']|date='Y-m-d H:i:s',###}</td>
+                        <td>
+                            <a href="{:url('edit',['id'=>$vo['id']])}">编辑</a>
+                            <a href="{:url('del',['id'=>$vo['id']])}" class="js-ajax-delete" data-msg="确定要删除吗？">删除</a>
+                        </td>
+                    </tr>
+                    </foreach>
+                </empty>
+            </tbody>
+        </table>
+        <div class="pagination">{$page}</div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+<script>
+    game_id = $("#game_id").attr('game_id');
+    $("#game_id").selectpicker('val', game_id);
+</script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="__TMPL__/issuepublic/assets/css/promote/select2.min.css" rel="stylesheet" />
+    <link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+    <link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+    <link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" />
+    <link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" media="all" href="__STATIC__/js/datejs/daterangepicker.css"/>
+    {:widget('issue/Management/css')}
+</head>
+
+<body>
+<!--左侧导航栏-->
+{:widget('issue/Management/left')}
+
+<!--头部-->
+{:widget('issue/Management/header')}
+
+<div class="trunk">
+
+    <div class="trunk-con">
+        <div class="right-container">
+            <div class="normal-list">
+                <div class="trunk">
+                    <ul class="tab">
+                        <li class="tab-menu "><a href="{:url('issue/Currency/index')}">联运币充值</a></li>
+                        <li class="tab-menu tab-menu-active"><a href="{:url('issue/Currency/orders')}">充值记录</a></li>
+<!--                        <li class="tab-menu "><a href="{:url('issue/Currency/withdraw')}">提现记录</a></li>-->
+                    </ul>
+
+                    <div class="tabpan">
+
+                        <div class="tabpan-con tabpan-show">
+                            <form action="{:url('issue/Currency/orders')}">
+                                <div class="trunk-search clearfix fr">
+                                    <input type="text" id="sdate" class="tabpan-input normal-space" autocomplete="off"
+                                           name="start_time" placeholder="开始时间" value="{:input('start_time')}">
+                                    <label class="line-color">&nbsp;-&nbsp;</label>
+                                    <input type="text" id="edate" class="tabpan-input " autocomplete="off" name="end_time"
+                                           placeholder="结束时间" value="{:input('end_time')}">
+                                    <input type="submit" class="submit fr normal-space" id="submit" value="查询">
+                                    <input type="hidden" id="page" name="row" value="{:input('row',10)}">
+                                </div>
+                            </form>
+                            <div class="clear"></div>
+                            <table class="table normal-table" id="promotecoin_table">
+                                <tbody>
+                                <tr>
+                                    <th>订单号</th>
+                                    <th>充值金额</th>
+                                    <th>支付方式</th>
+                                    <th>状态</th>
+                                    <th>充值时间</th>
+                                </tr>
+                                <notempty name="lists">
+                                    <volist name="lists" id='vo'>
+                                        <tr>
+                                            <td>{$vo.pay_order_number}</td>
+                                            <td>{$vo.pay_amount}</td>
+                                            <td>{:get_pay_way($vo['pay_way'])}</td>
+                                            <td>{$vo['pay_status']=='1'?'充值成功':'下单未付款'}</td>
+                                            <td>{:date("Y-m-d H:i:s",$vo['create_time'])}</td>
+                                        </tr>
+                                    </volist>
+                                <else/>
+                                    <!--暂无数据-->
+                                    <tr>
+                                        <td colspan="10" >
+                                            <div class="no-data">
+                                                <img src="__TMPL__/issuepublic/assets/images/icon_wushujv2.png"  alt="" class="no-data-img"/>
+                                                <p class="no-data-text">暂无数据</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </notempty>
+                                </tbody>
+                            </table>
+                            <notempty name="lists">
+                                <div class="pagenation clearfix">
+                                    {$lists->render()}
+                                </div>
+                            </notempty>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script src="__TMPL__/issuepublic/assets/js/promote/jquery-1.11.1.min.js"></script>
+<script src="__TMPL__/issuepublic/assets/js/promote/common.js"></script>
+<script src="__TMPL__/issuepublic/assets/js/promote/select2.min.js"></script>
+<script src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.js"></script>
+<script src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+<script>
+    $(function() {
+        $(".js-select-gallery").select2();
+    })
+</script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script src="__STATIC__/js/ajaxForm.js"></script>
+<script type="text/javascript">
+
+    $(function () {
+
+        $('#sdate').datetimepicker({
+            format: 'yyyy-mm-dd',
+            language: "zh-CN",
+            minView: 2,
+            autoclose: true,
+            scrollMonth: false,
+            scrollTime: false,
+            scrollInput: false
+        });
+        $('#edate').datetimepicker({
+            format: 'yyyy-mm-dd',
+            language: "zh-CN",
+            minView: 2,
+            autoclose: true,
+            pickerPosition: 'bottom-left',
+            scrollMonth: false,
+            scrollTime: false,
+            scrollInput: false
+        });
+
+    });
+
+</script>
+{:widget('issue/Management/footer')}
+
+</body>
+
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" media="all" href="__STATIC__/js/datejs/daterangepicker.css"/>
+		<include file="public@head"/>
+		<style>
+			.changeWidth .select2{
+				width:140px !important;
+			}
+		</style>
+		
+	</head>
+
+	<body>
+		<include file="public@nav"/>
+		<include file="public@header"/>
+		<div class="trunk">
+			<div class="trunk-con">
+				<div class="right-container">
+					<div class="normal-list">
+						<div class="trunk">
+							<div class="trunk-title">
+								<div class="location ">
+									<div class="location-container fr">当前位置：<span class="location-container-text">我的收益&gt;</span><span class="location-container-text">我的福利</span></div>
+								</div>
+								<img src="__TMPL__/public/assets/images/icon_zhuce.png" class="fl trunk-icon">
+								<span class="title-main fl ">我的福利  </span>
+
+							</div>
+
+							<div class="tabpan">
+
+								<div class="tabpan-con tabpan-show">
+									<form action="{:url('welfare')}">
+										<div class="trunk-search clearfix fr changeWidth">
+											<select id="game_id" name="game_id" class="tab-input js-select-gallery normal-space trunk-search-smallselect fl" >
+												<option value="" data="0">游戏名称</option>
+												<php>$gmap['game_status'] = 1;</php>
+												<volist name=":get_game_list('id,game_name,relation_game_id,relation_game_name',$gmap,null,'sort desc ,id desc')" id="vv">
+													<option <if condition="$vv['id'] eq input('game_id')"> selected</if> data="{$vv['game_name']}" value="{$vv['id']}">{$vv['game_name']}</option>
+												</volist>
+											</select>
+											<input type="submit" class="submit fr normal-space" id="submit" value="查询">
+											<input type="hidden" id="page" name="row" value="{:input('row',10)}">
+										</div>
+									</form>
+									<div class="clear"></div>
+									<table class="table normal-table" id="promotecoin_table">
+										<tbody>
+											<tr>
+												<th>ID</th>
+												<th>游戏名称</th>
+												<th>充值返利/%</th>
+												<!-- <th>统一折扣/折</th> -->
+                                                <th>会长代充统一首充折扣/折</th>
+                                                <th>会长代充统一续充折扣/折</th>
+                                                <th>渠道代充首充折扣/折</th>
+                                                <th>渠道代充续充折扣/折</th>
+<!--                                                <th>玩家首充折扣/折</th>-->
+<!--                                                <th>玩家续充折扣/折</th>-->
+<!--                                                <th>玩家绑币首充折扣/折</th>-->
+<!--                                                <th>玩家绑币续充折扣/折</th>-->
+											</tr>
+											<notempty name="data_lists">
+												<volist name="data_lists" id='vo'>
+													<tr>
+														<td>{$vo.game_id}</td>
+														<td>{$vo.game_name}</td>
+														<php>
+															$vo['ratio'] = $vo['ratio']== 0?null:sprintf("%.2f",$vo['ratio']);
+															$vo['money'] = $vo['ratio'] == 0?null:sprintf("%.2f",$vo['money']);
+															$vo['promote_discount_first'] = $vo['promote_discount_first']==0?null:sprintf("%.2f",$vo['promote_discount_first']);
+															$vo['promote_discount_continued'] = $vo['promote_discount_continued']==0?null:sprintf("%.2f",$vo['promote_discount_continued']);
+															$vo['first_discount'] = $vo['first_discount']==0?null:sprintf("%.2f",$vo['first_discount']);
+															$vo['continue_discount'] = $vo['continue_discount']==0?null:sprintf("%.2f",$vo['continue_discount']);
+															$vo['money_ratio'] = ($vo['money'] - $vo['ratio'])==0?null:sprintf("%.2f",($vo['money'] - $vo['ratio']));
+
+														</php>
+														<td><empty name="vo.status">{$vo['ratio']|default='--'}<else/>{$vo['money_ratio']}</empty></td>
+														<td>{$vo['discount']|default='--'}</td>
+														<!-- <td>会长代充统一</td> -->
+														<td>{$vo['continue_discount']|default='--'}</td>
+														<td>{$vo['promote_discount_first']|default='--'}</td>
+                                                        <td>{$vo['promote_discount_continued']|default='--'}</td>
+<!--														<td><empty name="vo.first_discount">&#45;&#45;<else/>{$vo['first_discount']}</empty></td>-->
+<!--														<td><empty name="vo.continue_discount">&#45;&#45;<else/>{$vo['continue_discount']}</empty></td>-->
+<!--														<td><empty name="vo.bind_first_discount">&#45;&#45;<else/>{$vo['bind_first_discount']}</empty></td>-->
+<!--														<td><empty name="vo.bind_continue_discount">&#45;&#45;<else/>{$vo['bind_continue_discount']}</empty></td>-->
+													</tr>
+												</volist>
+											<else/>
+												<!--暂无数据-->
+												<tr>
+													<td colspan="7" >
+													<div class="no-data">
+														<img src="__TMPL__/public/assets/images/icon_wushujv2.png"  alt="" class="no-data-img"/>
+														<p class="no-data-text">暂无数据</p>
+													</div>
+													</td>
+												</tr>
+											</notempty>
+										</tbody>
+									</table>
+									<notempty name="data_lists">
+									<div class="pagenation clearfix">
+										{$page}
+									</div>
+									</notempty>
+								</div>
+
+							</div>
+
+						</div>
+
+					</div>
+					<div class="tagging">说明：我的福利包含渠道享受的会长代充折扣，推广渠道下的玩家首充续充享受的充值折扣、充值返利优惠；渠道福利需平台设置才可享受，如若没有，则不享受福利。</div>
+
+				</div>
+			</div>
+		</div>
+
+		<include file="public@scripts"/>
+		<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+		<script src="__STATIC__/js/layer/layer.js"></script>
+		<script type="text/javascript" src="__STATIC__/js/datejs/moment.min.js"></script>
+		<script type="text/javascript" src="__STATIC__/js/datejs/momentfunction.js"></script>
+		<script type="text/javascript" src="__STATIC__/js/datejs/daterangepicker.js"></script>
+		<include file="public@date_config_scripts"/>
+		<script>
+            var maxDate = moment().startOf('day');
+            var date_autoUpdateInput = false;
+            var start = '{$start}',end  = '{$end}';
+            $(function() {
+				$(".js-select-gallery").select2();
+			})
+			//			日历
+			var date = "{$setdate}";
+			$('#sdate').datetimepicker({
+				format: 'yyyy-mm-dd',
+				language: "zh-CN",
+				minView: 2,
+				autoclose: true,
+				scrollMonth: false,
+				scrollTime: false,
+				scrollInput: false,
+				endDate: date
+			});
+			$('#edate').datetimepicker({
+				format: 'yyyy-mm-dd',
+				language: "zh-CN",
+				minView: 2,
+				autoclose: true,
+				pickerPosition: 'bottom-left',
+				scrollMonth: false,
+				scrollTime: false,
+				scrollInput: false,
+				endDate: date
+			});
+			$('#submit').click(function() {
+				var sdate = $('#sdate').val();
+				var edate = $('#edate').val();
+				// var pid = $('#promote_id').val();
+				// var pac = $('#promote_account').val();
+				// if(pid != '' && pac != '' && pid != pac) {
+				// 	layer.msg("渠道ID与渠道账号不匹配");
+				// 	return false;
+				// }
+				if(Date.parse(sdate) > Date.parse(edate)) {
+					layer.msg('开始时间必须小于等于结束时间');
+					return false;
+				}
+//				var url = $(this).attr('url');
+//				console.log(url);
+//				var query = $('.jssearch').find('input').serialize();
+//				query += "&" + $('.jssearch').find('select').serialize();
+//				query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+//				query = query.replace(/^&/g, '');
+//				if(url.indexOf('?') > 0) {
+//					url += '&' + query;
+//				} else {
+//					url += '?' + query;
+//				}
+//				window.location.href = url;
+			
+
+			});
+		</script>
+	</body>
+
+</html>

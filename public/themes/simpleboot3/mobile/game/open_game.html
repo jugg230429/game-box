@@ -1,0 +1,138 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <style>
+        body {
+            width: 100vw;
+            height: 100vh;
+            padding-bottom: 0;
+        }
+    </style>
+</block>
+<block name="body">
+
+    <iframe id="game_ifr" src="{$login_url}" scrolling="no" <if condition="$load_cover">style="background-image:url({:cmf_get_image_url($load_cover)});background-size:100% 100%;width:100%;height:100%" </if> ></iframe>
+    <if condition="$session['login_auth'] eq 1">
+    <include file="sdkh5@play" />
+    </if>
+	
+</block>
+
+<block name="script">
+    <script>
+        $('body').height(window.innerHeight)
+        $('#game_ifr').height(window.innerHeight)
+        var loginstatus = "{$session['login_auth']|default=0}";
+        var wd_token = "{$wd_token}";
+        var $mt ="{:get_devices_type()}";
+        if(loginstatus != 1){
+            loginFun();
+        }else{
+            if(isH5App){
+                sendToken(wd_token);
+            }
+        }
+        //微端返回设备号及渠道信息
+        function h5shell_application_info(imei,promote_id,game_id,sdk_version){
+            $.ajax({
+                type:'post',
+                url:"{:url('User/h5shell_imei',[],false,true)}",
+                data:{imei:imei,promote_id:promote_id,game_id:game_id,sdk_version:sdk_version},
+                success:function(data){
+                },error:function(){
+                }
+            });
+        }
+        //微端包切换用户JS
+        function h5shell_reLogin(){
+            if(loginstatus>0){
+                $.ajax({
+                    type:'post',
+                    url:"{:url('User/logout')}",
+                    success:function(data){
+                        window.location.reload();
+                    },error:function(){
+                    }
+                });
+            }else{
+                window.location.reload();
+            }
+        }
+        function sendToken(wd_token){
+            if(isH5App()){
+                if($mt == 2 ){
+                    window.webkit.messageHandlers.h5shelladdcookies.postMessage(wd_token);
+                }else{
+                    window.h5shell.saveGameToken(JSON.stringify(wd_token));
+                }
+            }
+        }
+
+        function isH5App(){
+            var ua = window.navigator.userAgent.toLowerCase();
+            if(ua.match(/app\/h5shell/i) == 'app/h5shell'){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        //微端包自动登录
+        function h5shell_automatic_login(token){
+            var token=token;
+            if(loginstatus<1&&token!=''){
+                $.ajax({
+                    type:'post',
+                    data:{token:token},
+                    url:"{:url('mobile/Game/auto_login')}",
+                    success:function(data){
+                        if(data.status==1){
+                            window.location.reload();
+                        }else{
+                            layer.msg(data.msg);
+                        }
+                    },error:function(){
+                    }
+                });
+            }
+        }
+
+        function h5shell_login(openID,nickName,icon,logintype){
+            var game_id = "{:input('game_id')}";
+            var pid = "{:input('pid')}";
+            $.ajax({
+                type:'post',
+                data:{openID:openID,nickName:nickName,icon:icon,logintype:logintype,game_id:game_id,pid:pid},
+                url:"{:url('@mobile/User/app_third_login')}",
+                success:function(data){
+                    if(data.code == 0){
+                        layer.msg(data.msg);
+                    }
+                    setTimeout(function () {
+                        window.location.reload();
+                    },500)
+                },error:function(){
+                }
+            });
+        }
+        // 判断是电脑还是手机
+        function IsPC() {
+            var userAgentInfo = navigator.userAgent;
+            var Agents = ["Android", "iPhone",
+                        "SymbianOS", "Windows Phone",
+                        "iPad", "iPod"];
+            var flag = true;
+            for (var v = 0; v < Agents.length; v++) {
+                if (userAgentInfo.indexOf(Agents[v]) > 0) {
+                    flag = false;
+                    break;
+                }
+            }
+            return flag;
+        }
+        var flag = IsPC()
+        if (!flag) {
+            $('.servicepop-con1').addClass('wapOnlyChange')
+            $('.servicepop-con2').addClass('wapOnlyUse')
+        }
+    </script>
+</block>

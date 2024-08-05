@@ -1,0 +1,414 @@
+@charset "utf-8";
+html,body{
+    color: #333333;
+    width: 100%;
+    height: 100%!important;
+    background: #F4F4F4;
+}
+p{
+    margin: 0;
+}
+footer{
+    display: none!important;
+}
+
+
+
+/* 设置页面 */
+.page-container {
+    background-color: #fff;
+    padding-bottom: 0!important;
+}
+.setTitle {
+    font-size: 0.44rem!important;
+    font-family: 'PingFang SC';
+    font-weight: 500;
+    color: #333333!important;
+}
+.page-content {
+    border-top: 0.2rem solid #F4F4F4;
+    border-bottom: 0.2rem solid #F4F4F4;
+}
+.siteItem {
+    display: block;
+    width: 100%;
+    height: 1.3rem;
+    border-bottom: 1px solid #E8E8E8;
+    padding-left: 0.3rem;
+    line-height: 1.3rem;
+    color: #333333;
+    font-size: 0.42rem;
+}
+.accountSet {
+    text-align: center;
+}
+.siteItem:last-child {
+    border-bottom: none
+}
+.iconJianTou {
+    float: right;
+    padding-right: 0.5rem;
+}
+.iconJianTou img {
+    width: 40%;
+}
+.logOutButton {
+    height: 1.5rem;
+    text-align: center;
+    line-height: 1.5rem;
+    font-family: 'PingFang SC';
+    font-weight: 500;
+    color: #26C7DB;
+    font-size: 0.42rem;
+}
+.outBtnText {
+    color: #26C7DB!important;
+}
+.h-middle {
+    justify-content: space-around!important;
+}
+.tabSwitch {
+    width: 100%;
+    height: 1rem;
+    border-bottom: 1px solid #E8E8E8;
+}
+.header-title {
+    font-size: 0.4rem;
+    color: #666666;
+}
+.header-title.active {
+    color:#26C7DB ;
+	font-weight:bold;
+    font-size: 0.4rem;
+    position: relative;
+}
+.header-title.active:after{
+    position: absolute;
+    bottom: -0.27rem;
+    left: 15%;
+    width: 70%;
+    height: 0.08rem;
+    background: #26C7DB;
+    content: '';
+}
+.req {
+    color: red;
+}
+.accountNumber {
+    padding-left: 0.1rem;
+}
+.emailNumber {
+    width: 2.9rem!important;
+}
+.tabpan-input{
+    border: 1px solid #E6E4E4;
+    border-radius: 0.1rem!important;
+    height: 0.7rem;
+    padding-left: 0.2rem;
+    width: 88%;
+}
+.explain{
+    background-color: rgba(182, 182, 182, .15);
+    height: 0.79rem;
+    width: 100%;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #666666;
+    font-size: 0.34rem;
+    line-height: 0.79rem;
+    padding-left: 0.3rem;
+}
+.bankSelection {
+    line-height: 0.8rem;
+    width: 100%;
+    border: 1px solid #ccc;
+    height: 0.8rem;
+}
+.payButton {
+    margin-left: 2.3rem!important;
+}
+.payInfoTitle{
+    width: 2.3rem!important;
+}
+.inputInfo {
+    width: 65%!important;
+}
+.select2-container,
+.select2-container--default, 
+.select2-container--below {
+    width: 66%;
+    padding-left: 0.2rem;
+}
+.select2-dropdown.select2-dropdown--below {
+    width: 71%!important;
+    left: 2.6rem!important;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    right: 1.3rem!important;
+}
+.search-item .select2-container--default .select2-selection--single .select2-selection__arrow {
+    right: 0.25rem!important;
+}
+.search-item.col-5 {
+    width: 25%;
+}
+.search-item.col-4 {
+    width: 23%!important;
+}
+.search-item.col-5:first-child {
+    margin-left: 0.3rem;
+}
+
+/* 修改密码 */
+.psdItem {
+    margin-top: 0.5rem;
+}
+.psdInput {
+    height: 0.9rem;
+    font-size: 0.4rem;
+    color: #000000;
+    position: relative;
+}
+.psdContent {
+    border: none;
+}
+.confirmButtton {
+    width: 90%!important;
+    margin-left: 0!important;
+}
+.clearIcon {
+    width: 0.38rem;
+    height: 0.38rem;
+    position: absolute;
+    right: 1.3rem;
+    top: 0.32rem;
+    background-image: url('../images/common/xg_ico_guanbi.png');
+    background-size: 100% 100%;
+    display: none;
+}
+
+/* 渠道列表 */
+.listIcon {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0.5rem;
+}
+.iocnItem {
+    width: 25%;
+    text-align: center;
+    margin-bottom: 0.46rem;
+}
+.iconPicture {
+    width: 1.3rem;
+    height: 1.3rem;
+    margin: auto;
+    padding-bottom: 0.27rem;
+}
+.iconPicture img {
+    width: 100%;
+    height: 100%;
+}
+.listInfo {
+    font-family: 'PingFang SC';
+    font-weight: 500;
+    color: #333333;
+    font-size: 0.36rem;
+}
+
+.form .form-item{
+    width: 100%;
+    height: 0.9rem;
+    margin-top: 0.37rem;
+    /*border-bottom: 0.0267rem solid #EDEEEF;*/
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-left: 0.4rem;
+
+}
+.form-item .form-item-title{
+    width: 3rem;
+    height: 100%;
+    font-size: 0.373rem;
+    color: #666;
+    line-height: 1rem;
+
+}
+.form-item .form-item-text{
+    width:calc(100% - 2.1333rem) ;
+    height: 100%;
+    box-sizing: border-box;
+    font-size: 0.34666rem;
+    line-height: 1rem;
+    position: relative;
+}
+.form-item .form-item-input {
+    width: 100%;
+    border: 0.0267rem solid #E0E0E0;
+    outline: none;
+    height: 100%;
+    padding-left: 0.2rem;
+    box-sizing: border-box;
+    border-radius: 3px;
+    font-size: 0.373rem;
+    box-shadow: none;
+    -webkit-appearance: none;
+}
+.form-item  .form-item-input:read-only{
+    border: none;
+    padding-left: 0;
+	color:#666;
+}
+.form-item .form-item-input::-webkit-input-placeholder{
+	color:#C0C0C4;
+}
+.form-item .form-item-input::-webkit-input-placeholder{
+	color:#C0C0C4;
+}
+.form-item .form-item-input::-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:#C0C0C4;
+}
+.form-item .form-item-input::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:#C0C0C4;
+}
+.form-item .form-item-input::-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:#C0C0C4;
+}
+.form-item-tips{
+    color: #999999;
+    font-size: 0.32rem;
+    position: absolute;
+    bottom: -0.6rem;
+    left: 0;
+    line-height: 1.2;
+}
+.form-item .submit-btn{
+    font-size: 0.4rem;
+    color: #fff;
+    background: #26c7db;
+    border-radius: 0.08rem;
+    width: 2.2rem;
+    height: 0.9rem;
+    line-height: 0.9rem;
+    text-align: center;
+    border: none;
+    margin-left: 2.8rem;
+}
+.countryPay {
+    width: 2.3rem!important;
+}
+.cityChoose {
+    border: 1px solid #E6E4E4;
+    border-radius: 0.1rem!important;
+    height: 0.7rem;
+    padding-left: 0.2rem;
+    line-height: 0.7rem;
+    width: 65%;
+}
+.select2-selection.select2-selection--single {
+    width: 86%;
+    border: 1px solid #E6E4E4;
+    border-radius: 0.1rem!important;
+    margin-left: 0.2rem;
+}
+
+.mail_suffix {
+    border: 1px solid #E6E4E4;
+    margin: 0;
+    padding: 0;
+    font-size: 0.32rem;
+    width: 90%;
+    height: 6rem;
+    overflow: hidden;
+    overflow-y: scroll;
+    border-radius: 0.1rem;
+    background-color: #fff;
+}
+.mail_suffix li {
+    line-height: 0.8rem!important;
+}
+.emailItem {
+    z-index: 99;
+}
+.psdForItem {
+    padding-left: 0.5rem!important;
+    box-sizing: border-box;
+}
+.emailInputWidth{
+    width: 84%!important;
+}
+/* 短信关闭 */
+.cl_ex{
+    display: none;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,.5);
+    z-index: 99;
+}
+.cl_exchange-con{
+    width: 9.14rem;
+    height: 4.45rem;
+    background-color: #fff;
+    border-radius: 0.1rem;
+    position: relative;
+    margin: auto;
+    top: 30%;
+   
+    
+}
+.cl_fl{
+    width: auto;
+    height: 0.8rem;
+    padding: 0.3rem;
+    /* background: yellow; */
+    font-size: 0.4rem;
+    font-weight: bold;
+}
+.cl_bottom-btns {
+    width: 2rem;
+    height: 0.86rem;
+    background: #ABABAB;
+    border-radius: 0.1rem;
+    color: #fff;
+    border: none;
+    outline: none;
+    font-size: 0.4rem;
+    margin-right: 0.6rem;
+}
+.cl_agree {
+    background: #26C7DB;
+}
+.cl_title{
+    padding: 0.1rem 0.3rem 0.3rem;
+    color: #999999;
+    font-size: 0.4rem;
+}
+.cl_button{
+    margin-top: 20px;
+    padding-left: 25px;
+    text-align: right;
+    margin-top: 20px;
+}
+.stepMainSet {
+    color: #018fff;
+}
+.openMessageTip {
+    padding-bottom: 0;
+}
+.openMessageTip::before {
+    content: '';
+    display: inline-block;
+    width: .08rem;
+    height: .38rem;
+    background: #26C7DB;
+    vertical-align: middle;
+    margin-right: .15rem;
+    position: relative;
+    top: -.04rem;
+}

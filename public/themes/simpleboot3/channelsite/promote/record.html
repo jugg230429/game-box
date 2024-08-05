@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		
+		<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+		<include file="public@head"/>
+	</head>
+
+	<body>
+		<include file="public@nav"/>
+		<include file="public@header"/>
+		<link href="__TMPL__/public/assets/css/promote/balance.css" rel="stylesheet" />
+		<div class="trunk">
+			<div class="trunk-con">
+				<div class="right-container">
+				    <div class="top-con">
+              <img src="/themes/simpleboot3/public/assets/images/ico_money2.png" class="top-con-icon fl">
+              <div class="fl">
+                <div class="top-con-num">{$baseinfo.balance_coin}</div>
+                <div class="top-con-text">平台币</div></div>
+            
+             
+              <a class="fl btn-exchange "  href="{:url(balance)}">充值</a>
+             </div>
+				
+					<div class="normal-list">
+						<div class="trunk">
+							
+							<ul class="tab ">
+								<if condition="AUTH_PAY eq 1">
+								<li class="tab-menu ">
+									<a href="{:url(balance)}">平台币充值</a>
+								</li>
+								</if>
+								<if condition="PID_LEVEL lt 3">
+									<li class="tab-menu ">
+										<a href="{:url('shift')}">给下级转移</a>
+									</li>
+								</if>
+								<li class="tab-menu tab-menu-active">
+									<a href="{:url('record')}">平台币记录</a>
+								</li>
+
+							</ul>
+                             <span class="tagging">说明：显示当前账号平台币余额的收支记录</span>
+							 <div class="clear"></div>
+							<div class="tabpan">
+
+								<div class="tabpan-con tabpan-show">
+									<form action="{:url('record')}" method="GET">
+										<div class="trunk-search clearfix fr">
+											<select id="pay_order_number" name="pay_order_number" class="tab-input js-select-gallery normal-space trunk-search-select fl" >
+												<option value="" data="0">订单号</option>
+												<volist name="alldata" id='dd'>
+													<if condition="$dd['pay_order_number'] neq '--'">
+														<option value="{$dd['pay_order_number']}" <if condition="$dd['pay_order_number'] eq input('pay_order_number')"> selected</if> data="0">{$dd['pay_order_number']}</option>
+													</if>
+												</volist>
+											</select>
+											<select id="to_id" name="to_id" class="tab-input js-select-gallery normal-space  fl trunk-search-select">
+												<option value="" data="0">渠道账号</option>
+												<option value="自己" <if condition="'自己' eq input('to_id')"> selected</if> data="0">自己</option>
+												<volist name="alldata" id='d2'>
+													<if condition="$d2.promote_id neq '自己'">
+														<option value="{$d2.to_id}" <if condition="$d2['to_id'] eq input('to_id')"> selected</if> data="0">{:get_promote_name($d2['to_id'])}</option>
+													</if>
+												</volist>
+											</select>
+											<select id="type" name="type" class="tab-input js-select-gallery normal-space trunk-search-select fl">
+												<option value="" data="0">途径</option>
+												<option value="5" <if condition="input('type') eq 5"> selected </if> data="0">后台收回</option>
+												<option value="3" <if condition="input('type') eq 3"> selected </if> data="0">平台币转移</option>
+												<!-- <option value="2" <if condition="input('type') eq 2"> selected </if> data="0">渠道充值</option> -->
+												<option value="1" <if condition="input('type') eq 1"> selected </if> data="0">充值渠道</option>
+												<option value="4" <if condition="input('type') eq 4"> selected </if> data="0">发放/转移</option>
+											</select>
+											<input type="submit" class="submit fr normal-space" id="submit" value="搜索">
+										</div>
+									</form>
+									<div class="clear"></div>
+									<table class="table normal-table" id="promotecoin_table">
+										<tbody>
+											<tr>
+
+												<th>订单号</th>
+												<th>账号</th>
+												<th>时间</th>
+												<th>数量</th>
+												<th>途径</th>
+											</tr>
+											<notempty name="data">
+												<volist name='data' id='vo'>
+													<tr>
+
+														<td>{$vo['pay_order_number']}</td>
+														<td><if condition="$vo['promote_id'] eq '自己'">自己<else/>{:get_promote_name($vo['to_id'])}</if></td>
+														<td>{:date('Y-m-d H:i:s',$vo['create_time'])}</td>
+														<td class="jstdcolor">
+															<if condition="$vo['type'] eq 1"/>+
+																<elseif condition="$vo['type'] eq 2"/>+
+																<elseif condition="$vo['type'] eq 3"/>-
+																<elseif condition="$vo['type'] eq 4"/>+
+																<elseif condition="$vo['type'] eq 5" />-
+															</if>{:null_to_0($vo['pay_amount'])}
+														</td>
+														<td><if condition="$vo['type'] eq 1"/>充值渠道<elseif condition="$vo['type'] eq 2"/>渠道充值<elseif condition="$vo['type'] eq 3"/>平台币转移<elseif condition="$vo['type'] eq 4"/>发放/转移<elseif condition="$vo['type'] eq 5"/>后台收回</if></td>
+													</tr>
+												</volist>
+												<tr style="background:#f0eff5">
+													<td>汇总</td>
+													<td>累计收入：{:null_to_0(deposit_record($alldata,1))}，累计支出：{:null_to_0(deposit_record($alldata,2))+$sum_hs}</td>
+													<td></td>
+													<td></td>
+													<td></td>
+												</tr>
+												<else/>
+												<!--暂无数据-->
+												<tr>
+													<td colspan="5">
+														<div class="no-data">
+															<img src="__TMPL__/public/assets/images/icon_wushujv2.png" alt=""
+																 class="no-data-img">
+															<p class="no-data-text">暂无数据</p>
+														</div>
+													</td>
+												</tr>
+											</notempty>
+										</tbody>
+									</table>
+									<notempty name="data">
+									<div class="pagenation clearfix">
+										<a download class="sch-btn" href="{:url('Export/expUser',array_merge(['id'=>7],input()))}">导出</a>
+										{$page}
+									</div>
+									</notempty>
+								</div>
+							
+							</div>
+						</div>
+
+					</div>
+					<include file="public@footer"/>
+				</div>
+			</div>
+		</div>
+		<include file="public@scripts"/>
+		<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+		<script>
+			$(function() {
+				$(".js-select-gallery").select2();
+				$('.jstdcolor').each(function(index,element){
+					that = $(this);
+					val = that.text();
+					if(val.indexOf("+") >= 0 ) {
+						that.css('color','#0099CC');
+					}
+					if(val.indexOf("-") >= 0 ){
+						that.css('color','#FF6600');
+					}
+				});
+			})
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,163 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        
+        <form id="search_form" class="well form-inline  fr" method="get" action="{:url('settlement/show_detail',['game_id'=>$game_id,'start_time'=>$start_time,'end_time'=>$end_time])}" onsubmit="return check();">
+            
+            <input type="submit" class="btn btn-primary" id="search_btn" value="刷新" />
+        </form>
+
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th colspan="10" style="text-align: center;">对账单</th>
+                </tr>
+                <php>
+                    $xls_tmp_name = '对账单';
+                </php>
+                <tr>
+                    <th>订单号</th>
+                    <th>充值时间</th>
+                    <th>所属渠道</th>
+                    <th>玩家账号</th>
+                    <th>游戏区服</th>
+                    <th>角色名</th>
+                    <th>充值游戏</th>
+                    <th>充值金额</th>
+                    <th>充值ip</th>
+                    <th>支付方式</th>
+                </tr>
+            </thead>
+            <tbody>
+                <empty name="data_lists">
+                    <tr><td colspan="10" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <php>
+                        $pay_way_name_arr = [
+                            1=>'绑币',
+                            2=>'平台币',
+                            3=>'支付宝',
+                            4=>'微信',
+                            5=>'谷歌',
+                            6=>'苹果支付'
+                        ];
+                    </php>
+                    <foreach name="data_lists" item="vo">
+                    <php>
+                        $time_str = date('Y-m-d H:i:s', $vo['pay_time']);
+                    </php>
+                    <tr>
+                        <td>{$vo.pay_order_number}</td>
+                        <td>{$time_str}</td>
+                        <td>{$vo.promote_account}</td>
+                        <td>{$vo.user_account}</td>
+                        <td>{$vo.server_name}</td>
+                        <td>{$vo.game_player_name}</td>
+                        <td>{$vo.game_name}</td>
+                        <td>{$vo.pay_amount}</td>
+                        <td>{$vo.spend_ip}</td>
+                        <td>{$pay_way_name_arr[$vo.pay_way]}</td>
+                    </tr>
+                    </foreach>
+                </empty>
+            </tbody>
+        </table>
+        <div class="pagination">
+            {$page}
+            <php>
+                $xls_tmp_name = '对账单';
+            </php>
+           <li class="page-item"><a class="page-link" href="{:url('exp_settlement_detail',array_merge(['xlsname'=>$xls_tmp_name],input()))}">导出</a></li>
+        </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script type="text/javascript" src="__STATIC__/js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+    <script type="text/javascript">
+        promote_id = $("#promote_id").attr('promote_id');
+        $("#promote_id").selectpicker('val', promote_id);
+        game_id = $("#game_id").attr('game_id');
+        $("#game_id").selectpicker('val', game_id);
+        function check(){
+            var start_date = $("input[name=start_time]").val();
+            var end_date = $("input[name=end_time]").val();
+            var start_time = (new Date(start_date).getTime())/1000;
+            var end_time = (new Date(end_date).getTime())/1000;
+            if(start_date != '' && end_date != '' && start_time > end_time){
+                layer.msg('开始时间不能大于结束时间');
+                return false;
+            }
+            return true;
+        }
+            $(function(){
+                $('.bindbut').click(function(){
+                    val = $(this).val();
+                    val1 = $('input[name=is_bind]').val();
+                    if(val!=val1){
+                        $('input[name=is_bind]').val(val);
+                    }
+                });
+                $('input[type=radio][name=jsis_bind]').change(function() {
+                   $("#is_bind").val(this.value);
+                   $("#search_btn").click();
+                });
+                //设置分成比例
+                $(".editTab").click(function(){
+                    var that = $(this);
+                    var title = that.attr("data-title");
+                    var value = that.text();
+                    var settlement_id = that.data('settlement_id');
+                    layer.prompt({title:title,placeholder:'',formType:0},function(value,index) {
+                        if (!/^(((\d|[1-9]\d)(\.\d{1,2})?)|100|100.0|100.00)$/.test(value)) {
+                            layer.msg('输入错误，0-100之间的两位小数',{time:2000});
+                            return false;
+                        }
+                        layer.closeAll();
+                        $.ajax({
+                            url:"{:url('setratio')}",
+                            type:'post',
+                            dataType:'json',
+                            data:{settlement_id:settlement_id,value:value},
+                            success:function(res){
+                                layer.msg(res.msg);
+                                if(res.code==1){
+                                    setTimeout(function () {
+                                        location.reload();
+                                    },1000)
+                                }
+                            },error(){
+                                layer.msg('服务器错误');
+                            }
+                        })
+                    });
+                })
+                //设置时间格式
+                dateD = "{$setdate}";
+                $('.jstime').datetimepicker({
+                    language: 'zh-CN',
+                    format: 'yyyy-mm-dd',
+                    minView: 'month',
+                    todayBtn: 0,
+                    autoclose: true,
+                    endDate: dateD
+                });
+        })
+            $('.chakan').click(function(){
+                var that=$(this),start = that.data('start'),end = that.data('end'),pid = that.data('pid'),gid = that.data('gid');
+                if(!start||!end||!pid||!gid){
+                    layer.msg('数据错误');
+                    return false;
+                }
+                layer.closeAll();
+                layer.open({
+                    type: 2,
+                    title: "结算状态详情",
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['70%', '80%'],
+                    content: "{:url('detail')}?start="+start+"&end="+end+"&pid="+pid+"&gid="+gid //iframe的url
+                });
+            });
+    </script>
+</body>
+</html>

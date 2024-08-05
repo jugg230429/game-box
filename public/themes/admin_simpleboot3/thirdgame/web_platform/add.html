@@ -1,0 +1,71 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+
+	<div class="nav-tabs mb20">
+        <span class="pb10">添加简化版平台</span>
+    </div>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('add')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>平台名称：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control " name="platform_name" id="platform_name" value="" placeholder="请输入平台名称">
+                            </div>
+                            <p class="help-block">例如：溪谷科技</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>平台域名：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control " name="platform_url" id="platform_url" value="" placeholder="请输入平台域名">
+                            </div>
+                            <p class="help-block">例如：http://www.xigusdk.com</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>api密钥：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control " name="api_key" id="api_key" value="" placeholder=" 输入加密密钥">
+                            </div>
+                            <p class="help-block">长度12-32位的数字和字母</p>
+                        </div>
+                        <!--<div class="form-group">-->
+                            <!--<label for="input-site_adminstyle" class="col-sm-2 control-label">支付通道：</label>-->
+                            <!--<div class="col-md-3 col-sm-5">-->
+                                <!--<label class="label-width">-->
+                                    <!--<input type="radio" value="1"  name="pay_type" checked>本平台-->
+                                <!--</label>-->
+                                <!--<label>-->
+                                    <!--<input type="radio" value="2"  name="pay_type" >第三方平台-->
+                                <!--</label>-->
+                            <!--</div>-->
+                            <!--<p class="help-block">设置支付通道</p>-->
+                        <!--</div>-->
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                                <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

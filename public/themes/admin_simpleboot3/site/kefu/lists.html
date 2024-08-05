@@ -1,0 +1,140 @@
+<include file="public@header" />
+<style>
+    .des{
+        max-width: 300px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    }
+   
+</style>
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li <if condition="input('platform_type','1') eq 1">class="active"</if>><a href="{:url('lists')}">SDK</a></li>
+            <li <if condition="input('platform_type') eq 2">class="active"</if>><a href="{:url('lists',['platform_type'=>2])}">推广平台</a></li>
+            <li <if condition="input('platform_type') eq 3">class="active"</if>><a href="{:url('lists',['platform_type'=>3])}">PC官网</a></li>
+        </ul>
+<div class="table-actions position" style="margin-left: -10px;">
+            <a href="{:url('add',['platform_type'=>input('platform_type')])}" class="btn btn-success  mtb17">新增问题</a>
+</div>
+        <form id="search_form" class="well form-inline fr" method="get" action="{:url('lists',['platform_type'=>input('platform_type')])}">
+            <input type="text" class="form-control" name="title" placeholder="标题" style="width: 200px;"
+                   value="{:input('title')}">&nbsp;&nbsp;
+            <select name="status" id="status" class="selectpicker" status="{:input('request.status')}" style="width: 120px;">
+                <option value="">状态</option>
+                <option value="0" <if condition="input('request.status') eq '0'">selected</if>>关闭</option>
+                <option value="1" <if condition="input('request.status') eq '1'">selected</if>>开启</option>
+            </select>
+            <select name="type" id="type" class="selectpicker" type="{:input('request.type')}" style="width: 120px;">
+                <option value="">分类</option>
+                <php>$map['platform_type'] = input('platform_type',1,'intval');</php>
+                <volist name=":get_kf_type($map)" key="k" id="vo">
+                    <option value="{$vo.id}" <eq name=":input('type')" value="$vo['id']">selected</eq>>{$vo.name}</option>
+                </volist>
+            </select>
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('lists',['platform_type'=>input('platform_type')])}">清空</a>
+        </form>
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>编号</th>
+                    <th style="width:800px">标题</th>
+                    <th style="width:300px">描述</th>
+                    <th>分类</th>
+                    <th>所属站点</th>
+                    <th>排序</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <empty name="data_lists">
+                    <tr><td colspan="8" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <foreach name="data_lists" item="vo">
+                    <tr>
+                        <td>{$vo['id']}</td>
+                        <td>{$vo.zititle}</td>
+                        <!-- <td>{$vo.content|substr=0,54}</td> -->
+                        <td class="des">{$vo.content}</td>
+                        <td>{$vo.title}</td>
+                        <td>
+                            <if condition="$vo['platform_type'] eq 1 ">
+                                SDK
+                            <elseif condition="$vo['platform_type'] eq 3"/>
+                                PC官网
+                            <else/>
+                                推广平台
+                            </if>
+                        </td>
+                        <td class="hits clickable" data-title="修改排序" data-id="{$vo['id']}" >{$vo.sort}</td>
+                        <td><a href="{:url('setstatus',['id'=>$vo['id'],'status'=>$vo['status']])}" class="js-ajax-dialog-btn"><span <if condition="$vo['status'] eq 1"> class="label label-success"<else/>class="label label-danger"</if>>{:get_info_status($vo['status'],4)}</span></a></td>
+                        <td>
+                            <a href="{:url('edit',['id'=>$vo['id'],'platform_type'=>input('platform_type')])}">编辑</a>
+                            <a href="{:url('del',['id'=>$vo['id']])}" class="js-ajax-delete" data-msg="确定要删除吗？">删除</a>
+                        </td>
+                    </tr>
+                    </foreach>
+                </empty>
+            </tbody>
+        </table>
+        <div class="pagination">{$page}</div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+<script>
+    game_id = $("#game_id").attr('game_id');
+    $("#game_id").selectpicker('val', game_id);
+    $("#status").selectpicker('val', $('#status').attr('status'));
+    $("#type").selectpicker('val', $('#type').attr('type'));
+
+
+    $(function () {
+
+        $(".hits").click(function () {
+
+            var url = "{:url('setSort')}";
+
+            var id = $(this).attr('data-id');
+            var title = $(this).attr('data-title');
+            var num = $(this).text();
+            layer.prompt({
+                formType: 3,
+                title: title,
+                value: num
+            }, function (hits) {
+                preg = /^(?:0|[0-9]*[1-9][0-9]*)$/;
+                if (!preg.test(hits)) {
+                    layer.msg("请输入正整数");
+                    return false;
+                }
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    dataType: 'json',
+                    data: {id: id, data: hits},
+                    success: function (data) {
+                        if (data.code > 0) {
+                            layer.msg(data.msg);
+                            setTimeout(function () {
+                                self.location.reload(true);
+                            }, 1000);
+                        } else {
+                            layer.msg(data.msg)
+                        }
+                    },
+                    error: function () {
+                        layer.msg("服务器故障！");
+                    }
+                });
+            });
+        });
+
+    })
+
+
+</script>
+</body>
+</html>

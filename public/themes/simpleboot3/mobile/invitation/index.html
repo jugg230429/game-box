@@ -1,0 +1,282 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/new_register.css">
+    <style>
+        .invite-contain,
+        .register-success-contain {
+            box-sizing: border-box;
+            padding: 0;
+            display: table;
+        }
+        .registerBody {
+            display: table-cell;
+            vertical-align: middle;
+        }
+        .registerSuccessBody {
+            display: table-cell;
+        }
+    </style>
+</block>
+
+<block name="body">
+    <div class="invite-contain">
+        <!--<a href="javascript:;" class="close-page">
+            <img src="__TMPL__/mobilepublic/assets/images/invite/success_btn_close.png">
+        </a>-->
+        <div class="registerBody">
+            <div class="register-box">
+                <div class="form-item">
+                    <input type="text" class="form-input" name="account" autocomplete="off" placeholder="手机号">
+                </div>
+                <div  class="form-item">
+                    <div class="geetest_box">
+                        <div class="geetest-heart"><span></span></div>
+                        <a href="javascript:;" id="verify_pop">点击按钮进行验证</a>
+                        <a href="javascript:;" id="verify_refresh" class="geetest-refresh">
+                            <img src="__TMPL__/mobilepublic/assets/images/refresh.png" >
+                        </a>
+                        <input type="hidden" name="verify_pop_tag">
+                        <input type="hidden" name="verify_pop_token">
+                    </div>
+                </div>
+                <div class="form-item v-middle">
+                    <input type="text" class="form-input" name="code" autocomplete="off" placeholder="验证码" style="width:15.57rem;">
+                    <div class="get-yzm-btn js-yzm"><p>获取验证码</p></div>
+                </div>
+                <div class="form-item">
+                    <input type="password" class="form-input" name="password" autocomplete="off" placeholder="密码">
+                </div>
+                <div class="can_jieshou">
+
+                    <label class="fl">
+                        <input id="agreement" hidden type="checkbox" name="agreement" value="1" checked="checked" class="" />
+                        <img src="__TMPL__/mobilepublic/assets/images/invite/redEnvelope_input_btn_choose_s.png" alt="" class="agree_con_img fl">
+                        <p style="width: 100%">我已阅读并同意 <span class="user_zhuce_info">《{$portal['post_title']}》</span><span class="user_zhuce_yinsi">《{$portal['post_title_yinsi']}》</span></p>
+                    </label>
+
+                </div>
+                <div class="register-btn js-register">注册</div>
+
+            </div>
+        </div>
+    </div>
+    <div class="register-success-contain" style="display: none">
+        <!--<a href="javascript:;" class="close-page">
+            <img src="__TMPL__/mobilepublic/assets/images/invite/success_btn_close.png">
+        </a>-->
+        <div class="registerSuccessBody">
+            <div class="success-tips">登录账号领取相应奖励</div>
+            <a href="" class="official-btn" class="official-btn">下载盒子APP</a>
+            <a href="{:url('index/index')}" class="official-btn goToIndexHome">去官网</a>
+        </div>
+    </div>
+</block>
+<block name="script">
+  
+    <script>
+        var height = $('body').height();
+        function isAndroid() {
+            var ua = navigator.userAgent
+
+            return !!/Android/i.test(ua)
+        }
+        function isWechat() {
+            var ua = navigator.userAgent
+            console.log('www', ua)
+            return !!(/MicroMessenger/i.test(ua))
+            
+        }
+        $('.invite-contain').css({"background-size":"100% 100%",'height': height});
+        
+
+        $(function () {
+            var u = navigator.userAgent;
+            var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+            if(isiOS){
+                $('html').css({'font-size':'11.5741px'})
+            }
+            // 点击同意
+            $('#agreement').click(function () {
+                var radio_val =$('#agreement').attr('checked');
+                if (radio_val) {
+                    $('.agree_con_img').prop('src', '__TMPL__/mobilepublic/assets/images/before_check.png');
+                    $('#agreement').attr('checked',false);
+
+                } else {
+
+                    $('.agree_con_img').prop('src', '__TMPL__/mobilepublic/assets/images/invite/redEnvelope_input_btn_choose_s.png');
+                    $('#agreement').attr('checked',true);
+                }
+            });
+            $('.js-yzm').click(function () {
+                var account = $('.register-box').find('input[name=account]').val();
+                if (account) {
+                    verify_pop_tag = $('input[name=verify_pop_tag]').val();
+                    verify_pop_token = $('input[name=verify_pop_token]').val();
+                    if(verify_pop_tag==''||verify_pop_token==''){
+                        layer.msg('请先进行验证');
+                        return false;
+                    }
+                    var that = $(this);
+                    if (that.hasClass('no_send')) {return false;}
+                    $.ajax({
+                        type: 'post',
+                        dataType: 'json',
+                        url:'{:url("User/sendSms")}',
+                        data:{phone:account,verify_token:verify_pop_token,verify_tag:verify_pop_tag,reg:1},
+                        success:function (data) {
+                            if(data.code==1){
+                                that.addClass('no_send');
+                                clock(that);
+                                layer.msg(data.msg);
+                            }else{
+                                layer.msg(data.msg);
+                            }
+
+                        },
+                        error:function () {
+                            layer.msg('服务器故障，请稍候再试');
+                        }
+                    });
+                } else {
+                    layer.msg('请输入手机号');
+                    return false;
+                }
+            })
+            $('#verify_pop').on('click',function(){
+                if($('body').find('.pop-caption-box').length>0) {return false;}
+                //回调函数
+                window.caption_callback_function = function(tag,token){
+                    $('#verify_pop').off('click').text('验证成功');
+                    $('input[name=verify_pop_tag]').val(tag);
+                    $('input[name=verify_pop_token]').val(token);
+                    is_mob_chorse=true
+                }
+                url = "{:url('user/caption/verify_pop')}"
+                $.get(url, function (html) {
+                    $('body').append(html);
+                });
+                return false;
+            });
+            $('#verify_refresh').click(function () {
+                $('input[name=verify_pop_tag]').val('');
+                $('input[name=verify_pop_token]').val('');
+                $('#verify_pop').off('click').on('click',function(){
+                    if($('body').find('.pop-caption-box').length>0) {return false;}
+
+                    //回调函数
+                    window.caption_callback_function = function(tag,token){
+                        $('#verify_pop').off('click').text('验证成功');
+                        $('input[name=verify_pop_tag]').val(tag);
+                        $('input[name=verify_pop_token]').val(token);
+                        is_mob_chorse=true
+                    }
+                    url = "{:url('user/caption/verify_pop')}"
+                    $.get(url, function (html) {
+                        $('body').append(html);
+                    });
+                    return false;
+                }).text('点击按钮进行验证');
+                return false;
+            });
+            $('.js-register').click(function () {
+                var account = $('.register-box').find('input[name=account]').val();
+                var invitation_account = "{:input('account')}";
+                var code = $('.register-box').find('input[name=code]').val();
+                var password = $('.register-box').find('input[name=password]').val();
+                var agreement = 0;
+                if($("#agreement").is(":checked")){
+                    agreement = 1;
+                }else{
+                    agreement = 0;
+                }
+                if(agreement == 0){
+                    layer.msg('请勾选用户注册协议');
+                    return false;
+                }
+                verify_pop_tag = $('input[name=verify_pop_tag]').val();
+                verify_pop_token = $('input[name=verify_pop_token]').val();
+                if(verify_pop_tag==''||verify_pop_token==''){
+                    layer.msg('请先进行验证');
+                    return false;
+                }
+                if(code == ''){
+                    layer.msg('请输入验证码');
+                    return false;
+                }
+                if (password == ''){
+                    layer.msg('请输入密码');
+                    return false;
+                }
+                var that = $(this);
+                if (that.hasClass('no_send')) {return false;}
+                $.ajax({
+                    type: 'post',
+                    dataType: 'json',
+                    url:'{:url("Invitation/register")}',
+                    data:{account:account,code:code,password:password,verify_tag:verify_pop_tag,verify_token:verify_pop_token,invitation_account:invitation_account,agreement:agreement},
+                    success:function (data) {
+                        if(data.code==1){
+                            layer.msg(data.msg);
+                            $('.invite-contain').hide();
+                            $('.register-success-contain').show()
+                        }else{
+                            layer.msg(data.msg);
+                        }
+                    },
+                    error:function () {
+                        layer.msg('服务器故障，请稍候再试');
+                    }
+                });
+            })
+            
+        })
+    </script>
+    <script>
+        function judgeBrand(sUserAgent) {
+       var isIphone = sUserAgent.match(/iphone/i) == "iphone";
+       var isHuawei = sUserAgent.match(/huawei/i) == "huawei";
+       var isHonor = sUserAgent.match(/honor/i) == "honor";
+       var isOppo = sUserAgent.match(/oppo/i) == "oppo";
+       var isOppoR15 = sUserAgent.match(/pacm00/i) == "pacm00";
+       var isVivo = sUserAgent.match(/vivo/i) == "vivo";
+       var isXiaomi = sUserAgent.match(/mi\s/i) == "mi ";
+       var isXiaomi2s = sUserAgent.match(/mix\s/i) == "mix ";
+       var isRedmi = sUserAgent.match(/redmi/i) == "redmi";
+       var isSamsung = sUserAgent.match(/sm-/i) == "sm-";
+
+       if (isIphone) {
+           return 'iphone';
+       } else if (isHuawei || isHonor) {
+           return 'huawei';
+       } else if (isOppo || isOppoR15) {
+           return 'oppo';
+       } else if (isVivo) {
+           return 'vivo';
+       } else if (isXiaomi || isRedmi || isXiaomi2s) {
+        return 'xiaomi';
+       } else if (isSamsung) {
+           return 'samsung';
+       } else {
+           return 'default';
+       }
+
+   }
+
+       if (isWechat()) {
+            if (isAndroid()) {
+                $('.invite-contain').css({"background-size":"100% 100%",'height': height});
+              
+            }
+           
+        }
+
+
+$('.register-success-contain').css({'height': height});
+    const paddingTop = height * 188/640
+    $('.registerSuccessBody').css('padding-top', paddingTop)
+
+   var brand = judgeBrand(navigator.userAgent.toLowerCase()); 
+
+    </script>
+</block>

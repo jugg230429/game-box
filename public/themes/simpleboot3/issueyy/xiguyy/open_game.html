@@ -1,0 +1,29 @@
+<extend name="./public/base" />
+
+<block name="body">
+    <iframe id="game_ifr" src="{$login_url}" style="width: 100%;height: 100vh;"></iframe>
+    <script>
+        var url = "{:url('@issueyy/Role/get_role_info',input())}";
+        $(function () {
+            //请求角色信息
+            var basetime = 300;
+            var truetime = 60;
+            var time = 60;
+            var b = setInterval(function(){
+                time--;
+                if(time <=0){
+                    truetime = truetime + basetime;
+                    time = truetime;
+                    $.ajax({
+                        type:'post',
+                        url:url,
+                        success:function(data){
+
+                        }
+                    })
+                }
+            },1000);
+        })
+    </script>
+</block>
+

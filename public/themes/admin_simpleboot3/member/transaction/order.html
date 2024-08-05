@@ -1,0 +1,157 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('transaction/order')}">小号订单</a></li>
+            <span class="title_remark">说明：用户购买商品的记录</span>
+        </ul>
+        <form id="search_form" class="well form-inline  fr" method="get" action="{:url('Transaction/order')}" onsubmit="return check();" style="margin-right: 0px;">
+            <if condition="AUTH_PROMOTE eq 1">
+                <input type="text" class="form-control" name="pay_order_number" style="width: 120px;" value="{:input('request.pay_order_number/s','')}" placeholder=" 订单号">
+            </if>
+            <input type="text" class="form-control js-bootstrap-date" id="start_time" name="start_time" placeholder="开始时间"
+                   value="{:input('request.start_time/s','')}" style="width: 140px;" autocomplete="off">-
+            <input type="text" class="form-control js-bootstrap-date" id="end_time" name="end_time" placeholder="结束时间"
+                   value="{:input('request.end_time/s','')}" style="width: 140px;" autocomplete="off">
+            <if condition="AUTH_GAME eq 1">
+                <select name="game_id" id="game_id" class="selectpicker " game_id="{:input('request.game_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+                    <option value="">游戏名称</option>
+                    <volist name=":get_game_list('id,game_name')" id="vo">
+                        <option game-id="{$vo.id}" value="{$vo.id}" >{$vo.game_name}</option>
+                    </volist>
+                </select>
+            </if>
+            <select name="pay_status" id="pay_status" class="selectpicker" pay_status="{:input('request.pay_status')}" style="width: 120px;">
+                <option value="">状态</option>
+                <option value="0" <if condition="input('pay_status') eq '0'">selected</if>>待付款</option>
+                <option value="1" <if condition="input('pay_status') eq 1">selected</if>>交易成功</option>
+                <option value="2" <if condition="input('pay_status') eq 2">selected</if>>交易失败</option>
+            </select>
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('Transaction/order')}">清空</a>
+        </form>
+        <div class="scroll-table-wrapper" style="margin-left: -10px;">
+        <table class="table table-hover table-bordered scroll-table" style="margin-left:0px;">
+            <thead>
+                <tr>
+                    <th>订单号</th>
+                    <th>商品信息</th>
+                    <th>交易用户</th>
+                    <th>售价</th>
+                    <th>手续费</th>
+                    <th>状态</th>
+                    <th>付款时间</th>
+                </tr>
+            </thead>
+            <tbody style="background: #ffffff">
+                <empty name="data_lists">
+                    <tr><td colspan="10" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <foreach name="data_lists" item="vo">
+                    <tr>
+                        <td>{$vo['pay_order_number']}</td>
+                        <td><p style="font-weight: bold">{$vo['title']}</p><span style="color: #666666">{$vo.game_name}/{$vo.server_name}/{:get_user_entity($vo['small_id'],false,'nickname')['nickname']}</span></td>
+                        <td><p>买：{$vo['user_account']}</p><span>卖：{$vo.sell_account}<notempty name="vo.phone">(手机{$vo.phone})</notempty></span></td>
+                        <td>{$vo['pay_amount']}</td>
+                        <td>{$vo['fee']}</td>
+                        <td>
+                            <switch name="vo.pay_status">
+                                <case value="0"><span>待付款</span></case>
+                                <case value="1">交易成功</case>
+                                <case value="2">交易失败</case>
+                            </switch>
+                        </td>
+                        <td>{$vo['pay_time']|date='Y-m-d H:i:s',###}</td>
+                    </tr>
+                    </foreach>
+                </empty>
+            </tbody>
+        </table>
+        </div>
+        <div class="pagination">
+            {$page}
+        </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script type="text/javascript">
+        $("#game_id").selectpicker('val', $("#game_id").attr('game_id'));
+        $("#pay_status").selectpicker('val', $('#pay_status').attr('pay_status'));
+        $(function () {
+            $("#reject").click(function () {
+                var url = $(this).attr('url');
+                layer.prompt({
+                    formType: 2,
+                    title: "商品驳回",
+                    value: '',
+                    success:function (layero, index) {
+                        layero.find('textarea').attr('placeholder','请输入驳回原因');
+                    }
+                }, function (msg) {
+                    $.ajax({
+                        url: url,
+                        type: 'post',
+                        dataType: 'json',
+                        data: {msg:msg},
+                        success: function (data) {
+                            if (data.code > 0) {
+                                layer.msg(data.msg);
+                                setTimeout(function(){
+                                    self.location.reload(true);
+                                },1000);
+                            } else {
+                                layer.msg(data.msg)
+                            }
+                        },
+                        error: function () {
+                            layer.msg("服务器故障！");
+                        }
+                    });
+                });
+            });
+            $("#lower_shelf").click(function () {
+                var url = $(this).attr('url');
+                layer.prompt({
+                    formType: 2,
+                    title: "商品下架",
+                    value: '',
+                    success:function (layero, index) {
+                        layero.find('textarea').attr('placeholder','请输入下架原因');
+                    }
+                }, function (msg) {
+                    $.ajax({
+                        url: url,
+                        type: 'post',
+                        dataType: 'json',
+                        data: {msg:msg},
+                        success: function (data) {
+                            if (data.code > 0) {
+                                layer.msg(data.msg);
+                                setTimeout(function(){
+                                    self.location.reload(true);
+                                },1000);
+                            } else {
+                                layer.msg(data.msg)
+                            }
+                        },
+                        error: function () {
+                            layer.msg("服务器故障！");
+                        }
+                    });
+                });
+            });
+        })
+        function check(){
+            var start_time = $("#start_time").val();
+            var end_time = $("#end_time").val();
+            if(start_time != '' && end_time != '' && start_time > end_time){
+                layer.msg('开始时间不能大于结束时间');
+                return false;
+            }
+            return true;
+        }
+
+    </script>
+</body>
+</html>

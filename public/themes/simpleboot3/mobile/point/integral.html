@@ -1,0 +1,261 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/integral.css">
+
+</block>
+
+<block name="body">
+    <div class="integral_header">
+	  <a href="{:url('point/index')}" class="fl"><img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class=" back_icon"></a>
+	  <div class="menu">
+	    <div class="menu_con menu_active">收入</div>
+		<div class="menu_con">支出</div>
+	  </div>
+	</div>
+	  <div>
+	      <div class="integral_con integral_show" >
+		    <div class="integral_total gpoint_sum">累计收入：<span class="gpoint_money"></span></div>
+			<ul id="gpointload">
+			</ul>
+		 </div>
+
+	     <div class="integral_con">
+		    <div class="integral_total upoint_sum">累计支出：<span class="upoint_money"></span></div>
+			<ul id="upointload">
+			</ul>
+		 </div>
+
+	  </div>
+	</div>
+  </block>
+<block name="script">
+<script src="__JS__/clipboard.min.js"></script>
+	<script>
+        var itemIndex = 0;
+        var lwx = window.lwx || {};
+        lwx.ready = true;
+        lwx.width = $(window).width();
+        lwx.height = $(window).height();
+        lwx.number = {gpoint:1,upoint:1};
+        lwx.row = {gpoint:10,upoint:10};
+        lwx.http = {
+            getJSON:function(url,callback){
+                $.getJSON(url + '&v=' + Date.now(),function(data){
+                    callback(data);
+                });
+            },
+            postJSON:function(url,args,callback) {
+                $.post(url + '&v=' + Date.now(), args, function(data) {
+                    callback(data);
+                },"json")
+            },
+        };
+        lwx.url ={
+            gpoint:'{:url("Point/get_gpoint")}',
+            upoint:'{:url("Point/get_upoint")}',
+        };
+        lwx.page = {
+            gpoint:function(){
+                if(lwx.number.gpoint) {
+                    lwx.http.getJSON(lwx.url.gpoint+'&limit='+lwx.row.gpoint+'&p='+lwx.number.gpoint,function(data) {
+                        var hotload = $('#gpointload');
+                        var sum = data.sum;
+                        var data = data.data;
+                        if(data && data.length) {
+                            $(".gpoint_money").text(sum);
+                            $(".gpoint_sum").show();
+                            var html = '';
+                            for (var i in data) {
+                                html += '<li class="integral_item">';
+                                html += '<div class="fl integral_item_left">';
+                                html += '<div class="integral_num">+'+data[i].point+'</div>';
+                                html += '<div class="integral_info">'+data[i].type_name+'</div>';
+                                html += '</div>';
+                                html += '<div class="fg integral_item_right">';
+                                html += ' <div class="integral_num_time">'+data[i].create_time+'</div>';
+                                html += '</div>';
+                                html += '</li>';
+                            }
+                            html += '</div>';
+                            hotload.append(html);
+                            hotload.find('.jsdropload').remove();
+                            if(data.length >= lwx.row.gpoint) {
+                                lwx.number.gpoint++;
+                                lwx.ready = true;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.gpoint = false;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                        } else {
+                            if(lwx.number.gpoint==1){
+                                $(".gpoint_sum").hide();
+                                hotload.html('').append('<p class="no_invest_info">~空空如也~</p>');
+                            } else{
+                                hotload.find('.jsdropload').remove();
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                            lwx.number.gpoint = false;
+                        }
+                    });
+                }
+            },
+            upoint:function(){
+                if(lwx.number.upoint) {
+                    lwx.http.getJSON(lwx.url.upoint+'&limit='+lwx.row.upoint+'&p='+lwx.number.upoint,function(data) {
+                        var upointload = $('#upointload');
+                        var sum = data.sum;
+                        var data = data.data;
+                        if(data && data.length) {
+                            $(".upoint_money").text(sum);
+                            $(".upoint_sum").show();
+                            var html = '';
+                            for (var i in data) {
+                                html += ' <li class="integral_item">';
+                                html += '<div class="fl integral_item_left">';
+                                html += '<div class="integral_num">-'+data[i].point+'</div>';
+                                html += '<div class="integral_info">'+data[i].type_name+data[i].good_name+'</div>';
+                                html += '</div>';
+                                html += '<div class="fg integral_item_right">';
+                                html += '<div class="integral_num_time">'+data[i].create_time+'</div>';
+                                if(data[i].type_id ==1){
+									html += '<a class="integral_num_btn" href="javascript:;" data-use_id="'+data[i].id+'" data-item_id="'+data[i].item_id+'">查看</a>';
+                                }
+                                html += '</div>';
+                                html += '</li>';
+                            }
+                            html += '</div>';
+                            upointload.append(html);
+                            upointload.find('.jsdropload').remove();
+                            if(data.length >= lwx.row.upoint) {
+                                lwx.number.upoint++;
+                                lwx.ready = true;
+                                upointload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.upoint = false;
+                                upointload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                        } else {
+                            if(lwx.number.upoint==1){
+                                $(".upoint_sum").hide();
+                                upointload.html('').append('<p class="no_invest_info">~空空如也~</p>');
+                            } else{
+                                upointload.find('.jsdropload').remove();
+                                upointload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                            lwx.number.upoint = false;
+                        }
+                    });
+                }
+            },
+        };
+        pageChange('#'+itemIndex);
+        function pageChange(n) {
+            switch (n) {
+                case '#0': {
+                    lwx.page.gpoint();
+                    if(lwx.number.gpoint) {lwx.ready=true;}
+                };break;
+                case '#1':{
+                    lwx.page.upoint();
+                    if(lwx.number.upoint) {lwx.ready=true;}
+                };break;
+            }
+        }
+        function pageScroll(scrollTop, boxHeight, maxScrollHeight) {
+            if (scrollTop + boxHeight >= maxScrollHeight - 50) {
+                if (lwx.ready) {
+                    lwx.ready = false;
+                    switch (itemIndex) {
+                        case 0:
+                            lwx.page.gpoint();
+                            break;
+                        case 1:
+                            lwx.page.upoint();
+                            break;
+                    }
+                }
+            }
+        }
+        window.onscroll = function() {
+            var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+            pageScroll(scrollTop, lwx.height, $(document).height())
+        }
+        $(window).on("hashchange", function() {
+            pageChange(location.hash);
+        });
+	</script>
+	<script>
+	    function Copy(str,that){
+        text = str;
+        var clipboard = new Clipboard('.copy',{
+            text: function() {
+                return text;
+
+            }
+        });
+        clipboard.on('success', function(e) {
+            layer.msg('<p>已复制</p>');
+            e.clearSelection();
+            clipboard.destroy();
+        });
+        clipboard.on('error', function(e) {
+            layer.msg('此浏览器不支持此操作，请长按内容复制');
+        });
+
+    }
+    $(function () {
+        $('.gettotal').text("{$gettotal}");
+        $('.usetotal').text("{$usetotal}");
+        $(".menu_con").click(function(){
+            var index=$(this).index();
+            $(this).addClass("menu_active").siblings().removeClass("menu_active");
+            $(".integral_con").eq(index).addClass("integral_show").siblings().removeClass("integral_show")
+            itemIndex = index;
+            location.hash = index;
+        })
+
+        window.wxWidth =  window.wxWidth || '25.487rem';
+        window.copyWidth =  window.copyWidth || '19.7rem';
+        $('body').on('click',".integral_num_btn",function(){
+            var use_id = $(this).data('use_id');
+            var item_id = $(this).data('item_id');
+            $.ajax({
+                url:"{:url('useDetail')}",
+                type: 'post',
+                data:{id:use_id,item_id:item_id},
+                success:function (res) {
+                    if(res.code==200){
+                        layer.open({
+                            type: 1,
+                            title: false,
+                            closeBtn: false,
+                            area: [window.copyWidth, 'auto'],
+                            content: '<div class="open-weixin-modal"><img src="__TMPL__/mobilepublic/assets/images/common_btn_close_n.png" alt="" class="close_login_modal">' +
+                            '<div class="copy-box"></i>'+((res.data.remark)?(res.data.remark):"暂无数据")+'</div><a class="open-weixin-btn js-copy copy" data-clipboard-text="'+res.data.remark+'">复制</a></div>',
+                            shadeClose: true,
+                            success: function (layero, index) {
+                                layero.find('.js-copy').click(function() {
+                                    Copy($(this).attr('data-clipboard-text'),$(this));
+                                })
+                                layero.find('.close_login_modal').click(function () {
+                                    layer.close(index);
+                                    return false;
+                                });
+                            },
+                        });
+                    }else{
+                        layer.msg('未知错误，请稍后重试');
+                    }
+
+                },error:function () {
+                    layer.msg('服务器异常，请刷新重试');
+                }
+            })
+            return false;
+        })
+    })
+
+	</script>
+
+	</block>

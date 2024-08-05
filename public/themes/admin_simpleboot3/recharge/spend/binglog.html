@@ -1,0 +1,47 @@
+<include file="public@header" />
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="javascript:;">订单绑定记录</a></li>
+        <span class="title_remark">说明：单一订单绑定到指定渠道。</span>
+    </ul>
+    <form id="search_form" class="well form-inline fr" method="get" action="{:url('bingLog')}">
+        <input style="display: none" type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+    </form>
+
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>订单编号</th>
+                <th>原渠道</th>
+                <th>绑定渠道</th>
+                <th>操作人员</th>
+                <th>操作时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <empty name="data_lists">
+                <tr><td colspan="13" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                <volist name="data_lists" id="vo">
+                    <tr>
+                        <td>{$vo['id']}</td>
+                        <td>{$vo['pay_order_number']}</td>
+                        <td>{$vo['old_promote_account']}</td>
+                        <td>{$vo['promote_account']}</td>
+                        <td>{$vo['create_user_account']}</td>
+                        <td>{:date("Y-m-d H:i:s",$vo['create_time'])}</td>
+                    </tr>
+                </volist>
+            </empty>
+            </tbody>
+        </table>
+        <div class="pagination">
+            {$page}
+        </div>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

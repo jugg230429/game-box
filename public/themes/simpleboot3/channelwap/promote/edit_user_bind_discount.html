@@ -1,0 +1,132 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/select2.min.css" type="text/css" />
+    <link href="__TMPL__/channelwappublic/assets/css/recharge.css" type="text/css" rel="stylesheet" />
+    <link href="__TMPL__/channelwappublic/assets/css/agency.css" type="text/css" rel="stylesheet" />
+    <link href="__TMPL__/channelwappublic/assets/css/bind_balance.css" type="text/css" rel="stylesheet" />
+    <style>
+        .tipBottomText {
+            color: #999;
+            margin-left: 3rem;
+            margin-top: .3rem;
+            line-height: .5rem;
+        }
+        .rightTipDiscount {
+            display: inline-block;
+            width: 1rem;
+            text-align: center;
+            position: absolute;
+            right: 0rem;
+            font-size: .4rem;
+        }
+        .tipSmallerDiscount{
+            text-align: center;
+            margin-top: 10px;
+            position: relative;
+            left: -14px;
+            color: #999;
+        }
+    </style>
+</block>
+<block name="body">
+    <div class="page-container">
+        <header>
+            <a href="javascript:history.back(-1);" class="back-btn"></a>
+            <div style="width: 100%;height: 100%" class="v-middle h-middle">
+                <p class="header-title addTitle">编辑绑币充值折扣</p>
+            </div>
+        </header>
+        <div class="page-content">
+            <form action="{:url('edit_user_bind_discount')}" id="ajaxForm2" method="post">
+                <div class="form agency-form">
+                    <div class="form-item">
+                        <!-- <label><span class="req">*</span></label> -->
+                        <div  class="fl agency-item-title couponChange"><span class="req">*</span>游戏名称：</div>
+                        <div class="form-item-text">
+                            <input type="text" class="tabpan-input couponInput" disabled value="{$info.game_name}">
+                        </div>
+                    </div>
+                    <div class="form-item" style=" height: 2.9rem;">
+                        <div class="agency-item-title couponChange"><span class="req">&nbsp;</span>折扣玩家：</div>
+                        <div class="form-item-text">
+                            <textarea name="game_user_account" class="tabpan-input couponInput"  rows="10" placeholder="输入玩家账号，1行1个，不填表示全部玩家">{$info.game_user_list}</textarea>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="agency-item-title couponChange"><span class="req">&nbsp;</span>首充折扣：</div>
+                        <div class="form-item-text">
+                            <input type="text" class="tabpan-input couponInput" onkeyup="value=value.replace(/^(\d*\.?\d{0,2}).*/,'$1')" name="first_discount" value="{$info.first_discount}">
+                            <span class="rightTipDiscount">折</span>
+                        </div>
+                    </div>
+                    <p class="tipBottomText">设置折扣对象下某个游戏的玩家首次充值绑币时可享受的折扣</p>
+                    <div class="form-item">
+                        <div class="agency-item-title couponChange"><span class="req">&nbsp;</span>续充折扣：</div>
+                        <div class="form-item-text">
+                            <input type="text" class="tabpan-input couponInput" onkeyup="value=value.replace(/^(\d*\.?\d{0,2}).*/,'$1')" name="continue_discount" value="{$info.continue_discount}">
+                            <span class="rightTipDiscount">折</span>
+                        </div>
+                    </div>
+                    <p class="tipBottomText">设置折扣对象下某个游戏的玩家非首次充值绑币时可享受的折扣</p>
+                    <input type="hidden" name="id" value="{$info.id}">
+                    <input type="hidden" name="game_id" value="{$info.game_id}">
+                    <input type="hidden" name="first_status" value="{$info.first_status}">
+                    <input type="hidden" name="continue_status" value="{$info.continue_status}">
+
+                    <div class="form-item confirmButtonLast">
+					     <div class="form-item-title"></div>
+                        <button type="button" class="submit-btn js-ajax-submit">确认</button>
+                    </div>
+                    <p class="tipSmallerDiscount">官方最低折扣<span id="show_gf_limit_discount">10.00</span>折</p>
+                </div>
+            </form>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/select2.min.js"></script>
+    <script>
+        $(function () {
+            $(".select_gallery").select2({
+                minimumResultsForSearch: -1
+            });
+            $(".js-ajax-submit").click(function () {
+                var url = $("#ajaxForm2").attr('action');
+                $.ajax({
+                    type: 'post',
+                    url: url,
+                    data: $("#ajaxForm2").serialize(),
+                    async: false,
+                    success: function (res) {
+                        if(res.code == 1){
+                            layer.msg(res.msg);
+                            setTimeout(function () {
+                                window.location.href = res.url;
+                            },1000)
+                        }else{
+                            layer.msg(res.msg);
+                        }
+                    },
+                    error: function () {
+                        layer.msg('服务器错误，请稍后再试');
+                    }
+                });
+            })
+
+
+            var game_id = "{$info['game_id']}";
+            $.ajax({
+                url:"{:url('getGameGfLimitDiscount')}",
+                data:{game_id,game_id},
+                success:function (res) {
+                    var limit = res.gf_limit_discount;
+                    $("#show_gf_limit_discount").text(limit);
+
+                },error:function () {
+                    layer.msg('服务器出错，请稍后再试');
+                }
+            })
+        })
+    </script>
+</block>

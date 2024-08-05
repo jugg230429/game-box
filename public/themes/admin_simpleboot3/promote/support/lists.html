@@ -1,0 +1,345 @@
+<include file="public@header" />
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="{:url('Support/lists')}">扶持发放</a></li>
+        <span class="title_remark">说明：对一级渠道提交的扶持申请进行审核并发放</span>
+    </ul>
+    <form id="search_form" class="well form-inline  fr" method="get" action="{:url('lists')}">
+
+        <select name="promote_id" id="promote_id" class="selectpicker" promote_id="{:input('request.promote_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+            <option value="">渠道账号</option>
+            <volist name=":get_promote_list()" id="vo">
+                <option value="{$vo.id}" >{$vo.account}</option>
+            </volist>
+        </select>
+
+        <select name="game_id" id="game_id" class="selectpicker " game_id="{:input('request.game_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+            <option value="">游戏名称</option>
+            <volist name=":get_game_list('id,game_name')" id="vo">
+                <option game-id="{$vo.id}" value="{$vo.id}" >{$vo.game_name}</option>
+            </volist>
+        </select>
+
+        <select name="server_id" id="server_id" class="selectpicker"  server_id="{:input('request.server_id')}">
+            <option value="">区服名称</option>
+        </select>
+
+        <select name="support_type" id="support_type" class="selectpicker" support_type="{:input('support_type')}">
+            <option value="">扶持类型</option>
+            <option value="0">新增扶持</option>
+            <option value="1">后续扶持</option>
+        </select>
+        <select name="status" id="status" class="selectpicker" status="{:input('status')}">
+            <option value="">审核状态</option>
+            <option value="0">待审核</option>
+            <option value="1">已通过</option>
+            <option value="2">已驳回</option>
+            <option value="3">已发放</option>
+        </select>
+
+        <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+        <a class="btn btn-clear" href="{:url('lists')}">清空</a>
+        <a class="btn btn-export js-ajax-dialog-btn-xz" data-msg="确定导出吗？" href="{:url('Export/expUser',array_merge(['id'=>8,'xlsname'=>'扶持申请'],input()))}">导出</a>
+    </form>
+    <form class="js-ajax-form" action="" method="post">
+        <div class="table-actions position" style="margin-left: -10px;">
+
+            <button class="btn btn-success   js-ajax-submit mtb17" type="submit"
+                    data-action="{:url('changeStatus',['status'=>1])}" data-subcheck="true" data-msg="您确定审核吗？">
+                通过
+            </button>
+
+            <button type="button" class="btn btn-danger   bohui mtb17 ml20" data-action="{:url('changeStatus',['status'=>2])}">
+                驳回
+            </button>
+
+            <button class="btn  js-ajax-submit mtb17 btn-audit" type="submit"
+                    data-action="{:url('changeAutoAudit',['status'=>$autostatus])}" data-subcheck="false" data-msg="您确定操作吗？">
+                <input type="checkbox" name="" <if condition="$autostatus eq 1">checked</if> id="auto-check" class="auto-checkbox promote_auto_audit"><label for="auto-check" class="fl"></label><div class="span-audit">自动审核通过</div>
+            </button>
+        </div>
+        <table class="table table-hover table-bordered prom-table">
+            <thead>
+            <tr>
+               <th width="15">
+                   <input type="checkbox" id="all-checkbox" class="table-item-checkbox js-check-all" data-direction="x" data-checklist="js-check-x">
+                   <label for="all-checkbox" class=""></label>
+               </th>
+                <th>编号</th>
+                <th>申请渠道</th>
+                <th>玩家账号</th>
+                <th>游戏名称</th>
+                <th>区服</th>
+                <th>角色名</th>
+                <th>申请额度</th>
+                <th>扶持类型</th>
+                <th>申请人备注</th>
+                <th>申请时间</th>
+                <th>可用额度</th>
+                <th>实际发放额度</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <empty name="data_lists">
+                <tr><td colspan="14" style="text-align: center;">暂无数据</td></tr>
+            <else/>
+                <php>
+                    $statusList = [0=>'<span style="color: orange;">待审核</span>',1=>'<span style="color: #3FAD46">已通过</span>',2=>'<span style="color: #d9534f;">已驳回</span>',3=>'<span style="color: #3FAD46">已发放</span>'];
+                    $typeList = [0=>'新增扶持',1=>'后续扶持'];
+                </php>
+                <foreach name="data_lists" item="vo">
+                    <tr>
+                       <td>
+                           <input type="checkbox" id="ids-checkbox{$vo.id}" class="table-item-checkbox js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
+                                  value="{$vo.id}" >
+                           <label for="ids-checkbox{$vo.id}" class=""></label>
+                       </td>
+                        <td >{$vo.id}</td>
+                        <td >{$vo.promote_account}</td>
+                        <td >{$vo.user_account}</td>
+                        <td >{$vo.game_name}</td>
+                        <td >{$vo.server_name}</td>
+                        <td >{$vo.role_name}</td>
+                        <td >{$vo.apply_num}</td>
+                        <td >{$typeList[$vo['support_type']]}</td>
+                        <td >{$vo.remark}</td>
+                        <td >{$vo['create_time']|date="Y-m-d H:i:s",###}</td>
+                        <td >{$vo.usable_num}</td>
+                        <td >{$vo.send_num}</td>
+                        <td >{$statusList[$vo['status']]}</td>
+                        <if condition="$vo['status'] eq 0">
+                            <td >
+                                <a href="{:url('Support/audit',['id'=>$vo['id']])}" class="js-ajax-dialog-btn" >通过</a>
+                                <a data-url="{:url('Support/deny')}" data-id="{$vo['id']}" class="js-deny">驳回</a>
+                                <!--<span>通知渠道</span>-->
+                            </td>
+                            <elseif condition="$vo['status'] eq 1"/>
+                            <td >
+                                <!--<span>审核</span>-->
+                                <!--<span>拒绝</span>-->
+                                <a data-url="{:url('Support/send')}" data-id="{$vo['id']}" data-apply-num="{$vo['apply_num']}" class="js-send">通知渠道</a>
+                            </td>
+                            <elseif condition="$vo['status'] eq 2"/>
+                            <td >
+                                <a href="{:url('Support/audit',['id'=>$vo['id']])}" class="js-ajax-dialog-btn">通过</a>
+                                <!--<span>拒绝</span>-->
+                                <!--<span>通知渠道</span>-->
+                            </td>
+                            <elseif condition="$vo['status'] eq 3"/>
+                            <td >
+                                <!--<span>审核</span>-->
+                                <!--<span>拒绝</span>-->
+                                <!--<span>通知渠道</span>-->
+                                --
+                            </td>
+                        </if>
+                    </tr>
+                </foreach>
+            </empty>
+            </tbody>
+        </table>
+    </form>
+    <div class="pagination">{$page}</div>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript">
+    $("#promote_id").selectpicker('val', $("#promote_id").attr('promote_id'));
+    $("#game_id").selectpicker('val', $("#game_id").attr('game_id'));
+    $("#support_type").selectpicker('val', $('#support_type').attr('support_type'));
+    $("#status").selectpicker('val', $('#status').attr('status'));
+
+
+    $("#server_id").selectpicker('val', $('#server_id').attr('server_id'));
+    game_id = $("#game_id").attr('game_id');
+    server_id = $("#server_id").attr('server_id');
+    if(game_id){
+        get_game_server(game_id);
+    }
+    $('#game_id').change(function(){
+        gi = $("#game_id").val();
+        get_game_server(gi);
+    });
+    $("#server_id").click(function () {
+        if($('#game_id').val()==0 ){
+            layer.msg('请先选择游戏');
+            return false;
+        }
+        if($('#game_id').val()=='' ){
+            layer.msg('请先选择游戏');
+            return false;
+        }
+    })
+    function get_game_server(game_id){
+        $('#server_id').empty();
+        $('#server_id').append("<option value=''>区服名称</option>");
+        $.ajax({
+            url:"{:url('game/server/get_game_server')}",
+            type:'post',
+            dataType:'json',
+            data:{game_id:game_id},
+            success:function(res){
+                if(res.code!=1){
+                    layer.msg(res.msg);
+                }else{
+                    option = '';
+                    $.each(res.data,function (key,value) {
+                        option+="<option value='";
+                        option+=value['id']+"'";
+                        if(value['id']==server_id){
+                            option+="selected";
+                        }
+                        option+=" >"+value['server_name'];
+                        option+="</option>";
+                    });
+                    $('#server_id').append(option).selectpicker('refresh');
+                    server_id = '';
+                }
+            },error(){
+                layer.msg('服务器错误');
+            }
+        })
+    }
+
+    $(function () {
+
+        /*通知渠道*/
+        $(".js-send").click(function () {
+            var that = $(this);
+            var apply_num = that.attr('data-apply-num');
+            $('html,body').addClass('no-scroll');
+            layer.prompt({
+                formType: 3,
+                title: '请输入实际发放数量',
+                value: apply_num,
+                cancel: function () {
+                    $('html,body').removeClass('no-scroll');
+                }
+            }, function (val) {
+                var url = that.attr('data-url');
+                var id = that.attr('data-id');
+                preg = /^[0-9]*$/;
+                if (!preg.test(val)) {
+                    layer.msg('请输入正确的发放数量');
+                    return false;
+                }
+
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    dataType: 'json',
+                    data: {
+                        'send_num': val,
+                        'id': id,
+                    },
+                    success: function (data) {
+                        if (data.code > 0) {
+                            layer.msg(data.msg);
+                            setTimeout(function () {
+                                self.location.reload(true);
+                            },1500)
+                        } else {
+                            layer.msg(data.msg)
+                        }
+                    },
+                    error: function () {
+                        alert("服务器错误");
+                    }
+                });
+            });
+        });
+
+        /*驳回申请*/
+        $(".js-deny").click(function () {
+            var that = $(this);
+            $('html,body').addClass('no-scroll');
+            layer.prompt({
+                formType: 3,
+                title: '审核意见',
+                value: '',
+                cancel: function () {
+                    $('html,body').removeClass('no-scroll');
+                },success:function (layero, index) {
+                    layero.find('input').attr('placeholder','输入驳回原因');
+                }
+            }, function (val) {
+                var url = that.attr('data-url');
+                var id = that.attr('data-id');
+
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    dataType: 'json',
+                    data: {
+                        'audit_idea': val,
+                        'id': id,
+                    },
+                    success: function (data) {
+                        if (data.code > 0) {
+                            layer.msg(data.msg);
+                            setTimeout(function () {
+                                self.location.reload(true);
+                            }, 1500)
+                        } else {
+                            layer.msg(data.msg)
+                        }
+                    },
+                    error: function () {
+                        alert("服务器错误");
+                    }
+                });
+            });
+        });
+
+        //批量驳回
+
+        $('.bohui').click(function () {
+            var $this = $(this);
+            var url = $this.attr('data-action');
+            //批量操作 判断选项
+            var ids = [];
+            $('input[name="ids[]"]:checked').each(function(){
+                ids.push($(this).val());
+            });
+            if(ids == '' || ids == undefined) {
+                layer.msg('请至少选择一项');
+                return false;
+            }
+            layer.prompt(
+                {
+                    formType: 2,
+                    title: "请输入驳回原因",
+                    area: ['300px', '50px'],
+                    placeholder:'请输入驳回原因',
+                    value: ''
+                }
+                , function (val) {
+                    $.ajax({
+                        url: url,
+                        type: 'post',
+                        dataType: 'json',
+                        data: {'audit_idea': val,'ids':ids},
+                        success: function (data) {
+                            if (data.code > 0) {
+                                layer.msg(data.msg);
+                                setTimeout(function () {
+                                    window.location.reload();
+                                },1000)
+                            } else {
+                                layer.msg(data.msg)
+                            }
+                        },
+                        error: function () {
+                            layer.msg('服务器错误');
+                        }
+                    });
+                });
+        })
+
+    })
+</script>
+</body>
+</html>

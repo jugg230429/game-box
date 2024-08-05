@@ -1,0 +1,154 @@
+<extend name="../mediapublic/base" />
+<!-- 主体内容 -->
+<block name="body">
+    <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/account_gl.css">
+    <!-- 用户信息 -->
+    <div class="userinfo_con">
+        <div class="layui-container">
+            <div class="fl left_user_info">
+                <div class="left_user_info_img">
+                    <img src="{:cmf_get_image_url($user['head_img'])}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                </div>
+                <div class="left_user_info_grade">
+                    <if condition="$user['vip_level'] gt 0">
+                        <img src="__STATIC__/images/my_ico_grade{$user['vip_level']}.png" alt="">
+                    </if>
+
+                </div>
+                <p class="left_user_info_name">{$user.nickname}</p>
+                <div class="checked_item_con">
+                    <include file="mediapublic@left_menu" />
+                </div>
+            </div>
+        <if condition="$email eq ''">
+            <!-- 未绑定 -->
+            <div class="fl right_user_info">
+                <div class="right_user_info_title">
+                    <p class="fl right_user_info_title_left">邮箱验证</p>
+                    <p class="fg right_user_info_title_right">您当前的位置：<a href="{:url('Index/index')}">平台首页</a>><a href="{:url('User/userinfo')}"> 用户中心</a>><a href="{:url('User/safe')}">账号管理</a>><span>邮箱验证</span></p>
+                </div>
+                <div class="update_pwd_con">
+                    <form class="js-ajax-form" style="margin-top: 38px" action="{:url('User/email')}" method="post">
+                        <div class="update_pwd_con_item">
+                            <p class="clear fl mt8">邮箱地址：</p><input type="text" id="email" name="email" placeholder="" class="ml5 fl">
+                        </div>
+                        <div class="update_pwd_con_item check_verify three">
+                            <p class="clear fl mt8">验证码：</p><input type="text" id="code" name="code" placeholder="" class=" fl">
+                            <a href="javascript:;" class="check_verify_btn getyanzhengma_email">获取验证码</a>
+                        </div>
+                        <div class="update_pwd_con_item">
+                            <div>
+                                <button type="submit" class="js-ajax-submit update_pwd_con_btn" style="background:#999;">确认</button>
+                            </div>
+                        </div>
+                        <p class="update_notice">邮箱停用？<a
+                            <if condition="get_xgkf_info(0) eq 1"> href="{:get_xgkf_info(1)}"  <else/>
+                                href="http://wpa.qq.com/msgrd?v=3&amp;uin=<if condition='$union_set[qq]'>{$union_set['qq']}<else/>{:cmf_get_option('kefu_set')['pc_set_server_qq']}</if>&amp;site=qq&amp;menu=yes"
+                            </if>
+                                target="_blank">联系客服</a></p>
+                    </form>
+                </div>
+            </div>
+        <else/>
+            <!-- 已绑定 -->
+            <div class="fl right_user_info">
+                <div class="right_user_info_title">
+                    <p class="fl right_user_info_title_left">邮箱换绑</p>
+                    <p class="fg right_user_info_title_right">您当前的位置：<a href="{:url('Index/index')}">平台首页</a>><a href="{:url('User/userinfo')}"> 用户中心</a>><a href="{:url('User/safe')}">账号管理</a>><span>邮箱换绑</span></p>
+                </div>
+                <div class="update_pwd_con">
+
+                    <div class="bind_yes_phone">您绑定的邮箱：{:hideStar($email)}</div>
+
+                    <div class="bind_yes_notice">
+                        绑定邮箱后，您可以通过邮箱找回密码，同时提高账户安全性，<br/>如需更换邮箱请先解绑邮箱
+                    </div>
+
+                    <div class="bind_yes_btn_wrapper">
+                        <a href="email_check.html" class="bind_yes_btn">解绑邮箱</a>
+                    </div>
+
+                </div>
+            </div>
+        </if>
+
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+        $('.update_pwd_con input').keyup(function () {
+            change_submit_btn($('.update_pwd_con'), $('.update_pwd_con_btn'));
+        });
+        // 更改
+        function change_submit_btn(consa, registe_btn) {
+            registe_btn.addClass('can_click')
+            consa.find('input').each(function (i, n) {
+                switch (n.type) {
+                    case 'text':
+                        if (!n.value) { registe_btn.removeClass('can_click'); return false; } break;
+                    case 'password':
+                        if (!n.value) { registe_btn.removeClass('can_click'); return false; } break;
+                    case 'checkbox':
+                        if (!n.checked) { registe_btn.removeClass('can_click'); return false; } break;
+                    default:
+                        registe_btn.addClass('can_click')
+                }
+            });
+        }
+        $('.update_pwd_con_btn').click(function(){
+            if(!$(this).hasClass('can_click')){
+                return false;
+            }
+        });
+        //邮箱注册发送验证码
+        var counttimea=60
+        var can_clicke=true
+        $('.getyanzhengma_email').on('click',function(){
+            if(counttimea!==60){
+            }else{
+                var email = $("#email").val();
+                code_type = "{:$email?3:4}";
+                var isoks = false;
+                $.ajax({
+                    url:send_email_url,
+                    type:'post',
+                    dataType:'json',
+                    async:false,
+                    data:{email:email,account:"{:session('member_auth.account')}",code_type:code_type},
+                    success:function(res){
+                        if(res.code!=1){
+                            isoks = true;
+                            layer.msg(res.msg,{skin: 'demo-red'});
+                        }else{
+                            layer.msg(res.msg,{skin: 'demo-blue'});
+                            $('.getyanzhengma_email').css('cursor','not-allowed')
+                            $('.getyanzhengma_email').css('background-color','#CCCCCC')
+                        }
+                    },error:function(){
+                        layer.msg('服务器错误',{skin: 'demo-red'});
+                    }
+                })
+                if(!isoks){
+                    if(can_clicke){
+                        can_clicke=false
+                        var send_numa=setInterval(function(){
+                            counttimea--
+                            $('.getyanzhengma_email').text('正在发送('+counttimea+')');
+                            if(counttimea===0){
+                                clearInterval(send_numa)
+                                can_clicke=true
+                                counttimea=60
+                                $('.getyanzhengma_email').text('获取验证码');
+                                $('.getyanzhengma_email').css('cursor','pointer');
+                                $('.getyanzhengma_email').css('background-color','#018FFF');
+                            }
+                        },1000)
+                    }
+                }
+            }
+        })
+
+
+    </script>
+</block>

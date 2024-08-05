@@ -1,0 +1,146 @@
+@charset "utf-8";
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+form,
+fieldset,
+input,
+textarea,
+p,
+blockquote,
+th,
+td,
+dl,
+dt,
+dd {
+	padding: 0px;
+	margin: 0px;
+	word-break: break-all;
+	font-family: "Microsoft Yahei", 微软雅黑, SimHei,'黑体';
+}
+
+#container {
+	height: 100% !important;
+}
+
+#cz_wxbox {
+	width: 889px;
+	overflow: hidden;
+	zoom: 1;
+	margin: 20px auto 20px auto;
+	color: #666;
+}
+
+#cz_wxbox .wxboxCon {
+	width: 889px;
+	height: 477px;
+	padding: 0 20px;
+	overflow: hidden;
+	zoom: 1;
+	border: 1px #e2e1e1 solid;
+	background: rgb(249, 249, 249);
+	box-sizing: border-box;
+}
+
+.wxtitle {
+	position: relative;
+	margin-bottom: 6px;
+}
+
+.wxtitle h2 {
+	font: normal 12px/24px "Microsoft Yahei", 微软雅黑, SimHei,'黑体';
+	color: #777777;
+}
+
+.wxtitle p {
+	position: absolute;
+	line-height: 24px;
+	right: 0;
+	top: 0;
+	color: #777777;
+	font-size: 12px;
+}
+
+.wxtitle p em {
+	font-style: normal;
+	color: #fe5d5b;
+	font-weight: bold;
+	font-size: 18px;
+	padding: 0 3px
+}
+
+.wxboxCon h3 {
+	width: 733px;
+	margin: 17px 0 23px 40px;
+	height: 39px;
+	font: normal 14px/33px "Microsoft Yahei", 微软雅黑, SimHei,'黑体';
+	text-indent: -9999px;
+	background: url(../images/wechat_pay/wechat_bg.png) no-repeat;
+	background-size: 100% 100%;
+}
+
+.wxboxCon .leftbox {
+	float: left;
+	padding: 0 51px 0 115px;
+}
+
+.wxboxCon .rightbox {
+	float: left;
+}
+
+.wxboxCon .wximg {
+	width: 236px;
+	height: 236px;
+}
+.wxboxCon .wximg img{
+	width:100%;
+	height: 100%;
+}
+.wxboxCon .tsimg {
+	width: 236px;
+	height: 75px;
+	background: url("../images/wechat_pay/tsimg.png") no-repeat -35px 6px;
+	margin-top: 10px;
+	background-color: rgb(68, 181, 73);
+}
+
+.wxboxCon .mbimg {
+	width: 278px;
+	height: 404px;
+	background: url(../images/wechat_pay/wechat_ico_ipone.png) no-repeat;
+	background-size: 100% 100%;
+	position: relative;
+	top: -19px;
+}
+
+.wxboxCon .clear {
+	clear: both;
+}
+
+.wxboxCon .return {
+	margin: 25px 0;
+	margin-left: -75px;
+}
+
+.wxboxCon .return a {
+	font: normal 12px/24px "Microsoft Yahei", 微软雅黑, SimHei,'黑体';
+	color: #777777;
+	padding: 0 5px;
+	text-decoration: none;
+}
+
+.wxboxCon .return a:Hover {
+	color: #333;
+}

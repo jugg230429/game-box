@@ -1,0 +1,570 @@
+<include file="public@header" />
+</head>
+
+<body>
+	<link href="__TMPL__/public/assets/simpleboot3/css/welcome.css" rel="stylesheet">
+	<div class="wrap" style="padding:11px 20px 0px 30px; ;">
+		<empty name="has_smtp_setting">
+			<div class="grid-item col-md-12">
+				<div class="alert alert-danger alert-dismissible fade in" role="alert" style="margin-bottom: 0;">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <!-- <span aria-hidden="true">&times;</span> -->
+                </button>
+					<strong>提示!</strong> 邮箱配置未完成,无法进行邮件发送!
+					<a href="#" data-dismiss="alert" aria-label="Close" onclick="parent.openapp('{:url('Mailer/index')}','admin_mailer_index','邮箱配置');">现在设置</a>
+				</div>
+			</div>
+		</empty>
+
+		<if condition="!extension_loaded('fileinfo')">
+			<div class="grid-item col-md-12">
+				<div class="alert alert-danger alert-dismissible fade in" role="alert" style="margin-bottom: 0;">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <!-- <span aria-hidden="true">&times;</span> -->
+                </button>
+					<strong>提示!</strong> php_fileinfo扩展没有开启，无法正常上传文件！
+				</div>
+			</div>
+		</if>
+		<div class="container-fluid">
+			<div class="top-info">
+				<img src="__TMPL__/public/assets/images/img_home_touxiang.png" class="user_touxiang">
+				<div class="text1"><span class="color1">您好,</span><span class="username">{$admin['user_login']}</span> <span class="color_777">（{:get_role_name($admin['id'])}）</span></div>
+				<div class="text2"><span class="color_777 color1"> 上次登录时间：{$admin['last_login_time']|date="Y-m-d H:i:s",###}</span>
+				<span class="color_777 color1">上次登录IP：{$admin['last_login_ip']}</span> <span class="color_777 color1">累计登录次数：{$admin['login_times']}次</span></div>
+
+				<div class="question row-right" style="display: none;">
+					<i class="question_mark">?</i>
+					<div class="question_content">
+					<ul class="question_content_box">
+						<li class="question_title">数据说明</li>
+						<li class="question_list">
+							<span>新增用户</span>
+							<span>平台新注册用户数</span>
+						</li>
+						<li class="question_list">
+							<span>活跃用户</span>
+							<span>登录游戏用户数（含新老用户，累计时去重）</span>
+						</li>
+						<li class="question_list">
+							<span>付费用户</span>
+							<span>游戏内充值用户数（统计充值成功，累计时去重）</span>
+						</li>
+						<li class="question_list">
+							<span>充值总金额</span>
+							<span>游戏内充值订单总额（所有支付方式）</span>
+						</li>
+
+					</ul>
+				</div>
+				</div>
+
+			</div>
+			<div class="row  index-position">
+
+				<if condition="AUTH_USER eq 1">
+
+					<div class="top_con">
+						<div class="top_con_left">
+							<div class="analy_title">{$addUserNum['yesRegNum']}</div>
+							<div class="analy_text">昨日新增</div>
+						</div>
+						<div class="top_con_right">
+							<div class="analy_title color_purple">{$addUserNum['todayRegNum']}</div>
+							<div class="color_purple analy_text">今日新增</div>
+						</div>
+					</div>
+					<div class="top_con active_top_con">
+
+						<div class="top_con_left">
+							<div class="analy_title">{$addActiveNum['yesActiveNum']}</div>
+							<div class="analy_text">昨日活跃</div>
+						</div>
+						<div class="top_con_right">
+							<div class="analy_title color_lilac">{$addActiveNum['todayActiveNum']}</div>
+							<div class="color_lilac analy_text">今日活跃</div>
+						</div>
+					</div>
+
+					<else/>
+
+				</if>
+				<if condition="(AUTH_USER eq 1) and (AUTH_PAY eq 1)">
+					<div class=" top_con payment_top_con">
+
+						<div class="top_con_left">
+							<div class="analy_title">{$payUserNum['yesNum']}</div>
+							<div class="analy_text">昨日付费用户</div>
+						</div>
+						<div class="top_con_right">
+							<div class="analy_title color_wathet">{$payUserNum['todayNum']}</div>
+							<div class="color_wathet analy_text">今日付费用户</div>
+						</div>
+					</div>
+					<div class=" top_con recharge_top_con">
+
+						<div class="top_con_left">
+							<div class="analy_title">{$payAmount['yesNum']}</div>
+							<div class="analy_text">昨日充值</div>
+						</div>
+						<div class="top_con_right">
+							<div class="analy_title color_79c">{$payAmount['todayNum']}</div>
+							<div class="color_79c analy_text">今日充值</div>
+						</div>
+					</div>
+
+			</div>
+			<else/>
+			<!-- 初始状态 -->
+			<div class=" col-xs-20 col-md-8 top_nodata nodata position"><span class="nodata-text">购买用户、充值模块后可查看详细数据</span>
+			</div>
+			</if>
+
+		</div>
+		<br/>
+		<div class="row index-position row-bottom">
+			<if condition="AUTH_GAME eq 1 and AUTH_USER eq 1 AND AUTH_PAY eq 1">
+           <div class="col-xs-12 col-md-6 row_con  row_con1"  >
+
+              <div class="col-md-12 footer_info pt10"><img src="__TMPL__/public/assets/images/icon_operate.png" class="footer_icon"><strong>近7天运营数据</strong></div>
+              <div  class="operate" id="operate" style="width: 110% ;height: 242px;margin-left: -3%;"></div>
+			</div>
+			</if>
+			<div class="col-xs-12 col-md-6  row_con row_con2 fr_row_con  ">
+
+				<div class="table-bordered-title pt10  footer_info">
+					<img src="__TMPL__/public/assets/images/icon_person.png" class="footer_icon"><strong>新增用户</strong>
+				</div>
+
+				<div class="question right-question right-question-not-row">
+					<i class="question_mark">?</i>
+					<div class="question_content">
+						<ul class="question_content_box">
+							<li class="question_title">数据说明</li>
+							<li class="question_list">
+								<div class="question_list_con">
+									新增用户中每类操作的占比计算（若今日新增100人，其中10人进行过下载游戏操作，则比例为10/100=10%，上升/下降值是相对于昨日的比例。同一用户若进行多种操作，则重复计算这一用户在不同行为中所占的比例）
+								</div>
+							</li>
+							<li class="question_list">
+								<span>打开游戏</span>
+								<span> 用户打开游戏的行为，同一用户打开多个游戏计为1</span>
+							</li>
+							<li class="question_list">
+								<span>领取礼包</span>
+								<span>用户在PC官网/WAP站/SDK内点击领取按钮的行为</span>
+							</li>
+							<li class="question_list">
+								<span>游戏分享</span>
+								<span>用户在SDK内点击分享入口的行为，同一用户在同一天内分享多款游戏计为1</span>
+							</li>
+							<li class="question_list">
+								<span>游戏内充值</span>
+								<span>在SDK内成功充值的人数，同一人多次充值成功计为1</span>
+							</li>
+
+						</ul>
+					</div>
+				</div>
+
+				<div class="fl left-user">
+					<div>{:date("Y-m-d")}</div>
+					<div class="newuser_num">{$addUserNum['todayRegNum']}</div>
+					<div>新增用户</div>
+					<div class="new-user-rate">
+						<if condition="$addUserNum['regRange'] lt 0">
+							<span class="analy_data decline_color">{$addUserNum['regRange']|abs|round=2}%
+                                <i class="decline_triangle"></i>
+                            </span>
+							<else/>
+							<span class="analy_data rise_color">{$addUserNum['regRange']|abs|round=2}%
+                                <i class="rise_triangle"></i>
+                            </span>
+						</if>
+					</div>
+				</div>
+				<table class="table table-bordered right-user new-add-user">
+
+					<if condition="(AUTH_GAME eq 1) and (AUTH_USER eq 1) and (AUTH_PAY eq 1)">
+						<tr>
+							<td colspan="5" class="pt20 pl10" style="font-size: 14px">其中</td>
+						</tr>
+						<tr>
+							<td class="user_title pl10" style="min-width: 100px">打开游戏</td>
+							<td class="percent">{$newUserInfo['first_open_game']['ratio']|default="0"}%</td>
+							<php>$newUserInfo_open = $newUserInfo['first_open_game']['ratio'] > 100 ? 100 : $newUserInfo['first_open_game']['ratio'];</php>
+							<td class="xg_percent_td"><span class="xg_percent"><em class="my_percent" style="width:{$newUserInfo_open|default="0"}%;"></em></span></td>
+							<td class="xg_percent_number">
+								<if condition="$newUserInfo['first_open_game']['range'] lt 0">
+									<span class="analy_decline decline_color">{$newUserInfo['first_open_game']['range']|abs|round=2}%
+                                     <i class="decline_triangle"></i>
+                                 </span>
+									<else/>
+									<span class="analy_decline rise_color">{$newUserInfo['first_open_game']['range']|abs|round=2}%
+                                     <i class="rise_triangle"></i>
+                                 </span>
+								</if>
+							</td>
+							<td class="number">{$newUserInfo['first_open_game']['number']|default="0"}人</td>
+						</tr>
+						<tr>
+							<td class="user_title pl10">领取礼包</td>
+							<td class="percent">{$newUserInfo['gift']['ratio']|default="0"}%</td>
+							<php>$newUserInfo_gift = $newUserInfo['gift']['ratio'] > 100 ? 100 : $newUserInfo['gift']['ratio'];</php>
+							<td><span class="xg_percent"><em class="my_percent" style="width:{$newUserInfo_gift|default="0"}%;"></em></span></td>
+							<td class="xg_percent_number">
+								<if condition="$newUserInfo['gift']['range'] lt 0">
+									<span class="analy_decline new-user-rate-down">{$newUserInfo['gift']['range']|abs|round=2}%
+                                     <i class="xg_reddeclineTriangle"></i>
+                                 </span>
+									<else/>
+									<span class="analy_decline">{$newUserInfo['gift']['range']|abs|round=2}%
+                                     <i class="xg_plusTriangle"></i>
+                                 </span>
+								</if>
+							</td>
+							<td class="number">{$newUserInfo['gift']['number']|default="0"}人</td>
+						</tr>
+						<tr>
+							<td class="user_title pl10">游戏分享</td>
+							<td class="percent">{$newUserInfo['share']['ratio']|default="0"}%</td>
+							<php>$newUserInfo_share = $newUserInfo['share']['ratio'] > 100 ? 100 : $newUserInfo['share']['ratio'];</php>
+							<td><span class="xg_percent"><em class="my_percent" style="width:{$newUserInfo_share|default="0"}%;"></em></span></td>
+							<td class="xg_percent_number">
+								<if condition="$newUserInfo['share']['range'] lt 0">
+									<span class="analy_decline new-user-rate-down">{$newUserInfo['share']['range']|abs|round=2}%
+                                     <i class="xg_reddeclineTriangle"></i>
+                                 </span>
+									<else/>
+									<span class="analy_decline">{$newUserInfo['share']['range']|abs|round=2}%
+                                     <i class="xg_plusTriangle"></i>
+                                 </span>
+								</if>
+							</td>
+							<td class="number">{$newUserInfo['share']['number']|default="0"}人</td>
+						</tr>
+						<tr>
+							<td class="user_title pl10">游戏内充值</td>
+							<td class="percent ">{$newUserInfo['pay']['ratio']|default="0"}%</td>
+							<php>$newUserInfo_pay = $newUserInfo['pay']['ratio'] > 100 ? 100 : $newUserInfo['pay']['ratio'];</php>
+							<td><span class="xg_percent"><em class="my_percent" style="width:{$newUserInfo_pay|default="0"}%;"></em></span></td>
+							<td class="xg_percent_number">
+								<if condition="$newUserInfo['pay']['range'] lt 0">
+									<span class="analy_decline new-user-rate-down">{$newUserInfo['pay']['range']|abs|round=2}%
+                                     <i class="xg_reddeclineTriangle"></i>
+                                 </span>
+									<else/>
+									<span class="analy_decline">{$newUserInfo['pay']['range']|abs|round=2}%
+                                     <i class="xg_plusTriangle"></i>
+                                 </span>
+								</if>
+							</td>
+							<td class="number">{$newUserInfo['pay']['number']|default="0"}人</td>
+						</tr>
+						<else/>
+						<tr>
+							<td colspan="5" class="nodata">购买用户、充值、游戏模块后可查看详细数据</td>
+						</tr>
+					</if>
+					<tr>
+						<td class="pb10"></td>
+					</tr>
+				</table>
+
+			</div>
+
+
+			<div class="col-xs-12 col-md-6 row_con row_con3 toDoListSchedule">
+				<div class="col-md-12 footer_info pt20"><img src="__TMPL__/public/assets/images/icon_daiban.png" class="footer_icon"><strong>待办事项</strong><span class="text">（显示当前系统待办内容，必须操作事项）</span></div>
+				<a class="fl item-menu jsitem-men item-menu-active" style="cursor: pointer;">游戏应用待办事项</a>
+				<if condition="AUTH_PROMOTE eq 1">
+					<a class="fl item-menu jsitem-men" style="cursor: pointer;">推广平台待办事项</a>
+				</if>
+<!--				<a class="fl item-menu">开发者平台待办事项</a>-->
+				<div class="item jsitem toDoListSchedule-item setNewItemMain">
+					<table class="table table-bordered table-item">
+						<if condition="AUTH_GAME eq 1">
+							<tr>
+								<td class="color_393 indexml" style="min-width: 100px">【游戏充值】</td>
+								<td class="color_393 n-tb-width-280">游戏充值通知失败待补单数</td>
+								<td class=" item-lasttd">
+<!--									<a target="_blank" href="//{:request()->server()['HTTP_HOST']}/admin/index/index.html#/admin/storage/index.html">文件存储</a>-->
+
+									<a href="javascript:;" onclick="parent.openapp('{:url('recharge/spend/lists',['pay_status'=>1,'pay_game_status'=>0])}','','',true);" >{$agendaData['pay_game_status_num']}</a>
+									<!-- <a href="javascript:openapp('/game/game/lists.html','182game','游戏列表',true);">{$agendaData['pay_game_status_num']}</a> -->
+								</td>
+							</tr>
+						</if>
+
+						<if condition="(AUTH_GAME eq 1) and (AUTH_PROMOTE eq 1)">
+							<notin name="PERMI" value="0,2">
+							<tr>
+								<td class="color_393 indexml">【游戏安卓】</td>
+								<td class="color_393">安卓游戏分包待打包数</td>
+								<td class=" item-lasttd">
+<!--									<a href="//{:request()->server()['HTTP_HOST']}/{:cmf_get_option('admin_settings')['admin_password']?:'admin'}#{:url('promote/promoteapply/lists',['enable_status'=>0])}" >{$agendaData['promote_game_pack_android_num']}</a>-->
+									<a href="javascript:;" onclick="parent.openapp('{:url(\'promote/promoteapply/lists\',[\'enable_status\'=>0])}','','',true);" >{$agendaData['promote_game_pack_android_num']}</a>
+								</td>
+							</tr>
+							<tr>
+								<td class="color_393 indexml">【游戏苹果】</td>
+								<td class="color_393">苹果游戏分包待打包数</td>
+								<td class=" item-lasttd">
+<!--									<a href="//{:request()->server()['HTTP_HOST']}/{:cmf_get_option('admin_settings')['admin_password']?:'admin'}#{:url('promote/promoteapply/lists',['enable_status'=>0,'sdk_version'=>2])}" >{$agendaData['promote_game_pack_ios_num']}</a>-->
+									<a href="javascript:;" onclick="parent.openapp('{:url(\'promote/promoteapply/lists\',[\'enable_status\'=>0,\'sdk_version\'=>2])}','','',true);" >{$agendaData['promote_game_pack_ios_num']}</a>
+								</td>
+							</tr>
+							</notin>
+							<tr>
+								<td class="color_393 indexml">【礼包管理】</td>
+								<td class="color_393">游戏礼包数量不足(<10)</td>
+								<td class=" item-lasttd">
+<!--									<a href="//{:request()->server()['HTTP_HOST']}/{:cmf_get_option('admin_settings')['admin_password']?:'admin'}#/game/giftbag/lists.html" >{$agendaData['gift']}</a>-->
+									<a href="javascript:;" onclick="parent.openapp('{:url(\'game/giftbag/lists\',[\'remain_num\'=>10])}','','',true);" >{$agendaData['gift']}</a>
+								</td>
+							</tr>
+							<neq name="PERMI" value="2">
+							<tr>
+								<td class="color_393 indexml">【渠道分包】</td>
+								<td class="color_393">渠道打包/百度云批量打包失败数</td>
+								<td class=" item-lasttd">
+<!--									<a  href="//{:request()->server()['HTTP_HOST']}/{:cmf_get_option('admin_settings')['admin_password']?:'admin'}#{:url('promote/promoteapply/lists')}" >{$agendaData['promote_game_pack_error_long_num']}</a>-->
+									<a  href="javascript:;" onclick="parent.openapp('{:url(\'promote/promoteapply/lists\',[\'enable_status\'=>\'-1\'])}','','',true);" >{$agendaData['promote_game_pack_error_long_num']}</a>
+								</td>
+							</tr>
+							</neq>
+							<tr>
+								<td class="color_393 indexml">【返利管理】</td>
+								<td class="color_393">已到期的返利游戏数</td>
+								<td class=" item-lasttd">
+<!--									<a href="//{:request()->server()['HTTP_HOST']}/{:cmf_get_option('admin_settings')['admin_password']?:'admin'}#{:url('recharge/rebate/lists',['end_time'=>time()])}" >{$agendaData['rebateOutCount']}</a>-->
+									<a href="javascript:;" onclick="parent.openapp('{:url(\'recharge/rebate/lists\',[\'end_time\'=>time()])}','','',true);" >{$agendaData['rebateOutCount']}</a>
+								</td>
+							</tr>
+							<else/>
+							<tr>
+								<td colspan="3" class="nodata">购买游戏、渠道模块后可查看详细数据</td>
+							</tr>
+						</if>
+					</table>
+				</div>
+					<div class="item setNewItemMain jsitem" style="display: none;">
+						<table class="table table-bordered table-item">
+							<if condition="AUTH_PROMOTE eq 1">
+								<tr>
+									<td class="color_393 indexml" style="min-width: 100px">【渠道列表】</td>
+									<td class="color_393 n-tb-width-280">渠道申请待审核数</td>
+									<td class=" item-lasttd item-lasttd-zero">
+<!--										<a href="//{:request()->server()['HTTP_HOST']}/{:cmf_get_option('admin_settings')['admin_password']?:'admin'}#{:url('promote/promote/lists',['status'=>0])}">{$promote_wait['promote_pass']}</a>-->
+										<a href="javascript:;" onclick="parent.openapp('{:url(\'promote/promote/lists\',[\'status\'=>0])}','','',true);">{$promote_wait['promote_pass']}</a>
+									</td>
+								</tr>
+								<tr>
+									<td class="color_393 indexml">【联盟申请】</td>
+									<td class="color_393">推广联盟申请待审核数</td>
+									<td class=" item-lasttd item-lasttd-zero">
+<!--										<a href="//{:request()->server()['HTTP_HOST']}/{:cmf_get_option('admin_settings')['admin_password']?:'admin'}#{:url('promote/promoteunion/lists',['status'=>0])}">{$promote_wait['union_pass']}</a>-->
+										<a href="javascript:;" onclick="parent.openapp('{:url(\'promote/promoteunion/lists\',[\'status\'=>0])}','','',true);">{$promote_wait['union_pass']}</a>
+									</td>
+								</tr>
+								<tr>
+									<td class="color_393 indexml">【收益提现】</td>
+									<td class="color_393">收益提现申请待审核数</td>
+									<td class=" item-lasttd item-lasttd-zero">
+<!--										<a href="//{:request()->server()['HTTP_HOST']}/{:cmf_get_option('admin_settings')['admin_password']?:'admin'}#{:url('promote/settlement/promote_withdraw',['status'=>0])}">{$promote_wait['withdrawal']}</a>-->
+										<a href="javascript:;" onclick="parent.openapp('{:url(\'promote/settlement/promote_withdraw\',[\'status\'=>0])}','','',true);">{$promote_wait['withdrawal']}</a>
+									</td>
+								</tr>
+								<tr>
+									<td class="color_393 indexml">【收益兑换】</td>
+									<td class="color_393">收益兑换申请待审核数</td>
+									<td class=" item-lasttd item-lasttd-zero">
+<!--										<a href="//{:request()->server()['HTTP_HOST']}/{:cmf_get_option('admin_settings')['admin_password']?:'admin'}#{:url('promote/settlement/promote_exchange',['status'=>0])}">{$promote_wait['exchange']}</a>-->
+										<a href="javascript:;" onclick="parent.openapp('{:url(\'promote/settlement/promote_exchange\',[\'status\'=>0])}','','',true);">{$promote_wait['exchange']}</a>
+									</td>
+								</tr>
+								<tr>
+									<td class="color_393 indexml">【APP分包】</td>
+									<td class="color_393">APP分包待打包数</td>
+									<td class=" item-lasttd item-lasttd-zero">
+<!--										<a href="//{:request()->server()['HTTP_HOST']}/{:cmf_get_option('admin_settings')['admin_password']?:'admin'}#{:url('promote/promoteapply/app_list',['enable_status'=>0,'status'=>0])}">{$promote_wait['app_packge']}</a>-->
+										<a href="javascript:;" onclick="parent.openapp('{:url(\'promote/promoteapply/app_list\',[\'enable_status\'=>0,\'status\'=>0])}','','',true);" >{$promote_wait['app_packge']}</a>
+									</td>
+								</tr>
+								<else/>
+								<tr>
+									<td colspan="3" class="nodata">购买游戏、渠道模块后可查看详细数据</td>
+								</tr>
+							</if>
+						</table>
+					</div>
+			</div>
+			<div class="col-xs-12 col-md-6 row_con row_con4 fr_row_con toDoListSchedule">
+				<div class="col-md-12 footer_info pt20"><img src="__TMPL__/public/assets/images/ico_system.png" class="footer_icon"><strong>系统信息</strong></div>
+				<div  class="system-left mt-10">
+					<div><span class="footer_title">系统名称：</span><span class="footer-text">手游联运系统旗舰版管理系统v9.6.0</span></div>
+					<div><span class="footer_title">操作系统：</span><span class="footer-text">{$config.server_os}</span></div>
+					<div><span class="footer_title">运行环境：</span><span class="footer-text">{$config.server_soft}</span></div>
+					<div>
+						<span class="footer_title">mysql版本：</span><span class="footer-text">{$config.mysql_version}</span>
+					</div>
+					<div>
+						<span class="footer_title">上传限制：</span><span class="footer-text">{$config.max_upload_size}</span>
+					</div>
+				</div>
+				<div  class="system-left">
+
+					<div class="">
+						<span class="footer_title">更新时间：</span><span class="footer-text">2021-09-18</span>
+					</div>
+					<div><span class="footer_title">官网地址：</span><a class="footer-text" href="https://www.vlsdk.com/" target="_blank">www.vlsdk.com</a></span>
+					</div>
+					<div><span class="footer_title">开发公司：</span><span class="footer-text">江苏溪谷网络科技有限公司</span></div>
+					<!--<div><span class="footer_title">短信云平台：</span><a class="footer-text" href="http://www.vlpush.com/" target="_blank">http://www.vlpush.com/</a></div>-->
+					<div><span class="footer_title">技术支持：</span><span class="footer-text">溪谷软件</span></div>
+					<div><span class="footer_title">系统信息：</span><span class="footer-text system_info">查看系统使用情况</span></div>
+				</div>
+			</div>
+		</div>
+		<br/>
+
+	</div>
+	</div>
+	<script src="__STATIC__/js/admin.js"></script>
+	<script src="__STATIC__/js/layer/layer.js"></script>
+	<script src="__TMPL__/public/assets/simpleboot3/js/adminindex.js"></script>
+	<script>
+		<!-- 无数据高度设置 -->
+		$(function() {
+			$(".nodata").each(function() {
+				height = $(this).parent().height();
+				$(this).height(height)
+
+			})
+		})
+	</script>
+	<script src="__STATIC__/js/echarts-all.js"></script>
+	<if condition="AUTH_GAME eq 1 and AUTH_USER eq 1 AND AUTH_PAY eq 1">
+	<script type="text/javascript">
+		// 基于准备好的dom，初始化echarts实例
+		var myChart = echarts.init(document.getElementById('operate'));
+		option = {
+			title: {
+
+				textStyle: {
+					fontSize: 14,
+					fontWeight: 'normal',
+					color: '#393B6B' // 主标题文字颜色
+				},
+			},
+			tooltip: {
+				trigger: 'axis'
+			},
+            legend: {
+				data: ['新增用户', '充值金额'],
+				textStyle:{
+                    color: '#393B6B'
+				}
+			},
+			calculable: true,
+			xAxis: [{
+				type: 'category',
+				boundaryGap: false,
+				data: {$database_time},
+
+			}],
+			yAxis: [{
+				type: 'value',
+				axisLabel: {
+					formatter: '{value}'
+				}
+			}],
+			series: [{
+				name: '新增用户',
+				type: 'line',
+				itemStyle: {
+					normal: {
+						color: '#41a6ed',
+						lineStyle: {
+							color: '#41a6ed'
+						}
+					}
+				},
+				data: {$database_register}
+			},
+
+
+				{
+					name: '充值金额',
+					type: 'line',
+					itemStyle : {
+                                normal : {
+                                    lineStyle:{
+                                        color:'#ffb170'
+                                    }
+                                }
+                            },
+					data: {$database_pay}
+
+				}
+			]
+		};
+		myChart.setOption(option);
+	</script>
+	</if>
+	<if condition="AUTH_PROMOTE eq 1">
+		<script>
+			$('.jsitem-men').click(function(){
+				index = $(this).index();
+				$(this).addClass('item-menu-active').siblings('.jsitem-men').removeClass('item-menu-active');
+				thatzi = $('.jsitem').eq(index-1);
+				thatzi.css('display','').siblings('.jsitem').css('display','none');
+			})
+		</script>
+	</if>
+
+	<script type="text/javascript">
+		$(function () {
+			var servers_ip = "{$servers_ip}";
+			var domain = "{$domain}";
+			var web_site_title = "{$web_site_title}";
+			var service_domain = "{:get_upgrade_domain()}";
+			var from_code = "{:get_from_code()}";  // 路径: /simplewind/thinkphp/helper.php 597行左右  包含授权信息，改动或删除前请告知溪谷软件
+			var version = "{:get_system_version()}";// 路径: /simplewind/thinkphp/helper.php 605行左右  包含授权信息，改动或删除前请告知溪谷软件
+
+			var url = service_domain + "/api/web_site/deploy";
+			$.ajax({
+				url: url,
+				data: {
+					ip: servers_ip,
+					domain: domain,
+					web_site_title: web_site_title,
+					from_code: from_code,
+					version: version
+				},
+				type: "post",
+				dataType: "jsonp",
+				success: function (data) {}
+			});
+
+			$(".system_info").click(function () {
+                var url = "{:url('used_status')}";
+                layer.open({
+                    type: 2,
+                    title: '查看系统使用情况',
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['70%', '80%'],
+                    content: url //iframe的url
+                });
+            })
+
+			function open(html){
+				window.open(html,'_self')
+			}
+		});
+	</script>
+
+</body>
+
+</html>

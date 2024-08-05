@@ -1,0 +1,97 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/trial_reward.css">
+</block>
+
+<block name="body">
+    <div class="trial_reward_page">
+        <div class="trial_reward_part1">
+            <div class="trial_reward_header">
+                <a href="javascript:back();"><img src="__TMPL__/mobilepublic/assets/images/back_return.png" alt="" class="fl back_icon"></a>
+                <p class="fl trial_reward_title">下载试玩游戏得平台币奖励</p>
+                <a href="{:url('rules')}" class="trial-rules-btn"></a>
+            </div>
+            <div class="trial-reward-step v-top h-middle">
+                <div class="reward-steps">
+                    <p class="step">1</p>
+                    <p class="reward-text">领取<span>任务</span></p>
+                </div>
+                <div class="reward-steps">
+                    <p class="step">2</p>
+                    <p class="reward-text">
+                        达到试玩要求后<br/>重新<span>登录游戏</span>
+                    </p>
+                </div>
+                <div class="reward-steps">
+                    <p class="step">3</p>
+                    <p class="reward-text">
+                        返回当前页<br/>领取<span>奖励</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="trial_reward_part2">
+            <div class="trial-reward-list">
+                <ul>
+                    <volist name="data" id="vo">
+                        <php>
+                            $devices_type = get_devices_type();
+                        </php>
+                        <if condition="$vo['sdk_version'] == $devices_type">
+                            <li class="trial-reward-item ">
+                                <a href="{:url('detail',['id'=>$vo['id']])}" class="v-middle">
+                                    <img src="{$vo.icon}" onerror="this.src='/static/images/empty.jpg';this.onerror=null" class="trial-game-icon">
+                                    <div class="trial-game-info">
+                                        <p class="game-title">{$vo.game_name}</p>
+                                        <if condition="empty($vo['status']) and empty($vo['end_time'])">
+                                            <p class="trial-end-time">{$vo.server_name}<span class="line">|</span>{$vo.time_out}小时内完成</p>
+                                            <elseif condition="empty($vo['status'])" />
+                                            <p class="trial-end-time">{$vo.server_name}<span class="line">|</span>剩余:{$vo.remain_time}</p>
+                                            <else/>
+                                            <p class="trial-end-time">{$vo.server_name}<span class="line">|</span>已完成</p>
+                                        </if>
+
+                                    </div>
+                                    <div class="trial-status">
+                                        <if condition="empty($vo['status']) and $vo['end_time']">
+                                            <p class="already-bm">已报名</p>
+                                            <elseif condition="$vo['status'] eq 1"/>
+                                            <p class="finish">任务完成<notempty name="vo.award"><i class="b-icon"></i>+{$vo.award}</notempty></p>
+                                            <elseif condition="$vo['endtime'] lt time() and $vo['endtime'] gt 0"/>
+                                            <p class="number-fill">已结束</p>
+                                            <elseif condition="($vo['sign'] egt $vo['quota']) and $vo['quota'] gt 0 " />
+                                            <p class="number-fill">名额已满</p>
+                                        </if>
+                                    </div>
+                                    <i class="arrow-icon"></i>
+                                </a>
+                            </li>
+                        </if>
+                    </volist>
+                </ul>
+                <empty name="data">
+                <div class="no-data" >
+                    <i class="no-data-icon"></i>
+                    <p class="text">~ 暂无任务，敬请期待 ~</p>
+                </div>
+                </empty>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+        function back(){
+            try{
+                $mt = "{:get_devices_type()}";
+                if($mt==2){
+                    window.webkit.messageHandlers.xgsdk_finishPage.postMessage(1);
+                }else{
+                    window.xgsdk.finishPage()
+                }
+            }catch (e) {
+                history.go(-1);
+            }
+        }
+    </script>
+</block>

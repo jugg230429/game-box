@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<include file="public@head"/>
+		<link href="__TMPL__/public/assets/css/promote/mychlid.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/promote/balance.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/promote/base_info.css" rel="stylesheet" />
+	</head>
+	<body>
+		<include file="public@nav"/>
+		<include file="public@header"/>
+		<div class="trunk">
+			<div class="trunk-con">
+				<div class="right-container">
+					<div class="normal-list">
+
+						<div class="trunk-title">
+							<div class="location ">
+								<div class="location-container fr">当前位置：<span class="location-container-text">管理中心&gt;</span><span class="location-container-text">子渠道>&gt;</span><span class="location-container-text">修改子渠道</span></div>
+							</div>
+							<img src="__TMPL__/public/assets/images/promote/icon_normal_ziqudao.png" class="fl trunk-icon">
+							<span class="title-main fl ">修改子渠道</span>
+						</div>
+						<ul class="tab fl">
+							<li class="tab-menu tab-menu-active">
+								基本信息
+							</li>
+							<li class="tab-menu ">
+								结算信息
+							</li>
+
+						</ul>
+						<div class="clear"></div>
+						<ol class="tabpan">
+							<li class="tabpan-con tabpan-show">
+								<form>
+									<div class="tabpan-con-con">
+										<label class="fl label-name">账号：</label>
+										<span class="formtxt fl">{:get_promote_name(input('id'))}</span>
+									</div>
+
+									<div class="tabpan-con-con">
+										<label class="fl label-name">密码：</label>
+										<input type="password" class="tabpan-input" name="password" id="password" maxlength="30" autocomplete="new-password" placeholder="">
+										<span class="tip">可进行修改，如不更改无需填写</span>
+									</div>
+									<div class="tabpan-con-con">
+										<label class="fl label-name">二级密码：</label>
+										<input type="password" class="tabpan-input" name="second_pwd" maxlength="30" id="second_pwd">
+										<span class="tip">可进行修改，如不更改无需填写</span>
+									</div>
+									<div class="tabpan-con-con">
+										<label class="fl label-name">姓名：</label>
+										<input type="text" class="tabpan-input" name="real_name" id="real_name" maxlength="25" value="{$data.real_name}" placeholder="">
+									</div>
+									<div class="tabpan-con-con">
+										<label class="fl label-name">手机号：</label>
+										<input type="text" class="tabpan-input"  name="mobile_phone" id="mobile_phone" maxlength="11" value="{$data.mobile_phone}"  placeholder="">
+									</div>
+									<div class="tabpan-con-con  postionr">
+										<label class="fl label-name">邮箱地址：</label>
+										<input type="text" class="tabpan-input" name="email" id="email" data-suffix="@qq.com" data-mail="" value="{$data.email}" placeholder="" >
+									</div>
+									<div class="tabpan-con-con">
+										<label class="fl label-name">备注：</label>
+										<textarea name="mark1" class="tabpan-input" rows="15"  id="mark1">{$data.mark1}</textarea>
+									</div>
+									<div class="tabpan-con-con">
+
+										<input type="hidden" name="id" value="{:input('id')}">
+										<input type="hidden" name="tab" value="1">
+										<input type="button" class="button" value="确认" title="" target-form="paw_er_info">
+										<a class="back-btn " alt="返回上一页" title="返回上一页" href="javascript:window.history.back();">返回</a>
+									</div>
+								</form>
+							</li>
+
+							<li class="tabpan-con">
+								<form>
+									<div class="tabpan-con-con">
+										<label class="fl label-name"><span class="req">*</span>手机号：</label>
+										<input type="text" class="tabpan-input settlement_input" name="bank_phone" maxlength="11" id="bank_phone" value="{$data.bank_phone}" placeholder=" 银行预留手机号">
+									</div>
+									<div class="tabpan-con-con">
+										<label class="fl label-name"><span class="req">*</span>银行卡号：</label>
+										<input type="text" class="tabpan-input settlement_input" name="bank_card" id="bank_card" value="{$data.bank_card}" placeholder="输入卡号" maxlength="19">
+									</div>
+									<div class="tabpan-con-con">
+										<label class="fl label-name"><span class="req">*</span>收款银行：</label>
+										<select id="bank_name" name="bank_name" class=" settlement_input" style="width: 280px;"></select>
+									</div>
+									<div class="tabpan-con-con">
+										<label class="fl label-name"><span class="req">*</span>持卡人：</label>
+										<input type="text" class="tabpan-input settlement_input" name="bank_account" id="bank_account" maxlength="25" value="{$data.bank_account}" placeholder="持卡人姓名，2-25个字符">
+									</div>
+
+									<div class="tabpan-con-con">
+										<label class="fl label-name"><span class="req"></span>开户城市：</label>
+
+										<select id="province" name="province" class="areaselect1 select_gallery js-select-gallery" style="width: 90px;"></select>
+										<select id="city" name="city" class="areaselect2 select_gallery js-select-gallery" style="width: 90px;"></select>
+										<select id="county" name="county" class="areaselect3 select_gallery js-select-gallery" style="width: 90px;"></select>
+
+									</div>
+									<div class="tabpan-con-con">
+										<label class="fl label-name"><span class="req">*</span>开户网点：</label>
+										<input type="text" class="tabpan-input settlement_input" name="account_openin" id="account_openin" value="{$data.account_openin}" placeholder="开户网点">
+									</div>
+									<div class="tabpan-con-con">
+
+										<input type="hidden" name="id" value="{:input('id')}">
+										<input type="hidden" name="tab" value="2">
+										<input type="button" disabled class="button settlement_button" value="确认" title="" target-form="paw_er_info">
+										<a class="back-btn " alt="返回上一页" title="返回上一页" href="javascript:window.history.back();">返回</a>
+									</div>
+								</form>
+							</li>
+
+						</ol>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<include file="public@scripts"/>
+		<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+		<script src="__TMPL__/public/assets/js/promote/area.js"></script>
+		<script src="__TMPL__/public/assets/js/promote/bank.js"></script>
+		<script src="__TMPL__/public/assets/js/promote/mail_suffix.js"></script>
+		<script src="__STATIC__/js/layer/layer.js"></script>
+		<script>
+			$(function () {
+                $('.settlement_input').bind('input propertychange', function () {
+                    var bank_phone = $("#bank_phone").val();
+                    var bank_card = $("#bank_card").val();
+                    var bank_name = $("#bank_name").val();
+                    var bank_account = $("#bank_account").val();
+                    var account_openin = $("#account_openin").val();
+                    if (bank_phone == '' || bank_card == '' || bank_name == '' || bank_account == '' || account_openin == '') {
+                        $(".settlement_button").attr('disabled', true);
+                    } else {
+                        $(".settlement_button").attr('disabled', false);
+                    }
+                })
+            })
+			$(".js-select-gallery").select2();
+			_init_area("province", "city", "county");
+
+			var pro="{:$data['bank_area']['0']?:'省'}";
+            var city="{:$data['bank_area']['1']?:'市'}";
+            var are="{:end($data['bank_area'])?:'区/县'}";
+			// 默认选中
+			$("#select2-province-container").text(pro);
+			$("#select2-city-container").text(city);
+			$("#select2-county-container").text(are);
+			$('#province').val(pro);
+			$('#province').change(function(){
+				$("#select2-city-container").text('市');
+				$("#select2-county-container").text('区/县');
+			});
+			$('#city').val(pro);
+			$('#county').val(pro);
+//				银行选择
+			var data_bank_name = '{$data["bank_name"]}';
+			var bank_name = '<option value="">选择银行</option>';
+			// console.log(bank);
+			for(var bn in bank) {
+				if(data_bank_name == bank[bn]) {
+					bank_name += '<option value="' + bank[bn] + '" selected>' + bank[bn] + '</option>';
+				} else {
+					bank_name += '<option value="' + bank[bn] + '">' + bank[bn] + '</option>';
+				}
+			}
+			$('#bank_name').html(bank_name).select2();
+            //邮箱
+            function add_mail_suffix(that) {
+                var suffix = $(that).data('suffix');
+                var input = $(that).closest('.mail_suffix').prev();
+                if(input.attr('data-mail').length > 0) {
+                    input.val(input.attr('data-mail') + suffix);
+                }
+            }
+            $('#email').focus(function() {
+                var val = $.trim($(this).val());
+                if(val) {
+                    var index = val.indexOf('@');
+                    if(index > -1) {
+                        var suffix = val.substring(index);
+                        val = val.substring(0, index);
+                        $(this).val(val).attr('data-suffix', suffix).attr('data-mail', val);
+                    }
+                }
+                var html = '<ul class="mail_suffix">';
+                for(var item in mail_suffix) {
+                    html += '<li onclick="add_mail_suffix(this)" data-suffix="' + mail_suffix[item] + '">' + mail_suffix[item] + '</li>';
+                }
+
+                html += '</ul>';
+                $(this).after(html);
+                $('body').click(function(event) {
+                    var e = event || window.event;
+                    var target = e.target || e.srcElement;
+
+                    if($(target).attr('id') != 'email' && $(target).attr('class') != 'mail_suffix') {
+                        $('.mail_suffix').remove();
+                    }
+                    return false;
+                });
+                return false;
+            }).blur(function(event) {
+                var e = event || window.event;
+                var target = e.target || e.srcElement;
+                var that = $(this);
+                if($(target).attr('id') == 'email' && $(target).attr('class') == 'mail_suffix') {
+                    $('.mail_suffix').remove();
+                }
+                if(that.attr('data-mail')) {
+                    var data_mail_index = that.attr('data-mail').indexOf('@');
+                    if(data_mail_index > -1) {
+                        var data_mail = that.attr('data-mail');
+                        that.val(data_mail);
+                        that.attr('data-mail', data_mail.substring(0, data_mail_index));
+                        that.attr('data-suffix', data_mail.substring(data_mail_index));
+                    } else {
+                        that.val(that.attr('data-mail') + that.attr('data-suffix'));
+                    }
+
+                }
+                return false;
+            }).keyup(function() {
+                var val = $.trim($(this).val());
+                if(val.length > 64) {
+                    val = val.substr(0, 64);
+                    $(this).val(val);
+                }
+                $(this).attr('data-mail', val);
+
+                return false;
+            });
+		</script>
+		<script type="text/javascript">
+			$('.button').click(function(){
+				that = $(this);
+				data = that.parents('form').serialize();
+				$.ajax({
+					url:"{:url('edit_child')}",
+					type:'post',
+					data:data,
+					success:function(res){
+						if(res.code==1){
+							layer.msg(res.msg,{time:1000},function(){
+								location.href= res.url;
+		                    })
+						}else{
+							layer.msg(res.msg,{time:1500})
+						}
+					},error:function(){
+						layer.msg('服务器错误，请稍后再试');
+					}
+				})
+			});
+		</script>
+	</body>
+
+</html>

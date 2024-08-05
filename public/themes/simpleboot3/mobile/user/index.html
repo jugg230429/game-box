@@ -1,0 +1,326 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/my_page_header.css">
+</block>
+<block name="body">
+
+    <php>
+        // 增加账号注册开关
+        $sdk_set = cmf_get_option('wap_set');
+        $account_register_switch = $sdk_set['account_register_switch'] ?? 1; // 0 关闭 1 开启
+        $phonenum_register_switch = $sdk_set['phonenum_register_switch'] ?? 1; // 0 关闭 1 开启
+    </php>
+
+    <div class="my_page_header">
+        <eq name="session.login_auth" value="1">
+            <div class="all" style="height:7.5rem;">
+                <a class="my_pic fl <empty name='session.login_auth'>login</empty>" href="{:url('User/set')}">
+                    <img src="<notempty name='user.head_img'>{:cmf_get_image_url($user['head_img'])}<else />__TMPL__/mobilepublic/assets/images/logoo.png</notempty>" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                </a>
+                <!-- 已登录 -->
+                    <div class="fl login_zhuce">
+                        <div class="login_zhuce_left fl">
+                            <div>
+                                <p class="user_nickname fl login_nickName">{$user.nickname}</p>
+                                 <if condition="!empty($vipLevel)">
+                                     <a href="{:url('user_vip')}"><span class="vip <empty name='user.vip_level'>vip-disabled</empty>">v{$user.vip_level}</span></a>
+                                 </if>
+                                 <if condition="$user['end_time'] gt time() and cmf_get_option('mcard_set')['status'] eq 1">
+                                    <div class="fl surplus"></div>
+                                </if>
+                            </div>
+                            <div class="clear"></div>
+                            <p class="user_username">账号：{$user.account} </p>
+                            <p class="user_moblie">绑定手机：{:$user['phone']?:'--'}</p>
+                        </div>
+                    </div>
+                <a href="{:url('User/set')}" class="btn-login-zhuce">
+                    <div class="login_zhuce_right ">
+                        <img src="__TMPL__/mobilepublic/assets/images/my-set.png" alt="">
+                    </div>
+                </a>
+           
+            </div>
+            <else />
+            <!-- 未登录 -->
+            <a class="my_pic fl <empty name='session.login_auth'>login</empty>" href="{:url('User/set')}">
+                <img src="<notempty name='user.head_img'>{:cmf_get_image_url($user['head_img'])}<else />__TMPL__/mobilepublic/assets/images/logoo.png</notempty>" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+            </a>
+            <div class="fl no_login_zhuce">
+                <p style="font-size: 1.37rem">
+                    <span class="login">登录</span>
+                    <if condition="($account_register_switch eq 1) or ($phonenum_register_switch eq 1)">
+                        <span class="login_zhuce_fgx">|</span>
+                        <span class="zhuce">注册</span>
+                    </if>
+                    
+                </p>
+            </div>
+        </eq>
+		<div class="clear"></div>
+       
+        <if condition="cmf_get_option('mcard_set')['status'] eq 1">
+           <div class="ecard">
+               <div class="fl" style="margin-left:5rem;">
+                   <div class="ecard-type"><empty name="user.end_time">尊享卡<else/>{$user['mcard_name']}({$user.member_days}天)</empty></div>
+                   <div class="ecard-text"><empty name="user.end_time">超值代金券天天领！<else/>有效期：{:date('Y-m-d',$user['end_time'])}</empty></div>
+               </div>
+               <a href="{:url('mcard/index')}" class="fg fr ecard-btn"><empty name="user.end_time">立即开通>> <else/>立即续费>></empty></a>
+           </div>
+        </if>
+		 <div class="balance-box">
+             <if condition="get_ptb_bind_recharge_status('ptb_pay') neq 0 or get_ptb_bind_recharge_status('bind_pay') neq 0">
+                 <a <eq name='session.login_auth' value='1'> href="{:url('pay/pay')}" <else/>href="javascript:;" class="login" </eq>>
+                 <else/>
+                 <a href="javascript:;">
+             </if>
+            <div class="ptb-balance">
+                <div class="">
+				     <p class="balance-txt">平台币</p>
+				     <p class="balance-num"><eq name="session.login_auth" value="1">{$user.balance}<else />0.00</eq></p>
+                </div>
+               <!-- <i class="look-icon"></i>-->
+            </div>
+            </a>
+            <a <eq name='session.login_auth' value='1'> href="{:url('user/bind_lists')}" class="ml-auto" <else/>href="javascript:;" class="ml-auto login" </eq>>
+            <div class="bing-balance">
+                <div class="">
+                    <p class="balance-txt">绑币</p>
+                    <p class="balance-num"><eq name="session.login_auth" value="1">{$user.bind_balance}<else />0.00</eq></p>
+                </div>
+                <!--<i class="look-icon"></i>-->
+            </div>
+            </a>
+			 <a <eq name='session.login_auth' value='1'> href="{:url('point/mall_task')}" class="ml-auto" <else/>href="javascript:;" class="ml-auto login" </eq>>
+            <div class="bing-balance">
+                <div class="">
+                    <p class="balance-txt">积分</p>
+                     <p class="balance-num"><eq name="session.login_auth" value="1">{$user.point}<else />0.00</eq></p>
+
+                </div>
+                <!--<i class="look-icon"></i>-->
+            </div>
+            </a>
+            <if condition="!empty($vipLevel)">
+			<a <eq name='session.login_auth' value='1'> href="{:url('point/mall_task')}" class="vip-integral-box" <else/>href="javascript:;" class="vip-integral-box login" </eq>>
+			   <div class="vip-integral-vip fl">
+			     <img src="__TMPL__/mobilepublic/assets/images/icon-huiyuan.png" class="fl vip-integral-vip-img">
+				 <font class="fl vip-integral-vip-text">VIP{$user.vip_level|default=0}</font>
+			   </div>
+			  <span>升级领积分，专享更多福利特权 <img src="__TMPL__/mobilepublic/assets/images/vip-right.png" class="vip-integral-arrow"></span>
+			</a>
+            </if>
+        </div>
+        
+    </div>
+    <div>
+       
+        <div class="user_operate clear">
+		<div class="coupon_title">玩家服务</div>
+           <eq name='session.login_auth' value='1'>
+                <a href="{:url('Coupon/index')}" class="" >
+                    <div class="my_coupon">
+                        <img src="__TMPL__/mobilepublic/assets/images/home_enter_ico_coupons.png" alt="">
+                        <p>代金券</p>
+                    </div>
+                </a>
+                <else />
+                <a href="javascript:;" data-url="{:url('Coupon/index')}" class="login" >
+                    <div class="my_coupon">
+                        <img src="__TMPL__/mobilepublic/assets/images/home_enter_ico_coupons.png" alt="">
+                        <p>代金券</p>
+                    </div>
+                </a>
+            </eq>
+			 <eq name='session.login_auth' value='1'>
+                <a href="{:url('User/invite_friends')}" class="" >
+                    <div class="my_trumpet">
+                        <img src="__TMPL__/mobilepublic/assets/images/my_ico_invite.png" alt="">
+                        <p>邀请奖励</p>
+                    </div>
+                </a>
+                <else />
+                <a href="javascript:;" data-url="{:url('User/invite_friends')}" class="login">
+                    <div class="my_trumpet">
+                        <img src="__TMPL__/mobilepublic/assets/images/my_ico_invite.png" alt="">
+                        <p>邀请奖励</p>
+                    </div>
+                </a>
+            </eq>
+			 <eq name='session.login_auth' value='1'>
+                <a href="{:url('Tplay/index')}" class="" >
+                    <div class="my_trumpet">
+                        <img src="__TMPL__/mobilepublic/assets/images/my_ico_trial.png" alt="">
+                        <p>试玩有奖</p>
+                    </div>
+                </a>
+                <else />
+                <a href="javascript:;" data-url="{:url('Tplay/index')}" class="login" >
+                    <div class="my_trumpet">
+                        <img src="__TMPL__/mobilepublic/assets/images/my_ico_trial.png" alt="">
+                        <p>试玩有奖</p>
+                    </div>
+                </a>
+            </eq>
+            
+			<eq name='session.login_auth' value='1'>
+                <a href="{:url('User/user_trumpet')}" class="" >
+                    <div class="my_trumpet">
+                        <img src="__TMPL__/mobilepublic/assets/images/my_enter_ico_account.png" alt="">
+                        <p>小号管理</p>
+                    </div>
+                </a>
+                <else />
+                <a href="javascript:;" data-url="{:url('User/user_trumpet')}" class="login" >
+                    <div class="my_trumpet">
+                        <img src="__TMPL__/mobilepublic/assets/images/my_enter_ico_account.png" alt="">
+                        <p>小号管理</p>
+                    </div>
+                </a>
+            </eq>
+            <eq name='session.login_auth' value='1'>
+                <a href="{:url('User/user_rebate')}" class="" style="margin-top: 0.4rem">
+                    <div class="my_coupon">
+                        <img src="__TMPL__/mobilepublic/assets/images/my_enter_ico_back.png" alt="">
+                        <p>我的返利</p>
+                    </div>
+                </a>
+                <else />
+                <a href="javascript:;" data-url="{:url('User/user_rebate')}" class="login" style="margin-top: 0.4rem" >
+                    <div class="my_coupon">
+                        <img src="__TMPL__/mobilepublic/assets/images/my_enter_ico_back.png" alt="">
+                        <p>我的返利</p>
+                    </div>
+                </a>
+            </eq>
+             <eq name='session.login_auth' value='1'>
+                <a href="{:url('User/user_tip')}" class="" style="margin-top: 0.4rem">
+                    <div class="my_coupon">
+                        <img src="__TMPL__/mobilepublic/assets/images/my_enter_ico_xiaoxi.png" alt="">
+                        <p>消息中心</p>
+                    </div>
+                </a>
+                <else />
+                <a href="javascript:;" data-url="{:url('User/user_tip')}" class="login" style="margin-top: 0.4rem" >
+                    <div class="my_coupon">
+                        <img src="__TMPL__/mobilepublic/assets/images/my_enter_ico_xiaoxi.png" alt="">
+                        <p>消息中心</p>
+                    </div>
+                </a>
+            </eq>
+
+            <if condition="is_weixin()">
+                <a href="javascript:layer.msg('请在外部浏览器调起客服QQ');" class="" style="margin-top: 0.4rem">
+                    <div class="my_coupon">
+                        <img src="__TMPL__/mobilepublic/assets/images/my_enter_ico_kefu.png" alt="">
+                        <p>我的客服</p>
+                    </div>
+                </a>
+            <else/>
+                <!-- <a href="mqqwpa://im/chat?chat_type=wpa&uin=<empty name='union_set.qq'>{:cmf_get_option('kefu_set')['pc_set_server_qq']}<else />{$union_set['qq']}</empty>&version=1&src_type=web" class="" style="margin-top: 0.4rem">
+                    <div class="my_coupon">
+                        <img src="__TMPL__/mobilepublic/assets/images/my_enter_ico_kefu.png" alt="">
+                        <p>我的客服</p>
+                    </div>
+                </a> -->
+                <a href="{:url('user/service')}" class="" style="margin-top: 0.4rem">
+                    <div class="my_coupon">
+                        <img src="__TMPL__/mobilepublic/assets/images/my_enter_ico_kefu.png" alt="">
+                        <p>我的客服</p>
+                    </div>
+                </a>
+
+            </if>
+           
+           
+        </div>
+        <div class="user_operate clear">
+		<div class="coupon_title">更多服务</div>
+            <eq name='session.login_auth' value='1'>
+                <a href="{:url('User/game')}">
+                    <div class="my_games">
+                        <img src="__TMPL__/mobilepublic/assets/images/me_icon_game.png" alt="">
+                        <p>我的游戏</p>
+                    </div>
+                </a>
+                <else />
+                <a href="javascript:;" data-url="{:url('User/game')}" class="login">
+                    <div class="my_games">
+                        <img src="__TMPL__/mobilepublic/assets/images/me_icon_game.png" alt="">
+                        <p>我的游戏</p>
+                    </div>
+                </a>
+            </eq>
+            <eq name='session.login_auth' value='1'>
+                <a href="{:url('User/gift')}">
+                    <div class="my_bags">
+                        <img src="__TMPL__/mobilepublic/assets/images/me_icon_bag.png" alt="">
+                        <p>我的礼包</p>
+                    </div>
+                </a>
+                <else />
+                <a href="javascript:;" data-url="{:url('User/gift')}" class="login">
+                    <div class="my_bags">
+                        <img src="__TMPL__/mobilepublic/assets/images/me_icon_bag.png" alt="">
+                        <p>我的礼包</p>
+                    </div>
+                </a>
+            </eq>
+            <eq name='session.login_auth' value='1'>
+                <a href="{:url('User/bill')}">
+                    <div class="my_gamelists">
+                        <img src="__TMPL__/mobilepublic/assets/images/me_icon_gamelist.png" alt="">
+                        <p>游戏账单</p>
+                    </div>
+                </a>
+                <else />
+                <a href="javascript:;" data-url="{:url('User/bill')}" class="login">
+                    <div class="my_gamelists">
+                        <img src="__TMPL__/mobilepublic/assets/images/me_icon_gamelist.png" alt="">
+                        <p>游戏账单</p>
+                    </div>
+                </a>
+            </eq>
+
+            <eq name='session.login_auth' value='1'>
+                <a href="{:url('User/feedback')}">
+                    <div class="my_gamelists">
+                        <img src="__TMPL__/mobilepublic/assets/images/message.png" alt="">
+                        <p>投诉反馈</p>
+                    </div>
+                </a>
+                <else />
+                <a href="javascript:;" data-url="{:url('User/feedback')}" class="login">
+                    <div class="my_gamelists">
+                        <img src="__TMPL__/mobilepublic/assets/images/message.png" alt="">
+                        <p>投诉反馈</p>
+                    </div>
+                </a>
+            </eq>
+            
+          
+        </div>
+    </div>
+  
+</block>
+<block name='script'>
+   <script>
+       $(function() {
+            var u = navigator.userAgent;
+            var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+            var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+            if(isAndroid){
+                $('.surplus').addClass('queenIcon')
+            }
+            if(isiOS){
+                $('.surplus').css('right','34%')
+            }
+
+       })
+       $(function(){
+           $(".all").click(function() {
+               window.location.href="{:url('User/set')}";
+           })
+       })
+   </script>
+</block>

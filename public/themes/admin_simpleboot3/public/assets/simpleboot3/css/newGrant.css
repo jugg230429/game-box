@@ -1,0 +1,128 @@
+li {
+    list-style: none;
+}
+.coupon-content{
+    width:100%;
+    background: #eeeeee;
+    display: block;
+    padding: 10px 0;
+    cursor: pointer;
+}
+.coupon-content p{
+    line-height: 15px;
+    text-align: center;
+    width:100%;
+    display: flex;
+    align-items: center;
+}
+.coupon-content p  span{
+    width:50%;
+    text-align: right;
+    display: block;
+}
+.grantContainer {
+    display: flex;
+    align-items: center;
+}
+.mainSelectOutBox{
+    width: 432px;
+    height: 378px;
+    background: #FFFFFF;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+}
+.grantNameLabel {
+    margin-right: 16px;
+}
+.inputGameUserCount{
+    width: 410px;
+    height: 32px;
+    background: #FFFFFF;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+    margin: 11px;
+    padding-left: 10px;
+}
+.grantBoxSelectData{
+    position: relative;
+    font-weight: normal;
+}
+.grantBoxSelectData input[type="checkbox"] {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    opacity: 0;
+    position: absolute;
+    z-index: 99;
+}
+.selectBoxIcon {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background-image: url('../images/btn_choose_n.png');
+    background-size: 100% 100%;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+.grantBoxSelectData input[type="checkbox"]:checked+.selectBoxIcon {
+    background-image: url('../images/btn_choose_s.png');
+}
+.showGameGrantList{
+    margin-left:11px;
+    margin-bottom: 9px;
+}
+.bottomShowList{
+    max-height: 300px;
+    overflow-y: auto;
+}
+.noHaveGamelist{
+    text-align: center;
+    margin-top: 100px;
+    color: #ACB6C0;
+}
+
+.grantDiscountData{
+    position: relative;
+    font-weight: normal;
+    cursor: pointer;
+}
+.grantDiscountData input[type="checkbox"] {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    opacity: 0;
+    position: absolute;
+    z-index: 99;
+}
+.discountBoxIcon {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background-image: url('../images/btn_choose_n.png');
+    background-size: 100% 100%;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+.grantDiscountData input[type="checkbox"]:checked+.discountBoxIcon {
+    background-image: url('../images/btn_choose_s.png');
+}
+.showDescDiscount{
+    display: none;
+    width: 395px;
+    height: 113px;
+    background: #F5F6F7;
+    border-radius: 4px;
+    padding: 8px 0 0 22px;
+    line-height: 25px;
+    box-sizing: border-box;
+    pointer-events: none;
+}
+.showDescDiscount p {
+    margin: 0;
+}
+.grantDiscountData:hover {
+    color: #006FC4;
+}
+.grantBottomFinalBtn{
+    margin-top: 11px;
+}

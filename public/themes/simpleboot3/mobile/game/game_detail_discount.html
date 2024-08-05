@@ -1,0 +1,100 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__JS__/layui/css/layui.css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/discount_game.css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/game_detail.css">
+</block>
+
+<block name="body">
+    <div class="discount_lists_page">
+        <div class="discount_lists_header">
+            <a href="javascript:;" onclick="history.back()"><img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon"></a>
+            <p class="discount-list-title">折扣返利</p>
+        </div>
+        <div class="type_down__long_hx clear"></div>
+        <div>
+            <notempty name="rebate">
+            <div class="discount-content-part">
+                <p class="discount-title v-middle"><i class="discount-icon rebate-icon"></i>充值返利</p>
+                <p class="discount-tips">单日单笔充值返利，不可累计 (充值后自动发放绑币)</p>
+                <ul class="discount-list">
+                    <if condition="empty($rebate['status'])">
+                        <li class="discount-item v-middle">
+                            <i class="star-icon"></i>
+                            充值返利{$rebate['ratio']}%
+                        </li>
+                        <else/>
+                        <volist name="rebate.money" id="vo" key="key">
+                            <li class="discount-item v-middle">
+                                <i class="star-icon"></i>
+                                充值{$vo}元及以上，返利{$rebate['ratio'][$key-1]}%
+                            </li>
+                        </volist>
+                    </if>
+                </ul>
+            </div>
+                <div class="type_down__long_hx clear"></div>
+            </notempty>
+
+            <notempty name="discount">
+            <div class="discount-content-part">
+                <p class="discount-title v-middle"><i class="discount-icon charge-icon"></i>充值折扣</p>
+                <p class="discount-tips">单笔充值折扣</p>
+                <ul class="discount-list">
+                    <if condition="$discount['first_discount']">
+                        <li class="discount-item v-middle">
+                            <i class="star-icon"></i>
+                            首充{$discount['first_discount']}折
+                        </li>
+                    </if>
+                    <if condition="$discount['continue_discount']">
+                        <li class="discount-item v-middle">
+                            <i class="star-icon"></i>
+                            续充{$discount['continue_discount']}折
+                        </li>
+                    </if>
+                </ul>
+            </div>
+                <div class="type_down__long_hx clear"></div>
+            </notempty>
+
+            <notempty name="data">
+                <div class="discount-content-part">
+                    <p class="discount-title v-middle"><i class="discount-icon bing-icon"></i>绑币折扣</p>
+                    <p class="discount-tips">单笔绑币充值折扣</p>
+                    <ul class="discount-list">
+                        <if condition="$data.first_discount">
+                            <li class="discount-item v-middle">
+                                <i class="star-icon"></i>
+                                首充绑定平台币{$data.first_discount}折
+                            </li>
+                        </if>
+                        <if condition="$data.continue_discount">
+                            <li class="discount-item v-middle">
+                                <i class="star-icon"></i>
+                                续充绑定平台币{$data.continue_discount}折
+                            </li>
+                        </if>
+                    </ul>
+                </div>
+            </notempty>
+        </div>
+        <!--暂无福利-->
+        <if condition="empty($data) && empty($rebate) && empty($discount)">
+        <div class="no-discount">
+            <p>该游戏暂无福利</p>
+        </div>
+        </if>
+
+    </div>
+</block>
+<block name="script">
+    <script src="__TMPL__/mobilepublic/assets/js/drop.js"></script>
+    <script src="__STATIC__/js/layui/layui.js"></script>
+    <script>
+        $(function () {
+
+        });
+
+    </script>
+</block>

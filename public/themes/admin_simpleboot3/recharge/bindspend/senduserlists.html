@@ -1,0 +1,124 @@
+<include file="public@header" />
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="{:url('bindspend/senduserlists')}">发放记录</a></li>
+        <li><a href="{:url('bindspend/senduser')}">给玩家发放</a></li>
+        <span class="title_remark">说明：后台给玩家发放绑币的记录，可进行批量充值</span>
+    </ul>
+    <form id="search_form" class="well form-inline  fr" method="get" action="{:url('bindspend/senduserlists')}" onsubmit="return check();">
+
+        <input type="text" class="form-control" name="user_account" style="width: 120px;" value="{:input('user_account/s','')}" placeholder="玩家账号">
+        <select name="game_id" id="game_id" class="selectpicker " game_id="{:input('request.game_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+            <option value="">游戏名称</option>
+            <volist name=":get_game_list('id,game_name')" id="vo">
+                <option game-id="{$vo.id}" value="{$vo.id}" >{$vo.game_name}</option>
+            </volist>
+        </select>
+
+        <input type="text" class="form-control js-bootstrap-date" id="start_time" name="start_time" placeholder="充值开始时间"
+               value="{:input('request.start_time/s','')}" style="width: 140px;" autocomplete="off">-
+        <input type="text" class="form-control js-bootstrap-date" id="end_time" name="end_time" placeholder="充值结束时间"
+               value="{:input('request.end_time/s','')}" style="width: 140px;" autocomplete="off">
+        <select name="admin_id" id="admin_id" class="selectpicker " admin_id="{:input('request.admin_id/s','')}" data-live-search="true"  data-size="8" style="width: 100px;">
+            <option value="">操作人员</option>
+            <volist name=":get_admin_lists()" id="vo">
+                <option  value="{$vo.id}" >{$vo.user_login}</option>
+            </volist>
+        </select>
+
+        <select name="status" id="status" class="selectpicker " status="{:input('request.status/s','')}"  style="width: 100px;">
+            <option value="">发放状态</option>
+            <option value="1" >已充值</option>
+            <option value="0" >未充值</option>
+        </select>
+
+        <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+        <a class="btn btn-clear" href="{:url('bindspend/senduserlists')}">清空</a>
+        <!--<a class="btn btn-export" href="{:url('Export/expUser',array_merge(['id'=>4,'xlsname'=>'后台发放平台币（玩家）'],input()))}">导出</a>-->
+    </form>
+    <form class="js-ajax-form" action="" method="post">
+        <div class="table-actions position" style="margin-left: -10px;">
+            <button class="btn btn-primary js-ajax-submit mtb17" type="submit"
+                    data-action="{:url('recharge')}" data-subcheck="true" data-msg="您确定充值吗？">
+                充值
+            </button>
+
+            <button class="btn btn-danger js-ajax-submit mtb17" type="submit"
+                    data-action="{:url('delete')}" data-subcheck="true" data-msg="您确定删除吗？">
+                删除
+            </button>
+        </div>
+        <table class="table table-hover table-bordered">
+            <thead >
+            <tr>
+                <th width="15">
+
+                    <input type="checkbox" id="all-checkbox" class="table-item-checkbox js-check-all" data-direction="x" data-checklist="js-check-x">
+                    <label for="all-checkbox" class=""></label>
+                </th>
+                <th>订单号</th>
+                <th>玩家账号</th>
+                <th>游戏名称</th>
+                <th>发放数量</th>
+                <th>操作人员</th>
+                <th>发放时间</th>
+                <th>充值时间</th>
+                <th>状态</th>
+            </tr>
+            </thead>
+            <tbody>
+            <empty name="data_lists">
+                <tr><td colspan="9" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                <foreach name="data_lists" item="vo">
+                    <tr>
+                        <php>if($vo['status'] ==1) $page_total +=$vo['amount'];</php>
+                        <td>
+                            <input type="checkbox" id="ids-checkbox{$vo.id}" class="table-item-checkbox js-check" <if condition="$vo['status'] eq 1"> disabled</if> data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
+                            value="{$vo.id}" >
+                            <label for="ids-checkbox{$vo.id}" class=""></label>
+                        </td>
+                        <td>{$vo['pay_order_number']}</td>
+                        <td>{$vo['user_account']}</td>
+                        <td>{$vo.game_name}</td>
+                        <td>{$vo['amount']}</td>
+                        <td>{:$vo['op_id']?$vo['op_account']:'--'}</td>
+                        <td><if condition="$vo['create_time'] eq ''">--<else/>{:date('Y-m-d H:i:s',$vo['create_time'])}</if></td>
+                        <td><if condition="$vo['update_time'] eq ''">--<else/>{:date('Y-m-d H:i:s',$vo['update_time'])}</if></td>
+                        <td><span <if condition="$vo['status'] eq 1"> class="label" style="color:#3FAD46;font-size:14px"<else/>class="label" style="color:#d9534f;font-size:14px"</if>>{:get_info_status($vo['status'],9)}</span></td>
+                    </tr>
+                </foreach>
+                <tr class="data_summary">
+                    <td colspan="2"><span style="margin-right: 10px;">汇总（只汇总充值成功） </span></td>
+                    <td colspan="7"><span>今日充值：{:null_to_0($today['total'])} ；昨日充值：{:null_to_0($yestoday['total'])} ；当页充值：{:null_to_0($page_total)} ； 累计充值：{:null_to_0($total['total'])}</span></td>
+                </tr>
+            </empty>
+            </tbody>
+        </table>
+    </form>
+    <div class="pagination">{$page}
+    </div>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script type="text/javascript">
+    admin_id = $("#admin_id").attr('admin_id');
+    status = $("#status").attr('status');
+    game_id = $("#game_id").attr('game_id');
+    $("#admin_id").selectpicker('val', admin_id);
+    $("#game_id").selectpicker('val', game_id);
+    $("#status").selectpicker('val', status);
+    function check(){
+        var start_time = $("#start_time").val();
+        var end_time = $("#end_time").val();
+        if(start_time != '' && end_time != '' && start_time > end_time){
+            layer.msg('开始时间不能大于结束时间');
+            return false;
+        }
+        return true;
+    }
+</script>
+</body>
+</html>

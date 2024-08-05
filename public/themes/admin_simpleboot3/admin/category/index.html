@@ -1,0 +1,96 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="{:url('index')}">分类管理</a></li>
+<!--        <li><a href="{:url('add')}">添加分类</a></li>-->
+    </ul>
+    <form class="well form-inline  fr" method="post" action="{:url('index')}">
+        <input type="text" class="form-control" name="keyword" style="width: 200px;"
+               value="{$keyword|default=''}" placeholder="请输入分类名称">
+        <input type="submit" class="btn btn-primary" value="搜索"/>
+        <a class="btn btn-clear" href="{:url('index')}">清空</a>
+    </form>
+
+    <form method="post" class="js-ajax-form " action="{:url('listOrder')}">
+        <div class="table-actions position">
+        </div>
+        <empty name="keyword">
+            <table class="table table-hover table-bordered table-list" id="menus-table">
+                <thead>
+                <tr>
+                    <th width="16" style="padding-left:20px;">
+                        <label>
+                            <input type="checkbox" class="js-check-all" data-direction="x" data-checklist="js-check-x">
+                        </label>
+                    </th>
+<!--                    <th width="50">排序</th>-->
+                    <th width="50">ID</th>
+                    <th>分类名称</th>
+                    <th width="800px">描述</th>
+                    <th>状态</th>
+                    <th width="210">操作</th>
+                </tr>
+                </thead>
+                {$category_tree}
+            </table>
+            <else/>
+            <table class="table table-hover table-bordered table-list">
+                <thead>
+                <tr>
+                    <th width="16">
+                        <label>
+                            <input type="checkbox" class="js-check-all" data-direction="x" data-checklist="js-check-x">
+                        </label>
+                    </th>
+<!--                    <th width="50">排序</th>-->
+                    <th width="50">ID</th>
+                    <th>分类名称</th>
+                    <th>描述</th>
+                    <th>状态</th>
+                    <th width="200">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <notempty name="categories">
+                    <foreach name="categories" item="vo">
+                        <tr>
+                            <td>
+                                <input type="checkbox" class="js-check" data-yid="js-check-y" data-xid="js-check-x"
+                                       name="ids[]" value="{$vo.id}">
+                            </td>
+                            <td>{$vo.id}</td>
+                            <td>{$vo.name}</td>
+                            <td>{$vo.description}</td>
+                            <td><span class="label label-success">{$vo.status?'显示':'隐藏'}</span></td>
+                            <td>
+                                <a href="{:url('edit',['id'=>$vo.id])}">编辑</a>
+                            </td>
+                        </tr>
+                    </foreach>
+                    <else/>
+                    <tr>
+                        <td colspan="6" style="text-align: center;">暂无数据</td>
+                    </tr>
+                </notempty>
+                </tbody>
+                <tfoot>
+            </table>
+        </empty>
+    </form>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script>
+    $(document).ready(function () {
+        Wind.css('treeTable');
+        Wind.use('treeTable', function () {
+            $("#menus-table").treeTable({
+                indent: 20,
+                initialState: 'expanded'
+            });
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+﻿@charset "UTF-8";
+
+/*
+* @description:联运申请配置参数弹窗
+ *@author:王奉
+* @update: name(xxxx-xx-xx xx:xx)
+ */
+
+
+.body{
+      background:#fff;
+   }
+    .applyname{
+	   width:133px;
+	   color:#333;
+	   text-align:left;
+	}
+	.applycon{
+	   width: 538px;
+       height: 32px;
+	   border: 1px solid #ddd;
+       border-radius: 4px;
+	}
+	.applycon:disabled{
+	   background:none;
+	   border:none;
+	}
+

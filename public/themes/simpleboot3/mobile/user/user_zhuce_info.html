@@ -1,0 +1,39 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+
+</block>
+<block name="body">
+    <div class="user_zhuce_info_page">
+        <div class="user_zhuce_info_page_header">
+            <a href="{:url('User/index')}" class="fl close_user_zhuce_info">关闭</a>
+            <p class="fl user_zhuce_info_page_item">用户条款</p>
+            <a href="{:url('Game/search')}"><img src="__TMPL__/mobilepublic/assets/images/common_btn_search.png" alt=""
+                    class="sears_btn"></a>
+        </div>
+        <div class="type_down__long_hx clear"></div>
+        <notempty name="data.post_content">
+            <div class="user_zhuce_info_con">
+
+                {$data.post_content}
+
+            </div>
+            <else />
+            <div class="user_zhuce_info_con_error_text">
+                <p>无法连接</p>
+                <div style="width: 100%;">
+                    <div class="user_zhuce_info_error_btn">
+                        <p>重试</p>
+                    </div>
+                </div>
+
+            </div>
+            <script>
+                $(function () {
+                    $('.user_zhuce_info_error_btn').click(function () {
+                        window.location.reload();
+                    });
+                })
+            </script>
+        </notempty>
+    </div>
+</block>

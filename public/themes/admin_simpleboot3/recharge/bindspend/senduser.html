@@ -1,0 +1,141 @@
+<include file="public@header"/>
+<style>
+    .user-input{
+        width: 50%!important;
+    }
+</style>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('bindspend/senduserlists')}">发放记录</a></li>
+        <li class="active"><a href="{:url('bindspend/senduser')}">给玩家发放</a></li>
+        <span class="title_remark">说明：给玩家发放绑币</span>
+
+    </ul>
+    <div class="form-horizontal">
+        <div class="form-group" style="margin-top: 20px">
+            <label class="col-sm-2 control-label">发放方式：</label>
+            <div class="col-md-6 col-sm-10" style="float: none">
+                <label class="radio-inline typer mr50" tab_id="1" style="margin-left: 15px">
+                    <input type="radio" name="type" value="1" checked=""> 单用户
+                </label>
+                <label class="radio-inline typer mr50" tab_id="2">
+                    <input type="radio" name="type" value="2"> 多用户
+                </label>
+                <label class="radio-inline typer" tab_id="3">
+                    <input type="radio" name="type" value="3" > 批量发放
+                </label>
+            </div>
+        </div>
+    </div>
+
+        <div id="tab1" class="ttt ">
+            <form class="form-horizontal js-ajax-form margin-top-20" action="{:url('senduser')}" method="post">
+            <div class="form-group">
+                <label for="input-name" class="col-sm-2 control-label"><span class="form-required">*</span>游戏名称：</label>
+                <div class="col-md-6 col-sm-10">
+                    <select name="game_id" class="selectpicker form-control user-input" data-live-search="true" >
+                        <option value="">请选择游戏</option>
+                        <volist name=":get_game_list('id,game_name')" id="vo">
+                            <option game-id="{$vo.id}" value="{$vo.id}" >{$vo.game_name}</option>
+                        </volist>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="input-name" class="col-sm-2 control-label"><span class="form-required">*</span>玩家账号：</label>
+                <div class="col-md-6 col-sm-10">
+                    <input type="text" class="form-control user-input" id="" name="account" placeholder="只能输入玩家账号">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input-remark" class="col-sm-2 control-label"><span class="form-required">*</span>发放数量：</label>
+                <div class="col-md-6 col-sm-10">
+                    <input type="text" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" class="form-control user-input" id="" name="num" placeholder="需输入大于0的整数">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-1 col-sm-10">
+                    <input type="hidden" name="type" value="1">
+                    <input type="hidden" name="coin_type" value="1">
+                    <button type="submit" class="btn btn-primary js-ajax-submit save-btn">保存</button>
+                    <a class="btn btn-default return-btn" href="javascript:history.back(-1)">返回</a>
+                </div>
+            </div>
+            </form>
+        </div>
+        <div id="tab2" class="ttt hidden">
+            <form class="form-horizontal js-ajax-form margin-top-20" action="{:url('senduser')}" method="post">
+            <div class="form-group">
+                <label for="input-name" class="col-sm-2 control-label"><span class="form-required">*</span>游戏名称：</label>
+                <div class="col-md-6 col-sm-10">
+                    <select name="game_id"  class="selectpicker form-control user-input" data-live-search="true" >
+                        <option value="">请选择游戏</option>
+                        <volist name=":get_game_list('id,game_name')" id="vo">
+                            <option game-id="{$vo.id}" value="{$vo.id}" >{$vo.game_name}</option>
+                        </volist>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input-name" class="col-sm-2 control-label"><span class="form-required">*</span>玩家账号：</label>
+                <div class="col-md-6 col-sm-10">
+                    <textarea type="text" class="form-control user-input" id="" name="accounts" placeholder="输入玩家账号，一行一个"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input-remark" class="col-sm-2 control-label"><span class="form-required">*</span>发放数量：</label>
+                <div class="col-md-6 col-sm-10">
+                    <input type="text" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" class="form-control user-input" id="" name="nums" placeholder="需输入大于0的整数">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-1 col-sm-10">
+                    <input type="hidden" name="type" value="2">
+                    <input type="hidden" name="coin_type" value="1">
+                    <button type="submit" class="btn btn-primary js-ajax-submit save-btn">保存</button>
+                    <a class="btn btn-default return-btn" href="javascript:history.back(-1)">返回</a>
+                </div>
+            </div>
+            </form>
+        </div>
+        <div id="tab3" class="ttt hidden">
+            <form class="form-horizontal js-ajax-form margin-top-20" action="{:url('senduser')}" method="post">
+            <div class="form-group">
+                <label for="input-name" class="col-sm-2 control-label"><span class="form-required"></span>Excel模板：</label>
+                <div class="col-md-6 col-sm-10">
+                    <a href="/upload/exclexls/Bonded_currency_issuance.xls">下载模板</a>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input-remark" class="col-sm-2 control-label">导入模板：</label>
+                <div class="col-md-6 col-sm-10">
+                    <input type="file" name="excelData" value=""  >
+                    <input type="hidden" name="filetype" value="file"  >
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-1 col-sm-10">
+                    <input type="hidden" name="type" value="3">
+                    <input type="hidden" name="coin_type" value="1">
+                    <button type="submit" class="btn btn-primary js-ajax-submit save-btn">保存</button>
+                    <a class="btn btn-default return-btn" href="javascript:history.back(-1)">返回</a>
+                </div>
+            </div>
+            </form>
+        </div>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript">
+    tabid = $('input[name=type]:checked').val();
+    $('#tab'+tabid).addClass('show').removeClass('hidden').siblings('.ttt').addClass('hidden').removeClass('show');
+    $('.typer').click(function(){
+        tabidd = $('input[name=type]:checked').val();
+        console.log(tabidd)
+        $('#tab'+tabidd).addClass('show').removeClass('hidden').siblings('.ttt').addClass('hidden').removeClass('show');
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<extend name="../channelwappublic/base" />
+
+<block name="css">
+    <link href="__TMPL__/channelwappublic/assets/css/login.css" type="text/css" rel="stylesheet" />
+</block>
+
+<block name="body">
+
+    <div class="container loginPage">
+        <div class="form loginForm">
+            <form id="regForm"  class="form-horizontal" method="post" novalidate="novalidate">
+
+                <div class="form-group clearfix">
+                    <div class="input-group input-format">
+                        <span class="input-group-addon"><i class="input-icon input-icon-user" ></i></span>
+                        <input type="text" name="account"  class="account form-control" placeholder="账号必须是6~30位字符串" aria-describedby="basic-addon1" maxlength="30">
+                    </div>
+                    <div class="input-status"></div>
+                </div>
+                <div class="form-group clearfix">
+                    <div class="input-group input-format">
+                        <input type="password" id="password" name="password" class="form-control" placeholder="密码必须是6~30位字符串" autocomplete="new-password" aria-describedby="basic-addon1" maxlength="30"  />
+                        <span class="input-group-addon"><i class="input-icon input-icon-lock"></i></span>
+                    </div>
+                    <div class="input-status"></div>
+                </div>
+                <div class="form-group mb15 clearfix">
+                    <div class="input-group input-format">
+                        <input type="password" id="repassword" name="repassword" class="form-control" placeholder="再次输入确认密码" aria-describedby="basic-addon1"  />
+                        <span class="input-group-addon"><i class="input-icon input-icon-lock"></i></span>
+                    </div>
+                    <div class="input-status"></div>
+                </div>
+
+                <div class="formContinue ">继续即表示同意<a href="javascript:;" data-href="{:url('index/register_doc')}" class="linkagreement jsxieyi">{$post_title}</a></div>
+
+                <div class="input-group input-format">
+                    <input id="registerButton" type="submit" class="btn btn-primary" value="下一步">
+                </div>
+                <div class="input-status"></div>
+            </form>
+
+            <div class="regformAdd">
+                已有账号，<a href="{:url('index/index')}" class="goRegister">去登录></a>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+        registerurl = "{:url('regstep1')}";
+        checkAccounturl = "{:url('promote/checkAccount')}";
+        promote_auto_audit = "{$promote_auto_audit}";
+    </script>
+    <script src="__TMPL__/public/assets/js/jquery-1.11.1.min.js"></script>
+    <script src="__TMPL__/public/assets/js/jquery.superslide.2.1.1.js"></script>
+    <script src="__TMPL__/public/assets/js/jquery.form.js"></script>
+    <script src="__TMPL__/public/assets/js/jquery.validate.min.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script src="__TMPL__/channelwappublic/assets/js/register.js"></script>
+    <script>
+        $(function () {
+            $(".jsxieyi").click(function () {
+                var url = $(this).data('href');
+                layer.open({
+                    type: 2,
+                    title: "{$post_title}",
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['100%', '100%'],
+                    content: url //iframe的url
+                });
+            })
+        })
+    </script>
+</block>

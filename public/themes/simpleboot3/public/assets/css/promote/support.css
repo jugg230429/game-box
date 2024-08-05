@@ -1,0 +1,63 @@
+@charset "utf-8";
+/**
+ * 鹿文学 2020-03-16
+ */
+.lwx-layer-form {
+    padding: 15px;
+}
+.lwx-layer-table {
+    width: 100%;
+    table-layout: fixed;
+}
+.lwx-layer-td {
+    vertical-align: middle;
+    padding: 5px 0;
+}
+.llt1 {
+    width: 90px;
+    text-align: right;
+}
+.llt1 i {
+    font-style: normal;
+    color: red;
+    padding: 0 2px;
+}
+.llt2 input[type=text]{
+    width: 90%;
+    margin-left: 10px;
+    position: relative;
+    padding: 0 10px;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    height: 34px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.llt2 textarea{
+    width: 90%;
+    margin-left: 10px;
+    position: relative;
+    padding: 0 10px;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    height: 70px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.llt2 input[type=text][readonly] {
+    background: #F6F7F9;
+}
+.llt2 input[type=button] {
+    width: 95px;
+    height: 36px;
+    display: inline-block;
+    background: #26c7db;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+    margin-top: 20px;
+}

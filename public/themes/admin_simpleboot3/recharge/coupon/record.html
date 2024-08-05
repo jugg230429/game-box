@@ -1,0 +1,134 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="javascript:;">领取记录</a></li>
+            <span class="title_remark">说明：玩家获取代金券及使用记录。</span>
+        </ul>
+        <form id="search_form" class="well form-inline  fr" method="get" action="{:url('Coupon/record')}">
+            <input type="text" class="form-control" name="user_account" style="width: 120px;" value="{:input('request.user_account/s','')}" placeholder="玩家账号">
+            <input type="text" class="form-control" name="coupon_name" style="width: 120px;" value="{:input('request.coupon_name/s','')}" placeholder="代金券名称">
+            <select name="game_id" id="game_id" class="selectpicker " game_id="{:input('request.game_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+                <option value="">游戏名称</option>
+                <volist name=":get_game_list('relation_game_id,relation_game_name',[],'relation_game_id')" id="vo">
+                    <option game-id="{$vo.relation_game_id}" value="{$vo.relation_game_id}" >{$vo.relation_game_name}</option>
+                </volist>
+            </select>
+            <select name="status" id="status" class="selectpicker"  style="width: 120px;">
+                <option value="">使用状态</option>
+                <option value="0" <if condition="input('request.status') eq '0'">selected</if>>未使用</option>
+                <option value="1" <if condition="input('request.status') eq 1">selected</if>>已使用</option>
+                <option value="2" <if condition="input('request.status') eq 2">selected</if>>已过期</option>
+                <option value="3" <if condition="input('request.status') eq 3">selected</if>>已回收</option>
+            </select>
+            <select name="get_way" id="get_way" class="selectpicker"  style="width: 120px;">
+                <option value="">获取途径</option>
+                <option value="0" <if condition="input('request.get_way') heq 0">selected</if>>领取</option>
+                <option value="1" <if condition="input('request.get_way') eq 1">selected</if>>发放</option>
+            </select>
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('Coupon/record')}">清空</a>
+            <a class="btn btn-export js-ajax-dialog-btn-xz" data-msg="确定导出吗？" href="{:url('Export/expUser',array_merge(['id'=>7,'xlsname'=>'代金券领取记录','row'=>99999999],input()))}">导出</a>
+        </form>
+        <form class="js-ajax-form" action="" method="post">
+            <div class="table-actions position" style="margin-left: -10px;">
+                <button class="btn btn-danger  js-ajax-submit mtb17" type="submit"
+                        data-action="{:url('recorddel')}" data-subcheck="true" data-msg="确定回收后，相关代金券将会被删除，用户将无法使用。">
+                    回收
+                </button>
+                <button class="btn btn-primary mtb17" type="button"  onclick="grant()" >发放</button>
+            </div>
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="all-checkbox" class="table-item-checkbox js-check-all" data-direction="x" data-checklist="js-check-x"><label for="all-checkbox" class=""></label></th>
+                        <th>玩家账号</th>
+                        <th>类型</th>
+                        <th>游戏名称</th>
+                        <th>代金券名称</th>
+                        <th>优惠金额</th>
+                        <th>使用条件</th>
+                        <th>获取途径</th>
+                        <th>获取时间</th>
+                        <th>使用时间</th>
+                        <th>订单金额</th>
+                        <th>实付金额</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <empty name="data_lists">
+                        <tr><td colspan="14" style="text-align: center;">暂无数据</td></tr>
+                    <else/>
+                        <foreach name="data_lists" item="vo">
+                        <tr>
+                            <td><input type="checkbox" id="ids-checkbox{$vo.id}" class="table-item-checkbox js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
+                                       value="{$vo.id}" title="ID:{$vo.id}">
+                                <label for="ids-checkbox{$vo.id}" class=""></label></td>
+                            <td>{$vo.user_account}</td>
+                            <td>{$vo['mold']==0?'通用':'游戏'}</td>
+                            <td>{$vo.game_name|default='--'}</td>
+                            <td>{$vo.coupon_name}</td>
+                            <td>{$vo['money']}</td>
+                            <td><empty name="vo.limit_money">无门槛<else/>满减：满{$vo.limit_money}</empty></td>
+                            <td>{$vo['get_way']==0?'领取':'发放'}</td>
+                            <td>{$vo['create_time']|date="Y-m-d H:i:s",###}</td>
+                            <td><empty name="vo.update_time">--<else/>{$vo['update_time']|date="Y-m-d H:i:s",###}</empty></td>
+                            <td><eq name="vo.cost" value="0.00">--<else/>{$vo.cost}</eq></td>
+                            <td><eq name="vo.pay_amount" value="0.00">--<else/>{$vo.pay_amount}</eq></td>
+                            <td>
+                                <eq name="vo.is_delete" value="1">
+                                    已回收
+                                <else/>
+                                    <if condition="$vo['status'] eq 1">
+                                        已使用
+                                    <elseif condition="($vo['end_time'] lt time()) and $vo['end_time'] gt 0"/>
+                                        已过期
+                                    <else/>
+                                        未使用
+                                    </if>
+                                </eq>
+                            </td>
+                            <td>
+                                <if condition="$vo['status'] eq 0 and ($vo['end_time'] gt time() or $vo['end_time'] eq 0 ) and $vo['is_delete'] eq 0">
+                                    <a href="{:url('recorddel',['ids'=>$vo['id']])}" class="js-ajax-delete" data-msg="确定回收后，相关代金券将会被删除，用户将无法使用。">回收</a>
+                                </if>
+                            </td>
+                        </tr>
+                        </foreach>
+                        <tr>
+                            <td>汇总</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td style="color:#ffb170;font-weight: bold;">{$total.totalcost}</td>
+                            <td style="color:#ffb170;font-weight: bold;">{$total.total}</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </empty>
+                </tbody>
+            </table>
+        </form>
+        <div class="pagination">
+            {$page}
+        </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script type="text/javascript">
+        $("#game_id").selectpicker('val', $('#game_id').attr('game_id'));
+        function grant() {
+          window.location.href = "{:url('grant')}";
+        }
+    </script>
+</body>
+</html>

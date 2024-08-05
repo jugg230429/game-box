@@ -1,0 +1,271 @@
+p {
+    margin: 0;
+    padding: 0;
+}
+.con{
+    width: 98%;
+    /* margin: auto; */
+    margin-left: 30px;
+}
+.unPayBoxHome{
+    /* padding-top: 59px; */
+    display: none;
+}
+
+.topTipBox{
+    width: 98%;
+    height: 257px;
+	background-image: url('../images/login/bg1.png');
+    background-size: 100% 100%;
+    /* margin: auto; */
+    box-sizing: border-box;
+    margin-left: 30px;
+}
+.titleTip{
+    text-align: center;
+    font-weight: bold;
+    color: #FFFFFF;
+    font-size: 28px;
+    padding-top: 30px;
+}
+.nowVersion{
+    color:#F8C957;
+    font-size: 32px;
+    font-style: italic;
+}
+.tipDetail {
+    text-align: center;
+    font-size: 16px;
+    /* color: #DBE1F6; */
+    color: #fff;
+    line-height: 30px;
+}
+.useBtn{
+    display: block;
+    width: 160px;
+    height: 47px;
+    background: #018FFF;
+    box-shadow: 0px 4px 6px 0px rgba(28, 46, 110, 0.8);
+    border-radius: 5px;
+    line-height: 47px;
+    text-align: center;
+    color: #fff;
+    font-size: 16px;
+    margin:auto;
+    margin-top: 32px;
+}
+.useBtn:hover {
+    color: #fff;
+    text-decoration: none;
+}
+.useBtn:focus {
+    color: #fff!important;
+    text-decoration: none!important;
+}
+.title-productUnique{
+    text-align: left;
+    margin-top: 30px;
+    font-weight: bold;
+    color: #333333;
+    font-size: 15px;
+}
+.showAllAdvantage{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: 43px
+}
+.itemAvantage{
+    font-weight: bold;
+    color: #333333;
+    font-size: 15px;
+}
+.avantageModal {
+    text-align: center;
+}
+.itemDetailAvantage{
+    color: #666;
+    font-size: 14px;
+    text-align: center;
+    margin-top: 5px;
+}
+.oaHome {
+    display: none;
+}
+.oaHome .topTipBox{
+    background-image: url('../images/login/bg3.png');
+}
+.advertisementHome{
+    display: none;
+}
+.advertisementHome .topTipBox{
+    background-image: url('../images/login/bg2.png');
+}
+.changeOAHome {
+    padding-top: 0;
+}
+.rightTipOA{
+    width: 89%;
+    padding-top: 59px;
+}
+/* 已配置 */
+.rightFinish{
+    width: 86.5%;
+    height: 100%;
+    background-image: url(/themes/admin_simpleboot3/public/assets/images/login/bg_fxxt1.png);
+    background-size: 100% 100%;
+}
+.f_div{
+    margin: 0 auto;
+    margin-top:154px;
+    /* background-color: pink; */
+    overflow: hidden;
+}
+.bottomTitle{
+    width: 100%;
+    font-size: 24px;
+    font-family: 'Microsoft YaHei';
+    font-weight: bold;
+    color: #018FFF;
+    line-height: 30px;
+    /* -webkit-text-stroke: 2px #FFFFFF; */
+    text-align: center;
+    margin-top:83px;
+}
+.topContent ul li p{
+    font-size: 15px;
+    font-family: 'Microsoft YaHei';
+    font-weight: bold;
+    color: #333333;
+    line-height: 30px;
+    margin-bottom: 1px;
+}
+.topContent ul li img{
+margin-top:40px;
+margin-bottom: 21px;
+}
+.topContent ul li{
+    list-style: none;
+    float: left;
+    width: 220px;
+    height: 280px;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 30px 0px rgba(1, 143, 255, 0.1);
+    border-radius: 10px;
+    text-align: center;
+    margin-right: 40px;
+}
+.topContent ul li:last-child{
+    margin-right: 0px;
+
+}
+.no-btn{
+    width: 80px;
+    height: 30px;
+    background: #E5ECF9;
+    border-radius: 5px;
+    font-size: 14px;
+    font-family: 'Microsoft YaHei';
+    font-weight: 400;
+    color: #A3AEC0;
+    /* line-height: 30px; */
+}
+.no-btn:hover{
+    color: #A3AEC0;
+    opacity: 0.8;
+}
+.yes-btn:hover{
+    color: #fff;
+    opacity: 0.8;
+}
+.yes-btn{
+    width: 80px;
+height: 30px;
+background: #018FFF;
+border-radius: 5px;
+font-size: 14px;
+font-family: 'Microsoft YaHei';
+font-weight: 400;
+color: #FFFFFF;
+}
+.topContent{
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+/* 客服弹窗 */
+.kefu-pop{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 19891015;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  top:0px;
+    left: 0px;
+}
+.kefu-box{
+    width: 430px;
+    height: 220px;
+    border-radius: 5px;
+	position: static;
+	left: 50%;
+	top: 25%;
+	margin-left: 0;
+	background-color: #fff;
+
+}
+.kefu-top{
+    float: left;
+    width: 100%;
+    border-bottom: 1px solid #F2F3F7;
+}
+.kefu-top p{
+    font-size: 15px;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    color: #222222;
+    line-height: 45px;
+    float: left;
+    margin-left:20px;
+}
+.kefu-top .kefu-close{
+    float: right;
+    line-height: 45px;
+    margin:16px 20px 0 0;
+
+}
+.kefu-content{
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    padding-top:36px
+}
+.kefu-content ul li p{
+    font-size: 15px;
+    font-family: 'Microsoft YaHei';
+    font-weight: 400;
+    color: #333333;
+    line-height: 30px;
+}
+.kefu-content ul li img{
+margin-bottom: 13px;
+}
+.kefu-content ul li{
+    list-style: none;
+    float: left;
+    text-align: center;
+    margin-right: 65px;
+}
+.kefu-content ul li:last-child{
+    margin-right: 0px;
+}
+.r-pop{
+    width: 100%;
+    height: 100%;
+}

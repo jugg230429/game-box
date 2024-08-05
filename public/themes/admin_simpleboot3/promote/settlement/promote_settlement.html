@@ -1,0 +1,239 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('settlement/promote_settlement')}">未结算订单</a></li>
+            <li><a href="{:url('settlement/promote_settlement_already')}">已结算订单</a></li>
+            <li><a href="{:url('settlement/promote_settlement_never')}">不参与结算订单</a></li>
+            <span class="title_remark">说明：针对渠道所属用户的注册充值进行结算，充值数据是指消费到游戏的所有订单。<i class="title-mark-notice">注：确认结算后的订单不可设置不参与结算。</i></span>
+        </ul>
+        <div class="describe " style="width:99%;margin-bottom: 0;">
+            参与结算设置：
+               <label class="label-width"> <input type="radio" name="jsis_bind" class="bindbut " value="0" <if condition="input('request.is_bind') neq 1"> checked="" </if>>排除绑币</label>
+               <label class="label-width"> <input type="radio" name="jsis_bind" class="bindbut" value="1" <if condition="input('request.is_bind') eq 1"> checked="" </if>>包含绑币</label>
+
+            <p style="margin-top: 5px">注意①：渠道结算只结算消费到游戏的所有订单记录（系统默认全部排除绑币，可视情况自行勾选）。</p>
+            <p style="margin-bottom: 10px">注意②：包含绑币勾选请慎重，由于玩家账户部分绑币的来源属于后台发放或者会长代充等，涉及到成本盈亏，是否参与渠道结算请考虑清楚！</p>
+            <p style="margin-bottom: 10px;color: red;">注意③：确认结算数据为当前搜索条件查询当前所有结算单数据</p>
+        </div>
+        <form id="search_form" class="well form-inline  fr" method="get" action="{:url('settlement/promote_settlement')}" onsubmit="return check();">
+            <input type="text" class="form-control" name="user_account" style="width: 120px;" value="{:input('request.user_account/s','')}" placeholder="账号">
+            <input type="text" class="form-control" name="pay_order_number" style="width: 120px;" value="{:input('request.pay_order_number/s','')}" placeholder="支付订单号">
+            <input type="hidden" name="is_bind" value="0">
+            <input type="text" class="form-control js-bootstrap-date jstime" name="start_time" placeholder="开始时间"
+                   value="{:input('request.start_time/s','')}" style="width: 140px;" autocomplete="off" >-
+            <input type="text" class="form-control js-bootstrap-date jstime" name="end_time" placeholder="结束时间"
+                   value="{:input('request.end_time/s','')}" style="width: 140px;" autocomplete="off">
+            <select name="game_id" id="game_id" class="selectpicker " game_id="{:input('request.game_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+                <option value="">游戏名称</option>
+                <volist name=":get_game_list('id,game_name')" id="vo">
+                    <option game-id="{$vo.id}" value="{$vo.id}" >{$vo.game_name}</option>
+                </volist>
+            </select>
+            <php>$pmap = ['parent_id'=>['eq',0]]</php>
+            <select name="promote_id" id="promote_id" class="selectpicker " promote_id="{:input('promote_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+                <option value="">所属渠道</option>
+                <volist name=":get_promote_list($pmap)" id="vo">
+                    <option value="{$vo.id}" >{$vo.account}</option>
+                </volist>
+            </select>
+            <input type="hidden" name="is_bind" id="is_bind" value="{:input('is_bind',0)}">
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('settlement/promote_settlement')}">清空</a>
+            <a class="btn btn-export js-ajax-dialog-btn-xz" data-msg="确定导出吗？" href="{:url('Export/exportXsl',array_merge(['id'=>101,'xlsname'=>'未结算订单'],input()))}">导出</a>
+        </form>
+        <div class="table-actions position" style="margin-left: -10px;">
+
+            <!-- <button class="js-ajax-dialog-btn btn btn-success mtb17" type="button"
+                    data-action="{:url('generatesettlementAll')}" data-subcheck="true" data-msg="您确定要进行此操作吗？">
+                确认结算
+            </button> -->
+
+            <button id="no_join" class="btn btn-success mtb17 no_join" type="button"
+                    data-action="{:url('generatesettlementAll')}" data-subcheck="true" data-msg="您确定要进行此操作吗？">
+                确认结算
+            </button>
+
+            <!-- <a href="{:url('generatesettlementAll')}" data-subcheck="true" type="submit" class="js-ajax-dialog-btn btn btn-success mtb17" data-msg="您确定结算吗？？">确认结算</a> -->
+
+            <button id="no_join" class="btn btn-success mtb17 no_join" type="button"
+                    data-action="{:url('changeCheckStatus')}" data-subcheck="true" data-msg="您确定要进行此操作吗？">
+                不参与结算
+            </button>
+        </div>
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="all-checkbox" class="table-item-checkbox js-check-all" data-direction="x" data-checklist="js-check-x"><label for="all-checkbox" class=""></label></th>
+                    <th>账号</th>
+                    <th>游戏名称</th>
+                    <th>结算模式</th>
+                    <th>订单号</th>
+                    <th>订单金额</th>
+                    <th>实付金额</th>
+                    <th>分成比例/注册单价</th>
+                    <th>分成佣金</th>
+                    <th>支付方式</th>
+                    <th>所属渠道</th>
+                    <th>创建时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <empty name="data_lists">
+                    <tr><td colspan="12" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <foreach name="data_lists" item="vo">
+                    <tr>
+                        <td><input type="checkbox" id="ids-checkbox{$vo.id}" class="table-item-checkbox js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
+                                   value="{$vo.id}" title="ID:{$vo.id}">
+                            <label for="ids-checkbox{$vo.id}" class=""></label></td>
+                        <td>{$vo.user_account}</td>
+                        <td>{$vo.game_name}</td>
+                        <td><empty name="vo.pattern">CPS<else/>CPA</empty></td>
+                        <td>{:$vo['pay_order_number']?:'--'}</td>
+                        <td><empty name="vo.pattern">{:sprintf("%.2f",$vo.cost)}<else/>--</empty></td>
+                        <td><empty name="vo.pattern">{:sprintf("%.2f",$vo.pay_amount)}<else/>--</empty></td>
+                        <td>
+                            <a href="javascript:;" class="editTab underline" data-title="重新设置分成" data-settlement_id="{$vo.id}"><empty name="vo.pattern">{:sprintf("%.2f",$vo.ratio)}<else/>{:sprintf("%.2f",$vo.money)}</empty></a>
+                        </td>
+                        <td>{:sprintf("%.2f",$vo.sum_money)}</td>
+                        <td>{:get_info_status($vo['pay_way'],1)}</td>
+                        <td>{:get_promote_name($vo['top_promote_id'])}</td>
+                        <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+                        <td>
+                            <a href="{:url('changeCheckStatus',['id'=>$vo['id']])}" class="js-ajax-dialog-btn">
+                                <span class="label label-success">不参与</span>
+                            </a>
+                        </td>
+                    </tr>
+                    </foreach>
+                    <tr class="data_summary">
+                        <td>汇总</td>
+                        <td>--</td>
+                        <td>--</td>
+                        <td>--</td>
+                        <td>--</td>
+                        <td class="data_summary_bold">{:sprintf("%.2f",$total.totalcost)}</td>
+                        <td class="data_summary_bold">{:sprintf("%.2f",$total.totalamount)}</td>
+                        <td>--</td>
+                        <td class="data_summary_bold">{:sprintf("%.2f",$total.totalmoney)}</td>
+                        <td>--</td>
+                        <td>--</td>
+                        <td>--</td>
+                        <td>--</td>
+                    </tr>
+                </empty>
+            </tbody>
+        </table>
+        <div class="pagination">
+            {$page}
+<!--            <li class="page-item"><a class="page-link" href="{:url('Export/expUser',array_merge(['id'=>6,'xlsname'=>'渠道管理_未结算订单','status'=>0,'is_check'=>1],input()))}">导出</a></li>-->
+        </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script type="text/javascript" src="__STATIC__/js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+    <script type="text/javascript">
+        promote_id = $("#promote_id").attr('promote_id');
+        $("#promote_id").selectpicker('val', promote_id);
+        game_id = $("#game_id").attr('game_id');
+        $("#game_id").selectpicker('val', game_id);
+        function check(){
+            var start_date = $("input[name=start_time]").val();
+            var end_date = $("input[name=end_time]").val();
+            var start_time = (new Date(start_date).getTime())/1000;
+            var end_time = (new Date(end_date).getTime())/1000;
+            if(start_date != '' && end_date != '' && start_time > end_time){
+                layer.msg('开始时间不能大于结束时间');
+                return false;
+            }
+            return true;
+        }
+            $(function(){
+                $(".no_join").click(function () {
+                    var ids = '';
+                    $('input[name="ids[]"]:checked').each(function(){
+                        //遍历每一个名字为interest的复选框，其中选中的执行函数
+                        ids = ids +$(this).val()+",";//将选中的值添加到数组chk_value中
+                    });
+                    if(ids == ''){
+                        layer.msg('请选择要操作的数据');
+                        return false;
+                    }
+                    ids = ids.substring(0,ids.length-1);
+                    var url = $(this).attr('data-action');
+                    var is_bind = $("input[name='jsis_bind']:checked").val();
+                    window.location.href = url+"?id="+ids+'&is_bind='+is_bind;
+                })
+                $('.bindbut').click(function(){
+                    val = $(this).val();
+                    val1 = $('input[name=is_bind]').val();
+                    if(val!=val1){
+                        $('input[name=is_bind]').val(val);
+                    }
+                });
+                $('input[type=radio][name=jsis_bind]').change(function() {
+                   $("#is_bind").val(this.value);
+                   $("#search_btn").click();
+                });
+                //设置分成比例
+                $(".editTab").click(function(){
+                    var that = $(this);
+                    var title = that.attr("data-title");
+                    var value = that.text();
+                    var settlement_id = that.data('settlement_id');
+                    layer.prompt({title:title,placeholder:'',formType:0},function(value,index) {
+                        if (!/^(((\d|[1-9]\d)(\.\d{1,2})?)|100|100.0|100.00)$/.test(value)) {
+                            layer.msg('输入错误，0-100之间的两位小数',{time:2000});
+                            return false;
+                        }
+                        layer.closeAll();
+                        $.ajax({
+                            url:"{:url('setratio')}",
+                            type:'post',
+                            dataType:'json',
+                            data:{settlement_id:settlement_id,value:value},
+                            success:function(res){
+                                layer.msg(res.msg);
+                                if(res.code==1){
+                                    setTimeout(function () {
+                                        location.reload();
+                                    },1000)
+                                }
+                            },error(){
+                                layer.msg('服务器错误');
+                            }
+                        })
+                    });
+                })
+                //设置时间格式
+                dateD = "{$setdate}";
+                $('.jstime').datetimepicker({
+                    language: 'zh-CN',
+                    format: 'yyyy-mm-dd',
+                    minView: 'month',
+                    todayBtn: 0,
+                    autoclose: true,
+                    endDate: dateD
+                });
+        })
+            $('.chakan').click(function(){
+                var that=$(this),start = that.data('start'),end = that.data('end'),pid = that.data('pid'),gid = that.data('gid');
+                if(!start||!end||!pid||!gid){
+                    layer.msg('数据错误');
+                    return false;
+                }
+                layer.closeAll();
+                layer.open({
+                    type: 2,
+                    title: "结算状态详情",
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['70%', '80%'],
+                    content: "{:url('detail')}?start="+start+"&end="+end+"&pid="+pid+"&gid="+gid //iframe的url
+                });
+            });
+    </script>
+</body>
+</html>

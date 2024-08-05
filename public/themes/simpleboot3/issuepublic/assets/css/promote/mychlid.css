@@ -1,0 +1,39 @@
+/*
+* @description: 子渠道
+ *@author:王奉
+* @update: name(xxxx-xx-xx xx:xx)
+ */
+
+.add-btn {
+	display: inline-block;
+	width: 135px;
+	height: 36px;
+	line-height: 36px;
+	text-align: center;
+	background: #3A97FF;
+	color: #fff;
+	border-radius: 4px;
+	/*margin: 0 0 20px 0;*/
+}
+
+.add-qudao {
+	width: 20px;
+	height: 20px;
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 5px;
+	background: url(../../images/promote/icon_normal_tianjia.png) no-repeat;
+}
+
+.desccontent {
+	padding-bottom: 54px;
+	margin: 20px 2% 0;
+	border-top: 1px dashed #E3E3E3;
+	line-height: 54px;
+	color: #ADAEC2;
+}
+
+.desccontent-title {
+	color: #6a7082;
+	text-align: right;
+}

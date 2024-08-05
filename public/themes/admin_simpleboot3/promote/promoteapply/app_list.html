@@ -1,0 +1,180 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap promote-apply-list js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="javascript:;">APP分包</a></li>
+            <span class="title_remark">说明：对渠道后台申请的游戏盒子APP渠道包进行审核并打包。</span>
+        </ul>
+        <form id="search_form" class="well form-inline promote-apply-list-form fr" method="get" action="{:url('app_list')}">
+
+            <select name="promote_id" id="promote_id" class="selectpicker " promote_id="{:input('request.promote_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+                <option value="">渠道账号</option>
+                <volist name=":get_promote_list()" id="vo">
+                    <option value="{$vo.id}" >{$vo.account}</option>
+                </volist>
+            </select>
+            <select name="enable_status" id="enable_status" class="selectpicker" enable_status="{:input('request.enable_status')}" style="width: 120px;">
+                <option value="">打包状态</option>
+                <option value="0" <if condition="input('enable_status') eq '0'">selected</if>>待打包</option>
+                <option value="2" <if condition="input('enable_status') eq '2'">selected</if>>准备打包</option>
+                <option value="3" <if condition="input('enable_status') eq '3'">selected</if>>打包中</option>
+                <option value="1" <if condition="input('enable_status') eq '1'">selected</if>>打包成功</option>
+                <option value="-1" <if condition="input('enable_status') eq '-1'">selected</if>>打包失败</option>
+            </select>
+
+            <select name="status" id="status" class="selectpicker" status="{:input('request.status')}" style="width: 120px;">
+                <option value="">审核状态</option>
+                <option value="0" <if condition="input('status') eq '0'">selected</if>>待审核</option>
+                <option value="1" <if condition="input('status') eq '1'">selected</if>>已审核</option>
+            </select>
+            <select name="app_version" id="app_version" class="selectpicker" style="width: 120px;">
+                <option value="">运营平台</option>
+                <option value="1" <if condition="input('request.app_version') eq '1'">selected</if>>安卓</option>
+                <option value="2" <if condition="input('request.app_version') eq '2'">selected</if>>IOS</option>
+            </select>
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('app_list')}">清空</a>
+        </form>
+        <form class="js-ajax-form" action="" method="post">
+        <div class="table-actions position" style="max-width:620px;margin-left: -10px;">
+            <button class="btn btn-success   js-ajax-submit mtb17" type="submit"
+                    data-action="{:url('changeAppStatus',['status'=>0])}" data-subcheck="true" data-msg="您确定审核吗？">
+                审核
+            </button>
+            <button class="btn btn-primary   js-ajax-submit mtb17 ml20" type="submit"
+                    data-action="{:url('apppackage')}" data-subcheck="true" data-msg="您确定打包吗？">
+                打包
+            </button>
+            &nbsp;
+            <button class="btn   js-ajax-submit mtb17 ml20 btn-audit" type="submit"
+                    data-action="{:url('set_config_auto_audit_app',['status'=>$autostatus])}" data-subcheck="false" data-msg="您确定操作吗？">
+                <input type="checkbox" name="" id="auto-check" <if condition="$autostatus eq 1">checked</if> class="auto-checkbox promote_auto_audit"><label for="auto-check" class="fl"></label><div class="span-audit">自动审核</div>
+            </button>
+        </div>
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th width="15">
+                                <input type="checkbox" id="all-checkbox" class="table-item-checkbox js-check-all" data-direction="x" data-checklist="js-check-x">
+                                <label for="all-checkbox" class=""></label>
+                        </th>
+                        <th>渠道账号</th>
+                        <th>运营平台</th>
+                        <th>申请时间</th>
+                        <th>审核状态</th>
+                        <th>打包状态</th>
+                        <th>是否自定义</th>
+                        <th>审核时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <empty name="data_lists">
+                        <tr><td colspan="8" style="text-align: center;">暂无数据</td></tr>
+                    <else/>
+                        <foreach name="data_lists" item="vo">
+                        <tr>
+                            <td>
+                                <input type="checkbox" id="ids-checkbox{$vo.id}" class="table-item-checkbox js-check" <if condition="$vo['enable_status'] eq 2 or $vo['enable_status'] eq 3"> disabled</if> data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
+                                       value="{$vo.id}" >
+                                <label for="ids-checkbox{$vo.id}" class=""></label>
+                            </td>
+                            <td>{:get_promote_name($vo['promote_id'])}</td>
+                            <td>{:get_info_status($vo['app_version'],5)}</td>
+                            <td>{:date('Y-m-d H:i:s',$vo['apply_time'])}</td>
+                            <td><span <if condition="$vo['status'] eq 1"> class="label" style="color:#3FAD46;font-size:14px;padding:0"<else/>class="label" style="color: orange;font-size:14px;padding:0"</if>>{:get_info_status($vo['status'],12)}</span></td>
+                            <td>
+                                <if condition="$vo['status'] eq 0">
+                                    <span style="color: orange;font-size:14px;padding:0">--</span>
+                                <elseif condition="$vo['enable_status'] eq 1" />
+                                    <span class="label" style="color:#3FAD46;font-size:14px;padding:0">打包成功</span>
+                                <elseif condition="$vo['enable_status'] eq 2" />
+                                    <span class="label " style="color:#3FAD46;font-size:14px;padding:0">准备打包</span>
+                                <elseif condition="$vo['enable_status'] eq 0" />
+                                    <span class="label " style="color: orange;font-size:14px;padding:0">待打包</span>
+                                <elseif condition="$vo['enable_status'] eq -1" />
+                                    <span class="label" style="color: #d9534f;font-size:14px;padding:0">打包失败</span>
+                                <else/>
+                                    <span class="label " style="color:#3FAD46;font-size:14px;padding:0">{:get_info_status($vo['enable_status'],13)}</span>
+                                </if>
+
+                            </td>
+                            <td>{$vo['is_user_define']=='1'?'自定义':'官方'}</td>
+                            <td>{:$vo['dispose_time']?date('Y-m-d H:i:s',$vo['dispose_time']):'--'}</td>
+                            <td>
+                                <if condition="$vo['status'] eq 0">
+                                    <a href="{:url('changeAppStatus',['ids'=>$vo['id'],'status'=>$vo['status']])}" class="js-ajax-dialog-btn">审核</a>
+                                <else/>
+                                    <if condition="$vo['app_version'] eq '1'">
+                                        <a href="{:url('appEdit',['id'=>$vo['id']])}" class="">编辑</a>
+                                    <elseif condition="$vo['app_version'] eq '2'"/>
+                                        <a href="{:url('appEdit2',['id'=>$vo['id']])}" class="">编辑</a>
+                                    <else/>
+                                        <span class="disabled">编辑</span>
+                                    </if>
+                                </if>
+                            </td>
+                        </tr>
+                        </foreach>
+                    </empty>
+                </tbody>
+            </table>
+        </form>
+        <div class="pagination">{$page}
+        </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script type="text/javascript">
+        promote_id = $("#promote_id").attr('promote_id');
+        game_id = $("#game_id").attr('game_id');
+        $("#promote_id").selectpicker('val', promote_id);
+        $("#game_id").selectpicker('val', game_id);
+        $("#enable_status").selectpicker('val', $('#enable_status').attr('enable_status'));
+        $("#dow_status").selectpicker('val', $('#dow_status').attr('dow_status'));
+        $("#status").selectpicker('val', $('#status').attr('status'));
+
+
+
+            $(function(){
+                //设置分成比例
+                $(".editTab").click(function(){
+                    var that = $(this);
+                    var title = that.attr("data-title");
+                    var game_id = that.attr("game-id");
+                    var promote_id = that.attr("promote-id");
+                    var field = that.attr('field');
+                    var num = that.text();
+                    layer.prompt({
+                        formType:0,
+                        title:title,
+                        value:num,
+                        success:function (layero, index) {
+                            layero.find('input').attr('placeholder','');
+                        }
+                    }, function(value,index) {
+                        if (!/^(((\d|[1-9]\d)(\.\d{1,2})?)|100|100.0|100.00)$/.test(value)) {
+                            layer.msg('输入错误，0-100之间的两位小数',{time:2000});
+                            return false;
+                        }
+                        $.ajax({
+                            async: false,
+                            url:"{:url('Promoteapply/setRatioMoney')}",
+                            type:"POST",
+                            dataType:'JSON',
+                            data:{game_id:game_id,promote_id:promote_id,field:field,value:value},
+                            success:function(result){
+                                layer.msg(result.msg,{time:1000},function(){
+                                    !result.code || location.reload();
+                                });
+                            },
+                            error:function(){
+                                layer.msg('服务器异常',{time:2000});
+                            }
+                        })
+                    });
+            })
+        })
+    </script>
+</body>
+</html>

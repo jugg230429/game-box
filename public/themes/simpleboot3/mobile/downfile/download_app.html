@@ -1,0 +1,297 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link href="__TMPL__/mobilepublic/download/css/mobiledown.css" rel="stylesheet">
+    <link href="__TMPL__/mobilepublic/download/css/mobilereset.css" rel="stylesheet">
+    <link href="__TMPL__/mobilepublic/download/css/style.css" rel="stylesheet">
+    <script src ="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+    <style>
+        .img_tishi {
+            padding-top: 4.5333rem;
+        }
+        .img_tishi .weixin-tip-img {
+            width: 16.333rem
+        }
+        .tip-step .guide-img {
+            position: absolute;
+            top: 1.85rem;
+            right: 1.72rem;
+            width: 5.5rem;
+            height: 10.8rem;
+        }
+        .img_tishi .tip-step .first-icon {
+            width: 1.4rem;
+            height: 1.4rem;
+            margin-right: 0.8rem;
+        }
+        .img_tishi .tip-step .second-icon {
+            width: 1.4rem;
+            height: 1.4rem;
+            margin-right: 0.8rem;
+        }
+        .img_tishi .tip-step .second-step {
+            margin-top: 1.12rem;
+        }
+        .img_tishi .tip-step .dian {
+            font-size: 2.66666rem;
+        }
+        .img_tishi .tip-step {
+            width: 20.333rem;
+            margin: 1.5666rem auto;
+            margin-left: 8.45rem;
+        }
+        .first-step {
+            font-size: 1.24rem;
+        }
+        .second-step {
+            font-size: 1.44rem;
+        }
+    </style>
+</block>
+
+<block name="body">
+    <div class="app-main" <if condition="cmf_get_option('app_set')['app_backgroup']">style="background-image:url({:cmf_get_image_url(cmf_get_option('app_set')['app_backgroup'])});    background-size: cover;"<else/> style="background-image: url(__TMPL__/mobilepublic/download/img/img-bg.png);    background-size: cover;"</if>>
+        <div class="dowloadGameLogo">
+            <img src="{:cmf_get_image_url($union_set['app_ico']?:(cmf_get_option('app_set')['app_logo']))}" alt="">
+        </div>
+        <div class="dowloadTitle">{:$union_set['app_name_ico']?:(cmf_get_option('app_set')['app_name']?:'游戏盒子APP')}</div>
+        <div class="dowloadDesc"># 热门游戏一网打尽 #</div>
+        <div>
+
+            <a href="{:url('Downfile/downapp',input())}" class="rightDowloadBtn <empty name='app_data.app_data'> disabled</empty>">立即下载</a>
+            <i class="xialaCheck"></i>
+        </div>
+        <!-- <div class="download-title">
+            下载{:$union_set['app_name_ico']?:(cmf_get_option('app_set')['app_name']?:'游戏盒子APP')}
+        </div>
+        <div class="download-title2">热 门 游 戏 一 网 打 尽</div>
+
+        <a href="{:url('Downfile/downapp',input())}" class="download-app-btn <empty name='app_data.app_data'> disabled</empty>" style="cursor: pointer"><i class="down-icon"></i>下载APP</a>
+        <img src="__TMPL__/mobilepublic/download/img/download_img_ipone.png" class="mobile-img"> -->
+    </div>
+
+    <img src="__TMPL__/mobilepublic/download/img/img-mfzjf.png" alt="">
+    <img src="__TMPL__/mobilepublic/download/img/img-swyj.png" alt="">
+    <img src="__TMPL__/mobilepublic/download/img/img-zkfl.png" alt="">
+    <img src="__TMPL__/mobilepublic/download/img/img-xrdlb.png" class="img1" alt="">
+    <div class="bottomDownloadTip">
+        <div class="dowload-tootipContent">
+            <img src="{:cmf_get_image_url($union_set['app_ico']?:(cmf_get_option('app_set')['app_logo']))}" alt="">
+            <div class="tootipBox">
+                <p class="title-tootip">{:$union_set['app_name_ico']?:(cmf_get_option('app_set')['app_name']?:'游戏盒子APP')}</p>
+                <p class="desc-tootip">千万游戏玩家都在用的APP</p>
+            </div>
+        </div>
+        <div>
+            <if condition="$devices_type eq 2">
+                <a href="{:url('Downfile/downapp_ios',input())}" class="finalDowloadBtn <empty name='app_data.app_data'> disabled</empty>">立即下载</a>
+            <else/>
+                <a href="{:url('Downfile/downapp',input())}" class="finalDowloadBtn <empty name='app_data.app_data'> disabled</empty>">立即下载</a>
+            </if>
+
+        </div>
+    </div>
+
+   <div class="wechat">
+      <div class="wechat-tip">
+	     <img src="__TMPL__/mobilepublic/download/img/wechat_text.png">
+	  </div>
+	      <img src="__TMPL__/mobilepublic/assets/images/pg_jiantou.png" class="wechat-rightimg">
+	      <div class="wechat-step" ><span class="number">1</span><span>点击右上角的"<font class="coloryellow point">...</font>"按钮</span></div>
+		  <div class="clear"></div>
+		  <div class="wechat-step"><span class="number">2</span><span>选择在<font class="coloryellow">浏览器</font>中打开</span></div>
+   </div>
+
+   <!-- 下载弹窗 -->
+   <div class="popbg hide">
+    <div class="popbox">
+      <span class="close" id="close"></span>
+      <div class="pop-head">选择支付方式</div>
+      <div class="pop-body">
+        <div class="choose-method">
+            <if condition="pay_type_status('wxscan') eq 1">
+                <li class="mwechat" data-method="wxpay">微信支付</li>
+            </if>
+            <if condition="get_pay_type_set('zfb')['status'] eq 1">
+                <li class="mapply" data-method="alipay">支付宝支付</li>
+            </if>
+        </div>
+        <div class="choose-confirm hide">
+          <a href="javascript:;"><span class="copy" data-clipboard-target=".phone">复制</span></a>
+          <p>当前设备信息</p>
+          <span class="phone">
+            <p>{:get_phone_brand()}</p>
+            <p >{$user_agent_md5}</p>
+          </span>
+          <p>您可以获得：</p>
+          <p class="version">{:$union_set['app_name_ico']?:(cmf_get_option('app_set')['app_name']?:'游戏盒子APP')}</p>
+          <p class="blue">安装说明：</p>
+          <p>1.不同设备需要分别付费安装，请确认好常用设备 <br>2.下载安装或支付问题,请<span class="blue xgkf">联系客服</span></p>
+          <div class="csbtn">确 定</div>
+        </div>
+      </div>
+        <input type="hidden" class="pay_method" name="pay_method" value="alipay"/>
+    </div>
+  </div>
+
+    <div class="cover">
+        <div class="img_tishi">
+            <img src="__TMPL__/mobilepublic/download/img/ico_write.png" class="weixin-tip-img">
+            <div class="tip-step">
+                <p class="first-step v-middle">
+                    <i class="first-icon"></i>
+                    <span class="v-middle">点击右上角的" <span class="dian">...</span> "按钮</span>
+                    <img src="__TMPL__/mobilepublic/download/img/ico_arrow.png" class="guide-img">
+                </p>
+                <p class="second-step v-middle">
+                    <i class="second-icon"></i>
+                    <span class="v-middle">选择在<span style="color: #FCFA62">浏览器</span>中打开</span>
+                </p>
+            </div>
+            <!--<img alt="" src="__TMPL__/mobilepublic/download/img/weixin_zd01.png">-->
+        </div>
+    </div>
+
+</block>
+<block name="script">
+    <script type="text/javascript">
+        $('.download-app-btn').click(function() {
+            var is_weixin = "{:cmf_is_wechat()}";
+            if(is_weixin == 1){
+                $('.wechat').css('display','block');
+                return false
+            }
+        })
+        $('.rightDowloadBtn').click(function () {
+
+
+            if(isWeixin()){
+                $('.cover').css('display','block');
+                $('.img_tishi').css('display','block');
+                return false;
+            }
+
+
+            var flag = isIOS();
+            if (flag) {
+                var ret = true;
+                var url = "{:url('mobile/downfile/checkAppDownStatus')}";
+                $.ajax({
+                    type: "post",
+                    url: url,
+                    async: false,
+                    cache: false,
+                    success: function (res) {
+                        if (res.code == '1') {
+                            var href = "{:url('mobile/downfile/downapp_ios',input())}";
+                            $('.rightDowloadBtn').attr('href', href);
+                        } else {
+                            // 显示弹窗
+                            $('.popbg').removeClass('hide');
+                            ret = false;
+                        }
+                    }
+                });
+                return ret;
+            }
+        });
+
+        $('.finalDowloadBtn').click(function () {
+            var flag = isIOS()
+            if (flag) {
+                var ret = true;
+                var url = "{:url('mobile/downfile/checkAppDownStatus')}";
+                $.ajax({
+                    type: "post",
+                    url: url,
+                    async: false,
+                    cache: false,
+                    success: function (res) {
+                        if (res.code == '1') {
+                            var href = "{:url('mobile/downfile/downapp_ios',input())}";
+                            $('.finalDowloadBtn').attr('href', href)
+                        } else {
+                            // 显示弹窗
+                            $('.popbg').removeClass('hide');
+                            ret = false;
+                        }
+                    }
+                });
+                return ret;
+            }
+        })
+
+        function isIOS() {
+            var u = navigator.userAgent;
+            var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+            if (isIOS) {
+                return true;
+
+            } else {
+                return false;
+            }
+        }
+
+        /**
+         * 判断是否微信浏览
+         * @returns {boolean}
+         */
+        function isWeixin() {
+            var ua = navigator.userAgent.toLowerCase();
+            if (ua.match(/MicroMessenger/i) == "micromessenger") {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+       $('body').scroll(function() {
+            $('.bottomDownloadTip').css('display','block');
+            $('body').css('padding-bottom','16rem');
+       })
+
+
+        // 选择支付方式
+        $('.choose-method li').click(function () {
+
+            var method = $(this).attr('data-method');
+            $(".pay_method").val(method);
+
+            $(this).parents('.popbox').addClass('choosebox');
+            $(this).parents('.choose-method').addClass('hide');
+            $(this).parents('.pop-body').find('.choose-confirm').removeClass('hide')
+        })
+        // 关闭弹窗
+        $('#close').click(function(){
+            $(".choose-method").removeClass('hide');
+            $(".choose-confirm").addClass('hide');
+            $('.popbg').addClass('hide')
+        })
+        // 弹窗上复制功能
+        var clipboard = new ClipboardJS('.copy');
+        clipboard.on('success', function(e) {
+            layer.msg("复制成功!");
+            e.clearSelection();
+        });
+        //确定支付
+        $(".csbtn").click(function () {
+            var pay_url = "{:url('mobile/downfile/doPay')}";
+            var pay_method = $(".pay_method").val();
+            $.post(pay_url,{pay_method:pay_method},function (res) {
+                if(res.code=='0'){
+                    layer.msg(res.msg);
+                    return false;
+                }
+                location.href=res.data.pay_url;
+                return false;
+            });
+        });
+
+        $(".xgkf").click(function () {
+            var xgkf_ = "{:get_xgkf_info(1)}";
+            window.open( xgkf_);
+        });
+
+
+
+    </script>
+</block>

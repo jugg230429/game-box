@@ -1,0 +1,293 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap jskeyup">
+    <ul class="nav nav-tabs mb20">
+        <li ><a href="{:url('user/lists')}">用户列表</a></li>
+        <li class="active"><a>编辑</a></li>
+        <span class="title_remark">说明：显示分发平台用户的详细信息</span>
+        
+    </ul>
+    <ul class="nav nav-menu">
+        <li class="active fl nav-menu-con"><a href="#A" data-toggle="tab">基础信息</a></li>
+        <li class="fl  nav-menu-con"><a href="#B" data-toggle="tab">结算信息</a></li>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" action="{:url('edit')}" method="post">
+        <div class="tabbable">
+            <div class="tab-content">
+                <div class="tab-pane active" id="A">
+                    <input type="hidden" name="id" value="{$info['id']}" />
+                    <div class="form-group">
+                        <label for="account" class="col-sm-2 control-label">用户账号：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <input type="text" class="form-control" id="account" name="account" value="{$info['account']|default=''}" disabled placeholder="6-30位字母或数字组合">
+                        </div>
+                        <p class="help-block"></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="col-sm-2 control-label">登录密码：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <input type="password" class="form-control" id="password" name="password" placeholder="6-30位字母或数字组合">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="nickname" class="col-sm-2 control-label">简称：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <input type="text" class="form-control" id="nickname" name="nickname" value="{$info['nickname']|default=''}" placeholder="请输入用户简称，便于查询">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">结算模式：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <label class="radio-inline label-width" tab_id="1">
+                                <input type="radio" name="settle_type" value="0" <?php if($info['settle_type']!='1') echo 'checked'; ?>> 预付款
+                            </label>
+                            <label class="radio-inline label-width" tab_id="2">
+                                <input type="radio" name="settle_type" value="1" <?php if($info['settle_type']=='1') echo 'checked' ?>> 平台结算
+                            </label>
+                        </div>
+                        <p class="help-block">预付款：玩家充值到分发平台账户内，分成金额从联运币内扣除；平台结算：玩家充值到平台账户内，由平台方进行定期结算；</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">账号状态：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <label class="radio-inline label-width" tab_id="1">
+                                <input type="radio" name="status" value="1" <?php if($info['status']=='1') echo 'checked' ?>> 开启
+                            </label>
+                            <label class="radio-inline label-width" tab_id="2">
+                                <input type="radio" name="status" value="0" <?php if($info['status']!='1') echo 'checked'; ?>> 锁定
+                            </label>
+                        </div>
+                        <p class="help-block">锁定状态下，账号无法登录</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-company_name" class="col-sm-2 control-label">公司名称：</label>
+                        <div class="col-md-6 col-sm-10">
+                            <div class="user-input fl" id="input-company_name">{$info['company_name']|default='--'}</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-linkman" class="col-sm-2 control-label">联系人姓名：</label>
+                        <div class="col-md-6 col-sm-10">
+                            <div class="user-input fl" id="input-linkman">{$info['linkman']|default='--'}</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-job" class="col-sm-2 control-label">职务：</label>
+                        <div class="col-md-6 col-sm-10">
+                            <div class="user-input fl" id="input-job">{$info['job']|default='--'}</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-mobile" class="col-sm-2 control-label">联系电话：</label>
+                        <div class="col-md-6 col-sm-10">
+                            <div class="user-input fl" id="input-mobile">{$info['mobile']|default='--'}</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-qq" class="col-sm-2 control-label">联系QQ：</label>
+                        <div class="col-md-6 col-sm-10">
+                            <div class="user-input fl" id="input-qq">{$info['qq']|default='--'}</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-wechat" class="col-sm-2 control-label">微信：</label>
+                        <div class="col-md-6 col-sm-10">
+                            <div class="user-input fl" id="input-wechat">{$info['wechat']|default='--'}</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-address" class="col-sm-2 control-label">联系地址：</label>
+                        <div class="col-md-6 col-sm-10">
+                            <div class="user-input fl" id="input-address">{$info['address']|default='--'}</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-business_license_img" class="col-sm-2 control-label">营业执照：</label>
+                        <div class="col-md-6 col-sm-10">
+                            <div class="user-input fl" id="input-business_license_img">
+                                <if condition="$info['business_license_img']">
+                                    <img src="{:cmf_get_image_url($info['business_license_img'])}" class="viewer"/>
+                                    <else/>
+                                    --
+                                </if>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-wenwangwen_img" class="col-sm-2 control-label">文网文：</label>
+                        <div class="col-md-6 col-sm-10">
+                            <div class="user-input fl" id="input-wenwangwen_img">
+                                <if condition="$info['business_license_img']">
+                                    <img src="{:cmf_get_image_url($info['wenwangwen_img'])}"  class="viewer"/>
+                                    <else/>
+                                    --
+                                </if>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-icp_img" class="col-sm-2 control-label">ICP许可证：</label>
+                        <div class="col-md-6 col-sm-10">
+                            <div class="user-input fl" id="input-icp_img">
+                                <if condition="$info['business_license_img']">
+                                    <img src="{:cmf_get_image_url($info['icp_img'])}"  class="viewer"/>
+                                    <else/>
+                                    --
+                                </if>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-create_time" class="col-sm-2 control-label">注册时间：</label>
+                        <div class="col-md-6 col-sm-10">
+                            <div class="user-input fl" id="input-create_time">{:date("Y-m-d H:i:s",$info['create_time'])}</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-last_login_time" class="col-sm-2 control-label">最后登录时间：</label>
+                        <div class="col-md-6 col-sm-10">
+                            <if condition="$info['last_login_time']">
+                                <div class="user-input fl" id="input-last_login_time">{:date("Y-m-d H:i:s",$info['last_login_time'])}</div>
+                                <else/>
+                                <div class="user-input fl" id="input-last_login_time">未登录</div>
+                            </if>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-last_login_ip" class="col-sm-2 control-label">最后登录IP：</label>
+                        <div class="col-md-6 col-sm-10">
+                            <div class="user-input fl" id="input-last_login_ip">{$info['last_login_ip']|default=''}</div>
+                        </div>
+                    </div>
+                    <!--        <div class="form-group">-->
+                    <!--            <label for="input-last_login_address" class="col-sm-2 control-label">最后登录地区：</label>-->
+                    <!--            <div class="col-md-6 col-sm-10">-->
+                    <!--                <div class="user-input fl" id="input-last_login_address"></div>-->
+                    <!--            </div>-->
+                    <!--        </div>-->
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-5">
+                            <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9">保存</button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="tab-pane" id="B">
+
+                    <if condition="$info['account_type'] eq 'alipay'">
+                        <div class="form-group">
+                            <label for="input-account_type" class="col-sm-2 control-label">结算账户：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="user-input fl" id="input-account_type">支付宝</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-alipay_account" class="col-sm-2 control-label">支付宝账号：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="user-input fl" id="input-alipay_account">{$info['alipay_account']|default='--'}</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-alipay_realname" class="col-sm-2 control-label">支付宝真实姓名：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="user-input fl" id="input-alipay_realname">{$info['alipay_realname']|default='--'}</div>
+                            </div>
+                        </div>
+                    <else/>
+                        <div class="form-group">
+                            <label for="input-account_type" class="col-sm-2 control-label">结算账户：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="user-input fl" id="input-account_type">银行卡</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-bank_phone" class="col-sm-2 control-label">手机号：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="user-input fl" id="input-bank_phone">{$info['bank_phone']|default='--'}</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-bank_card" class="col-sm-2 control-label">银行卡号：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="user-input fl" id="input-bank_card">{$info['bank_card']|default='--'}</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-bank_name" class="col-sm-2 control-label">收款银行：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="user-input fl" id="input-bank_name">{$info['bank_name']|default='--'}</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-bank_account" class="col-sm-2 control-label">持卡人：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="user-input fl" id="input-bank_account">{$info['bank_account']|default='--'}</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-province" class="col-sm-2 control-label">开户城市：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="user-input fl" id="input-province">{$info['province']}--{$info['city']}--{$info['county']}</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-account_openin" class="col-sm-2 control-label">开户网点：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="user-input fl" id="input-account_openin">{$info['account_openin']|default='--'}</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-check_people" class="col-sm-2 control-label">对账人：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="user-input fl" id="input-check_people">{$info['check_people']|default='--'}</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-check_people_qq" class="col-sm-2 control-label">对账人QQ：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="user-input fl" id="input-check_people_qq">{$info['check_people_qq']|default='--'}</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-check_people_phone" class="col-sm-2 control-label">对账人手机：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="user-input fl" id="input-check_people_phone">{$info['check_people_phone']|default='--'}</div>
+                            </div>
+                        </div>
+
+                    </if>
+
+
+
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-5">
+                            <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9">保存</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </form>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script src="__TMPL__/public/assets/js/bootstrap.viewer.js"></script>
+<script type="text/javascript">
+    // $('.jskeyup input,select').keyup(function () {
+    //     change_submit_btn($('.jskeyup'), $('.jskeyup .js-ajax-submit'));
+    // });
+    // $('.jskeyup input,select').click(function () {
+    //     change_submit_btn($('.jskeyup'), $('.jskeyup .js-ajax-submit'));
+    // });
+	  $(function () {
+                $('.viewer').bootstrapViewer();//The default image source file path is the src attribute of the img tag.
+            })
+</script>
+</body>
+</html>

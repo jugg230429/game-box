@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="__TMPL__/issuepublic/assets/css/promote/select2.min.css" rel="stylesheet" />
+	<link href="__TMPL__/issuepublic/assets/css/promote/game.css" rel="stylesheet" />
+    <link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+    <link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" media="all" href="__STATIC__/js/datejs/daterangepicker.css"/>
+    {:widget('issue/Management/css')}
+    <style>
+        .select2-container--default .select2-results>.select2-results__options {
+            max-height: 200px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        .form-btn-box {
+            margin-top: 10px!important;
+            justify-content: inherit;
+            margin-left: 112px;
+        }
+        .game-label{
+            width: 100%!important;
+        }
+        .configForm-input {
+            width: 82%!important;
+        }
+    </style>
+</head>
+
+<body>
+<!--左侧导航栏-->
+{:widget('issue/Management/left')}
+
+<!--头部-->
+{:widget('issue/Management/header')}
+
+<div class="trunk">
+
+    <div class="trunk-con">
+        <div class="right-container">
+            <div class="normal-list">
+                <div class="trunk">
+                    <php>
+                        $pt_type = get_pt_type(PID);
+                    </php>
+                    <div class="trunk-title">
+                        <div class="overview">
+                            <if condition="in_array($pt_type,[0,1,3,5])">
+                                <a href="{:url('issue/management/game',['type'=>1])}"><div class="overview-con fl <?php if($type=='1') echo 'overview-con-active'; ?> ">H5</div></a>
+                            </if>
+                            <if condition="in_array($pt_type,[0,2,3,6])">
+                                <a href="{:url('issue/management/game',['type'=>2])}"><div class="overview-con fl <?php if($type=='2') echo 'overview-con-active'; ?>">手游</div></a>
+                            </if>
+                            <if condition="in_array($pt_type,[0,4,5,6])">
+                                <a href="{:url('issue/management/game',['type'=>3])}"><div class="overview-con fl <?php if($type=='3') echo 'overview-con-active'; ?>">页游</div></a>
+                            </if>
+                        </div>
+                    </div>
+
+                    <div class="tabpan">
+
+                        <div class="tabpan-con tabpan-show">
+                            <form action="{:url('issue/management/game',['type'=>input('type')])}">
+                                <div class="trunk-search clearfix fr">
+                                    <select id="game_id" name="game_id" class="tab-input js-select-gallery normal-space trunk-search-smallselect fl" >
+                                        <option value="" data="0">游戏名称</option>
+                                        <volist name=":get_game_list('id,game_name,relation_game_id,relation_game_name',$gmap,null,'sort desc ,id desc')" id="vv">
+                                            <option <if condition="$vv['id'] eq input('game_id')"> selected</if> data="{$vv['game_name']}" value="{$vv['id']}">{$vv['game_name']}</option>
+                                        </volist>
+                                    </select>
+
+                                    <select id="status" name="status" class="tab-input js-select-gallery normal-space trunk-search-smallselect fl" >
+                                        <option value="" <?php if(input('status')==='') echo 'selected'; ?>>状态</option>
+                                        <option value="0" <?php if(input('status')==='0') echo 'selected'; ?>>待审核</option>
+                                        <option value="1" <?php if(input('status')==='1') echo 'selected'; ?>>联运中</option>
+                                        <option value="2" <?php if(input('status')==='2') echo 'selected'; ?>>已锁定</option>
+                                        <option value="3" <?php if(input('status')==='3') echo 'selected'; ?>>未申请</option>
+                                    </select>
+
+                                    <input type="submit" class="submit fr normal-space" id="submit" value="查询">
+                                    <input type="hidden" id="page" name="row" value="{:input('row',10)}">
+                                </div>
+                            </form>
+                            <div class="clear"></div>
+                            <table class="table normal-table" id="promotecoin_table">
+                                <tbody>
+                                <tr>
+                                    <th>ICON</th>
+                                    <th>游戏名称</th>
+                                    <th>运营平台</th>
+                                    <th>上线时间</th>
+                                    <th>分成比例(%)</th>
+                                    <th>游戏素材</th>
+                                    <th>回调地址</th>
+                                    <th>配置参数</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                                <notempty name="gameLists">
+                                    <php>
+                                        $sdk_version_name = [1=>'安卓',2=>'IOS',3=>'H5','4'=>'页游'];
+                                    </php>
+                                    <volist name="gameLists" id='vo'>
+                                        <tr>
+                                            <td><img src="{:cmf_get_image_url($vo['icon'])}" width="25px" class="game-icon" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null" /></td>
+                                            <td>{$vo.game_name}</td>
+                                            <td>{$sdk_version_name[$vo['sdk_version']]}</td>
+                                            <if condition="$vo['dispose_time']">
+                                                <td>{:date("Y-m-d H:i:s",$vo['dispose_time'])}</td>
+                                            <else/>
+                                                <td>--</td>
+                                            </if>
+                                            <if condition="$vo['ratio']">
+                                                <td>{$vo.ratio}</td>
+                                            <else/>
+                                                <td>{$vo.ff_ratio}</td>
+                                            </if>
+                                            <empty name="vo['apply_id']">
+                                                <td>--</td>
+                                                <td>--</td>
+                                                <td>--</td>
+                                                <td>未申请</td>
+                                                <td><a href="javascript:;" class="js-apply" id-data="{$vo['id']}" style="color: rgb(38,199,219)">申请</a></td>
+
+                                            <else/>
+
+                                                <if condition="$vo['apply_status'] eq 1">
+                                                    <empty name="$vo['material_url']">
+                                                        <td>--</td>
+                                                    <else/>
+                                                        <td><a style="color: rgb(38,199,219)" href="{:cmf_get_image_url($vo['material_url'])}" download="">下载</a></td>
+                                                    </empty>
+                                                    <td>
+                                                        <a href="javascript:;" class="view-callback" data-sdk_version="{$vo['sdk_version']}"
+                                                           data-apply_id="{$vo.apply_id}" data-game_name="{$vo['game_name']}" style="color: rgb(38,199,219)">查看</a>
+                                                    </td>
+                                                    <td>
+                                                        <a href="javascript:;" class="view-config" data-apply_id="{$vo.apply_id}"
+                                                           data-game_name="{$vo['game_name']}" style="color: rgb(38,199,219)">配置</a>
+                                                        <if condition="$type eq 2">
+                                                            <a href="javascript:;" class="view-service-config" data-apply_id="{$vo.apply_id}"
+                                                               data-game_name="{$vo['game_name']}" style="color: rgb(38,199,219)">服务端参数</a>
+                                                        </if>
+                                                    </td>
+
+                                                    <if condition="$vo['enable_status'] eq 1">
+                                                        <td>联运中</td>
+                                                    <else/>
+                                                        <td>已锁定</td>
+                                                    </if>
+                                                    <td>--</td>
+                                                <else/>
+                                                    <td>--</td>
+                                                    <td>--</td>
+                                                    <td>--</td>
+                                                    <td>待审核</td>
+                                                    <td>--</td>
+                                                </if>
+
+                                            </empty>
+                                        </tr>
+                                    </volist>
+                                    <else/>
+                                    <!--暂无数据-->
+                                    <tr>
+                                        <td colspan="10" >
+                                            <div class="no-data">
+                                                <img src="__TMPL__/issuepublic/assets/images/icon_wushujv2.png"  alt="" class="no-data-img"/>
+                                                <p class="no-data-text">暂无数据</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </notempty>
+                                </tbody>
+                            </table>
+                            <notempty name="gameLists">
+                                <div class="pagenation clearfix">
+                                    {$gameLists->render()}
+                                </div>
+                            </notempty>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="gameHtml" style="display: none">
+    <div>
+        <label class="game-label">
+            登录地址：<input type="text" id="playgame_url" value="" class="form-input" />
+            <a href="javascript:;" data-clipboard-target="#playgame_url" class="game-copy" copy-url="">复制</a>
+        </label>
+        <label hidden class="game-label js-role">
+            角色地址：<input type="text" id="role_url" value="" class="form-input" />
+            <a href="javascript:;" data-clipboard-target="#role_url" class="game-copy" copy-url="">复制</a>
+        </label>
+        <label class="game-label">
+            支付地址：<input type="text" id="callback_url" value="" class="form-input" />
+            <a href="javascript:;" data-clipboard-target="#callback_url" class="game-copy" copy-url="">复制</a>
+        </label>
+    </div>
+</div>
+
+
+<div id="configHtml" style="display: none">
+    <div>
+        <form action="{:url('issue/Management/setPlatformConfig')}" method="post" id="setConfigForm">
+            <input type="hidden" id="apply_id" name="id" value="" />
+            <volist name="config" id="vo">
+                <php>
+                    $vo = trim($vo);
+                    $vo_arr = explode('|',$vo);
+                    $v1 = $vo_arr[0];
+                    $v2 = !empty($vo_arr[1])?$vo_arr[1]:'';
+                    $v3 = !empty($vo_arr[2])?$vo_arr[2]:'text';
+                </php>
+                <label class="game-label">
+                    <span class="game-name fl">{$v1}：</span>
+                    <if condition="$v3 eq 'textarea'">
+                        <textarea id="js-config-textarea-{$v1}" style="height: 200px" name="{$v1}" placeholder="{$v2}" class="form-input configForm-input fl"></textarea>
+                    <else/>
+                        <input type="text" id="js-config-{$v1}" name="{$v1}" value="" placeholder="{$v2}"  class="form-input configForm-input fl"/>
+                    </if>
+                </label>
+            </volist>
+            <div class="form-btn-box">
+			    <input type="button" class="js-config-submit confirm-btn" value="确定"/>
+                <input type="button" class="js-config-cancel cancel-btn" value="取消"/>
+			</div>
+        </form>
+    </div>
+</div>
+
+
+<div id="serviceConfigHtml" style="display: none">
+    <div>
+        <form action="{:url('issue/Management/setPlatformServiceConfig')}" method="post" id="setServiceConfigForm">
+            <input type="hidden" id="apply_service_id" name="id" value="" />
+            <volist name="service_config" id="vo">
+                <php>
+                    $vo = trim($vo);
+                    $vo_arr = explode('|',$vo);
+                    $v1 = $vo_arr[0];
+                    $v2 = !empty($vo_arr[1])?$vo_arr[1]:'';
+                </php>
+                <label class="game-label"><span class="game-name fl">{$v1}：</span><input type="text" id="js-service-config-{$v1}" name="{$v1}" value="" placeholder="{$v2}"  class="form-input configForm-input fl"/></label>
+            </volist>
+            <div class="form-btn-box">
+                <input type="button" class="js-config-submit confirm-btn" value="确定"/>
+                <input type="button" class="js-config-cancel cancel-btn" value="取消"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script src="__TMPL__/issuepublic/assets/js/promote/jquery-1.11.1.min.js"></script>
+<script src="__TMPL__/issuepublic/assets/js/promote/common.js"></script>
+<script src="__TMPL__/issuepublic/assets/js/promote/select2.min.js"></script>
+<script>
+    $(function() {
+        $(".js-select-gallery").select2();
+})
+</script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script src="__STATIC__/js/ajaxForm.js"></script>
+<script src="__STATIC__/js/clipboard.min.js"></script>
+{:widget('issue/Management/footer')}
+
+<script type="text/javascript">
+    $(function () {
+
+        var config_count = "{:count($config)}";
+        var service_config_count = "{:count($service_config)}";
+
+        $(".view-callback").click(function () {
+            var apply_id = $(this).attr('data-apply_id');
+            var game_name = $(this).attr('data-game_name');
+            var sdk_version = $(this).attr('data-sdk_version');
+            var url = "{:url('issue/Management/getGameUrl')}";
+            $.post(url, {apply_id: apply_id}, function (res) {
+                if (res.code == 1) {
+                    if (sdk_version == 4) {
+                        $("#playgame_url").attr('value', res.data.game_url).next('a').attr('copy-url', res.data.game_url);
+                        $("#role_url").attr('value', res.data.role_url).next('a').attr('copy-url', res.data.role_url);
+                        $("#callback_url").attr('value', res.data.callback_url).next('a').attr('copy-url', res.data.callback_url);
+                        $(".js-role").show();
+                    }else if (sdk_version == 3) {
+                        $("#role_url").parent().hide();
+                        $("#playgame_url").attr('value', res.data.game_url).next('a').attr('copy-url', res.data.game_url);
+                        $("#callback_url").attr('value', res.data.callback_url).next('a').attr('copy-url', res.data.callback_url);
+                    } else {
+                        $("#role_url").parent().hide();
+                        $("#playgame_url").parent().hide();
+                        $("#callback_url").attr('value', res.data.callback_url).next('a').attr('copy-url', res.data.callback_url);
+                    }
+                }
+                layer.open({
+                    type: 1,
+                    title: game_name + ' - 回调地址',
+                    skin: 'layui-layer-rim', //加上边框
+                    area: ['800px', '500px'], //宽高
+                    content: $("#gameHtml").html(),
+                });
+                return false;
+            });
+        });
+
+
+        $(".view-config").click(function () {
+
+            if(config_count<=0){
+                layer.msg('该游戏无需配置参数');
+                return false;
+            }
+
+            var getPlConfUrl = "{:url('issue/Management/getApplyConfig')}";
+            var apply_id = $(this).attr('data-apply_id');
+            var game_name = $(this).attr('data-game_name');
+            $("#apply_id").attr('value', apply_id);
+            $.post(getPlConfUrl,{apply_id:apply_id},function (res) {
+
+                $("input[id^='js-config-']").attr('value','');
+                $("input[id^='js-config-textarea-']").text('');
+
+                $.each(res,function(index,ele) {
+                    $("#js-config-"+index+"").attr('value',ele);
+                    $("#js-config-textarea-"+index+"").text(ele);
+                });
+
+                var index = layer.open({
+                    type: 1,
+                    title: game_name + ' - 参数配置',
+                    skin: 'layui-layer-rim', //加上边框
+                    area: ['800px', '500px'], //宽高
+                    content: $("#configHtml").html(),
+                });
+
+
+                $(".js-config-submit").click(function () {
+                    var data = $('#setConfigForm').serializeArray();
+                    var setUrl = $("#setConfigForm").attr('action');
+                    $.post(setUrl, data, function (res) {
+                        layer.close(index);
+                        layer.msg(res.msg);
+                    });
+                    return false;
+                });
+
+                $(".js-config-cancel").click(function () {
+                    layer.close(index);
+                    return false;
+                });
+            });
+
+            return false;
+        });
+
+
+
+        $(".view-service-config").click(function () {
+
+            if(service_config_count<=0){
+                layer.msg('该游戏无需配置服务端参数');
+                return false;
+            }
+
+            var getPlConfUrl = "{:url('issue/Management/getApplyServiceConfig')}";
+            var apply_id = $(this).attr('data-apply_id');
+            var game_name = $(this).attr('data-game_name');
+            $("#apply_service_id").attr('value', apply_id);
+            $.post(getPlConfUrl,{apply_id:apply_id},function (res) {
+
+                $("input[id^='js-service-config-']").attr('value','');
+
+                $.each(res,function(index,ele) {
+                    $("#js-service-config-"+index+"").attr('value',ele);
+                });
+
+                var index = layer.open({
+                    type: 1,
+                    title: game_name + ' - 参数配置',
+                    skin: 'layui-layer-rim', //加上边框
+                    area: ['800px', '500px'], //宽高
+                    content: $("#serviceConfigHtml").html(),
+                });
+
+
+                $(".js-config-submit").click(function () {
+                    var data = $('#setServiceConfigForm').serializeArray();
+                    var setUrl = $("#setServiceConfigForm").attr('action');
+                    $.post(setUrl, data, function (res) {
+                        layer.close(index);
+                        layer.msg(res.msg);
+                    });
+                    return false;
+                });
+
+                $(".js-config-cancel").click(function () {
+                    layer.close(index);
+                    return false;
+                });
+            });
+
+            return false;
+        });
+
+
+        $(".js-apply").click(function () {
+
+            $(this).unbind('click');
+
+            var url = "{:url('issue/management/applyGame')}";
+            var id = $(this).attr('id-data');
+            $.post(url, {id: id}, function (res) {
+                layer.msg(res.msg);
+                setTimeout(function () {
+                    location.reload();
+                }, 1500)
+                return false;
+            })
+
+        });
+
+
+        new Clipboard('.game-copy', {
+            text: function (trigger) {
+			layer.msg("复制成功");
+                return trigger.getAttribute('copy-url');
+
+
+            }
+        });
+
+
+    })
+
+</script>
+
+</body>
+
+</html>

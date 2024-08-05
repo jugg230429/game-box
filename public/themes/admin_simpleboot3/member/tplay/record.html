@@ -1,0 +1,79 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li><a href="{:url('task')}">试玩任务</a></li>
+            <li class="active"><a href="{:url('record')}">试玩列表</a></li>
+            <li><a href="{:url('withdraw')}">提现记录</a></li>
+            <li><a href="{:url('withdraw_set')}">提现设置</a></li>
+        </ul>
+        <form id="search_form" class="well form-inline  fr" method="get" action="{:url('Tplay/record')}">
+            <input type="text" class="form-control" name="user_account" style="width: 120px;" value="{:input('request.user_account/s','')}" placeholder="玩家账号">
+            <select name="status" id="status" class="selectpicker"  style="width: 120px;">
+                <option value="">任务状态</option>
+                <option value="0" <if condition="input('request.status') eq '0'">selected</if>>进行中</option>
+                <option value="1" <if condition="input('request.status') eq 1">selected</if>>已完成</option>
+                <option value="2" <if condition="input('request.status') eq 2">selected</if>>已超时</option>
+            </select>
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('Tplay/record')}">清空</a>
+        </form>
+        <form class="js-ajax-form" action="" method="post">
+            <div class="table-actions position">
+                <button class="btn btn-success  js-ajax-submit mtb17" type="submit"
+                        data-action="{:url('grant')}" data-subcheck="true" data-msg="确定发放奖励吗？">
+                    发放
+                </button>
+             </div>
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="all-checkbox" class="table-item-checkbox js-check-all" data-direction="x" data-checklist="js-check-x"><label for="all-checkbox" class=""></label></th>
+                        <th>玩家账号</th>
+                        <th>游戏名称</th>
+                        <th>区服名称</th>
+                        <th>任务状态</th>
+                        <th>发放平台币</th>
+                        <th>发放现金</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <empty name="data_lists">
+                        <tr><td colspan="8" style="text-align: center;">暂无数据</td></tr>
+                    <else/>
+                        <foreach name="data_lists" item="vo">
+                        <tr>
+                            <td><input type="checkbox" id="ids-checkbox{$vo.id}" class="table-item-checkbox js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
+                                       value="{$vo.id}" title="ID:{$vo.id}">
+                                <label for="ids-checkbox{$vo.id}" class=""></label></td>
+                            <td>{$vo.user_account}</td>
+                            <td>{$vo.game_name|default='--'}</td>
+                            <td>{$vo.server_name|default='--'}</td>
+                            <td><span <eq name="vo.status" value="2">style="color:red;"</eq> >{:get_info_status($vo['status'],23)}</span></td>
+                            <td>{$vo['award']}</td>
+                            <td>{$vo['cash']}</td>
+                            <td>
+                                <if condition="$vo['status'] eq 1 and empty($vo['award'])">
+                                    <a href="{:url('grant',['ids'=>$vo['id']])}" class="js-ajax-dialog-btn" data-msg="确定发放奖励吗？">发放</a>
+                                    <else/>
+                                    --
+                                </if>
+                            </td>
+                        </tr>
+                        </foreach>
+                    </empty>
+                </tbody>
+            </table>
+        </form>
+        <div class="pagination">
+            {$page}
+        </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script type="text/javascript">
+    </script>
+</body>
+</html>

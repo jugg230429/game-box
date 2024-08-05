@@ -1,0 +1,344 @@
+<!--<link rel="stylesheet" href="__STATIC__/js/mui/mui.min.css">-->
+<link rel="stylesheet" href="__STATIC__/js/viewer/viewer.min.css">
+<include file="public@header"/>
+</head>
+<body>
+<style>
+    .pic-list{
+        display: flex;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+    .pic-list li{
+        margin-right: 20px;
+    }
+    /*
+图片点击查看样式*/
+   /* fieldset {
+        margin: 0 2px;
+        padding: .35em .625em .75em;
+        border: none!important;
+    }
+    .mui-preview-image.mui-fullscreen {
+        position: fixed;
+        z-index: 20;
+        background-color: rgba(0,0,0,0.7);
+    }
+    .mui-preview-header,
+    .mui-preview-footer {
+        position: absolute;
+        width: 100%;
+        left: 0;
+        z-index: 10;
+    }
+    .mui-preview-header {
+        height: 44px;
+        top: 0;
+    }
+    .mui-preview-footer {
+        height: 50px;
+        bottom: 0px;
+    }
+    .mui-preview-header .mui-preview-indicator {
+        display: block;
+        line-height: 25px;
+        color: #fff;
+        text-align: center;
+        margin: 15px auto 4px;
+        width: 70px;
+        background-color: rgba(0, 0, 0, 0.4);
+        border-radius: 12px;
+        font-size: 16px;
+    }
+    .mui-preview-image {
+        display: none;
+        -webkit-animation-duration: 0.5s;
+        animation-duration: 0.5s;
+        -webkit-animation-fill-mode: both;
+        animation-fill-mode: both;
+    }
+    .mui-preview-image.mui-preview-in {
+        -webkit-animation-name: fadeIn;
+        animation-name: fadeIn;
+    }
+    .mui-preview-image.mui-preview-out {
+        background: none;
+        -webkit-animation-name: fadeOut;
+        animation-name: fadeOut;
+    }
+    .mui-preview-image.mui-preview-out .mui-preview-header,
+    .mui-preview-image.mui-preview-out .mui-preview-footer {
+        display: none;
+    }
+    .mui-zoom-scroller {
+        position: absolute;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        -webkit-backface-visibility: hidden;
+    }
+    .mui-zoom {
+        -webkit-transform-style: preserve-3d;
+        transform-style: preserve-3d;
+    }
+    .mui-slider .mui-slider-group .mui-slider-item img {
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 100%;
+    }
+    .mui-android-4-1 .mui-slider .mui-slider-group .mui-slider-item img {
+        width: 100%;
+    }
+    .mui-android-4-1 .mui-slider.mui-preview-image .mui-slider-group .mui-slider-item {
+        display: inline-table;
+    }
+    .mui-android-4-1 .mui-slider.mui-preview-image .mui-zoom-scroller img {
+        display: table-cell;
+        vertical-align: middle;
+    }
+    .mui-preview-loading {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        display: none;
+    }
+    .mui-preview-loading.mui-active {
+        display: block;
+    }
+    .mui-preview-loading .mui-spinner-white {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -25px;
+        margin-top: -25px;
+        height: 50px;
+        width: 50px;
+    }
+    .mui-preview-image img.mui-transitioning {
+        -webkit-transition: -webkit-transform 0.5s ease, opacity 0.5s ease;
+        transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+    @-webkit-keyframes fadeIn {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+    @-webkit-keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+    p img {
+        max-width: 100%;
+        height: auto;
+    }
+*/
+</style>
+
+<script type="text/html" id="photos-item-tpl">
+    <li id="saved-image{id}">
+        <input id="photo-{id}" type="hidden" name="screenshot[]" value="{filepath}">
+        <input class="form-control" id="photo-{id}-name" type="text" name="photo_names[]" value="{name}"
+               style="width: 200px;" title="图片名称">
+        <img id="photo-{id}-preview" src="{url}" class="upload-img"
+             onclick="imagePreviewDialog(this.src);">
+
+    </li>
+</script>
+<div class="wrap js-check-wrap">
+
+	 <div class="nav-tabs mb20">
+        <span>查看商品</span>
+    </div>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action=""
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <!--<span class="form-required">*</span>-->游戏信息
+                            </label>
+                            <div class="col-md-3 col-sm-5 mt-7">
+                                <span>{$data.game_name}/{$data.server_name}/{:get_user_entity($data['small_id'],false,'nickname')['nickname']}</span>
+                            </div>
+                            <p class="help-block game_error"></p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-admin_url_password" class="col-sm-2 control-label"><!--<span class="form-required">*</span>-->售价:</label>
+                            <div class="col-md-3 col-sm-5 mt-7">
+                                ￥{$data.money}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">发布时间：</label>
+                            <div class="col-md-3 col-sm-5 mt-7">
+                                {$data.create_time|date='Y-m-d H:i:s',###}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_icp" class="col-sm-2 control-label">商品标题：</label>
+                            <div class="col-md-3 col-sm-5 mt-7">
+                               {$data.title}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_icp" class="col-sm-2 control-label">商品描述：</label>
+                            <div class="col-md-3 col-sm-5 mt-7">
+								{$data.dec}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_admin_email" class="col-sm-2 control-label">二级密码：</label>
+                            <div class="col-md-3 col-sm-5 mt-7">
+                               {$data.password}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">游戏截图：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <ul id="photos" class="pic-list list-unstyled form-inline mt-10">
+                                    <notempty name="data.screenshot">
+                                        <php>$screenshot= explode(',',$data['screenshot']);</php>
+                                        <foreach name="screenshot" item="vo">
+                                            <li id="saved-image{$key}">
+                                                <input id="photo-{$key}" type="hidden" name="screenshot[]"
+                                                       value="{$vo}">
+                                                <img id="photo-{$key}-preview"
+                                                     src="{:cmf_get_image_preview_url($vo)}"
+                                                     class="upload-img"
+                                                     data-preview-src=""
+                                                     data-preview-group="1"
+                                                >
+                                                <!--<a href="javascript:(function(){$('#saved-image{$key}').remove();})();">移除</a>-->
+                                            </li>
+                                        </foreach>
+                                    </notempty>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">卖家账号：</label>
+                            <div class="col-md-3 col-sm-5 mt-7">
+                                {$data.user_account}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">绑定手机：</label>
+                            <div class="col-md-3 col-sm-5 mt-7">
+                               {$data.phone}
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+
+<!--<script src="__STATIC__/js/mui/mui.min.js"></script>
+<script src="__STATIC__/js/mui/mui.zoom.js"></script>
+<script src="__STATIC__/js/mui/mui.previewimage.js"></script>-->
+<script src="__STATIC__/js/viewer/viewer.min.js"></script>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script>
+    $(function () {
+        /*mui.previewImage();
+        mui('body').on('click','a',function(){
+            window.top.location.href=this.href;
+        });*/
+
+        $('#photos').viewer({
+            movable:false
+        });
+
+        //官方下载和第三方下载切换
+        $('input:radio[name="down_port"]').change( function() {
+            var radio = $('input:radio[name="down_port"]:checked').val();
+            if(radio == 1){
+               $('.third_address').attr('hidden',true);
+            }else{
+                $('.third_address').attr('hidden',false);
+            }
+        })
+
+        //点击不推荐取消推荐选中状态
+        $("#radio6").click(function(){
+            if(!$(this).attr('checked')){
+                $("#radio7").attr("checked",false);
+            }
+            click_ver($(this));
+        });
+
+        //点击推荐取消不推荐选中状态
+        $("#radio7").click(function(){
+            if(!$(this).attr('checked')){
+                $("#radio6").attr("checked",false);
+            }
+            click_ver($(this));
+        });
+        $("#radio8,#radio9").click(function () {
+            click_ver($(this));
+        })
+        //验证当前推荐状态选择个数
+        function click_ver(that){
+            var length = $('input[name="recommend_status[]"]:checked').length;
+            if(length>2){
+                layer.msg('最多选择两种状态');
+                that.attr("checked",false);
+            }
+        }
+
+    })
+    function clearNoNum(obj)
+
+    {
+        obj.value = obj.value.replace(/[^\d.]/g,"");
+        obj.value = obj.value.replace(/\.{2,}/g,".");
+        obj.value = obj.value.replace(/^\./g,"");
+        obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+        obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');
+    }
+</script>
+</body>
+</html>

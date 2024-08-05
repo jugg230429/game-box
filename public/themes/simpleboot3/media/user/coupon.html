@@ -1,0 +1,129 @@
+<extend name="../mediapublic/base" />
+<!-- 主体内容 -->
+<block name="body">
+    <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/my_welfare.css">
+    <!-- 用户信息 -->
+    <div class="userinfo_con">
+        <div class="layui-container">
+            <div class="fl left_user_info">
+                <div class="left_user_info_img">
+                    <img src="{:cmf_get_image_url($user['head_img'])}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                    <span class="levelIcon">V{$user['vip_level']}</span>
+                </div>
+                <!-- <div class="left_user_info_grade">
+                    <if condition="$user['vip_level'] gt 0">
+                        <img src="__STATIC__/images/my_ico_grade{$user['vip_level']}.png" alt="">
+                    </if>
+
+                </div> -->
+                <p class="left_user_info_name">{$user.nickname}</p>
+                <div class="checked_item_con">
+                    <include file="mediapublic@left_menu" />
+                </div>
+            </div>
+            <div class="fl right_user_info">
+                <div class="right_user_info_title">
+                    <a href="{:url('User/rebate')}">
+                        <div class="fl right_user_info_title_left ">
+                            我的返利
+                        </div>
+                    </a>
+                    <a href="{:url('User/coupon')}">
+                        <div class="fl right_user_info_title_left active">
+                            我的代金券
+                        </div>
+                    </a>
+                    <p class="fg right_user_info_title_right">您当前的位置：<a href="{:url('Index/index')}">平台首页</a>><a href="{:url('User/userinfo')}"> 用户中心</a>><a href="javascript:;">我的福利</a>><span>我的代金券</span></p>
+                </div>
+                <div class="my_coupon_list">
+                    <!--<empty name="list">
+                        &lt;!&ndash; 无领取记录 &ndash;&gt;
+                        <p class="no_mygame_con_item">~暂无代金券~</p>
+                    </empty>-->
+                    <div class="coupon-menu v-middle">
+                        <a href="{:url('coupon')}" class="menu-item <if condition='empty(input(type))'>active</if>">可领取</a>
+                        <a href="{:url('coupon',['type'=>1])}" class="menu-item <if condition='input(type) eq 1'>active</if>">可使用</a>
+                        <a href="{:url('coupon',['type'=>2])}" class="menu-item <if condition='input(type) eq 2'>active</if>">已失效</a>
+                    </div>
+                    <div class="coupon-game-tab">
+                        <if condition="$coupon">
+                        <div class="coupon-game-list" >
+                            <ul class="v-middle"  style="flex-wrap: wrap">
+                                <volist name="coupon" id="vo">
+                                <li class="coupon-game-item <if condition='input(type) eq 2'>invalid</if>">
+                                    <div class="coupon-detail-box v-middle">
+                                        <div class="coupon-num">
+                                            <p class="coupon-money"><span>￥</span>{$vo.money}</p>
+                                            <p class="coupon-use-condition"><if condition="$vo['limit_money']">满{$vo['limit_money']}可使用<else/>无门槛</if></p>
+                                        </div>
+                                        <div class="coupon-name-date">
+                                            <div class="coupon-name">{$vo.coupon_name}</div>
+                                            <div class="coupon-date" >{$vo.start_time|date='Y.m.d',###}-<empty name="vo.end_time">永久<else/>{$vo.end_time|date='Y.m.d',###}</empty></div>
+                                        </div>
+                                        <if condition="empty(input('type'))">
+                                            <div style="margin-left: auto">
+                                                <a href="javascript:;" data-id="{$vo.id}" class="coupon-btn receive_btn">
+                                                    领取
+                                                </a>
+                                                <a href="javascript:;" class="coupon-number">
+                                                    剩余{$vo.limit_num}次
+                                                </a>
+                                            </div>
+
+                                        <elseif condition="input('type') eq 1"/>
+                                            <a href="javascript:;"class="coupon-btn no-use">
+                                                未使用
+                                            </a>
+                                        <else/>
+                                            <a href="javascript:;"class="coupon-btn">
+                                                <eq name="vo.status" value="1">已使用<else/>已失效</eq>
+                                            </a>
+                                        </if>
+                                    </div>
+                                    <div class="coupon-scope">
+                                        适用于<if condition="$vo['mold'] eq 0">全部游戏<else/>《{$vo["coupon_game"]}》</if>
+                                    </div>
+                                </li>
+                                </volist>
+                            </ul>
+                        </div>
+                        <else/>
+                        <div class="no-data" style="display: none" >
+                            <img src="__TMPL__/mobilepublic/assets/images/icon_wushujv.png" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                            <p>~空空如也~</p>
+                        </div>
+                        </if>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            //领取优惠券
+            $(".receive_btn").click(function () {
+                var coupon_id = $(this).data('id');
+                $.ajax({
+                    type: 'post',
+                    url: '{:url("user/getcoupon")}',
+                    async: false,
+                    data: { coupon_id: coupon_id },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.code == 1) {
+                            layer.msg(data.msg);
+                            setTimeout(function () {
+                                window.location.reload();
+                            },1500);
+                        } else {
+                            layer.msg(data.msg);
+                        }
+                    },
+                    error: function (xhr, type) {
+                        alert('服务器错误');
+                    }
+                });
+            })
+        });
+    </script>
+</block>

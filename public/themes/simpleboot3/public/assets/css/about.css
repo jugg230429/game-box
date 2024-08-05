@@ -1,0 +1,65 @@
+/*
+* @description: 关于我们
+ *@author:王奉
+* @update: name(xxxx-xx-xx xx:xx)
+ */
+
+.banner {
+	width: 100%;
+	height: 322px;
+	background: url(../images/bg_banner.png) no-repeat center;
+}
+
+header {
+	background: #000;
+	background: rgba(0,0,0,0.18);
+	position: absolute;
+	width: 100%;
+	top: 0;
+}
+.header-nav-con-link:hover .header-nav-con-link-text {
+
+	color: #25C3D8;
+}
+.inner {
+	width: 1200px;
+	margin: 0 auto;
+}
+.intr{
+	margin-top: 35px;
+	color: #333;
+	font-size: 14px;
+	line-height: 36px;
+	height: auto;
+	overflow: hidden;
+	padding-bottom: 52px;
+}
+.intr-con{
+ 	width: 825px;
+	min-height: 435px;
+	margin-left: 372px;
+ }
+.nointr-con{
+	float: none;
+	margin: 0 auto;
+ }
+.intr-img{
+	width: 300px;
+	height: 200px;
+    border-radius: 10px;
+    display: block;
+    margin: 30px 32px 0 0;
+    float: left;
+}
+.intr-title{
+	font-size: 16px;
+	font-weight: bold;
+
+}
+.intr-text{
+	margin-bottom: 40px;
+}
+
+.intr-con img {
+	max-width: 100% !important;
+}

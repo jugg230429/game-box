@@ -1,0 +1,294 @@
+/*
+* @description: 公共样式
+ *@author:王奉
+* @update: name(xxxx-xx-xx xx:xx)
+ */
+
+html {
+	font: 400 14px/1.5 'Microsoft Yahei','微软雅黑', SimHei,'黑体';
+	color: #333;
+	height:100%;
+}
+body{
+	height:100%;
+}
+blockquote,
+body,
+dd,
+div,
+dl,
+fieldset,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+img,
+legend,
+li,
+ol,
+p,
+pre,
+table,
+td,
+textarea,
+th,
+ul {
+	margin: 0;
+	padding: 0;
+}
+
+a {
+	text-decoration: none;
+	cursor: pointer;
+	color: inherit;
+
+}
+
+ul,
+li {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.inner {
+	width: 1200px;
+	margin: 0 auto;
+	position: relative;
+}
+
+.fl {
+	float: left;
+}
+
+.fr {
+	float: right;
+}
+.clearfix {
+    zoom: 1;
+}
+.clearfix::after {
+    content: "";
+    display: block;
+    height: 0;
+    font-size: 0;
+    clear: both;
+    overflow: hidden;
+}
+.page-aside {
+    padding: 20px 0 40px;
+}
+.textl{
+	text-align:left;
+}
+
+/*头部*/
+
+header {
+	height: 63px;
+	padding: 10px 0;
+	font-size: 16px;
+	background: #0B53A2;
+	color: #FFF;
+
+}
+
+.logo-img {
+	max-height: 60px;
+	vertical-align: middle;
+}
+
+.logo-line {
+	width: 1px;
+	height: 30px;
+	background-color: #e6e6e6;
+	margin: 0 10px;
+	float: left;
+	margin-top: 17px;
+}
+
+.logo-text {
+	padding-top: 10px;
+	color: #FFF;
+	float: left;
+	font-size: 14px;
+}
+
+.logo-text-span {
+	display: block;
+}
+
+.header-nav {
+	float: right;
+	line-height: 63px;
+}
+
+.header-nav-con {
+	float: left;
+    margin-right: 40px;
+	text-align: center;
+}
+
+.header-nav-con-link {
+	color: #fff;
+	display: block;
+	padding: 0;
+}
+
+.header-nav-con-link-text {
+	padding: 29px 0;
+}
+
+.header-nav-con-link:hover .header-nav-con-link-text {
+	border-bottom: 3px solid #26C7DB;
+	color: #26C7DB;
+}
+.header-nav-con-link .active{
+	border-bottom: 3px solid #26C7DB;
+	color: #26C7DB;
+}
+
+/* 页码 */
+.indexpagenation{
+	text-align:center;
+}
+.page{
+	display: inline-block;
+}
+.page li {
+    float: left;
+}
+.page .form-control{
+    float: right;
+    line-height: 43px;
+    color: #666;
+    font-size: 12px;
+}
+.page .active span,.page a:hover{
+	color: #27C6DB;
+}
+/*分页*/
+
+
+
+.page-item {
+	display: inline-block;
+	float: none;
+	height: 43px;
+	line-height: 43px;
+	color: #666;
+	font-size: 12px;
+}
+
+.page a,
+.page span {
+	padding: 0 5px;
+	color: #000;
+	color: #666;
+}
+/*footer*/
+
+.footer {
+	background:#0D1E2C;
+	color: #F1F1F1;
+	width: 100%;
+	text-align: center;
+	padding:10px 0 16px 0;
+	z-index: 1;
+	position: absolute;
+    
+}
+
+.footer-con-text,.footer-text1,.footer-text2,.footer-text3 {
+	margin: 0 15px;
+}
+
+
+ .footer-text {
+	color: #E2E2E2;
+	/*margin-top: 10px;*/
+}
+.footer-text span,.footer-con span {
+	display: inline-block;
+	-ms-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+.footer-con span {
+	max-width: 30%;
+}
+.footer-text .footer-text1 {
+	max-width: 24%;
+}
+.footer-text .footer-text2 {
+	max-width: 30%;
+}
+.footer-text .footer-text3 {
+	max-width: 44%;
+}
+/* 右悬浮 */
+.sider{
+	position: fixed;
+   bottom: 80px;
+
+   z-index: 999;
+  right: 10px;
+}
+.sider-con{
+	display:block;
+ 
+  background:#fff url(../images/btn_qq_n.png) no-repeat 13px 15px;
+  width: 48.26px;
+  height: 48.26px;
+  margin-bottom:10px;
+  cursor:pointer;
+  position:relative;
+  width:52px;
+  height:52px;
+
+  box-shadow:0px 1px 5px 0px rgba(51,51,51,0.15);
+  border-radius:26px;
+
+}
+
+.sider-tel{
+     background:#fff url(../images/btn_tel_n.png) no-repeat 13px 15px;
+}
+.sider-back{
+    background:#fff url(../images/btn_back_n.png) no-repeat 13px 15px;
+}
+
+
+.sider-qq-con,.sider-tel-con{
+	display:none;
+	width: 167px;
+    height: 52px;
+    background: rgba(1,143,255,1);
+    border-radius: 26px;
+    position: absolute;
+   right: 0px;
+   top: 0px;
+   color: #fff;
+   font-size: 16px;
+   text-align: center;
+   line-height: 52px;
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+
+}
+.sider-qq:hover .sider-qq-con{
+	display:block;
+}
+.sider-tel:hover .sider-tel-con{
+	display:block;
+}
+.sider-con img {
+	vertical-align: middle;
+	margin-top: -4px;
+}

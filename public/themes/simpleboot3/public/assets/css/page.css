@@ -1,0 +1,320 @@
+/*
+* @description: 分页样式
+ *@author:王奉
+* @update: name(xxxx-xx-xx xx:xx)
+ */
+/*分页*/
+a{
+	text-decoration: none;
+}
+.pagenation {
+
+	font-size: 13px;
+	padding: 30px 0;
+	width: 100%;
+	line-height: 5.5vh;
+	float: right;
+	display: inline-block;
+}
+
+.pagenation div {
+	float: right;
+	border-radius: 5px;
+	line-height: 1.444444;
+}
+
+.pagenation .rows {
+	position: absolute;
+	left: 0;
+	top: 30px;
+	border: none;
+	color: #515974;
+}
+
+.pagenation .rows i {
+	color: #056dae;
+	font-style: normal;
+}
+
+.pagenation a,
+.pagenation span {
+	float: left;
+	/*  margin-left: -1px; */
+	padding: 0 14px;
+	height: 30px;
+	line-height: 30px;
+	color: #000;
+}
+
+.pagenation a {
+	float: left;
+	width: 31px;
+	height: 28px;
+	text-align: center;
+	line-height: 30px;
+	padding: 0;
+	color: #3399d5;
+	color: #404040;
+}
+.page-link{
+	padding: 0 10px!important;
+	width: auto!important;
+}
+
+.pagenation a.current {
+	background: #f5f5f5;
+	cursor: default;
+	border-top-color: #ddd;
+	cursor: not-allowed;
+	color: #737373;
+}
+
+.pagenation a:hover {
+	text-decoration: none;
+	color: #00DFD0;
+	/* background-color: #f5f5f5; */
+}
+
+.pagenation select {
+	width: auto !important;
+	height: 30px;
+	float: left;
+	color: #404040;
+	border: 1px solid #ccc;
+	padding: 2px;
+	border-radius: 3px;
+	float: right;
+	outline: none;
+	margin-right: 10px;
+
+}
+
+
+.pagenation select+a,
+.pagenation select+.current {
+	margin-left: 15px;
+}
+
+.pagenation .sch-btn,
+.pagenation .sch-btn:hover {
+
+	font-size: 14px;
+	font-weight: normal;
+	cursor: pointer;
+	border-radius: 3px;
+	text-align: center;
+	float: right;
+	width: 70px;
+	background: transparent;
+	color: #404040;
+	border: 1px solid #ccc;
+	margin-left: 10px;
+	height: 28px;
+	line-height: 28px;
+}
+
+.pagenation .sch-btn:before {
+	content: url(../images/promote/icon_daochu1.png);
+	position: relative;
+	padding: 0 5px 0 0;
+}
+
+.pagenation .totalvalue {
+	float: right;
+	border: none;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 34px;
+    /* color: #535875; */
+		color: #a5a6bb;
+}
+.pagenation li{
+	float:left;
+}
+.pagenation .page-item{
+	float:none;
+	display: inline;
+}
+.pagination > li > span {
+	position: relative;
+	float: left;
+
+}
+.pagenation .page-item:last-child a,.pagenation .page-item:first-child a{
+	width: 40px;
+}
+.pagenation .active span{
+	color: #00DFD0;
+}
+.pagenation a:hover{
+	/* color: #00DFD0; */
+}
+
+.pagenation .form-record{
+	color: #6A7082;
+}
+
+.question_content {
+	/*visibility: hidden;
+	opacity: 0;*/
+	display: none;
+	position: absolute;
+	width: 565px;
+	z-index: 10000;
+	background: #fff;
+	background-size: 100% 100%;
+	border-radius: 3px;
+	/*box-shadow: 0px 4px 4px rgba(0, 0, 0, .1), 2px 0px 2px rgba(0, 0, 0, .1), -2px 0px 2px rgba(0, 0, 0, .1);*/
+	top: 26px;
+	left: -90px;
+}
+/*.question_content:before {
+	display: block;
+	content: '';
+	width: 0;
+	height: 0;
+	border: 10px solid transparent;
+	border-bottom-color: #8693F3;
+	margin-top: -20px;
+	margin-left: 88px;
+	position: absolute;
+	top: 0;
+	left: 0;
+}*/
+.question_list {
+	overflow: hidden;
+	clear: both;
+	padding: 4px 20px;
+	font-size: 12px;
+	color: #7d7fbe;
+	font-family: inherit;
+}
+.question_list span {
+	display: block;
+	float: left;
+	line-height: 22px;
+	width: 392px;
+}
+.question_list span:first-child {
+	width: 90px;
+	margin-right: 28px;
+	font-weight: bold;
+	text-align: justify;
+}
+tr th{
+	text-align: center;
+	min-width: 30px;
+}
+.question_{
+	visibility: hidden;
+	opacity: 0;
+	cursor: pointer;
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 10px;
+	color: #747cb5;
+}
+.question_.on{
+	visibility: visible;
+	opacity: 1;
+}
+.question_ .question_mark{
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	line-height: 16px;
+	color: #FFFFFF;
+	border-radius: 2px;
+	text-align: center;
+	font-size: 14px;
+	font-style: normal;
+	background: #9B9C9E;
+}
+.question_ .question_content.open{
+	visibility: visible;
+	opacity: 1;
+	transition: visibility 1.5s, opacity 1s;
+}
+.question_ .question_content{
+	top: 28px;
+	width: auto;
+	left: -11px;
+	box-shadow: 0 0 0;
+	border: 1px solid #e6e6e6;
+}
+.question_.last .question_content{
+	left: -200px;
+}
+.question_ .question_content:before {
+	border-bottom-color: #ffffff;
+	top: 4px;
+	left: -30px;
+}
+.question_.last .question_content:before {
+	left: 110px;
+}
+.question_ .question_content_box {
+	margin: 0;
+	padding: 10px 10px 8px;
+}
+.question_ .question_list{
+	padding: 0;
+	list-style: none;
+}
+.question_ .question_list span{
+	float: none;
+	color: #333333;
+	width: auto;
+	white-space: nowrap;
+}
+.question_ .question_list .title{
+	font-size: 12px;
+	color: #999999;
+
+}
+.question_ .question_list span:first-child{
+	width:auto;
+}
+.couponConfirmBox {
+	display: none;
+	border: 1px solid #ccc;
+    position: absolute;
+    bottom: 54%;
+    left: 37%;
+    width: 300px;
+    height: 115px;
+    border-radius: 4px;
+    text-align: center;
+    background: #fff
+}
+.couponTextBox {
+	margin-top: 15px;
+}
+.buttonConfirm {
+	display: inline-block;
+	width: 58px;
+	height: 25px;
+	line-height: 25px;
+    background: #3A97FF;
+    color: #fff;
+	border-radius: 3px;
+	margin-right: 20px;
+    margin-top: 10px;
+}
+.buttonCancel {
+	display: inline-block;
+	width: 58px;
+	height: 25px;
+	line-height: 25px;
+	background: #ccc;
+    color: #fff;
+	border-radius: 3px;
+	margin-top: 10px;
+}
+.orangeTipBox {
+	margin: 1% 2% 0;
+    color: #FF6803;
+    background: #F2F2F2;
+    padding: 5px;
+}

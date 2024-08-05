@@ -1,0 +1,211 @@
+﻿@charset "UTF-8";
+
+/*
+* @description:渠道排行榜样式
+ *@author:王奉
+* @update: name(xxxx-xx-xx xx:xx)
+ */
+
+
+.nav-tabs>li>a {
+	margin-right: 20px;
+}
+.nav-tabs a {
+	color: #393b6b;
+	font-size: 14px;
+}
+.h-middle{
+	display: flex;
+	justify-content: center;
+}
+.nav-tabs>li.active>a,
+.nav-tabs>li.active>a:hover,
+.nav-tabs>li.active>a:focus {
+	color: #8e9af4;
+	border-top: 4px solid #8e9af4;
+}
+.pl-5{
+	padding-left: 5px;
+}
+.pl-12{
+	padding-left: 12px;
+}
+.rank-form {
+	width: 30%;
+	/*height: 726px;*/
+	float: left;
+	border: 1px solid #ececec;
+	margin: 22px 0 0 0;
+	border-radius: 5px;
+}
+
+.rank-form-title {
+	width: 100%;
+	line-height: 35px;
+	height: 35px;
+}
+
+.rank-form-title-con {
+	font-size: 14px;
+	font-weight: bold;
+	width: 33.33%;
+	text-align: left;
+}
+
+.rank-form-title-con-first {
+	padding-left: 58px;
+}
+
+.rank-form-con {
+	width: 92%;
+	margin: 0 auto;
+}
+/*.nav>li>a {
+	padding: 10px 20px;
+}*/
+.rank-topthree {
+	width: 100%;
+	height: 57px;
+	line-height: 57px;
+	margin: 13px 0 0 0;
+	background: #A9B2F6;
+	border-radius: 3px;
+}
+
+.rank-topthree-con {
+	width: 33.33%;
+}
+.rank-topthree-con.rangk-user-wm{
+	width:30%;
+	margin-left: 3.33%;
+}
+.rank-goldmedal-first,
+.rank-goldmedal-second,
+.rank-goldmedal-third {
+	display: block;
+	width: 24px;
+	height: 42px;
+	background: url(../../images/ranking_ico_numb1.png) no-repeat;
+	/*margin-left: 39px;*/
+}
+
+.rank-goldmedal-second {
+	background: url(../../images/ranking_ico_numb2.png) no-repeat;
+}
+
+.rank-goldmedal-third {
+	background: url(../../images/ranking_ico_numb3.png) no-repeat;
+}
+
+.rank-user {
+	display: block;
+	width: 39px;
+	height: 39px;
+	background: url(../../images/ranking_ico_headportrait.png) no-repeat;
+	margin: 9px 0 0 6px;
+}
+
+.rank-num {
+	font-size: 24px;
+}
+
+.color-white {
+	color: #fff;
+}
+
+.bg-lilac {
+	background: #eef0fd;
+}
+
+.color-lilac {
+	color: #a9b2f6;
+}
+
+.color-orange {
+	color: #ffb170;
+}
+
+.color-deongaree {
+	color: #393b6b;
+	color: rgba(57, 59, 107, .8);
+}
+.color-blue{
+	color:#4b97e4 ;
+}
+
+.bg-azure{
+	background: #00bbf0;
+	background: #81bbf0;
+}
+.bg-oldlace{
+	background: #ecf5fd;
+}
+.color-79c{
+	color: #79cae5;
+}
+
+.bg-79c{
+	background: #79cae5;
+}
+.bg-ebf{
+	background: #ebf7fb;
+}
+.color-81b{
+	color: #81bbf0;
+}
+.rank-con {
+	height: 40px;
+	line-height: 40px;
+	height: 37px;
+	line-height: 37px;
+	color: #393B6B;
+	border-bottom: 1px solid #ececec;
+}
+.rank-con:last-child {
+	border-bottom: none;
+}
+.rank-con-first {
+	padding-left: 39px;
+}
+/*无数据*/
+.rank-nodata{
+	text-align: center;
+	font-size: 16px;
+    color: #999;
+    margin-top: 340px;
+}
+
+.promote_rank {
+	padding: 14px 49px 29px 42px;
+}
+.promote_rank .survey-background {
+	padding: 19px 28px 29px 26px;
+}
+.rank-form-active {
+	margin: 22px 5% 0 5%;
+}
+.rank-form-register .rank-form-title {
+	background: #edeffd;
+}
+.rank-form-active .rank-form-title {
+	background: #ecf5fd;
+}
+.rank-form-pay .rank-form-title {
+	background: #ebf7fb;
+}
+.rank-form-register .rank-form-title-con {
+	color: #8693f3;
+}
+.rank-form-active .rank-form-title-con {
+	color: #81bbf0;
+}
+.rank-form-pay .rank-form-title-con {
+	color: #79cae5;
+}
+.rank-form-pay .rank-form-title-con i {
+	font-style: normal;
+	font-size: 12px;
+	font-weight: 400;
+}
+
+

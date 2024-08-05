@@ -1,0 +1,152 @@
+
+.couponHeader {
+    width: 100%;
+    height: 8.8rem;
+    background-image: url('../images/coupon/lqzx_bg.png');
+    background-size: 100% 100%;
+    border-bottom: none;
+}
+.coupon_lists_header .back_icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0.74rem;
+    margin-top: 1.3rem;
+    margin-left: 1.5rem;
+}
+.question_btn {
+    width: auto;
+    color: #fff;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.3rem;
+}
+.couponSearchbox {
+    width: 30.48rem;
+    height: 2.78rem;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 0.06rem 0px rgba(246, 136, 42, 0.05);
+    border-radius: 1.39rem;
+    color: #B3B3B3;
+    font-size: 1.17rem;
+    margin-top: 1.8rem;
+    margin-left: 1rem;
+    position: relative;
+
+}
+.coupon-list-title{
+    width: 100%;
+    text-align: center;
+    font-size: 1.45rem;
+    line-height: 1.45rem;
+    padding-top: 1.2rem;
+    margin-bottom: 0.9rem;
+    font-weight: 500;
+    font-size: 1.5rem;
+    color: #fff;
+
+}
+.couponHeader .search-title {
+   margin-bottom: 0!important;
+   margin-left: 0.93rem;
+   margin-top: 0.2rem;
+}
+.searchIconImg {
+    display: inline-block;
+    width: 1.46rem;
+    height: 1.46rem;
+    background-image: url('../images/coupon/deal_seach_btn_seach.png');
+    background-size: 100% 100%;
+    position: absolute;
+    right: 1.27rem;
+    top: 0.68rem;
+}
+.coupon-game-tab{
+    width: 100%;
+    height: auto;
+}
+.couponList-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1rem;
+    border-bottom: 1px solid #EDEEEF;
+}
+.leftMoney {
+    display: flex;
+}
+.itemPic {
+    width: 5.5rem;
+    height: 5.5rem;
+    border-radius: 0.2rem;
+    margin-right: 1rem;
+}
+.itemPic img {
+    width: 100%;
+    height: 100%;
+}
+.centerContent-detail {
+    line-height: 2rem;
+}
+.center-title {
+    font-size: 1.36rem;
+    font-weight: bold;
+    color: #222
+}
+.center-limiter{
+    font-size: 1rem;
+    color: #999999;
+}
+.center-bottomContent {
+    font-size: 1rem;
+}
+.center-bottom {
+    color: #F97306;
+}
+.changeColor {
+    color: #FEA44C;
+    margin: 0 0.62rem;
+}
+.blueDeffrent {
+    color: #48A6F0;
+}
+.rightMoney {
+    text-align: center;
+}
+.redCountNum {
+    font-weight: bold;
+    color: #F45D5D;
+    font-size: 1.05rem;
+}
+.numberCount{
+    font-size: 1.54rem;
+}
+.totalCoupon {
+    color: #999999;
+    font-size: 1rem;
+    line-height: 1.8rem;
+}
+.getCouponBtn{
+    background: #F97306;
+    display: block;
+    width: 5.12rem;
+    height: 2.04rem;
+    border-radius: 2rem;
+    color: #fff;
+    text-align: center;
+    line-height: 2.04rem;
+    font-size: 1.11rem;
+}
+.emptyCouponBox{
+    width:18.76rem ;
+    height: 8.40rem;
+    position: absolute;
+    top: 50%;
+    left: 45%;
+    transform: translate(-40%, -50%);
+}
+.emptyCouponBox img {
+    width: 100%;
+    height: 100%;
+}

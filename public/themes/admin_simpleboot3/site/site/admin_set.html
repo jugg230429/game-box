@@ -1,0 +1,287 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#A" data-toggle="tab">站点配置</a></li>
+<!--        <li><a href="#B" data-toggle="tab">用户配置</a></li>-->
+        <li><a href="#C" data-toggle="tab">系统配置</a></li>
+        <span class="title_remark">说明：针对管理后台的显示进行基本配置</span>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20 " role="form" action="{:url('sitePost')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">网站标题：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control"  name="web_site_title"
+                                       value="{$data.web_site_title|default=''}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>网站域名：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="web_site"
+                                       value="{$data.web_site|default=''}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">网站描述：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="web_set_meta_desc"
+                                       value="{$data.web_set_meta_desc|default=''}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">网站关键词：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="web_set_telecom_license"
+                                       value="{$data.web_set_telecom_license|default=''}">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">站点状态：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="web_cache" <eq name='data.web_cache' value='1'>checked="checked"</eq>> 开启
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="web_cache" <eq name='data.web_cache' value='0'>checked="checked"</eq>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block"> 站点关闭后，PC官网、WAP站、推广平台网址不能被用户访问，提示“站点已关闭” </p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">后台iCO图标：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="web_set_ico" type="hidden" name="web_set_ico" value="{$data.web_set_ico}" >
+                                <img id="web_set_ico-preview" class="upload-img" <if condition="$data['web_set_ico']">src="{:cmf_get_image_preview_url($data['web_set_ico'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#web_set_ico');">上传</a>
+                                <a href="javascript:(function(){$('#web_set_ico-preview').attr('src','');$('#web_set_ico').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">后台网址ico图标，尺寸16 * 16px</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">后台LOGO：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="web_set_logo" type="hidden" name="web_set_logo" value="{$data.web_set_logo}" >
+                                <img id="web_set_logo-preview" class="upload-img" <if condition="$data['web_set_logo']">src="{:cmf_get_image_preview_url($data['web_set_logo'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#web_set_logo');">上传</a>
+                                <a href="javascript:(function(){$('#web_set_logo-preview').attr('src','');$('#web_set_logo').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">用于登录页展示，尺寸336*48px</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">管理中心LOGO：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="web_set_center_logo" type="hidden" name="web_set_center_logo" value="{$data.web_set_center_logo}" >
+                                <img id="web_set_center_logo-preview" class="upload-img" <if condition="$data['web_set_center_logo']">src="{:cmf_get_image_preview_url($data['web_set_center_logo'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#web_set_center_logo');">上传</a>
+                                <a href="javascript:(function(){$('#web_set_center_logo-preview').attr('src','');$('#web_set_center_logo').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">用于管理中心展示，尺寸198*52px</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">玩家默认头像：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="web_set_avatar" type="hidden" name="web_set_avatar" value="{$data.web_set_avatar}" >
+                                <img id="web_set_avatar-preview" class="upload-img" <if condition="$data['web_set_avatar']">src="{:cmf_get_image_preview_url($data['web_set_avatar'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#web_set_avatar');">上传</a>
+                                <a href="javascript:(function(){$('#web_set_avatar-preview').attr('src','');$('#web_set_avatar').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">360*360px</p>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">客服系统：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio xigukf" value="0" name="kf_system_switch" <if condition="empty($data['kf_system_switch'])">checked="checked"</if>> 官方QQ
+                                </label>
+                                <label class="label-width" style="width: 115px">
+                                    <input type="radio" class="inp_radio xigukf" value="1" name="kf_system_switch" <eq name='data.kf_system_switch' value='1'>checked="checked"</eq>> 溪谷客服系统
+                                </label>
+                            </div>
+                            <p class="help-block"> 默认官方QQ，选择溪谷客服系统时需确保已接入该系统，<a href="https://www.vlsdk.com/online.html" target="_blank">去接入></a></p>
+                        </div>
+                       <div class="ht_xgkf" hidden>
+
+                           <div class="form-group rebate-itemkf">
+                               <label for="input-site_analytics" class="col-sm-2 control-label"></label>
+                               <div class="col-md-2 col-sm-5" style="width: 23%;">
+                                   <input type="text" class="form-control" name="xg_kf_url[]" value="{$data.xg_kf_url[0]}" >
+                               </div>
+
+                               <div class="add-dynamic-btn" style="margin-top:7px;">
+                                   <span class="rebate-add-btnkf js-rebate-add-btnkf">+</span>
+                               </div>
+                               <p class="help-block" style="position: absolute;left: 638px;">输入溪谷客服系统上的指定客服人员链接，需接入溪谷客服系统，<a href="https://www.vlsdk.com/online.html" target="_blank">去接入></a></p>
+
+
+                           </div>
+                           <div id="rebate-listkf" >
+                               <volist name="data.xg_kf_url" id="vo" key="key" offset="1">
+                                   <div class="form-group rebate-itemkf">
+                                       <label for="input-site_analytics" class="col-sm-2 control-label sp_text"></label>
+                                       <div class="col-md-2 col-sm-5"  style="width: 23%;">
+                                           <input type="text" class="form-control" name="xg_kf_url[]" value="{$vo}" >
+                                       </div>
+                                       <div class="dynamic-btn" style="position:static;width:auto;margin-top:8px;">
+                                           <span class="rebate-del-btn js-rebate-del-btnkf">-</span>
+                                       </div>
+                                   </div>
+                               </volist>
+                           </div>
+                       </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">渠道短信通知：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="promote_sms_notice_switch" <eq name='data.promote_sms_notice_switch' value='1'>checked="checked"</eq>> 开启
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="promote_sms_notice_switch" <if condition="empty($data['promote_sms_notice_switch'])">checked="checked"</if>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block" style="position: relative;left: 3px;z-index:-1"> 默认关闭，开启时渠道可免费短信接收前一日的业绩数据</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-one_key_password" class="col-sm-2 control-label">一键登录初始密码：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="one_key_password"
+                                       value="{$data.one_key_password|default=''}">
+                            </div>
+                            <p class="help-block" >默认为123456</p>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <input type="hidden" name="set_type" value="{$name}">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn " data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="C">
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">后台允许访问IP：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <textarea class="form-control" name="admin_allow_ip">{$data.admin_allow_ip|default=''}</textarea>
+                            </div>
+                            <p class="help-block">默认不配置，表示不限制IP访问；配置后，只有配置IP可访问管理后台，分行展示，一行一个 </p>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">用户操作延后执行：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="task_mode" <eq name='data.task_mode' value='1'>checked="checked"</eq>> 开启
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="task_mode" <if condition="empty($data['task_mode'])">checked="checked"</if>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">默认关闭，开启需要执行run_task命令，并配置服务器进程管理</p>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <input type="hidden" name="set_type" value="{$name}">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+
+<script>
+    $(function () {
+
+
+        $('input[type=radio][name=kf_system_switch]').change(function() {
+            deal_xgkf_show_hid()
+         });
+        deal_xgkf_show_hid();
+
+
+        //动态添加溪谷客服档位
+        var add_onekf = function () {
+            $('.js-rebate-add-btnkf').unbind('click');
+            $('.js-rebate-add-btnkf').click(function () {
+                var tr = $(this).closest('.rebate-itemkf');
+                var parent = $('#rebate-listkf') ;
+                var html = '<div class="form-group rebate-itemkf">\n' +
+                    '                                    <label for="input-site_analytics" class="col-sm-2 control-label sp_text"></label>\n' +
+                    '                                    <div class="col-md-2 col-sm-5" style="width:23%;">\n' +
+                    '                                        <input type="text" class="form-control" name="xg_kf_url[]" value="" >\n' +
+                    '                                    </div>\n' +
+                    '                                    <div class="dynamic-btn" style="position:static;width:auto;margin-top:5px;">\n' +
+                    '                                        <span class="rebate-del-btn js-rebate-del-btnkf">-</span>\n' +
+                    '                                    </div>\n' +
+                    '                                </div>';
+                parent.append(html);
+                re_bindkf();
+            })
+        };
+        var remove_likf = function () {
+            $('.js-rebate-del-btnkf').unbind('click');
+            $('.js-rebate-del-btnkf').click(function () {
+                var parent = $(this).closest('.rebate-itemkf');
+                parent.remove();
+                re_bindkf();
+            })
+        };
+        var add_flagkf = function () {
+            // $('#rebate-listkf .rebate-itemkf').each(function (index, element) {
+            //     // $(this).find('.sp_text').text("溪谷指定客服"+(index+2)+":");
+            // })
+        };
+        var re_bindkf = function () {
+            add_onekf();
+            remove_likf();
+            add_flagkf();
+        };
+        re_bindkf();
+    })
+
+    function deal_xgkf_show_hid() {
+        var kf_system_switch= $('input:radio[name="kf_system_switch"]:checked').val();
+        if(kf_system_switch == 1){
+            $(".ht_xgkf").show();
+        }else{
+            $(".ht_xgkf").hide();
+        }
+    }
+
+</script>
+</body>
+</html>

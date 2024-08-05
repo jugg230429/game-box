@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet"/>
+    <link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet"/>
+    <link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet"/>
+    <link href="__TMPL__/public/assets/css/page.css" rel="stylesheet"/>
+    <link href="__TMPL__/public/assets/css/promote/mychlid.css" rel="stylesheet" />
+    <link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+    <include file="public@head"/>
+</head>
+<style>
+    .daterangepicker .ranges li.active {
+        color: #fff!important;
+    }
+    input[type=text]:focus {
+        border-color: #E5E5E5!important;
+    }
+    .topGameName{
+        margin-top:20px
+    }
+    .gameNameGroup{
+        display:flex
+    }
+    .customGameCount {
+        width: 350px;
+        height: 150px;
+        overflow: auto;
+        border-radius: 4px;
+        border: none;
+        outline: none;
+        padding: 0;
+        padding-left: 10px;
+        padding-top: 10px;
+        margin: 0;
+        resize: none;
+        font-size:14px;
+        border: 1px solid #E5E5E5;
+        font-family: 'Microsoft Yahei','微软雅黑', SimHei,'黑体';
+    }
+    .labelName {
+        width: 7%;
+    }
+    .distance{
+        margin-top:20px
+    }
+    .nameItem {
+        /* width: 25%; */
+        margin-right: 30px;
+    }
+    .addWhiteBtn {
+        width: 95px;
+        height: 36px;
+        background: #26C7DB;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        font-size: 14px;
+        margin-left: 110px;
+        margin-top: 18px;
+        padding: 0;
+    }
+    .saveAllow {
+        width: 95px;
+        height: 36px;
+        background: #26C7DB;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        font-size: 14px;
+        margin-left: 110px;
+        margin-top: 18px;
+        padding: 0;
+    }
+</style>
+<body>
+<include file="public@nav"/>
+<include file="public@header"/>
+<link href="__TMPL__/public/assets/css/finance.css" rel="stylesheet"/>
+<div class="trunk">
+    <div class="trunk-con">
+        <div class="right-container">
+            <div class="normal-list">
+                <div class="record">
+                    <ul class="nav-tabs">
+                        <li class="nav-tabs-con fl nav-tabs-active">
+                            <a href="javascript:;" class="nav-link">模拟器白名单</a></li>
+                    </ul>
+                    <div class="topGameName">
+
+                        <div class="tabpan-con-con" style="margin-left: -20px;">
+                            <label class="fl label-name">全部允许：</label>
+                            <label class="label-choose js_choose">
+                                <input type="radio" class="radio-choose <?php if(get_promote_allow_simulator(PID)=='1') echo 'checked'; ?>" value="1" name="all_allow" <?php if(get_promote_allow_simulator(PID)=='1') echo 'checked'; ?> >
+                                <i class="label-choose-i <?php if(get_promote_allow_simulator(PID)=='1') echo 'current'; ?>"></i>
+                                <span>是</span>
+                            </label>
+                            <label class="label-choose js_choose">
+                                <input type="radio" class="radio-choose <?php if(get_promote_allow_simulator(PID)=='0') echo 'checked'; ?>" value="0" name="all_allow" <?php if(get_promote_allow_simulator(PID)=='0') echo 'checked'; ?>>
+                                <i class="label-choose-i <?php if(get_promote_allow_simulator(PID)=='0') echo 'current'; ?>"></i>
+                                <span>否</span>
+                            </label>
+                        </div>
+
+                        <div class="all_allow_block" hidden>
+                            <div class="gameNameGroup">
+                               <div class="labelName">游戏名称：</div>
+                                <div>
+                                    <ul class="gameNameGroup">
+                                        <li class="nameItem">
+                                            <volist name="game_lists" id="vo" offset="0" length='5'>
+                                                <div>{$vo['game_name']|default=''}</div>
+                                            </volist>
+                                        </li>
+                                        <li class="nameItem">
+                                            <volist name="game_lists" id="vo" offset="5" length='5'>
+                                                <div>{$vo['game_name']|default=''}</div>
+                                            </volist>
+                                        </li>
+                                        <li class="nameItem">
+                                            <volist name="game_lists" id="vo" offset="10" length='5'>
+                                                <div>{$vo['game_name']|default=''}</div>
+                                            </volist>
+                                        </li>
+                                        <li class="nameItem">
+                                            <volist name="game_lists" id="vo" offset="15" length='5'>
+                                                <div>{$vo['game_name']|default=''}</div>
+                                            </volist>
+                                        </li>
+                                        <li class="nameItem">
+                                            <volist name="game_lists" id="vo" offset="20" length='5'>
+                                                <div>{$vo['game_name']|default=''}</div>
+                                            </volist>
+                                        </li>
+                                        <li class="nameItem">
+                                            <volist name="game_lists" id="vo" offset="25" length='5'>
+                                                <div>{$vo['game_name']|default=''}</div>
+                                            </volist>
+                                        </li>
+                                        <li class="nameItem">
+                                            <volist name="game_lists" id="vo" offset="30" length='5'>
+                                                <div>{$vo['game_name']|default=''}</div>
+                                            </volist>
+                                        </li>
+                                        <li class="nameItem">
+                                            <volist name="game_lists" id="vo" offset="35" length='5'>
+                                                <div>{$vo['game_name']|default=''}</div>
+                                            </volist>
+                                        </li>
+                                        <li class="nameItem">
+                                            <volist name="game_lists" id="vo" offset="40" length='5'>
+                                                <div>{$vo['game_name']|default=''}</div>
+                                            </volist>
+                                        </li>
+                                        <li class="nameItem">
+                                            <volist name="game_lists" id="vo" offset="45" length='5'>
+                                                <div>{$vo['game_name']|default=''}</div>
+                                            </volist>
+                                        </li>
+                                        <li class="nameItem">
+                                            <volist name="game_lists" id="vo" offset="50" length='5'>
+                                                <div>{$vo['game_name']|default=''}</div>
+                                            </volist>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                            <div class="gameNameGroup distance">
+                                <div class="labelName">玩家ID：</div>
+                                <div class="inputContainer">
+                                    <textarea type="text" name="ids" id="ids" class="customGameCount" placeholder="每行一个玩家ID"></textarea>
+                                    <!-- <input type="text"  class="customGameCount" placeholder="每行一个玩家ID"> -->
+                                </div>
+
+                            </div>
+                            <button class="addWhiteBtn">加入白名单</button>
+                        </div>
+
+                    </div>
+
+
+                    <div class="all_allow_block" hidden>
+                        <div class="tabpan" style="margin: 5% 0% 0;">
+                        <div class="tabpan-con tabpan-show mychlid-tabcon">
+                            <a href="javascript:;" class="add-btn fl remove"><i class="add-coupon"></i><span>移除</span></a>
+                            <a href="javascript:;" class="add-btn fl all-remove"><i class="add-coupon"></i><span>一键全部移除</span></a>
+                        </div>
+                    </div>
+                        <form id="submit_form" method="get">
+                            <div class="trunk-search clearfix fr">
+                                <input type="text" class="tabpan-input" name="user_account" placeholder="玩家账号" value="{:input('user_account')}">
+                                <input type="text" class="tabpan-input"name="user_id" placeholder="玩家ID" value="{:input('user_id')}">
+                                <input type="button" url="{:url('white_list')}" class="submit fr normal-space btn-clear"  value="清空">
+                                <input type="submit" class="submit fr normal-space" id="submit" value="查询">
+                            </div>
+                        </form>
+                        <div class="clear"></div>
+                        <div class="minh-table">
+                            <table class="table normal-table" id="promotecoin_table">
+                                <tbody>
+                                <tr>
+                                    <th><label class="checked"><input class="check-all" type="checkbox"><i class="check-icon"></i></label></th>
+                                    <th>玩家ID</th>
+                                    <th>玩家账号</th>
+                                    <th>登录时间</th>
+                                    <th>操作</th>
+                                </tr>
+
+                                <notempty name="user_lists">
+                                    <volist name="user_lists" id="vo">
+                                        <tr>
+                                            <td><label class="checked"><input class="ids" type="checkbox" value="{$vo['id']}"><i class="check-icon"></i></label></td>
+                                            <td>{$vo['id']}</td>
+                                            <td>{$vo['account']}</td>
+                                            <td>{$vo['login_time']|date="Y-m-d H:i:s",###}</td>
+                                            <td><a class="light remove" data-id="{$vo['id']}" href="javascript:;">移除</a></td>
+                                        </tr>
+                                    </volist>
+                                    <else/>
+                                    <!--暂无数据-->
+                                    <tr>
+                                        <td colspan="<if condition='PID_LEVEL neq 3'>9<else/>8</if>">
+                                            <div class="no-data">
+                                                <img src="__TMPL__/public/assets/images/icon_wushujv2.png" alt=""
+                                                     class="no-data-img">
+                                                <p class="no-data-text">暂无数据</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </notempty>
+                                </tbody>
+                            </table>
+                            <notempty name="user_lists">
+                                <div class="pagenation clearfix">
+                                    {$user_lists->render()}
+                                </div>
+                            </notempty>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <include file="public@scripts"/>
+        <script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+        <script src="__STATIC__/js/layer/layer.js"></script>
+        <script>
+
+
+
+            $(".addWhiteBtn").click(function () {
+                var url = "{:url('Simulator/addUser')}";
+                var ids = $("#ids").val().split('\n');
+                $.post(url, {ids: ids}, function (res) {
+                    if (res.code == 0) {
+                        layer.msg(res.msg);
+                        return false;
+                    }
+                    layer.msg(res.msg);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000)
+                });
+
+                return false;
+            });
+
+
+            $(".remove").click(function () {
+
+                var url = "{:url('Simulator/removeUser')}";
+                var id = $(this).attr('data-id');
+
+                if (!id) {
+                    that = $(this);
+                    ids = $('.ids');
+                    id = [];
+                    ids.each(function (index, element) {
+                        if ($(this).prop('checked')) {
+                            id.push($(this).val());
+                        }
+                    });
+                    if (id.length=='0') {
+                        layer.msg('请至少选择一条数据');
+                        return false;
+                    }
+                }
+
+                $.post(url, {id: id}, function (res) {
+                    if (res.code == 0) {
+                        layer.msg(res.msg);
+                        return false;
+                    }
+                    layer.msg(res.msg);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000)
+                });
+            });
+
+
+            $(".all-remove").click(function () {
+                var url = "{:url('Simulator/removeAllUser')}";
+                $.post(url, function (res) {
+                    if (res.code == 0) {
+                        layer.msg(res.msg);
+                        return false;
+                    }
+                    layer.msg(res.msg);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000)
+                });
+            });
+
+
+            $(".btn-clear").click(function () {
+                var url = $(this).attr('url');
+                location.href = url;
+            })
+
+            // $('.js_choose').click(function(e){
+
+            $(".js_choose").on("click",function(e){
+                if(!e.isPropagationStopped()) {
+                    that = $(this);
+                    input = that.children('.radio-choose');
+                    i = that.children('.label-choose-i');
+                    $('.label-choose-i').removeClass('current');
+                    i.addClass('current');
+                    $('input[name=all_allow]').removeAttr('checked');
+                    $('input[name=all_allow]').removeClass('checked');
+                    input.attr('checked', 'checked').addClass('checked');
+                    block_show();
+                    changeType();
+                }
+                e.stopPropagation();
+            });
+
+
+
+            //全选
+            $(".check-all").click(function() {
+                $('.ids').prop("checked", this.checked);
+            });
+            $(".ids").click(function() {
+                var option = $(".ids");
+                option.each(function(i) {
+                    if(!this.checked) {
+                        $(".check-all").prop("checked", false);
+                        return false;
+                    } else {
+                        $(".check-all").prop("checked", true);
+                    }
+                });
+            });
+
+
+            block_show();
+            function block_show(){
+                var all_allow = $(".checked").val();
+                if(all_allow=='1'){
+                    $(".all_allow_block").hide();
+                }else{
+                    $(".all_allow_block").show();
+                }
+            }
+
+            var times = 0;
+            function changeType(){
+                if(times==0){
+                    times = 1;
+                    var all_allow = $(".checked").val();
+                    var save_allow_url = "{:url('channelsite/simulator/saveAllAllow')}";
+                    $.post(save_allow_url, {all_allow: all_allow}, function (res) {
+                        layer.msg(res.msg);
+                        if (res.code == 0) {
+                            times = 0;
+                            return false;
+                        }
+                        setTimeout(function () {
+                            location.reload();
+                        }, 2000)
+                    });
+                }
+
+                return false;
+            }
+
+        </script>
+    </div>
+</div>
+</body>
+
+</html>

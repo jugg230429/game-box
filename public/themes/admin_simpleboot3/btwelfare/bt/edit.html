@@ -1,0 +1,339 @@
+<include file="public@header"/>
+</head>
+<body>
+
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="javascript:;">编辑福利</a></li>
+        <span class="title_remark"></span>
+    </ul>
+
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" method="post" action="{:url('edit')}">
+
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <input type="hidden" name="id" value="{$info['id']}" />
+                        <div class="form-group">
+                            <label for="game_id" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>选择游戏：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <select name="game_id" id="game_id" class="selectpicker user-input" data-width="252px"
+                                        data-live-search="true">
+                                    <option value="">选择游戏</option>
+                                    <volist name=":get_game_list('id,game_name',$map)" id="vo">
+                                        <option value="{$vo.id}" <?php if($info['game_id']==$vo['id']) echo 'selected'; ?> >{$vo.game_name}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="promote_ids" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>选择渠道：
+                            </label>
+                            <div class="col-md-2 col-sm-5" style="width:282px;">
+                                <input type="button" class="form-control choose_promote" style="color: #acb6c0;text-align: left;" readonly
+                                       name="promote_ids" value="请选择渠道" id="promote_ids"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group ">
+                            <label class="col-sm-3 control-label">注册福利：</label>
+                            <div class="col-md-4 col-sm-5" style="display: flex">
+                                <select id="register_prop_ids" name="register_prop_ids[]" class="selectpicker fl" data-live-search="true" data-width="252px" multiple>
+                                    <option disabled>请选择道具</option>
+                                    <volist name="prop_lists" id="vo">
+                                        <option value="{$vo['id']}" <?php if(in_array($vo['id'],explode(',',$info['register_prop_ids']))) echo 'selected'; ?> >{$vo['prop_name']}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group ">
+                            <label class="col-sm-3 control-label">充值福利：</label>
+                            <div class="col-md-4 col-sm-5" style="display: flex">
+                                <select id="recharge_prop_ids" name="recharge_prop_ids[]" class="selectpicker fl" data-live-search="true" data-width="252px" multiple>
+                                    <option disabled>请选择道具</option>
+                                    <volist name="prop_lists" id="vo">
+                                        <option value="{$vo['id']}" <?php if(in_array($vo['id'],explode(',',$info['recharge_prop_ids']))) echo 'selected'; ?> >{$vo['prop_name']}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <php>
+                            $total_recharge = json_decode($info['total_recharge_prop'],true);
+                        </php>
+
+                        <div class="form-group ">
+                            <label class="col-sm-3 control-label">累充福利：</label>
+                            <div class="col-md-4 col-sm-5" style="display: flex">
+
+                                <input type="text" class="form-control" style="width: 252px" name="total_recharge[money][0]" value="{$total_recharge[0]['money']}" placeholder="输入累充额度，如1000" /> -
+
+                                <select id="total_recharge_prop_ids0" name="total_recharge[prop][0][]" class="selectpicker fl" data-live-search="true" data-width="252px" multiple>
+                                    <option disabled>请选择道具</option>
+                                    <volist name="prop_lists" id="vo">
+                                        <option value="{$vo['id']}" <?php if(in_array($vo['id'],$total_recharge[0]['prop'])) echo 'selected'; ?> >{$vo['prop_name']}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group ">
+                            <label class="col-sm-3 control-label"></label>
+                            <div class="col-md-4 col-sm-5" style="display: flex">
+
+                                <input type="text" class="form-control" style="width: 252px" name="total_recharge[money][1]" value="{$total_recharge[1]['money']}" placeholder="输入累充额度，如2000" /> -
+
+                                <select id="total_recharge_prop_ids1" name="total_recharge[prop][1][]" class="selectpicker fl" data-live-search="true" data-width="252px" multiple>
+                                    <option disabled>请选择道具</option>
+                                    <volist name="prop_lists" id="vo">
+                                        <option value="{$vo['id']}" <?php if(in_array($vo['id'],$total_recharge[1]['prop'])) echo 'selected'; ?> >{$vo['prop_name']}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label class="col-sm-3 control-label"></label>
+                            <div class="col-md-4 col-sm-5" style="display: flex">
+
+                                <input type="text" class="form-control" style="width: 252px" name="total_recharge[money][2]" value="{$total_recharge[2]['money']}" placeholder="输入累充额度，如5000" /> -
+
+                                <select id="total_recharge_prop_ids2" name="total_recharge[prop][2][]" class="selectpicker fl" data-live-search="true" data-width="252px" multiple>
+                                    <option disabled>请选择道具</option>
+                                    <volist name="prop_lists" id="vo">
+                                        <option value="{$vo['id']}" <?php if(in_array($vo['id'],$total_recharge[2]['prop'])) echo 'selected'; ?> >{$vo['prop_name']}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label class="col-sm-3 control-label"></label>
+                            <div class="col-md-4 col-sm-5" style="display: flex">
+
+                                <input type="text" class="form-control" style="width: 252px" name="total_recharge[money][3]" value="{$total_recharge[3]['money']}" placeholder="输入累充额度，如8000" /> -
+
+                                <select id="total_recharge_prop_ids3" name="total_recharge[prop][3][]" class="selectpicker fl" data-live-search="true" data-width="252px" multiple>
+                                    <option disabled>请选择道具</option>
+                                    <volist name="prop_lists" id="vo">
+                                        <option value="{$vo['id']}" <?php if(in_array($vo['id'],$total_recharge[3]['prop'])) echo 'selected'; ?> >{$vo['prop_name']}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label class="col-sm-3 control-label"></label>
+                            <div class="col-md-4 col-sm-5" style="display: flex">
+
+                                <input type="text" class="form-control" style="width: 252px" name="total_recharge[money][4]" value="{$total_recharge[4]['money']}" placeholder="输入累充额度，如10000" /> -
+
+                                <select id="total_recharge_prop_ids4" name="total_recharge[prop][4][]" class="selectpicker fl" data-live-search="true" data-width="252px" multiple>
+                                    <option disabled>请选择道具</option>
+                                    <volist name="prop_lists" id="vo">
+                                        <option value="{$vo['id']}" <?php if(in_array($vo['id'],$total_recharge[4]['prop'])) echo 'selected'; ?> >{$vo['prop_name']}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label class="col-sm-3 control-label"></label>
+                            <div class="col-md-4 col-sm-5" style="display: flex">
+
+                                <input type="text" class="form-control" style="width: 252px" name="total_recharge[money][5]" value="{$total_recharge[5]['money']}" placeholder="输入累充额度，如20000" /> -
+
+                                <select id="total_recharge_prop_ids5" name="total_recharge[prop][5][]" class="selectpicker fl" data-live-search="true" data-width="252px" multiple>
+                                    <option disabled>请选择道具</option>
+                                    <volist name="prop_lists" id="vo">
+                                        <option value="{$vo['id']}" <?php if(in_array($vo['id'],$total_recharge[5]['prop'])) echo 'selected'; ?> >{$vo['prop_name']}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label class="col-sm-3 control-label"></label>
+                            <div class="col-md-4 col-sm-5" style="display: flex">
+
+                                <input type="text" class="form-control" style="width: 252px" name="total_recharge[money][6]" value="{$total_recharge[6]['money']}" placeholder="输入累充额度，如30000" /> -
+
+                                <select id="total_recharge_prop_ids6" name="total_recharge[prop][6][]" class="selectpicker fl" data-live-search="true" data-width="252px" multiple>
+                                    <option disabled>请选择道具</option>
+                                    <volist name="prop_lists" id="vo">
+                                        <option value="{$vo['id']}" <?php if(in_array($vo['id'],$total_recharge[6]['prop'])) echo 'selected'; ?> >{$vo['prop_name']}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label class="col-sm-3 control-label"></label>
+                            <div class="col-md-4 col-sm-5" style="display: flex">
+
+                                <input type="text" class="form-control" style="width: 252px" name="total_recharge[money][7]" value="{$total_recharge[7]['money']}" placeholder="输入累充额度，如50000" /> -
+
+                                <select id="total_recharge_prop_ids7" name="total_recharge[prop][7][]" class="selectpicker fl" data-live-search="true" data-width="252px" multiple>
+                                    <option disabled>请选择道具</option>
+                                    <volist name="prop_lists" id="vo">
+                                        <option value="{$vo['id']}" <?php if(in_array($vo['id'],$total_recharge[7]['prop'])) echo 'selected'; ?> >{$vo['prop_name']}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group ">
+                            <label class="col-sm-3 control-label">月卡福利：</label>
+                            <div class="col-md-4 col-sm-5" style="display: flex">
+                                <input type="text" class="form-control" style="width: 252px" name="month_card_money" value="{$info['month_card_money']}" placeholder="单笔充值最低限额,如648" /> -
+                                <select id="month_card_prop_ids" name="month_card_prop_ids[]" class="selectpicker fl" data-live-search="true" data-width="252px" multiple>
+                                    <option disabled>请选择道具</option>
+                                    <volist name="prop_lists" id="vo">
+                                        <option value="{$vo['id']}" <?php if(in_array($vo['id'],explode(',',$info['month_card_prop_ids']))) echo 'selected'; ?> >{$vo['prop_name']}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                            <p class="help-block">有效期30天，渠道可每天发放一次日福利</p>
+                        </div>
+
+                        <div class="form-group ">
+                            <label class="col-sm-3 control-label">周卡福利：</label>
+                            <div class="col-md-4 col-sm-5" style="display: flex">
+                                <input type="text" class="form-control" style="width: 252px" name="week_card_money" value="{$info['week_card_money']}" placeholder="单笔充值最低限额,如648" /> -
+                                <select id="week_card_prop_ids" name="week_card_prop_ids[]" class="selectpicker fl" data-live-search="true" data-width="252px" multiple>
+                                    <option disabled>请选择道具</option>
+                                    <volist name="prop_lists" id="vo">
+                                        <option value="{$vo['id']}" <?php if(in_array($vo['id'],explode(',',$info['week_card_prop_ids']))) echo 'selected'; ?> >{$vo['prop_name']}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                            <p class="help-block">有效期7天，渠道可每天发放一次日福利</p>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">
+                                <span class="form-required">*</span>福利发放时间：
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" class="form-control js-bootstrap-datetime fl" name="start_time" id="start_time"
+                                       style="width:47.6%;" value="{:date('Y-m-d H:i',$info['start_time'])}" autocomplete="off" >
+                                <span class="fl to-span">至</span>
+                                <if condition="$info['end_time'] eq 0">
+                                    <input type="text" class="form-control js-bootstrap-datetime fl" name="end_time" id="end_time"
+                                           style="width:47.6%;"  autocomplete="off" placeholder="选择结束时间，不填默认永久有效" >
+                                <else/>
+                                    <input type="text" class="form-control js-bootstrap-datetime fl" name="end_time" id="end_time"
+                                           style="width:47.6%;" value="{:date('Y-m-d H:i',$info['end_time'])}" autocomplete="off" placeholder="选择结束时间，不填默认永久有效" >
+                                </if>
+
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">
+                                状态：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="status" <?php if($info['status']=='1') echo 'checked'; ?>> 开启
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="status" <?php if($info['status']=='0') echo 'checked'; ?> > 关闭
+                                </label>
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                                <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="promote_list" hidden>
+            {$promote_choose}
+        </div>
+
+    </form>
+
+
+</div>
+
+<script src="__STATIC__/js/wind.js"></script>
+<script src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript">
+
+    $(function () {
+
+        var currentDateTime = "{:date('Y-m-d H:i')}";
+        Wind.css('bootstrapDatetimePicker');
+        Wind.use('bootstrapDatetimePicker', function () {
+            $('.js-bootstrap-datetime').datetimepicker('setStartDate', currentDateTime);
+        });
+
+        $(".choose_promote").click(function () {
+            $(".promote_list").show();
+            $(".pro_promot").show();
+        });
+
+
+        $("#game_id").change(function () {
+            var url = "{:url('Prop/getGameProp')}";
+            var game_id = $(this).val();
+            if (game_id == '') {
+                refresh_prop_list('');
+                return false;
+            }
+            $.post(url, {game_id: game_id}, function (res) {
+                if (res.code == 0) {
+                    layer.msg('该游戏暂未添加道具');
+                    refresh_prop_list('');
+                    return false;
+                }
+                var data = res.data;
+                var html = "";
+                $.each(data, function (index, ele) {
+                    html += '<option value="' + ele.id + '">' + ele.prop_name + '</option>';
+                });
+                refresh_prop_list(html);
+            });
+            return false;
+        });
+
+
+    })
+
+    //刷新道具选项
+    function refresh_prop_list(html) {
+        $("#register_prop_ids").html(html).selectpicker('refresh');
+        $("#recharge_prop_ids").html(html).selectpicker('refresh');
+        $("#total_recharge_prop_ids0").html(html).selectpicker('refresh');
+        $("#total_recharge_prop_ids1").html(html).selectpicker('refresh');
+        $("#total_recharge_prop_ids2").html(html).selectpicker('refresh');
+        $("#total_recharge_prop_ids3").html(html).selectpicker('refresh');
+        $("#total_recharge_prop_ids4").html(html).selectpicker('refresh');
+        $("#total_recharge_prop_ids5").html(html).selectpicker('refresh');
+        $("#total_recharge_prop_ids6").html(html).selectpicker('refresh');
+        $("#total_recharge_prop_ids7").html(html).selectpicker('refresh');
+        $("#month_card_prop_ids").html(html).selectpicker('refresh');
+        $("#week_card_prop_ids").html(html).selectpicker('refresh');
+    }
+</script>
+</body>
+</html>

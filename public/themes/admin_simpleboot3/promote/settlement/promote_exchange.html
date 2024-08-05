@@ -1,0 +1,123 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('settlement/promote_withdraw')}">收益兑换</a></li>
+            <span class="title_remark">说明：渠道提交收益兑换申请的记录，后台审批操作</span>
+        </ul>
+        <form id="search_form" class="well form-inline fr" method="get" action="{:url('promote_exchange')}">
+
+            <select name="promote_id" id="promote_id" class="selectpicker " promote_id="{:input('request.promote_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+                <option value="">渠道账号</option>
+                <volist name=":get_promote_list()" id="vo">
+                    <option value="{$vo.id}" >{$vo.account}</option>
+                </volist>
+            </select>
+
+            <input type="text" class="form-control" name="widthdraw_number" style="width: 180px;" value="{:input('request.widthdraw_number/s','')}" placeholder="兑换单号">
+            <select name="status" id="status" class="form-control" style="width: 120px;">
+                <option value="">兑换状态</option>
+                <option value="1" <if condition="input('status') eq '1'">selected</if>>已通过</option>
+                <option value="0" <if condition="input('status') eq '0'">selected</if>>待审核</option>
+                <option value="2" <if condition="input('status') eq '2'">selected</if>>已驳回</option>
+                <option value="3" <if condition="input('status') eq '3'">selected</if>>已发放</option>
+            </select>
+
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('promote_exchange')}">清空</a>
+            <a class="btn btn-export js-ajax-dialog-btn-xz" data-msg="确定导出吗？" href="{:url('Export/expUser',array_merge(['id'=>7,'xlsname'=>'推广兑换'],input()))}">导出</a>
+        </form>
+        <form class="js-ajax-form" action="" method="post">
+        <div class="table-actions position" style="margin-left: -10px;">
+            <button class="btn btn-success   js-ajax-submit mtb17" type="submit" data-style="margin-top:23px"
+                    data-action="{:url('changeStatus',['status'=>1])}" data-subcheck="true" data-msg="您确定审核吗？">
+                通过
+            </button>
+
+            <button class="btn btn-danger   js-ajax-submit mtb17" type="submit" data-style="margin-top:23px"
+                    data-action="{:url('changeStatus',['status'=>2])}" data-subcheck="true" data-msg="您确定驳回吗？">
+                驳回
+            </button>
+
+        </div>
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th width="9">
+
+                                <input type="checkbox" id="all-checkbox" class="table-item-checkbox js-check-all" data-direction="x" data-checklist="js-check-x">
+                                <label for="all-checkbox" class=""></label>
+                        </th>
+                        <th>兑换单号</th>
+                        <th>兑换平台币数量</th>
+                        <th>渠道账号</th>
+                        <th>申请时间</th>
+                        <th>兑换状态</th>
+                        <th>审核时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <empty name="data_lists">
+                        <tr><td colspan="8" style="text-align: center;">暂无数据</td></tr>
+                    <else/>
+                        <foreach name="data_lists" item="vo">
+                        <tr>
+                            <php>$page_total +=$vo['sum_money'];</php>
+                            <td>
+                                <input type="checkbox" id="ids-checkbox{$vo.id}" class="table-item-checkbox js-check" <if condition="$vo.status eq 3" >disabled</if> data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
+                                       value="{$vo.id}" >
+                                <label for="ids-checkbox{$vo.id}" class=""></label>
+                            </td>
+                            <td>{$vo.widthdraw_number}</td>
+                            <td><span style="color: orange;">{:null_to_0($vo['sum_money'])}</span></td>
+                            <td>{:get_promote_name($vo['promote_id'])}</td>
+                            <td>{:date('Y-m-d H:i:s',$vo['create_time'])}</td>
+                            <td>
+                                <if condition="$vo['status'] eq 1">
+                                    <span class="label" style="color: #3FAD46;font-size:14px">已通过</span>
+                                <elseif condition="$vo['status'] eq 2" />
+                                    <span class="label " style="color:#d9534f;font-size:14px">已驳回</span>
+                                <elseif condition="$vo['status'] eq 3"/>
+                                    <span class="label" style="color: #3FAD46;font-size:14px">已发放</span>
+                                <else/>
+                                    <span class="label" style="color: #f0ad4e;font-size:14px">待审核</span>
+                                </if>
+
+                            </td>
+                            <td>{:$vo['audit_time']?date('Y-m-d H:i:s',$vo['audit_time']):'--'}</td>
+                            <td>
+                                <if condition="$vo['status'] eq 1">
+                                    <a href="{:url('grant',['id'=>$vo['id']])}" class="js-ajax-dialog-btn">发放</a>
+                                <elseif condition="$vo['status'] eq 2"/>
+                                    -
+                                <elseif condition="$vo['status'] eq 0"/>
+                                    <a href="{:url('changeStatus',['ids'=>$vo['id'],'status'=>1])}" class="js-ajax-dialog-btn">通过</a>
+                                    <a href="{:url('changeStatus',['ids'=>$vo['id'],'status'=>2])}" class="js-ajax-dialog-btn">驳回</a>
+                                <else />
+                                    已发放
+                                </if>
+                            </td>
+                        </tr>
+                        </foreach>
+                        <tr class="data_summary">
+                            <td colspan="2"><span style="margin-right: 10px;">汇总</span></td>
+                            <td colspan="8"><span>今日兑换：{:null_to_0($today)} ； 昨日兑换：{:null_to_0($yestoday)} ；当页兑换：{:null_to_0($page_total)}元 ； 累计兑换：{:null_to_0($total)}元</span></td>
+                        </tr>
+                    </empty>
+                </tbody>
+            </table>
+        </form>
+        <div class="pagination">{$page}
+        </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script type="text/javascript">
+        promote_id = $("#promote_id").attr('promote_id');
+        $("#promote_id").selectpicker('val', promote_id);
+
+    </script>
+</body>
+</html>

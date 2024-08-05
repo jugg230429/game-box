@@ -1,0 +1,334 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active first" ><a href="#A" data-toggle="tab">支付宝</a></li>
+        <li class="second"><a href="#B" data-toggle="tab">微信（扫码/H5）</a></li>
+        <if condition="PERMI neq 1">
+        <li class="promote"><a href="#E" data-toggle="tab">支付渠道</a></li>
+        <!-- <li><a href="{:url('weiduan')}">微信（微端）</a></li> -->
+        </if>
+        <li class="four"><a href="#C" data-toggle="tab">平台币</a></li>
+        <li class="five"><a href="#D" data-toggle="tab">绑币</a></li>
+        <li class="six"><a href="#G" data-toggle="tab">支付宝（提现）</a></li>
+        <span class="title_remark">说明：用于配置网站所用到的支付功能相关参数</span>
+    </ul>
+    <form class="form-horizontal js-ajax-form " role="form" action="{:url('set_pay')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="describe" style="margin-bottom: 20px">
+                            <div>说明①：支付宝可申请电脑网站支付、手机网站支付、APP支付，根据运营需求申请对应支付方式</div>
+                            <div>说明②：H5游戏需申请当面付</div>
+                            <div>说明③：当在服务平台打包上架版游戏包时，选择第三方支付则为WAP支付，选择苹果内购则为苹果内购支付；当打包非上架版游戏包时，选择第三方支付则为WAP支付，选择苹果内购则为APP支付（android版游戏无需设置）</div>
+                        </div>
+						<div class="clear"></div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label"><span
+                                    class="form-required"><!-- * --></span>启用状态</label>
+                            <div class="col-md-6 col-sm-10">
+							    <div class="fl user-input">
+                                    <label class="fl mr50 pt7"><input type="radio" name="zfb[status]" value="1" <if condition="$zfb['status'] eq 1"> checked </if>> 启用</label>
+                                    <label class="fl pt7"><input type="radio" name="zfb[status]" value="0" <if condition="$zfb['status'] eq 0"> checked </if>> 禁用</label>
+							    </div>
+                                <span  class="fl user-remarks  l18" style="line-height: 36px;">
+                                    支付宝启用状态，控制多个站点内是否显示支付宝支付入口；
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="B">
+                        <div class="describe">
+                            <div>说明①：微信（扫码）支付即支持pc扫码支付，wap/H5支付</div>
+                            <div>说明②：推荐在微信公众平台配置公众号，申请开通扫码支付权限</div>
+                            <div>说明③：仅申请微信（扫码）支付，不需要提供文网文</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_seo_title" class="col-sm-2 control-label">启用状态：</label>
+                            <div class="col-md-8 col-sm-10">
+                               <label class="fl mr50 pt7"> <input type="radio" name="wx[status]" value="1" <if condition="$wxscan['status'] eq 1"> checked </if>> 启用</label>
+                               <label class="fl pt7"> <input type="radio" name="wx[status]" value="0" <if condition="$wxscan['status'] eq 0"> checked </if>> 禁用</label>
+                                 <span  class="fl user-remarks ml25">
+                                    微信扫码启用状态，控制在PC官网、WAP站、SDK、推广系统官网上是否显示微信支付入口
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn" data-refresh="0">
+                                    确定
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="C" style="margin-top: -40px;">
+<!--                        <div class="describe">-->
+
+<!--                        </div>-->
+                        <div class="form-group" style="margin-top: 50px">
+                            <label for="input-site_seo_title" class="col-sm-2 control-label">启用状态：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="fl pt7">
+                                    <input type="radio" name="ptb_pay[status]" value="1" <if condition="$ptb_pay['status'] eq 1"> checked </if>> 启用<label class="mr50"></label>
+                                    <input type="radio" name="ptb_pay[status]" value="0" <if condition="$ptb_pay['status'] eq 0"> checked </if>> 禁用
+                                </div>
+                                <span  class="fl user-remarks ml33" style="margin-left: 20px;margin-top: 1px;">
+                                    默认开启，控制SDK支付、推广后台-会长代充时是否开启平台币支付
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top: 20px">
+                            <label for="input-site_seo_title" class="col-sm-2 control-label">充值状态：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="fl pt7">
+                                    <input type="radio" name="ptb_pay[recharge_status]" value="on" <if condition="$ptb_pay['config']['recharge_status'] neq 'off'"> checked </if>> 启用<label class="mr50"></label>
+                                    <input type="radio" name="ptb_pay[recharge_status]" value="off" <if condition="$ptb_pay['config']['recharge_status'] eq 'off'"> checked </if>> 禁用
+                                </div>
+                                <span  class="fl user-remarks ml33" style="width:800px;margin-left: 20px;margin-top: 1px;">
+                                    默认开启，控制SDK-余额-平台币、PC官网-充值-支付宝/微信支付、WAP站/盒子APP-我的-账户充值页是否显示平台币充值入口，禁用时不显示
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn" data-refresh="0">
+                                    确定
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="D"  style="margin-top: -40px;">
+<!--                        <div class="describe">-->
+
+<!--                        </div>-->
+                        <div class="form-group" style="margin-top: 50px">
+                            <label for="input-site_seo_title" class="col-sm-2 control-label">启用状态：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="fl pt7">
+                                    <input type="radio" name="bind_pay[status]" value="1" <if condition="$bind_pay['status'] eq 1"> checked </if>> 启用<label class="mr50"></label>
+                                    <input type="radio" name="bind_pay[status]" value="0" <if condition="$bind_pay['status'] eq 0"> checked </if>> 禁用
+                                </div>
+                                <span  class="fl user-remarks ml33" style="margin-left: 20px;margin-top: 1px;">
+                                    默认开启，控制SDK内绑币支付是否开启
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top: 20px">
+                            <label for="input-site_seo_title" class="col-sm-2 control-label">充值状态：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="fl pt7">
+                                    <input type="radio" name="bind_pay[recharge_status]" value="on" <if condition="$bind_pay['config']['recharge_status'] neq 'off'"> checked </if>> 启用<label class="mr50"></label>
+                                    <input type="radio" name="bind_pay[recharge_status]" value="off" <if condition="$bind_pay['config']['recharge_status'] eq 'off'"> checked </if>> 禁用
+                                </div>
+                                <span  class="fl user-remarks ml33" style="width: 800px;margin-left: 20px;margin-top: 1px;">
+                                    默认开启，控制PC官网-充值-、WAP站/盒子APP-我的-账户充值页是否显示绑币充值入口，禁用时不显示
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn" data-refresh="0">
+                                    确定
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="G">
+                        <div class="describe" style="margin-bottom: 20px">
+                            <div>说明①：企业开发者若涉及 资金类支出接口 接入，必须使用 公钥证书 方式</div>
+                        </div>
+                        <div class="clear"></div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label"><span
+                                    class="form-required"><!-- * --></span>合作伙伴身份ID（PID）</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" class="form-control fl user-input "   name="zfb_tx[pid]"
+                                       value="{$zfb_tx.config.pid|default=''}">
+                                <span  class="fl user-remarks l18" style="width: 800px;">合作账户中心--mapi网关产品密钥--合作伙伴身份（PID）份者id，以2088开头的16位纯数字</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label"><span
+                                    class="form-required"><!-- * --></span>MD5密钥</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" class="form-control fl user-input"   name="zfb_tx[key]"
+                                       value="{$zfb_tx.config.key|default=''}">
+                                <span  class="fl user-remarks ">账户中心--mapi网关产品密钥--合作伙伴密钥</span>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label"><span
+                                    class="form-required"><!-- * --></span>打款帐户</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" class="form-control fl user-input"   name="zfb_tx[account]"
+                                       value="{$zfb_tx.config.account|default=''}">
+                                <span  class="fl user-remarks ">卖家支付宝帐户</span>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label"><span
+                                    class="form-required"><!-- * --></span>APPID</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" class="form-control fl user-input"   name="zfb_tx[appid]"
+                                       value="{$zfb_tx.config.appid|default=''}">
+                                <span  class="fl user-remarks ">应用APPID</span>
+
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+    <div  id="E" style="display: none;">
+        <div class="describe">
+            <div>支付渠道列表</div>
+        </div>
+        <form id="search_form" class="well form-inline  fr" method="get" action="{:url('lists')}">
+            <if condition="AUTH_GAME eq 1">
+                <select name="game_id" id="game_id" class="selectpicker " game_id="{:input('request.game_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+                    <option value="">游戏名称</option>
+                    <volist name=":get_game_list('id,game_name')" id="vo">
+                        <option game-id="{$vo.id}" value="{$vo.id}" >{$vo.game_name}</option>
+                    </volist>
+                </select>
+            </if>
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+        </form>
+        <form class="js-ajax-form" action="" method="post">
+            <div class="table-actions position" style="margin-left: -10px;">
+                <a href="{:url('add')}" class="btn btn-danger  mtb17" >新增</a>
+                <button class="btn btn-danger  js-ajax-submit  mtb17" type="submit"
+                        data-action="{:url('del')}" data-subcheck="true" data-msg="您确定删除吗？">
+                    删除
+                </button>
+            </div>
+            <table class="table table-hover table-bordered">
+                <thead>
+                <tr>
+                    <th><input type="checkbox" class="js-check-all" data-direction="x" data-checklist="js-check-x"></th>
+                    <th>游戏ID</th>
+                    <th>游戏名称</th>
+                    <th>渠道</th>
+                    <th>支付类型</th>
+                    <th>商户号</th>
+                    <th>秘钥</th>
+                    <th>下单地址</th>
+                    <th>通道编码</th>
+                    <th>回调IP</th>
+                    <th>权重</th>
+                    <th>启用状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <empty name="data_lists">
+                    <tr><td colspan="8" style="text-align: center;">暂无数据</td></tr>
+                    <else/>
+                    <foreach name="data_lists" item="vo">
+                        <tr>
+                            <th><input type="checkbox" class="js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
+                                       value="{$vo.id}" title="ID:{$vo.id}"></th>
+                            <td>{$vo.game_id}</td>
+                            <td>{$vo.game_name}</td>
+                            <td>{$promote_list[$vo.promote_id]['promote_name']}</td>
+                            <td>{$type_list[$vo.type]}</td>
+                            <td>{$vo.partner}</td>
+                            <td>{$vo.key}</td>
+                            <td>{$vo.order_address}</td>
+                            <td>{$vo.channel_coding}</td>
+                            <td>{$vo.callback_ip}</td>
+                            <td>{$vo.weight}</td>
+                            <td><span <if condition="$vo['status'] eq 1"> class="label label-success"<else/>class="label label-danger"</if>>{$vo['status_name']}</span></td>
+                            <td>
+                                <a href="{:url('edit',['id'=>$vo['id']])}" >编辑</a>
+                                <a href="{:url('del',['ids'=>$vo['id']])}" class="js-ajax-delete" data-msg="您确定删除吗？">删除</a>
+                            </td>
+                        </tr>
+                    </foreach>
+                </empty>
+                </tbody>
+            </table>
+            <div class="pagination">
+                {$page}
+            </div>
+        </form>
+    </div>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script>
+    $('.promote').click(function() {
+        $('#E').show()
+        $('#A').hide()
+        $('#B').hide()
+        $('#C').hide()
+        $('#D').hide()
+    })
+
+    $('.first').click(function() {
+        $('#A').show().siblings().hide()
+        $('#E').hide()
+    })
+    $('.second').click(function() {
+        $('#B').show().siblings().hide()
+        $('#E').hide()
+    })
+    $('.third').click(function() {
+        $('#F').show().siblings().hide()
+        $('#E').hide()
+    })
+    $('.four').click(function() {
+        $('#C').show().siblings().hide()
+        $('#E').hide()
+    })
+    $('.five').click(function() {
+        $('#D').show().siblings().hide()
+        $('#E').hide()
+    })
+    $('.six').click(function() {
+        $('#G').show().siblings().hide()
+        $('#E').hide()
+    })
+
+    game_id = $("#game_id").attr('game_id');
+    $("#game_id").selectpicker('val', game_id);
+
+    var is_promote = "{$is_promote}";
+    if(is_promote==1){
+        $(".promote").trigger('click');
+        $('.promote').addClass('active').siblings().removeClass('active');
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+    <link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+    <link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" media="all" href="__STATIC__/js/datejs/daterangepicker.css"/>
+    <link href="__TMPL__/public/assets/css/promote/mychlid.css" rel="stylesheet" />
+	<link href="__TMPL__/public/assets/css/promote/statistics.css" rel="stylesheet" />
+    <include file="public@head"/>
+</head>
+
+<body>
+<include file="public@nav"/>
+<include file="public@header"/>
+<div class="trunk">
+    <div class="trunk-con">
+        <div class="right-container">
+            <div class="normal-list">
+                <div class="trunk">
+                    <div class="trunk-title">
+                        <div class="location ">
+                            <div class="location-container fr">当前位置：<span class="location-container-text">扶持管理&gt;</span><span class="location-container-text">扶持额度</span></div>
+                        </div>
+                        <img src="__TMPL__/public/assets/images/icon_zhuce.png" class="fl trunk-icon">
+                        <span class="title-main fl ">扶持额度</span>
+                        <span class="tagging fl"></span>
+						<div class="question row-right fl">
+					       <i class="question_mark">?</i>
+					       <div class="question_content">
+					       <ul class="question_content_box">
+						     <li class="question_title">数据说明</li>
+									<li class="question_list">
+										<strong>累计额度</strong>
+										<span>单款游戏该渠道和其下级所有渠道玩家实时充值的总金额 * 扶持比例</span>
+									</li>
+									<li class="question_list">
+										<strong>可申请后续扶持  </strong>
+										<span> 累计额度 - 已发放后续扶持 - 待审核后续扶持</span>
+									</li>
+									<li class="question_list">
+										<strong>已发放后续扶持 </strong>
+										<span>已经发放的后续扶持总数</span>
+									</li>
+									<li class="question_list">
+										<strong>已发放新增扶持 </strong>
+										<span>已经发放的新增扶持总数</span>
+									</li>
+								   <li class="question_list">
+										<strong>待审核后续扶持</strong>
+										<span> 待审核的后续扶持总数</span>
+									</li>
+									<li class="question_list">
+										<strong>待审核新增扶持 </strong>
+										<span>待审核的新增扶持总数</span>
+									</li>
+									 <li class="question_list">
+										<strong>今日已申请数量  </strong>
+										<span>今日审核通过的后续扶持数量</span>
+									</li>
+                                     <li class="question_list">
+										<strong>今日新申请总数 </strong>
+										<span>今日申请的后续扶持总数，不区分状态</span>
+									</li>									
+       
+
+					</ul>
+				</div>
+				</div>
+                    </div>
+                    <div class="tabpan">
+
+                        <div class="tabpan-con tabpan-show mychlid-tabcon">
+                            <form action="{:url('Support/statistics')}">
+                                <div class="trunk-search clearfix fr">
+                                    <select id="game_id" name="game_id" style="width: 240px" class="tab-input js-select-gallery normal-space trunk-search-smallselect fl" >
+                                        <option value="">游戏名称</option>
+                                        <volist name="game_lists" id="vo">
+                                            <option value="{$vo.id}" <?php if(input('game_id')==$vo['id']) echo 'selected';?> >{$vo.game_name}</option>
+                                        </volist>
+                                    </select>
+                                    <input type="submit" class="submit fr normal-space" id="submit" value="查询">
+                                    <input type="hidden" id="page" name="row" value="{:input('row',10)}">
+                                </div>
+                            </form>
+                            <div class="clear"></div>
+                            <table class="table normal-table" id="promotecoin_table">
+                                <tbody>
+                                <tr>
+                                    <th>游戏名称</th>
+                                    <th>累计额度</th>
+                                    <th>可申请后续扶持</th>
+                                    <th>已发放后续扶持</th>
+                                    <th>已发放新增扶持</th>
+                                    <th>待审核后续扶持</th>
+                                    <th>待审核新增扶持</th>
+                                    <th>今日已申请数量</th>
+                                    <th>今日新申请总数</th>
+                                </tr>
+                                <notempty name="data_lists">
+                                    <php>
+                                        $statusList = [0=>'待审核',1=>'已通过',2=>'已驳回',3=>'已发放'];
+                                    </php>
+                                    <volist name="data_lists" id='vo'>
+                                        <tr>
+                                            <td>{$vo['game_name']}</td>
+                                            <td>{$vo['total_num']}</td>
+                                            <td>{:$vo['total_num']-$vo['send_following_num']-$vo['uncheck_following_num']}</td>
+                                            <td>{$vo['send_following_num']}</td>
+                                            <td>{$vo['send_first_num']}</td>
+                                            <td>{$vo['uncheck_following_num']}</td>
+                                            <td>{$vo['uncheck_frist_num']}</td>
+                                            <td>{$vo['today_num']}</td>
+                                            <td>{$vo['today_total_num']}</td>
+                                        </tr>
+                                    </volist>
+                                    <else/>
+                                    <!--暂无数据-->
+                                    <tr>
+                                        <td colspan="10" >
+                                            <div class="no-data">
+                                                <img src="__TMPL__/public/assets/images/icon_wushujv2.png"  alt="" class="no-data-img"/>
+                                                <p class="no-data-text">暂无数据</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </notempty>
+                                </tbody>
+                            </table>
+                            <notempty name="data_lists">
+                                <div class="pagenation clearfix">
+                                    {$data_lists->render()}
+                                </div>
+                            </notempty>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<include file="public@scripts"/>
+<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script type="text/javascript" src="__STATIC__/js/datejs/moment.min.js"></script>
+<script type="text/javascript" src="__STATIC__/js/datejs/momentfunction.js"></script>
+<script type="text/javascript" src="__STATIC__/js/datejs/daterangepicker.js"></script>
+<include file="public@date_config_scripts"/>
+<script>
+
+    var maxDate = moment().startOf('day');
+    var date_autoUpdateInput = false;
+    var start = '{$start}',end  = '{$end}';
+    $(function() {
+        $(".js-select-gallery").select2();
+    })
+    //			日历
+    var date = "{$setdate}";
+    $('#sdate').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language: "zh-CN",
+        minView: 2,
+        autoclose: true,
+        scrollMonth: false,
+        scrollTime: false,
+        scrollInput: false,
+        endDate: date
+    });
+    $('#edate').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language: "zh-CN",
+        minView: 2,
+        autoclose: true,
+        pickerPosition: 'bottom-left',
+        scrollMonth: false,
+        scrollTime: false,
+        scrollInput: false,
+        endDate: date
+    });
+    $('#submit').click(function() {
+        var sdate = $('#sdate').val();
+        var edate = $('#edate').val();
+        // var pid = $('#promote_id').val();
+        // var pac = $('#promote_account').val();
+        // if(pid != '' && pac != '' && pid != pac) {
+        // 	layer.msg("渠道ID与渠道账号不匹配");
+        // 	return false;
+        // }
+        if(Date.parse(sdate) > Date.parse(edate)) {
+            layer.msg('开始时间必须小于等于结束时间');
+            return false;
+        }
+//				var url = $(this).attr('url');
+//				console.log(url);
+//				var query = $('.jssearch').find('input').serialize();
+//				query += "&" + $('.jssearch').find('select').serialize();
+//				query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+//				query = query.replace(/^&/g, '');
+//				if(url.indexOf('?') > 0) {
+//					url += '&' + query;
+//				} else {
+//					url += '?' + query;
+//				}
+//				window.location.href = url;
+
+    });
+</script>
+
+
+<script type="text/javascript">
+
+    var getServerUrl = "{:url('Support/getServer')}";
+    var game_id = "{:input('game_id')}";
+    var server_id = "{:input('server_id')}";
+
+
+    $(function () {
+
+        $('#game_id').change(function () {
+            var game_id = $(this).val();
+            getServerLists(game_id);
+        });
+
+        getServerLists(game_id, server_id);
+
+    });
+
+
+    //获取区服列表
+    function getServerLists(game_id, server_id = 0) {
+        $("#server_id").empty();
+        $("#select2-server_id-container").text('请选择区服');
+        var html = '<option  value="">请选择区服</option>';
+        $.post(getServerUrl, {game_id: game_id}, function (res) {
+            if (res.code == '1') {
+                var data = res.data;
+                $.each(data, function (index, ele) {
+                    if (server_id == ele.id) {
+                        html += '<option  value="' + ele.id + '" selected>' + ele.server_name + '</option>';
+                        $("#select2-server_id-container").text(ele.server_name);
+                    } else {
+                        html += '<option  value="' + ele.id + '">' + ele.server_name + '</option>';
+                    }
+                });
+                $("#server_id").html(html);
+            }
+        });
+
+    }
+
+</script>
+
+
+</body>
+
+</html>

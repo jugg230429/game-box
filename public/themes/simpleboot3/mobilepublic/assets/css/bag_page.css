@@ -1,0 +1,281 @@
+.bag_page_title{
+    font-size: 1.45rem;
+    height: 3.8rem;
+	line-height:3.8rem;
+    text-align: center;
+    color: #222;
+    font-weight: 550;
+
+}
+.bag_page_title p{
+
+    position: relative;
+    left: 47%;
+}
+.title_down_hx{
+    width: 100%;
+    height: 1px;
+    background-color: #EDEEEF;
+	margin-bottom: 5rem;
+}
+.game_bag_down_hx{
+    width: 100%;
+    height: 1px;
+    background-color: #F2F2F2;
+}
+
+.game_infos_img img{
+    width: 4rem;
+    height:4rem;
+    border-radius: 5px;
+}
+
+.game_infos{
+    margin-top: 0.95rem;
+    height: 4.8rem;
+    display: block;
+}
+.game_infos_img{
+     width: 4rem;;
+    background-color: #e2e2e2;
+    height:4rem;
+    border-radius: 5px;
+    margin-left: 1.2rem;
+}
+.game_infos_cons{
+    margin-left: 2%;
+    height: 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.layui-layer-hui {
+    border-radius: 8px!important;
+    min-width: 80px!important;
+}
+.layui-layer-hui .layui-layer-content{
+    padding: 6px 25px!important;
+}
+.game_infos_cons_name{
+    font-size: 15px;
+    font-weight: bold;
+    margin-top: 0.2rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: #333333;
+    font-family:PingFang SC;
+}
+.game_bag_detail_title{
+    font-family:PingFang SC;
+    font-size: 14px;
+    font-weight: bold;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+
+}
+.game_infos_cons_num{
+    font-size: 12px;
+    margin-left: 0.4rem;
+    margin-top: 0.4rem;
+    color: #949494;
+}
+.game_bag_detail_con{
+    font-size: 12px;
+    margin-top: 0.5rem;
+    color: #949494;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+}
+.game_infos_cons_num span{
+    color: #018FFF!important;
+}
+.game_bag_detail{
+    width:75%;
+}
+.game_bag_con_item{
+    margin-left: 1rem;
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+    height: 3.6rem;
+}
+.game_bag_lingqu_btn{
+    background-color: #018FFF;
+    color: #ffffff;
+    width: 5.5rem;
+    height: 2.1rem;
+    box-shadow: none;
+    text-align: center;
+    border-radius: 5px;
+    margin-right: 3%;
+    font-size: 14px;
+    margin-top: 0.95rem;
+	position:relative;
+    border: 1px solid #018fff;
+    position: relative;
+    box-sizing: border-box;
+}
+.game_bag_lingqu_btn:disabled
+{
+   background-color: #ccc;
+   border: 1px solid #ccc;
+}
+.game_bag_lingqu_btn .disabled {
+	width: 5.5rem;
+    height: 2.1rem;
+    display: block;
+    margin: -1px;
+    line-height: 2.1rem;
+    background-color: #ccc;
+    color: #ffffff;
+    box-shadow: none;
+    text-align: center;
+    border-radius: 5px;
+    padding: 0;
+	position: absolute;
+    top: 0;
+    left: 0;
+}
+.no_game_bag_text{
+    width: 100%;
+    font-size: 13px;
+    text-align: center;
+    position: absolute;
+    top: 48%;
+	font-size: 1.3rem;
+    color: #999;
+}
+
+.bag_open_modals{
+    display: none;
+}
+.bag_open_modals_closeimg{
+    position: absolute;
+    right: 1rem;
+    top: 1rem
+}
+.layui-layer{
+    border-radius:8px!important;
+}
+.bag_open_modals_firstline{
+    text-align: center;
+    margin-top: 1rem;
+    margin-top: 1.16rem;
+    font-weight: bold;
+    font-size: 15px;
+    color: #222;
+}
+.bag_open_modals_secondline{
+    font-size: 10px;
+    text-align: center;
+    margin-top: 0.2rem;
+    color: gray
+}
+/*.bag_open_modals input{
+    height: 25px!important;
+    width: 80%!important;
+    margin-left: 7%;
+    text-indent: 4rem;
+    font-size: 14px!important;
+    color: #018FFF!important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}*/
+/*.bag_open_modals span{
+    color: gray;
+    font-size: 13px;
+    position: relative;
+    top:2.1rem;
+    left: 9%;
+}*/
+.bag_open_modals input.bag_open_modals_input {
+    height: 1.83rem;
+    height: 2.2rem;
+    width: 100%;
+    text-indent: 5rem;
+    font-size: 14px!important;
+    color: #018FFF!important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+.bag_open_modals_prefix {
+    color: #666;
+    font-size: 13px;
+    position: absolute;
+    top: 0;
+    left: .5rem;
+    height: 1.83rem;
+    height: 2.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.bag_open_modals_notice {
+    padding-top: .7rem;
+}
+@media screen and (min-width:414px) and (orientation:portrait){
+   /* .bag_open_modals span{
+        position: relative;
+        top:2rem;
+    }*/
+}
+@media screen and (max-width:320px) and (orientation:portrait){
+/*    .bag_open_modals span{
+        position: relative;
+        top:2.2rem;
+    }
+    .bag_open_modals input{
+        font-size: 13px!important;
+    }*/
+}
+.bag_open_modals_btn{
+    margin-left: 40%;
+    text-align: center;
+    margin-top: 1rem;
+    width: 5rem;
+    border-radius: 5px;
+    height: 2.2rem;
+    line-height: 2.2rem!important;
+    background-color: #018FFF;
+    background-color: #0090fe;
+    color: #ffffff;
+    font-size: 13px;
+}
+.fuzhu_con {
+    width: 1px;
+    height: 1px;
+    position: absolute;
+    right: 10px;
+    opacity: 0;
+}
+.bag_open_modals .tap{
+    font-size: 12px;
+    text-align: center;
+    color: gray;
+    letter-spacing: 1px
+}
+@media screen and (max-width:320px) and (orientation:portrait){
+    .game_infos{
+        margin-top: 0.9rem;
+        height: 4.2rem;
+        /* background-color: #018EFE; */
+    }
+    .game_infos_cons_name{
+        margin-bottom: 0.1rem!important;
+    }
+    .game_bag_detail_title{
+        margin-bottom: 0.2rem!important;
+    }
+    .game_bag_lingqu_btn{
+        width: 4.5rem!important;
+        height: 1.8rem!important;
+        line-height: 1.8rem!important;
+    }
+}

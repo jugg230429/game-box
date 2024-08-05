@@ -1,0 +1,212 @@
+<extend name="../mediapublic/base"/>
+<block name="body">
+    <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/gift_bag.css">
+    <style>
+        .gamescreen_con_second_line {
+            width: 138%;
+        }
+    </style>
+    <!-- 礼包banner -->
+    <div class="bag_banner">
+        <a href="{$carousel.url}" target="{$carousel.target}"><img src="{:cmf_get_image_url($carousel['data'])}" alt="" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null"></a>
+    </div>
+    <!-- 礼包中心 -->
+    <div class="bag_content">
+        <div class="layui-container">
+            <div class="active_ios_type">
+                <div class="gamescreen_con fl">
+                    <if condition="PERMI gt  0 and YPERMI eq 1">
+                    <div class="gamescreen_con_first_line">
+                        <p class="gamescreen_con_title fl">礼包类型：</p>
+                        <a href="{:url('gift',['vip'=>input('vip'),'giftbag_name'=>input('giftbag_name')])}" class="alls bluecolors ml-20 fl <if condition='empty(input(type))'> type_active</if>"><span>不限</span></a>
+                        <a href="{:url('gift',['type'=>1,'vip'=>input('vip'),'giftbag_name'=>input('giftbag_name')])}" class=" bluecolors gamescreen_con_menu fl <eq name=':input(type)' value='1'>type_active</eq>"><span>手游礼包 </span></a>
+                        <a href="{:url('gift',['type'=>3,'vip'=>input('vip'),'giftbag_name'=>input('giftbag_name')])}" class=" bluecolors gamescreen_con_menu fl <eq name=':input(type)' value='3'>type_active</eq>"><span>H5礼包 </span></a>
+                        <a href="{:url('gift',['type'=>2,'vip'=>input('vip'),'giftbag_name'=>input('giftbag_name')])}" class=" bluecolors gamescreen_con_menu fl <eq name=':input(type)' value='2'>type_active</eq>"><span>页游礼包</span></a>
+                    </div>
+                    </if>
+                    <div class="gamescreen_con_second_line clear">
+                        <p class="gamescreen_con_title fl">VIP等级：</p>
+                        <div class="fl" style="width: 90%;display:flex">
+                            <a href="{:url('gift',['type'=>input('type'),'giftbag_name'=>input('giftbag_name')])}" class="alls bluecolors ml-20 fl <if condition='(input(vip) heq NULL)'> type_active</if>"><span>不限</span></a>
+                            <div class="fl" style="width:89%">
+                                <volist name="vip_level" id="vip">
+                                    <a href="{:url('gift',['vip'=>$key+1,'type'=>input('type'),'giftbag_name'=>input('giftbag_name')])}" class=" bluecolors gamescreen_con_menu fl <eq name=':input(vip)' value=':$key+1'>type_active</eq>"><span>VIP{:$key+1}</span></a>
+                                </volist>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <form action="{:url('Gift/gift',['vip'=>input('vip'),'type'=>input('type')])}" method="get">
+                    <div class="search fg ">
+                        <label for="searchbag">
+                            <input type="text" name="giftbag_name" value="{:input('giftbag_name','')}" id="searchbag"
+                                   placeholder="输入关键词" autocomplete="off" class="searchInput">
+                            <button type="submit" class="search_icon"><img src="__STATIC__/images/nav-search.png" alt=""></button>
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div class="bag_ios_con clear">
+                <!-- 有礼包 -->
+                <volist name="data" id="vo">
+                    <div class="bag_ios_con_item">
+                        <a data-href="{:url('Gift/detail',['gift_id'=>$vo['gift_id']])}">
+                            <div class="bag_ios_con_item_img fl">
+                                <notempty name="vo.icon">
+                                    <img src="{:cmf_get_image_url($vo['icon'])}" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null">
+                                </notempty>
+                            </div>
+
+                            <div class="fl ml15">
+                                <p class="bag_ios_con_item_name">{$vo.game_name}{$vo.giftbag_name}</p>
+                                <p class="bag_ios_con_item_num">还剩<span> {:null_to_0($vo['remain_num']/$vo['novice_num']*100)} </span>%</p>
+                                <if condition="$vo['received'] eq 0">
+                                    <div <if condition="session('member_auth') and $vo['vip'] gt session('member_auth.vip_level')">class="receive_bag receive_bag_disabled"<else/> class="receive_bag getgift" </if> data-giftbag_id="{$vo.gift_id}">领取礼包</div>
+                                    <else/>
+                                    <div class="receive_bag copy" data-novice="{$vo.novice}">复制</div>
+                                </if>
+
+                            </div>
+                        </a>
+                    </div>
+                </volist>
+                <div class="receive_bag_modal">
+                    <div class="receive_bag_modal_header">
+                        <span>礼包领取成功</span>
+                        <span class="close_receive_bag_modal">
+                            <img src="__STATIC__/images/delete_icon.png" alt="">
+                        </span>
+                    </div>
+                    <div class="receive_bag_modal_con">
+                        <p class="receive_bag_modal_firstline"><span class="colblack">激活码 : </span>
+                            <input readonly type="text" id="novice" class="fasfegxv" value="">
+                        </p>
+                        <p class="receive_bag_modal_secondline"><span> 可在[<a
+                                href="{:url('User/mygift')}">我的礼包</a>]中查看</span></p>
+                        <div class="receive_bag_modal_thirdline copy1"><span>复制</span></div>
+                    </div>
+                </div>
+                <empty name="data">
+                    <if condition="input(giftbag_name)">
+                        <div class="no_bag_text">
+                            <p><img src="__STATIC__/images/common_ico_Notfound.png" alt=""></p>
+                            <p>没有找到相关礼包，换个关键词吧</p>
+                        </div>
+                        <else/>
+                        <div class="no_bag_text">
+                            <p><img src="__STATIC__/images/common_ico_gift.png" alt=""></p>
+                            <p>~暂无礼包~</p>
+                        </div>
+                    </if>
+                </empty>
+            </div>
+        </div>
+    </div>
+    <notempty name="data">
+        <div class="gamelistpage">{$page}</div>
+    </notempty>
+    <script>
+
+        $(document).ready(function () {
+            $('.bag_ios_con_item >a').click(function () {
+                location.href = $(this).data("href")
+            });
+            $('.copy1').click(function () {
+                event.stopPropagation();
+                var str = $("#novice").val();
+                Copy(str);
+                layer.msg("复制成功", {time: 1000, skin: 'demo-blue'});
+            })
+            $('.copy').click(function () {
+                event.stopPropagation();
+                var str = $(this).attr('data-novice');
+                Copy(str);
+                layer.msg("复制成功", {time: 1000, skin: 'demo-blue'});
+            });
+            $('.bag_ios_con_item').hover(function () {
+                $(this).find('.bag_ios_con_item_num').hide()
+                $(this).find('.receive_bag').show()
+            }, function () {
+                $(this).find('.bag_ios_con_item_num').show()
+                $(this).find('.receive_bag').hide()
+            })
+            // $('.receive_bag').click(function (event) {
+            //     $(this).next().show()
+            //     return false
+            //     event.stopPropagation();
+            // })
+            $('.close_receive_bag_modal').click(function () {
+                layer.closeAll()
+            })
+            //领取礼包
+        $('.getgift').click(function () {
+            event.stopPropagation();
+            var $this = $(this);
+            var login_auth = "{$session['login_auth']}";
+            if (login_auth == 1) {
+                var gift_id = $this.attr('data-giftbag_id');
+                $.ajax({
+                    type: 'post',
+                    url: '{:url("Gift/getgift")}',
+                    async: false,
+                    data: {gift_id: gift_id},
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.code == 1) {
+                            $("#novice").val(data.novice);
+                            $this.parent().find('button').text('已领取');
+                            var conss = $('.receive_bag_modal');
+                            layer.open({
+                                type: 1,
+                                title: false,
+                                closeBtn: false,
+                                area: ['325px', '191px'],
+                                offset: 'auto',
+                                content: conss,
+                                btnAlign: 'c',
+                                shadeClose: true,
+                                end: function () {
+                                    $('.receive_bag_modal').hide();
+                                    window.location.reload();
+                                }
+                            })
+                        } else {
+                            layer.msg(data.msg, {skin: 'demo-red'});
+                        }
+                    },
+                    error: function (xhr, type) {
+                        alert('服务器错误');
+                    }
+                });
+            } else {
+                var conss = $('.login_modals')
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: false,
+                    area: ['305px', '320px'],
+			        skin:'loginclass',
+                    offset: 'auto',
+                    content: conss,
+                    btnAlign: 'c',
+                    shadeClose: true,
+                    end: function () {
+                        $('.login_modals').hide()
+                    }
+                })
+            }
+        })
+        })
+
+        //复制功能
+        function Copy(str) {
+            var save = function (e) {
+                e.clipboardData.setData('text/plain', str);
+                e.preventDefault();
+            }
+            document.addEventListener('copy', save);
+            document.execCommand('copy');
+            document.removeEventListener('copy', save);
+        }
+    </script>
+</block>

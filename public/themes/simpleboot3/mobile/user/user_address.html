@@ -1,0 +1,48 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/update_address.css">
+</block>
+<block name="body">
+    <div class="update_nickname_page">
+        <div class="update_nickname_header">
+            <a  href="{:url('User/set')}" class="fl">
+                <img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon">
+            </a>
+            <p >我的收货地址</p>
+            <empty name="address"><a href="{:url('user_address_edit')}" class="user-add " style="display: block;">添加地址</a></empty>
+        </div>
+        <div class="game_bag_down_hx"></div>
+		<!-- 暂无数据 -->
+        <empty name="address">
+            <div class="empty-box">暂无地址</div>
+        <else/>
+            <div class="address-list">
+                <ul class="clearfix ">
+                  <li class="clearfix ">
+                    <a class="item v-middle" href="{:url('User/user_address_edit')}" >
+                        <div style="width: 90%">
+                            <div class="title">
+                                <span class="name">{$address[0]}</span>
+                                <span class="phone">{$address[1]}</span>
+                            </div>
+                            <div class="address fl">{$address[2]} {$address[3]}</div>
+                        </div>
+
+                        <div class="v-middle " style="margin-left: auto">
+                            <img src="__TMPL__/mobilepublic/assets/images/common_btn_into.png" alt="" class="into_icon fg">
+                        </div>
+
+                    </a>
+
+                  </li>
+                </ul>
+            </div>
+        </empty>
+    </div>
+</block>
+<block name="script">
+    <script>
+       
+
+    </script>
+</block>

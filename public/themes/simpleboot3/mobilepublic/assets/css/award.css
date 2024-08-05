@@ -1,0 +1,137 @@
+@charset "UTF-8";
+
+/*
+* @description: 抽奖
+ *@author:王奉
+* @update: name(2020/08/05)
+ */
+
+body {
+	width: 100%;
+	height: 100vh;
+	background: url(../images/award/bg.png) no-repeat;
+	background-size: 100% 100%;
+}
+
+.footer {
+	display: none;
+}
+.back_icon {
+    width: 0.74rem;
+    margin-top: 1.25rem;
+    margin-left: 1rem;
+}
+.title-img{
+	width:80%;
+	display:block;
+	margin:4.5rem auto 0;
+}
+
+.draw {
+	width:82%;
+	height: auto;
+	overflow:hidden;
+	background-size: 100% 100%;
+	margin: 1.2rem auto 1rem;
+	background: url(../images/award/draw.png) no-repeat;
+	background-size: 100% 100%;
+	padding: 0.5rem 3% 2rem;
+}
+
+
+
+.draw .item {
+	width: 27%;
+	height:8rem;
+    background:url(../images/award/bg_prize.png) no-repeat;
+	background-size: 100% 100%;
+    border-radius:10px;
+    margin: 1.2rem 0 0 5%;
+	float: left;
+
+}
+
+.draw .item.active {
+	
+	background:url(../images/award/bg2.png) no-repeat;
+	background-size: 100% 100%;
+}
+
+.draw .img {
+	display: table-cell;
+	width: 8rem;
+	height: 5.1rem;
+	vertical-align: middle;
+	text-align: center;
+}
+
+
+
+.draw .img img {
+	vertical-align: top;
+	max-width:5rem;
+	max-height:3rem
+}
+.draw .nogood{
+	background:url(../images/award/disabled-goods.png) no-repeat ;
+	color:#999;
+	background-size: 100% 100%;
+}
+.draw .nogood .name{
+	color:#999;
+}
+.nogood .img img{
+   -webkit-filter: grayscale(100%);
+   -moz-filter: grayscale(100%);
+   -ms-filter: grayscale(100%);
+   -o-filter: grayscale(100%);
+   filter: grayscale(100%);
+   filter: gray;
+}
+
+.draw .name {
+	display: block;
+	font-size: 1.1rem;
+	text-align: center;
+	color:#E74435;
+	width:90%;
+	overflow:hidden;
+	text-overflow: ellipsis;
+    white-space: nowrap;
+	margin: -0.45rem auto 0;
+}
+
+.draw .draw-btn {
+	display: block;
+	width:27%;
+	height:8rem;
+	border-radius: 20px;
+	background:url(../images/award/btn.png) no-repeat ;
+	text-decoration: none;
+	background-size:100% 100%;
+	color:#DE4739;
+	font-size:1rem;
+	float: left;
+	margin: 1.2rem 0 0 5%;
+	text-align: center;
+    line-height: 12rem;
+}
+.draw .disabled{
+	background:url(../images/award/disabled.png) no-repeat ;
+	color:#999;
+	background-size: 100% 100%;
+}
+.rule{
+	color:#fff;
+	font-size:1.5rem;
+	font-weight:bold;
+	opacity:0.6;
+	margin: 0 0 1rem 5%;
+}
+.rule-text{
+	color:#fff;
+	font-size:1rem;
+	opacity:0.6;
+	margin: 0 0 1rem 5%;
+	line-height:2rem;
+}

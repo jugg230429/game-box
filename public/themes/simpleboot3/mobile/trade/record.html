@@ -1,0 +1,560 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/trade_record.css">
+</block>
+
+<block name="body">
+    <div class="trade_record_page">
+        <div class="trade_record_header">
+            <a href="{:url('index')}" ><img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon"></a>
+            <p class="trade-record-title">交易记录</p>
+
+        </div>
+        <div class="type_down__long_hx clear"></div>
+        <div class="menu-list swiper-container">
+            <div class="swiper-wrapper">
+                <a href="javascript:;" class="menu-item active">购买</a>
+                <a href="javascript:;" class="menu-item ">出售</a>
+                <a href="javascript:;" class="menu-item ">收入</a>
+            </div>
+        </div>
+
+        <div class="trade-record-tab">
+            <div class="buy-trumpet-tips v-middle">购买的小号如何使用？<a href="{:url('record_instructions')}" class="know-detail-btn">点击了解</a></div>
+            <div class="buy-trumpet-list">
+                <ul>
+                    <volist name="order_data" id="vo">
+                        <li class="buy-trumpet-item purchased">
+                            <switch name="vo.pay_status">
+                                <case value="0">
+                                    <if condition="(time() - $vo['pay_time']) lt 300 ">
+                                        <p class="trumpet-status-box no-pay">
+                                            <span class="trumpet-status-title js-trumpetStatusTitle">待支付</span>
+                                            <span class="trumpet-date">({:get_pay_time($vo['pay_time'])})</span>
+                                            <span class="trumpet-pay-date"><span class="order-invalid-date js-orderInvalidDate" data-id="{$vo.id}" data-time="{$vo.time}"></span>后订单将失效</span>
+                                        </p>
+                                    <else/>
+                                        <p class="trumpet-status-box invalid">
+                                            <span class="trumpet-status-title">已失效</span>
+                                            <span class="trumpet-date">({:get_pay_time($vo['pay_time'])})</span>
+                                        </p>
+                                    </if>
+                                </case>
+                                <case value="1">
+                                    <p class="trumpet-status-box ">
+                                        <span class="trumpet-status-title">已购买</span>
+                                        <span class="trumpet-date">({:get_pay_time($vo['pay_time'])})</span>
+                                    </p>
+                                </case>
+                                <case value="2">
+                                    <p class="trumpet-status-box invalid">
+                                        <span class="trumpet-status-title">已失效</span>
+                                        <span class="trumpet-date">({:get_pay_time($vo['pay_time'])})</span>
+                                    </p>
+                                </case>
+                            </switch>
+                            <div class="trumpet-info-box v-middle">
+                                <a href="{:url('order_info',['id'=>$vo['id']])}">
+                                    <img src="{:cmf_get_image_url($vo['icon'])}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null" class="trumpet-game-icon">
+                                </a>
+                                <a href="{:url('order_info',['id'=>$vo['id']])}" class="trumpet-game-info">
+                                    <p class="trumpet-game-title">{$vo.title}</p>
+                                    <p class="trumpet-game-server">区服：{$vo.server_name}</p>
+                                </a>
+                                <div class="trumpet-price-box">
+                                    <p class="trumpet-price">{$vo.pay_amount}</p>
+                                    <switch name="vo.pay_status">
+                                        <case value="0">
+                                            <if condition="(time() - $vo['pay_time']) lt 300 ">
+                                                <div class="record-btn-box js-recordBtnBox">
+                                                    <div class="record-delete-btn jscancel_order" data-id="{$vo.id}">取消</div>
+                                                    <div class="to-pay-btn pay" data-id="{$vo['id']}" data-url1="{:url('api/Pay/get_wx_code',[],'','',true)}" data-url="{:url('pay',['id'=>$vo['id']],'','',true)}">前往支付</div>
+                                                </div>
+                                            <else/>
+                                                <div class="record-btn-box">
+                                                    <div class="record-delete-btn jsdelete" data-id="{$vo.id}">删除</div>
+                                                </div>
+                                            </if>
+                                        </case>
+                                        <default>
+                                            <div class="record-btn-box">
+                                                <div class="record-delete-btn jsdelete" data-id="{$vo.id}">删除</div>
+                                            </div>
+                                        </default>
+                                    </switch>
+                                </div>
+                            </div>
+                        </li>
+                    </volist>
+                </ul>
+                <empty name="order_data">
+                    <div class="no-data" >
+                        <p>暂无购买记录，快去挑选商品吧</p>
+                    </div>
+                </empty>
+            </div>
+        </div>
+        <div class="trade-record-tab" style="display: none">
+            <div class="buy-trumpet-tips v-middle">审核和出售中的小号，将无法登录<a href="{:url('rule')}" class="know-detail-btn">交易须知</a></div>
+            <div class="buy-trumpet-list">
+                <ul>
+                    <volist name="sell_data" id="vo">
+                        <li class="buy-trumpet-item">
+                            <switch name="vo.status">
+                                <case value="-1">
+                                    <p class="trumpet-status-box in-sale">
+                                        <span class="trumpet-status-title">出售中</span>
+                                        <span class="trumpet-date">({:get_pay_time($vo['create_time'])})</span>
+                                    </p>
+                                </case>
+                                <case value="0">
+                                    <p class="trumpet-status-box check-pending">
+                                        <span class="trumpet-status-title">待审核</span>
+                                        <span class="trumpet-date">({:get_pay_time($vo['create_time'])})</span>
+                                    </p>
+                                </case>
+                                <case value="1">
+                                    <p class="trumpet-status-box in-sale">
+                                        <span class="trumpet-status-title">出售中</span>
+                                        <span class="trumpet-date">({:get_pay_time($vo['create_time'])})</span>
+                                    </p>
+                                </case>
+                                <case value="2">
+                                    <p class="trumpet-status-box not-pass">
+                                        <span class="trumpet-status-title">审核不通过</span>
+                                        <span class="trumpet-date">({:get_pay_time($vo['create_time'])})</span>
+                                    </p>
+                                    <notempty name="vo.reject">
+                                        <span class="not-pass-reason">{$vo.reject}</span>
+                                    </notempty>
+                                </case>
+                                <case value="3">
+                                    <p class="trumpet-status-box finish-sale">
+                                        <span class="trumpet-status-title">已出售</span>
+                                        <span class="trumpet-date">({:get_pay_time($vo['create_time'])})</span>
+                                    </p>
+                                </case>
+                                <case value="4">
+                                    <p class="trumpet-status-box lower-shelf">
+                                        <span class="trumpet-status-title">已下架</span>
+                                        <span class="trumpet-date">({:get_pay_time($vo['create_time'])})</span>
+                                    </p>
+                                    <notempty name="vo.lower_shelf">
+                                    <span class="not-pass-reason">{$vo.lower_shelf}</span>
+                                    </notempty>
+                                </case>
+                            </switch>
+
+                            <div class="trumpet-info-box v-middle">
+                                <a href="{:url('sell_info',['id'=>$vo['id']])}">
+                                    <img src="{:cmf_get_image_url($vo['icon'])}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null" class="trumpet-game-icon">
+
+                                </a>
+                                <a href="{:url('sell_info',['id'=>$vo['id']])}" class="trumpet-game-info">
+                                    <p class="trumpet-game-title">{$vo.title}</p>
+                                    <p class="trumpet-game-server">区服：{$vo.server_name}</p>
+                                </a>
+                                <div class="trumpet-price-box">
+                                    <p class="trumpet-price">{$vo.money}</p>
+                                    <div class="record-btn-box">
+                                        <switch name="vo.status">
+                                            <case value="-1">
+<!--                                                <div class="record-edit-btn js-edit-price" data-id="{$vo.id}">改价</div>-->
+                                                <div class="record-cancel-btn jscancel" data-id="{$vo.id}">取消出售</div>
+                                            </case>
+                                            <case value="0">
+<!--                                                <a href="{:url('edit',['id'=>$vo['id']])}" class="record-edit-btn">修改</a>-->
+                                                <div class="record-cancel-btn jscancel" data-id="{$vo.id}">取消出售</div>
+                                            </case>
+                                            <case value="1">
+<!--                                                <div class="record-edit-btn js-edit-price" data-id="{$vo.id}">改价</div>-->
+                                                <div class="record-cancel-btn jscancel" data-id="{$vo.id}">取消出售</div>
+                                            </case>
+                                            <case value="2">
+<!--                                                <a href="{:url('edit',['id'=>$vo['id']])}" class="record-edit-btn">修改</a>-->
+                                                <div class="record-cancel-btn jscancel" data-id="{$vo.id}">取消出售</div>
+                                            </case>
+                                            <case value="3">
+                                                <div class="record-delete-btn js-del-sell" data-id="{$vo.id}">删除</div>
+                                            </case>
+                                            <case value="4">
+                                                <div class="record-delete-btn js-del-sell" data-id="{$vo.id}">删除</div>
+<!--                                                <div class="record-again-btn js-again-sale" data-url="{:url('edit',['id'=>$vo['id']])}">重新上架</div>-->
+                                            </case>
+                                        </switch>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </li>
+                    </volist>
+                </ul>
+                <empty name="sell_data">
+                    <div class="no-data">
+                        <p>暂无出售记录，快去发布商品吧</p>
+                    </div>
+                </empty>
+
+            </div>
+        </div >
+        <div class="trade-record-tab" style="display: none">
+            <div class="user-income-box">
+                <div class="user-total-box">
+                    <div>
+                        <p class="total-income">总收入</p>
+                        <p class="income-num">
+                            <span><empty name="profit">0.00<else/>{:null_to_0(array_sum(array_column($profit,'amount')))}</empty></span>元
+                        </p>
+                        <p class="income-tips">已发放到账户平台币余额内</p>
+                    </div>
+                </div>
+                <div class="income-explain">
+                    <p class="title">说明</p>
+                    <p>1.账号交易收入直接转成平台币，本页面仅作为统计和展示</p>
+                    <p>2.账号交易成交后会收取{:cmf_get_option('transaction_set')['fee']?:0}%(最低{:cmf_get_option('transaction_set')['min_dfee']?:0}元)的手续费</p>
+                    <p>3.交易收入为实时到账，如有延时请联系客服处理</p>
+                </div>
+                <div class="history-record-box">
+                    <div class="history-title">历史记录</div>
+                    <div class="history-record-list">
+                        <ul>
+                            <volist name="profit" id="vo">
+                                <li class="history-record-item">
+                                    <div class="v-middle">
+                                        <span class="spot"></span>
+                                        <span class="history-record-date">{$vo.create_time|date='Y-m-d H:i',###}</span>
+                                    </div>
+                                    <div class="history-info-box v-middle">
+                                        <div class="history-info">
+                                            <p class="game-name">{$vo.game_name}</p>
+                                            <p class="trumpet-account">小号：{$vo.small_account}</p>
+                                        </div>
+                                        <div class="history-money">金额：<span>{$vo.amount}</span></div>
+                                    </div>
+                                </li>
+                            </volist>
+                        </ul>
+                        <empty name="profit">
+                            <div class="no-data" >
+                                <p>暂无历史记录</p>
+                            </div>
+                        </empty>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="pop"></div>
+</block>
+<block name="script">
+    <script src="__STATIC__/js/layui/layui.js"></script>
+    <script src="__TMPL__/mobilepublic/assets/js/pop.lwx.min.js"></script>
+    <script>
+        function zeroize(value, length) {
+            length = isNaN(parseInt(length)) ? 2: parseInt(length);
+            value += '';
+            if(value.length == length) {
+                return value;
+            }
+            var count = length - value.length;
+            for(var i=0; i<count; i++) {
+                value = '0' + value;
+            }
+            return value;
+        }
+        function formatSeconds(value) {
+            var s = parseInt(value);
+            var m = 0;
+            if(s>60) {
+                m = parseInt(s/60);
+                s = parseInt(s%60);
+            }
+            var r = zeroize(s);
+            if(m>0) {
+                r = zeroize(m) + ':' + r;
+            } else {
+                r = '00:' + r;
+            }
+            return r;
+        }
+        function render(that) {
+            var parent = that.parent();
+            var record = parent.siblings('.js-trumpetStatusTitle').text('已失效')
+                .parent().removeClass('no-pay').addClass('invalid')
+                .siblings().find('.js-recordBtnBox');
+            record.find('div').remove();
+            parent.remove();
+            var id = that.attr('data-id');
+            record.html('<div class="record-delete-btn jsdelete" data-id="'+id+'">删除</div>');
+        }
+        function clock(that) {
+            var t = parseInt(that.attr('data-time'));
+            that.text(formatSeconds(t));
+            var time = setInterval(function () {
+                t--;
+                if(t<=0) {
+                    clearInterval(time);
+                    render(that);
+                }
+                that.text(formatSeconds(t));
+            },1000);
+        }
+        $(function () {
+            // 支付成功回调弹窗提示
+            var tmp_flag = "{$tmp_flag}";
+            if(tmp_flag == 1){
+                // alert('支付成功!');
+                layer.msg('购买成功!');
+            }
+
+            $('.js-orderInvalidDate').each(function () {
+               clock($(this));
+            });
+
+            $('.menu-list a').click(function () {
+                $(this).addClass("active").siblings("a").removeClass("active");
+                var index = $(this).index();
+                $('.trade-record-tab').eq(index).show().siblings(".trade-record-tab").hide()
+            });
+            //去支付
+            $(".pay").click(function () {
+                var url = $(this).data('url');
+                var url1 = $(this).data('url1');
+                var id= $(this).data('id');
+                var is_wechat = "{:cmf_is_wechat()}";
+                var is_company_weixin = "{:cmf_is_company_wechat()}";
+                if(is_wechat == 1 && !is_company_weixin){
+                    var generateHideElement = function (name, value) {
+                        var tempInput = document.createElement("input");
+                        tempInput.type = "hidden";
+                        tempInput.name = name;
+                        tempInput.value = value;
+                        return tempInput;
+                    }
+                    var form = document.createElement("form");
+                    document.body.appendChild(form);
+                    var  weixin_pay_type = generateHideElement("weixin_pay_type", 3),
+                    trade_id = generateHideElement("id", id);
+                    form.appendChild(weixin_pay_type);
+                    form.appendChild(trade_id);
+                    form.method = "post";
+                    form.action = url1;
+                    form.submit();
+                }else{
+                    $.ajax({
+                        type: 'post',
+                        dataType: 'json',
+                        url: url,
+                        async:false,
+                        success: function (data) {
+                            if (data.code == 1) {
+                                //支付返回信息统一跳转,如是支付宝支付,再行判断wap和APP(只有安卓)
+                                if(data.data.ali_app == 1){
+                                    //支付宝APP支付-通知安卓
+                                    window.mengchuang.appaliapppay(data.data.arg);//安卓
+                                    return false;
+                                }
+                                //其他URL跳转的
+                                window.location.href = data.url;
+                            }else{
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.msg('服务器故障，请稍候再试');
+                            that.removeClass('no_send');
+                        }
+                    });
+                }
+                return false;
+            })
+            //删除弹窗
+            $('body').on('click', '.jsdelete', function () {
+                var id = $(this).data('id');
+                var popwin =$(".pop").pop();
+                popwin.addClass('pop-delete').open(300,'<div class="del_box"><p>删除后该记录无法恢复，是否确认删除？</p><div class="del_btn_box z_clearfix v-middle"><a href="javascript:;" class="cancel_btn">取消</a><a href="javascript:;" class="confirm_btn">确定</a></div></div>');
+                popwin.find('.cancel_btn').click(function() {
+                    popwin.close();
+                    return false;
+                });
+                popwin.find('.confirm_btn').click(function() {
+                    $.ajax({
+                        type: 'post',
+                        dataType: 'json',
+                        url: '{:url("del_order")}',
+                        data: { id: id},
+                        success: function (data) {
+                            layer.msg(data.msg);
+                            if (data.code == 1) {
+                                setTimeout(function () {
+                                    window.location.reload();
+                                }, 1000);
+                            }
+                        },
+                        error: function () {
+                            layer.msg('服务器故障，请稍候再试');
+                            that.removeClass('no_send');
+                        }
+                    });
+                    return false;
+                });
+            })
+            //取消订单
+            $('.jscancel_order').click(function () {
+                var id = $(this).data('id');
+                var popwin =$(".pop").pop();
+                popwin.addClass('pop-delete').open(300,'<div class="del_box"><p>确定取消支付吗？</p><div class="del_btn_box z_clearfix v-middle"><a href="javascript:;" class="cancel_btn">取消</a><a href="javascript:;" class="confirm_btn">确定</a></div></div>');
+                popwin.find('.cancel_btn').click(function() {
+                    popwin.close();
+                    return false;
+                });
+                popwin.find('.confirm_btn').click(function() {
+                    $.ajax({
+                        type: 'post',
+                        dataType: 'json',
+                        url: '{:url("cancel_order")}',
+                        data: { id: id},
+                        success: function (data) {
+                            layer.msg(data.msg);
+                            if (data.code == 1) {
+                                setTimeout(function () {
+                                    window.location.reload();
+                                }, 1000);
+                            }
+                        },
+                        error: function () {
+                            layer.msg('服务器故障，请稍候再试');
+                            that.removeClass('no_send');
+                        }
+                    });
+                    return false;
+                });
+            })
+            //取消出售
+            $('.jscancel').click(function () {
+                var id = $(this).data('id');
+                var popwin =$(".pop").pop();
+                popwin.addClass('pop-cancel').open(300,'<div class="cancel-box"><div class="cancel-content cancel-content_"><p class="title">取消出售</p><p>取消出售后，小号将转回您的账号如登录未见小号，请点悬浮球切换 </p></div><div class="del_btn_box z_clearfix v-middle"><a href="javascript:;" class="cancel_btn">取消</a><a href="javascript:;" class="confirm_btn">确定</a></div></div>');
+
+                popwin.find('.cancel_btn').click(function() {
+                    popwin.close();
+                    return false;
+                });
+                popwin.find('.confirm_btn').click(function() {
+                    $.ajax({
+                        type: 'post',
+                        dataType: 'json',
+                        url: '{:url("cancel_sell")}',
+                        data: { id: id},
+                        success: function (data) {
+                            layer.msg(data.msg,{time: 2500});
+                            if (data.code == 1) {
+                                setTimeout(function () {
+                                    window.location.reload();
+                                }, 2500);
+                            }
+                        },
+                        error: function () {
+                            layer.msg('服务器故障，请稍候再试');
+                            that.removeClass('no_send');
+                        }
+                    });
+                    return false;
+                });
+            });
+            //重新上架
+            $('.js-again-sale').click(function () {
+                var url = $(this).data('url');
+                var popwin =$(".pop").pop();
+                popwin.addClass('pop-cancel').open(300,'<div class="cancel-box"><div class="cancel-content cancel-content_"><p class="title">重新上架</p><p>需修改后重新提交审核才能上架，是否确定修改 </p></div><div class="del_btn_box z_clearfix v-middle"><a href="javascript:;" class="cancel_btn">取消</a><a href="javascript:;" class="confirm_btn">确定</a></div></div>');
+
+                popwin.find('.cancel_btn').click(function() {
+                    popwin.close();
+                    return false;
+                });
+                popwin.find('.confirm_btn').click(function() {
+                    window.location.href = url;
+                    return false;
+                });
+            });
+            //改价
+            $('.js-edit-price').click(function () {
+                var id = $(this).data('id');
+                var min_price_set = {$min_fee};
+                var popwin=$(".pop").pop();
+                popwin.addClass('pop-price').open(300,'<div class="edit-price-box"><a href="javascript:;" class="js-cancel "><img src="__TMPL__/mobilepublic/assets/images/trade/common_btn_close_n.png" class="cancel-img"></a><div class="edit-price-content"><p class="title">请输入改价的金额</p><input class="edit-input" id="price" type="text" placeholder="设置售价，最低'+min_price_set+'元"></div><div class="del_btn_box z_clearfix v-middle"><a href="javascript:;" class="cancel_btn js-cancel">取消</a><a href="javascript:;" class="confirm_btn" style="color: #018FFF">确认修改</a></div></div>');
+                popwin.find('input').keyup(function() {
+                    var val=$(this).val();
+                    val2=val.replace(/^\D*(\d*(?:\.\d{0,6})?).*$/g, '$1','');
+                    $(this).val(val2);
+                });
+                popwin.find('.js-cancel').click(function() {
+                    popwin.close();
+                    return false;
+                });
+                popwin.find('.confirm_btn').click(function() {
+                    var price = $("#price").val();
+                    if(price < min_price_set){
+                        layer.msg("最低售价"+min_price_set+"元");
+                        return false;
+                    }
+                    $.ajax({
+                        type: 'post',
+                        dataType: 'json',
+                        url: '{:url("set_sell_price")}',
+                        data: { id: id,price:price},
+                        success: function (data) {
+                            layer.msg(data.msg,{time: 2500});
+                            if (data.code == 1) {
+                                setTimeout(function () {
+                                    window.location.reload();
+                                }, 2500);
+                            }
+                        },
+                        error: function () {
+                            layer.msg('服务器故障，请稍候再试');
+                            that.removeClass('no_send');
+                        }
+                    });
+                    return false;
+                });
+            })
+        });
+
+        //删除出售记录
+        $('.js-del-sell').click(function () {
+            var id = $(this).data('id');
+            var popwin =$(".pop").pop();
+            popwin.addClass('pop-cancel').open(300,'<div class="cancel-box"><div class="cancel-content"><p>删除后该记录无法恢复，确认删除吗？</p></div><div class="del_btn_box z_clearfix v-middle"><a href="javascript:;" class="cancel_btn">取消</a><a href="javascript:;" class="confirm_btn">确定</a></div></div>');
+
+            popwin.find('.cancel_btn').click(function() {
+                popwin.close();
+                return false;
+            });
+            popwin.find('.confirm_btn').click(function() {
+                $.ajax({
+                    type: 'post',
+                    dataType: 'json',
+                    url: '{:url("del_sell")}',
+                    data: { id: id},
+                    success: function (data) {
+                        layer.msg(data.msg);
+                        if (data.code == 1) {
+                            setTimeout(function () {
+                                window.location.reload();
+                            }, 1000);
+                        }
+                    },
+                    error: function () {
+                        layer.msg('服务器故障，请稍候再试');
+                        that.removeClass('no_send');
+                    }
+                });
+                return false;
+            });
+        });
+
+    </script>
+</block>

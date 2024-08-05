@@ -1,0 +1,88 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <form id="search_form" class="well form-inline fr" method="get" action="{:url('issue/platform/getapplygames',['platform_id'=>input('platform_id')])}" >
+            <input type="submit" class="btn btn-primary hidden" id="search_btn" value="搜索" />
+        </form>
+        <table class="table table-hover table-bordered">
+            <thead>
+           
+                <tr>
+                    <th>游戏名称</th>
+                    <th>分成比例(%)</th>
+					<th>修改时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                <empty name="gameLists">
+                    <tr><td colspan="3" style="text-align: center;">暂无数据</td></tr>
+                </empty>
+                <php>
+                    $sdk_version_arr = [1=>'(安卓版)',2=>'(苹果版)',3=>''];
+                </php>
+                <volist name="gameLists" id="vo">
+                    <tr>
+                        <td>{$vo['game_name']}{$sdk_version_arr[$vo['sdk_version']]}</td>
+                        <td class="editTab underline" data-title="修改分成比例" data-id="{$vo['id']}" style="color: #169BD5;text-decoration: underline;">{$vo['ratio']}</td>
+                        <td>{:date("Y-m-d H:i:s",$vo['update_time'])}</td>
+                    </tr>
+                </volist>
+            </tbody>
+        </table>
+
+        <div class="pagination">
+            {$gameLists->render()}
+        </div>
+        
+    </div>
+
+
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script type="text/javascript">
+
+        $(function(){
+
+            //设置分成比例
+            $(".editTab").click(function () {
+                var that = $(this);
+                var title = that.attr("data-title");
+                var id = that.attr('data-id');
+                var num = that.text();
+                layer.prompt({
+                    formType: 0,
+                    title: title,
+                    value: num,
+                    success: function (layero, index) {
+                        layero.find('input').attr('placeholder', '');
+                    }
+                }, function (value, index) {
+                    if (!/^(((\d|[1-9]\d)(\.\d{1,2})?)|100|100.0|100.00)$/.test(value)) {
+                        layer.msg('输入错误，0-100之间的两位小数', {time: 2000});
+                        return false;
+                    }
+                    $.ajax({
+                        async: false,
+                        url: "{:url('issue/platform/setApplyRatio')}",
+                        type: "POST",
+                        dataType: 'JSON',
+                        data: {id: id, ratio: value},
+                        success: function (result) {
+                            layer.msg(result.msg, {time: 1000}, function () {
+                                !result.code || location.reload();
+                            });
+                        },
+                        error: function () {
+                            layer.msg('服务器异常', {time: 2000});
+                        }
+                    })
+                });
+            })
+
+        });
+
+    </script>
+
+</body>
+</html>

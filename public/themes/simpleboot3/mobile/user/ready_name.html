@@ -1,0 +1,138 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/ready_name.css">
+</block>
+<block name="body">
+    <div class="ready_name_page">
+        <div class="ready_namename_header">
+            <a href="javascript:history.go(-1);" data-href="{:url('User/set')}" class="fl btn-back">
+                <img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon">
+            </a>
+            <p class="fl">实名认证</p>
+        </div>
+        <div class="game_bag_down_hx"></div>
+        <if condition="!empty($user['real_name']) and !empty($user['idcard']) ">
+            <!-- 已认证 -->
+            <div class="has_ready_name_con">
+                <p class="has_ready_name_firstline">您已进行过实名认证</p>
+                <p class="has_ready_name_secondline">真实姓名：{$user.real_name}</p>
+                <p class="has_ready_name_thirdline" style="margin-top: 0.76rem">身份证号：{:substr($user['idcard'],0,1)}****************{:substr($user['idcard'],-1)}</p>
+            </div>
+            <if condition="input('type') eq 'point'">
+                <a href="{:url('Point/signin')}">
+                    <div class="into_userset">
+                        <p>返回个人中心</p>
+                    </div>
+                </a>
+            <else/>
+                <a href="{:url('User/set')}">
+                    <div class="into_userset">
+                        <p>返回个人中心</p>
+                    </div>
+                </a>
+            </if>
+
+            <else />
+            <!-- 未认证 -->
+            <div class="ready_name_con">
+                <div class="pr"><input type="text" name="real_name" maxlength="25" placeholder="请输入您的真实姓名"><img src="__TMPL__/mobilepublic/assets/images/common_btn_delet.png" alt="" class="clear_texts fristclear_texts"></div>
+                <div class="pr"><input type="text" name="idcard"  maxlength="18" placeholder="输入身份证号，如有字母请小写" style="margin-top: 1.2rem"><img src="__TMPL__/mobilepublic/assets/images/common_btn_delet.png" alt="" class="clear_texts"></div>
+                <div class="tj_btn" style="cursor: pointer;">
+                    <p>提交</p>
+                </div>
+                <p class="ready_name_page_tap">
+                    根据国家相关法律，游戏用户需要进行实名认证。<br/>
+                    1.姓名、身份证需同属一个人<br/>
+                    2.实名认证通过后，不可更改，请如实填写<br/>
+                    3.信息仅用于认证且绝对保密<br/>
+                    4.未成年人游戏支付额度有限制
+                </p>
+            </div>
+        </if>
+
+    </div>
+</block>
+<block name="script">
+    <if condition="!empty($user['real_name']) and !empty($user['idcard']) ">
+        <else />
+        <script>
+            $(function () {
+                // 更改
+                function change_submit_btn(consa, registe_btn) {
+                    registe_btn.addClass('can_click')
+                    consa.find('input').each(function (i, n) {
+                        switch (n.type) {
+                            case 'text':
+                                if (!n.value) { registe_btn.removeClass('can_click'); return false; } break;
+                            case 'password':
+                                if (!n.value) { registe_btn.removeClass('can_click'); return false; } break;
+                            case 'checkbox':
+                                if (!n.checked) { registe_btn.removeClass('can_click'); return false; } break;
+                            default:
+                                registe_btn.addClass('can_click');
+                        }
+                    });
+                }
+                $('.ready_name_page input').keyup(function () {
+                    change_submit_btn($('.ready_name_page'), $('.tj_btn'));
+
+                });
+                $('body').on('click', '.tj_btn.can_click', function () {
+                    var type = "{:input('type')}";
+                    var realname = $.trim($('input[name=real_name]').val());
+                    var idcard = $.trim($('input[name=idcard]').val());
+
+                    if (!realname) { layer.msg('请输入您的真实姓名'); return false; }
+                    if (!idcard) { layer.msg('请输入身份证号'); return false; }
+                    if (realname && idcard) {
+                        var that = $(this);
+                        if (that.hasClass('no_send')) { return false; }
+                        that.addClass('no_send');
+                        var index = layer.msg('正在认证...', { time: 315360000000 });
+                        $.ajax({
+                            type: 'post',
+                            dataType: 'json',
+                            url: '{:url("User/realname")}',
+                            data: { real_name: realname, idcard: idcard },
+                            success: function (data) {
+                                layer.close(index);
+                                that.removeClass('no_send');
+                                layer.msg(data.msg);
+                                if (data.code == 1) {
+                                    setTimeout(function () {
+                                        if(type == 'point'){
+                                            location.href = '{:url("Point/signin")}';
+                                        }else{
+                                            location.href = '{:url("User/set")}';
+                                        }
+                                    }, 2000);
+                                }
+                            },
+                            error: function () {
+                                layer.msg('服务器故障，请稍候再试');
+                                that.removeClass('no_send');
+                            }
+                        });
+                    }
+                    return false;
+                });
+            });
+
+		 // input 右侧x号 点击清除
+		$('body').on('focus', 'input[type=text],input[type=password]', function() {
+
+			$(this).siblings('.clear_texts').css("display","block")
+
+			return false;
+		});
+		$('body').on('blur', 'input[type=text],input[type=password]', function() {
+			$(this).siblings('.clear_texts').css("display","none")
+			return false;
+		});
+		$('body').on('mousedown', '.clear_texts', function() {
+			$(this).css("display","none").siblings('input').val('').focus();
+			return false;
+		});
+        </script>
+    </if>
+</block>

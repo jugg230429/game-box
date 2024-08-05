@@ -1,0 +1,101 @@
+@charset "utf-8";
+input{outline:none;-webkit-appearance:none}
+			html{font-size:12px}
+			body{background:#ffffff;font-size:inherit}
+			i{font-style:normal;font-weight:normal}
+			a{color: #333333}
+			a{text-decoration:none}
+			.recharge_table{display:table;width:100%}
+			.recharge_table .recharge_cell{display:table-cell;vertical-align:middle;text-align:center}
+			.recharge_content{margin:0 auto}
+			.recharge_content span{display:block}
+			.recharge_money{background:#FFF}
+			.recharge_content_number{color:#FF0000;line-height:1rem}
+			.recharge_content_coin,.recharge_game_name{color:#999}
+			.recharge_content_number i{font-size:0.73rem}
+			.recharge_game{background:#FFF;font-size:1.2rem;height:3.727rem;line-height:3.737rem;border-top:2px solid #DEE2E5}
+			.recharge_game .recharge_value{padding:0 1.13rem}
+			.recharge_way{}
+			.recharge_way_title{text-align:center;font-size:0.365rem;margin-top:0.8rem;margin-bottom: 0.5rem;}
+			.recharge_way_content,.recharge_way_wrap{}
+			.recharge_way_btn{height:3.5rem;display:inline-block}
+			.recharge_way_btn img{width:6.84rem;height:6.84rem;display:inline-block;margin-top:.18rem}
+			.recharge_way_btn_alipay img{width:7.057rem;height:7.2rem;margin-top:0}
+			.platform_pop{position:absolute;top:0;left:0;width:100%;height:100%;display:none;background:rgba(0,0,0,0.8)}
+			.platform_pop_table{width:100%;height:100%}
+			.platform_box{color:#999;position:relative;top:0;left:auto;right:auto;width:9rem;display:block;margin:0 auto;background:#FFF;border-radius:.3rem}
+			.platform_pop_close{position:absolute;top:-0.2rem;right:0.5rem;color:#999}
+			.platform_pop_close img{width:0.5rem;height:0.5rem}
+			.platform_title{line-height:2rem;font-size:0.6rem}
+			.platform_content{padding:0 0.8rem;text-align:left;font-size:0.45rem}
+			.platform_notice{color:#333;line-height:1.4}
+			.platform_notice span{color:red}
+			.platform_radio{padding-top:.2rem;padding-bottom:0.2rem}
+			.platform_radio .platform_radio_item{display:block;line-height:1.8;position:relative}
+			.platform_radio_item input{position:absolute;top:0;left:0;z-index:-1;width:1.8rem;height:1.8rem}
+			.platform_radio_item input~i{width:0.5rem;height:0.5rem;background:url(../images/btn_check_n.png) center center no-repeat;background-size:100% 100%;display:inline-block;vertical-align:middle;margin-top:-.1rem;margin-right:0.2rem}
+			.platform_radio_item input:checked~i{background-image:url(../images/btn_check_s.png)}
+			.platform_btn{padding:0.2rem .8rem 1rem}
+			.platform_btn input{background:#F9AB42;color:#FFF;line-height:1.2rem;font-size:0.5rem;border:none;width:100%;border-radius:.3rem}
+			.recharge_content_title{width:100%;margin-top:0.6rem;text-align:center;font-size:0.365rem}
+			.recharge_content_number .money-icon{display:inline-block;font-size:0.365rem}
+			.goods-pay-detail{width:10rem;margin:0.2rem auto 0.5rem;height:4.38rem;background:#F6F6F6;border-radius:0.31rem;font-size:0.39rem;padding:0.1rem 0;box-sizing:border-box}
+			.goods-pay-detail p{margin:0.25rem 0}
+			.goods-title{width:3rem;text-align:right;display:inline-block}
+			.y-color{color:#FF8F19}
+			.charge-item{padding-top:0.45rem;box-sizing:border-box;display:block;width:2.32rem;height:2.53rem;border-radius:0.31rem;background:#F6F6F6;margin:0 0.12rem;font-size:0.365rem;text-align:center;position:relative}
+			.charge-item.select .select-pay{position:absolute;bottom:-0.13rem;right:-0.15rem;width:0.57rem;height:0.57rem;background:url(../images/sdk_pay_btn_choose_s@2x.png)no-repeat;background-size:100% 100%}
+			.v-middle{display:flex;align-items:center;justify-content:center}
+			.charge-item .pay-icon{width:1rem;height:1rem;margin:0 auto 0;display:block}
+			.charge-item .pay-icon.zfb-icon{background:url(../images/sdk_pay_ico_zhifubao@2x.png)no-repeat;background-size:100% 100%}
+			.charge-item .pay-icon.wx-icon{background:url(../images/sdk_pay_ico_wechat@2x.png)no-repeat;background-size:100% 100%}
+			.charge-item .pay-icon.ptb-icon{background:url(../images/sdk_pay_ico_system@2x.png)no-repeat;background-size:100% 100%}
+			.charge-item .pay-icon.bing-icon{background:url(../images/sdk_pay_ico_bangding@2x.png)no-repeat;background-size:100% 100%}
+			.charge-item .pay-title{margin:0.15rem 0;color:#666666}
+			.charge-btn{width:10rem;margin:0.8rem auto;height:1.2rem;border-radius:0.2rem;background:#18B1EA;line-height:1.2rem;text-align:center;font-size:0.42rem;color:#ffffff}
+			.coupon-pop{position: fixed; top:0;left: 0; width:100vw;height: 100vh;    background: #fff; overflow: auto;z-index:100;display: none}
+			.coupon-pop .containers_{width:100%;padding:0.52rem 1rem 2rem;box-sizing:border-box;overflow:auto}
+			.coupon-pop .coupon-list{}
+			.coupon-pop .coupon-item{width:3.94rem;height:4.747rem;background:url(../images/receive_list_bg_coupons_n.png)no-repeat;background-size:100% 100%;color:#ffffff;float:left;margin-bottom:0.34rem;position:relative}
+			.coupon-pop .coupon-item.select .select-coupon{position:absolute;bottom:0.05rem;right:0.05rem;display:block;width:1.04rem;height:1.04rem;background:url(../images/use_coupouns_btn_choose_s.png)no-repeat;background-size:100% 100%}
+			.coupon-pop .coupon-item .coupon-date{width:100%;text-align:center;height:1.04rem;font-size:0.286rem;line-height:1.04rem;color:#ffffff;position:relative}
+			.coupon-pop .coupon-item .coupon-date:after{position:absolute;bottom:0;margin:0 auto;left:0.35rem;width:3.234rem;height:1px;border-bottom:1px dotted #ffffff;content:''}
+			.coupon-pop .coupon-item .coupon-num{padding-left:0.12rem;text-align:center;font-size:1.2rem;position:relative;margin-top:0.1rem}
+			.coupon-pop .coupon-item:nth-child(2n){margin-left:0.8rem}
+			.coupon-pop .coupon-item .coupon-num span{position: relative}
+			.coupon-pop .coupon-item .coupon-num span:before{position:absolute;top:0.12rem;left:-0.32rem;font-size:0.39rem;display:inline-block;content:'￥';vertical-align:super}
+			.coupon-pop .coupon-item .coupon-condition{font-size:0.34rem;text-align:center}
+			.coupon-pop .coupon-item .coupon-btn{width:1.95rem;height:0.652rem;margin:0.4rem auto 0;font-size:0.34rem;border-radius:9.9rem;background:#fff;color:#FF7734;display: flex; align-items: center;justify-content: center;box-sizing: border-box;}
+			.coupon-pop .no-data{padding-top:3rem;text-align:center;font-size:0.4rem;color:#999999}
+			.coupon-pop .no-use-btn{width:100%;height:1.8rem;background:#ffffff;position:fixed;bottom:0;left:0}
+			.coupon-pop .no-use-btn a{width:10rem;height:1rem;margin:0 auto;line-height:1rem;text-align:center;color:#ffffff;font-size:0.417rem;display:block;background:#18B1EA;border-radius:0.2rem}
+			.coupon-pop .v-middle{display:flex;align-items:center}
+			.coupon-pop .coupon-item .radio {position: absolute;top:0;left: 0;opacity: 0;width:100%;height: 100%;  }
+			ul,li{list-style-type:none;margin: 0;padding: 0}
+			.coupon_lists_header{width:100%;height:1.2rem}
+			.coupon_lists_header .back_icon{position:absolute;top:0.35rem;left:0.25rem;width:0.25rem}
+			.coupon-list-title{width:100%;text-align:center;font-size:0.5rem;line-height:1.2rem;font-weight:500;color:#222222;margin:0}
+			.type_down__long_hx{width:100%;height:1px;background-color:#EDEEEF;position:relative;z-index:1}
+			@media screen and (orientation:portrait){
+                   .recharge_way_title {
+    text-align: center;
+    font-size: 0.365rem;
+    margin-top: 0.8rem;
+    margin-bottom: 0.5rem;
+}
+              }
+			@media screen and (orientation: landscape){ 
+			    .coupon_lists_header{height: 0.65rem;}
+			    .coupon-list-title{    font-size: 0.28rem;   line-height: 0.65rem;}
+				.coupon_lists_header .back_icon {position: absolute;top: 0.25rem;left: 0.25rem;width: 0.15rem;}
+                .recharge_content_title{    font-size: 0.21rem;    margin-top: 0.26rem;}
+                .recharge_content_number .money-icon{    font-size: 0.2rem;} height: 2.58rem;font-size: 0.26rem;    padding: 0.1rem 0;}
+                 .recharge_way_title{font-size:0.24rem;margin:0.2rem 0 ;}
+				 .goods-pay-detail {margin: 0.1rem auto 0.25rem;   font-size: 0.22rem;    height: auto;}
+                .charge-item .pay-icon {   width: 0.6rem; height: 0.6rem;}
+                 .charge-item{    font-size: 0.25rem;    height: 1.6rem;    padding-top: 0.25rem;}
+                .charge-btn{    margin: 0.2rem auto;    line-height: 0.67rem;    height: 0.67rem;font-size: 0.22rem;}
+				.recharge_content_number i {font-size: 0.4rem;}
+				.recharge_content_number{    line-height: 0.5rem;}
+				.goods-pay-detail p {  margin: 0.1rem 0;}
+			}

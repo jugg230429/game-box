@@ -1,0 +1,250 @@
+<include file="public@header" />
+</head>
+<body>
+<style>
+    .bootstrap-select:not([class*="col-"]):not([class*="form-control"]):not(.input-group-btn) {
+        width: 120px;
+    }
+    .layui-equipment-num .layui-layer-content{
+        padding: 20px;
+    }
+    .f2{
+        float: left;
+    position: relative;
+    left: 285px;
+    top: -26px;
+    color: #999;
+    font-size: 12px;
+}
+.user-remarks {
+    margin-left: -109px !important;
+    top: -40px;
+    }
+    .user-input {
+    margin-top: 5px;
+}
+
+</style>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('user/safecenter')}">隐私模式</a></li>
+            <li ><a href="{:url('user/single_end_login')}">单端登录</a></li>
+            <li ><a href="{:url('user/defense')}">防刷设置</a></li>
+        </ul>
+        <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('safecenter')}" method="post">
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active">
+
+<!--                        <div class="form-group">-->
+<!--                            <label for="input-html_cache_on" class="col-sm-2 control-label">隐私模式：</label>-->
+<!--                            <div class="col-md-6 col-sm-10">-->
+<!--                                <div class="user-input fl">-->
+<!--                                    <input type="radio"  name="privicy_mode_admin" <eq name="data.privicy_mode_admin" value="0">checked</eq> value="0">关闭-->
+<!--                                    <label class="ml50"></label>-->
+<!--                                    <input type="radio"  name="privicy_mode_admin" <eq name="data.privicy_mode_admin" value="1">checked</eq> value="1">开启-->
+<!--                                </div>-->
+<!--                                <span class="fl user-remarks">开启，管理员账号登录管理后台时，玩家的账号、手机号字段以***格式显示</span>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+                        <div class="form-group">
+                            <label for="input-html_cache_on" class="col-sm-2 control-label">账号显示：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="user-input fl">
+                                    <input type="radio"  name="account_show_admin" <neq name="data.account_show_admin" value="1">checked</neq> value="0">****
+                                    <label class="ml50"></label>
+                                    <input type="radio"  name="account_show_admin" <eq name="data.account_show_admin" value="1">checked</eq> value="1">X****X
+                                </div>
+                                <span class="fl user-remarks"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-html_cache_on" class="col-sm-2 control-label"></label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="user-input fl">
+                                    <input type="radio"  name="account_show_admin_status" <neq name="data.account_show_admin_status" value="1">checked</neq> value="0">关闭
+                                    <label class="ml50"></label>
+                                    <input type="radio"  name="account_show_admin_status" <eq name="data.account_show_admin_status" value="1">checked</eq> value="1">开启
+                                </div>
+                                <span class="fl user-remarks">开启，管理员账号登录管理后台时，玩家的账号字段以***或X***X格式显示</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-html_cache_on" class="col-sm-2 control-label">手机号显示：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="user-input fl">
+                                    <input type="radio"  name="phone_show_admin" <neq name="data.phone_show_admin" value="1">checked</neq> value="0">****
+                                    <label class="ml50"></label>
+                                    <input type="radio"  name="phone_show_admin" <eq name="data.phone_show_admin" value="1">checked</eq> value="1">X****X
+                                </div>
+                                <span class="fl user-remarks"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-html_cache_on" class="col-sm-2 control-label"></label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="user-input fl">
+                                    <input type="radio"  name="phone_show_admin_status" <neq name="data.phone_show_admin_status" value="1">checked</neq> value="0">关闭
+                                    <label class="ml50"></label>
+                                    <input type="radio"  name="phone_show_admin_status" <eq name="data.phone_show_admin_status" value="1">checked</eq> value="1">开启
+                                </div>
+                                <span class="fl user-remarks">开启，管理员账号登录管理后台时，玩家的手机号字段以***或X***X格式显示</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-html_cache_on" class="col-sm-2 control-label">角色显示：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="user-input fl">
+                                    <input type="radio"  name="role_show_admin" <neq name="data.role_show_admin" value="1">checked</neq> value="0">****
+                                    <label class="ml50"></label>
+                                    <input type="radio"  name="role_show_admin" <eq name="data.role_show_admin" value="1">checked</eq> value="1">X****X
+                                </div>
+                                <span class="fl user-remarks"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-html_cache_on" class="col-sm-2 control-label"></label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="user-input fl">
+                                    <input type="radio"  name="role_show_admin_status" <neq name="data.role_show_admin_status" value="1">checked</neq> value="0">关闭
+                                    <label class="ml50"></label>
+                                    <input type="radio"  name="role_show_admin_status" <eq name="data.role_show_admin_status" value="1">checked</eq> value="1">开启
+                                </div>
+                                <span class="fl user-remarks">开启，管理员账号登录管理后台时，玩家的角色字段以***或X***X格式显示</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-html_cache_on" class="col-sm-2 control-label">管理员账号：</label>
+                            <div class="col-md-2 col-sm-10">
+                                <php>$map = ['parent_id'=>0];</php>
+                                <select name="admin_id[]" id="admin_id" class="selectpicker form-control " data-none-selected-text="全部" multiple data-actions-box="true" data-live-search="true" data-size="8" style="width: 300px;" title="选择账号">
+                                    <volist name=":get_admin_list()" id="vo">
+                                        <option admin-id="{$vo.id}" value="{$vo.id}" <if condition="in_array($vo['id'], $admin_id)">selected</if>>{$vo.account}</option>
+                                    </volist>
+                                </select>
+                                <span class="fl f2">可多选</span>
+                            </div>
+                        </div>
+                        <div style="width: 751px;height:1px;background-color: #ddd;margin-left: 35px;margin-bottom: 30px;"></div>
+
+<!--                        <div class="form-group">-->
+<!--                            <label for="input-html_cache_on" class="col-sm-2 control-label">隐私模式：</label>-->
+<!--                            <div class="col-md-6 col-sm-10">-->
+<!--                                <div class="user-input fl">-->
+<!--                                    <input type="radio"  name="privicy_mode_promote" <eq name="data.privicy_mode_promote" value="0">checked</eq> value="0">关闭-->
+<!--                                    <label class="ml50"></label>-->
+<!--                                    <input type="radio"  name="privicy_mode_promote" <eq name="data.privicy_mode_promote" value="1">checked</eq> value="1">开启-->
+<!--                                </div>-->
+<!--                                <span class="fl user-remarks">开启，渠道账号登录推广后台时，玩家的账号、手机号字段以***格式显示</span>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+                        <div class="form-group">
+                            <label for="input-html_cache_on" class="col-sm-2 control-label">账号显示：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="user-input fl">
+                                    <input type="radio"  name="account_show_promote" <neq name="data.account_show_promote" value="1">checked</neq> value="0">****
+                                    <label class="ml50"></label>
+                                    <input type="radio"  name="account_show_promote" <eq name="data.account_show_promote" value="1">checked</eq> value="1">X****X
+                                </div>
+                                <span class="fl user-remarks"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-html_cache_on" class="col-sm-2 control-label"></label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="user-input fl">
+                                    <input type="radio"  name="account_show_promote_status" <neq name="data.account_show_promote_status" value="1">checked</neq> value="0">关闭
+                                    <label class="ml50"></label>
+                                    <input type="radio"  name="account_show_promote_status" <eq name="data.account_show_promote_status" value="1">checked</eq> value="1">开启
+                                </div>
+                                <span class="fl user-remarks">开启，渠道账号登录推广后台时，玩家的账号字段以***或X***X格式显示</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-html_cache_on" class="col-sm-2 control-label">手机号显示：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="user-input fl">
+                                    <input type="radio"  name="phone_show_promote" <neq name="data.phone_show_promote" value="1">checked</neq> value="0">****
+                                    <label class="ml50"></label>
+                                    <input type="radio"  name="phone_show_promote" <eq name="data.phone_show_promote" value="1">checked</eq> value="1">X****X
+                                </div>
+                                <span class="fl user-remarks"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-html_cache_on" class="col-sm-2 control-label"></label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="user-input fl">
+                                    <input type="radio"  name="phone_show_promote_status" <neq name="data.phone_show_promote_status" value="1">checked</neq> value="0">关闭
+                                    <label class="ml50"></label>
+                                    <input type="radio"  name="phone_show_promote_status" <eq name="data.phone_show_promote_status" value="1">checked</eq> value="1">开启
+                                </div>
+                                <span class="fl user-remarks">开启，渠道账号登录推广后台时，玩家的手机号字段以***或X***X格式显示</span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="input-html_cache_on" class="col-sm-2 control-label">角色显示：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="user-input fl">
+                                    <input type="radio"  name="role_show_promote" <neq name="data.role_show_promote" value="1">checked</neq> value="0">****
+                                    <label class="ml50"></label>
+                                    <input type="radio"  name="role_show_promote" <eq name="data.role_show_promote" value="1">checked</eq> value="1">X****X
+                                </div>
+                                <span class="fl user-remarks"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-html_cache_on" class="col-sm-2 control-label"></label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="user-input fl">
+                                    <input type="radio"  name="role_show_promote_status" <neq name="data.role_show_promote_status" value="1">checked</neq> value="0">关闭
+                                    <label class="ml50"></label>
+                                    <input type="radio"  name="role_show_promote_status" <eq name="data.role_show_promote_status" value="1">checked</eq> value="1">开启
+                                </div>
+                                <span class="fl user-remarks">开启，渠道账号登录推广后台时，玩家的角色字段以***或X***X格式显示</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-html_cache_on" class="col-sm-2 control-label">渠道账号：</label>
+                            <div class="col-md-2 col-sm-10">
+                                <php>$map = ['parent_id'=>0];</php>
+                                <select name="promote_id[]" id="promote_id" class="selectpicker form-control " data-none-selected-text="全部" multiple data-actions-box="true" data-live-search="true" data-size="8" style="width: 300px;" title="选择账号">
+                                    <volist name=":get_promote_list($map)" id="vo">
+                                        <option promote-id="{$vo.id}" value="{$vo.id}" <if condition="in_array($vo['id'], $promote_id)">selected</if>>{$vo.account}</option>
+                                    </volist>
+                                </select>
+                                <span class="fl f2">可多选（显示一级渠道，二三级默认跟随）</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn " data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                                 <!-- <a class="btn btn-default return-btn" href="javascript:history.back(-1)">{:lang('BACK')}</a> -->
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script>
+
+    </script>
+</body>
+</html>

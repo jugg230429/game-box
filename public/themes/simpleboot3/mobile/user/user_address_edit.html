@@ -1,0 +1,136 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/update_address.css">
+	<link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/ydui.css?rev=@@hash">
+   
+</block>
+<block name="body">
+    <div class="update_nickname_page">
+        <div class="update_nickname_header">
+            <a href="javascript:;" data-href="{:url('User/set')}" class="fl go_back">
+                <img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon">
+            </a>
+			<if condition="$address">
+				<p >编辑收货地址</p>
+			<else/>
+				<p >新增收货地址</p>
+			</if>
+			<a class="user-save jssave">保存</a>
+        </div>
+        <div class="game_bag_down_hx"></div>
+        <form action="" class="js-edit">
+         <div class="adreesinfo">
+		    <div class="adreesinfo-item">
+			  <span class="adreesinfo-item-name">收货人</span><input type="text"  name="address_name" class="txt" placeholder=""  value="{$address[0]}" maxlength="25">
+			</div>
+			<div class="adreesinfo-item">
+			  <span class="adreesinfo-item-name">手机号码</span><input type="text"  name="address_phone" class="txt" placeholder=""  value="{$address[1]}">
+			</div>
+			<div class="adreesinfo-item" id="city">
+			  <span class="adreesinfo-item-name">所在地区</span>
+			  <div class="addressbox" >
+			     <input type="hidden" id="consignee_address" name="consignee_address" value="{$address[2]}">
+				 <div class="txt default area consignee_address fl">{$address[2]|default=""}</div>
+				  <img src="__TMPL__/mobilepublic/assets/images/common_btn_into.png" alt="" class="into_icon fg">
+				 </div>
+			</div>
+			<div class="adreesinfo-item adreesinfo-item-name-adress">
+			  <span class="adreesinfo-item-name ">详细地址:</span>
+			 
+			</div>
+			<div class="adreesinfo-item">
+			     <textarea type="text"  rows="20"  name="address_detail" class="txt" placeholder="如道路、门牌号、小区、楼栋号、单元" >{$address[3]}</textarea>
+			</div>
+		 </div>
+
+          </form>
+    </div>
+</block>
+  
+<block name="script">
+    <script type="text/javascript" src="__TMPL__/mobilepublic/assets/js/ydui.citys.js"></script>
+    <script type="text/javascript" src="__TMPL__/mobilepublic/assets/js/ydui.js"></script>
+    <script>
+		var change = false;
+        $('textarea').bind('input propertychange', function(){
+            change = true;
+        });
+        $("body").bind('input porpertychange',function(){
+            change = true;
+        });
+        //地区联动
+		var $target = $('#city');
+		$target.citySelect();
+		$target.on('click', function (event) {
+			event.stopPropagation();
+			$target.citySelect('open');
+		});
+		$target.on('done.ydui.cityselect', function (ret) {
+			var val = ret.provance + ' -' + ret.city + ' -' + ret.area;
+			if(val){
+				$(this).find('input').val(val);
+				$(this).find('.consignee_address').removeClass('default').text(val);
+			} else {
+				$(this).find('input').val('');
+				$(this).find('.consignee_address').addClass('default').text('省份 -城市 -区县');
+			}
+		});
+
+    $(".go_back").click(function(){
+        var consignee = $("#consignee_address").val();
+        var consignee_address = "{$address[2]|default=''}";
+        if(change == false && consignee == consignee_address){
+            window.location.href = "{:url('user/user_address')}";
+            return false;
+        }
+        layer.confirm('是否保存此次编辑结果？', {
+            title: false,
+            closeBtn:0 ,
+            skin: 'save-class',
+            btn: ['不保存','保存'] //按钮
+            ,btn1: function(index, layero){
+                window.location.href = "{:url('user/user_address')}";
+            }
+            ,btn2: function(index, layero){
+                $.ajax({
+                    url:"{:url('user_address_edit')}",
+                    type:'post',
+                    data:$('.js-edit').serialize(),
+                    success:function (res) {
+                        if(res.code==1){
+                            layer.msg(res.msg,{time:500},function(){
+                                window.location.href = "{:url('user/user_address')}";
+                            })
+                        }else{
+                            layer.msg(res.msg);
+                        }
+                    },error(){
+                        layer.msg('服务器异常，请稍后再试');
+                    }
+                })
+            }
+        })
+    })
+
+
+    $(".jssave").click(function(){
+		$.ajax({
+			url:"{:url('user_address_edit')}",
+			type:'post',
+			data:$('.js-edit').serialize(),
+			success:function (res) {
+				if(res.code==1){
+					layer.msg(res.msg,{time:500},function(){
+						location.href="{:url('user/user_address')}"
+					})
+				}else{
+					layer.msg(res.msg);
+				}
+			},error(){
+				layer.msg('服务器异常，请稍后再试');
+			}
+		})
+	})
+     
+    </script>
+</block>

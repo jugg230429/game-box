@@ -1,0 +1,194 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/select2.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/new_select2.css" type="text/css" />
+    <link href="__TMPL__/channelwappublic/assets/css/welfare.css" type="text/css" rel="stylesheet" />
+</block>
+<block name="body">
+    <div class="page-container">
+        <header>
+            <a href="javascript:history.back(-1);" class="back-btn"></a>
+            <div style="width: 100%;height: 100%" class="v-middle h-middle">
+                <p class="header-title titleText">我的福利</p>
+                <a href="javascript:;" class="tips-pop-btn changeTipsBtn"><img src="__TMPL__/channelwappublic/assets/images/common/shouyi_wenhao.png" alt=""></a>
+            </div>
+        </header>
+        <div class="page-content">
+            <div class="search-box">
+                <div class="search-item">
+                        <select id="game_id" class="select_gallery" data-placeholder="来源游戏">
+                            <option value="0" >选择游戏</option>
+                            <volist name=":get_game_list('id,game_name')" id="vo">
+                                <option value="{$vo.id}" <if condition="input(game_id) eq $vo['id']">selected</if>>{$vo.game_name}</option>
+                            </volist>
+                        </select>
+                </div>
+            </div>
+            <div class="table-box">
+                <table>
+                    <tbody>
+                    <tr class="table-title">
+                        <th>游戏</th>
+                        <th>充值返利</th>
+                        <th>会长代充统一首充折扣</th>
+                        <th>会长代充统一续充折扣</th>
+                        <th>会长代充渠道首充折扣</th>
+                        <th>会长代充渠道续充折扣</th>
+<!--                        <th>首充折扣</th>-->
+<!--                        <th>续充折扣</th>-->
+                    </tr>
+                    </tbody>
+                    <tbody id="welfareload">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="pop"></div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/select2.min.js"></script>
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/pop.lwx.min.js"></script>
+    <script>
+        $(function () {
+            $('.header-title').click(function () {
+                location.href=$(this).data("url");
+            });
+            $(".select_gallery").select2({});
+            $('body').on('click','.tips-pop-btn',function () {
+                var tips_prop = $(".pop").pop();
+                var that = $(this);
+                tips_prop.addClass("tips-prop-pop").open(300,'<div class="descriptionContent"><p class="content-title">我的福利</p><p class="content-item">包含渠道享受的会长代充折扣，推广渠道下的玩家首充续充享受的充值折扣、充值返利优惠；渠道福利需平台设置才可享受，如若没有，则不享受福利。</p></div></div><div class=" konwBtn"><a href="javascript:;" class="pop-btn cancel-btn footerButton">知道了</a></div>');
+                tips_prop.find('.cancel-btn').click(function() {
+                    tips_prop.close();
+                    return false;
+                });
+            })
+
+        })
+    </script>
+    <script>
+        var itemIndex = 0;
+        var game_id = 0;
+        var lwx = window.lwx || {};
+        lwx.ready = true;
+        lwx.width = $(window).width();
+        lwx.height = $(window).height();
+        lwx.number = {welfare:1};
+        lwx.row = {welfare:15};
+        lwx.http = {
+            getJSON:function(url,callback){
+                $.getJSON(url + '&v=' + Date.now(),function(data){
+                    callback(data);
+                });
+            },
+            postJSON:function(url,args,callback) {
+                $.post(url + '&v=' + Date.now(), args, function(data) {
+                    callback(data);
+                },"json")
+            },
+        };
+        lwx.url ={
+            welfare:'{:url("Promote/get_welfare")}',
+        };
+        lwx.page = {
+            welfare:function(){
+                if(lwx.number.welfare) {
+                    lwx.http.getJSON(lwx.url.welfare+'?game_id='+game_id+'&row='+lwx.row.welfare+'&page='+lwx.number.welfare,function(data) {
+                        var hotload = $('#welfareload');
+                        if(data && data.length) {
+                            var html = '';
+                            for (var i in data) {
+                                html += '<tr class="child-channel-item">';
+                                html += '<td class="channel-name">'+data[i].game_name+'</td>';
+                                if(data[i].status == undefined){
+                                    html += '<td class="channel-date">--</td>';
+                                }else{
+                                    if(data[i].status == 0){
+                                        html += '<td class="channel-date">'+data[i].ratio+'</td>';
+                                    }else{
+                                        html += '<td class="channel-date">'+data[i].money+'-'+data[i].ratio+'</td>';
+                                    }
+                                }
+                                if(data[i].discount == undefined){
+                                    html += '<td class="channel-date">--</td>';
+                                }else{
+                                    html += '<td class="channel-date">'+data[i].discount+'折'+ '</td>';
+                                }
+                                if(data[i].continue_discount == undefined){
+                                    html += '<td class="channel-date">--</td>';
+                                }else{
+                                    html += '<td class="channel-date">'+data[i].continue_discount+'折'+ '</td>';
+                                }
+                                if(data[i].promote_discount_first == undefined){
+                                    html += '<td class="channel-date">--</td>';
+                                }else{
+                                    html += '<td class="channel-date">'+data[i].promote_discount_first+'折'+'</td>';
+                                }
+                                if(data[i].promote_discount_continued == undefined){
+                                    html += '<td class="channel-date">--</td>';
+                                }else{
+                                    html += '<td class="channel-date">'+data[i].promote_discount_continued+'折'+'</td>';
+                                }
+                                html += '</tr>';
+                            }
+                            hotload.append(html);
+                            hotload.find('.jsdropload').remove();
+                            if(data.length >= lwx.row.welfare) {
+                                lwx.number.welfare++;
+                                lwx.ready = true;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.welfare = false;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                        } else {
+                            if(lwx.number.welfare==1){
+                                hotload.html('').append('<p class="no_invest_info jsdropload">~空空如也~</p>');
+                            } else{
+                                hotload.find('.jsdropload').remove();
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                            lwx.number.welfare = false;
+                        }
+                    });
+                }
+            }
+        };
+        pageChange();
+        function pageChange() {
+            lwx.page.welfare();
+        }
+        function pageScroll(scrollTop, boxHeight, maxScrollHeight) {
+            if (scrollTop + boxHeight >= maxScrollHeight - 50) {
+                if (lwx.ready) {
+                    lwx.ready = false;
+                    lwx.page.welfare();
+                }
+            }
+        }
+        window.onscroll = function() {
+            var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+            pageScroll(scrollTop, lwx.height, $(document).height())
+        }
+        $(function () {
+            $('.game-menu-box a').click(function () {
+                $(this).addClass("active").siblings().removeClass("active");
+                var index = $(this).index();
+                $('.menu-tab').eq(index).show().siblings(".menu-tab").hide();
+                itemIndex = index;
+                location.hash = index;
+            });
+            $("#game_id").change(function () {
+                game_id = $("#game_id").val();
+                $("#welfareload").empty();
+                lwx.number.welfare = 1;
+                pageChange();
+            })
+        })
+        $(window).on("hashchange", function() {
+            pageChange();
+        });
+    </script>
+</block>

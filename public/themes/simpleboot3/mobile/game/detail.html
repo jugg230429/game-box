@@ -1,0 +1,880 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link href="__TMPL__/mobilepublic/download/css/mobiledown.css" rel="stylesheet">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/game_detail.css">
+    
+</block>
+
+<block name="body">
+    <div class="game_detail_page">
+        <div class="game_detail_page_header">
+            <a href="{:url('mobile/index/index')}" class="fl"><img src="__TMPL__/mobilepublic/assets/images/back_2.png" alt="" class="fl back_icon"></a>
+            <p class="fl game_detail_page_header_title">{$data['game_name']}</p>
+            <a   <eq name="session.login_auth" value="1">  href="{:url('user/game')}" class="fg" <else/> class="fg login"</eq> ><img src="__TMPL__/mobilepublic/assets/images/btn_downloads.png" alt="" class="fl down_icon"></a>
+            <if condition="$session['login_auth'] eq 1">
+                <a href="javascript:void(0);" class="fg js_collect collect_btn" >
+                    <empty name="is_collect">
+                        <img src="__TMPL__/mobilepublic/assets/images/icon_normal_shoucang@3x.png" alt="" class="fl collect_icon down_icon" >
+                        <else/>
+                        <img src="__TMPL__/mobilepublic/assets/images/icon_selected_yishoucang@3x.png" alt="" class="fl collect_icon down_icon">
+                    </empty>
+                </a>
+                <else/>
+                <a class="fg login collect_btns"><img src="__TMPL__/mobilepublic/assets/images/icon_normal_shoucang@3x.png" alt="" class="fl down_icon collect_icon"></a>
+            </if>
+            <div class="game_detail_page_header_title_info">
+                <div class="fl game_detai_header_info_img">
+                    <notempty name="data.icon">
+                    <img src="{:cmf_get_image_url($data['icon'])}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                    </notempty>
+                </div>
+                <div class="fl game_detai_header_info_cons">
+                    <div class="game-detail-info-wrap">
+                    <div class="game-detail-info-wrap-cell">
+                    <p class="game_detai_header_info_cons_title">{$data['game_name']}</p>
+                    <notempty name="data.tag_name">
+                    <div class="game_detai_header_info_cons_btnground">
+                        <notempty name="$data['tag_name'][0]"><div class="fl cons_btnground_one"><p>{$data['tag_name'][0]}</p></div></notempty>
+                        <notempty name="$data['tag_name'][1]"><div class="fl cons_btnground_two"><p>{$data['tag_name'][1]}</p></div></notempty>
+                        <notempty name="$data['tag_name'][2]"><div class="fl cons_btnground_three"><p>{$data['tag_name'][2]}</p></div></notempty>
+                    </div>
+                    </notempty>
+                    <p class="game_detai_header_info_cons_down">
+                        <span class="game_detai_header_info_cons_type">{$data['game_type_name']}</span>
+                        <eq name="data.sdk_version" value="3">
+                            <span class="cons_down_fgx">|</span><span>{:get_simple_number($data['dow_num'])}人在玩</span>
+                            <else/>
+                            <span class="cons_down_fgx">|</span><span>{:get_simple_number($data['dow_num'])}人下载</span>
+                            <span class="cons_down_fgx">|</span><span><eq name="data.down_port" value="1">{$data['game_size']}<else/>{$data['game_address_size']}MB</eq></span>
+                        </eq>
+                    </p>
+                    </div>
+                    </div>
+                </div>
+                <div class="fg game_detail_page_remark">
+                    <p>{:number_format($data['game_score'],1)}分</p>
+                </div>
+            </div>
+        </div>
+        <div class="rebate-discount-box v-middle">
+            <if condition="$discount_show_status neq '0'">
+                <a href="{:url('game_detail_discount',['id'=>$data['id']])}" class="rebate-discount-btn"></a>
+            </if>
+            <if condition="$coupon_show_status neq '0'">
+            <a href="javascript:;" class="rebate-coupon-btn js-coupon-btn  <eq name="session.login_auth" value="0">login</eq>"></a>
+            </if>
+        </div>
+        <div class="game_detail_coninfo">
+            <!-- 轮播图 -->
+            <div class="swiper-container game_detail_imgground">
+                <div class="swiper-wrapper">
+                    <notempty name="$data['screenshot']">
+                        <volist name="$data['screenshot']" id="vo">
+                            <div class="swiper-slide">
+                                <img src="{:cmf_get_image_url($vo)}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                            </div>
+                        </volist>
+                        <else/>
+                        <div class="swiper-slide">
+                        </div>
+                    </notempty>
+
+
+                </div>
+            </div>
+            <!-- 内容 -->
+            <div class="game_detail_coninfo_con">
+                <volist name="$data['introduction']" id="introduction">
+                    <if condition="!empty(trim($introduction))">
+                    <div class="game_detail_coninfo_con_item clear">
+                        <div class="game_detail_coninfo_dot fl"></div>
+                        <p class=" game_detail_coninfo_right">{$introduction}</p>
+                    </div>
+                    </if>
+                </volist>
+
+                <div class="game_detail_coninfo_con_item clear">
+
+                </div>
+            </div>
+            <!-- <div class="game_detail_coninfo_con">
+                <div class="game_detail_item_titles recharge_title">
+                    <img src="__TMPL__/mobilepublic/assets/images/icon_fanli.png" alt="" class="fl">
+                    <p class="fl textRecharge">充值返利</p>
+                </div>
+                <p class="oneDayRebate">单日单笔充值返利，不可累计 (充值后自动发放绑币)</p>
+                <div>
+                    <ul class="recharge">
+                        <li> <img src="__TMPL__/mobilepublic/assets/images/ico_xing.png" alt="">充值499元及以上，返利<span class="percent">30%</span></li>
+                        <li> <img src="__TMPL__/mobilepublic/assets/images/ico_xing.png" alt="">充值999元及以上，返利<span class="percent">50%</span></li>
+                        <li> <img src="__TMPL__/mobilepublic/assets/images/ico_xing.png" alt="">充值2999元及以上，返利<span class="percent">80%</span></li>
+                        <li> <img src="__TMPL__/mobilepublic/assets/images/ico_xing.png" alt="">充值4999元及以上，返利<span class="percent">120%</span></li>
+                        <li> <img src="__TMPL__/mobilepublic/assets/images/ico_xing.png" alt="">充值9999元及以上，返利<span class="percent">150%</span></li>
+                        <li> <img src="__TMPL__/mobilepublic/assets/images/ico_xing.png" alt="">充值10000元及以上，返利<span class="percent">200%</span></li>
+                    </ul>
+                </div>
+                <div class="long_fengexian chargeFenge"></div>
+                <div class="game_detail_item_titles recharge_title">
+                    <img src="__TMPL__/mobilepublic/assets/images/icon_czzk.png" alt="" class="fl">
+                    <p class="fl textRecharge">充值折扣</p>
+                </div>
+                <p class="oneDayRebate">单笔充值折扣</p>
+                <div>
+                    <ul class="recharge">
+                        <li> <img src="__TMPL__/mobilepublic/assets/images/ico_xing.png" alt="">首次充值<span class="percent">5.0折</span></li>
+                        <li> <img src="__TMPL__/mobilepublic/assets/images/ico_xing.png" alt="">续充<span class="percent">7.5折</span></li>
+                    </ul>
+                </div>
+                <div class="long_fengexian chargeFenge"></div>
+                <div class="game_detail_item_titles recharge_title">
+                    <img src="__TMPL__/mobilepublic/assets/images/icon_bbzk.png" alt="" class="fl">
+                    <p class="fl textRecharge">绑币折扣</p>
+                </div>
+                <p class="oneDayRebate">单日单笔绑币折扣</p>
+                <div>
+                    <ul class="recharge">
+                        <li> <img src="__TMPL__/mobilepublic/assets/images/ico_xing.png" alt="">充值绑定平台币<span class="percent">8.5折</span></li>
+                    </ul>
+                </div>
+
+
+            </div>  -->
+        </div>
+        <notempty name="data.vip_table_pic">
+            <div class="fengeshixian"></div>
+            <div class="game_detail_gameopen">
+                <div class="zhanweidiv"></div>
+                <div class="game_detail_item_titles">
+
+                    <!-- <img src="{:cmf_get_image_url($data['vip_table_pic'])}" alt=""> -->
+                    <a href="{:cmf_get_image_url($data['vip_table_pic'])}">
+
+                        <img src="__TMPL__/mobilepublic/assets/images/VIP.png" alt="" class="fl vipImage">
+
+
+                        <p class="fl vipText">《 {$data['game_name']} 》VIP表</p>
+                        <img src="__TMPL__/mobilepublic/assets/images/common_btn_xiala.png" alt="" class="jiantouIcon">
+                    </a>
+                </div>
+            </div>
+        </notempty>
+        <!-- <div class="fengeshixian"></div>
+        <div class="detailContent">
+            <div class="zhanweidiv"></div>
+            <volist name="$data['introduction']" id="introduction">
+                    <if condition="!empty(trim($introduction))">
+                    <div class="game_detail_coninfo_con_item clear newClear">
+                        <div class="game_detail_coninfo_dot fl"></div>
+                        <p class=" game_detail_coninfo_right">{$introduction}</p>
+                    </div>
+                    </if>
+                </volist>
+
+                <div class="game_detail_coninfo_con_item clear newClear">
+
+                </div>
+        </div> -->
+
+        <!-- 游戏开服/礼包/活动 -->
+        <div class="fengeshixian"></div>
+        <notempty name="$server">
+        <div class="game_detail_gameopen">
+            <div class="zhanweidiv"></div>
+            <div class="game_detail_item_titles">
+                <img src="__TMPL__/mobilepublic/assets/images/icon_kaifu.png" alt="" class="fl">
+                <p class="fl">游戏开服</p>
+            </div>
+            <div class="game_detail_gameopen_con clear">
+                <volist name="$server" id="server">
+                <div class='game_detail_gameopen_item <empty name="server.today">gameopen_item_yest</empty>' >
+                    <div class="fl game_detail_gameopen_item_dot"></div>
+                    <p class="fl opengameinfo"><span>{:date('m-d',$server['start_time'])}</span><span>{:date('H:i',$server['start_time'])}</span><span>{$server['today']}</span></p>
+                    <div class="fg btn_game_open"><p>{$server['server_name']}</p></div>
+                </div>
+                </volist>
+            </div>
+        </div>
+    </notempty>
+    <notempty name="gift">
+        <!-- 礼包领取弹窗 -->
+        <div class="bag_open_modals">
+            <img src="__TMPL__/mobilepublic/assets/images/common_btn_close_n.png" alt="" class="bag_open_modals_closeimg">
+            <p class="bag_open_modals_firstline">礼包领取成功</p>
+
+            <p style="width: 100%;text-align: center;margin-top: 1.2rem;position: relative"><span>激活码：</span><input type="text" id="novice" readonly value=""></p>
+            <p class="tap">可在[我的礼包]查看</p>
+            <div class="bag_open_modals_btn copy" data-clipboard-text="">
+                <p>复制</p>
+            </div>
+        </div>
+        <!-- 礼包详情弹窗 -->
+        <div class="bag_infocon_modal">
+            <div class="bag_infocon_modal_header">
+                <p>礼包详情</p>
+            </div>
+            <img src="__TMPL__/mobilepublic/assets/images/common_btn_close_n.png" alt="">
+            <div style="padding-bottom:0.8rem">
+                <p class="game_bag_con_title">礼包内容</p>
+                <p class="game_bag_con_info" id="gift_digest"></p>
+                <p class="game_bag_con_title">使用说明</p>
+                <p class="game_bag_con_info" id="gift_desribe"></p>
+                <p class="game_bag_con_title">有效期</p>
+                <p class="game_bag_con_info" id="gift_time"></p>
+            </div>
+        </div>
+        <div class="long_fengexian"></div>
+        <div class="game_detail_bag">
+            <div class="zhanweidiv"></div>
+            <div class="game_detail_item_titles">
+                <img src="__TMPL__/mobilepublic/assets/images/icon_libao.png" alt="" class="fl">
+                <p class="fl">游戏礼包</p>
+            </div>
+            <volist name="gift" id="gift">
+            <div class="game_detail_bagitem clear">
+                <div>
+                    <div class="fl game_detail_infos">
+                        <p class="game_detail_titles">{$gift['giftbag_name']}</p>
+                        <p class="game_detail_summny">剩余：{:null_to_0($gift['remain_num']/$gift['novice_num']*100)}% <span class="gamebag_use_info" data-digest="{$gift['digest']}" data-desribe="{$gift['desribe']}" data-time="{$gift['time']}" >使用说明>></span></span></span>
+                        </p>
+                    </div>
+                    <button class="fg lingqu_btn <if condition='$gift[received] eq 1'>copy</if>" data-clipboard-text="{$gift['novice']}" data-id="{$gift['gift_id']}">
+                        <if condition="$gift['received'] eq 1">
+                            <input type="text" readonly class="fuzhu_con" value="{$gift['novice']}">
+                            复制
+                        <else/>
+                            <if condition="$session['login_auth'] eq 1">
+                                <lt name="$session['vip_level']" value="$gift['vip']">
+                                    <span class="disabled">领取</span>
+                                <else/>
+                                    领取
+                                </lt>
+                            <else/>
+                                领取
+                            </if>
+                        </if>
+                    </button>
+                </div>
+                <p class="clear game_detail_bag_con">{$gift['digest']}</p>
+            </div>
+            <div class="long_fengexian"></div>
+            </volist>
+        </div>
+    </notempty>
+    <notempty name="article">
+        <div class="alone_activity">
+            <div class="alone_activity_idv"></div>
+            <div class="game_detail_item_titles">
+                <img src="__TMPL__/mobilepublic/assets/images/icon_huodong.png" alt="" class="fl">
+                <p class="fl">独家活动</p>
+            </div>
+
+            <volist name="article" id="article">
+            <div class="game_detail_item_con clear">
+                <div class="game_detail_item_con_btn">
+                    <switch name="$article.category_id">
+                        <case value="2"><p>资讯</p></case>
+                        <case value="3"><p>活动</p></case>
+                        <case value="4"><p>公告</p></case>
+                        <case value="5"><p>攻略</p></case>
+                    </switch>
+                </div>
+                <a class="game_detail_item_con2" href="{:url('article/detail',['id'=>$article.id])}">
+                <div class="game_detail_item_con_title fl">
+                    <p>{$article['post_title']}</p>
+                </div>
+                <div class="game_detail_item_con_into">
+                    <img src="__TMPL__/mobilepublic/assets/images/common_btn_xiala.png" alt="" class="game-detail-arrow">
+                </div>
+                </a>
+            </div>
+            </volist>
+
+            <div class="alone_activity_idv"></div>
+        </div>
+    </notempty>
+        <div class="zhanweidiv"></div>
+        <!-- 你可能喜欢 -->
+        <div class="maybe_like">
+            <notempty name="like">
+
+            <div class="zhanweidiv"></div>
+            <div class="maybe_like_firstline">
+                <p class="maybe_like_firstline_left fl">你可能喜欢</p>
+                <p class="maybe_like_firstline_right fl" data-type_id="{$data['game_type_id']}" data-game_id="{$data['id']}" data-page="2">换一批</p>
+            </div>
+            <div class="maybe_like_gamecon">
+                <volist name="like" id="like">
+                    <a href="{:url('detail',['game_id'=>$like['id']])}">
+                    <div class='fl maybe_like_gamecon_item <neq name="$key" value="0">other_gamecon_item</neq> '>
+                        <div>
+                            <notempty name="like.icon">
+                            <img src="{:cmf_get_image_url($like['icon'])}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                            </notempty>
+                        </div>
+                        <p>{$like['relation_game_name']}</p>
+                    </div>
+                    </a>
+                </volist>
+
+            </div>
+            </notempty>
+            <eq name="promote_id" value='0'>
+                <eq name="data.sdk_version" value="3">
+                    <div class="start-game start-game-h5 js-start-game-h5">
+
+                        <div class="down_load_frame">
+                            <if condition="get_weiduan_down_status($data['relation_game_id'],get_devices_type(),MOBILE_PID) eq true">
+                                <a <eq name="session.login_auth" value="1">class="play_game" play-id="{$data['relation_game_id']}" play-url="{:url('Game/open_game',[],false)}?game_id={$data['relation_game_id']}"</eq> >
+                                <div data-href="{:url('Game/open_game',[],false)}?game_id={$data['relation_game_id']}" class='down_load_btn h5_down_load_btn h5_down_load_btn_play <eq name="session.login_auth" value="0">login</eq> '>去玩</div>
+                                </a>
+                                <a  class="down_game" href="javascript:;" down-id="{$data['relation_game_id']}" down-version="3" down-url="{:url('Downfile/weiduan_down',['game_id'=>$data['relation_game_id'],'sdk_version'=>get_devices_type()])}" >
+                                <div class='down_load_btn h5_down_load_btn '>下载</div>
+                                </a>
+                                <else/>
+                                <a <eq name="session.login_auth" value="1">class="play_game" play-id="{$data['relation_game_id']}" play-url="{:url('Game/open_game',[],false)}?game_id={$data['relation_game_id']}"</eq> >
+                                <div data-href="{:url('Game/open_game',[],false)}?game_id={$data['relation_game_id']}" class='down_load_btn h5_down_load_btn h5_down_load_btn_play <eq name="session.login_auth" value="0">login</eq> '>去玩</div>
+                                </a>
+                                <!--<div class="down_load_btn h5_down_load_btn" style="background-color: #B2B2B2!important">下载微端包</div>-->
+                            </if>
+                        </div>
+                        <div class="down_load_frame">
+                            <else/>
+                            <div class="start-game start-game-mobile">
+                                <if condition="get_down_status2($data.relation_game_id,get_devices_type()) eq true">
+                                    <a class="down_game" href="javascript:;" down-id="{$data['relation_game_id']}" down-version="3" down-url="{:url('Downfile/down',['game_id'=>$data['relation_game_id'],'sdk_version'=>get_devices_type()])}" >
+                                    <div class="down_load_frame"><div class='down_load_btn '>立即下载</div></div>
+                                    </a>
+                                    <else/>
+                                    <div class="down_load_frame"> <div class="down_load_btn" style="background-color: #B2B2B2!important">立即下载</div></div>
+                                </if>
+                            </div>
+                </eq>
+                <else/>
+                <eq name="data.sdk_version" value="3">
+                    <div class="start-game start-game-h5 js-start-game-h5">
+
+                        <div class="down_load_frame">
+                            <if condition="get_weiduan_down_status($data['relation_game_id'],get_devices_type(),MOBILE_PID) eq true">
+                                <a <eq name="session.login_auth" value="1">href="{:url('Game/open_game',[],false)}?game_id={$data['relation_game_id']}&pid={$promote_id}"</eq> >
+                                <div data-href="{:url('Game/open_game',[],false)}?game_id={$data['relation_game_id']}&pid={$promote_id}" class='down_load_btn h5_down_load_btn h5_down_load_btn_play <eq name="session.login_auth" value="0">login</eq> '>去玩</div>
+                                </a>
+                                <a class="down_game" href="javascript:;" down-id="{$data['relation_game_id']}" promote_id="{$promote_id}" down-version="3" down-url="{:url('Downfile/weiduan_down',['game_id'=>$data['relation_game_id'],'sdk_version'=>get_devices_type(),'promote_id'=>$promote_id])}" >
+                                <div class='down_load_btn h5_down_load_btn '>下载</div>
+                                </a>
+                                <else/>
+                                <a <eq name="session.login_auth" value="1">href="{:url('Game/open_game',[],false)}?game_id={$data['relation_game_id']}&pid={$promote_id}"</eq> >
+                                <div data-href="{:url('Game/open_game',[],false)}?game_id={$data['relation_game_id']}" class='down_load_btn h5_down_load_btn h5_down_load_btn_play <eq name="session.login_auth" value="0">login</eq> '>去玩</div>
+                                </a>
+                                <!--<div class="down_load_btn h5_down_load_btn" style="background-color: #B2B2B2!important">下载微端包</div>-->
+                            </if>
+                        </div>
+                        <div class="down_load_frame">
+                            <else/>
+                            <div class="start-game start-game-mobile">
+                                <if condition="get_down_status2($data.relation_game_id,get_devices_type()) eq true">
+                                    <a  class="down_game" href="javascript:;" down-id="{$data['relation_game_id']}" promote_id="{$promote_id}" down-version="3" down-url="{:url('Downfile/down',['game_id'=>$data['relation_game_id'],'sdk_version'=>get_devices_type(),'promote_id'=>$promote_id])}" >
+                                    <div class="down_load_frame"><div class='down_load_btn'>立即下载</div></div>
+                                    </a>
+                                    <else/>
+                                    <div class="down_load_frame"> <div class="down_load_btn" style="background-color: #B2B2B2!important">立即下载</div></div>
+                                </if>
+                            </div>
+                </eq>
+            </eq>
+        </div>
+
+    </div>
+    <div class="swiper-box">
+
+         <div class="swiper-container gameBottom">
+            <div class="swiper-wrapper">
+                <notempty name="$data['screenshot']">
+                    <volist name="$data['screenshot']" id="vo">
+                        <div class="swiper-slide">
+                            <img src="{:cmf_get_image_url($vo)}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null" class="swiperBoxImg">
+                        </div>
+                    </volist>
+                    <else/>
+                    <div class="swiper-slide">
+                    </div>
+
+                </notempty>
+            </div>
+            <div class="swiper-pagination"></div><!--分页器。如果放置在swiper-container外面，需要自定义样式。-->
+        </div>
+    </div>
+
+    <div class="wechat" style="z-index: 99999;overflow:hidden;position:fixed;left:0;top:0;">
+      <div class="wechat-tip">
+         <img src="__TMPL__/mobilepublic/download/img/wechat_text.png">
+      </div>
+          <img src="__TMPL__/mobilepublic/assets/images/pg_jiantou.png" class="wechat-rightimg">
+          <div class="wechat-step" ><span class="number">1</span><span>点击右上角的"<font class="coloryellow point">...</font>"按钮</span></div>
+          <div class="clear"></div>
+          <div class="wechat-step"><span class="number">2</span><span>选择在<font class="coloryellow">浏览器</font>中打开</span></div>
+   </div>
+
+
+   <!-- 付费下载弹窗 -->
+   <div class="popbg hide">
+    <div class="popbox">
+      <span class="close" id="close"></span>
+      <div class="pop-head">选择支付方式</div>
+      <div class="pop-body">
+        <div class="choose-method">
+            <if condition="pay_type_status('wxscan') eq 1">
+                <li class="mwechat" data-method="wxpay" data-game_id="{$data['id']}" >微信支付</li>
+            </if>
+            <if condition="get_pay_type_set('zfb')['status'] eq 1">
+                <li class="mapply" data-method="alipay" data-game_id="{$data['id']}" >支付宝支付</li>
+            </if>
+        </div>
+        <div class="choose-confirm hide">
+          <a href="javascript:;"><span class="copy" data-clipboard-target=".phone">复制</span></a>
+          <p>当前设备信息</p>
+          <span class="phone">
+            <p>{:get_phone_brand()}</p>
+            <p >{$user_agent_md5}</p>
+          </span>
+          <p>您可以获得：</p>
+          <p class="version">游戏: {$data['game_name']}</p>
+          <p class="blue">安装说明：</p>
+          <p>1.不同设备需要分别付费安装，请确认好常用设备 <br>2.下载安装或支付问题,请<span class="blue xgkf">联系客服</span></p>
+          <div class="csbtn">确 定</div>
+        </div>
+      </div>
+        <input type="hidden" class="pay_method" name="pay_method" value="alipay"/>
+    </div>
+  </div>
+
+
+</block>
+<block name="script">
+    <!-- <script src="__JS__/clipboard.min.js"></script> -->
+    <script src ="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+
+    <script>
+        $(function () {
+            $(".down_game").click(function () {
+                var down_url = $(this).attr('down-url');
+                var down_id = $(this).attr('down-id'); // relation_game_id
+                var down_version = $(this).attr('down-version');
+                var promote_id = $(this).attr('promote_id');
+                var down_flag = 0;
+                var down_flag2 = 0;
+                 // 判断ios超级签游戏是否需要付费下载
+                 $.ajax({
+                    url: "{:url('Downfile/checkiosPayDownload')}",
+                    type: 'post',
+                    dataType: 'json',
+                    async:false,
+                    data: {game_id: down_id,promote_id:promote_id},
+                    success: function (res) {
+                        if (res.code == 1) {
+                            // 显示付费弹窗
+                            $('.popbg').removeClass('hide');
+                            return false;
+
+                        } 
+                        if(res.code != 2){
+                            layer.msg(res.msg);
+                            return false;
+                        }
+                        down_flag = 1;
+                        // 可以直接下载
+                       
+                    }, error() {
+                        layer.msg('服务器错误');
+                            return false;
+                    }
+                })
+
+                //请求
+                $.ajax({
+                    url: "{:url('Downfile/get_ban_status')}",
+                    type: 'post',
+                    dataType: 'json',
+                    async:false,
+                    data: {game_id: down_id,type:4,sdk_version:down_version,promote_id:promote_id},
+                    success: function (res) {
+                        if (res.code != 1) {
+                            layer.msg(res.msg);
+                            return false;
+                        } else {
+                            down_flag2 = 1;
+                        }
+                    }, error() {
+                        layer.msg('服务器错误');
+                    }
+                })
+
+                if(down_flag2 == 1 && down_flag == 1){
+                    location.href = down_url;
+                }
+                
+            })
+            
+            $('.choose-method li').click(function () {
+                var method = $(this).attr('data-method');
+                $(".pay_method").val(method);
+
+                $(this).parents('.popbox').addClass('choosebox');
+                $(this).parents('.choose-method').addClass('hide');
+                $(this).parents('.pop-body').find('.choose-confirm').removeClass('hide')
+            })
+            // 关闭弹窗
+            $('#close').click(function(){
+                $(".choose-method").removeClass('hide');
+                $(".choose-confirm").addClass('hide');
+                $('.popbg').addClass('hide')
+            })
+            // 弹窗上复制功能
+            var clipboard = new ClipboardJS('.copy');
+            clipboard.on('success', function(e) {
+            layer.msg("复制成功!");
+            e.clearSelection();
+            });
+            //确定支付
+            $(".csbtn").click(function () {
+                game_id = $('.choose-method li').attr('data-game_id');
+                promote_id = $(".down_game").attr('promote_id');
+
+                var pay_url = "{:url('mobile/downfile/doPay2')}";
+                var pay_method = $(".pay_method").val(); 
+                $.post(pay_url,{pay_method:pay_method,game_id:game_id,promote_id:promote_id},function (res) {
+                    if(res.code=='0'){
+                        layer.msg(res.msg);
+                        return false;
+                    }
+                    location.href=res.data.pay_url;
+                    return false;
+                });
+            });
+
+            $(".xgkf").click(function () {
+                var xgkf_ = "{:get_xgkf_info(1)}";
+                window.open( xgkf_);
+            });
+
+
+
+            $(".play_game").click(function () {
+                var play_url = $(this).attr('play-url');
+                var play_id = $(this).attr('play-id');
+                //请求
+                $.ajax({
+                    url: "{:url('game/get_ban_status')}",
+                    type: 'post',
+                    dataType: 'json',
+                    data: {game_id: play_id,type:1},
+                    success: function (res) {
+                        if (res.code != 1) {
+                            layer.msg(res.msg);
+                        } else {
+
+                            location.href = play_url;
+                        }
+                    }, error() {
+                        layer.msg('服务器错误');
+                    }
+                })
+            })
+
+
+
+
+
+        })
+    </script>
+    
+    <script>
+        $(function () {
+            var is_weixin = "{:cmf_is_wechat()}";
+            if(is_weixin == 1){
+                $(".wx_down_load_btn").click(function () {
+                    $('.wechat').css('display','block');
+                    return false;
+                })
+            }
+
+            var u = navigator.userAgent;
+            var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+            var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+
+            function Copy(str,that){
+                text = str;
+                var clipboard = new Clipboard('.copy',{
+                    text: function() {
+                        return text;
+                    }
+                });
+                clipboard.on('success', function(e) {
+                    layer.msg('<p>已复制</p>');
+                    e.clearSelection();
+                    clipboard.destroy();
+                });
+                clipboard.on('error', function(e) {
+                    layer.msg('此浏览器不支持此操作，请长按礼包码复制');
+                });
+            }
+            var downbtn_length=$(".down_load_frame a").length;
+            console.log(downbtn_length)
+            if(downbtn_length==1){
+            $(".h5_down_load_btn").css("width","94%");
+            }
+            else{
+                $(".h5_down_load_btn").css("width","45%");
+            }
+
+
+        $('.maybe_like_firstline_right').click(function(){
+            var game_id=$(this).data('game_id');
+            var game_type_id=$(this).data('type_id');
+            var page=parseInt($(this).attr('data-page'));
+            $.ajax({
+                type: 'post',
+                url: '{:url("Game/likeGame")}',
+                async: false,
+                data: {game_id: game_id,game_type_id:game_type_id,page:page},
+                dataType: 'json',
+                success: function(data) {
+                    if(data.code == 1) {
+                        var result='';
+                        for (var i in data.data) {
+                            result +=    '<a href='+data.data[i].url+'>';
+                            if(i==0){
+                                result +=    "<div class='fl maybe_like_gamecon_item'>";
+                            }else{
+                                result +=    "<div class='fl maybe_like_gamecon_item other_gamecon_item'>";
+                            }
+                            result +=    '<div>';
+                            if(data.data[i].icon){
+                                result +=    '<img src='+data.data[i].icon+' alt="" onerror="this.src=\'/static/images/empty.jpg\';this.onerror=null">';
+                            }
+                            result +=    '</div>';
+                            result +=    '<p>'+data.data[i].relation_game_name+'</p>';
+                            result +=    '</div>';
+                            result +=    '</a>';
+
+
+                        }
+                        $('.maybe_like_gamecon').html(result);
+                        $('.maybe_like_firstline_right').attr('data-page',data.page);
+                    }else {
+                        // layer.msg(data.msg);
+                    }
+                },
+                error: function(xhr, type) {
+                    alert('服务器错误');
+                }
+            });
+
+        })
+        $(".js_collect").click(function () {
+            var game_id  = "{$data['id']}";
+            $.ajax({
+                type: 'post',
+                url: '{:url("Game/collect")}',
+                async: false,
+                data: {game_id: game_id},
+                dataType: 'json',
+                success: function(data) {
+                    layer.msg(data.msg);
+                    if(data.collect == 1) {
+                        $('.js_collect').find('img').attr('src',"__TMPL__/mobilepublic/assets/images/icon_selected_yishoucang@3x.png");
+                    }else{
+                        $('.js_collect').find('img').attr('src',"__TMPL__/mobilepublic/assets/images/icon_normal_shoucang@3x.png");
+                    }
+                },
+                error: function(xhr, type) {
+                    alert('服务器错误');
+                }
+            });
+        })
+        $('.bag_open_modals_closeimg').click(function(){
+            layer.closeAll();
+        })
+        var myswiper = new Swiper('.game_detail_imgground', {
+            slidesPerView: 'auto',
+            spaceBetween: '2.55%',
+        });
+        $('.bag_open_modals_btn').click(function () {
+            Copy($(this).attr('data-clipboard-text'),$(this));
+        })
+        $('.gamebag_use_info').click(function(){
+            var gift_digest = $(this).data('digest');
+            var gift_desribe = $(this).data('desribe');
+            var gift_time = $(this).data('time');
+            $('#gift_digest').text(gift_digest);
+            $('#gift_desribe').text(gift_desribe);
+            $('#gift_time').text(gift_time);
+            var consa = $('.bag_infocon_modal')
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: false,
+                    area: ['85%'],
+                    offset: 'auto',
+                    content: consa,
+                    btnAlign: 'c',
+                    shadeClose: true,
+                    end: function () {
+                        $('.bag_infocon_modal').hide()
+                    }
+                })
+        })
+        $('.bag_infocon_modal img').click(function(){
+            layer.closeAll();
+        })
+        $('.lingqu_btn').click(function () {
+            var is_login="{:session('member_auth.user_id')}";
+            var auth_user="{:AUTH_USER}";
+            if(auth_user!=1){
+                layer.msg('请购买用户权限');
+                return false;
+            }
+            if(is_login==''){
+                login();
+                return false;
+            }
+            if ($(this).text().indexOf('复制') !== -1) {
+                Copy($(this).attr('data-clipboard-text'),$(this));
+            }
+            if ($(this).html().indexOf('领取') !== -1&&$(this).html().indexOf("领取</span>") === -1) {
+                var gift_id = $(this).attr('data-id');
+                $.ajax({
+                    type: 'post',
+                    url: '{:url("Gift/getgift")}',
+                    async: false,
+                    data: {gift_id: gift_id},
+                    dataType: 'json',
+                    success: function(data) {
+                        if(data.code == 1) {
+                            $("#novice").val(data.novice);
+                            $(".bag_open_modals_btn").attr('data-clipboard-text',data.novice);
+                            var consa = $('.bag_open_modals')
+                            layer.open({
+                                type: 1,
+                                title: false,
+                                closeBtn: false,
+                                area: ['85%', '15rem'],
+                                offset: 'auto',
+                                content: consa,
+                                btnAlign: 'c',
+                                shadeClose: true,
+                                end: function () {
+                                    $('.bag_open_modals').hide()
+                                    location.reload();
+                                }
+                            })
+                        }else {
+                            layer.msg(data.msg);
+                        }
+                    },
+                    error: function(xhr, type) {
+                        alert('服务器错误');
+                    }
+                });
+            }
+
+        })
+        function login() {
+            var consa = $('.login_modal')
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: false,
+                area: ['80%', '26rem'],
+                offset: 'auto',
+                content: consa,
+                btnAlign: 'c',
+                shadeClose: true,
+                success: function (layero, index) {
+
+                    layero.find('.modal_login_btn').click(function () {
+                        var that=$(this);
+                        if (that.hasClass('no_send')) {return false;}
+                        that.addClass('no_send');
+                        var account = consa.find('input[name=account]').val();
+                        var password = consa.find('input[name=password]').val();
+                        $.ajax({
+                            type: 'post',
+                            dataType: 'json',
+                            url: '{:url("User/login")}',
+                            data: {account:account,password:password},
+                            success: function (data) {
+                                that.removeClass('no_send');
+                                layer.msg(data.msg);
+                                if (data.code == 1) {
+                                    setTimeout(function () {
+                                        if (data.url) {
+                                            window.location.href = data.url;
+                                        } else {
+                                            window.location.reload();
+                                        }
+                                    },data.wait*1000);
+                                }
+                            },
+                            error: function () {
+                                layer.msg('服务器故障，请稍候再试');
+                                that.removeClass('no_send');
+                            }
+                        });
+
+                        return false;
+                    });
+
+                    layero.find('.close_login_modal').click(function () {
+
+                        $('.login_modal input').val('');
+
+                        layer.close(index);
+
+                        return false;
+                    });
+                },
+                end: function () {
+                    $('.login_modal').hide();
+                }
+            })
+        }
+        })
+        $(".js-coupon-btn").click(function () {
+            $.ajax({
+                type:'get',
+                url:'{:url("get_user_status")}',
+                success:function (res) {
+                    if(res.status!=0){
+                        window.location.href = "{:url('game_detail_coupon',['relation_game_id'=>$data['relation_game_id']])}";
+                    }else {
+                        /*layer.msg('请先登录');*/
+                        /* $(".login").click();*/
+                    }
+                }
+            });
+        })
+
+        $(".swiper-slide").click(function() {
+            $(".swiper-box").show()
+            var otherSwiper = new Swiper('.gameBottom', {
+                setWrapperSize :true,
+                pagination: {
+                    el: '.swiper-pagination',
+                },
+            });
+        })
+
+        $(".swiper-box").on('click',function() {
+            $(".swiper-box").hide()
+        })
+
+    //     // 微信支付
+    //    function weixin_payPop(){
+    //     alert("微信支付")
+    //     }
+    //     //支付宝支付
+    //    function alipay_payPop(){
+    //     alert("支付宝支付")
+    //     }
+    </script>
+</block>

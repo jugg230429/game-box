@@ -1,0 +1,300 @@
+<extend name="../businesspublic/head-foot" />
+<block name="body">
+	<link rel="stylesheet" type="text/css" media="all" href="__STATIC__/js/datejs/daterangepicker.css"/>
+	<!--内容start-->
+	<div class="containers">
+		<div class="search-container jssearch">
+
+			<div class="rightcontainer">
+				<div class="rightcontainer-summary">
+					<div class="search-top">
+						<!--<div class="location-container">当前位置：<span>数据汇总</span></div>-->
+						<img src="__TMPL__/businesspublic/assets/images/icon_zhuce.png">
+						<span class="title_main">数据汇总</span><span class="tagging">说明：商务数据汇总(缓存处理)，默认显示截至昨日数据</span>
+					
+					</div>
+					<div class="searchdetail">
+						<form action="{:url('data_summary')}">
+							<div class="fr">
+								<div class="fl mr20">
+									<select id="promote_id" name="promote_id" class="select_gallery" style="width:150px;height:31px;border-radius: 5px;color: #a5a6bb;">
+										<option value="">全部渠道</option>
+										<php>
+											$map['busier_id'] = BID;
+											$map['parent_id'] = 0;
+										</php>
+										<volist name=":get_busier_promote_list($map)" id="vo">
+											<option value="{$vo.id}" <if condition="input('promote_id') eq $vo['id']"> selected="true" </if> > {$vo.account}</option>
+										</volist>
+									</select>
+								</div>
+								<div class="fl ">
+									<span class="gf00"></span>
+									<input type="text" name="begtime" data-required="false" class="time1" value="{:input('begtime')}" style="margin:auto 5px;color: #a5a6bb;" id="sdate" placeholder="开始时间">
+
+									<span class="txt4">-</span>
+									<input type="text" name="endtime" data-required="false" class="time1" value="{:input('endtime')}" style="margin:auto 5px;color: #a5a6bb;" id="edate" placeholder="结束时间">
+								</div>
+								<input type="hidden" name="sort" id="sort" value="{:input('request.sort',1)}">
+								<input type="hidden" name="sort_type" id="sort_type" value="{:input('request.sort_type')}">
+								<input type="hidden" id="page" name="row" value="{:input('row',10)}">
+								<input type="submit" class="submit fr normal-space" id="search" value="查询">
+							</div>
+						</form>
+					</div>
+
+		</div>
+			<div class="rightcontainer-detail">
+				<table class="detailtb">
+					<tr class="num0">
+						<th>ID</th>
+						<th>渠道</th>
+						<th>
+							新增用户
+							<div class="question_">
+								<i class="question_mark">?</i>
+								<div class="question_content" style="left: -46px;">
+									<ul class="question_content_box">
+										<li class="question_list">
+											<span class="title">新增用户</span>
+											<span class="">新注册的用户数</span>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</th>
+						<th>
+							<a href="javascript:changesort('count_active_user');">活跃用户
+								<if condition="input('request.sort_type') eq 'count_active_user' and input('request.sort') eq 3">
+									▼
+									<elseif condition="input('request.sort_type') eq 'count_active_user' and input('request.sort') eq 2"/>
+									▲
+									<else/>
+									<img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+								</if>
+							</a>
+							<div class="question_">
+								<i class="question_mark">?</i>
+								<div class="question_content" style="left: -131px;">
+									<ul class="question_content_box">
+										<li class="question_list">
+											<span class="title">活跃用户</span>
+											<span class="">登录游戏的用户数（含新老用户，累计时去重）</span>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</th>
+						<th>
+							<a href="javascript:changesort('count_pay_user');">付费用户
+								<if condition="input('request.sort_type') eq 'count_pay_user' and input('request.sort') eq 3">
+									▼
+									<elseif condition="input('request.sort_type') eq 'count_pay_user' and input('request.sort') eq 2"/>
+									▲
+									<else/>
+									<img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+								</if>
+							</a>
+							<div class="question_">
+								<i class="question_mark">?</i>
+								<div class="question_content" style="left: -149px;">
+									<ul class="question_content_box">
+										<li class="question_list">
+											<span class="title">付费用户</span>
+											<span class="">在游戏内充值的用户数（统计充值成功，累计时去重）</span>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</th>
+						<th>
+							<a href="javascript:changesort('count_register_ip');">新增注册IP
+								<if condition="input('request.sort_type') eq 'count_register_ip' and input('request.sort') eq 3">
+									▼
+									<elseif condition="input('request.sort_type') eq 'count_register_ip' and input('request.sort') eq 2"/>
+									▲
+									<else/>
+									<img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+								</if>
+							</a>
+							<div class="question_">
+								<i class="question_mark">?</i>
+								<div class="question_content" style="left: -58px;">
+									<ul class="question_content_box">
+										<li class="question_list">
+											<span class="title">注册IP </span>
+											<span class="">用户注册时的IP地址</span>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</th>
+						<th>
+							<a href="javascript:changesort('count_new_pay_user');">新增付费用户
+								<if condition="input('request.sort_type') eq 'count_new_pay_user' and input('request.sort') eq 3">
+									▼
+									<elseif condition="input('request.sort_type') eq 'count_new_pay_user' and input('request.sort') eq 2"/>
+									▲
+									<else/>
+									<img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+								</if>
+							</a>
+							<div class="question_">
+								<i class="question_mark">?</i>
+								<div class="question_content" style="left: -186px;">
+									<ul class="question_content_box">
+										<li class="question_list">
+											<span class="title">新增付费用户</span>
+											<span class="">注册当日进行游戏内充值的用户数（统计充值成功，累计时去重）</span>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</th>
+						<th>
+							<a href="javascript:changesort('total_pay');">总付费额
+								<if condition="input('request.sort_type') eq 'total_pay' and input('request.sort') eq 3">
+									▼
+									<elseif condition="input('request.sort_type') eq 'total_pay' and input('request.sort') eq 2"/>
+									▲
+									<else/>
+									<img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+								</if>
+							</a>
+							<div class="question_">
+								<i class="question_mark">?</i>
+								<div class="question_content" style="left:-37px">
+									<ul class="question_content_box">
+										<li class="question_list">
+											<span class="title">总付费额 </span>
+											<span class="">累计充值总额</span>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</th>
+						<th>
+							<a href="javascript:changesort('rate');">总付费率
+								<if condition="input('request.sort_type') eq 'rate' and input('request.sort') eq 3">
+									▼
+									<elseif condition="input('request.sort_type') eq 'rate' and input('request.sort') eq 2"/>
+									▲
+									<else/>
+									<img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+								</if>
+							</a>
+							<div class="question_">
+								<i class="question_mark">?</i>
+								<div class="question_content" style="left: -54px;">
+									<ul class="question_content_box">
+										<li class="question_list">
+											<span class="title">总付费率</span>
+											<span class="">付费用户/新增用户</span>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</th>
+					</tr>
+					<notempty name="data_lists">
+
+						<volist name="data_lists" id="data" mod="2">
+							<tr class="num<eq name='mod' value='1'>1<else />2</eq>">
+								<td>{$data.promote_id}</td>
+								<td>{$data.promote_account}</td>
+								<td>{$data.count_new_register_user}</td>
+								<td>{$data.count_active_user}</td>
+								<td>{$data.count_pay_user}</td>
+								<td>{$data.count_register_ip}</td>
+								<td>{$data.count_new_pay_user}</td>
+								<td>{$data.total_pay}</td>
+								<td>{$data.rate}</td>
+							</tr>
+						</volist>
+
+
+						<tr class="num0 tableSummary">
+							<td>汇总</td>
+							<td>--</td>
+							<td>{$total_data.new_register_user}</td>
+							<td>{$total_data.active_user}</td>
+							<td>{$total_data.pay_user}</td>
+							<td>{$total_data.count_register_ip}</td>
+							<td>{$total_data.new_pay_user}</td>
+							<td>{$total_data.total_pay}</td>
+							<td>{:$total_data['new_register_user']==0?'0.00':null_to_0($total_data['pay_user']/$total_data['new_register_user']*100)}%</td>
+
+						</tr>
+
+					</notempty>
+				</table>
+				<empty name="data_lists">
+					<div class="empty">暂无数据</div>
+				</empty>
+
+				<div class="pagenation clearfix">
+					<a download class="sch-btn" href="{:url('Export/expUser',array_merge(['id'=>1],input()))}">导出</a>
+					{$page}
+				</div>
+
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	</div>
+	<script>
+		//排序
+		$(function () {
+            //经过表头字段热区时出现？
+            // $(".question_").click(function () {
+            //     $(this).find(".question_content").css("dispaly","block")
+            // });
+			$(".question_").click(function(){
+				$(this).find(".question_content").css("display","block")
+			})
+            $("tr th").mouseover(function () {
+                $(this).find(".question_").addClass("on");
+            });
+            $("tr th").mouseout(function () {
+				$(this).find(".question_content").css("display","none")
+                // $(this).find(".question_").removeClass("on");
+                // $(this).find(".question_content").removeClass("open")
+            });
+			
+        });
+		function changesort(type){
+			var sort_type = $("#sort_type").val();
+			if(sort_type != type){
+				var sort = 1;
+			}else{
+				var sort = $("#sort").val();
+			}
+			$("#sort_type").val(type);
+			if(sort == 1){
+				$("#sort").val(3);
+			}else if(sort == 3){
+				$("#sort").val(2);
+			}else{
+				$("#sort").val(1);
+			}
+			$("#search").click();
+		}
+		$(document).ready(function(){
+			$('#sdate').datetimepicker({
+				lang: 'ch',
+				format: 'Y-m-d',
+				formatDate: 'Y-m-d',
+				timepicker: false,
+			});
+
+			$('#edate').datetimepicker({
+				lang: 'ch',
+				format: 'Y-m-d',
+				formatDate: 'Y-m-d',
+				timepicker: false,
+			});
+		});
+
+	</script>
+	<!--内容end-->
+</block>

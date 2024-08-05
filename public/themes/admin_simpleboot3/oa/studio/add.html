@@ -1,0 +1,111 @@
+<include file="public@header" />
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li ><a href="{:url('studio/lists')}">工作室列表</a></li>
+        <li class="active"><a href="{:url('studio/add')}">添加工作室</a></li>
+        <span class="title_remark">说明：添加自定义工作室</span>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" action="{:url('add')}" method="post">
+        <div class="form-group">
+            <label for="input-studio_name" class="col-sm-2 control-label"><span class="form-required">*</span>工作室名称：</label>
+            <div class="col-md-3 col-sm-5">
+                <input type="text" class="form-control jsmust" id="input-studio_name" name="studio_name" placeholder="请输入工作室名称">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input-appid" class="col-sm-2 control-label"><span class="form-required">*</span>APPID：</label>
+            <div class="col-md-3 col-sm-5">
+                <input type="text" class="form-control jsmust" id="input-appid" name="appid" placeholder="APPID">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input-domain" class="col-sm-2 control-label"><span class="form-required">*</span>工作室域名：</label>
+            <div class="col-md-3 col-sm-5">
+                <input type="text" class="form-control jsmust" id="input-domain" name="domain" placeholder="工作室域名">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input-api_key" class="col-sm-2 control-label"><span class="form-required">*</span>APIKEY：</label>
+            <div class="col-md-3 col-sm-5">
+                <input type="text" class="form-control jsmust" id="input-api_key" name="api_key" placeholder="工作室请求接口加密key">
+            </div>
+            <div class="col-sm-2">
+                <a class="btn btn-outline btn-info refresh" title="刷新Token"><i id="refesh_icon" class="fa fa-undo"></i> <span> 刷新 </span></a>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">状态：</label>
+            <div class="col-md-4 col-sm-6">
+                <label class="radio-inline label-width">
+                    <input type="radio" name="status" value="1" checked> 启用
+                </label>
+                <label class="radio-inline label-width">
+                    <input type="radio" name="status" value="0"> 禁用
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-1 col-sm-5">
+                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9">添加</button>
+                <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+
+<script src="__STATIC__/js/admin.js"></script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+        checkBrowser()
+
+        function checkBrowser() {
+            var ua = navigator.userAgent.toLocaleLowerCase();
+            var browserType = null;
+            if (ua.match(/msie/) != null || ua.match(/trident/) != null) {
+                browserType = "IE";
+                $('#refesh_icon').hide()
+            }
+            return browserType;
+        }
+
+        $('.refresh').click(function () {
+            create_api_key()
+            return false;
+        });
+        create_api_key();
+
+        function create_api_key(len) {
+            len = len || 64;
+            var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678oOLl9gqVvUuI1';
+            var maxLen = $chars.length;
+            var str = '';
+            for (i = 0; i < len; i++) {
+                str += $chars.charAt(Math.floor(Math.random() * maxLen));
+            }
+            $('input[name="api_key"]').val(str);
+        }
+
+        create_appid();
+        function create_appid(len) {
+            len = len || 32;
+            var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678oOLl9gqVvUuI1';
+            var maxLen = $chars.length;
+            var str = '';
+            for (i = 0; i < len; i++) {
+                str += $chars.charAt(Math.floor(Math.random() * maxLen));
+            }
+            $('input[name="appid"]').val(str);
+        }
+
+    });
+
+</script>
+</body>
+</html>

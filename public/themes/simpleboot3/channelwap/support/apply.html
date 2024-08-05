@@ -1,0 +1,832 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/LCalendar.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/select2.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/new_select2.css" type="text/css" />
+    <link href="__TMPL__/channelwappublic/assets/css/support.css" type="text/css" rel="stylesheet" />
+    <link href="__TMPL__/channelwappublic/assets/css/swiper-bundle.min.css" type="text/css" rel="stylesheet" />
+</block>
+<block name="body">
+    <div class="page-container profit-exchange-container">
+        <header>
+            <a href="{:url('promote/index')}" class="back-btn"></a>
+            <div style="width: 100%;height: 100%" class="v-middle h-middle">
+                <p data-url="{:url('settlement/profit_record')}" class="titleText">扶持管理</p>
+            </div>
+            <a href="{:url('add')}" class="add-child-icon" style="font-size: 0.4rem;top:0.3rem">
+               新增扶持
+            </a>
+        </header>
+        <div class="page-content">
+            <div class="my-profit-content">
+
+                <div class="exchange-tab">
+                    <div class="profit-menu-box">
+                        <a href="javascript:;" class="active" data-id="apply">扶持申请</a>
+                        <a href="javascript:;"  data-id="record">扶持记录</a>
+                        <a href="javascript:;"  data-id="quota">扶持额度</a>
+                    </div>
+                    <div class="menu-tab">
+                        <div class="search-box">
+                            <div class="search-item col-4">
+                                <input type="text" class="input-date" id="user_account" placeholder="玩家账号">
+                            </div>
+                            <div class="search-item col-4">
+                                <input type="text" class="input-date" id="role_name" placeholder="角色名">
+                            </div>
+                            <div class="search-item col-4">
+                            
+                                <select id="game_id" class="select_gallery" data-placeholder="游戏">
+                                    <option value="0" >选择游戏</option>
+                                    <volist name="game_lists" id="vo">
+                                        <option value="{$vo.id}">{$vo.game_name}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                            <div class="search-item  col-4">
+                                <select id="server_id" name="server_id" class="select_gallery" data-placeholder="区服名称">
+                                    <option value="0">区服名称</option>
+                                </select>
+                            </div>
+                            <div class="search-item  col-4">
+                                <input type="text" class="input-date btn-date" readonly name="start_time" id="start_time" placeholder="开始时间" value="" autocomplete="off">
+                            </div>
+                            <div class="search-item  col-4">
+                                <input type="text" class="input-date btn-date" readonly name="end_time" id="end_time" placeholder="结束时间" value="" autocomplete="off">
+                            </div>
+                        </div>
+                       <div>
+                           
+                        <div class="swiper-container" id="applySwiper">
+                            <div class="swiper-wrapper" >
+                              <div class="swiper-slide" >
+                                
+                                    <table class="applyBox" id="applyTable">
+                                        <tbody>
+                                            <tr class="table-title">
+                                                <th>游戏</th>
+                                                <th>区服</th>
+                                                <th>角色名</th>
+                                                <th>玩家账号</th>
+                                                <th>累计扶持数量</th>
+                                                <th>累计扶持次数</th>
+                                                <th>最新申请时间</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </tbody>
+                                        <tbody id="applyload">
+                                        </tbody>
+                                    </table>
+                               
+                              </div>
+                            </div>
+                        </div>
+                           
+                       </div>
+                    </div>
+                    <div class="menu-tab" style="display: none">
+                        <div class="search-box">
+                            <div class="search-item col-2">
+                                <input type="text" class="input-date" id="user_account2" placeholder="玩家账号">
+                            </div>
+                            <div class="search-item col-2">
+                                <input type="text" class="input-date" id="role_name2" placeholder="角色名">
+                            </div>
+                            <select id="game_id2" class="select_gallery" data-placeholder="游戏">
+                                <option value="0" >选择游戏</option>
+                                <volist name="game_lists_record" id="vo">
+                                    <option value="{$vo.id}">{$vo.game_name}</option>
+                                </volist>
+                            </select>
+                            <div class="search-item  col-4">
+                                <select id="server_id2" name="server_id2" class="select_gallery" data-placeholder="区服名称">
+                                    <option value="0">区服名称</option>
+                                </select>
+                            </div>
+                            <div class="search-item  col-4">
+                                <input type="text" class="input-date btn-date" readonly name="start_time" id="start_time2" placeholder="开始时间" value="" autocomplete="off">
+                            </div>
+                            <div class="search-item  col-4">
+                                <input type="text" class="input-date btn-date" readonly name="end_time" id="end_time2" placeholder="结束时间" value="" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="swiper-container" id="recordSwiper">
+                            <div class="swiper-wrapper" >
+                              <div class="swiper-slide" >
+                                
+                                    <table class="applyBox" id="recordTable">
+                                <tbody>
+                                    <tr class="table-title">
+                                        <th>游戏</th>
+                                        <th>区服</th>
+                                        <th>角色名</th>
+                                        <th>玩家账号</th>
+                                        <th>申请数量</th>
+                                        <th>状态</th>
+                                        <th>实际发放</th>
+                                        <th>申请时间</th>
+                                        <th>审核时间</th>
+                                        <th>审核意见</th>
+                                        <th>备注</th>
+                                    </tr>
+                                </tbody>
+                                <tbody id="recordload">
+                                </tbody>
+                            </table>
+
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-tab" style="display: none">
+                       <div class="addNewContentBox">
+                            <div class="search-box" style="width:85%">
+                                <select id="game_id3" class="select_gallery" data-placeholder="游戏">
+                                    <option value="0" >选择游戏</option>
+                                    <volist name="game_lists_record" id="vo">
+                                        <option value="{$vo.id}">{$vo.game_name}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                            <span class="attentionPoint">数据说明</span>
+                       </div>
+                        <div class="swiper-container" id="quotaSwiper">
+                            <div class="swiper-wrapper" >
+                              <div class="swiper-slide" >
+                                
+                                    <table class="applyBox" id="quotaTable">
+                                <tbody>
+                                <tr class="table-title">
+                                    <th>游戏</th>
+                                    <th>累计额度</th>
+                                    <th>可申请后续扶持</th>
+                                    <th>已发放后续扶持</th>
+                                    <th>已发放新增扶持</th>
+                                    <th>待审核后续扶持</th>
+                                    <th>待审核新增扶持</th>
+                                    <th>今日已申请总数</th>
+                                    <th>今日新申请总数</th>
+                                </tr>
+                                </tbody>
+                                <tbody id="statisticsload">
+                                </tbody>
+                            </table>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="descriptionBox">
+                        <div class="shadowBox">
+                            <div class="shadow-cell">
+                                <div class="descriptionContent">
+                                    <div class="content-title">
+                                        <p>数据说明</p> 
+                                        <span class="closeBox"><img src="__TMPL__/channelwappublic/assets/images/common/xg_ico_guanbi.png" alt="" class="closeImg"></span>
+                                    </div>
+                                   <div class="content-item">
+                                        <p>累计额度</p>
+                                        <span style="display: inline-block;width: 90%;" class="contentItem-detail">单款游戏该渠道和其下级所有渠道玩家实时充值的总金额 * 扶持比例</span>
+                                        <p>可申请后续扶持</p>
+                                        <span class="contentItem-detail">累计额度 - 已发放后续扶持 - 待审核后续扶持</span>
+                                        <p>已发放后续扶持</p>
+                                        <span class="contentItem-detail">已经发放的后续扶持总数</span>
+                                        <p>已发放新增扶持  </p>
+                                        <span class="contentItem-detail">已经发放的新增扶持总数</span>
+                                        <p>待审核后续扶持 </p>
+                                        <span class="contentItem-detail">待审核的后续扶持总数</span>
+                                        <p>待审核新增扶持</p>
+                                        <span class="contentItem-detail">待审核的新增扶持总数</span>
+                                        <p>今日已申请数量</p>
+                                        <span class="contentItem-detail">今日审核通过的后续扶持数量</span>
+                                        <p>今日新申请总数 </p>
+                                        <span class="contentItem-detail">今日申请的后续扶持总数，不区分状态</span>
+                                   </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/select2.min.js"></script>
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/LCalendar.min.js"></script>
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/swiper-bundle.min.js"></script>
+    <script>
+        var swiper = {}
+        $(function () {
+            $('.header-title').click(function () {
+                location.href=$(this).data("url");
+            });
+            $(".select_gallery").select2({
+                minimumResultsForSearch: -1
+            });
+            $('.attentionPoint').click(function() {
+                $('.descriptionBox').css('display','block')
+            })
+            $('.closeBox').click(function() {
+                $('.descriptionBox').css('display','none')
+            })
+            //  swiper.apply = new Swiper('#applySwiper', {
+            //     slidesPerView: 'auto',
+            //     freeMode: true,
+            //     mousewheel: true,
+            // });
+            // swiper.record = new Swiper('#recordSwiper', {
+            //     slidesPerView: 'auto',
+            //     freeMode: true,
+            //     mousewheel: true,
+            // });
+            // swiper.quota = new Swiper('#quotaSwiper', {
+            //     slidesPerView: 'auto',
+            //     freeMode: true,
+            //     mousewheel: true,
+            // });
+
+            // setTimeout(function() {
+            //     $('.applyBox').each(function() {
+            //     $(this).parent().css('width',$(this).width()+'px')  
+            //     swiper[$(this).attr('id').replace('Table','')].update()
+            // })          
+            // },500)
+
+
+
+           
+            //时间插件
+
+            var start_calendar2 = new LCalendar();
+            start_calendar2.init({
+                'trigger': '#start_time', //标签id
+                'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+                'minDate': (new Date().getFullYear() - 3) + '-' + 1 + '-' + 1, //最小日期
+                'maxDate': (new Date().getFullYear() + 3) + '-' + 12 + '-' + 31 //最大日期
+            });
+            var end_calendar2 = new LCalendar();
+            end_calendar2.init({
+                'trigger': '#end_time', //标签id
+                'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+                'minDate': (new Date().getFullYear() - 3) + '-' + 1 + '-' + 1, //最小日期
+                'maxDate': (new Date().getFullYear() + 3) + '-' + 12 + '-' + 31 //最大日期
+            });
+            var start_calendar3 = new LCalendar();
+            start_calendar3.init({
+                'trigger': '#start_time2', //标签id
+                'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+                'minDate': (new Date().getFullYear() - 3) + '-' + 1 + '-' + 1, //最小日期
+                'maxDate': (new Date().getFullYear() + 3) + '-' + 12 + '-' + 31 //最大日期
+            });
+            var end_calendar3 = new LCalendar();
+            end_calendar3.init({
+                'trigger': '#end_time2', //标签id
+                'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+                'minDate': (new Date().getFullYear() - 3) + '-' + 1 + '-' + 1, //最小日期
+                'maxDate': (new Date().getFullYear() + 3) + '-' + 12 + '-' + 31 //最大日期
+            });
+
+            // $('.profit-menu-box a').click(function () {
+            //     $(this).addClass("active").siblings().removeClass("active");
+            //     var index = $(this).index();
+            //     $('.menu-tab').eq(index).show().siblings(".menu-tab").hide();
+            // });
+            $('body').on('click','.reapply',function(){
+                that = $(this);
+                var url = "{:url('reapply')}";
+                var id = that.data('id');
+                $.post(url,{id:id},function(res){
+                    layer.msg(res.msg);
+                    setTimeout(function(){
+                        window.location.reload();
+                    },1000);
+                });
+            })
+        })
+    </script>
+    <script>
+        var getServerUrl = "{:url('Support/getServer')}";
+        var changeRoleUrl = "{:url('Support/changeRoleName')}";
+        var getUsableNum = "{:url('Support/usableNum')}";
+        var followingUrl = "{:url('Support/following')}";
+        var game_id = "{:input('game_id')}";
+        var server_id = "{:input('server_id')}";
+
+        getServerLists(game_id, server_id);
+
+        var itemIndex = 0;
+        var now_url = window.location.href;
+        var moren = now_url.split('#')[1];
+        var game_id = 0;
+        var start_time = '';
+        var end_time = '';
+        var user_account = '';
+        var role_name='';
+        var server_id = 0;
+
+        var game_id2 = 0;
+        var user_account2 = '';
+        var role_name2='';
+        var server_id2 = 0;
+        var start_time2 = '';
+        var end_time2 = '';
+
+        var game_id3 = 0;
+
+        if(moren != undefined){
+            itemIndex = parseInt(moren);
+            if(itemIndex>2) {itemIndex=1;}
+            $(".profit-menu-box a:eq("+moren+")").addClass('active').siblings().removeClass('active');
+            $('.menu-tab').eq(moren).show().siblings(".menu-tab").hide();
+        }
+        var lwx = window.lwx || {};
+        lwx.ready = true;
+        lwx.width = $(window).width();
+        lwx.height = $(window).height();
+        lwx.number = {apply:1,record:1,statistics:1};
+        lwx.row = {apply:15,record:15,statistics:15};
+        lwx.http = {
+            getJSON:function(url,callback){
+                $.getJSON(url + '&v=' + Date.now(),function(data){
+                    callback(data);
+                });
+            },
+            postJSON:function(url,args,callback) {
+                $.post(url + '&v=' + Date.now(), args, function(data) {
+                    callback(data);
+                },"json")
+            },
+        };
+        lwx.url ={
+            apply:'{:url("Support/get_apply")}',
+            record:'{:url("Support/get_suprecord")}',
+            statistics:'{:url("Support/get_statistics")}',
+        };
+        lwx.page = {
+            apply:function(){
+                if(lwx.number.apply) {
+                    lwx.http.getJSON(lwx.url.apply+'?game_id='+game_id+'&server_id='+server_id+'&role_name='+role_name+'&user_account='+user_account+'&row='+lwx.row.apply+'&page='+lwx.number.apply+'&start_time='+start_time+'&end_time='+end_time,function(data) {
+                        var hotload = $('#applyload');
+                        var data = data.data;
+                        if(data && data.length) {
+                            var html = '';
+                            for (var i in data) {
+                                html += '<tr>';
+								html += '<td>'+data[i].game_name+'</td>';
+                                html += '<td>'+data[i].server_name+'</td>';
+                                html += '<td>'+(data[i].role_name)+'</td>';
+                                html += '<td>'+data[i].user_account+'</td>';
+                                html += '<td>'+data[i].totalNum+'</td>';
+                                html += '<td>'+data[i].totalCount+'</td>';
+                                html += '<td>'+formatUnixtimestamp(data[i].create_time)+'</td>';
+                                html += '<td class="operationButton"><a href="javascript:;" class="apply-btn js-support-edit" data-id="'+data[i].id+'" data-game="'+data[i].game_name+'" data-server="'+data[i].server_name+'" data-account="'+data[i].user_account+'" data-role="'+data[i].role_name+'">编辑</a>';
+                                html += '<a href="javascript:;" class="apply-btn js-support-follow" data-id="'+data[i].id+'">申请后续</a></td>';
+                                html += '</tr>';
+                            }
+                            hotload.append(html);
+                            hotload.find('.jsdropload').remove();
+                            if(data.length >= lwx.row.apply) {
+                                lwx.number.apply++;
+                                lwx.ready = true;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.apply = false;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                        } else {
+                            if(lwx.number.apply==1){
+                                hotload.html('').append('<p class="no_invest_info jsdropload">~空空如也~</p>');
+                            } else{
+                                hotload.find('.jsdropload').remove();
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                            lwx.number.apply = false;
+                        }
+                    });
+                }
+            },
+            record:function(){
+                if(lwx.number.record) {
+                    lwx.http.getJSON(lwx.url.record+'?game_id='+game_id2+'&server_id='+server_id2+'&user_account='+user_account2+'&role_name='+role_name2+'&row='+lwx.row.record+'&page='+lwx.number.record+'&start_time='+start_time2+'&end_time='+end_time2,function(data) {
+                        var recordload = $('#recordload');
+
+                        var _data = data.data;
+
+                        if(_data && _data.length) {
+                            var html = '';
+                            for (var i in _data) {
+                                html += '<tr>';
+                                html += '<td>'+_data[i].game_name+'</td>';
+                                html += '<td>'+_data[i].server_name+'</td>';
+                                html += '<td>'+_data[i].role_name+'</td>';
+                                html += '<td>'+_data[i].user_account+'</td>';
+                                html += '<td>'+_data[i].apply_num+'</td>';
+                                html += '<td>'+get_status(_data[i].status)+'</td>';
+                                html += '<td>'+_data[i].send_num+'</td>';
+                                html += '<td>'+formatUnixtimestamp(_data[i].create_time)+'</td>';
+                                html += '<td>'+formatUnixtimestamp(_data[i].audit_time)+'</td>';
+                                html += '<td>'+_data[i].audit_idea+'</td>';
+                                html += '<td>'+_data[i].remark+'</td>';
+                                html += '</tr>';
+                            }
+                            html += '</div>';
+                            console.log(html)
+                            recordload.append(html);
+                            recordload.find('.jsdropload').remove();
+                            if(_data.length >= lwx.row.record) {
+                                lwx.number.record++;
+                                lwx.ready = true;
+                                recordload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.record = false;
+                                recordload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                        } else {
+                            if(lwx.number.record==1){
+                                recordload.html('').append('<p class="no_invest_info jsdropload">~空空如也~</p>');
+                            } else{
+                                recordload.find('.jsdropload').remove();
+                                recordload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                            lwx.number.record = false;
+                        }
+                    });
+                }
+            },
+            statistics:function(){
+                if(lwx.number.statistics) {
+                    lwx.http.getJSON(lwx.url.statistics+'?game_id='+game_id3+'&row='+lwx.row.statistics+'&page='+lwx.number.statistics,function(data) {
+                        var statisticsload = $('#statisticsload');
+                        var data = data.data;
+                        if(data && data.length) {
+                            var html = '';
+                            for (var i in data) {
+                                html += '<tr>';
+                                html += '<td>'+data[i].game_name+'</td>';
+                                html += '<td>'+data[i].total_num+'</td>';
+                                html += '<td>'+(data[i].total_num - data[i].send_following_num)+'</td>';
+                                html += '<td>'+data[i].send_following_num+'</td>';
+                                html += '<td>'+data[i].send_first_num+'</td>';
+                                html += '<td>'+data[i].uncheck_following_num+'</td>';
+                                html += '<td>'+data[i].uncheck_frist_num+'</td>';
+                                html += '<td>'+data[i].today_num+'</td>';
+                                html += '<td>'+data[i].today_total_num+'</td>';
+                                html += '</tr>';
+                            }
+                            html += '</div>';
+                            statisticsload.append(html);
+                            statisticsload.find('.jsdropload').remove();
+                            if(data.length >= lwx.row.statistics) {
+                                lwx.number.statistics++;
+                                lwx.ready = true;
+                                statisticsload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.statistics = false;
+                                statisticsload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                        } else {
+                            if(lwx.number.statistics==1){
+                                statisticsload.html('').append('<p class="no_invest_info jsdropload">~空空如也~</p>');
+                            } else{
+                                statisticsload.find('.jsdropload').remove();
+                                statisticsload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                            lwx.number.statistics = false;
+                        }
+                    });
+                }
+            },
+        };
+        pageChange('#'+itemIndex);
+        function pageChange(n) {
+            switch (n) {
+                case '#0': {
+                    lwx.page.apply();
+                    if(lwx.number.apply) {lwx.ready=true;}
+                       swiper.apply = new Swiper('#applySwiper', {
+                        slidesPerView: 'auto',
+                        freeMode: true,
+                        mousewheel: true,
+                    });
+
+                };break;
+                case '#1':{
+                    lwx.page.record();
+                    if(lwx.number.record) {lwx.ready=true;}
+                       swiper.record = new Swiper('#recordSwiper', {
+                        slidesPerView: 'auto',
+                        freeMode: true,
+                        mousewheel: true,
+                    });
+                };break;
+                case '#2':{
+                    lwx.page.statistics();
+                    if(lwx.number.statistics) {lwx.ready=true;}
+                     swiper.quota = new Swiper('#quotaSwiper', {
+                        slidesPerView: 'auto',
+                        freeMode: true,
+                        mousewheel: true,
+                    });
+                };break;
+            }
+            setTimeout(function() {
+                $('.applyBox').each(function() {
+                    $(this).parent().css('width',$(this).width()+'px')  
+                    switch(n) {
+                        case '#0': {
+                            swiper.apply.update()
+                        };break;
+                        case '#1': {
+                            swiper.record.update()
+                        };break;
+                        case '#2': {
+                            swiper.quota.update()
+                        };break;
+                    }
+                })          
+            },500)
+        }
+        function pageScroll(scrollTop, boxHeight, maxScrollHeight) {
+            if (scrollTop + boxHeight >= maxScrollHeight - 50) {
+                if (lwx.ready) {
+                    lwx.ready = false;
+                    switch (itemIndex) {
+                        case 0:
+                            lwx.page.apply();
+                            break;
+                        case 1:
+                            lwx.page.record();
+                            break;
+                        case 2:
+                            lwx.page.statistics();
+                            break;
+                    }
+                }
+            }
+        }
+        window.onscroll = function() {
+            var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+            pageScroll(scrollTop, lwx.height, $(document).height())
+        }
+        $(function () {
+
+
+
+            $('.profit-menu-box a').click(function () {
+                $(this).addClass("active").siblings().removeClass("active");
+                var index = $(this).index();
+                $('.menu-tab').eq(index).show().siblings(".menu-tab").hide();
+                itemIndex = index;
+                location.hash = index;
+
+            });
+            $("#game_id").change(function () {
+                game_id = $("#game_id").val();
+                $("#applyload").empty();
+                lwx.number.apply = 1;
+                getServerLists(game_id);
+                pageChange('#'+itemIndex);
+            })
+            $("#server_id").change(function () {
+                server_id = $("#server_id").val();
+                $("#applyload").empty();
+                lwx.number.apply = 1;
+                pageChange('#'+itemIndex);
+            })
+            $("#user_account").bind('input porpertychange',function(){
+                user_account = $("#user_account").val();
+                $("#applyload").empty();
+                lwx.number.apply = 1;
+                pageChange('#'+itemIndex);
+            });
+            $("#role_name").bind('input porpertychange',function(){
+                role_name = $("#role_name").val();
+                $("#applyload").empty();
+                lwx.number.apply = 1;
+                pageChange('#'+itemIndex);
+            });
+
+            $("#game_id2").change(function () {
+                game_id2 = $("#game_id2").val();
+                $("#recordload").empty();
+                lwx.number.record = 1;
+                getServerLists2(game_id2);
+                pageChange('#'+itemIndex);
+            })
+            $("#server_id2").change(function () {
+                server_id2 = $("#server_id2").val();
+                $("#recordload").empty();
+                lwx.number.record = 1;
+                pageChange('#'+itemIndex);
+            })
+            $("#user_account2").bind('input porpertychange',function(){
+                user_account2 = $("#user_account2").val();
+                $("#recordload").empty();
+                lwx.number.record = 1;
+                pageChange('#'+itemIndex);
+            });
+            $("#role_name2").bind('input porpertychange',function(){
+                role_name2 = $("#role_name2").val();
+                $("#recordload").empty();
+                lwx.number.record = 1;
+                pageChange('#'+itemIndex);
+            });
+
+            $("#game_id3").change(function () {
+                game_id3 = $("#game_id3").val();
+                $("#statisticsload").empty();
+                lwx.number.statistics = 1;
+                pageChange('#'+itemIndex);
+            })
+            $("#start_time").bind('input porpertychange',function(){
+                start_time = $("#start_time").val();
+                $("#applyload").empty();
+                lwx.number.apply = 1;
+                pageChange('#'+itemIndex);
+            });
+            $("#end_time").bind('input porpertychange',function(){
+                end_time = $("#end_time").val();
+                $("#applyload").empty();
+                lwx.number.apply = 1;
+                pageChange('#'+itemIndex);
+            });
+            $("#start_time2").bind('input porpertychange',function(){
+                start_time2 = $("#start_time2").val();
+                $("#recordload").empty();
+                lwx.number.record = 1;
+                pageChange('#'+itemIndex);
+            });
+            $("#end_time2").bind('input porpertychange',function(){
+                end_time2 = $("#end_time2").val();
+                $("#recordload").empty();
+                lwx.number.record = 1;
+                pageChange('#'+itemIndex);
+            });
+        })
+        $(window).on("hashchange", function() {
+            pageChange(location.hash);
+        });
+        $("body").on('click', '.js-support-edit', function () {
+            var that = $(this);
+            var game = that.attr('data-game');
+            var server = that.attr('data-server');
+            var account = that.attr('data-account');
+            var role = that.attr('data-role');
+            var id = that.attr('data-id');
+            layer.open({
+                type: 1,
+                title: '新增扶持-修改',
+                skin: 'lwx-layer-support',
+                area: ['80%', '8.4rem'], //宽高
+                content: '<form class="lwx-layer-form"><table class="lwx-layer-table">' +
+                '<tr><td class="lwx-layer-td llt1"><i class="req">*</i>游戏名称：</td>' +
+                '<td class="lwx-layer-td llt2"><input type="text" name="" class="readOnlyInput" id="layer-game" readonly value="' + game + '" ></td></tr>' +
+                '<tr><td class="lwx-layer-td llt1"><i class="req">*</i>区服：</td>' +
+                '<td class="lwx-layer-td llt2"><input type="text" name="" class="readOnlyInput" id="layer-server" readonly value="' + server + '" ></td></tr>' +
+                '<tr><td class="lwx-layer-td llt1"><i class="req">*</i>帐号：</td>' +
+                '<td class="lwx-layer-td llt2"><input type="text" name="" class="readOnlyInput" id="layer-account" readonly value="' + account + '" ></td></tr>' +
+                '<tr><td class="lwx-layer-td llt1"><i class="req">*</i>角色名称：</td>' +
+                '<td class="lwx-layer-td llt2"><input type="text" name="" class="inputContentApply" id="layer-role" value="' + role + '" ></td></tr>' +
+                '<tr><td class="lwx-layer-td llt1">&nbsp;</td>' +
+                '<td class="lwx-layer-td llt2">' +
+                '<input type="button" class="js-supportConfirm saveButton" value="提交">' +
+                '<input type="button" class="js-supportCancel saveButton cacelButton" value="取消">' +
+                '</td></tr>' +
+                '</table><p class="zhuyi">注意：扶持未到账前，请不要在游戏内修改角色名称，避免无法到账！</p></form>',
+                success: function (layero, index) {
+                    layero.find('.js-supportConfirm').on('click', function () {
+                        var role = $.trim($('#layer-role').val());
+                        if (!role) {
+                            layer.msg('请输入角色名称');
+                            return false;
+                        }
+                        $.ajax({
+                            type: 'post',
+                            dataType: 'json',
+                            url: changeRoleUrl,
+                            data: {id: id, role: role},
+                            success: function (res) {
+                                layer.closeAll();
+                                if (res.code == '1') {
+                                    location.reload();
+                                }
+                            },
+                            error: function () {
+                            }
+                        });
+                        return false;
+                    });
+                    layero.find('.js-supportCancel').on('click', function () {
+                        layer.close(index);
+                        return false;
+                    });
+                },
+            });
+            return false;
+        });
+
+        //后续扶持发放
+        $("body").on('click', '.js-support-follow', function () {
+
+            var that = $(this);
+            var id = that.attr('data-id');
+            //获取额度上限
+            $.post(getUsableNum, {id: id}, function (res) {
+                usableNum = res;
+                layer.open({
+                    type: 1,
+                    title: '申请后续扶持',
+                    skin: 'lwx-layer-support',
+                    area: ['80%', '8rem'], //宽高
+                    content: '<form class="lwx-layer-form"><table class="lwx-layer-table">' +
+                    '<tr><td class="lwx-layer-td llt1 overllt1"><i class="req">*</i>可申请额度上限：</td>' +
+                    '<td class="lwx-layer-td llt2"><input type="text" name="" id="layer-usableNum" class="readOnlyInput" readonly value="' + usableNum + '" ></td></tr>' +
+                    '<tr><td class="lwx-layer-td llt1"><i class="req">*</i>扶持数量：</td>' +
+                    '<td class="lwx-layer-td llt2"><input type="text" name="apply_num" class="inputContentApply" id="layer-apply_num" value="" ></td></tr>' +
+                    '<tr><td class="lwx-layer-td llt1 remarkContent">备注：</td>' +
+                    '<td class="lwx-layer-td llt2"><textarea id="layer-remark" class="remarkContentApply" name="remark"></textarea></td></tr>' +
+                    '<tr><td class="lwx-layer-td llt1">&nbsp;</td>' +
+                    '<td class="lwx-layer-td llt2">' +
+                    '<input type="button" class="js-supportConfirm saveButton" value="提交">' +
+                    '<input type="button" class="js-supportCancel saveButton cacelButton" value="取消">' +
+                    '</td></tr>' +
+                    '</table><p class="zhuyi">注意：扶持未到账前，请不要在游戏内修改角色名称，避免无法到账！</p></form>',
+                    success: function (layero, index) {
+                        layero.find('.js-supportConfirm').on('click', function () {
+                            var apply_num = $.trim($('#layer-apply_num').val());
+                            if (!apply_num) {
+                                layer.msg('请输入扶持数量');
+                                return false;
+                            }
+                            var remark = $.trim($('#layer-remark').val());
+
+                            $.post(followingUrl, {id: id, apply_num: apply_num, remark: remark}, function (res) {
+                                if (res.code == 0) {
+                                    layer.msg(res.msg);
+                                    return false;
+                                }
+                                if (res.code == 1) {
+                                    layer.msg('后续扶持申请成功');
+                                    location.reload();
+                                }
+                                return false;
+                            });
+                            return false;
+                        });
+                        layero.find('.js-supportCancel').on('click', function () {
+                            layer.close(index);
+                            return false;
+                        });
+                    }
+                });
+            });
+            return false;
+        });
+
+        //获取区服列表
+        function getServerLists(game_id, server_id = 0) {
+            $("#server_id").empty();
+            $("#select2-server_id-container").text('请选择区服');
+            var html = '<option  value="0">请选择区服</option>';
+            $.post(getServerUrl, {game_id: game_id}, function (res) {
+                if (res.code == '1') {
+                    var data = res.data;
+                    $.each(data, function (index, ele) {
+                        if (server_id == ele.id) {
+                            html += '<option  value="' + ele.id + '" selected>' + ele.server_name + '</option>';
+                            $("#select2-server_id-container").text(ele.server_name);
+                        } else {
+                            html += '<option  value="' + ele.id + '">' + ele.server_name + '</option>';
+                        }
+                    });
+                    $("#server_id").html(html);
+                }
+            });
+        }
+        //获取区服列表
+        function getServerLists2(game_id, server_id = 0) {
+            $("#server_id2").empty();
+            $("#select2-server_id2-container").text('请选择区服');
+            var html = '<option  value="0">请选择区服</option>';
+            $.post(getServerUrl, {game_id: game_id}, function (res) {
+                if (res.code == '1') {
+                    var data = res.data;
+                    $.each(data, function (index, ele) {
+                        if (server_id == ele.id) {
+                            html += '<option  value="' + ele.id + '" selected>' + ele.server_name + '</option>';
+                            $("#select2-server_id2-container").text(ele.server_name);
+                        } else {
+                            html += '<option  value="' + ele.id + '">' + ele.server_name + '</option>';
+                        }
+                    });
+                    $("#server_id2").html(html);
+                }
+            });
+        }
+        function get_status(index) {
+            var list = {0:'待审核',1:'已通过',2:'已驳回',3:'已发放'};
+            return list[index];
+        }
+    </script>
+</block>

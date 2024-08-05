@@ -1,0 +1,65 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/select2.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/new_select2.css" type="text/css" />
+    <link href="__TMPL__/channelwappublic/assets/css/set.css" type="text/css" rel="stylesheet" />
+    <style>
+        footer{
+            display: flex!important;
+        }
+        body{
+            background: #fff;
+        }
+    </style>
+</block>
+<block name="body">
+    <div class="page-container">
+        <div class="pageBox">
+            <div class="listIcon">
+                <div class="iocnItem">
+                    <div class="iconPicture"> 
+                        <a class="header-title" href="{:url('Promote/mychild')}">
+                            <img src="__TMPL__/channelwappublic/assets/images/common/qudao_icon_zqdlb.png" alt="">
+                        </a>
+                    </div>
+                    <p class="listInfo">子渠道列表</p>
+                </div>
+                <div class="iocnItem">
+                    <div class="iconPicture">
+                        <a class="header-title" href="{:url('Settlement/settlement')}" >
+                            <img src="__TMPL__/channelwappublic/assets/images/common/qudao_icon_zqdjs.png" alt="">
+                        </a>
+                    </div>
+                    <p class="listInfo">子渠道结算</p>
+                </div>
+                <div class="iocnItem">
+                    <div class="iconPicture">
+                        <a class="header-title " href="{:url('Settlement/son_withdrawal')}">
+                            <img src="__TMPL__/channelwappublic/assets/images/common/qudao_icon_sytx.png" alt="">
+                        </a>
+                    </div>
+                    <p class="listInfo">收益提现</p>
+                </div>
+                <div class="iocnItem">
+                    <div class="iconPicture">
+                        <a class="header-title " href="{:url('Settlement/son_exchange')}">
+                            <img src="__TMPL__/channelwappublic/assets/images/common/qudao_icon_sydh.png" alt="">
+                        </a>
+                    </div>
+                    <p class="listInfo">收益兑换</p>
+                </div>
+                <div class="iocnItem">
+                    <div class="iconPicture">
+                        <a class="header-title " href="{:url('Settlement/son_sum')}">
+                            <img src="__TMPL__/channelwappublic/assets/images/common/qudao_icon_jshz.png" alt="">
+                        </a>
+                    </div>
+                    <p class="listInfo">结算汇总</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+</block>

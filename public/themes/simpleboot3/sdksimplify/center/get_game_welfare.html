@@ -1,0 +1,74 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <link rel="stylesheet" href="http://{:request()->header()['host']}__TMPL__/mobilepublic/assets/css/public.css">
+        <link rel="stylesheet" href="http://{:request()->header()['host']}__TMPL__/mobilepublic/assets/css/public.css">
+        <link rel="stylesheet" href="http://{:request()->header()['host']}__TMPL__/mobilepublic/assets/css/discount_game.css">
+        <link rel="stylesheet" href="http://{:request()->header()['host']}__TMPL__/mobilepublic/assets/css/game_detail.css">
+    </head>
+
+<body>
+    <div class="discount_lists_page">
+        <div>
+            <notempty name="list['rebate_list']">
+                <div class="discount-content-part">
+                    <p class="discount-title v-middle"><i class="discount-icon rebate-icon"></i>充值返利</p>
+                    <p class="discount-tips">单日单笔充值返利，不可累计 (充值后自动发放绑币)</p>
+                    <div class="discount-otherBox">
+                        <ul class="discount-list">
+                            <volist name="$list['rebate_list']" id="vo">
+                                <li class="discount-item v-middle">
+                                    <i class="star-icon"></i>
+                                    {$vo}
+                                </li>
+                            </volist>
+                        </ul>
+                    </div>
+                </div>
+                <div class="type_down__long_hx clear"></div>
+            </notempty>
+
+            <notempty name="list['welfare_list']">
+                <div class="discount-content-part">
+                    <p class="discount-title v-middle"><i class="discount-icon charge-icon"></i>充值折扣</p>
+                    <p class="discount-tips">单笔充值折扣</p>
+                   <div class="discount-otherBox">
+                        <ul class="discount-list">
+                            <volist name="$list['welfare_list']" id="vo">
+                                <li class="discount-item v-middle">
+                                    <i class="star-icon"></i>
+                                    {$vo}
+                                </li>
+                            </volist>
+                        </ul>
+                   </div>
+                </div>
+                <div class="type_down__long_hx clear"></div>
+            </notempty>
+            <notempty name="list['balance_list']">
+                <div class="discount-content-part">
+                    <p class="discount-title v-middle"><i class="discount-icon bing-icon"></i>绑币折扣</p>
+                    <p class="discount-tips">单日单笔绑币充值折扣</p>
+                    <div class="discount-otherBox">
+                        <ul class="discount-list">
+                            <volist name="$list['balance_list']" id="vo">
+                                <li class="discount-item v-middle">
+                                    <i class="star-icon"></i>
+                                    {$vo}
+                                </li>
+                            </volist>
+                        </ul>
+                    </div>
+                </div>
+            </notempty>
+        </div>
+        <!--暂无福利-->
+        <if condition="empty($list['rebate_list']) && empty($list['welfare_list']) && empty($list['balance_list'])">
+            <div class="no-discount">
+                <p>该游戏暂无福利</p>
+            </div>
+        </if>
+    </div>
+</body>
+</html>

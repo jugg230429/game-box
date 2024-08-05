@@ -1,0 +1,130 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+
+	<div class="nav-tabs mb20">
+        <span class="pb10">更新H5原包</span>
+    </div>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('hedit')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group game">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                游戏名称：
+                            </label>
+                            <div class="col-md-6 col-sm-10">
+                                <php>$map['sdk_version']=3</php>
+                                <select id="game_id" disabled class="selectpicker " game_id="{$data.game_id}" data-live-search="true" style="width: 100px;">
+                                    <option value="">选择游戏</option>
+                                    <volist name=":get_game_list('id,game_name',$map)" id="vo">
+                                        <option value="{$vo.id}" >{$vo.game_name}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">运营平台：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" value="1" disabled <eq name="data.file_type" value="1">checked</eq>>安卓
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" value="2" disabled <eq name="data.file_type" value="2">checked</eq>>苹果
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                上传原包：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="file_url" type="hidden" name="file_url" value="">
+                                <input id="file_url-name" class="form-control" name="file_name" type="text" value="" title="文件名称" style="display:block;border:1px solid #ddd">
+                                <a data-type="add" href="javascript:uploadOne('文件上传','#file_url','file',{'retain_local':'1'});">上传</a>
+                                <a data-type="del" href="javascript:(function(){$('#file_url-name').val('');$('#file_url').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">更新原包后会自动进行渠道游戏包更新，打包完成后，对应渠道下的游戏包无需更新，渠道玩家即可下载最新版游戏包（前提：服务器开启定时任务）</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_icp" class="col-sm-2 control-label">原包大小：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input disabled class="form-control" value="{$data.file_size}" >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                包名：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="bao_name"  name="bao_name" disabled class="form-control" value="{$data.bao_name}" >
+                            </div>
+                            <p class="help-block">填写内容需与游戏对应，且每个游戏对应单独的一个包名</p>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <input type="hidden" name="id" value="{$data.id}">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9 btn-tijiao-load-img" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                                <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script>
+    game_id = $('#game_id').attr('game_id');
+    $("#game_id").selectpicker('val', game_id);
+    var ctype ="{:cmf_get_option('storage')['type']}";
+	$('.btn-tijiao-load-img').on('click', function(){
+	    if(ctype != 'Local'){
+            btn_tijiao_load_img_id=layer.msg('上传服务器中，请耐心等待', {
+                icon: 16,
+                shade: 0.4,
+                time:false //取消自动关闭
+            });
+        }
+	});
+    $(function () {
+        $("#file_url-name").siblings('a').on('click',function () {
+            var that = $(this);type=that.attr('data-type');
+            if(type == 'add') {
+                var input = $("#file_url-name");
+                var si = setInterval(function () {
+                    if(input.val()) {
+                        $('#bao_name').removeAttr('disabled');
+                        $('#source_version').removeAttr('disabled');
+                        clearInterval(si);
+                    }
+                },300);
+            } else if(type='del') {
+                $('#bao_name').attr('disabled',true);
+                $('#source_version').attr('disabled',true);
+                clearInterval(si);
+            } else {
+                clearInterval(si);
+            }
+            console.log('111');
+            return true;
+        })
+        $("#source_version").blur(function () {
+            var $this = $(this);
+            if($this.val() < $this.attr('data')){
+                layer.msg('您输入的版本号过低');
+            }
+        })
+    })
+</script>
+</body>
+</html>

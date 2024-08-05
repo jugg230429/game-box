@@ -1,0 +1,484 @@
+<extend name="../mediapublic/base" />
+<!-- 主体内容 -->
+<block name="body">
+    <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/game.css">
+    <div class="game_page">
+        <!-- 轮播图 -->
+
+        <div class="game_banner">
+            <div style="width:100%;height:12px;"></div>
+            <div class="layui-container lbt-bg">
+                <notempty name="carousel">
+                <div class="wrap" id="wrap">
+                    <ul id="pic">
+                        <volist name="carousel" id="vo">
+                            <li><a target="{$vo.target}" href="{$vo.url}"><img src="{:cmf_get_image_url($vo['data'])}" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null"></a>
+                            </li>
+                        </volist>
+                    </ul>
+                    <ol id="list">
+                        <div class="tpbm totop"><img src="__STATIC__/images/banner_ico_UpArrow.png" alt=""></div>
+                        <!-- 指示器 -->
+                        <div class="zhishiqi_rongqi">
+                            <div class="zhishiqi">
+                                <volist name="carousel" id="vo" key="k">
+                                    <if condition='$k eq 0'>
+                                        <li class="active list_first_line">
+                                            <img src="{:cmf_get_image_url($vo['icon'])}" alt=""></li>
+                                        <else />
+                                        <li class=""><img src="{:cmf_get_image_url($vo['icon'])}" alt="" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null"></li>
+                                    </if>
+                                </volist>
+                            </div>
+                        </div>
+                        <div class="tpbm tobottom" style="top:250px"><img
+                                src="__STATIC__/images/banner_ico_downArrow.png" alt="">
+                        </div>
+                    </ol>
+                </div>
+                </notempty>
+            </div>
+        </div>
+
+        <!-- 筛选条件 -->
+        <div class="gamescreen">
+            <div class="layui-container">
+
+                <div class="gamescreen_con">
+
+                    <div class="gamescreen_con_first_line">
+                        <if condition="PERMI neq 2">
+                        <p class="gamescreen_con_title fl">运营平台：</p>
+                        <a href="{:url('Game/game_center',['game_type_id'=>input('game_type_id'),'short'=>input('short')])}"
+                            class="alls bluecolors ml-20 fl <if condition='empty(input(sdk_version))'>type_active</if>"><span>不限</span></a>
+                        <volist name="version" id="vo">
+                            <a href="{$vo.url}"
+                                class="<if condition='input(sdk_version) eq $vo[value]'>type_active</if> bluecolors gamescreen_con_andriod fl"><span>{$vo.name}</span></a>
+                        </volist>
+                        </if>
+                    </div>
+
+                    <div class="gamescreen_con_second_line clear">
+                        <p class="gamescreen_con_title fl">游戏类型：</p>
+                        <div class="game-type-list fl">
+                            <a href="{:url('Game/game_center',['sdk_version'=>input('sdk_version'),'short'=>input('short')])}"
+                               class="alls bluecolors ml-20 fl <if condition='empty(input(game_type_id))'>type_active</if>"><span>不限</span></a>
+                            <div class="other-game-type fl">
+                                <volist name="game_type" id="vo">
+                                    <a href="{$vo.url}"
+                                       class="<if condition='input(game_type_id) eq $vo[id]'>type_active</if> bluecolors gamescreen_con_type fl">
+                                        <p>{$vo.type_name}</p>
+                                    </a>
+                                </volist>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="gamescreen_con_third_line clear">
+                        <p class="gamescreen_con_title fl">字母顺序：</p>
+                        <a href="{:url('Game/game_center',['gmae_type_id'=>input('gmae_type_id'),'sdk_version'=>input('sdk_version')])}"
+                            class="alls bluecolors ml-20 fl <if condition='empty(input(short))'>type_active</if>"><span>不限</span></a>
+                        <volist name="short" id="vo">
+                            <a href="{$vo.url}"
+                                class="<if condition='input(short) eq $vo[value]'>type_active</if> bluecolors letter fl"><span>{$vo.name}</span></a>
+                        </volist>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 游戏列表 -->
+        <div class="gamelist">
+            <div class="layui-container">
+                <!-- 有游戏时显示 -->
+                <div style="position: relative;">
+                    <volist name="data" id="vo" mod="3">
+                        <div data-href="{:url('Game/detail',['game_id'=>$vo['relation_game_id']])}" class="js-link">
+                            <div class="gamelist_item fl">
+                                <div class="gamelist_item_img fl">
+                                    <notempty name="vo.icon"><img src="{:cmf_get_image_url($vo['icon'])}" alt="" onerror="this.src='__STATIC__/images/empty.jpg';this.onerror=null">
+                                    </notempty>
+                                </div>
+                                <div class="gamelist_item_info fl">
+                                    <div class="gamelist_item_title">{$vo.game_name}</div>
+                                    <div class="gamelist_item_info1">
+                                        <span class="fl">版本：</span>
+                                        <div class="fl gama_item_size">
+                                            <eq name="vo.sdk_type" value="2">
+                                                <img src="__STATIC__/images/content_ico_andriod.png" alt="" class="pb3">
+                                                <img src="__STATIC__/images/content_ico_IOS.png" alt="" class="mb5">
+                                                <else />
+                                                <if condition="$vo['sdk_version'] eq 1">
+                                                    <img src="__STATIC__/images/content_ico_andriod.png" alt=""
+                                                        class="pb3">
+                                                    <else />
+                                                    <img src="__STATIC__/images/content_ico_IOS.png" alt="" class="pb3">
+                                                </if>
+                                            </eq>
+                                        </div>
+                                        <span class="ml10 fl gama_item_time over-hide">类型：<span>{$vo.game_type_name}</span></span>
+                                    </div>
+                                    <div class="gamelist_item_info2 clear">
+                                        <span class="fl">大小：</span>
+                                        <div class="fl gama_item_size"><span>{$vo.game_size}</span></div>
+                                        <span class="ml10 fl gama_item_time">更新时间：<span>{$vo.create_time|date='Y-m-d',###}</span></span>
+                                    </div>
+                                    <div class="gamelist_item_buttons">
+                                        <a href="{:url('Game/detail',['game_id'=>$vo['relation_game_id']])}"
+                                            class="gamelist_item_gameweb fl">
+                                            <p>游戏官网</p>
+                                        </a>
+                                        <a href="{:url('Game/detail',['game_id'=>$vo['relation_game_id']])}" class="gamelist_item_download fl ">
+                                            <p>领取礼包</p>
+                                        </a>
+                                    </div>
+                                    <div class="showNew-regame">
+                                        <div class="newBox">
+                                            <div class="imageBox">
+                                                <img src="{$vo.qrcode}">
+                                            </div>
+                                            <ul class="boxContent">
+                                                <if condition="get_down_status2($vo['relation_game_id'],1)">
+<!--                                                    <li class="andriodColor"><image src="__TMPL__/mediapublic/assets/images/btn_icon_android.png" class="rightIcon" /><a download="" <if condition="$session['login_auth'] eq 0">class="login"<else />href="{:url('Downfile/down',['game_id'=>$vo['relation_game_id'],'sdk_version'=>1])}"</if>>安卓版下载</a></li>-->
+                                                    <li class="andriodColor"><image src="__TMPL__/mediapublic/assets/images/btn_icon_android.png" class="rightIcon" /><a download="" class="down_game" href="javascript:;" down-id="{$vo['relation_game_id']}" down-version="1" down-url="{:url('Downfile/down',['game_id'=>$vo['relation_game_id'],'sdk_version'=>1])}">安卓版下载</a></li>
+                                                <else />
+                                                    <!--<li class="andriodColor grayDown js-disabled"><image src="__TMPL__/mediapublic/assets/images/btn_icon_android.png" class="rightIcon" /><a class="disabled" href="javaScript:;">安卓版下载</a></li>-->
+                                                    </if>
+                                                <if condition="get_down_status2($vo['relation_game_id'],2)">
+<!--                                                    <li class="andriodColor appleColor"><image src="__TMPL__/mediapublic/assets/images/btn_icon_apple.png" class="rightIcon" /><a <if condition="$session['login_auth'] eq 0">class="login"<else />href="{:url('Downfile/down',['game_id'=>$vo['relation_game_id'],'sdk_version'=>2])}"</if>>苹果版下载</a></li>-->
+                                                    <li class="andriodColor appleColor"><image src="__TMPL__/mediapublic/assets/images/btn_icon_apple.png" class="rightIcon" /><a class="down_game" href="javascript:;" down-id="{$vo['relation_game_id']}" down-version="2"  down-url="{:url('Downfile/down',['game_id'=>$vo['relation_game_id'],'sdk_version'=>2])}">苹果版下载</a></li>
+                                                <else />
+                                                    <!--<li class="andriodColor appleColor grayDown js-disabled"><image src="__TMPL__/mediapublic/assets/images/btn_icon_apple.png" class="rightIcon" /><a class="disabled" href="javaScript:;">苹果版下载</a></li>-->
+                                                </if>
+                                            </ul>
+                                            <div class="imageGo" style="margin-left: 30px;">
+                                                <img src="__TMPL__/mediapublic/assets/images/game_icon_right.png">
+                                            </div>
+                                            <!-- <ul class="boxContent">
+                                                <li class="andriodColor"><image src="__TMPL__/mediapublic/assets/images/btn_icon_android.png" class="rightIcon"/><a href="javaScript:;">安卓版下载</a></li>
+                                                <li class="andriodColor appleColor"><image src="__TMPL__/mediapublic/assets/images/btn_icon_apple.png" class="rightIcon"/><a href="javaScript:;">苹果版下载</a></li>
+                                            </ul> -->
+                                            <!-- <ul class="boxContent">
+                                                <li class="andriodColor"><image src="__TMPL__/mediapublic/assets/images/btn_icon_android.png" class="rightIcon"/><a href="javaScript:;">安卓版下载</a></li>
+                                                <li class="andriodColor appleColor"><image src="__TMPL__/mediapublic/assets/images/btn_icon_apple.png" class="rightIcon"/><a href="javaScript:;">苹果版下载</a></li>
+                                            </ul> -->
+                                        </div>
+                                   </div>
+                                </div>
+                            </div>
+                            <if condition="$mod eq 0 or $mod eq 1">
+                                <div class="sx_zhanwei_div fl"></div>
+                            </if>
+                        </div>
+                    </volist>
+
+                </div>
+                <empty name="data">
+                    <if condition="input(game_name)">
+                        <div class="no_search_game_text">
+                            <p><img src="__STATIC__/images/common_ico_Notfound.png" alt=""></p>
+                            <p>没有找到相关游戏，换个关键词吧</p>
+                        </div>
+                        <else />
+                        <div class="no_game_text">
+                            <p><img src="__STATIC__/images/game_ico_Nogames.png" alt=""></p>
+                            <p>~暂无游戏~</p>
+                        </div>
+                    </if>
+
+                </empty>
+            </div>
+        </div>
+        <div id="page1" class="gamelistpage">
+            <notempty name="data">
+            {$page}
+            </notempty>
+        </div>
+    </div>
+    <notempty name="carousel">
+    <script>
+        var wrap = document.getElementById('wrap'),
+            zhishiqi = document.getElementsByClassName('zhishiqi'),
+            pic = document.getElementById('pic'),
+            list = document.getElementById('list').getElementsByTagName('li'),
+            topbottom = document.getElementById('list').getElementsByClassName('tpbm')
+        index = 0,
+            timer = null;
+        // 定义并调用自动播放函数
+        if (timer) {
+            clearInterval(timer);
+            timer = null;
+        }
+        timer = setInterval(autoplay, 4000);
+
+        // 定义图片切换函数
+        function autoplay() {
+            index++;
+            if (index >= list.length) {
+                index = 0;
+            }
+            changeoptions(index);
+
+        }
+
+        $('#wrap').hover(function () {
+            clearInterval(timer);
+        }, function () {
+            timer = setInterval(autoplay, 4000);
+        })
+        $('.zhishiqi_rongqi').hover(function () {
+            clearInterval(timer);
+        }, function () {
+            timer = setInterval(autoplay, 4000);
+        })
+        // 遍历所有数字导航实现划过切换至对应的图片
+        list[0].className = 'active'
+        for (var i = 0; i < list.length; i++) {
+            list[i].id = i;
+            list[i].onmouseover = function () {
+                clearInterval(timer);
+                changeoptions(this.id, 'hover');
+            }
+        }
+        topbottom[1].onclick = function () {
+            // console.log(parseInt(parseInt(index) + 1), list.length)
+            if (parseInt(parseInt(index) + 1) < list.length) {
+                changeoptions(parseInt(parseInt(index) + 1))
+            } else {
+                changeoptions(0)
+            }
+
+        }
+        topbottom[0].onclick = function () {
+            if (parseInt(parseInt(index) - 1) >= 0) {
+                changeoptionss(parseInt(parseInt(index) - 1), '', '1')
+            } else {
+                changeoptionss(list.length - 1)
+            }
+        }
+        var cur
+        function changeoptionss(curindex) {
+            clearInterval(timer);
+            cur = curindex
+            for (var j = 0; j < list.length; j++) {
+                list[j].className = '';
+                pic.style.top = 0;
+            }
+            list[curindex].className = 'active';
+            pic.style.top = -curindex * 380 + 'px';
+            index = curindex;
+            if (list.length <= 4) {
+                return false
+            }
+            var toppx = $('.zhishiqi').css('top').toString()
+            var toplen = toppx.slice(0, toppx.indexOf('px'))
+            var rongqi_height = parseInt($('.zhishiqi').css('height').toString().slice(0, $('.zhishiqi').css('height').toString().indexOf('px')))
+            var list_height = 0 - (parseInt(list.length * 60) - 240)
+            console.log(curindex, list.length - 4, parseInt(toplen))
+            console.log(parseInt(toplen) <= -60)
+            if (curindex === list.length - 1) {
+                $('.zhishiqi').attr('style', 'top:-' + (list.length - 4) * 60 + 'px')
+                return false
+            }
+            if (parseInt(toplen) <= -60) {
+                $('.zhishiqi').attr('style', 'top:' + (parseInt(parseInt(toplen) + (list.length - 5) * 60) + 'px'))
+            }
+        }
+        function changeoptions(curindex, hover, ids) {
+            clearInterval(timer);
+            cur = curindex
+            for (var j = 0; j < list.length; j++) {
+                list[j].className = '';
+                pic.style.top = 0;
+            }
+            list[curindex].className = 'active';
+            pic.style.top = -curindex * 380 + 'px';
+            index = curindex;
+            if (hover) {
+                return false
+            }
+            if (list.length <= 4) {
+                return false
+            }
+            var toppx = $('.zhishiqi').css('top').toString()
+            var toplen = toppx.slice(0, toppx.indexOf('px'))
+            var rongqi_height = parseInt($('.zhishiqi').css('height').toString().slice(0, $('.zhishiqi').css('height').toString().indexOf('px')))
+            var list_height = 0 - (parseInt(list.length * 60) - 240)
+            console.log(curindex, list.length - 4, parseInt(toplen))
+            console.log(list_height === parseInt(toplen))
+            if (!ids) {
+                if (list_height === parseInt(toplen)) {
+                    if (curindex === 0) {
+                        $('.zhishiqi').attr('style', 'top:0px')
+                    } else {
+                    }
+                } else {
+                    $('.zhishiqi').attr('style', 'top:-' + parseInt(-toplen + 60) + 'px')
+                }
+            } else {
+            }
+
+            // if (index !== list.length - 1 && index !== list.length - 2 && index !== list.length - 3) {
+            //     if (index === 0) {
+            //         $('.zhishiqi').attr('style', 'top:0px')
+            //     } else {
+            //         var toppx = $('.zhishiqi').css('top').toString()
+            //         var toplen = toppx.slice(0, $('.zhishiqi').css('top').toString().indexOf('px'))
+            //         $('.zhishiqi').attr('style', 'top:-' + parseInt(-toplen + 60) + 'px')
+            //     }
+
+            // }else{
+            //     $('.zhishiqi').attr('style', 'top:-' + parseInt(-toplen + 60) + 'px')
+            // }
+        }
+
+    </script>
+    </notempty>
+    <script>
+        $(function () {
+            $(".down_game").click(function () {
+                var down_url = $(this).attr('down-url');
+                var down_id = $(this).attr('down-id');
+                var down_version = $(this).attr('down-version');
+                //请求
+
+                $.ajax({
+                    url: "{:url('Downfile/get_ban_status')}",
+                    type: 'post',
+                    dataType: 'json',
+                    data: {game_id: down_id,type:4,sdk_version:down_version},
+                    success: function (res) {
+
+                        if (res.code != 1) {
+                            layer.msg(res.msg);
+                        } else {
+                            var promote_id = 0;
+                            checkIosPayRes = checkIosPay(down_id,promote_id,down_version);
+                            if(checkIosPayRes){
+                                location.href = down_url;
+                            }else{
+
+                                return false;
+                                // 需要付费下载
+                            }
+                        }
+                    }, error() {
+
+                        console.log("asdasd");
+                        return false;
+
+                        layer.msg('服务器错误');
+                    }
+                })
+            })
+        })
+        
+
+        function checkIosPay(down_id,promote_id,down_version)
+        {
+            // 判断ios超级签游戏是否需要付费下载
+            if(down_version == 2){
+                $.ajax({
+                    url: "{:url('mobile/Downfile/checkiosPayDownload')}",
+                    type: 'post',
+                    dataType: 'json',
+                    async:false,
+                    data: {game_id: down_id,promote_id:promote_id,down_version:down_version},
+                    success: function (res) {
+                        
+                        if(res.code == 2){
+                            down_flag = 1;
+                            // 可以直接下载
+                            return true;
+
+                        } else { 
+                            // layer.msg(res.msg);
+                            return false;
+                        }
+                    }, error() {
+                        // layer.msg(res.msg);
+                        return false;
+                    }
+                })
+                // alert("付费下载");
+                // return false;
+            }else{
+                return true;
+            }
+                
+        }
+
+
+    
+    </script>
+    <script>
+        window.onload = function () {
+            $('.totop').hover(function () {
+                $(this).children('img').prop('src', '__STATIC__/images/banner_btn_UpArrow_s.png')
+            }, function () {
+                $(this).children('img').prop('src', '__STATIC__/images/banner_ico_UpArrow.png')
+            })
+            $('.tobottom').hover(function () {
+                $(this).children('img').prop('src', '__STATIC__/images/banner_btn_downArrow_s.png')
+            }, function () {
+                $(this).children('img').prop('src', '__STATIC__/images/banner_ico_downArrow.png')
+            })
+        }
+
+
+        function into_game_detail_page() {
+            location.href = './game_detail.html'
+        }
+
+        $(".gamelist_item_download").hover(function () {
+            $(this).next().show()
+        }, function () {
+            $(this).next().hide()
+        })
+        $(".game_item_down_modal").hover(function () {
+            $(this).show()
+        }, function () {
+            $(this).hide()
+        })
+        $('.gamescreen_con_first_line .bluecolors').click(function () {
+            if (!$(this).hasClass('type_active')) {
+                if ($('.gamescreen_con_first_line .bluecolors .type_active')) {
+                    $('.gamescreen_con_first_line .type_active').removeClass('type_active')
+                }
+                $(this).addClass('type_active')
+            }
+        })
+        $('.gamescreen_con_second_line .bluecolors').click(function () {
+            if (!$(this).hasClass('type_active')) {
+                if ($('.gamescreen_con_second_line .bluecolors .type_active')) {
+                    $('.gamescreen_con_second_line .type_active').removeClass('type_active')
+                }
+                $(this).addClass('type_active')
+            }
+        })
+        $('.gamescreen_con_third_line .bluecolors').click(function () {
+            if (!$(this).hasClass('type_active')) {
+                if ($('.gamescreen_con_third_line .bluecolors .type_active')) {
+                    $('.gamescreen_con_third_line .type_active').removeClass('type_active')
+                }
+                $(this).addClass('type_active')
+            }
+        })
+
+        // $('body').on('click','.js-link',function() {
+        // })
+
+        $('.js-link').click(function() {
+            var e = event || window.event
+                var target = e.target
+                if($(target).is('a[download]') || ($(target).is('li') && $(target).children('a[download]'))) {
+                   
+                }else {
+                    window.location.href = $(this).attr('data-href')
+                }
+        })
+
+        $('.js-disabled').click(function() {
+            return false
+        })
+    </script>
+</block>

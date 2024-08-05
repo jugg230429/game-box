@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<include file="public@head"/>
+				<link href="__TMPL__/public/assets/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="__TMPL__/public/assets/css/bootstrap-select.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/promote/mychlid.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/promote/grant.css" rel="stylesheet" />
+	</head>
+	<body>
+		<include file="public@nav"/>
+		<include file="public@header"/>
+		<div class="trunk">
+			<div class="trunk-con">
+				<div class="right-container">
+					<div class="normal-list">
+						<div class="trunk">
+							<div class="trunk-title">
+								<div class="location ">
+									<div class="location-container fr">当前位置：<span class="location-container-text">管理中心&gt;</span><span class="location-container-text">我的收益>&gt;</span><span class="location-container-text">发放代金券</span></div>
+								</div>
+								<img src="__TMPL__/public/assets/images/promote/icon_normal_ziqudao.png" class="fl trunk-icon">
+								<span class="title-main fl ">发放代金券</span>
+								<span class="tagging">说明：代金券优惠金额从平台币余额内扣除，回收不予退还。</span>
+							</div>
+
+							<div class="clear"></div>
+							<ol class="tabpan">
+								<li class="tabpan-con tabpan-show">
+									<form id="form1" action="{:url('grant_post')}" method="post">
+									    <div class="grant-pan-box">
+                                        <div class="fl grant-pan-item">
+										 <span class="fl pro_promot_name">选择用户：</span><div class=" player fl">
+										    <div class="pro_promot_search ">
+                                                  <input type="text" name="key" id="key" class="pro_promot_search_input form-control fl" placeholder="请选择玩家" onkeydown="keyup_submit(event);">
+                                                   <input type="button" class="btn btn-primary pro_promot_search_btn fl" id="psi" value="搜索">
+                                            </div>
+											<div class="clear"></div>
+											 <div class="pro_promot_game">
+                                                <ul id="promote_list" class="z_clearfix game_list">
+
+                                                </ul>
+												<div class="clear"></div>
+                                               
+												<div class="all-select-btn clear">
+                                                    <div class="fl" style="transform: translateY(40px);">
+                                                        <input type="checkbox" class="fl pro_promot_game_check jsgameid" id="all-select">
+                                                        <label for="all-select" class="fl"></label>
+                                                        <span class="fl pro_promot_game_name omission" style="margin-top:6px">全选</span>
+                                                    </div>
+                                                     <div class="grant-pan-page pagenation fl" style="transform: translateX(31%);">
+                                                        <ul  id="promote_list_page">
+    
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                             </div>
+										</div>
+										<div class="clear"></div>
+										</div>
+										<div class="fl grant-pan-item" id="coupon">
+										    <span class="fl pro_promot_name">选择代金券：</span>
+											<ul class="fl coupon-dropdown">
+											    <volist name=":get_coupon_list('id,coupon_name,game_name,money,start_time,end_time',[],1,PID)" id="vo">
+												  <li class="couponItem">
+												  	 <div class="coupon-labelInput">
+                                                        <input type="checkbox" value="{$vo.id}" name="coupon_ids[]" class="fl pro_promot_coupon_check " id="coupon{$key}">
+                                                        <label for="coupon{$key}" class="fl"></label>
+                                                        <span class="fl pro_promot_game_name omission pro_promot_game_name_tg" title="">{$vo.coupon_name}</span>
+                                                        <div class="clear"></div>
+                                                      </div>
+                                                      <div class="coupon-content" style="height: 70px;padding-top: 8px;">
+                                                        <p><span>券值：</span><span>{$vo.money}</span></p>
+                                                        <p><span>游戏：</span><span>{$vo.game_name}</span></p>
+                                                        <p><span>时效：</span><span>{:$vo['start_time']?date('Y-m-d',$vo['start_time']):'永久'}至{:$vo['end_time']?date('Y-m-d',$vo['end_time']):'永久'}</span></p>
+                                                     </div>
+												  </li>
+                                                  
+                                                 
+                                                 
+												</volist>
+											</ul>
+                                           
+											<div class="clear"></div>
+											<div class="coupon-bottom">
+                                                    <input type="checkbox" class="fl pro_promot_coupon_check" id="all-coupon-select">
+                                                    <label for="all-coupon-select" class="fl"></label>
+                                                    <span class="fl pro_promot_game_name omission">全选</span>
+											</div>
+										</div>
+                                        <div class="clear"></div>
+                                        </div>
+                                        <div class="grant-pan-btn">
+                                            <button type="button" class="button js_submit save-btn" >保存</button>
+                                            <a class="back-btn " alt="返回上一页" title="返回上一页" href="javascript:window.history.back();">返回</a>
+                                        </div>
+									</form>
+								</li>
+							</ol>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		<include file="public@scripts"/>
+		<script src="__STATIC__/js/layer/layer.js"></script>
+
+		<script>
+			var is_ok = true;
+			var page = 1;
+			var key = '';
+			var total = 1;
+			$(function() {
+
+                userList();
+
+				 //全选
+                $('#all-select').click(function () {
+                if(this.checked){
+                    $(".pro_promot_game_check:checkbox").prop("checked",true)
+                 }else{
+                     $(".pro_promot_game_check:checkbox").prop("checked",false)
+                 }
+				});
+                // 优惠券全选
+                $('#all-coupon-select').click(function () {
+                    $('.pro_promot_coupon_check:checkbox').prop('checked', this.checked);
+                });
+				//取消
+			   $(".coupon-bottom-cancel").click(function(){
+			      $(".pro_promot_coupon_check:checkbox").prop("checked",false)
+			   })
+                //提交事件
+                $(".js_submit").click(function () {
+                    if(is_ok == false){
+                        return false;
+                    }
+                    is_ok = false;
+                    var url = $("#form1").attr('action');
+                    $.ajax({
+                        type: 'POST',
+                        url: url ,
+                        data:$("#form1").serialize(),
+                        async:false,
+                        dataType:'json',
+                        success:function(data){
+                            if (data.code > 0){
+                                layer.msg(data.msg,{time:1000},function(){
+                                    window.location.href= data.url;
+                                })
+                            }
+                            else{
+                                layer.msg(data.msg,{time:1000});
+                            }
+                        }
+                    })
+                    is_ok = true;
+                })
+			})
+			$(document).on('keydown', function(e){
+            if(e.keyCode === 13)
+             {
+　　            e.preventDefault();
+             }
+           })
+
+            $('body').on('click', '.js-p-link', function () {
+                page = $(this).attr('data-page') * 1;
+                userList();
+            });
+
+             // 搜索
+        $('#psi').on('click', function () {
+            key = $.trim($('#key').val());
+            if (key) {
+                userList();
+                //$('#promote_list li').hide().find('input').prop('disabled', true);
+                //$('#promote_list li span[title*="'+key+'"]').siblings('input').prop('disabled', false).closest('li').show();
+            }
+        return false;
+    });
+	   //搜索回车
+		function keyup_submit(e){
+           var evt = window.event || e;
+           if (evt.keyCode == 13){
+           //回车事件
+          var key = $.trim($('#key').val());
+          if (key) {
+            $('#promote_list li').hide().find('input').prop('disabled', true);
+            $('#promote_list li span[title*="'+key+'"]').siblings('input').prop('disabled', false).closest('li').show();
+        }
+        return false;
+       }
+   }
+
+        function userList()
+        {
+            $.post('{:url("ajax_get_user_lists_info")}', {page:page,name:key}, function (response) {
+                var list = $('#promote_list');
+                var p = $('#promote_list_page');
+                list.empty();
+                p.empty();
+                $(".pro_promot_game_check:checkbox").prop("checked",false)
+                if (response.data) {
+                    page = response.data.page*1;
+                    total = response.data.total*1;
+                    var data = response.data.list;
+                    if (data && data.length) {
+                        var html = '';
+                        $.each(data, function (index, item) {
+                            html += '<li class="fl pro_promot_game_con" >' +
+                                '<input type="checkbox" value="' + item.id + '" name="ids[]" class="fl pro_promot_game_check jsgameid" id="gameCheck' + index + '">' +
+                                '<label for="gameCheck' + index + '" class="fl"></label>' +
+                                '<span class="fl pro_promot_game_name omission" title="' + item.account + '">' + item.account + '</span></li>';
+                        });
+                        list.append(html);
+                    }
+                    if (total) {
+                        var phtml = '<div style="float:none">';
+                        if (page==1) {
+                            phtml += '<li class="page-item disabled"><span class="page-link">上一页</span></li>';
+                        } else {
+                            phtml += '<li class="page-item"><a class="page-link js-p-link" data-page="'+(page*1-1)+'" href="javascript:;">上一页</a></li>'
+                        }
+
+                        if (total > 7) {
+                            if (page < 5) {
+                                phtml += deal(1, 5);
+                            } else if (page > total - 5) {
+                                phtml += deal(total-5, total);
+                            } else {
+                                phtml += '<li class="page-item"><a class="page-link js-p-link" data-page="1" href="javascript:;">1</a></li>';
+                                phtml += deal(page-2, page+2);
+                                phtml += '<li class="page-item"><a class="page-link js-p-link" data-page="'+(total)+'" href="javascript:;">'+total+'</a></li>';
+                            }
+                        } else {
+                            phtml += deal(1, total);
+                        }
+
+                        if (page==total) {
+                            phtml += '<li class="page-item disabled"><span class="page-link">下一页</span></li>';
+                        } else {
+                            phtml += '<li class="page-item"><a class="page-link js-p-link" data-page="'+(page*1+1)+'" href="javascript:;">下一页</a></li>'
+                        }
+
+                        phtml += '</div>';
+
+                        p.append(phtml);
+                    }
+                }
+            });
+        }
+
+        function deal(start, end)
+        {
+            var html = '';
+            for(var i=start; i<=end; i++) {
+                if (page == i) {
+                    html += '<li class="active page-item disabled"><span class="page-link">'+i+'</span></li>';
+                } else {
+                    html += '<li class="page-item"><a class="page-link js-p-link" data-page="'+i+'" href="javascript:;">'+i+'</a></li>';
+                }
+            }
+            return html;
+        }
+
+        $('.couponItem .coupon-labelInput').mouseenter(function() {
+            $(this).siblings('.coupon-content').show()
+        })
+        $('.couponItem .coupon-labelInput').mouseleave(function() {
+            $(this).siblings('.coupon-content').hide()
+        })
+
+
+		</script>
+	</body>
+
+</html>

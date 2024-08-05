@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<include file="public@head"/>
+		<link href="__TMPL__/public/assets/css/common.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/index.css" rel="stylesheet" />
+		<!-- <script src="//captcha.luosimao.com/static/dist/api.js"></script> -->
+		<script src="__STATIC__/js/gt.js"></script>
+		<style type="text/css">
+			.geetest_logo,.geetest_feedback,.geetest_copyright,.geetest_success_logo{
+				display: none!important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header>
+			<include file="public@indexheader"/>
+		</header>
+
+		<div class="banner">
+			<div class="inner">
+				<if condition="$flag eq 1">
+					<a href="tencent://message/?uin={$promote_union_set['qq']}&Site=Sambow&Menu=yes" class="qqbtn" ><img src="__TMPL__/public/assets/images/index/icon_kf.png" class="qqbtn-img">QQ咨询</a>
+				</if>
+				<if condition="$flag eq 0">
+					<a href="tencent://message/?uin={:cmf_get_option('kefu_set')['pc_set_server_qq']}&Site=Sambow&Menu=yes" class="qqbtn" ><img src="__TMPL__/public/assets/images/index/icon_kf.png" class="qqbtn-img">QQ咨询</a>
+				</if>
+				
+				<div class="lrbox">
+					<if condition="is_p_login() elt 0">
+						<div class="lrbox-login" id="lr-login">
+							<div class="login-title">
+								<span class="titletext">欢迎回来</span>
+								
+							</div>
+							<form id="loginForm" class="form-horizontal" method="post" novalidate="novalidate" >
+							<div class="form-group clearfix">
+								<div class="input-group input-format">
+									<span class="input-group-addon"><i class="input-icon input-icon-user"></i></span>
+									<input type="text" name="account" value="{:cookie('p_account')}" class="account form-control" placeholder="账号" aria-describedby="basic-addon1" maxlength="15">
+								</div>
+								<div class="input-status"></div>
+							</div>
+
+							<div class="form-group clearfix js-password">
+								<div class="input-group input-format ">
+									<span class="input-group-addon"><i class="input-icon input-icon-lock"></i></span>
+									<input type="password" id="password" value="" name="password" class="form-control" autocomplete="new-password" placeholder="密码" aria-describedby="basic-addon1" maxlength="30">
+								</div>
+
+								<div class="input-status"></div>
+							</div>
+
+							<div class="form-group mb15 clearfix js-geet">
+	                            <!-- <div class="l-captcha" data-site-key="{$config.auto_verify_index}" data-width="100%"></div> -->
+	                            <div class="btn_delphil textc"  id="embed-captcha"></div>
+								<p id="wait" style="display: block;">正在加载验证码......</p>
+								<p id="notice" style="display: none;">请先完成验证</p>
+	                        </div>
+
+							<div class="form-group mb13 ff clearfix">
+								<label class="tabbtn"><input type="checkbox" name="remm" id="remember"  checked  class="tabbtn-input"><i class="input-icon-checkbox on"></i><span>记住账号</span></label>
+                                 <if condition="cmf_get_option('promote_set')['ch_user_allow_register'] eq 1">
+								<span class="fr titlebtn ">还没账号？<a class="jsreg titlebtn-link">去注册</a></span>
+								</if>
+							</div>
+							<div>
+								<input id="loginButton" type="submit" class="btn btn-primary" value="登 录">
+							</div>
+							</form>
+						</div>
+					<else/>
+						<!--已登录-->
+						<div class="lrbox-alreadylogin" id="lr-alreadylogin" style="display: block;">
+							<img src="__TMPL__/public/assets/images/promote/index/home_ico_head.png"  class="lrbox-via"/>
+							<div class="lrbox-account">Hi，{:PNAME}</div>
+							<form action="{:url('promote/index')}" method="GET">
+								<div><input id="loginButton" type="submit" class=" btn-primary" value="进入管理中心"></div>
+							</form>
+							<a class="switch-btn logout" >切换账号</a>
+						</div>
+					</if>
+				</div>
+			</div>
+		</div>
+		</div>
+		<div class="advantage page-aside">
+			<div class="inner">
+				<div class="aside-title">
+					<span class="aside-title-text">平台优势</span>
+
+				</div>
+				<div class="aside-content ">
+					<ul>
+						<li class="aside-content-con">
+							<div class="item"><i class="aside-icon icon1"></i><span class="aside-contitle">收入丰厚</span>
+								<p class="aside-contitle-context"><span class="aside-contitle-context-text">CPS+CPA双模式计费方式</span><span>可持续获得收益</span></p>
+							</div>
+						</li>
+						<li class="aside-content-con">
+							<div class="item"><i class="aside-icon aside-icon2"></i><span class="aside-contitle">统计精准</span>
+								<p class="aside-contitle-context"><span class="aside-contitle-context-text">每一笔收入都有迹可循</span><span>精准无误，永不扣量</span></p>
+							</div>
+						</li>
+						<li class="aside-content-con">
+							<div class="item"><i class="aside-icon aside-icon3"></i><span class="aside-contitle">海量资源</span>
+								<p class="aside-contitle-context"><span class="aside-contitle-context-text">优质内容，海量资源开放合作</span><span>提供最佳合作方式</span></p>
+							</div>
+						</li>
+						<li class="aside-content-con">
+							<div class="item"><i class="aside-icon aside-icon4"></i><span class="aside-contitle">结算及时</span>
+								<p class="aside-contitle-context"><span class="aside-contitle-context-text">结算快速，结算金额准确无误</span><span>绝不拖欠分成</span></p>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		    <img src="__TMPL__/public/assets/images/index/bj_1.png"  class=""/>
+		</div>
+		<!---->
+		<if condition="AUTH_GAME == 1">
+		<div class="app page-aside">
+			<div class="inner">
+				<div class="aside-title">
+					<span class="aside-title-text">精品应用推荐</span>
+
+				</div>
+				<div class="app-aside-content app-slideColumn clearfix">
+					<div class="bd">
+						<if condition="count($game) gt 1">
+							<div class="ulWrap">
+						<else/>
+							<div class="">
+						</if>
+						<volist name='game' id="gm">
+							<ul>
+								<volist name='gm' id="g">
+									<li class="ulWrap-con">
+										<div class="pic">
+											<a href="javascript:;"><span class="placeholder-graphic placeholder-graphic_icon"><img src="{:cmf_get_image_preview_url($g['icon'])}" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null"></span></a>
+										</div>
+										<div class="app-title">
+											<a style="cursor:default" href="javascript:;" title="{$g['game_name']}">{$g['game_name']}</a>
+										</div>
+									</li>
+								</volist>
+							</ul>
+						</volist>
+					</div>
+					</div>
+					<if condition="count($game) gt 1">
+						<a class="prev" href="javascript:void(0)"></a>
+						<a class="next" href="javascript:void(0)"></a>
+					</if>
+				</div>
+			</div>
+		</div>
+		</if>
+		<!--join-->
+		<div class="join page-aside">
+			<div class="inner">
+				<div class="aside-title">
+					<span class="aside-title-text">如何加入我们</span>
+
+				</div>
+				<div class="aside-content">
+					<ul class="aside-content-ul">
+						<li class="join-li">
+							<div class="join-item">
+							    <img  src="__TMPL__/public/assets/images/index/icon_step1d.png" class="join-step-icon">
+							    <img class="join-icon" src="__TMPL__/public/assets/images/index/step1.png">
+								<p class="context"><span class="context-con">注册账号，通过审核，加入联盟</span></p>
+							</div>
+							<div class="angle"><i class="iconangle"></i>
+							
+							</div>
+						</li>
+						<li class="join-li">
+							<div class="join-item">
+							    <img  src="__TMPL__/public/assets/images/index/icon_step2d.png" class="join-step-icon">
+							   <img class="join-icon" src="__TMPL__/public/assets/images/index/step2.png">
+							
+								<p class="context"><span class="context-con">选择推广的产品，游戏信息</span></p>
+							</div>
+							<div class="angle"><i class="iconangle"></i></div>
+						</li>
+						<li class="join-li">
+							<div class="join-item">
+							    <img  src="__TMPL__/public/assets/images/index/icon_step3d.png" class="join-step-icon">
+							    <img class="join-icon" src="__TMPL__/public/assets/images/index/step3.png">
+								
+								<p class="context"><span class="context-con">获得自有渠道的游戏资源包</span></p>
+							</div>
+							<div class="angle"><i class="iconangle"></i></div>
+						</li>
+						<li class="join-li">
+							<div class="join-item">
+							 <img  src="__TMPL__/public/assets/images/index/icon_step4d.png" class="join-step-icon">
+							<img class="join-icon" src="__TMPL__/public/assets/images/index/step4.png">
+								
+								<p class="context"><span class="context-con">每笔充值，后台申请结算的分成</span></p>
+							</div>
+						</li>
+					</ul>
+					
+				</div>
+			</div>
+		</div>
+        <div class="spread">
+		    <div class="inner">
+		       <div class="spread-title">想要开始推广吗?</div>
+			   <a class="spread-btn jsreg">立即注册</a>
+			</div>
+		</div>
+		<!--注册弹窗-->
+		<div class="register-bg">
+			<div class="center">
+				<div class="register-box">
+					<div class="register-colse jslog"><img src="__TMPL__/public/assets/images/close.png" class="register-colse-img"></div>
+					<div class="reg-title">
+						<span class="titletext">欢迎加入！</span>
+						<span class="fr titlebtn ">已有账号？<a class="titlebtn-link jslog">去登录</a></span>
+					</div>
+					<form id="regForm"  class="form-horizontal" method="post" novalidate="novalidate">
+
+						<div class="form-group clearfix">
+						<div class="input-group input-format">
+							<span class="input-group-addon"><i class="input-icon input-icon-user" ></i></span>
+							<input type="text" name="reaccount"  class="account form-control" placeholder="账号必须是6~30位字符串" aria-describedby="basic-addon1" maxlength="30">
+						</div>
+						<div class="input-status"></div>
+					</div>
+						<div class="form-group clearfix">
+							<div class="input-group input-format">
+								<input type="password" id="regpassword" name="regpassword" class="form-control" placeholder="密码必须是6~30位字符串" autocomplete="new-password" aria-describedby="basic-addon1" maxlength="30"  />
+								<span class="input-group-addon"><i class="input-icon input-icon-lock"></i></span>
+							</div>
+							<div class="input-status"></div>
+						</div>
+						<div class="form-group mb15 clearfix">
+							<div class="input-group input-format">
+								<input type="password" id="regrepassword" name="regrepassword" class="form-control" placeholder="再次输入确认密码" aria-describedby="basic-addon1"  />
+								<span class="input-group-addon"><i class="input-icon input-icon-lock"></i></span>
+							</div>
+							<div class="input-status"></div>
+						</div>
+
+						<div class="input-group input-format">
+							<label class="tabbtn"><input type="checkbox" id="accpet" name="remember"  class="tabbtn-input"><i class=" input-icon-checkbox on"></i><span>我已阅读并接受<a href="{:url('index/register_doc')}" class="check-a jsxieyi" target="_blank">《{$tmp_post_title}》</a></span></label>
+							<input id="registerButton" type="submit" class="btn btn-primary" value="下一步">
+						</div>
+						<div class="input-status"></div>
+					</form>
+				</div>
+				<!--下一步注册弹窗-->
+				<div class="nextregister-box" >
+					<div class="register-colse jslog"><img src="__TMPL__/public/assets/images/close.png" class="register-colse-img"></div>
+					<div class="reg-title">
+						<span class="titletext">欢迎加入！</span>
+						<span class="fr titlebtn ">已有账号？<a class="titlebtn-link jslog">去登录</a></span>
+					</div>
+					<form id="nextregForm"  class="form-horizontal" method="post" novalidate="novalidate">
+
+                        <div class="form-group clearfix">
+							<div class="input-group input-format">
+								<label class="sdis">
+									<input type="radio" name="register_type"  checked="checked"  value="0" class="sdis-radio "><i></i><span>个人</span>
+								</label>
+								<label class="sdis">
+									<input type="radio" name="register_type"   value="1" class="sdis-radio "><i></i><span>公会</span>
+								</label>
+								<label class="sdis">
+									<input type="radio" name="register_type"   value="2" class="sdis-radio "><i></i><span>公众号</span>
+								</label>
+								<label class="sdis">
+									<input type="radio" name="register_type"    value="3" class="sdis-radio "><i></i><span>其他</span>
+								</label>
+							</div>
+							<div class="input-status"></div>
+						</div>
+						<div class="form-group clearfix">
+							<div class="input-group input-format">
+								<input type="text" name="real_name" class="form-control" placeholder="输入联系人姓名" aria-describedby="basic-addon1" maxlength="25"  />
+								<span class="input-group-addon"><i class="input-icon input-icon-contacts"></i></span>
+							</div>
+							<div class="input-status"></div>
+						</div>
+						<div class="form-group mb40 clearfix">
+							<div class="input-group input-format">
+								<input type="text" name="mobile_phone" class="form-control" placeholder="输入联系人手机号" aria-describedby="basic-addon1" maxlength="11" >
+								<span class="input-group-addon"><i class="input-icon input-icon-telephone"></i></span>
+							</div>
+							<div class="input-status"></div>
+						</div>
+						<div class="input-group input-format">
+							<input id="nextregisterregisterButton" type="submit" class="btn btn-primary" value="确定">
+						</div>
+					</form>
+				</div>
+			</div>
+
+		</div>
+
+
+		<include file="public@index_footer"/>
+		<script src="__TMPL__/public/assets/js/jquery-1.11.1.min.js"></script>
+		<script src="__TMPL__/public/assets/js/jquery.superslide.2.1.1.js"></script>
+		<script src="__TMPL__/public/assets/js/jquery.form.js"></script>
+		<script src="__TMPL__/public/assets/js/jquery.validate.min.js"></script>
+		<script src="__STATIC__/js/layer/layer.js"></script>
+		<script type="text/javascript">
+			$('.geetest_logo').css('display','none');
+			var handlerEmbed = function (captchaObj) {
+                var validate = captchaObj.getValidate();
+                captchaObj.onSuccess(function () {
+                    validate = captchaObj.getValidate();
+                    if (validate) {
+                        $("#loginButton").click();
+                        $("#loginButton").attr("disabled", "disabled");
+                    }
+                });
+	            // 将验证码加到id为captcha的元素里，同时会有三个input的值：geetest_challenge, geetest_validate, geetest_seccode
+	            captchaObj.appendTo("#embed-captcha");
+	            captchaObj.onReady(function () {
+	                $("#wait").css('display','none');
+	            });
+	            // 更多接口参考：http://www.geetest.com/install/sections/idx-client-sdk.html
+	        };
+	        $.ajax({
+	            // 获取id，challenge，success（是否启用failback）
+	            url: "{:url('checkGeetest')}?t=" + (new Date()).getTime(), // 加随机数防止缓存
+	            type: "post",
+	            dataType: "json",
+	            success: function (data) {
+	                // 使用initGeetest接口
+	                // 参数1：配置参数
+	                // 参数2：回调，回调的第一个参数验证码对象，之后可以使用它做appendTo之类的事件
+	                initGeetest({
+	                    gt: data.gt,
+	                    challenge: data.challenge,
+	                    new_captcha: data.new_captcha,
+	                    product: "embed", // 产品形式，包括：float，embed，popup。注意只对PC版验证码有效
+	                    offline: !data.success // 表示用户后台检测极验服务器是否宕机，一般不需要关注
+	                    // 更多配置参数请参见：http://www.geetest.com/install/sections/idx-client-sdk.html#config
+	                }, handlerEmbed);
+	            }
+	        });
+		</script>
+		<script>
+			checkAccounturl = "{:url('promote/checkAccount')}";
+			loginurl  = "{:url('login')}";
+			registerurl = "{:url('register')}";
+			promote_auto_audit = "{$promote_auto_audit}";
+			$(document).ready(function() {
+				//精品应用推荐
+				$(".app-slideColumn").slide({
+					titCell: ".hd ul",
+					mainCell: ".bd .ulWrap",
+					autoPage: true,
+					effect: "leftLoop",
+					autoPlay: true,
+					vis: 1
+				});
+				//	new
+				$(".txtScroll").slide({
+					mainCell: ".bd ul",
+					autoPage: true,
+					effect: "leftLoop",
+					autoPlay: true
+				});
+				//记住账号
+				$('#remember').change(function() {
+					var that = $(this);
+					if(that.prop('checked')) {
+						that.siblings('i').addClass('on');
+					} else {
+						that.siblings('i').removeClass('on');
+					}
+				});
+				// $('.tabbtn').click(function(){
+				// 	$('#accpet').click();
+				// });
+				//阅读并接受协议
+				$('#accpet').change(function() {
+					var that = $(this);
+					if(that.prop('checked')) {
+						that.siblings('i').addClass('on');
+					} else {
+						that.siblings('i').removeClass('on');
+					}
+				});
+
+				$("#commentForm").validate();
+
+			});
+				//关闭注册弹窗
+			$(".jslog").click(function(){
+				$(".register-box").hide();
+                $('.register-bg').hide();
+				$('.nextregister-box').hide();
+				$(".lrbox-login").show();
+                scrollTo(0,0);
+			})
+				//打开注册弹窗
+			$(".jsreg").click(function(){
+                $('.register-bg').show();
+				$(".register-box").show();
+				$(".lrbox-login").hide();
+			})
+			//切换账号
+			$(".switch-btn").click(function(){
+				$.ajax({
+					url:"{:url('logout')}",
+					type:'post',
+					success:function(){
+						location.href = location.href;
+					}
+				});
+			})
+
+		</script>
+		<script src="__TMPL__/public/assets/js/login.js"></script>
+		<script src="__TMPL__/public/assets/js/register.js"></script>
+	</body>
+
+</html>

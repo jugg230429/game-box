@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="__TMPL__/issuepublic/assets/css/promote/select2.min.css" rel="stylesheet" />
+    <link href="__TMPL__/issuepublic/assets/css/promote/game.css" rel="stylesheet" />
+    <link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+    <link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+    <link href="__TMPL__/public/assets/css/promote/mychlid.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" media="all" href="__STATIC__/js/datejs/daterangepicker.css"/>
+    {:widget('issue/Management/css')}
+    <style>
+        .select2-container--default .select2-results>.select2-results__options {
+            overflow-x: hidden;
+        }
+        .omission {
+            max-width: 80px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+
+<body>
+<!--左侧导航栏-->
+{:widget('issue/Management/left')}
+
+<!--头部-->
+{:widget('issue/Management/header')}
+
+<div class="trunk">
+
+    <div class="trunk-con">
+        <div class="right-container">
+            <div class="normal-list">
+                <div class="trunk">
+                    <ul class="tab">
+                        <li class="tab-menu changeTabMenu <?php if(input('category')=='') echo 'tab-menu-active'; ?>"><a href="{:url('issue/article/index')}">全部</a></li>
+                        <li class="tab-menu changeTabMenu <?php if(input('category')=='2') echo 'tab-menu-active'; ?>"><a href="{:url('issue/article/index',['category'=>2])}">资讯</a></li>
+                        <li class="tab-menu changeTabMenu <?php if(input('category')=='3') echo 'tab-menu-active'; ?>"><a href="{:url('issue/article/index',['category'=>3])}">活动</a></li>
+                        <li class="tab-menu changeTabMenu <?php if(input('category')=='4') echo 'tab-menu-active'; ?>"><a href="{:url('issue/article/index',['category'=>4])}">公告</a></li>
+                        <li class="tab-menu changeTabMenu <?php if(input('category')=='5') echo 'tab-menu-active'; ?>"><a href="{:url('issue/article/index',['category'=>5])}">攻略</a></li>
+                    </ul>
+
+                    <div class="tabpan">
+
+                        <div class="tabpan-con tabpan-show mychlid-tabcon">
+<!--                            <input type="button" class="btn-calc fl bg-26c jsgrant" value="批量下载" >-->
+                            <form action="{:url('issue/article/index')}" method="get">
+                                <div class="trunk-search clearfix fr">
+                                    <input type="text" class="tabpan-input normal-space" name="keyword" style="width: 120px;" value="{:input('request.keyword/s','')}" placeholder="文档标题">
+                                    <select id="game_id" name="game_id" class="tab-input js-select-gallery normal-space trunk-search-smallselect fl" >
+                                        <option value="" data="0">游戏名称</option>
+                                        <volist name=":get_game_list('relation_game_id,relation_game_name',[],'relation_game_name')" id="vo">
+                                            <option value="{$vo.relation_game_id}" <if condition="input('game_id') eq $vo['relation_game_id']">selected</if> >{$vo.relation_game_name}</option>
+                                        </volist>
+                                    </select>
+<!--                                    <select id="category" name="category" class="tab-input js-select-gallery normal-space trunk-search-smallselect fl" >-->
+<!--                                        <option value="">类型</option>-->
+<!--                                        <option value="2" <?php if(input('category')=='2') echo 'selected'; ?>>资讯</option>-->
+<!--                                        <option value="3" <?php if(input('category')=='3') echo 'selected'; ?>>活动</option>-->
+<!--                                        <option value="4" <?php if(input('category')=='4') echo 'selected'; ?>>公告</option>-->
+<!--                                        <option value="5" <?php if(input('category')=='5') echo 'selected'; ?>>攻略</option>-->
+<!--                                    </select>-->
+                                    <input type="submit" class="submit fr normal-space" id="submit" value="查询">
+                                    <input type="hidden" name="category" value="{:input('category')}" />
+                                    <input type="hidden" id="page" name="row" value="{:input('row',10)}">
+                                </div>
+                            </form>
+                            <div class="clear"></div>
+                            <table class="table normal-table" id="promotecoin_table">
+                                <tbody>
+                                <tr>
+<!--                                    <th><label class="checked"><input class="check-all" type="checkbox"><i class="check-icon"></i></label></th>-->
+                                    <th>游戏名称</th>
+                                    <th style="text-align:left;">标题</th>
+                                    <th>更新时间</th>
+                                    <th>操作</th>
+                                </tr>
+                                <notempty name="articles">
+                                    <volist name="articles" id='vo'>
+                                        <tr>
+<!--                                            <td class="jsid">-->
+<!--                                                <label class="checked">-->
+<!--                                                    <input type="checkbox" class="js-check ids" name="ids[]"-->
+<!--                                                           value="{$vo.id}"/>-->
+<!--                                                    <i class="check-icon"></i>-->
+<!--                                                </label>-->
+<!--                                            </td>-->
+                                            <td>{:get_relation_game_name($vo.game_id)}</td>
+                                            <td class="omission" title="{$vo.post_title}">{$vo.post_title}</td>
+                                            <td>
+                                                <notempty name="vo.update_time">
+                                                    {:date('Y-m-d H:i',$vo['update_time'])}
+                                                </notempty>
+                                            </td>
+                                            <td><a href="{:url('issue/article/download',['id'=>$vo['id']])}" style="color: rgb(38,199,219)">下载文档</a></td>
+                                        </tr>
+                                    </volist>
+                                    <else/>
+                                    <!--暂无数据-->
+                                    <tr>
+                                        <td colspan="10" >
+                                            <div class="no-data">
+                                                <img src="__TMPL__/issuepublic/assets/images/icon_wushujv2.png"  alt="" class="no-data-img"/>
+                                                <p class="no-data-text">暂无数据</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </notempty>
+                                </tbody>
+                            </table>
+                            <notempty name="articles">
+                                <div class="pagenation clearfix">
+                                    {$page}
+                                </div>
+                            </notempty>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script src="__TMPL__/issuepublic/assets/js/promote/jquery-1.11.1.min.js"></script>
+<script src="__TMPL__/issuepublic/assets/js/promote/common.js"></script>
+<script src="__TMPL__/issuepublic/assets/js/promote/select2.min.js"></script>
+<script>
+    $(function() {
+        $(".js-select-gallery").select2();
+    })
+</script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script src="__STATIC__/js/ajaxForm.js"></script>
+{:widget('issue/Management/footer')}
+
+<script type="text/javascript">
+    $(function () {
+
+
+        //全选
+        $(".check-all").click(function() {
+            var option = $(".ids");
+            that = $(this);
+            option.each(function(i) {
+                if(!this.disabled){
+                    this.checked = that.prop('checked');
+                }
+            });
+        });
+        $(".ids").click(function() {
+            var option = $(".ids");
+            option.each(function(i) {
+                if(!this.checked) {
+                    $(".check-all").prop("checked", false);
+                    return false;
+                } else {
+                    $(".check-all").prop("checked", true);
+                }
+            });
+        });
+
+
+        $('.jsgrant').click(function () {
+            var downUrl = "{:url('issue/Article/download')}";
+            that = $(this);
+            ids = $('.ids');
+            value = '';
+            ids.each(function (index, element) {
+                if ($(this).prop('checked')) {
+                    value = value + $(this).val() + ',';
+                }
+            });
+            value = value.substr(0, value.length - 1);
+            if (!value) {
+                layer.msg('请选择需要下载的数据');
+                return false;
+            }
+            location.href = downUrl + '?ids=' + value;
+        });
+
+
+    })
+
+</script>
+
+</body>
+
+</html>

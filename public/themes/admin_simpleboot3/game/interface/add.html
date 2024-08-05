@@ -1,0 +1,113 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+
+	<div class="nav-tabs mb20">
+        <span class="pb10">添加接口</span>
+    </div>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('add')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>接口名称：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control " name="name" id="name" value="" placeholder=" ">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>标签：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control " name="tag" id="tag" value="" placeholder="">
+                            </div>
+                            <p class="help-block">创建接口文件名称必须以此命名</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>标识：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control " name="unid" id="unid" value="" placeholder="接口标识（平台在游戏方的标识）">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>登录地址：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control "  name="login_url" id="login_url" value="" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>充值地址：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control "  name="pay_url" id="pay_url" value="" placeholder=" ">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>角色地址：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control "  name="role_url" id="role_url" value="" placeholder=" ">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>登录Key：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control "  name="login_key" id="login_key" value="" placeholder=" ">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>充值Key：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control "  name="pay_key" id="pay_key" value="" placeholder=" ">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">备注：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <div id="textarea_box">
+                                    <textarea maxlength="1000" id="content" style="height: 200px;" name="remark" class="form-control"></textarea>
+                                    <p id="text_count_p"><span style="color: #999" id="aaa"></span></p>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                                <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript" src="__STATIC__/js/statistical_word_number.js"></script>
+<script>
+    $(function () {
+        startMonitor('content', 'aaa',1000);
+    })
+</script>
+</body>
+</html>

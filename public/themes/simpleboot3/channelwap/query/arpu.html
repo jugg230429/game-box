@@ -1,0 +1,334 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/LCalendar.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/select2.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/new_select2.css" type="text/css" />
+    <link href="__TMPL__/channelwappublic/assets/css/query.css" type="text/css" rel="stylesheet" />
+    <link href="__TMPL__/channelwappublic/assets/css/swiper-bundle.min.css" type="text/css" rel="stylesheet" />
+    <style>
+        .search-item.col-4{
+            width: 30%;
+            border-top: 0.0267rem solid #E0E0E0;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+    </style>
+</block>
+<block name="body">
+    <div class="page-container profit-exchange-container" style="padding-bottom: 1.3rem">
+        <header>
+            <div style="width: 100%;height: 100%" class="v-middle h-middle">
+                <p class="header-title" data-url="{:url('query/summary')}">数据汇总</p>
+                <empty name="baseinfo.pattern">
+                    <p class="header-title " data-url="{:url('query/recharge')}">充值明细</p>
+                    <else/>
+                    <p class="header-title " data-url="{:url('query/register')}">注册明细</p>
+                </empty>
+                <p class="header-title" data-url="{:url('query/role')}">角色查询</p>
+                <p class="header-title active" data-url="{:url('query/arpu')}">ARPU</p>
+                <p class="header-title" data-url="{:url('query/rank')}">排行榜</p>
+            </div>
+        </header>
+        <div class="page-content">
+            <div class="data-summary-box">
+                <div class="search-box">
+                    <div class="search-item col-4">
+                        <select id="game_id" name="game_id" class="select_gallery" data-placeholder="游戏名称">
+                            <option value="" data="0">游戏名称</option>
+                            <php>$gmap['game_status'] = 1;</php>
+                            <volist name=":get_game_list('id,game_name,relation_game_id,relation_game_name',$gmap,null,'sort desc ,id desc')" id="vv">
+                                <option <if condition="$vv['id'] eq input('game_id')"> selected</if> data="{$vv['game_name']}" value="{$vv['id']}">{$vv['game_name']}</option>
+                            </volist>
+                        </select>
+                    </div>
+                    <div class="search-item  col-4">
+                        <input type="text" class="input-date btn-date" readonly name="start_time" id="start_time" placeholder="开始时间" value="" autocomplete="off">
+                    </div>
+                    <div class="search-item  col-4">
+                        <input type="text" class="input-date btn-date endTimeInput" readonly name="end_time" id="end_time" placeholder="结束时间" value="" autocomplete="off">
+                    </div>
+                    <div class="explainPoint">说明</div>
+                </div>
+                <div class="newBox">
+                    <div class="swiper-container" >
+                        <div class="swiper-wrapper">
+                          <div class="swiper-slide" style="width: 1200px;">
+                                <div class="table-box">
+                                    <table>
+                                        <tbody>
+                                        <tr class="table-title">
+                                            <th>日期</th>
+                                            <th>新增用户</th>
+                                            <th>活跃用户</th>
+                                            <th>付费用户</th>
+                                            <th>新增付费用户</th>
+                                            <th>新增付费额</th>
+                                            <th>订单数</th>
+                                            <th>总付费额</th>
+                                            <th>总付费率</th>
+                                            <th>ARPU</th>
+                                            <th>ARPPU</th>
+                                        </tr>
+                                        <tr class="total">
+                                            <td><span style="margin-right: 10px;">汇总 </span></td>
+                                            <td class="new_register_user">0</td>
+                                            <td class="active_user">0</td>
+                                            <td class="pay_user">0</td>
+                                            <td class="new_pay_user">0</td>
+                                            <td class="new_total_pay">0.00</td>
+                                            <td class="total_order">0</td>
+                                            <td class="total_pay">0.00</td>
+                                            <td class="total_pay_precent">0.00%</td>
+                                            <td class="arpu">0.00</td>
+                                            <td class="ARPPU">0.00</td>
+                                        </tr>
+                                        </tbody>
+                                        <tbody id="arpuload" >
+                                        
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="descriptionBox">
+                    <div class="shadowBox">
+                        <div class="shadow-cell">
+                            <div class="descriptionContent">
+                               <div class="titleTop">
+                                    <span class="content-title">数据说明</span>
+                                    <span class="closeDialog"><img src="__TMPL__/channelwappublic/assets/images/common/xg_ico_guanbi.png" alt=""></span>
+                               </div>
+                               <div class="content-item">
+                                    <p class="boldTitle">新增用户</p>
+                                    <p>平台新注册用户数</p>
+                                    <p class="boldTitle">活跃用户</p>
+                                    <p>登录游戏的用户数（含新老用户，累计时去重）</p>
+                                    <p class="boldTitle">付费用户</p>
+                                    <p>在游戏内充值的用户数（统计充值成功，累计时去重）</p>
+                                    <p class="boldTitle">新增付费用户</p>
+                                    <p>注册当日进行游戏内充值的用户数（统计充值成功，累计时去重）</p>
+                                    <p class="boldTitle">新增付费额</p>
+                                    <p>新注册用户的注册金额</p>
+                                    <p class="boldTitle">订单数</p>
+                                    <p>游戏内的订单数量（统计充值成功）</p>
+                                    <p class="boldTitle">总付费额</p>
+                                    <p>累计充值总额</p>
+                                    <p class="boldTitle">总付费率</p>
+                                    <p>付费用户/新增用户</p>
+                                    <p class="boldTitle">ARPU</p>
+                                    <p>总付费额/活跃用户</p>
+                                    <p class="boldTitle">ARPPU</p>
+                                    <p>总付费额/付费用户</p>
+                               </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/select2.min.js"></script>
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/LCalendar.min.js"></script>
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/swiper-bundle.min.js"></script>
+    <script>
+        $(function () {
+            //点击tab
+            $('.header-title').click(function () {
+                location.href=$(this).data("url");
+            });
+            $(".select_gallery").select2({
+                minimumResultsForSearch: -1
+            });
+            $('.summary-date-menu a').click(function () {
+                $(this).addClass("active").siblings().removeClass("active");
+                var index = $(this).index();
+                $('.summary-date-tab').eq(index).show().siblings(".summary-date-tab").hide();
+            });
+            //swiper插件
+            var swiper = new Swiper('.swiper-container', {
+                slidesPerView: 'auto',
+                freeMode: true,
+                mousewheel: true,
+            });
+
+
+            //时间插件
+            var start_calendar = new LCalendar();
+            start_calendar.init({
+                'trigger': '#start_time', //标签id
+                'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+                'minDate': (new Date().getFullYear() - 3) + '-' + 1 + '-' + 1, //最小日期
+                'maxDate': new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDate() //最大日期
+            });
+            var end_calendar = new LCalendar();
+            end_calendar.init({
+                'trigger': '#end_time', //标签id
+                'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+                'minDate': (new Date().getFullYear() - 3) + '-' + 1 + '-' + 1, //最小日期
+                'maxDate': new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDate() //最大日期
+            })
+            $('.explainPoint').click(function() {
+                $('.descriptionBox').css('display','block')
+            })
+            $('.closeDialog').click(function() {
+                $('.descriptionBox').css('display','none')
+            })
+        })
+    </script>
+    <script>
+        var itemIndex = 0;
+        var start_time = '';
+        var end_time = '';
+        var game_id = 0;
+        var lwx = window.lwx || {};
+        var pattern = {$baseinfo.pattern};
+        var pid = {:PID};
+        lwx.ready = true;
+        lwx.width = $(window).width();
+        lwx.height = $(window).height();
+        lwx.number = {arpu:1};
+        lwx.row = {arpu:15};
+        lwx.http = {
+            getJSON:function(url,callback){
+                $.getJSON(url + '&v=' + Date.now(),function(data){
+                    callback(data);
+                });
+            },
+            postJSON:function(url,args,callback) {
+                $.post(url + '&v=' + Date.now(), args, function(data) {
+                    callback(data);
+                },"json")
+            },
+        };
+        lwx.url ={
+            arpu:'{:url("Query/get_arpu")}',
+        };
+        lwx.page = {
+            arpu:function(){
+                if(lwx.number.arpu) {
+                    lwx.http.getJSON(lwx.url.arpu+'?row='+lwx.row.arpu+'&page='+lwx.number.arpu+'&game_id='+game_id+'&start_time='+start_time+'&end_time='+end_time,function(data) {
+                        var hotload = $('#arpuload');
+                        var total = data.total;
+                        var data = data.data;
+                        if(data && data.length) {
+                            $(".total").show();
+                            $(".new_register_user").text(total.new_register_user);
+                            $(".active_user").text(total.active_user);
+                            $(".pay_user").text(total.pay_user);
+                            $(".new_pay_user").text(total.new_pay_user);
+                            $(".new_total_pay").text(total.new_total_pay);
+                            $(".total_order").text(total.total_order);
+                            $(".total_pay").text(total.total_pay);
+                            if(total.new_register_user > 0){
+                                var total_pay_precent = total.pay_user/total.new_register_user*100;
+                                $(".total_pay_precent").text(total_pay_precent.toFixed(2)+"%");
+                            }
+                            if(total.active_user > 0){
+                                var arpu = total.total_pay/total.active_user;
+                                $(".arpu").text(arpu.toFixed(2));
+                            }
+                            if(total.pay_user > 0){
+                                var arppu = total.total_pay/total.pay_user
+                                $(".ARPPU").text(arppu.toFixed(2));
+                            }
+                            var html = '';
+                            for (var i in data) {
+                                html += '<tr>';
+                                html += '<td>'+data[i].time+'</td>'
+                                html += '<td>'+data[i].count_new_register_user+'</td>';
+                                html += '<td>'+data[i].count_active_user+'</td>';
+                                html += '<td>'+data[i].count_pay_user+'</td>';
+                                html += '<td>'+data[i].count_new_pay_user+'</td>';
+                                html += '<td>'+data[i].new_total_pay+'</td>';
+                                html += '<td>'+data[i].count_total_order+'</td>';
+                                html += '<td>'+data[i].total_pay+'</td>';
+                                html += '<td>'+data[i].rate+'</td>';
+                                html += '<td>'+data[i].arpu+'</td>';
+                                html += '<td>'+data[i].arppu+'</td>';
+                                html += '</tr>';
+                            }
+							
+                            hotload.append(html);
+                            hotload.find('.jsdropload').remove();
+                            if(data.length >= lwx.row.arpu) {
+                                lwx.number.arpu++;
+                                lwx.ready = true;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.arpu = false;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                        } else {
+                            if(lwx.number.arpu==1){
+                                $(".total").hide();
+                                hotload.html('').append('<p class="no_invest_info jsdropload">~空空如也~</p>');
+                            } else{
+                                hotload.find('.jsdropload').remove();
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                            lwx.number.arpu = false;
+                        }
+                    });
+                }
+            }
+        };
+        pageChange();
+        function pageChange() {
+            lwx.page.arpu();
+        }
+        function pageScroll(scrollTop, boxHeight, maxScrollHeight) {
+            if (scrollTop + boxHeight >= maxScrollHeight - 50) {
+                if (lwx.ready) {
+                    lwx.ready = false;
+                    lwx.page.arpu();
+                }
+            }
+        }
+        window.onscroll = function() {
+            var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+            pageScroll(scrollTop, lwx.height, $(document).height())
+        }
+        $(function () {
+            $('.game-menu-box a').click(function () {
+                $(this).addClass("active").siblings().removeClass("active");
+                var index = $(this).index();
+                $('.menu-tab').eq(index).show().siblings(".menu-tab").hide();
+                itemIndex = index;
+                location.hash = index;
+            });
+            $("#game_id").change(function () {
+                game_id = $("#game_id").val();
+                $("#arpuload").empty();
+                lwx.number.arpu = 1;
+                pageChange();
+            })
+            $("#start_time").bind('input porpertychange',function(){
+                start_time = $("#start_time").val();
+                if(start_time && end_time && start_time > end_time){
+                    layer.msg('开始时间大于结束时间');
+                }
+                $("#arpuload").empty();
+                lwx.number.arpu = 1;
+                pageChange();
+            });
+            $("#end_time").bind('input porpertychange',function(){
+                end_time = $("#end_time").val();
+                if(start_time && end_time && start_time > end_time){
+                    layer.msg('开始时间大于结束时间');
+                }
+                $("#arpuload").empty();
+                lwx.number.arpu = 1;
+                pageChange();
+            });
+        })
+        $(window).on("hashchange", function() {
+            pageChange();
+        });
+    </script>
+</block>

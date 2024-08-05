@@ -1,0 +1,746 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__JS__/layui/css/layui.css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/rank_lists.css">
+</block>
+
+<block name="body">
+    <div class="rnk_lists_page">
+        <include file="mobilepublic@header_menu" />
+        <div class="clear"></div>
+        <div class="type_down__long_hx clear"></div>
+        <div class="menu-list">
+            <p class='menu-item active'>热门榜</p>
+            <p class='menu-item'>新游榜</p>
+            <p class='menu-item'>推荐榜</p>
+            <if condition="MODEL eq 1">
+                <p class='menu-item'>下载榜</p>
+            <else/>
+                <p class='menu-item'>在玩榜</p>
+            </if>
+        </div>
+        <!--热门榜-->
+        <div class="rank-tab">
+            <!--有数据-->
+            <notempty name="hotgame">
+            <div>
+                <!--排行榜前三-->
+                <div class="rank-top3-box">
+                    <volist name="hotgame" id="vo" offset="0" key="key" length="3">
+                        <div class="rank-top{$key}">
+                        <a href="{$vo.url}" class="">
+                            <div class="top{$key}-img">
+                                <img src="{$vo.icon}" alt=""  onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                                <i class="no{$key}-icon1"></i>
+                                <i class="no{$key}-icon2"></i>
+                            </div>
+                            <p class="game-name">{$vo.relation_game_name}</p>
+                        </a>
+                        <eq name="vo.sdk_version" value="3">
+                            <a <eq name="session.login_auth" value="1">href="{:url('Game/open_game',[],false)}?game_id={$vo['relation_game_id']}"</eq> >
+                            <div data-href="{:url('Game/open_game',[],false)}?game_id={$vo['relation_game_id']}" class='download-btn <eq name="session.login_auth" value="0">login</eq> '>
+                                <p>去玩</p>
+                            </div>
+                            </a>
+                        <else/>
+                            <if condition="get_down_status2($vo.relation_game_id,get_devices_type()) eq true">
+                                <a   <eq name="session.login_auth" value="1">href="{:url('Downfile/down',['game_id'=>$vo['relation_game_id'],'sdk_version'=>get_devices_type()])}"</eq> >
+                                <div class='download-btn  <eq name="session.login_auth" value="0">login</eq>  '>
+                                    <p>下载游戏</p>
+                                </div>
+                                </a>
+                            <else/>
+                                <div class="download-btn disabled">
+                                    <p>下载游戏</p>
+                                </div>
+                            </if>
+                        </eq>
+                        </div>
+                    </volist>
+                </div>
+                <div class="rec_hot_new_cons_rec">
+                    <!-- 流加载 -->
+                    <ul class="flow-default" id="hot_rank">
+                        <volist name="hotgame" key="key" id="vo" offset="3" >
+                        <div class="rec_hot_new_cons_item clear">
+                            <a href="{$vo.url}">
+                                <div class="rec_hot_new_cons_item_img fl">
+                                    <img src="{$vo.icon}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                                </div>
+                                <div class="fl rec_hot_new_info">
+                                    <p class="rec_hot_new_info_one">{$vo.relation_game_name}</p>
+                                    <p class="rec_hot_new_info_two">
+                                        <span class="rec_hot_new_info_type">{$vo.game_type_name}</span>
+                                        <span class="rec_hot_new_fgx">|</span>
+                                        <span class="rec_hot_new_download_num">{:get_simple_number($vo['dow_num'])}</span>
+                                        <span><eq name="vo.sdk_version" value="3">人在玩<else/>下载</eq></span>
+                                        <neq name="vo.sdk_version" value="3">
+                                            <span class="rec_hot_new_fgx">|</span>
+                                            <span>{$vo.game_size}</span>
+                                        </neq>
+                                    </p>
+                                    <div class="rec_hot_new_info_three">
+                                        <p>{$vo.features}</p>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="fg game-curr-rank ">
+                                <p>NO.{$key}</p>
+                            </div>
+                        </div>
+                        </volist>
+                    </ul>
+                </div>
+            </div>
+            </notempty>
+            <!--没数据-->
+            <empty name="hotgame">
+            <div class="no_rec_hot_new_text">
+                <img src="__TMPL__/mobilepublic/assets/images/icon_wushujv.png" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                <p>~空空如也~</p>
+            </div>
+            </empty>
+        </div>
+        <!--新游榜-->
+        <div class="rank-tab" style="display: none">
+            <!--有数据-->
+            <notempty name="newgame">
+            <div>
+                <!--排行榜前三-->
+                <div class="rank-top3-box">
+                    <volist name="newgame" id="vo" key="key" offset="0" length="3">
+                    <div class="rank-top{$key}">
+                        <a href="{$vo.url}" >
+                            <div class="top{$key}-img">
+                                <img src="{$vo.icon}" alt=""  onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                                <i class="no{$key}-icon1"></i>
+                                <i class="no{$key}-icon2"></i>
+                            </div>
+                            <p class="game-name">{$vo.relation_game_name}</p>
+                        </a>
+                        <eq name="vo.sdk_version" value="3">
+                            <a <eq name="session.login_auth" value="1">href="{:url('Game/open_game',[],false)}?game_id={$vo['relation_game_id']}"</eq> >
+                            <div data-href="{:url('Game/open_game',[],false)}?game_id={$vo['relation_game_id']}" class='download-btn <eq name="session.login_auth" value="0">login</eq> '>
+                                <p>去玩</p>
+                            </div>
+                            </a>
+                            <else/>
+                            <if condition="get_down_status2($vo.relation_game_id,get_devices_type()) eq true">
+                                <a   <eq name="session.login_auth" value="1">href="{:url('Downfile/down',['game_id'=>$vo['relation_game_id'],'sdk_version'=>get_devices_type()])}"</eq> >
+                                <div class='download-btn  <eq name="session.login_auth" value="0">login</eq>  '>
+                                    <p>下载游戏</p>
+                                </div>
+                                </a>
+                                <else/>
+                                <div class="download-btn disabled">
+                                    <p>下载游戏</p>
+                                </div>
+                            </if>
+                        </eq>
+                    </div>
+                    </volist>
+                </div>
+                <div class="rec_hot_new_cons_rec">
+                    <!-- 流加载 -->
+                    <ul class="flow-default" id="new_rank">
+                        <volist name="newgame" key="key" id="vo" offset="3" >
+                            <div class="rec_hot_new_cons_item clear">
+                                <a href="{$vo.url}">
+                                    <div class="rec_hot_new_cons_item_img fl">
+                                        <img src="{$vo.icon}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                                    </div>
+                                    <div class="fl rec_hot_new_info">
+                                        <p class="rec_hot_new_info_one">{$vo.relation_game_name}</p>
+                                        <p class="rec_hot_new_info_two">
+                                            <span class="rec_hot_new_info_type">{$vo.game_type_name}</span>
+                                            <span class="rec_hot_new_fgx">|</span>
+                                            <span class="rec_hot_new_download_num">{:get_simple_number($vo['dow_num'])}</span>
+                                            <span><eq name="vo.sdk_version" value="3">人在玩<else/>下载</eq></span>
+                                            <neq name="vo.sdk_version" value="3">
+                                                <span class="rec_hot_new_fgx">|</span>
+                                                <span>{$vo.game_size}</span>
+                                            </neq>
+                                        </p>
+                                        <div class="rec_hot_new_info_three">
+                                            <p>{$vo.features}</p>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div class="fg game-curr-rank ">
+                                    <p>NO.{$key}</p>
+                                </div>
+                            </div>
+                        </volist>
+                    </ul>
+                </div>
+            </div>
+            </notempty>
+            <!--没数据-->
+            <empty name="newgame">
+            <div class="no_rec_hot_new_text">
+                <img src="__TMPL__/mobilepublic/assets/images/icon_wushujv.png" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                <p>~空空如也~</p>
+            </div>
+            </empty>
+        </div>
+        <!--推荐榜-->
+        <div class="rank-tab" style="display: none">
+            <!--有数据-->
+            <notempty name="resgame">
+            <div>
+                <!--排行榜前三-->
+                <div class="rank-top3-box">
+                    <volist name="resgame" id="vo" key="key" offset="0" length="3">
+                    <div class="rank-top{$key}">
+                        <a href="{$vo.url}" >
+                            <div class="top{$key}-img">
+                                <img src="{$vo.icon}" alt=""  onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                                <i class="no{$key}-icon1"></i>
+                                <i class="no{$key}-icon2"></i>
+                            </div>
+                            <p class="game-name">{$vo.relation_game_name}</p>
+                        </a>
+                        <eq name="vo.sdk_version" value="3">
+                            <a <eq name="session.login_auth" value="1">href="{:url('Game/open_game',[],false)}?game_id={$vo['relation_game_id']}"</eq> >
+                            <div data-href="{:url('Game/open_game',[],false)}?game_id={$vo['relation_game_id']}" class='download-btn <eq name="session.login_auth" value="0">login</eq> '>
+                                <p>去玩</p>
+                            </div>
+                            </a>
+                            <else/>
+                            <if condition="get_down_status2($vo.relation_game_id,get_devices_type()) eq true">
+                                <a   <eq name="session.login_auth" value="1">href="{:url('Downfile/down',['game_id'=>$vo['relation_game_id'],'sdk_version'=>get_devices_type()])}"</eq> >
+                                <div class='download-btn  <eq name="session.login_auth" value="0">login</eq>  '>
+                                    <p>下载游戏</p>
+                                </div>
+                                </a>
+                                <else/>
+                                <div class="download-btn disabled">
+                                    <p>下载游戏</p>
+                                </div>
+                            </if>
+                        </eq>
+                    </div>
+                    </volist>
+                </div>
+                <div class="rec_hot_new_cons_rec">
+                    <!-- 流加载 -->
+                    <ul class="flow-default" id="recommend_rank">
+                        <volist name="resgame" id="vo" key="key" offset="3" >
+                            <div class="rec_hot_new_cons_item clear">
+                                <a href="{$vo.url}">
+                                    <div class="rec_hot_new_cons_item_img fl">
+                                        <img src="{$vo.icon}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                                    </div>
+                                    <div class="fl rec_hot_new_info">
+                                        <p class="rec_hot_new_info_one">{$vo.relation_game_name}</p>
+                                        <p class="rec_hot_new_info_two">
+                                            <span class="rec_hot_new_info_type">{$vo.game_type_name}</span>
+                                            <span class="rec_hot_new_fgx">|</span>
+                                            <span class="rec_hot_new_download_num">{:get_simple_number($vo['dow_num'])}</span>
+                                            <span><eq name="vo.sdk_version" value="3">人在玩<else/>下载</eq></span>
+                                            <neq name="vo.sdk_version" value="3">
+                                                <span class="rec_hot_new_fgx">|</span>
+                                            <span>{$vo.game_size}</span>
+                                            </neq>
+                                        </p>
+                                        <div class="rec_hot_new_info_three">
+                                            <p>{$vo.features}</p>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div class="fg game-curr-rank ">
+                                    <p>NO.{$key}</p>
+                                </div>
+                            </div>
+                        </volist>
+                    </ul>
+                </div>
+            </div>
+            </notempty>
+            <!--没数据-->
+            <empty name="resgame">
+            <div class="no_rec_hot_new_text" style="display: none">
+                <img src="__TMPL__/mobilepublic/assets/images/icon_wushujv.png" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                <p>~空空如也~</p>
+            </div>
+            </empty>
+        </div>
+        <!--下载榜-->
+        <div class="rank-tab" style="display: none">
+            <!--有数据-->
+            <notempty name="downgame">
+            <div>
+                <!--排行榜前三-->
+                <div class="rank-top3-box">
+                    <volist name="downgame" id="vo" key="key" offset="0" length="3">
+                        <div class="rank-top{$key}">
+                        <a href="{$vo.url}">
+                            <div class="top{$key}-img">
+                                <img src="{$vo.icon}" alt=""  onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                                <i class="no{$key}-icon1"></i>
+                                <i class="no{$key}-icon2"></i>
+                            </div>
+                            <p class="game-name">{$vo.relation_game_name}</p>
+                        </a>
+                        <eq name="vo.sdk_version" value="3">
+                            <a <eq name="session.login_auth" value="1">href="{:url('Game/open_game',[],false)}?game_id={$vo['relation_game_id']}"</eq> >
+                            <div data-href="{:url('Game/open_game',[],false)}?game_id={$vo['relation_game_id']}" class='download-btn <eq name="session.login_auth" value="0">login</eq> '>
+                                <p>去玩</p>
+                            </div>
+                            </a>
+                            <else/>
+                            <if condition="get_down_status2($vo.relation_game_id,get_devices_type()) eq true">
+                                <a   <eq name="session.login_auth" value="1">href="{:url('Downfile/down',['game_id'=>$vo['relation_game_id'],'sdk_version'=>get_devices_type()])}"</eq> >
+                                <div class='download-btn  <eq name="session.login_auth" value="0">login</eq>  '>
+                                    <p>下载游戏</p>
+                                </div>
+                                </a>
+                                <else/>
+                                <div class="download-btn disabled">
+                                    <p>下载游戏</p>
+                                </div>
+                            </if>
+                        </eq>
+                        </div>
+                    </volist>
+                </div>
+                <div class="rec_hot_new_cons_rec">
+                    <!-- 流加载 -->
+                    <ul class="flow-default" id="download_rank">
+                        <volist name="downgame" id="vo" key="key" offset="3" >
+                            <div class="rec_hot_new_cons_item clear">
+                                <a href="{$vo.url}">
+                                    <div class="rec_hot_new_cons_item_img fl">
+                                        <img src="{$vo.icon}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                                    </div>
+                                    <div class="fl rec_hot_new_info">
+                                        <p class="rec_hot_new_info_one">{$vo.relation_game_name}</p>
+                                        <p class="rec_hot_new_info_two">
+                                            <span class="rec_hot_new_info_type">{$vo.game_type_name}</span>
+                                            <span class="rec_hot_new_fgx">|</span>
+                                            <span class="rec_hot_new_download_num">{:get_simple_number($vo['dow_num'])}</span>
+                                            <span><eq name="vo.sdk_version" value="3">人在玩<else/>下载</eq></span>
+                                            <neq name="vo.sdk_version" value="3">
+                                                <span class="rec_hot_new_fgx">|</span>
+                                                <span>{$vo.game_size}</span>
+                                            </neq>
+                                        </p>
+                                        <div class="rec_hot_new_info_three">
+                                            <p>{$vo.features}</p>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div class="fg game-curr-rank ">
+                                    <p>NO.{$key}</p>
+                                </div>
+                            </div>
+                        </volist>
+                    </ul>
+                </div>
+            </div>
+            </notempty>
+            <!--没数据-->
+            <empty name="downgame">
+            <div class="no_rec_hot_new_text">
+                <img src="__TMPL__/mobilepublic/assets/images/icon_wushujv.png" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                <p>~空空如也~</p>
+            </div>
+            </empty>
+        </div>
+
+    </div>
+    <div class="footerSpace"></div>
+</block>
+<block name="script">
+    <script src="__TMPL__/mobilepublic/assets/js/drop.js"></script>
+    <script src="__STATIC__/js/layui/layui.js"></script>
+    <script>
+        var itemIndex = 0;
+        var lwx = window.lwx || {};
+        lwx.ready = true;
+        lwx.width = $(window).width();
+        lwx.height = $(window).height();
+        lwx.number = {hot:2,new:2,rec:2,down:2};
+        lwx.row = {hot:8,new:8,rec:8,down:8};
+        lwx.http = {
+            getJSON:function(url,callback){
+                $.getJSON(url + '&v=' + Date.now(),function(data){
+                    callback(data);
+                });
+            },
+            postJSON:function(url,args,callback) {
+                $.post(url + '&v=' + Date.now(), args, function(data) {
+                    callback(data);
+                },"json")
+            },
+        };
+        lwx.url ={
+            hot:"{:url('Game/get_more_game',['type'=>1],false)}",
+            new:"{:url('Game/get_more_game',['type'=>2])}",
+            rec:"{:url('Game/get_more_game',['type'=>3])}",
+            down:"{:url('Game/get_more_game',['type'=>4])}",
+        };
+        lwx.page = {
+            hot:function(){
+                if(lwx.number.hot) {
+                    lwx.http.getJSON(lwx.url.hot+'/limit/'+lwx.row.hot+'/p/'+lwx.number.hot,function(data) {
+                        var hotload = $('#hot_rank');
+                        if(data && data.length) {
+                            var result = '';
+                            var number = lwx.row.hot*(lwx.number.hot-1);
+                            for (var i in data) {
+                                result += '<div class="rec_hot_new_cons_item clear">';
+                                result += '<a href="' + data[i].url + '">';
+                                result += '<div class="rec_hot_new_cons_item_img fl">';
+                                if(data[i].icon){
+                                    result += '<img src=' + data[i].icon + ' alt="" onerror="this.src=\'/static/images/empty.jpg\';this.onerror=null">' ;
+                                }
+                                result +=  '</div>';
+                                result += '<div class="fl rec_hot_new_info">';
+                                result += '   <p class="rec_hot_new_info_one">' + data[i].relation_game_name + '</p>';
+                                result += '   <p class="rec_hot_new_info_two"><span class="rec_hot_new_info_type">' + data[i].game_type_name + '</span><span class="rec_hot_new_fgx">|</span><span class="rec_hot_new_download_num">' + data[i].dow_num + '</span>';
+                                if(data[i].sdk_version == 3){
+                                    result += '<span>人在玩</span>';
+                                }else{
+                                    result += '<span>下载</span><span class="rec_hot_new_fgx">|</span><span>' + data[i].game_size + '</span>';
+                                }
+                                result += '</p>';
+                                result += '  <div class="rec_hot_new_info_three">';
+                                result+=  '  <p>'+data[i].features+'</p>';
+                                result += '  </div>';
+                                result += ' </div>';
+                                result += ' </a>';
+                                result += ' <div class="fg game-curr-rank ">';
+                                result += ' <p>NO.'+(parseInt(number)+parseInt(i))+'</p>';
+                                result += ' </div>';
+                                result += ' </div>';
+                                result += '';
+                            }
+                            hotload.append(result);
+                            hotload.find('.jsdropload').remove();
+                            if(data.length >= lwx.row.hot) {
+                                lwx.number.hot++;
+                                lwx.ready = true;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.hot = false;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">没有更多了~~</div></div>');
+                            }
+                        } else {
+                            if(lwx.number.hot==1){
+                                hotload.html('').append('<p class="no_invest_info">~空空如也~</p>');
+                            } else{
+                                hotload.find('.jsdropload').remove();
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">没有更多了~~</div></div>');
+                            }
+                            lwx.number.hot = false;
+                        }
+                    });
+                }
+            },
+            new:function(){
+                if(lwx.number.new) {
+                    lwx.http.getJSON(lwx.url.new+'/limit/'+lwx.row.new+'/p/'+lwx.number.new,function(data) {
+                        var newload = $('#new_rank');
+                        if(data && data.length) {
+                            var result = '';
+                            var number = lwx.row.new*(lwx.number.new-1);
+                            for (var i in data) {
+                                result += '<div class="rec_hot_new_cons_item clear">';
+                                result += '<a href="' + data[i].url + '">';
+                                result += '<div class="rec_hot_new_cons_item_img fl">';
+                                if(data[i].icon){
+                                    result += '<img src=' + data[i].icon + ' alt="" onerror="this.src=\'/static/images/empty.jpg\';this.onerror=null">' ;
+                                }
+                                result +=  '</div>';
+                                result += '<div class="fl rec_hot_new_info">';
+                                result += '   <p class="rec_hot_new_info_one">' + data[i].relation_game_name + '</p>';
+                                result += '   <p class="rec_hot_new_info_two"><span class="rec_hot_new_info_type">' + data[i].game_type_name + '</span><span class="rec_hot_new_fgx">|</span><span class="rec_hot_new_download_num">' + data[i].dow_num + '</span>';
+                                if(data[i].sdk_version == 3){
+                                    result += '<span>人在玩</span>';
+                                }else{
+                                    result += '<span>下载</span><span class="rec_hot_new_fgx">|</span><span>' + data[i].game_size + '</span>';
+                                }
+                                result += '</p>';
+                                result += '  <div class="rec_hot_new_info_three">';
+                                result+=  '  <p>'+data[i].features+'</p>';
+                                result += '  </div>';
+                                result += ' </div>';
+                                result += ' </a>';
+                                result += ' <div class="fg game-curr-rank ">';
+                                result += ' <p>NO.'+(parseInt(number)+parseInt(i))+'</p>';
+                                result += ' </div>';
+                                result += ' </div>';
+                                result += '';
+                            }
+                            newload.append(result);
+                            newload.find('.jsdropload').remove();
+                            if(data.length >= lwx.row.new) {
+                                lwx.number.new++;
+                                lwx.ready = true;
+                                newload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.new = false;
+                                newload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">没有更多了~~</div></div>');
+                            }
+                        } else {
+                            if(lwx.number.new==1){
+                                newload.html('').append('<p class="no_invest_info">~空空如也~</p>');
+                            } else{
+                                newload.find('.jsdropload').remove();
+                                newload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">没有更多了~~</div></div>');
+                            }
+                            lwx.number.new = false;
+                        }
+                    });
+                }
+            },
+            rec:function(){
+                if(lwx.number.rec) {
+                    lwx.http.getJSON(lwx.url.rec+'/limit/'+lwx.row.rec+'/p/'+lwx.number.rec,function(data) {
+                        var recload = $('#recommend_rank');
+                        if(data && data.length) {
+                            var result = '';
+                            var number = lwx.row.rec*(lwx.number.rec-1);
+                            for (var i in data) {
+                                result += '<div class="rec_hot_new_cons_item clear">';
+                                result += '<a href="' + data[i].url + '">';
+                                result += '<div class="rec_hot_new_cons_item_img fl">';
+                                if(data[i].icon){
+                                    result += '<img src=' + data[i].icon + ' alt="" onerror="this.src=\'/static/images/empty.jpg\';this.onerror=null">' ;
+                                }
+                                result +=  '</div>';
+                                result += '<div class="fl rec_hot_new_info">';
+                                result += '   <p class="rec_hot_new_info_one">' + data[i].relation_game_name + '</p>';
+                                result += '   <p class="rec_hot_new_info_two"><span class="rec_hot_new_info_type">' + data[i].game_type_name + '</span><span class="rec_hot_new_fgx">|</span><span class="rec_hot_new_download_num">' + data[i].dow_num + '</span>';
+                                if(data[i].sdk_version == 3){
+                                    result += '<span>人在玩</span>';
+                                }else{
+                                    result += '<span>下载</span><span class="rec_hot_new_fgx">|</span><span>' + data[i].game_size + '</span>';
+                                }
+                                result += '</p>';
+                                result += '  <div class="rec_hot_new_info_three">';
+                                result+=  '  <p>'+data[i].features+'</p>';
+                                result += '  </div>';
+                                result += ' </div>';
+                                result += ' </a>';
+                                result += ' <div class="fg game-curr-rank ">';
+                                result += ' <p>NO.'+(parseInt(number)+parseInt(i))+'</p>';
+                                result += ' </div>';
+                                result += ' </div>';
+                                result += '';
+                            }
+                            recload.append(result);
+                            recload.find('.jsdropload').remove();
+                            if(data.length >= lwx.row.rec) {
+                                lwx.number.rec++;
+                                lwx.ready = true;
+                                recload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.rec = false;
+                                recload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">没有更多了~~</div></div>');
+                            }
+                        } else {
+                            if(lwx.number.rec==1){
+                                recload.html('').append('<p class="no_invest_info">~空空如也~</p>');
+                            } else{
+                                recload.find('.jsdropload').remove();
+                                recload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">没有更多了~~</div></div>');
+                            }
+                            lwx.number.rec = false;
+                        }
+                    });
+                }
+            },
+            down:function(){
+                if(lwx.number.down) {
+                    lwx.http.getJSON(lwx.url.down+'/limit/'+lwx.row.down+'/p/'+lwx.number.down,function(data) {
+                        var download = $('#download_rank');
+                        if(data && data.length) {
+                            var result = '';
+                            var number = lwx.row.down*(lwx.number.down-1);
+                            for (var i in data) {
+                                result += '<div class="rec_hot_new_cons_item clear">';
+                                result += '<a href="' + data[i].url + '">';
+                                result += '<div class="rec_hot_new_cons_item_img fl">';
+                                if(data[i].icon){
+                                    result += '<img src=' + data[i].icon + ' alt="" onerror="this.src=\'/static/images/empty.jpg\';this.onerror=null">' ;
+                                }
+                                result +=  '</div>';
+                                result += '<div class="fl rec_hot_new_info">';
+                                result += '   <p class="rec_hot_new_info_one">' + data[i].relation_game_name + '</p>';
+                                result += '   <p class="rec_hot_new_info_two"><span class="rec_hot_new_info_type">' + data[i].game_type_name + '</span><span class="rec_hot_new_fgx">|</span><span class="rec_hot_new_download_num">' + data[i].dow_num + '</span>';
+                                if(data[i].sdk_version == 3){
+                                    result += '<span>人在玩</span>';
+                                }else{
+                                    result += '<span>下载</span><span class="rec_hot_new_fgx">|</span><span>' + data[i].game_size + '</span>';
+                                }
+                                result += '</p>';
+                                result += '  <div class="rec_hot_new_info_three">';
+                                result+=  '  <p>'+data[i].features+'</p>';
+                                result += '  </div>';
+                                result += ' </div>';
+                                result += ' </a>';
+                                result += ' <div class="fg game-curr-rank ">';
+                                result += ' <p>NO.'+(parseInt(number)+parseInt(i))+'</p>';
+                                result += ' </div>';
+                                result += ' </div>';
+                                result += '';
+                            }
+                            download.append(result);
+                            download.find('.jsdropload').remove();
+                            if(data.length >= lwx.row.down) {
+                                lwx.number.down++;
+                                lwx.ready = true;
+                                download.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.down = false;
+                                download.append('<div class="dropload-down jsdropload"><div class="dropload-noData">没有更多了~~</div></div>');
+                            }
+                        } else {
+                            if(lwx.number.down==1){
+                                download.html('').append('<p class="no_invest_info">~空空如也~</p>');
+                            } else{
+                                download.find('.jsdropload').remove();
+                                download.append('<div class="dropload-down jsdropload"><div class="dropload-noData">没有更多了~~</div></div>');
+                            }
+                            lwx.number.down = false;
+                        }
+                    });
+                }
+            },
+        };
+        function pageChange(n) {
+            switch (n) {
+                case '#0': {
+                    lwx.page.hot();
+                    if(lwx.number.hot) {lwx.ready=true;}
+                };break;
+                case '#1':{
+                    lwx.page.new();
+                    if(lwx.number.new) {lwx.ready=true;}
+                };break;
+                case '#2':{
+                    lwx.page.rec();
+                    if(lwx.number.rec) {lwx.ready=true;}
+                };break;
+                case '#3':{
+                    lwx.page.down();
+                    if(lwx.number.down) {lwx.ready=true;}
+                };break;
+            }
+        }
+        function pageScroll(scrollTop, boxHeight, maxScrollHeight) {
+            if (scrollTop + boxHeight >= maxScrollHeight - 50) {
+                if (lwx.ready) {
+                    lwx.ready = false;
+                    switch (itemIndex) {
+                        case 0:
+                            lwx.page.hot();
+                            break;
+                        case 1:
+                            lwx.page.new();
+                            break;
+                        case 2:
+                            lwx.page.rec();
+                            break;
+                        case 3:
+                            lwx.page.down();
+                            break;
+                    }
+                }
+            }
+        }
+        window.onscroll = function() {
+            var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+            pageScroll(scrollTop, lwx.height, $(document).height())
+        }
+        $(window).on("hashchange", function() {
+            pageChange(location.hash);
+        });
+
+        $('.menu-item').click(function () {
+            $(this).addClass("active").siblings().removeClass("active");
+            var index = $(this).index();
+            $('.rank-tab').eq(index).show().siblings(".rank-tab").hide();
+            itemIndex = index;
+            location.hash = index;
+        });
+
+
+        /**
+         * 是否登录
+         */
+        function is_login() {
+            var status = "{$session.login_auth}";
+            return status;
+        }
+        function login() {
+            var consa = $('.login_modal');
+            var auth_user = "{:AUTH_USER}";
+            if (auth_user != 1) {
+                layer.msg('请购买用户权限');
+                return false;
+            }
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: false,
+                area: ['80%', '26rem'],
+                offset: 'auto',
+                content: consa,
+                btnAlign: 'c',
+                shadeClose: true,
+                success: function (layero, index) {
+
+                    layero.find('.modal_login_btn').click(function () {
+                        var that = $(this);
+                        if (that.hasClass('no_send')) { return false; }
+                        that.addClass('no_send');
+                        var account = consa.find('input[name=account]').val();
+                        var password = consa.find('input[name=password]').val();
+                        $.ajax({
+                            type: 'post',
+                            dataType: 'json',
+                            url: '{:url("User/login")}',
+                            data: { account: account, password: password },
+                            success: function (data) {
+                                that.removeClass('no_send');
+                                layer.msg(data.msg);
+                                if (data.code == 1) {
+                                    setTimeout(function () {
+                                        if (data.url) {
+                                            window.location.href = data.url;
+                                        } else {
+                                            window.location.reload();
+                                        }
+                                    }, data.wait * 1000);
+                                }
+                            },
+                            error: function () {
+                                layer.msg('服务器故障，请稍候再试');
+                                that.removeClass('no_send');
+                            }
+                        });
+
+                        return false;
+                    });
+
+                    layero.find('.close_login_modal').click(function () {
+
+                        $('.login_modal input').val('');
+
+                        layer.close(index);
+
+                        return false;
+                    });
+                },
+                end: function () {
+                    $('.login_modal').hide();
+                }
+            })
+        }
+
+
+    </script>
+</block>

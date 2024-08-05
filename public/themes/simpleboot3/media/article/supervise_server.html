@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>家长监督</title>
+    <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/public.css">
+    <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/par_sub_ser.css">
+    <script src="__JS__/jquery-1.11.1.min.js"></script>
+    <link rel="stylesheet" href="__JS__/layui/css/layui.css">
+    <link href="<if condition='$union_set[pc_icon]'>{:cmf_get_image_url($union_set['pc_icon'])}<else/>{:cmf_get_image_url(cmf_get_option('media_set')['pc_set_ico'])}</if>" type="image/x-icon" rel="shortcut icon">
+    <script src="__JS__/layui/layui.all.js"></script>
+    <script src="__JS__/public.js"></script>
+</head>
+<body>
+    <div class="par_sub_sys_banner">
+        <img src="__STATIC__/images/par_banner.png" alt="">
+    </div>
+    <div class="layui-container par_sub_sys_con">
+        <div class="fl par_sub_sys_left">
+            <div class="par_sub_sys_left_nav">
+                <a href="{:url('Article/supervise')}"><div class="fl">系统介绍</div></a>
+                <a href="{:url('Article/superviseApply')}"><div class="fl">申请流程</div></a>
+                <a href="{:url('Article/superviseServer')}"><div class="fl active_par_sub_sys_left_nav">服务PAQ</div></a>
+            </div>
+            <div class="par_sub_sys_left_con">
+                <p class="par_sub_sys_left_con_title">家长监护进度查询</p>
+                <p>"网络游戏未成年人家长监护工程"是一项由中华人民共和国文化部指导，旨在加强家长对未成年人参与网络游戏的监护，引导未成年人健康、绿色参与网络游戏，和谐家庭关系的社会性公益行动。它提供了一种切实可行的方法，一种家长实施监控的管道，使家长纠正部分未成年子女沉迷游戏的行为成为可能。该项社会公益行动充分反映了中国网络游戏行业高度的社会责任感，对未成年玩家合法权益的关注以及对用实际行动营造和谐社会的愿望。</p>
+                <p class="par_sub_sys_left_con_title">Q2：什么情况下需要申请该项服务呢？</p>
+                <p>在监护人发现被监护人有沉溺网络游戏的情况下，监护人可向公司申请发起未成年人家长监护机制。</p>
+                <p class="par_sub_sys_left_con_title">Q3：申请该项服务时需要提交哪些资料呢？如何提交呢？</p>
+                <p>申请人需通过传真或邮寄方式向我司提交的材料包含：</p>
+                <p>附件1：申请人的身份证或户口本</p>
+                <p>附件2：被申请人的身份证或户口本</p>
+                <p>附件3：游戏未成年人家长监护申请书</p>
+                <p class="par_sub_sys_left_con_title">Q4：相关资料传真或寄往哪里呢？</p>
+                <p>请将相关资料邮寄至：（请在信封表面写上"家长监控服务申请书"的字样）</p>
+                <p>收件人：{:cmf_get_option('kefu_set')['pc_recipients']}</p>
+                <p>地址：{:cmf_get_option('kefu_set')['pc_set_address']}  </p>
+                <p>客服电话：{:cmf_get_option('kefu_set')['pc_set_server_tel']}</p>
+                <p>邮编：{:cmf_get_option('kefu_set')['pc_zip_code']}</p>
+                <p>传真电话：{:cmf_get_option('kefu_set')['pc_set_fax']}</p>
+                <p class="par_sub_sys_left_con_title">Q5：提交资料后，后续处理流程怎样呢？</p>
+                <p>您提交相关申请资料后，我司客服人员将按照监护申请流程尽快处理您的申请，处理过程中可能需要对监护人和被监护人进行电话回访以便信息的判定，希望您的配合。</p>
+                <p class="par_sub_sys_left_con_title">Q6：判定帐号归属需要多久呢？</p>
+                <p>1. 在判断申请材料完整的情况下，我司将联系疑似账号归属者，告知其在 15 个工作日内将按照监护人需求对其账号进行相关操作，并要求疑似账号归属者提供身份材料以便我司判定其与监护人监护关系；</p>
+                <p>2. 若疑似账号归属者在 15 个工作日内不能提供有效身份证明或逾期提供，则默认为疑似账号归属者与被监护人身份相符。我司即按照监护人申请要求，对其游戏账号纳入防沉迷系统；</p>
+                <p>3. 若疑似账号归属者在 15 个工作日内提供的身份证明与被监护人相符，我司即按照监护人申请要求，对其游戏账号纳入防沉迷系统；</p>
+                <p>4. 若疑似账号归属者在 15 个工作日内提供的身份证明与被监护人不符，我司则无法判定其与被监护人的身份关系。在此情况下，为保障用户游戏账号安全，我司将通知监护人通过公安机关出具账号找回协查证明，由我司协助被监护人找回游戏账号后再进行后续操作；</p>
+                <p class="par_sub_sys_left_con_title">Q7:若发现对帐号归属有疑义或账号被恶意防沉迷限制怎么办？</p>
+                <p>您需要在收到通知后15个工作日内提供您的身份证复印件（纸质），并通过以下地址邮寄到我司，如果我司在15个工作日内未收到您的身份证复印件，我们会将您的账号纳入家长监控系统。</p>
+                <p>收件人：{:cmf_get_option('kefu_set')['pc_recipients']}</p>
+                <p>地址：{:cmf_get_option('kefu_set')['pc_set_address']}</p>
+                <p>注1：请在身份证复印件上写明您的签名以及游戏账号。</p>
+                <p>注2：请您注意我司提供该项服务不收取任何费用，以免上当受骗。</p>
+                <p class="par_sub_sys_left_con_title">温馨提示：</p>
+                <p>您在邮寄或传真申请书时，要记得一起提供如下资料：</p>
+                <p>附件1：申请人的身份证或户口本（复印件）</p>
+                <p>附件2：被申请人的身份证或户口本 （复印件）</p>
+                <p>附件3：游戏未成年人家长监护申请书 （复印件）</p>            
+            </div>
+        </div>
+        <div class="fl par_sub_sys_right">
+            <div class="par_sub_sys_right_hx_first"></div>
+            <div class="par_sub_sys_right_first clear">
+                <p class="par_sub_sys_right_linetitle">服务申请表下载</p>
+                <div class="downloadtextbtn">
+                    <a <if condition="cmf_get_option('kefu_set')['pc_guardianship1']"> download href="{:cmf_get_file_download_url(cmf_get_option('kefu_set')['pc_guardianship1'])}"<else/>href="javascript:;" class='disabled'</if>>
+                    <img class="fl" src="__STATIC__/images/Form_ico_download.png" alt="">
+                    <p class="fl">监护服务申请文档</p>
+                    </a>
+                </div>
+                <p class="par_sub_sys_right_first_title">表单内容</p>
+                <div class="par_sub_sys_right_first_con_item">
+                    <p>附件表一：监护人信息表明书</p>
+                    <div class="zhanweihangxian"></div>
+                </div>
+                <div class="par_sub_sys_right_first_con_item">
+                    <p>附件表二：被监护人信息表明书</p>
+                    <div class="zhanweihangxian"></div>
+                </div>
+                <div class="par_sub_sys_right_first_con_item">
+                    <p>附件表三：家长监督申请书</p>
+                </div>
+            </div>
+            <div class="par_sub_sys_right_hx"></div>
+            <div class="par_sub_sys_right_second clear">
+                <p class="par_sub_sys_right_linetitle">监护通道</p>
+                <div class="par_sub_sys_right_second_con">
+                    <div class="right_second_con_item">
+                        <img src="__STATIC__/images/channel_ico_Ground.png" alt="" class="fl">
+                        <div class="fl right_second_con_item_sx"></div>
+                        <p class="fl right_second_con_item_summ">监护热线：</p>
+                        <p class="fl right_second_con_item_con">{:cmf_get_option('kefu_set')['pc_set_custody_tel']}</p>
+                    </div>
+                    <div class="right_second_con_item clear">
+                        <img src="__STATIC__/images/channel_ico_telepone.png" alt="" class="fl">
+                        <div class="fl right_second_con_item_sx"></div>
+                        <p class="fl right_second_con_item_summ">客服电话：</p>
+                        <p class="fl right_second_con_item_con">{:cmf_get_option('kefu_set')['pc_set_server_tel']}</p>
+                    </div>
+                    <div class="right_second_con_item clear">
+                        <img src="__STATIC__/images/channel_ico_fox.png" alt="" class="fl">
+                        <div class="fl right_second_con_item_sx"></div>
+                        <p class="fl right_second_con_item_summ">传真：</p>
+                        <p class="fl right_second_con_item_con n-width">{:cmf_get_option('kefu_set')['pc_set_fax']}</p>
+                    </div>
+                    <div class="right_second_con_item clear">
+                        <img src="__STATIC__/images/channel_ico_people.png" alt="" class="fl">
+                        <div class="fl right_second_con_item_sx"></div>
+                        <p class="fl right_second_con_item_summ">联系人：</p>
+                        <p class="fl right_second_con_item_con n-width2">{:cmf_get_option('kefu_set')['pc_worker']}<if condition="cmf_get_option('kefu_set')['pc_work_time']">（{:cmf_get_option('kefu_set')['pc_work_time']}）</if></p>
+                    </div>
+                    <div class="right_second_con_item clear">
+                        <img src="__STATIC__/images/channel_ico_adress.png" alt="" class="fl">
+                        <div class="fl right_second_con_item_sx"></div>
+                        <p class="fl right_second_con_item_summ">邮寄地址：</p>
+                        <p class="fl right_second_con_item_con_adress">{:cmf_get_option('kefu_set')['pc_set_address']}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="par_sub_sys_right_hx"></div>
+            <div class="par_sub_sys_right_third clear">
+                <p class="par_sub_sys_right_linetitle">家长监护FAQ</p>
+                <div class="par_sub_sys_right_third_con">
+                    <a href="{:url('Article/superviseServer')}">
+                        <div class="par_sub_sys_right_third_item">
+                            <div class="dot_par_sub_sys fl"></div>
+                            <p class="par_sub_sys_right_third_item_title">网络游戏未成年人家长监护机制工程是什么？</p>
+                            <div class="clear par_sub_sys_right_third_item_hx"></div>
+                        </div>
+                    </a>
+                    <a href="{:url('Article/superviseServer')}">
+                        <div class="par_sub_sys_right_third_item">
+                            <div class="dot_par_sub_sys fl"></div>
+                            <p class="par_sub_sys_right_third_item_title">什么情况下需要申请改服务？</p>
+                            <div class="clear par_sub_sys_right_third_item_hx"></div>
+                        </div>
+                    </a>
+                    <a href="{:url('Article/superviseServer')}">
+                        <div class="par_sub_sys_right_third_item">
+                            <div class="dot_par_sub_sys fl"></div>
+                            <p class="par_sub_sys_right_third_item_title">申请该项服务时需要提交那些资料？</p>
+                            <div class="clear par_sub_sys_right_third_item_hx"></div>
+                        </div>
+                    </a>
+                    <a href="{:url('Article/superviseServer')}">
+                        <div class="par_sub_sys_right_third_item">
+                            <div class="dot_par_sub_sys fl"></div>
+                            <p class="par_sub_sys_right_third_item_title">相关资料寄到哪里？</p>
+                            <div class="clear par_sub_sys_right_third_item_hx"></div>
+                        </div>
+                    </a>
+                    <a href="{:url('Article/superviseServer')}">
+                        <div class="par_sub_sys_right_third_item">
+                            <div class="dot_par_sub_sys fl"></div>
+                            <p class="par_sub_sys_right_third_item_title">判定账号归属需要多久？</p>
+                            <div class="clear par_sub_sys_right_third_item_hx"></div>
+                        </div>
+                    </a>
+                    <a href="{:url('Article/superviseServer')}">
+                        <div class="par_sub_sys_right_third_item">
+                            <div class="dot_par_sub_sys fl"></div>
+                            <p class="par_sub_sys_right_third_item_title">网络游戏未成年人家长监护机制工程是什么？</p>
+                            <div class="clear par_sub_sys_right_third_item_hx"></div>
+                        </div>
+                    </a>
+                    <a href="{:url('Article/superviseServer')}">
+                        <div class="par_sub_sys_right_third_item">
+                            <div class="dot_par_sub_sys fl"></div>
+                            <p class="par_sub_sys_right_third_item_title">申请该项服务时需要提交那些资料？</p>
+                            <div class="clear par_sub_sys_right_third_item_hx"></div>
+                        </div>
+                    </a>
+                    <a href="{:url('Article/superviseServer')}">
+                        <div class="par_sub_sys_right_third_item">
+                            <div class="dot_par_sub_sys fl"></div>
+                            <p class="par_sub_sys_right_third_item_title">网络游戏未成年人家长监护机制工程是什么？</p>
+                            <div class="clear par_sub_sys_right_third_item_hx"></div>
+                        </div>
+                    </a>
+                    <a href="{:url('Article/superviseServer')}">
+                        <div class="par_sub_sys_right_third_item">
+                            <div class="dot_par_sub_sys fl"></div>
+                            <p class="par_sub_sys_right_third_item_title">申请该项服务时需要提交那些资料？</p>
+                            <div class="clear par_sub_sys_right_third_item_hx"></div>
+                        </div>
+                    </a>
+                    <a href="{:url('Article/superviseServer')}">
+                        <div class="par_sub_sys_right_third_item">
+                            <div class="dot_par_sub_sys fl"></div>
+                            <p class="par_sub_sys_right_third_item_title">什么情况下需要申请改服务？</p>
+                            <div class="clear par_sub_sys_right_third_item_hx"></div>
+                        </div>
+                    </a>
+                    <a href="{:url('Article/superviseServer')}">
+                        <div class="par_sub_sys_right_third_item">
+                            <div class="dot_par_sub_sys fl"></div>
+                            <p class="par_sub_sys_right_third_item_title">判定账号归属需要多久？</p>
+                            <!-- <div class="clear par_sub_sys_right_third_item_hx"></div> -->
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="par_sub_footer">
+        <p class="par_sub_footer_oneline">{:cmf_get_option('media_set')['pc_game_prompt']}</p>
+        <p class="par_sub_footer_twoline">{:cmf_get_option('media_set')['pc_set_for_the_record']}       <span>{:cmf_get_option('media_set')['pc_set_telecom_license']}</span></p>
+        <p class="par_sub_footer_threeline">{:cmf_get_option('media_set')['pc_set_license']}            <span>{:cmf_get_option('media_set')['pc_set_for_the_record_icp']}</span></p>
+        <p class="par_sub_footer_fourline">{:cmf_get_option('media_set')['pc_set_copyright']}</p>
+    </div>
+</body>
+
+</html>

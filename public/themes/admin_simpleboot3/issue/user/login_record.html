@@ -1,0 +1,50 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('issue/user/detail',['id'=>input('id')])}">账号详情</a></li>
+        <li><a href="{:url('issue/user/activationRecord',['id'=>input('id')])}">激活游戏记录</a></li>
+        <li class="active"><a href="javascript:;">近期登陆记录</a></li>
+        <li><a href="{:url('issue/user/spendRecord',['id'=>input('id')])}">付费记录</a></li>
+        <span class="title_remark"></span>
+    </ul>
+
+    <form id="search_form" class="well form-inline fr" method="get" action="{:url('activationRecord',['id'=>input('id')])}">
+
+    </form>
+
+    <form class="js-ajax-form" action="" method="post">
+
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>登陆时间</th>
+                <th>游戏</th>
+                <th>所属分发平台</th>
+                <th>使用设备</th>
+                <th>记录IP</th>
+            </tr>
+            </thead>
+            <tbody>
+            <empty name="data_lists">
+                <tr><td colspan="9" style="text-align: center;">暂无数据</td></tr>
+            <else/>
+                <foreach name="data_lists" item="vo">
+                    <tr>
+                        <td>{:date("Y-m-d H:i:s",$vo['login_time'])}</td>
+                        <td>{:get_issue_game_name($vo['game_id'])}</td>
+                        <td>{:get_pt_account($vo['platform_id'])}</td>
+                        <td>{$vo.equipment_num|default='--'}</td>
+                        <td>{$vo.login_ip}</td>
+                    </tr>
+                </foreach>
+            </empty>
+            </tbody>
+        </table>
+    </form>
+    <div class="pagination" style="padding-bottom: 50px">{$data_lists->render()}</div>
+
+</div>
+</body>
+</html>

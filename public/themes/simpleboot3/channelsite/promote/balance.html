@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		
+		<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/promote/pay.css" rel="stylesheet" />
+		<include file="public@head"/>
+	</head>
+
+	<body>
+		<include file="public@nav"/>
+		<include file="public@header"/>
+		<link href="__TMPL__/public/assets/css/promote/balance.css" rel="stylesheet" />
+		<div class="trunk">
+			<div class="trunk-con">
+				<div class="right-container">
+				<div class="top-con">
+              <img src="/themes/simpleboot3/public/assets/images/ico_money2.png" class="top-con-icon fl">
+              <div class="fl">
+                <div class="top-con-num">{$baseinfo.balance_coin}</div>
+                <div class="top-con-text">平台币</div></div>
+            
+             
+              <a class="fl btn-exchange "  href="{:url(balance)}">充值</a>
+             </div>
+					
+					<div class="normal-list">
+						<div class="trunk">
+							
+							<ul class="tab">
+								<li class="tab-menu tab-menu-active"><a href="{:url(balance)}">充值平台币</a></li>
+								<if condition="PID_LEVEL lt 3"><li class="tab-menu"><a href="{:url('shift')}">给下级转移</a></li></if>
+								<li class="tab-menu"><a href="{:url('record')}">平台币记录</a></li>
+                                
+							</ul>
+							<!--<span class="tagging">说明：显示当前账号进行平台币充值及后台对其发放平台币的记录（只记录充值成功）</span>-->
+							<div class="clear"></div>
+							<ol class="tabpan">
+								<li class="tabpan-con tabpan-show">
+									<from id="form1" action="" target="_blank">
+										<div class="tabpan-con-con">
+											<label class="fl label-name">充值账户：</label>
+											<input type="text" class="tabpan-input" name="account" id="account" value="" placeholder="输入渠道账户">
+										</div>
+										<div class="tabpan-con-con">
+											<label class="fl label-name">金额：</label>
+											<input type="text" class="tabpan-input" name="amount" id="amount" value="" placeholder="输入正整数">
+										</div>
+										<div class="tabpan-con-con">
+											<label class="fl label-name">支付方式：</label>
+											<volist name="paytype" id="pt">
+												<if condition="$pt['name'] eq 'zfb'">
+													<label class="label-choose js_choose"><input type="radio" class="radio-choose" value="zfb" name="pay_type"><i class="label-choose-i"></i><span>支付宝</span></label>
+												</if>
+												<if condition="$pt['name'] eq 'wxscan'">
+													<label class="label-choose js_choose"><input type="radio" class="radio-choose" value="wx" name="pay_type"><i class="label-choose-i"></i><span>微信</span></label>
+												</if>
+											</volist>
+										</div>
+										<div class="tabpan-con-con">
+											<label class="fl label-name">获得平台币：</label>
+											<span class="formtxt" id="show">--</span>
+										</div>
+										<div class="tabpan-con-con">
+											<input type="submit" class="button jsconfirm" value="确认" title="" target-form="paw_er_info">
+										</div>
+									</from>
+								</li>
+								
+							</ol>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+			<div id="new_czinfobg" style="display: none;">
+				<div id="czerrots" class="czerrots">
+					<div class="qrcz_ts">
+						<h1 class="qrcz_title"><span>请在新打开的支付页面上完成付款充值！</span><a href="javascript:void(0);"  class="czinfobox_close3 qrcz_close">close</a></h1>
+						<ul class="czinfobox_con">
+							<li class="tscon1 czinfobox_con_con">付款前请不要关闭或刷新此窗口。</li>
+						</ul>
+						<span class="qrtjBtn">
+							<a class="getresult" href="javascript:getresult();" order_no=''>查看充值结果</a>
+							<!-- <a href="javascript:;" class="czinfobox_close3">返回</a> -->
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<include file="public@scripts"/>
+		<script src="__STATIC__/js/layer/layer.js"></script>
+		<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+		<script>
+			$(function() {
+				$(".js-select-gallery").select2();
+				$('.label-choose-i:first').addClass('current');
+				$('input[name=pay_type]:first').attr('checked','checked').addClass('paycheck');
+
+				$('.js_choose').click(function(){
+					that = $(this);
+					input = that.children('.radio-choose');
+					i = that.children('.label-choose-i');
+					$('.label-choose-i').removeClass('current');
+					i.addClass('current');
+					$('input[name=pay_type]').removeAttr('checked');
+					$('input[name=pay_type]').removeClass('paycheck');
+					input.attr('checked','checked').addClass('paycheck');
+				});
+				$('#amount').on('input propertychange',function(){
+					var amount = $.trim($('#amount').val());
+					re = /^[1-9]\d*$/ ;
+					if(re.test(amount)){
+						$('#show').text(amount);
+					}else{
+						$('#show').text('--');
+					}
+				});
+              	var is_type = 0;
+				function check(){
+	              	var account = $.trim($('#account').val());
+	              	var pid = "{:PID}";
+	              	if(account == ''){
+	                  	layer.msg('充值账户不能为空');
+	                  	return false;
+	              	}
+	              	var is_true = false;
+	              	$.ajax({
+	                  	type: 'POST',
+	                  	url: "{:url('checkAccount')}" ,
+	                  	data:{"account":account},
+	                  	async:false,
+	                  	dataType:'json',
+	                  	success:function(data){
+	                      	if (data.code > 0){
+	                          	is_true = true;
+	                          	if(data.data.id == pid){
+	                          		is_type = 1;
+	                          	}else if(data.data.parent_id == pid){
+	                          		is_type = 2;
+	                          	}else{
+	                          		is_type = 3;
+	                          	}
+	                      	}
+	                  	}
+	              	})
+	              	if(!is_true){
+	                  	layer.msg('充值账户不存在');
+	                  	return false;
+	              	}
+	              	var amount = $.trim($('#amount').val());
+	              	re = /^[1-9]\d*$/ ;
+	              	if(amount == ''){
+	                  	layer.msg('金额不能为空');
+	                  	return false;
+	              	}else if(!re.test(amount)){
+	              		layer.msg('金额错误，请输入正整数');
+	                  	return false;
+	              	}
+
+	              	return true;
+	          	}
+	          	//充值提交
+				$('.jsconfirm').click(function(){
+					account=$('#account').val();
+					amount=$('#amount').val();
+					res = check();
+					if(!res){
+						return false;
+					}
+					order_no = get_order();
+					if(!order_no){
+						layer.msg('订单生成失败，请刷新后重试');
+						return false;
+					}else{
+						$('.getresult').attr('order_no',order_no);
+					}
+					pay_type = $('.paycheck').val();
+					if(pay_type=='zfb'){
+						url = "{:url('recharge/PromotePay/alipay','',false)}";
+						url = url+'?'+'account='+account+'&amount='+amount+'&order_no='+order_no+'&type='+is_type;
+						$("#new_czinfobg").show();
+						url_open(url);
+					}else if(pay_type=='wx'){
+						url = "{:url('recharge/PromotePay/weixinpay','',false)}";
+						url = url+'?'+'account='+account+'&amount='+amount+'&order_no='+order_no+'&type='+is_type;
+						$("#new_czinfobg").show();
+						url_open(url);
+					}else{
+						layer.msg('支付方式错误');
+						return false;
+					}
+					var count = 0;
+					var timer = setInterval(function() {
+						if(count<200){
+							checkStatus(timer);//轮询
+						}else{
+							location.href=location.href;
+						}
+						count++;
+					},3000);
+					
+				});
+
+			})
+		</script>
+
+		<script>
+			$(".czinfobox_close3").click(function() {
+				$("#new_czinfobg").hide();
+			})
+			//新开页面 防止浏览器拦截
+			function url_open(url){
+				var a = $("<a href='"+url+"' target='_blank'>支付</a>").get(0);
+		            var e = document.createEvent('MouseEvents');
+		            e.initEvent( 'click', true, true );
+		            a.dispatchEvent(e);
+			}
+			//查看充值结果
+			function getresult(){
+				order_no = check_order_no()||$('.getresult').attr('order_no');
+				console.log(order_no);
+				$('.getresult').attr('order_no',order_no);
+				url = "{:url('check_order_status')}"+'?'+'order_no='+order_no;
+				url_open(url);
+			}
+			//获取订单号
+			function get_order(){
+				order_no = '';
+				$.ajax({
+                  	type: 'POST',
+                  	url: "{:url('recharge/PromotePay/get_order')}" ,
+                  	async:false,
+                  	dataType:'json',
+                  	success:function(data){
+                      	order_no = data.order_no;
+                  	}
+              	})
+              	return order_no;
+			}
+			function check_order_no(){
+				order_no = lwx.getItem('order_no');
+				return order_no;
+			}
+			//轮询查询订单状态
+			function checkStatus(timer){
+				order_no = $('.getresult').attr('order_no');
+				$.ajax({
+                  	type: 'POST',
+                  	url: "{:url('check_order_status')}" ,
+                  	data:{'order_no':order_no},
+                  	async:true,
+                  	dataType:'json',
+                  	success:function(data){
+                      	if(data.code==1){
+                      		$("#new_czinfobg").hide();
+                      		clearInterval(timer);
+                      	}
+                  	}
+              	})
+          		
+			}
+		</script>
+	</body>
+
+</html>

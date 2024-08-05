@@ -1,0 +1,1225 @@
+/* prefixed by https://autoprefixer.github.io (PostCSS: v7.0.26, autoprefixer: v9.7.3) */
+
+@charset "utf-8";
+/**
+ * 交易
+ */
+ .layertip .layui-layer-btn .layui-layer-btn0{
+	 
+ }
+  .layertip .layui-layer-btn a{
+	  font-size: 0.36rem;
+  }
+.tradeTransactionPage{
+
+}
+.tradeSearchEmpty {
+    font-size: .45rem;
+    color: #999;
+    padding-top: 2.45rem;
+    text-align: center;
+}
+.tradeEmpty {
+    padding-top: 1.89rem;
+    text-align: center;
+}
+.tradeEmptyIcon {
+    display: block;
+    width: 1.68rem;
+    height: 1.95rem;
+    margin: 0 auto;
+    background: url("../images/trade/deal_img_no.png") center center no-repeat;
+    background-size: 100% 100%;
+    position: relative;
+    left: .1rem;
+}
+.tradeEmptyText {
+    padding-top: .32rem;
+    font-size: .45rem;
+    color: #999;
+}
+.tradeSaleEmpty {
+    padding-top: 2.95rem;
+}
+.header,.realHeader {
+    height: 1.29rem;
+    border-bottom: 1px solid #ededed;
+    position: relative;
+    width: 100%;
+}
+.headerTitle,.realHeaderTitle {
+    font-size: .52rem;
+    color: #222;
+    height: 100%;
+}
+.headerOperation {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+}
+.operationIcon {
+    display: block;
+    height: .7rem;
+    width: .7rem;
+    background: url("../images/trade/deal_tab_btn_service.png") center center no-repeat;
+    background-size: 100% 100%;
+}
+.operationQQ {
+    position: relative;
+    margin-right: .68rem;
+}
+.operationPrice {
+    background-image: url("../images/trade/deal_tab_btn_pricse.png");
+    position: relative;
+    right: .25rem;
+}
+.operationPrice:after {
+    content:'';
+    position: absolute;
+    width: .16rem;
+    height: .16rem;
+    background: red;
+    right: .06rem;
+    top: -.08rem;
+    border-radius: 50%;
+}
+
+.tradeMenu {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: .28rem .14rem;
+}
+.menuIcon {
+    width:1.22rem;
+    height: 1.22rem;
+    display: block;
+    background: url("../images/trade/deal_ico_seal.png") center center no-repeat;
+    background-size: 100% 100%;
+}
+.recordMenuIcon {
+    background-image: url("../images/trade/deal_ico_records.png");
+}
+.trendsMenuIcon {
+    background-image: url("../images/trade/deal_ico_state.png");
+}
+.ruleMenuIcon {
+    background-image: url("../images/trade/deal_ico_news.png");
+}
+.menuTitle {
+    padding-top: .242rem;
+    font-size: .34rem;
+    color: #222;
+}
+
+.tradeIndexList {
+    padding-top: .412rem;
+}
+.tradeListTitle {
+    height: .9rem;
+    padding: 0 .3rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    position: relative;
+}
+.listTitleText {
+    font-size: .42rem;
+    color: #222;
+    font-weight: bold;
+    display: block;
+}
+.listTitleSelect {
+    display: none;
+    padding: .05rem .37rem .05rem .3rem;
+    background: #fff;
+    border-radius: .1rem;
+    width: 10.2rem;
+    height: 3.29rem;
+    position: absolute;
+    top: .9rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border: 1px solid #E7E7E7;
+    z-index: 999;
+}
+.listTitleSelectItem {
+    font-size: .4rem;
+    color: #333;
+    height: 1.05rem;
+    width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    font-weight: normal;
+}
+.listTitleSelectItem.active {
+    color: #018FFF;
+}
+.listTitleSelectItem~.listTitleSelectItem {
+    border-top: 1px solid #e7e7e7b3;
+}
+.listTitleTextIcon {
+    width: .33rem;
+    height: .18rem;
+    display: inline-block;
+    background: url("../images/trade/deal_new_btn_down.png") center center no-repeat;
+    background-size: 100% 100%;
+    vertical-align: middle;
+    margin-left: .16rem;
+}
+.listTitleTextIcon.on {
+    -webkit-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+.listTitleSearch {
+    display: block;
+    height: .9rem;
+    width: 4.63rem;
+    border-radius: .9rem;
+    background: #F0F0F0;
+    position: relative;
+}
+.listTitleSearchInput:-ms-input-placeholder {
+    color:#b3b3b3
+}
+.listTitleSearchInput::-ms-input-placeholder {
+    color:#b3b3b3
+}
+.listTitleSearchInput::placeholder,
+.listTitleSearchInput:-ms-input-placeholder,
+.listTitleSearchInput::-webkit-input-placeholder,
+.listTitleSearchInput:-moz-placeholder {
+    color:#b3b3b3
+}
+
+
+.listTitleSearchInput {
+    font-size: .38rem;
+    color: #333;
+    width: 100%;
+    height: 100%;
+    border: none;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    background: transparent;
+    display:-webkit-box;
+    display:-ms-flexbox;
+    display:flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 0 .86rem 0 .32rem;
+}
+.listTitleSearchIcon {
+    position: absolute;
+    height: 100%;
+    width: .82rem;
+    top: 0;
+    right: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.listTitleSearchIcon:after {
+    content:'';
+    width: .46rem;
+    height: .46rem;
+    background: url("../images/trade/deal_seach_btn_seach.png") center center no-repeat;
+    background-size: 100% 100%;
+}
+.tradeListContent {
+    padding-top: .13rem;
+    padding-bottom: 1.8rem;
+}
+.tradeListItem {
+    height: 2.41rem;
+    padding: 0 .3rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.tradeIndexList .tradeListItem~.tradeListItem {
+    border-top: 1px solid #EDEEEF;
+}
+.tradeListItemIcon {
+    height: 1.74rem;
+    width: 1.74rem;
+    border-radius: .33rem;
+}
+.tradeListItemIcon img {
+    width: 100%;
+    height: 100%;
+    border-radius: .33rem;
+    overflow: hidden;
+    display: block;
+}
+.tradeListItemInfo {
+    width: 5.4rem;
+    max-height: 2.4rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding-left: .2rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+.listItemInfoTitle {
+    font-size: .44rem;
+    color: #333;
+    max-width: 6rem;
+    font-weight: bold;
+}
+.listItemDesc {
+    padding-top: .058rem;
+    font-size: .32rem;
+    color: #F45D5D;
+    display: block;
+    /* word-wrap: break-word; */
+    white-space:nowrap
+
+}
+.listItemRecord {
+    padding-top: .125rem;
+    font-size: .32rem;
+    color: #666;
+}
+.listItemRecord i {
+    color: #018FFF;
+    font-style: normal;
+}
+.listItemPrice {
+    color: #F45D5D;
+    font-size: .48rem;
+    font-weight: bold;
+    width: 3.2rem;
+    text-align: right;
+}
+
+
+
+.tradeHeaderBack,.realHeaderIcon {
+    width: .86rem;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.tradeHeaderBack:after,.realHeaderIcon:after {
+    content:'';
+    width: .24rem;
+    height: .45rem;
+    background: url("../images/trade/sealaccount_tab_btn_banck.png") center center no-repeat;
+    background-size: 100% 100%;
+    display: block;
+}
+.tradeSaleList {
+    padding-top: .2rem;
+}
+.tradeSaleListItem {
+    height: 1.76rem;
+    border-bottom: 1px solid #F2F2F2;
+}
+.tradeSaleListItemInfo {
+    width: 8.28rem;
+}
+.tradeSaleListItemInfoTitle {
+    font-size: .43rem;
+    color: #333;
+    width: 8rem;
+}
+.tradeSaleListItemIcon {
+    width: 1.11rem;
+    height: 1.11rem;
+    border-radius: .16rem;
+}
+.tradeSaleListItemIcon img {
+    border-radius: .16rem;
+}
+.listItemCount {
+    font-size: .34rem;
+    color: #949494;
+    padding-top: .056rem;
+}
+.listItemChange {
+    width: .45rem;
+    height: .24rem;
+    background: url("../images/trade/sealaccount_btn_down.png") center center no-repeat;
+    background-size: 100% 100%;
+    margin: 0 .2rem 0 .32rem;
+}
+.tradeSaleListItem.on .listItemChange {
+    background-image: url("../images/trade/sealaccount_btn_up.png");
+}
+
+.listItemContent {
+    display: none;
+}
+.listItemContentItem {
+    height: 1.55rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 0 .3rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.listItemContentItemInfo {
+    width: 8.1rem;
+    margin-left: .27rem;
+}
+.listItemContentItemIcon {
+    width: .18rem;
+    height: .18rem;
+    background: #018EFE;
+    border-radius: 50%;
+}
+.listItemContentItemInfoTitle {
+    font-size: .43rem;
+    color: #333;
+}
+.listItemContentItemInfoDesc {
+    font-size: .34rem;
+    color: #949494;
+}
+.listItemContentItemInfoDesc i {
+    color: #018EFE;
+    font-style: normal;
+}
+.listItemContentItemBtn {
+    color: #fff;
+    font-size: .4rem;
+    background: #018EFE;
+    width: 1.59rem;
+    border-radius: .33rem;
+    padding: .08rem 0;
+    text-align: center;
+}
+
+.saleRuleShade,.realShade {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .6);
+    z-index: 100;
+    display: none;
+}
+.saleRuleWrapper,.realWrapper {
+    width: 100%;
+    height: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.saleRuleBox {
+    width: 9.27rem;
+    height: 14.28rem;
+    background: url("../images/sale/deal_window_bg.png") center center no-repeat;
+    background-size: 100% 100%;
+}
+
+.saleRuleHeader {
+    font-size: .32rem;
+    color: #fff;
+    text-align: center;
+    height: 1.7rem;
+}
+.saleRuleHeaderTitle {
+    padding-top: .21rem;
+    font-size: .5rem;
+    color: #fff;
+    font-weight: 500;
+}
+.saleRuleHeaderDesc {
+    padding-top: .056rem;
+}
+
+.saleRuleProcess {
+    padding-top: .242rem;
+}
+
+.saleRuleTitle {
+    font-size: .44rem;
+    color: #333;
+    padding-left: .43rem;
+    padding-bottom: .16rem;
+}
+.saleRuleShow {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: .172rem .74rem 0.12rem;
+}
+.saleRuleShowItem {
+    font-size: .34rem;
+    color: #333;
+    text-align: center;
+    width: 1.04rem;
+}
+.saleRuleShowIcon {
+    display: block;
+    width: 1.04rem;
+    height: .96rem;
+    background: url("../images/sale/deal_window_ico_submit.png") center center no-repeat;
+    background-size: 100% 100%;
+}
+.toSaleRuleShowIcon {
+    margin: -0.1rem auto 0;
+    width: 0.887rem;
+    height: 0.156rem;
+    background-image: url("../images/sale/deal_window_ico_process.png");
+}
+.checkSaleRuleShowIcon {
+    background-image: url("../images/sale/deal_window_ico_audit.png");
+}
+.saleSaleRuleShowIcon {
+    background-image: url("../images/sale/deal_window_ico_buy.png");
+}
+.moneySaleRuleShowIcon {
+    background-image: url("../images/sale/deal_window_ico_money.png");
+}
+.saleRuleShowTitle {
+    padding-top: .142rem;
+}
+.saleRuleShowIcon~.saleRuleShowTitle {
+    width: 1.4rem;
+    position: relative;
+    left: -.2rem;
+}
+.toSaleRuleShowIcon~.saleRuleShowTitle {
+    height: .33rem;
+    width: 0;
+}
+.saleRuleRecord {
+    padding-top: .204rem;
+}
+.saleRuleList {
+    font-size: .34rem;
+    color: #666;
+    padding: 0 .64rem 0 .74rem;
+    height: 6.3rem;
+    overflow: auto;
+}
+.saleRuleList li {
+    position: relative;
+    line-height: 1.8;
+    margin-bottom: 0.12rem;
+}
+.saleRuleList li:before {
+    content: '';
+    width: .14rem;
+    height: .14rem;
+    display:block;
+    position: absolute;
+    background: #6baff8;
+    border-radius: 50%;
+    left: -.3rem;
+    top: .24rem;
+}
+
+
+.saleRuleCheck {
+    font-size: .36rem;
+    color: #999;
+    padding: .1rem .44rem .3rem;
+}
+.saleRuleCheck label {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.saleRuleCheckBtn {
+    opacity: 0;
+    position: absolute;
+}
+.saleRuleCheckIcon {
+    width: .42rem;
+    height: .42rem;
+    margin-right: .19rem;
+    display: inline-block;
+    background: url("../images/sale/deal_window_btn_more_n.png") center center no-repeat;
+    background-size: 100% 100%;
+}
+.saleRuleCheckBtn:checked~.saleRuleCheckIcon {
+    background-image: url("../images/sale/deal_window_btn_more_s.png");
+}
+
+.saleRuleClick {
+    font-size: .4rem;
+    color: #666;
+    padding: 0 .48rem 0 .43rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.saleRuleClickBtn {
+    height: 1.04rem;
+    border-radius: .52rem;
+}
+.saleRuleClickBtn.cancel {
+    width: 2.2rem;
+    background: #ECECEC;
+}
+.saleRuleClickBtn.confirm {
+    width: 5.97rem;
+    background: #018FFF;
+    color: #fff;
+}
+.transactionNoticePop{
+	position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    top: 0;
+    left: 0;
+    z-index: 99;
+}
+
+.transactionNotice {
+    font-size: .36rem;
+    color: #999;
+    background:#F6F6F6;
+    height: 1.56rem;
+    padding: .298rem .58rem .298rem .3rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+	position: absolute;
+    top: 50%;
+    margin-top: -0.88rem;
+    width: 80%;
+    left: 50%;
+    margin-left: -40%;
+}
+.transactionNotice a {
+    color: #FF0000;
+}
+.smallInfo,.goodInfo {
+    background: #fff;
+    font-size: .38rem;
+    color: #333;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.smallInfo {
+    height: 3.6rem;
+    padding: .161rem 0;
+}
+.smallInfoItem,.goodInfoItem {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.smallInfoItem {
+    padding: .289rem 0.29rem;
+}
+.smallInfoItemTitle,.goodInfoItemTitle {
+    width: 2.37rem;
+}
+.smallInfoItemContent {
+    font-weight: bold;
+}
+.smallInfoItemContent,.goodInfoItemContent {
+    -webkit-box-flex: 1;
+    -ms-flex: auto;
+    flex: auto;
+}
+
+.goodInfo,.smallDesc {
+    border-top: .14rem solid #F6F6F6;
+}
+.goodInfo {
+    padding-bottom: .226rem;
+}
+.goodInfoItem {
+    padding: .334rem .29rem;
+}
+.goodInfoItemMark {
+    color: #FF0000;
+    font-style: normal;
+    margin-left: .18rem;
+    margin-top: 0.12rem;
+}
+.goodInfoNotice {
+    color: #815E02;
+    font-size: .32rem;
+    padding: 0 .29rem .22rem;
+    margin-top: -0.15rem;
+}
+.goodInfoNotice i {
+    font-style: normal;
+}
+.goodInfoItemPrice {
+    padding: .076rem .29rem;
+}
+.goodInfoItemContent input:-ms-input-placeholder,
+.goodInfoItemContent input::-webkit-input-placeholder,
+.goodInfoItemContent input::-moz-placeholder,
+.goodInfoItemContent input:-moz-placeholder {
+    color:#B3B3B3
+}
+.goodInfoItemContent input{
+    border: none;
+    width: 100%;
+    font-size: 0.36rem;
+    line-height: 1.2;
+}
+.goodInfoItemContentPrice,
+.uploadTab {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+.goodInfoItemContentPrice label,
+.uploadTab label{
+    width: 2.23rem;
+    height: .73rem;
+    position: relative;
+}
+.goodInfoItemContentPrice label:last-child,
+.uploadTab label:last-child {
+    margin-left: .6rem;
+}
+.goodInfoItemContentPrice input,
+.uploadTab input {
+    opacity: 0;
+    width: 0;
+    position: absolute;
+}
+.goodInfoItemContentPrice label div,
+.uploadTab label div {
+    width: 100%;
+    height: 100%;
+    border: 1px solid #999999;
+    color: #999999;
+    border-radius: .37rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+.goodInfoItemContentPrice label input:checked~div,
+.uploadTab label input:checked~div {
+    border-color: #018EFE;
+    color: #018EFE;
+}
+.smallDesc {
+
+}
+.smallDescItemTitle,.smallScreenItemTitle {
+    font-size: .4rem;
+    color: #333;
+}
+.smallDescItemTitle {
+    padding: .41rem .29rem .18rem;
+}
+.smallDescItemContent {
+    font-size: .36rem;
+    color: #333;
+    padding: 0 .36rem 0 .24rem;
+}
+.smallDescItemContent textarea:-ms-input-placeholder,
+.smallDescItemContent textarea::-webkit-input-placeholder,
+.smallDescItemContent textarea::-moz-placeholder,
+.smallDescItemContent textarea:-moz-placeholder {
+    color:#B1B1B1
+}
+.smallDescItemContent textarea {
+    border:none;
+    width: 100%;
+    background: #F6F6F6;
+    border-radius: .2rem;
+    padding: .288rem .43rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.smallScreenItemTitle {
+    padding: .42rem .29rem .36rem;
+}
+.uploadTab {
+    font-size: .38rem;
+    padding: 0 .29rem;
+}
+.uploadArea {
+    display: none;
+}
+.uploadNotice {
+    font-size: .32rem;
+    color: #999;
+    padding: 0 0rem .296rem;
+    -webkit-transform: scale(.95);
+    -ms-transform: scale(.95);
+    transform: scale(.95);
+}
+.uploadContent {
+    padding: 0 .29rem .36rem;
+}
+.uploadList {
+    position: relative;
+    max-width: 100%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-line-pack: start;
+    align-content: flex-start;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    float: left;
+}
+.uploadList li {
+    position: relative;
+    width: 2.94rem;
+    height: 2.94rem;
+    margin-right: .54rem;
+    margin-bottom: .36rem;
+}
+.uploadList li:nth-child(3n) {
+    margin-right: 0;
+}
+.webuploader-container label{position: absolute;left: 0;top: 0;width: 100%;}
+.webuploader-element-invisible{opacity: 0;width: 100%;height: 100%;clip: rect(1px 1px 1px 1px);clip: rect(1px,1px,1px,1px);}
+.viewThumb{ position:relative;width: 100%;height: 100%;border-radius: .3rem;}
+.viewThumb img{ width: 100%;height: 100%;}
+.diyBar{ position: absolute; display:none; top: 0;left: 0;width: 100%;height: 100%;background: transparent;z-index: 3;}
+.diyProgress{ position: absolute; left: 0;top: 1.15rem;width: 100%;height: .7rem;font-size: .34rem;line-height: .7rem;text-align: center;color: #FFF;background:rgba(10,168,241,.7); z-index: 3;}
+.diyControl{ position: absolute; display:none; left: 0;bottom: 0;width: 100%;height: 24px;line-height:24px;font-size: 14px;background:transparent; z-index: 3; }
+.viewThumb:hover .diyControl{ display: block; }
+.diyControlbox {position: absolute;display:block;right:0;top:0;width: .7rem;height: .7rem;line-height: .7rem;font-size: .34rem;z-index:3;}
+.diyControl span i:hover,.diyControlbox span i:hover{ opacity: 1; cursor: pointer; }
+.diyControlbox .diyCancel {width:.52rem;height:.52rem;padding: 0;position: absolute;top:-.26rem;right:-.26rem;}
+.diyControlbox .diyCancel i {
+    display: block;opacity:1;width:100%;height:100%;background: url("../images/trade/write_picture_btn_close.png") center center no-repeat;background-size:100% 100%; }
+
+.uploadList li img {
+    width: 100%!important;
+    height: 100%!important;
+}
+.uploadList li a {
+    width:.52rem;
+    height:.52rem;
+    position: absolute;top:-.26rem;right:-.26rem;
+    background: url("../images/trade/write_picture_btn_close.png") center center no-repeat;
+    background-size:100% 100%;
+    text-indent: -99999rem;
+}
+.uploadPick {
+    display: block;
+    position: relative;
+    width: 2.94rem;
+    height: 2.94rem;
+    background: url("../images/trade/write_picture_btn_add.png") center center no-repeat;
+    background-size: 35% 35%;
+    border: 1px solid #EAEAEA;
+    float: left;
+}
+.webuploader-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+.webuploader-pick {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+
+
+.uploadOtherNotice {
+    font-size: .36rem;
+    color: #333;
+    padding: .538rem .29rem .276rem;
+}
+.uploadOtherWarn {
+    padding: 0 .29rem .8rem;
+}
+.uploadOtherWarnTitle {
+    padding: .3rem 0 .1rem;
+    font-size: .36rem;
+    color: #333;
+}
+.uploadOtherWarnContent {
+    font-size: .34rem;
+    color: #999;
+    line-height: 1.8;
+}
+
+.tradeSpace {
+    height: 1.33rem;
+}
+.tradeFooter {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    padding: .12rem .55rem .16rem .91rem;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: #fff;
+    height: 1.33rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-box-shadow:0px -.03rem .29rem 0px rgba(174,185,190,0.5);
+    box-shadow:0px -.03rem .29rem 0px rgba(174,185,190,0.5);
+}
+.tradeFooterServiceIcon {
+    display: block;
+    width: .65rem;
+    height: .68rem;
+    background: url("../images/trade/write_bar_btn_service.png") center center no-repeat;
+    background-size: 100% 100%;
+}
+.tradeFooterSubmitBtn {
+    width: 7.85rem;
+    height: 1.05rem;
+    background: #018EFE;
+    color: #fff;
+    font-size: .4rem;
+    border-radius: .5rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+
+
+
+
+
+
+.realBox {
+    width:100%;
+    height: 100%;
+    background: #fff;
+}
+.realBodyPan {
+    display: none;
+}
+.realNotice {
+    font-size: .38rem;
+    color: #999;
+    padding: .488rem .84rem;
+    line-height: 1.8;
+}
+.realNoticeMain {
+    color: #018FFF;
+    font-style: normal;
+}
+.realForm {
+    padding: 0 .9rem;
+}
+.realFormItem {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+}
+.realFormItem .realFormInput:-ms-input-placeholder,
+.realFormItem .realFormInput::-webkit-input-placeholder,
+.realFormItem .realFormInput::-moz-placeholder,
+.realFormItem .realFormInput:-moz-placeholder {
+    color:#C1C0C4
+}
+.realFormItem .realFormInput {
+    background-color: #F2F2F2!important;
+    width: 6.1rem;
+    height: 1.14rem;
+    border-radius: .11rem;
+    font-size: .4rem;
+    color: #333;
+    border:none;
+    padding: 0 .31rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.realCodeSend {
+    width: 2.59rem;
+    height: 1.14rem;
+    border-radius: .16rem;
+    background: #018FFF;
+    color: #fff;
+    font-size: .35rem;
+}
+.realCodeSend.disabled {
+    background: #D6D6D6;
+}
+.realBtn {
+    padding: .52rem .9rem .55rem;
+}
+.realBtnConfirm {
+    background: #018FFF;
+    color: #FAFAFA;
+    font-size: .4rem;
+    height: 1.14rem;
+    border-radius: .17rem;
+}
+.realWay {
+    font-size: .38rem;
+    color: #999;
+    text-align: center;
+}
+.realWay a {
+    color: #018FFF;
+}
+
+
+
+
+
+
+
+
+
+@media (-webkit-min-device-pixel-ratio: 1.5) and (-webkit-max-device-pixel-ratio: 2.49),
+(min-device-pixel-ratio: 1.5) and (max-device-pixel-ratio: 2.49),
+(-webkit-min-device-pixel-ratio: 1.5) and (-webkit-max-device-pixel-ratio: 2.4895833333333335),
+(-o-min-device-pixel-ratio: 3/2) and (-o-max-device-pixel-ratio: 239/96),
+(min-resolution: 144dpi) and (max-resolution: 239dpi),
+(-o-min-device-pixel-ratio: 3/2) and (-o-max-device-pixel-ratio: 249/100),
+(min-resolution: 1.5dppx) and (max-resolution: 2.49dppx) {
+
+    .tradeEmptyIcon {
+        background-image: url("../images/trade/deal_img_no@2x.png");
+    }
+
+    .operationIcon {
+        background-image: url("../images/trade/deal_tab_btn_service@2x.png");
+    }
+    .operationPrice {
+        background-image: url("../images/trade/deal_tab_btn_pricse@2x.png");
+    }
+    .menuIcon {
+        background-image: url("../images/trade/deal_ico_seal@2x.png");
+    }
+    .recordMenuIcon {
+        background-image: url("../images/trade/deal_ico_records@2x.png");
+    }
+    .trendsMenuIcon {
+        background-image: url("../images/trade/deal_ico_state@2x.png");
+    }
+    .ruleMenuIcon {
+        background-image: url("../images/trade/deal_ico_news@2x.png");
+    }
+    .listTitleTextIcon {
+        background-image: url("../images/trade/deal_new_btn_down@2x.png");
+    }
+    .listTitleSearchIcon:after {
+        background-image: url("../images/trade/deal_seach_btn_seach@2x.png");
+    }
+
+    .tradeHeaderBack:after,.realHeaderIcon:after {
+        background-image: url("../images/trade/sealaccount_tab_btn_banck.png");
+    }
+
+    .listItemChange {
+        background-image: url("../images/trade/sealaccount_btn_down.png");
+    }
+
+    .saleRuleBox {
+        background-image: url("../images/sale/deal_window_bg@2x.png");
+    }
+    .saleRuleShowIcon {
+        background-image: url("../images/sale/deal_window_ico_submit@2x.png");
+    }
+    .toSaleRuleShowIcon {
+        background-image: url("../images/sale/deal_window_ico_process@2x.png");
+    }
+    .checkSaleRuleShowIcon {
+        background-image: url("../images/sale/deal_window_ico_audit@2x.png");
+    }
+    .saleSaleRuleShowIcon {
+        background-image: url("../images/sale/deal_window_ico_buy@2x.png");
+    }
+    .moneySaleRuleShowIcon {
+        background-image: url("../images/sale/deal_window_ico_money@2x.png");
+    }
+    .saleRuleCheckIcon {
+        background-image: url("../images/sale/deal_window_btn_more_n@2x.png");
+    }
+    .saleRuleCheckBtn:checked~.saleRuleCheckIcon {
+        background-image: url("../images/sale/deal_window_btn_more_s@2x.png");
+    }
+
+
+    .tradeFooterServiceIcon {
+        background-image: url("../images/trade/write_bar_btn_service@2x.png");
+    }
+
+    .diyControlbox .diyCancel i {
+        background-image: url("../images/trade/write_picture_btn_close@2x.png");
+    }
+    .uploadPick {
+        background-image: url("../images/trade/write_picture_btn_add@2x.png");
+    }
+
+
+}
+
+
+@media (-webkit-min-device-pixel-ratio: 2.5),
+(min-device-pixel-ratio: 2.5),
+(-o-min-device-pixel-ratio: 5/2),
+(min-resolution: 240dpi),
+(min-resolution: 2.5dppx) {
+
+    .tradeEmptyIcon {
+        background-image: url("../images/trade/deal_img_no@2x.png");
+    }
+    .operationIcon {
+        background-image: url("../images/trade/deal_tab_btn_service@2x.png");
+    }
+    .operationPrice {
+        background-image: url("../images/trade/deal_tab_btn_pricse@2x.png");
+    }
+    .menuIcon {
+        background-image: url("../images/trade/deal_ico_seal@2x.png");
+    }
+    .recordMenuIcon {
+        background-image: url("../images/trade/deal_ico_records@2x.png");
+    }
+    .trendsMenuIcon {
+        background-image: url("../images/trade/deal_ico_state@2x.png");
+    }
+    .ruleMenuIcon {
+        background-image: url("../images/trade/deal_ico_news@2x.png");
+    }
+    .listTitleTextIcon {
+        background-image: url("../images/trade/deal_new_btn_down@2x.png");
+    }
+    .listTitleSearchIcon:after {
+        background-image: url("../images/trade/deal_seach_btn_seach@2x.png");
+    }
+    .tradeHeaderBack:after,.realHeaderIcon:after {
+        background-image: url("../images/trade/sealaccount_tab_btn_banck.png");
+    }
+    .listItemChange {
+        background-image: url("../images/trade/sealaccount_btn_down.png");
+    }
+
+    .saleRuleBox {
+        background-image: url("../images/sale/deal_window_bg@2x.png");
+    }
+    .saleRuleShowIcon {
+        background-image: url("../images/sale/deal_window_ico_submit@2x.png");
+    }
+    .toSaleRuleShowIcon {
+        background-image: url("../images/sale/deal_window_ico_process@2x.png");
+    }
+    .checkSaleRuleShowIcon {
+        background-image: url("../images/sale/deal_window_ico_audit@2x.png");
+    }
+    .saleSaleRuleShowIcon {
+        background-image: url("../images/sale/deal_window_ico_buy@2x.png");
+    }
+    .moneySaleRuleShowIcon {
+        background-image: url("../images/sale/deal_window_ico_money@2x.png");
+    }
+    .saleRuleCheckIcon {
+        background-image: url("../images/sale/deal_window_btn_more_n@2x.png");
+    }
+    .saleRuleCheckBtn:checked~.saleRuleCheckIcon {
+        background-image: url("../images/sale/deal_window_btn_more_s@2x.png");
+    }
+
+
+    .tradeFooterServiceIcon {
+        background-image: url("../images/trade/write_bar_btn_service@2x.png");
+    }
+
+    .diyControlbox .diyCancel i {
+        background-image: url("../images/trade/write_picture_btn_close@2x.png");
+    }
+    .uploadPick {
+        background-image: url("../images/trade/write_picture_btn_add@2x.png");
+    }
+}

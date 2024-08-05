@@ -1,0 +1,46 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li><a href="{:url('site/sdkw_set')}">站点设置</a></li>
+            <li class="active"><a href="{:url('lists')}">用户注册协议</a></li>
+            <span class="title_remark">说明：用于海外游戏SDK内展示用户注册协议(多语言)</span>
+        </ul>
+
+            <a href="{:url('add')}" class="btn btn-primary btn-sm mtb17">添加</a>
+
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>标题</th>
+                    <th>语言</th>
+                    <th>创建时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <empty name="data_lists">
+                    <tr><td colspan="5" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <foreach name="data_lists" item="vo">
+                    <tr>
+                        <td>{$vo['id']}</td>
+                        <td>{$vo.title}</td>
+                        <td>{:get_language($vo.language)}</td>
+                        <td>{$vo['create_time']|date='Y-m-d',###}</td>
+                        <td>
+                            <a href="{:url('edit',['id'=>$vo['id']])}">编辑</a>
+                            <a href="{:url('del',['id'=>$vo['id']])}" class="js-ajax-delete" data-msg="确定要删除吗？">删除</a>
+                        </td>
+                    </tr>
+                    </foreach>
+                </empty>
+            </tbody>
+        </table>
+        <div class="pagination">{$page}</div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

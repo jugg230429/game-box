@@ -1,0 +1,75 @@
+<include file="public@header" />
+</head>
+<body>
+
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li ><a href="{:url('user/safecenter')}">隐私模式</a></li>
+        <li ><a href="{:url('user/single_end_login')}">单端登录</a></li>
+        <li class="active"><a href="{:url('user/defense')}">防刷设置</a></li>
+        <span class="title_remark" style="color:rgb(231,76,60)"></span>
+    </ul>
+
+    <form class="form-horizontal js-ajax-form margin-top-20 " role="form" action="{:url('sitePost')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="form-group">
+                        <label for="input-site_adminstyle" class="col-sm-2 control-label">极验ID：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <input type="text" class="form-control" name="auto_verify_index"
+                                   value="{$data.auto_verify_index|default='test'}">
+                        </div>
+                        <p class="help-block">极验ID值</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site_adminstyle" class="col-sm-2 control-label">极验key：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <input type="text" class="form-control" name="auto_verify_admin"
+                                   value="{$data.auto_verify_admin|default='test'}">
+                        </div>
+                        <p class="help-block">极验key值</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site_adminstyle" class="col-sm-2 control-label">注册IP黑名单：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <textarea type="text" class="form-control" name="reg_blank_ip">{$data.reg_blank_ip}</textarea>
+                        </div>
+                        <p class="help-block">用英文逗号‘,’分隔，不配置默认表示不限制IP注册</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site_adminstyle" class="col-sm-2 control-label">单IP每日注册上限：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <input type="text" class="form-control" name="ip_day_limit"
+                                   onkeyup="this.value=this.value.replace(/[^\d]/g,'') " onafterpaste="this.value=this.value.replace(/[^\d]/g,'') "
+                                   value="{$data.ip_day_limit|default=''}">
+                        </div>
+                        <p class="help-block">单IP每日可注册新用户的上限值，超出不可继续注册</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-site_adminstyle" class="col-sm-2 control-label">允许IP注册白名单：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <textarea class="form-control" name="no_limit_ip">{$data.no_limit_ip|default=''}</textarea>
+                        </div>
+                        <p class="help-block">默认不配置，表示该IP不受IP注册次数限制，分行展示，一行一个 </p>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-5">
+                            <input type="hidden" name="set_type" value="admin_set">
+                            <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                {:lang('SAVE')}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+
+<script src="__STATIC__/js/admin.js"></script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+
+</body>
+</html>

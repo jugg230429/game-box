@@ -1,0 +1,63 @@
+<extend name="../mediapublic/base" />
+<!-- 主体内容 -->
+<block name="body">
+    <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/user_game_bill.css">
+    <!-- 用户信息 -->
+    <div class="userinfo_con">
+        <div class="layui-container">
+            <div class="fl left_user_info">
+                <div class="left_user_info_img">
+                    <img src="{:cmf_get_image_url($user['head_img'])}" alt="" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                    <span class="levelIcon">V{$user['vip_level']}</span>
+                </div>
+                <!-- <div class="left_user_info_grade">
+                    <if condition="$user['vip_level'] gt 0">
+                        <img src="__STATIC__/images/my_ico_grade{$user['vip_level']}.png" alt="">
+                    </if>
+
+                </div> -->
+                <p class="left_user_info_name">{$user.nickname}</p>
+                <div class="checked_item_con">
+                    <include file="mediapublic@left_menu" />
+                </div>
+            </div>
+            <div class="fl right_user_info">
+                <div class="right_user_info_title">
+                    <a href="{:url('integral')}" class="fl right_user_info_title_left ">
+                        收入
+                    </a>
+                    <a href="javascript:;" class="fl right_user_info_title_left active">
+                        支出
+                    </a>
+                    <p class="fg right_user_info_title_right">您当前的位置：<a href="{:url('Index/index')}">平台首页</a>><a href="{:url('User/userinfo')}"> 用户中心</a>><span>积分明细</span></p>
+                </div>
+            
+                <div class="game_bill_list">
+
+                    <div class="game_bill_header">
+                        <div class="integral_title fl"><p>积分值</p></div>
+                        <div class="integral_way fl"><p> 获取方式</p></div>
+                        <div class="integral_time fl"><p>时间</p></div>
+                     
+                    </div>
+                    <empty name="list">
+                        <p class="no_mygame_con_item">~暂无消费记录~</p>
+                    </empty>
+                    <volist name="list" id="vo">
+                        <div class="game_bill_item">
+                            <div class="integral_title fl"><p>-{$vo.point}</p></div>
+                            <div class="game_money fl"><p>{$vo.type_name}</p></div>
+                            <div class="game_time fl"><p>{:date('Y-m-d H:i:s',$vo['create_time'])}</p></div>
+                        </div>
+                    </volist>
+                    <notempty name="list">
+                        <div class="recharge-total">累计支出：<span style="color: #018FFF">{$total}</span></div>
+                    </notempty>
+                </div>
+                <notempty name="list">
+                <div id="page1" class="gamelistpage">{$page}</div>
+                </notempty>
+            </div>
+        </div>
+    </div>
+</block>

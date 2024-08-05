@@ -1,0 +1,145 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+
+	<div class="nav-tabs mb20">
+        <span class=" pb10">编辑广告</span>
+
+    </div>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('edit_adv')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">广告标题：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control " name="title" value="{$data.title}" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">打开内容：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio radio_1" value="0" name="type" <eq name="data.type" value="0">checked="checked"</eq>> 活动链接
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio radio_2" value="1" name="type"  <eq name="data.type" value="1">checked="checked"</eq>> 游戏详情
+                                </label>
+                            </div>
+                        </div>
+                        <div <eq name="data.type" value="0">hidden</eq> class="form-group form-group-control class_game">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>选择游戏：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <div class="fl form-input-control" style="width: 100%">
+                                    <php>$map['game_status'] = 1;</php>
+                                    <select name="game_id"  id="game_id" class="selectpicker " data-live-search="true" >
+                                        <option value="">选择游戏</option>
+                                        <volist name=":get_game_list('id,game_name',$map)" id="vo">
+                                            <option value="{$vo.id}" <eq name="vo.id" value="$data['game_id']">selected</eq> >{$vo.game_name}</option>
+                                        </volist>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div <eq name="data.type" value="1">hidden</eq> class="form-group class_url">
+                            <label for="input-site-name" class="col-sm-2 control-label">广告链接：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control " name="url" value="{$data.url}" >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">开始时间：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control js-bootstrap-date" name="start_time" id="start_time" placeholder="不填默认无时间限制" value="<notempty name='data.start_time'>{$data.start_time|date='Y-m-d H:i:s',###}</notempty>"  autocomplete="off">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">结束时间：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control js-bootstrap-date" name="end_time" id="end_time" placeholder="不填默认无时间限制" value="<notempty name='data.end_time'>{$data.end_time|date='Y-m-d H:i:s',###}</notempty>"  autocomplete="off">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">广告排序：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control " name="sort" value="{$data.sort}" >
+                            </div>
+                            <p class="help-block">不填默认为0，数值越大越靠前</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">打开方式：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="_blank" name="target" <eq name="data.target" value="_blank">checked="checked"</eq>> 新页面
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="_self" name="target" <eq name="data.target" value="_self">checked="checked"</eq>> 本页面
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>广告图：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="data" type="hidden" name="data" value="{$data.data}" >
+                                <img id="data-preview" class="upload-img" src="{:cmf_get_image_preview_url($data['data'])}" >
+                                <a href="javascript:uploadOneImage('图片上传','#data');">上传</a>
+                                <a href="javascript:(function(){$('#data-preview').attr('src','');$('#data').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">图片建议大小为2M以内，图片分辨率：{$adv_pos.width} * {$adv_pos.height}，支持{:cmf_get_option('upload_setting')['file_types']['image']['extensions']?:'jpg,jpeg,png,gif,bmp'}格式</p>
+                        </div>
+                        <if condition="$data['pos_id'] eq 4">
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>广告ICON：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="icon" type="hidden" name="icon" value="{$data.icon}" >
+                                <img id="icon-preview" class="upload-img" src="{:cmf_get_image_preview_url($data['icon'])}" >
+                                <a href="javascript:uploadOneImage('图片上传','#icon');">上传</a>
+                                <a href="javascript:(function(){$('#icon-preview').attr('src','');$('#icon').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">图片建议大小为2M以内，图片分辨率：200 * 200PX，支持{:cmf_get_option('upload_setting')['file_types']['image']['extensions']?:'jpg,jpeg,png,gif,bmp'}格式，用于游戏页轮播广告位展示</p>
+                        </div>
+                        </if>
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <input type="hidden" name="id" value="{$data.id}">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                                <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script>
+    $(function () {
+        $(".radio_1").click(function () {
+            $(".class_game").hide();
+            $(".class_url").show();
+        })
+        $(".radio_2").click(function () {
+            $(".class_game").show();
+            $(".class_url").hide();
+        })
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,257 @@
+.type_down__long_hx{
+    width: 100%;
+    height: 1px;
+    background-color: #EDEEEF;
+    position: static;
+    top: -0.2rem;
+    z-index: 1;
+    margin-top: 0.3rem;
+}
+.my_game_page_header{
+    width: 100%;
+    height: 3.5rem;
+	position: relative;
+}
+.end_delete{
+    font-size: 15px;
+    color: #222;
+    font-weight:400;
+    position: absolute;
+    right: 1.2rem;
+    display: none;
+	top: 50%;
+    transform: translateY(-50%);
+    margin-top: 0.1rem
+}
+.my_game_page_header .back_icon{
+    width: 0.74rem;
+    margin-top: 1.25rem;
+    margin-left: 1rem;
+}
+#all_checked +label{
+    display: block;
+    width: 17px;
+    height: 17px;
+    cursor: pointer;
+    float: left;
+    background: #e2e2e2
+}
+.one_checked_check{
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 50%;
+}
+.all_checked_check{
+    width: 1.21rem;
+    height: 1.21rem;
+    margin: 1.1rem .4rem 0 1.85rem;
+}
+.check_con{
+    width: 1.5rem;
+    height: 1.5rem;
+    position: absolute;
+    bottom: -.3rem;
+    right: -.3rem;
+}
+.check_con .one_checked_img{
+    display: none;
+    width: 100%;
+    height: 100%;
+}
+.my_all_checked_text{
+    position: relative;
+    left: 0;
+}
+.delete_text{
+
+	margin:0 0 0 30%;
+}
+#my_all_checked{
+    opacity: 0;
+}
+.my_game_footer{
+    display: none;
+    width: 100%;
+    background-color: #0092FF;
+    height: 3.4rem;
+	line-height: 3.4rem;
+    position: fixed;
+    bottom: 0;
+    text-align: center;
+    color: #FFFFFF;
+    font-size: 1.27rem;
+}
+.my_game_footer .delete_text {
+    font-size: 1.38rem;
+}
+.my_game_page_item{
+    margin-left: 6rem;
+    font-size: 1.45rem;
+    line-height: 1.5rem;
+    color: #999999;
+    padding-top: 1.2rem;
+    margin-bottom: 0.9rem;
+}
+.my_game_page_item a{
+    color: #999999;
+}
+.active_my_game_page_type a{
+    color: #018FFF;
+    font-weight:bold;
+}
+
+.active_type_down_hx{
+    background-color: #018FFF;
+}
+.mygame_download{
+    padding-left: 1rem;
+}
+.type_down_hx1,.type_down_hx2{
+	width:6.2rem;
+    height: 2px;
+    position: relative;
+    top: 0.2rem;
+    z-index: 2;
+}
+.type_down_hx1 {
+    margin-left:7.6rem;
+}
+.type_down_hx2 {
+    margin-left: 17.5rem;
+    top: 0.1rem
+}
+.delete_btn{
+    width: 5%;
+    position: absolute;
+    top: 1.15rem;
+    right: 1.2rem;;
+}
+.game-time{
+	color: #666;
+	line-height:35px;
+	padding-left:1rem;
+	background:#f2f2f2;
+	font-size:1rem;
+}
+.mygame_item{
+	 width: 100%;
+    display: block;
+    height: 5.8rem;
+	float:left;
+	text-align:center;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.mygame_item:hover{
+	color:#333;
+}
+.mygame_item_img{
+    width: 4.11rem;
+    height: 4.11rem;
+    background-color: #e2e2e2;
+    border-radius: 10px;
+    position: relative;
+}
+.mygame_item_img img{
+    width: 4.11rem;
+    height: 4.11rem;
+    border-radius: 10px;
+}
+.mygame_item_con{
+    text-align: left;
+    height: 4.6rem;
+    width: 68%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /*margin-left: -0.87rem;*/
+    margin-left: 1rem;
+}
+.mygame_collect{
+    display: none
+}
+.mygame_item_con_title{
+	width:100%;
+    font-size: 1.43rem;
+	 overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.mygame_item_con_summny{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #999999;
+    font-size: 1rem;
+}
+@media screen and (max-width:320px) and (orientation:portrait){
+    .mygame_item{
+        height: 7.8rem;
+    }
+    .mygame_item_img{
+        width: 4.6rem;
+        height: 4.6rem;
+        background-color: #e2e2e2;
+    }
+    .mygame_item_img img{
+        width: 4.6rem;
+        height: 4.6rem;
+    }
+
+    .my_game_page_header{
+        height: 3.4rem!important;
+    }
+    .my_game_page_item{
+        font-size: 1.3rem;
+        padding-top: 1rem;
+        margin-left: 4.6rem!important;
+        margin-bottom: 0.8rem;
+    }
+    .type_down_hx{
+        width: 4.2rem;
+        margin-left: 2.4rem;
+    }
+    .type_down_hx1{
+        margin-left:5.8rem!important;
+        top: 0.2rem!important
+    }
+    .type_down_hx2{
+        margin-left: 15.2rem!important;
+        top: 0rem!important
+    }
+    .type_down__long_hx{
+        top: -0.3rem!important;
+        height: 1px!important;
+    }
+    .my_game_page_cons_item{
+        margin-left: 1rem!important;
+        height: 7.1rem!important;
+    }
+    .my_game_page_info{
+        width: 13.8rem!important;
+    }
+    .my_game_page_info_three div{
+        max-width: 3.8rem!important;
+        /* padding-left: 0.2rem!important;
+        padding-right: 0.2rem!important; */
+    }
+	.one_checked_img{
+		 right: 0.5rem;
+	}
+}
+@media screen and (min-width:360px) and (max-width:374px) and (orientation:portrait) {
+    .my_game_page_info{
+        width: 16rem!important;
+    }
+}
+@media screen and (min-width:414px) and (max-width:431px) and (orientation:portrait){
+    .type_down_hx1,.type_down_hx2{
+        position: relative;
+        top: 0.2rem!important;
+    }
+}
+.col_mygame_item{
+    margin:auto
+}

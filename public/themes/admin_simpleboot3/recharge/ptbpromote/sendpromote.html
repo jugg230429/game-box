@@ -1,0 +1,117 @@
+<include file="public@header"/>
+<style>
+    .sendpromote .bootstrap-select:not([class*="col-"]):not([class*="form-control"]):not(.input-group-btn) {
+    width: 397.5px !important;
+}
+span.balance {
+    margin-top: 27px;
+    position: relative;
+    top: 7px;
+}
+</style>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('ptbpromote/sendpromotelists')}">发放记录</a></li>
+        <li class="active"><a href="{:url('ptbpromote/sendpromote')}">给渠道发放</a></li>
+        <span class="title_remark">说明：给渠道发放平台币</span>
+
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" action="{:url('sendpromote')}" method="post">
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">渠道等级：</label>
+            <div class="col-md-6 col-sm-10">
+                <label class="radio-inline typer mr50" tab_id="1">
+                    <input type="radio" name="type" value="1" <if condition="$type neq 2"> checked="" </if>> 一级渠道
+                </label>
+                <label class="radio-inline typer mr50" tab_id="2">
+                    <input type="radio" name="type" value="2" <if condition="$type eq 2"> checked="" </if>> 二级渠道
+                </label>
+                <label class="radio-inline typer" tab_id="3">
+                    <input type="radio" name="type" value="3" <if condition="$type eq 3"> checked="" </if>> 三级渠道
+                </label>
+            </div>
+        </div>
+        <div id="tab1" class="ttt ">
+            <div class="form-group sendpromote">
+                <label for="input-name" class="col-sm-2 control-label"><span class="form-required">*</span>渠道账号：</label>
+				  <div class="col-md-6 col-sm-10">
+                <select name="promote_id" id="promote_id"  class="selectpicker" data-live-search="true" data-size="8">
+                    <option value="">请选择渠道</option>
+                    <php>$map = $type > 0?['promote_level'=>['eq',$type]]:['promote_level'=>['eq',1]];</php>
+                    <volist name=":get_promote_list($map)" id="vo">
+                        <option promote-id="{$vo.id}" value="{$vo.id}" <if condition="input('request.promote_id') eq $vo['id']">selected</if>>{$vo.account}</option>
+                    </volist>
+                </select>
+				 </div>
+            </div>
+            <div class="form-group">
+                <label for="input-name" class="col-sm-2 control-label"><span class="form-required"></span>账户余额：</label>
+                <div class="col-md-6 col-sm-10" style="">
+                    <span class="balance">0.00</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="input-remark" class="col-sm-2 control-label"><span class="form-required">*</span>发放数量：</label>
+                <div class="col-md-6 col-sm-10">
+                    <input type="text" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" class="form-control user-input" id="" name="num" autocomplete="new-password" placeholder="需输入大于0的整数">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="input-remark" class="col-sm-2 control-label"><span class="form-required">*</span>二级密码：</label>
+                <div class="col-md-6 col-sm-10">
+                    <input type="password" class="form-control user-input"  name="password" autocomplete="new-password" placeholder="请输入管理员二级密码">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-1 col-sm-10">
+                 <button type="submit" class="btn btn-primary js-ajax-submit save-btn">确定</button>
+				<a class="btn btn-default return-btn" href="javascript:history.back(-1)">返回</a>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript">
+    tabid = $('input[name=type]:checked').val();
+    $('.typer').click(function(){
+        tabidd = $('input[name=type]:checked').val();
+        if(tabidd!=tabid){
+            url = "{:url('ptbpromote/sendpromote','','')}";
+            url = url+'/type/'+tabidd;
+            location.href = url;
+        }
+    });
+
+    $('#promote_id').change(function(){
+        pid = $(this).find('option:selected').val();
+        if(!pid){
+            $('.balance').text('0.00');
+        }else{
+            $.ajax({
+                url:'{:url("get_promote_coin")}',
+                type:'post',
+                data:{pid:pid},
+                dataType:'json',
+                success:function(res){
+                    if(res.code==1){
+                        coin = res.coin>0?res.coin:'0.00';
+                        $('.balance').text(coin);
+                    }else{
+                        layer.msg(res.msg);
+                        setTimeout('location.href=location.href',1500);
+                    }
+                },error:function(){
+                    layer.msg('服务器错误，请稍后再试');
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

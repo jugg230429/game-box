@@ -1,0 +1,53 @@
+<extend name="../channelwappublic/base" />
+
+<block name="css">
+    <link href="__TMPL__/channelwappublic/assets/css/login.css" type="text/css" rel="stylesheet" />
+</block>
+
+<block name="body">
+
+    <div class="container loginPage">
+        <div class="form loginForm">
+            <form class="js-ajax-form" action="{:url('login')}" method="post">
+            <div class="formContent">
+                <div class="formList js-formList">
+                    <div class="formItem js-formItem">
+                        <div class="formMark flex">
+                            <i class="formIcon formIconUser"></i>
+                        </div>
+                        <div class="formText">
+                            <div class="formInput flex">
+                                <input type="text" id="account" class="flex" name="account" value="{:cookie('promote_account')}" placeholder="请输入账号" >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="formItem js-formItem">
+
+                        <div class="formMark flex">
+                            <i class="formIcon formIconPassword"></i>
+                        </div>
+                        <div class="formText">
+
+                            <div class="formInput flex">
+                                <input type="password" id="password" class="flex" name="password" placeholder="请输入密码" >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="formBtnContent">
+                <input type="submit" class="formSubmit flex  js-ajax-submit" value="登录" >
+            </div>
+            </form>
+            <div class="formAdd">
+                还没账号，<a href="{:url('index/regstep1')}" class="goRegister">去注册></a>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+    </script>
+    <script src="__TMPL__/channelwappublic/assets/js/login.js"></script>
+	
+</block>

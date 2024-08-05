@@ -1,0 +1,170 @@
+<include file="public@header"/>
+</head>
+<body>
+<link href="__TMPL__/public/assets/simpleboot3/css/rank.css" rel="stylesheet">
+<div class="wrap promote_rank">
+    <div class="survey-background clearfix">
+    <div>
+        <ul class="nav nav-tabs">
+            <li <if condition="input('type') eq ''">class="active"</if>>
+                <a href="{:url('promote/promote_rank')}">今日排行</a>
+            </li>
+            <li <if condition="input('type') eq '7'">class="active"</if>>
+                <a href="{:url('promote/promote_rank',['type'=>'7'])}">近7日排行</a>
+            </li>
+            <li <if condition="input('type') eq '30'">class="active"</if>>
+                <a href="{:url('promote/promote_rank',['type'=>'30'])}">近30日排行</a>
+            </li>
+
+        </ul>
+    </div>
+    <div class="clearfix">
+        <div class="rank-form fl rank-form-register">
+            <div class="rank-form-title">
+                <div class="rank-form-title-con fl rank-form-title-con-first">排行</div>
+                <div class="rank-form-title-con fl pl-5">渠道</div>
+                <div class="rank-form-title-con fl pl-12">注册用户</div>
+            </div>
+            <div class="rank-form-con">
+<!--注册-->
+                <notempty name="data['register_rank']">
+                    <volist name="data['register_rank']" id="register">
+                        <if condition="$key eq 0">
+                            <div class="rank-topthree">
+                                <div class="fl rank-topthree-con h-middle"><span class="rank-goldmedal-first fl"></span><span
+                                        class="rank-user fl"></span></div>
+                                <div class="fl rank-topthree-con color-white"><strong>{$register['promote_account']}</strong></div>
+                                <div class="fl rank-topthree-con color-white rank-num rangk-user-wm"><strong>{$register['count_new_register_user']}</strong></div>
+                            </div>
+                        <elseif condition="$key eq 1" />
+                            <div class="rank-topthree bg-lilac">
+                                <div class="fl rank-topthree-con h-middle"><span class="rank-goldmedal-second fl"></span><span
+                                        class="rank-user fl"></span></div>
+                                <div class="fl rank-topthree-con color-lilac"><strong>{$register['promote_account']}</strong></div>
+                                <div class="fl rank-topthree-con color-orange rank-num rangk-user-wm"><strong>{$register['count_new_register_user']}</strong></div>
+                            </div>
+                        <elseif condition="$key eq 2" />
+                            <div class="rank-topthree bg-lilac">
+                                <div class="fl rank-topthree-con h-middle"><span class="rank-goldmedal-third fl"></span><span
+                                        class="rank-user fl"></span></div>
+                                <div class="fl rank-topthree-con color-lilac"><strong>{$register['promote_account']}</strong></div>
+                                <div class="fl rank-topthree-con color-orange rank-num rangk-user-wm"><strong>{$register['count_new_register_user']}</strong></div>
+                            </div>
+                        <else/>
+                            <div class="rank-con">
+                                <div class="fl rank-topthree-con  color-deongaree"><span class="rank-con-first">{:$key+1}</span></div>
+                                <div class="fl rank-topthree-con color-deongaree">{$register['promote_account']}</div>
+                                <div class="fl rank-topthree-con color-orange rangk-user-wm">{$register['count_new_register_user']}</div>
+                            </div>
+                        </if>
+                    </volist>
+                        <else/>
+                        <!--无数据-->
+                        <div class="rank-nodata">暂无排行</div>
+                </notempty>
+            </div>
+        </div>
+        <div class="rank-form fl rank-form-active">
+            <div class="rank-form-title">
+                <div class="rank-form-title-con fl rank-form-title-con-first">排行</div>
+                <div class="rank-form-title-con fl pl-5">渠道</div>
+                <div class="rank-form-title-con fl pl-12">活跃用户</div>
+            </div>
+            <div class="rank-form-con">
+                <!--活跃-->
+                <notempty name="data['active_user']">
+                    <volist name="data['active_user']" id="active">
+                        <if condition="$key eq 0">
+                            <div class="rank-topthree bg-azure">
+                                <div class="fl rank-topthree-con h-middle"><span class="rank-goldmedal-first fl"></span><span
+                                        class="rank-user fl"></span></div>
+                                <div class="fl rank-topthree-con color-white"><strong>{$active['promote_account']}</strong></div>
+                                <div class="fl rank-topthree-con color-white rank-num rangk-user-wm"><strong>{$active['count_active_user']}</strong></div>
+                            </div>
+                        <elseif condition="$key eq 1">
+                            <div class="rank-topthree bg-oldlace">
+                                <div class="fl rank-topthree-con  h-middle"><span class="rank-goldmedal-second fl"></span><span
+                                        class="rank-user fl"></span></div>
+                                <div class="fl rank-topthree-con color-81b"><strong>{$active['promote_account']}</strong></div>
+                                <div class="fl rank-topthree-con color-orange rank-num rangk-user-wm"><strong>{$active['count_active_user']}</strong></div>
+                            </div>
+                        <elseif condition="$key eq 2" >
+                            <div class="rank-topthree bg-oldlace">
+                                <div class="fl rank-topthree-con h-middle"><span class="rank-goldmedal-third fl"></span><span
+                                        class="rank-user fl"></span></div>
+                                <div class="fl rank-topthree-con color-81b"><strong>{$active['promote_account']}</strong></div>
+                                <div class="fl rank-topthree-con color-orange rank-num rangk-user-wm"><strong>{$active['count_active_user']}</strong></div>
+                            </div>
+                        <else/>
+                            <div class="rank-con">
+                                <div class="fl rank-topthree-con color-deongaree"><span class="rank-con-first">{:$key+1}</span></div>
+                                <div class="fl rank-topthree-con color-deongaree">{$active['promote_account']}</div>
+                                <div class="fl rank-topthree-con color-orange rangk-user-wm">{$active['count_active_user']}</div>
+                            </div>
+                        </if>
+                    </volist>
+                    <else/>
+                    <!--无数据-->
+                    <div class="rank-nodata">暂无排行</div>
+                </notempty>
+            </div>
+        </div>
+        <div class="rank-form fl rank-form-pay">
+            <div class="rank-form-title">
+                <div class="rank-form-title-con fl rank-form-title-con-first">排行</div>
+                <div class="rank-form-title-con fl pl-5">渠道</div>
+                <div class="rank-form-title-con fl pl-12">充值金额<i>(元)</i></div>
+            </div>
+            <div class="rank-form-con">
+                <!--充值-->
+                <notempty name="data['total_pay']">
+                    <volist name="data['total_pay']" id="pay">
+                        <if condition="$key eq 0">
+                            <div class="rank-topthree bg-79c">
+                                <div class="fl rank-topthree-con h-middle"><span class="rank-goldmedal-first fl"></span><span
+                                        class="rank-user fl"></span></div>
+                                <div class="fl rank-topthree-con color-white "><strong>{$pay['promote_account']}</strong></div>
+                                <div class="fl rank-topthree-con color-white rank-num rangk-user-wm"><strong>{$pay['total_pay']}</strong></div>
+                            </div>
+                        <elseif condition="$key eq 1">
+                            <div class="rank-topthree bg-ebf">
+                                <div class="fl rank-topthree-con h-middle"><span class="rank-goldmedal-second fl"></span><span
+                                        class="rank-user fl"></span></div>
+                                <div class="fl rank-topthree-con color-79c"><strong>{$pay['promote_account']}</strong></div>
+                                <div class="fl rank-topthree-con color-orange rank-num rangk-user-wm"><strong>{$pay['total_pay']}</strong></div>
+                            </div>
+                        <elseif condition="$key eq 2" >
+                            <div class="rank-topthree bg-ebf">
+                                <div class="fl rank-topthree-con h-middle"><span class="rank-goldmedal-third fl"></span><span
+                                        class="rank-user fl"></span></div>
+                                <div class="fl rank-topthree-con color-79c"><strong>{$pay['promote_account']}</strong></div>
+                                <div class="fl rank-topthree-con color-orange rank-num rangk-user-wm"><strong>{$pay['total_pay']}</strong></div>
+                            </div>
+                        <else/>
+                            <div class="rank-con">
+                                <div class="fl rank-topthree-con color-deongaree"><span class="rank-con-first">{:$key+1}</span></div>
+                                <div class="fl rank-topthree-con color-deongaree">{$pay['promote_account']}</div>
+                                <div class="fl rank-topthree-con color-orange rangk-user-wm">{$pay['total_pay']}</div>
+                            </div>
+                        </if>
+                    </volist>
+                    <else/>
+                    <!--无数据-->
+                    <div class="rank-nodata">暂无排行</div>
+                </notempty>
+            </div>
+        </div>
+
+    </div>
+    </div>
+</div>
+
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script src="__STATIC__/js/echarts-all.js"></script>
+    <script type="text/javascript">
+
+    </script>
+</body>
+
+</html>

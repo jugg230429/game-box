@@ -1,0 +1,190 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="frontend" content="Robin">
+  <meta content="yes" name="apple-mobile-web-app-capable">
+  <meta content="black" name="apple-mobile-web-app-status-bar-style">
+   <meta content="telephone=no" name="format-detection">
+
+  <!--safira浏览器保存桌面图标和标题 -->
+  <if condition="session('union_host') neq ''">
+    <meta name="apple-mobile-web-app-title" content="{$union_set['app_name_ico']}">
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="{:cmf_get_image_url($union_set['app_ico'])}">
+    <else/>
+    <meta name="apple-mobile-web-app-title" content="{:cmf_get_option('wap_set')['screen_app_name']}">
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="{:cmf_get_image_url(cmf_get_option('wap_set')['wap_app_icon'])}">
+  </if>
+  <link href="" type="image/x-icon" rel="shortcut icon">
+<!--  seo-->
+  <include file="mobilepublic@seo" />
+  <link rel="stylesheet" href="__JS__/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="__JS__/swiper/swiper.min.css">
+  <link rel="stylesheet" href="__JS__/layui/css/layui.css">
+  <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/public.css?v=1">
+  <style>
+    .show {
+      display: block;
+      text-align: center!important;
+      width: 100%!important
+    }
+
+    .hide {
+      display: none;
+      text-align: center!important;
+      width: 100%!important
+    }
+
+    #embed-captcha {
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .geetest_copyright,
+    .geetest_feedback {
+      display: none !important;
+    }
+    .geetest_box {
+      margin:1rem 8.6%
+    }
+    .to_login {
+      left: -7.2rem;
+    }
+    .geetest_holder.geetest_wind {
+      width: 100% !important;
+      min-width: 100px !important;
+    }
+    .geetest_holder.geetest_wind .geetest_btn {
+      width: 100% !important;
+    }
+    .geetest_goto_wrap {
+      display: none;
+    }
+  </style>
+  <block name="css"></block>
+  <script src="__JS__/jquery-1.11.1.min.js"></script>
+  <script>
+
+     $(function () {
+	      var val = document.body.clientWidth/10.8/3;
+	      $('html').css('fontSize',val+'px');
+	 })
+    url="{:url('Index/get_auth')}";
+    send_sms_url="{:url('User/send_sms')}";
+    forget_url = "{:url('User/checkForgetName')}";
+    forget_sms_url = "{:url('User/checkForgetPhone')}";
+    //全局变量
+    var GV = {
+      ROOT: "/",
+      WEB_ROOT: "/",
+      JS_ROOT: "static/js/"
+    };
+
+  </script>
+</head>
+<body>
+
+<block name="body"></block>
+<if condition="($action_name eq 'index' or ($controller_name eq 'Game' and ($action_name eq 'discount_game') or $action_name eq 'server_lists' or $action_name eq 'rank_lists' or $action_name eq 'game_center')) and (session('member_auth.request_source') eq NULL)">
+  <!-- 底部 -->
+  <footer class="footer">
+    <a href="{:url('Index/index')}">
+      <div class="first_type">
+        <if condition="$controller_name eq 'Index' or $controller_name eq 'Game'">
+          <img src="__TMPL__/mobilepublic/assets/images/footer_game_s.png" alt="">
+          <p class="active_type">游戏</p>
+          <else />
+          <img src="__TMPL__/mobilepublic/assets/images/footer_game.png" alt="">
+          <p class="">游戏</p>
+        </if>
+      </div>
+    </a>
+    <a href="{:url('Gift/index')}">
+      <div>
+        <if condition="$controller_name eq 'Gift'">
+          <img src="__TMPL__/mobilepublic/assets/images/footer_bag_s.png" alt="">
+          <p class="active_type">礼包</p>
+          <else />
+          <img src="__TMPL__/mobilepublic/assets/images/footer_bag.png" alt="">
+          <p>礼包</p>
+        </if>
+      </div>
+    </a>
+    <if condition="cmf_get_option('wap_set')['trade_show'] eq 1">
+    <a href="{:url('Trade/index')}">
+      <div>
+        <if condition="$controller_name eq 'Trade'">
+          <img src="__TMPL__/mobilepublic/assets/images/common/footer_trade_s@2x.png"  alt="">
+          <p class="active_type">交易</p>
+          <else />
+          <img src="__TMPL__/mobilepublic/assets/images/common/footer_trade@2x.png"  alt="">
+          <p>交易</p>
+        </if>
+      </div>
+    </a>
+    </if>
+
+    <if condition="cmf_get_option('wap_set')['zhuanjin'] neq '0'">
+      <a href="{:url('Point/index')}">
+        <div>
+          <if condition="$controller_name eq 'Point'">
+            <img src="__TMPL__/mobilepublic/assets/images/common/footer_mall_s.png"  alt="">
+            <p class="active_type">赚金</p>
+            <else />
+            <img src="__TMPL__/mobilepublic/assets/images/common/footer_mall.png"  alt="">
+            <p>赚金</p>
+          </if>
+        </div>
+      </a>
+    </if>
+
+    <a href="{:url('User/index')}">
+      <div style="position: relative">
+        <if condition="$tip_status">
+        <span class="red-spot2"></span>
+        </if>
+        <if condition="$controller_name eq 'User'">
+          <img src="__TMPL__/mobilepublic/assets/images/footer_user_n.png" alt="">
+          <p class="active_type">我的</p>
+          <else />
+          <img src="__TMPL__/mobilepublic/assets/images/footer_user.png" alt="">
+          <p>我的</p>
+        </if>
+      </div>
+    </a>
+  </footer>
+
+</if>
+<!--  登录注册  -->
+<include file="mobilepublic@login" />
+
+<script src="__JS__/layer/mobile/layer.js"></script>
+<script src="__JS__/layui/layui.all.js"></script>
+<script src="__JS__/swiper/swiper.min.js"></script>
+<script src="__JS__/bootstrap/bootstrap.min.js"></script>
+<script src="//res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+<script src="//qzonestyle.gtimg.cn/qzone/qzact/common/share/share.js"></script>
+<script>
+    var sharetitle = "{$shareparams.title}";
+    <if condition="$own_share_img">
+        var shareimg = "{$own_share_img}";
+        <else/>
+        var shareimg = "{$shareparams.imgUrl}";
+    </if>
+    var sharedes = "{$shareparams.desc}";
+
+    setShareInfo({
+        title:          sharetitle, // 分享标题
+        summary:        sharedes, // 分享内容
+        pic:            shareimg, // 分享图片
+    });
+</script>
+<!--  微信分享-->
+  <include file="mobilepublic@wechatshare" />
+<block name='script'></block>
+</body>
+</html>

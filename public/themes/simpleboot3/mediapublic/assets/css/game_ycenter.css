@@ -1,0 +1,418 @@
+@charset "UTF-8";
+
+/*
+* @description:页游样式
+ *@author:wangfeng
+ * @update: name(2020-9-19)
+*/
+.wrap {
+	width: 1200px;
+	margin: 0 auto;
+}
+
+.banner {
+	width: 100%;
+	height: 514px;
+	background: url(../images/game_ycenter_banner.png) no-repeat center;
+	margin-bottom: 29px;
+}
+
+.bannner-title {
+	color: #2E3654;
+	font-size: 28px;
+	font-weight: bold;
+	text-align: center;
+	padding: 41px 0 44px 0;
+}
+
+.bannner-title-name {
+	padding: 0 19px;
+}
+
+.bannner-title-rightimg {
+	transform: rotate(180deg);
+	-ms-transform: rotate(180deg);
+ 	/* IE 9 */
+	-moz-transform: rotate(180deg);
+ 	/* Firefox */
+	-webkit-transform: rotate(180deg);
+ /* Safari 和 Chrome */
+	-o-transform: rotate(180deg);
+}
+
+.banner-game {
+	width: 386px;
+	height: 290px;
+	background: #222E3E;
+	box-shadow: 0px 0px 24px 0px rgba(0, 0, 0, 0.4);
+	border-radius: 5px;
+	margin-right: 20px;
+	position: relative;
+	
+}
+.banner-game-link{
+	display:block;
+	width:100%;
+	height:100%;
+} 
+.banner-game:last-child {
+	margin-right: 0;
+}
+
+.banner-game:hover{
+	 transform:scale(1.02);
+     -webkit-transform:scale(1.02);  /*兼容-webkit-引擎浏览器*/
+     -moz-transform:scale(1.02);     /*兼容-moz-引擎浏览器*/
+}
+
+.banner-game-img {
+	width: 386px;
+	height: 290px;
+	border-radius: 5px;
+}
+
+.banner-game-icon {
+	width: 90px;
+	height: 90px;
+	border-radius: 15px;
+	position: absolute;
+	top: 20px;
+	left: 21px;
+	z-index: 9;
+}
+
+.banner-game-code {
+	width: 106px;
+	height: 106px;
+	background: #FFFFFF;
+	border: 2px solid #0290FF;
+	box-shadow: 1px 7px 16px 0px rgba(0, 0, 0, 0.24);
+	border-radius: 5px;
+	position: absolute;
+	top: 20px;
+	left: 21px;
+	z-index: 99;
+	display: none;
+}
+
+.banner-game-code-img {
+	width: 102px;
+	height: 102px;
+	border-radius: 5px;
+	margin: 2px auto;
+	display: block;
+}
+
+.banner-box {
+	position: absolute;
+	top: 163px;
+	left: 21px;
+	z-index: 99;
+	color: #fff;
+}
+
+.banner-box-name {
+	max-width: 308px;
+	font-size: 13px;
+	font-weight: bold;
+	text-shadow: 1px 2px 0px rgba(0, 0, 0, 0.2);
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.banner-box-type {
+	font-size: 22px;
+	margin: 12px 0 5px;
+	text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.banner-box-text {
+	width: 357px;
+	font-size: 13px;
+	line-height: 18px;
+	text-overflow: -o-ellipsis-lastline;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+   -webkit-line-clamp: 2;
+   line-clamp: 2;
+   -webkit-box-orient: vertical;
+}
+.no-data{
+	text-align:center;
+	margin:60px 0;
+	color:#666;
+}
+.gamelist {
+	width: 846px;
+}
+
+.bluediv {
+	width: 4px;
+	height: 24px;
+	background-color: #0290FF;
+	float: left;
+	margin-top: 2px;
+	margin: 0 10px 0 0;
+}
+
+.gamelis-ttitle {
+	height: 25px;
+	font-size: 24px;
+	color: #343434;
+	line-height: 18px;
+}
+
+.gamesearch {
+	width: 161px;
+}
+
+.gamesearch input {
+	border: 1px solid #DEDEDE;
+	padding-left: 5px;
+	padding-right: 30px;
+	border-radius: 15px;
+	height: 30px;
+	width: 100%;
+	box-sizing: border-box;
+	border: 1px solid #d8d8d8;
+	background-color: #fff;
+	color: #d8d8d8;
+	text-indent: 12px;
+	color: rgba(34,34,34,1);
+	font-size: 14px;
+	line-height: 1.42857143;
+	-webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+	transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+	z-index: -1;
+}
+
+.gamesearch .search_icon {
+	position: absolute;
+	right: 12px;
+	top: -3px;
+}
+
+.gamescreen_con_second_line {
+	margin-top: 16px;
+	position: relative;
+	overflow: hidden;
+	color: #343434;
+}
+
+.game-type-list {
+	width: 750px;
+}
+
+.gamescreen_con_title {
+	margin-left: 13px;
+	margin-right: 10px;
+	font-size: 13px;
+	font-weight: bold;
+}
+
+.ml-20 {
+	margin-right: 20px
+}
+
+.alls {
+	width: 42px;
+	height: 20px;
+	
+}
+
+.alls span {
+	padding-left: 8px;
+	font-size: 12px;
+}
+
+.gamescreen_con_type {
+	height: 19px;
+	border-radius: 15px;
+	line-height: 19px;
+	padding-left: 6px;
+	padding-right: 6px;
+	font-size: 13px;
+	margin: 0 20px 16px 0;
+}
+.type_active{
+    background:rgba(1,143,255,1);
+   
+    color: white;
+    border-radius: 50px;
+    box-sizing: border-box;
+}
+.type_active p:hover{
+    color: white!important;
+}
+.gamescreen_con_type:hover {
+	color: #0290FF;
+}
+
+
+
+.game-box {
+	width: 846px;
+	height: 168px;
+	border: 1px solid #ddd;
+	margin-bottom: 16px;
+}
+
+.game-box:hover {
+	border: 1px solid #018FFF;
+	box-shadow: 0px 0px 16px 0px rgba(153, 153, 153, 0.2);
+}
+
+.game-box-img {
+	display: block;
+	width: 159px;
+	height: 119px;
+	border-radius: 3px;
+	margin: 25px 23px 0 21px;
+}
+
+.game-box-name {
+	font-size: 20px;
+	font-weight: bold;
+	color: #333;
+	line-height: 20px;
+	margin: 25px 0 18px;
+}
+
+.game-box-tag {
+	color: #018FFF;
+	font-size: 12px;
+	position: relative;
+	padding: 0 10px;
+}
+
+.game-box-tag:first-child {
+	padding: 0 10px 0 0;
+}
+
+.game-box-tag:after {
+	content: "";
+	display: block;
+	position: absolute;
+	width: 1px;
+	height: 10px;
+	background: #ccc;
+	right: 0;
+	top: 4px;
+}
+
+.game-box-tag:last-child:after {
+	width: 0;
+}
+
+.game-box-describe {
+	width: 453px;
+	font-size: 12px;
+	color: #3C3C3C;
+	line-height: 20px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+}
+
+.game-box-gamebtn,.game-box-giftbtn {
+	display: block;
+	width: 97px;
+	height: 28px;
+	line-height: 28px;
+	background: #FFAC5B;
+	border-radius: 4px;
+	text-align: center;
+	color: #fff;
+	font-size: 12px;
+	margin: 49px 47px 14px 0;
+}
+
+.game-box-gamebtn:hover,.game-box-giftbtn:hover {
+	color: #fff;
+}
+
+.game-box-giftbtn {
+	background: #018FFF;
+	margin: 0 47px 0 0;
+}
+
+.new-open {
+	width: 330px;
+}
+
+.new-open-box {
+	width: 330px;
+	height: 399px;
+	background: #fff;
+	border: 1px solid #ddd;
+	margin: 20px 0;
+}
+
+.new-open-box-item {
+	display: block;
+	width: 298px;
+	height: 36px;
+	line-height: 36px;
+	border-bottom: 1px solid #eee;
+	margin: 0 auto;
+	color: #3C3C3C;
+	font-size: 13px;
+}
+
+.new-open-box-item:last-child {
+	border-bottom: none;
+}
+
+.new-open-box-item:hover {
+	color: #018FFF;
+}
+
+.new-open-box-name {
+	overflow: hidden;
+	width: 96px;
+	margin-right: 15px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.new-open-box-area {
+	overflow: hidden;
+	width: 95px;
+	margin-right: 15px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.new-open-box-time {
+	overflow: hidden;
+	color: #898989;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.new-open-box-item:hover .new-open-box-time {
+	color: #018FFF;
+}
+
+.new-open-box-title {
+	width: 298px;
+	height: 29px;
+	line-height: 29px;
+	margin: 0 auto;
+	font-size: 14px;
+}
+
+.new-open-box-title .new-open-box-name,.new-open-box-title .new-open-box-area,.new-open-box-title .new-open-box-time {
+	color: #888;
+}
+/* 分页 */
+.gamelistpage{clear:both;width:846px;text-align:center;padding:15px 0;}
+.gamelistpage li{display:inline}
+.gamelistpage .active{border:1px solid #018FFF;background-color:#018FFF;color:#ffffff}

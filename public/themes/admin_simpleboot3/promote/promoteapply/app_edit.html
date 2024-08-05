@@ -1,0 +1,115 @@
+<include file="public@header"/>
+</head>
+<style>
+    .btn.disabled, .btn[disabled], fieldset[disabled] .btn {
+        background-color: rgb(238,238,238)!important;
+        border-color: rgb(238,238,238)!important;
+        opacity: 1;
+    }
+</style>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs mb20">
+        <li class="active">
+            <a href="javascript:;">
+                <if condition="$info['app_version'] eq 1">安卓分包</if>
+                <if condition="$info['app_version'] eq 2">IOS分包</if>
+                <!-- 自定义APP分包 -->
+            </a>
+        </li>
+
+        <span class="title_remark">说明：对渠道后台申请的游戏盒子APP渠道包进行审核并打包。</span>
+    </ul>
+
+    <form class="form-horizontal js-ajax-form margin-top-20" action="{:url('appEdit')}" method="post">
+        <div class="tabbable">
+            <div class="tab-content">
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">是否自定义渠道包：</label>
+                    <div class="col-md-4 col-sm-6">
+                        <label class="radio-inline label-width">
+                            <input type="radio" name="is_user_define" value="0" <?php if($info['is_user_define']=='0') echo 'checked'; ?>>默认
+                        </label>
+                        <label class="radio-inline label-width">
+                            <input type="radio" name="is_user_define" value="1" <?php if($info['is_user_define']=='1') echo 'checked'; ?>> 自定义
+                        </label>
+                    </div>
+                    <p class="help-block">是否自定义渠道包</p>
+                </div>
+
+                <div class="user_define_block" <?php if($info['is_user_define']=='0') echo 'style="display: none"'; ?>>
+
+                    <div class="form-group">
+                        <label for="dow_url_address" class="col-sm-2 control-label">APP名称：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <input type="text" class="form-control" id="app_new_name" name="app_new_name" value="{$info['app_new_name']}" placeholder="">
+                             <p class="help-block">显示的APP名称</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dow_url_address" class="col-sm-2 control-label">APP图标：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <input id="app_new_icon" type="hidden" name="app_new_icon" value="{$info.app_new_icon}" >
+                            <img id="app_new_icon-preview" class="upload-img"  <if condition="$info['app_new_icon']">src="{:cmf_get_image_preview_url($info['app_new_icon'])}"</if>>
+                            <a href="javascript:uploadOneImage('图片上传','#app_new_icon');">上传</a>
+                            <a href="javascript:(function(){$('#app_new_icon-preview').attr('src','');$('#app_new_icon').val('')})();">移除</a>
+                            <p class="help-block"> 200px * 200px (图片格式为png，不可将其他格式图片修改后缀上传)</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dow_url_address" class="col-sm-2 control-label">启动图(上)：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <input id="start_img1" type="hidden" name="start_img1" value="{$info.start_img1}" >
+                            <img id="start_img1-preview" class="upload-img"  <if condition="$info['start_img1']">src="{:cmf_get_image_preview_url($info['start_img1'])}"</if>>
+                            <a href="javascript:uploadOneImage('图片上传','#start_img1');">上传</a>
+                            <a href="javascript:(function(){$('#start_img1-preview').attr('src','');$('#start_img1').val('')})();">移除</a>
+                            <p class="help-block"> 890px * 825px (图片格式为png，不可将其他格式图片修改后缀上传)</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dow_url_address" class="col-sm-2 control-label">启动图(下)：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <input id="start_img2" type="hidden" name="start_img2" value="{$info.start_img2}" >
+                            <img id="start_img2-preview" class="upload-img"  <if condition="$info['start_img2']">src="{:cmf_get_image_preview_url($info['start_img2'])}"</if>>
+                            <a href="javascript:uploadOneImage('图片上传','#start_img2');">上传</a>
+                            <a href="javascript:(function(){$('#start_img2-preview').attr('src','');$('#start_img2').val('')})();">移除</a>
+                            <p class="help-block"> 660px * 200px (图片格式为png，不可将其他格式图片修改后缀上传)</p>
+                        </div>
+                    </div>
+
+                </div>
+                    <div class="form-group">
+                        <input type="hidden" name="id" value="{$info['id']}">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            <button type="submit" class="btn btn-primary js-ajax-submit save-btn">保存</button>
+                            <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript">
+
+    $(function () {
+
+        $("input[name='is_user_define']").click(function () {
+
+            var is_user_define = $(this).val();
+            if (is_user_define == '1') {
+                $(".user_define_block").show();
+            } else {
+                $(".user_define_block").hide();
+            }
+        });
+
+    })
+
+</script>
+</body>
+</html>

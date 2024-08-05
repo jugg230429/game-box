@@ -1,0 +1,461 @@
+@charset "utf-8";
+/**
+ * 登录注册样式
+ * @author cw
+ */
+body{
+    position: relative;
+}
+footer{
+    display: none!important;
+}
+.loginPage {
+    position: relative;
+}
+
+.close-login-btn {
+    position: absolute;
+    top: .4rem;
+    right: .346666rem;
+    width: .373333rem;
+    height: .373333rem;
+    background: url("../images/login/login_ico_guanbi.png") center center no-repeat;
+    background-size: 100% 100%;
+    z-index: 10;
+}
+
+
+
+.loginForm {
+    padding: 2.66667rem 0.826667rem 0 ;
+    box-sizing: border-box;
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+.registerForm {
+    padding: 1.58rem 1.39rem 0 1.4rem;
+}
+
+.formContent {
+    position: relative;
+}
+
+.formItem {
+    border-bottom: .02rem solid #ddd;
+    position: relative;
+    height: 0.98666rem;
+    margin-top: 0.4rem;
+}
+
+.formMark {
+    position: absolute;
+    top: 0.28rem;
+    left: 0.08rem;
+    /*height: 100%;*/
+}
+.formMark .formIcon {
+    width: .45333rem;
+    height: .50666rem;
+    -webkit-background-size: 100% 100%;
+    background-size: 100% 100%;
+    display: block;
+}
+
+.formMark .formIconPassword {
+    background-image: url("../images/login/login_ico_passwordt_n.png");
+}
+.formMark .formIconReal {
+    background-image: url("../images/login/registration_ico_name_n.png");
+}
+.formMark .formIconCard {
+    background-image: url("../images/login/registration_ico_iponet_n.png");
+}
+
+ .formMark .formIconUser {
+    background-image: url("../images/login/login_ioc_zhanghao.png");
+}
+.formMark .formIconContacts {
+    background-image: url("../images/login/icon_lianxiren.png");
+}
+
+ .formMark .formIconTel {
+    background-image: url("../images/login/register_icon_lianxiren.png");
+}
+ .formMark .formIconPassword {
+    background-image: url("../images/login/login_iocn_mima.png");
+}
+.focus .formMark .formIconReal {
+    background-image: url("../images/login/registration_ico_name_s.png");
+}
+.focus .formMark .formIconCard {
+    background-image: url("../images/login/registration_ico_iponet_s.png");
+}
+
+
+.formText {
+    padding: 0 .5rem 0 .76rem;
+    position: relative;
+    height: 100%;
+}
+.formAgreeText {
+    padding-left: .45rem;
+}
+.formInput {
+    height: 100%;
+}
+
+.formInput input:-ms-input-placeholder {
+    color: #C0C0C4;
+    font-size: .4rem;
+}
+
+.formInput input::-webkit-input-placeholder {
+    color: #C0C0C4;
+    font-size: .4rem;
+}
+
+.formInput input::-moz-placeholder {
+    color: #C0C0C4;
+    font-size: .4rem;
+}
+
+.formInput input:-moz-placeholder {
+    color: #C0C0C4;
+    font-size: .4rem;
+}
+
+.formInput input {
+    border: none;
+    width: 100%;
+    height: 100%;
+    font-size: .4rem;
+    padding: .05rem 0;
+    color: #333;
+    background: transparent;
+    box-sizing: border-box;
+}
+
+.formClear {
+    position: absolute;
+    right: -.04rem;
+    top: 0;
+    height: 100%;
+}
+.formClearBtn {
+    width: .5rem;
+    height: .5rem;
+    background: url("../images/login/login_btn_delate.png") center center no-repeat;
+    -webkit-background-size: 100% 100%;
+    background-size: 100% 100%;
+    display: none;
+}
+
+.clearAble .formClearBtn {
+    display:block;
+}
+
+
+.formBtnContent {
+    padding: 1.06667rem 0 .3rem;
+}
+.registerForm .formBtnContent {
+    padding-top: .1rem;
+}
+.formSubmit {
+    font-size: .376rem;
+    color: #fff;
+    background:#374760;
+    width: 100%;
+    height: 0.906rem;
+    border: none;
+    border-radius: 0.08rem!important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.formSubmit.disabled {
+    background:#D2D2D2;
+    color: #999;
+}
+
+.formAdd ,.regformAdd{
+    font-size: .32rem;
+    color: #999;
+    text-align: center;
+	margin-top: 5rem;
+}
+.regformAdd{
+	margin-top:3rem;
+}
+.goRegister {
+    color: #374760;
+}
+
+.formError {
+    font-size: .3rem;
+    color: #f00;
+    position: absolute;
+    bottom: -.6rem;
+    left: 0;
+}
+.btnBack{
+	display:block;
+	text-align: center;
+	color:#374760;
+	font-size: .376rem;
+	margin-top: 0.5rem;
+}
+.registerForm .formError {
+    bottom: -.5rem;
+}
+.formContinue{
+	color:#C0C0C4;
+	font-size: .376rem;
+    position: relative;
+    margin-top: 0.4rem;
+}
+.linkagreement {
+    color: #374760;
+}
+
+.formCheck {
+    position: relative;
+    font-size: .32rem;
+    color: #999;
+    height: 1.42rem;
+}
+.formCheckbox {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+}
+.formCheckbox input {
+    position: absolute;
+    opacity: 0;
+    z-index: 5;
+}
+.formIconAgree {
+    width: .36rem;
+    height: .36rem;
+    background:url("../images/login/registration_btn_choose_n.png") center center no-repeat;
+    -webkit-background-size: 90% 90%;
+    background-size: 90% 90%;
+}
+.formCheckbox input:checked~.formIconAgree {
+    background-image: url("../images/login/registration_btn_choose_s.png");
+}
+.formCheck .formText {
+    justify-content:flex-start;
+}
+.toAgreement {
+    color: #374760;
+}
+.header {
+    height: 1.46rem;
+    font-size: .44rem;
+    color: #222;
+    border-bottom: .02rem solid #edeeef;
+    position: relative;
+}
+.headerBack {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1.07rem;
+    height: 100%;
+}
+
+.agreementTitle {
+    height: 100%;
+}
+
+.article {
+    padding: .2rem .5rem .5rem;
+    font-size: .32rem;
+}
+
+.registerForm .formList {
+    position: relative;
+}
+.history-account-box{
+
+
+}
+.history-account-box .drop-down-icon{
+    position: absolute;
+    bottom: 0.32rem;
+    right: 0.1333rem;
+    width: 0.48rem;
+    height: 0.32rem;
+    background: url(../images/login/login_ico_xialai.png)no-repeat;
+    background-size: 100% 100%;
+}
+.history-account-box .drop-down-icon.rotate{
+    transform: rotate(180deg);
+}
+.history-account-box .history-account-list{
+    display: none;
+    position: absolute;
+    top: 0.98666rem;
+    left: 0;
+    width: 100%;
+    max-height: 5.68rem;
+    background: #ffffff;
+    z-index: 9;
+    background:rgba(255,255,255,1);
+    border-top:1px solid rgba(207,207,207,0.5);
+    border-left:1px solid rgba(207,207,207,0.5);
+    box-shadow:3px 5px 7px 0px rgba(143,143,143,0.18);
+    padding: 0 0.746rem;
+    box-sizing: border-box;
+}
+.history-account-list .history-account-item{
+    width:100%;
+    height: 1.116rem;
+    display: flex;
+    align-items: center;
+    font-size: 0.4rem;
+    color: #222222;
+}
+.sdis{
+	position:relative;
+	margin-right: 0.376rem;
+	font-size:.376rem;
+}
+.sdis-radio{
+	cursor: pointer;
+	width: 0.376rem;
+	height: 0.376rem;
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin: 0;
+	margin-top: 0px;
+	margin-top: 2px;
+	opacity:1;
+}
+ .sdis i {
+    width: 0.376rem;
+    height: 0.376rem;
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: -2px;
+    margin-right: 5px;
+    background: url(../images/login/icon_nochoose.png);
+	background-size:100% 100%;
+
+}
+ .sdis i.current {
+
+     background: url(../images/login/icon_choose.png);
+	 background-size:100% 100%;
+}
+ .sdis  input[type="radio"]+i {
+    width: 0.376rem;
+    height: 0.376rem;
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: -2px;
+    margin-right: 5px;
+    background: url(../images/login/icon_nochoose.png);
+	background-size:100% 100%;
+
+}
+
+ .sdis  input[type="radio"]:checked+i {
+
+     background: url(../images/login/icon_choose.png);
+	 background-size:100% 100%;
+}
+.form-group{
+	border-bottom: .02rem solid #ddd;
+    position: relative;
+    height: 0.98666rem;
+    margin-top: 0.4rem;
+}
+.choosetype{
+	float:left;
+	font-size:.376rem;
+    margin-right: 0.376rem;
+	position: relative;
+    padding-left: 0.65rem;
+}
+.form-group .choosetype input{
+	border: none;
+    width: 0.376rem;
+    height: 0.376rem;
+    font-size: .4rem;
+    padding: .05rem 0;
+    color: #333;
+    background: transparent;
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+    top: -0.02rem;
+}
+#nextregForm .form-group:first-child{
+	border-bottom:none;
+}
+.input-group{
+	height:100%;
+}
+.form-group input {
+    border: none;
+    width: 100%;
+    height: 100%;
+    font-size: .4rem;
+    padding: .05rem 0;
+    color: #333;
+    background: transparent;
+    box-sizing: border-box;
+	padding: 0 .5rem 0 .76rem;
+}
+
+.btn-primary{
+	font-size: .376rem;
+    color: #fff;
+    background: #374760;
+    width: 100%;
+    height: 0.906rem;
+    border: none;
+    border-radius: 0.08rem!important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+	margin:1.06667rem 0 .3rem;
+}
+.input-status{
+	    color: #DB3421
+}
+.input-group-addon{
+    position: absolute;
+    top: 0.28rem;
+    left: 0.08rem;
+    height: 100%;
+}
+.input-group-addon .input-icon{
+    width: .45333rem;
+    height: .50666rem;
+    -webkit-background-size: 100% 100%;
+    background-size: 100% 100%;
+    display: block;
+}
+.input-icon-user{
+	 background-image: url("../images/login/login_ioc_zhanghao.png");
+
+}
+.input-icon-lock{
+	 background-image: url("../images/login/login_iocn_mima.png");
+
+}
+.input-icon-contacts{
+	 background-image: url("../images/login/icon_lianxiren.png");
+}
+.input-icon-telephone{
+	 background-image: url("../images/login/register_icon_lianxiren.png");
+}

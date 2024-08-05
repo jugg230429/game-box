@@ -1,0 +1,113 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('member/user/userinfo')}">用户列表</a></li>
+        <li class="active"><a href="javascript:;">批量创建账号</a></li>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('batchCreate')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+
+                        <div class="form-group">
+                            <label for="create_number" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>账号数量：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="number" class="form-control" name="create_number" id="create_number"
+                                       value="100" placeholder="">
+                            </div>
+                            <p class="help-block">输入整数</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>账号密码：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="password" id="password" value="123456"
+                                       placeholder="">
+                            </div>
+                            <p class="help-block">6~15位字母或数字组合</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="promote_id" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>所属渠道：
+                            </label>
+                            <div class="col-md-3 col-sm-5">
+                                <select name="promote_id" id="promote_id" class="form-control selectpicker"
+                                        data-live-search="true">
+                                    <option value="0"<if condition="input('request.promote_id') eq '0'">selected</if>>官方渠道</option>
+                                    <volist name=":get_promote_list()" id="vo">
+                                        <option value="{$vo.id}" <if condition="input('request.promote_id') eq $vo['id']">selected</if> >{$vo.account}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="game_id" class="col-sm-2 control-label">游戏名称：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <select name="game_id" id="game_id" class="form-control selectpicker"
+                                        data-live-search="true">
+                                    <option value="">选择注册游戏</option>
+                                    <volist name=":get_game_list('id,game_name',[])" id="vo">
+                                        <option value="{$vo.id}">{$vo.game_name}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9"
+                                        data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                                <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript">
+
+    $(function () {
+
+        $("#promote_id").change(function () {
+            var promote_id = $(this).val();
+            var url = "{:url('member/user/promoteGame')}";
+            var html = "";
+            $.post(url, {promote_id: promote_id}, function (res) {
+                var game_lists = res.data.data;
+                if (game_lists.length == 0) {
+                    $("#game_id").html('<option value="">暂无游戏</option>').selectpicker('refresh');
+                    return false;
+                }
+
+                $.each(game_lists, function (index, ele) {
+                    html += '<option value="' + ele.id + '">' + ele.game_name + '</option>';
+                });
+
+                $("#game_id").html(html).selectpicker('refresh');
+                return false;
+            });
+            return false;
+        })
+
+    })
+
+</script>
+</body>
+</html>

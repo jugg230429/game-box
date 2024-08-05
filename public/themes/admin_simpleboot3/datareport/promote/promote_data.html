@@ -1,0 +1,314 @@
+<include file="public@header" />
+<script type="text/javascript" src="__STATIC__/js/datejs/momentfunction.js"></script>
+<link href="__TMPL__/public/assets/simpleboot3/css/question.css" rel="stylesheet">
+<link rel="stylesheet" href="/themes/admin_simpleboot3/public/assets/js/laydate.css" id="layuicss-laydate">
+<link rel="stylesheet" href="__JS__/layui/css/layui.css">
+</head>
+<style>
+    #search_form #rangepickdate {
+	    width: 220px!important;
+    }   
+    #test {
+        position: relative;
+        top: 2px;
+    }
+</style>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('promote/promote_data')}">渠道数据</a></li>
+            <span class="title_remark"></span>
+        </ul>
+        <form id="search_form" class="well form-inline  fr" method="get" action="{:url('promote/promote_data')}" onsubmit="return check();">
+            <span class="form-cell-wrap">
+                <input type="text" name="datetime" class="laydate-input-ico01" id="test" placeholder="开始时间-结束时间" value="{:input('datetime')}" autocomplete="off">
+            <!-- <input type="text" class="form-control calendar form-control-date" name="rangepickdate" id="rangepickdate" style="width: 220px;" value="" readonly placeholder="请选择日期"> -->
+            </span>
+            <if condition="AUTH_PROMOTE eq 1">
+                <span class="form-cell-wrap">
+                <php>$map = ['parent_id'=>0];</php>
+                <select name="promote_id" id="promote_id" class="selectpicker " game_id="{:input('request.promote_id')}" data-live-search="true" data-size="8" style="width: 100px;">
+                    <option value="">全部渠道</option>
+                    <volist name=":get_promote_list($map)" id="vo">
+                        <option promote-id="{$vo.id}" value="{$vo.id}" <if condition="input('request.promote_id') eq $vo['id']">selected</if>>{$vo.account}</option>
+                    </volist>
+                </select>
+                </span>
+            </if>
+            <input type="hidden" name="row" value="{:input('request.row',10)}">
+            <input type="hidden" name="sort" id="sort" value="{:input('request.sort',3)}">
+            <input type="hidden" name="sort_type" id="sort_type" value="{:input('request.sort_type')}">
+            <span class="form-cell-wrap">
+                <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" /></span>
+            <span class="form-cell-wrap">
+                <a class="btn btn-clear" href="{:url('promote/promote_data')}">清空</a></span>
+            <span class="form-cell-wrap">
+            <a class="btn btn-export js-ajax-dialog-btn-xz" data-msg="确定导出吗？" href="{:url('Export/expUser',array_merge(['id'=>3,'xlsname'=>'渠道数据'],input(),$total_data))}">导出</a>
+            </span>
+        </form>
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>渠道ID</th>
+                    <th>渠道</th>
+                    <th>
+                        <a href="javascript:changesort('count_new_register_user');">新增用户
+                            <if condition="input('request.sort_type') eq 'count_new_register_user' and input('request.sort') eq 3">
+                                ▼
+                                <elseif condition="input('request.sort_type') eq 'count_new_register_user' and input('request.sort') eq 2"/>
+                                ▲
+                                <else/>
+                                <img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+                            </if>
+                        </a>
+                        <div class="question_">
+                            <i class="question_mark">?</i>
+                            <div class="question_content">
+                                <ul class="question_content_box">
+                                    <li class="question_list">
+                                        <span class="title">新增用户</span>
+                                        <span class="">新注册的渠道用户数</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </th>
+
+                    <th>
+                        <a href="javascript:changesort('count_active_user');">活跃用户
+                            <if condition="input('request.sort_type') eq 'count_active_user' and input('request.sort') eq 3">
+                                ▼
+                                <elseif condition="input('request.sort_type') eq 'count_active_user' and input('request.sort') eq 2"/>
+                                ▲
+                                <else/>
+                                <img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+                            </if>
+                        </a>
+                        <div class="question_">
+                            <i class="question_mark">?</i>
+                            <div class="question_content">
+                                <ul class="question_content_box">
+                                    <li class="question_list">
+                                        <span class="title">活跃用户</span>
+                                        <span class="">登录游戏的渠道用户数（含新老用户，累计时去重）</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </th>
+                    <th>
+                        <a href="javascript:changesort('count_pay_user');">付费用户
+                            <if condition="input('request.sort_type') eq 'count_pay_user' and input('request.sort') eq 3">
+                                ▼
+                                <elseif condition="input('request.sort_type') eq 'count_pay_user' and input('request.sort') eq 2"/>
+                                ▲
+                                <else/>
+                                <img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+                            </if>
+                        </a>
+                        <div class="question_">
+                            <i class="question_mark">?</i>
+                            <div class="question_content">
+                                <ul class="question_content_box">
+                                    <li class="question_list">
+                                        <span class="title">付费用户</span>
+                                        <span class="">游戏内充值的渠道用户数（统计充值成功，累计时去重）</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </th>
+
+                    <th>
+                        <a href="javascript:changesort('count_new_pay_user');">新增付费用户
+                            <if condition="input('request.sort_type') eq 'count_new_pay_user' and input('request.sort') eq 3">
+                                ▼
+                                <elseif condition="input('request.sort_type') eq 'count_new_pay_user' and input('request.sort') eq 2"/>
+                                ▲
+                                <else/>
+                                <img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+                            </if>
+                        </a>
+                        <div class="question_">
+                            <i class="question_mark">?</i>
+                            <div class="question_content">
+                                <ul class="question_content_box">
+                                    <li class="question_list">
+                                        <span class="title">新增付费用户</span>
+                                        <span class="">注册当日进行游戏内充值的渠道用户数（统计充值成功，累计时去重）</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </th>
+
+                    <th>
+                        <a href="javascript:changesort('total_pay');">总付费额
+                            <if condition="input('request.sort_type') eq 'total_pay' and input('request.sort') eq 3">
+                                ▼
+                                <elseif condition="input('request.sort_type') eq 'total_pay' and input('request.sort') eq 2"/>
+                                ▲
+                                <else/>
+                                <img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+                            </if>
+                        </a>
+                        <div class="question_">
+                            <i class="question_mark">?</i>
+                            <div class="question_content">
+                                <ul class="question_content_box">
+                                    <li class="question_list">
+                                        <span class="title">总付费额</span>
+                                        <span class=""> 渠道用户累计充值总额</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </th>
+
+                    <th>
+                        <a href="javascript:changesort('rate');">付费率
+                            <if condition="input('request.sort_type') eq 'rate' and input('request.sort') eq 3">
+                                ▼
+                                <elseif condition="input('request.sort_type') eq 'rate' and input('request.sort') eq 2"/>
+                                ▲
+                                <else/>
+                                <img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+                            </if>
+                        </a>
+                        <div class="question_">
+                            <i class="question_mark">?</i>
+                            <div class="question_content">
+                                <ul class="question_content_box">
+                                    <li class="question_list">
+                                        <span class="title">付费率</span>
+                                        <span class="">付费用户/新增用户</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <empty name="data_lists">
+                    <tr><td colspan="8" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <tr class="">
+                        <td>汇总</td>
+                        <td class="data_summary_bold">{:input('request.promote_id')==0?'--':get_promote_name(input('request.promote_id'))}</td>
+                        <td class="data_summary_bold">{$total_data['new_register_user']}</td>
+                        <td class="data_summary_bold">{$total_data['active_user']}</td>
+                        <td class="data_summary_bold">{$total_data['pay_user']}</td>
+                        <td class="data_summary_bold">{$total_data['new_pay_user']}</td>
+                        <td class="data_summary_bold">{$total_data['total_pay']}</td>
+                        <td class="data_summary_bold">{:$total_data['new_register_user']==0?'0.00':null_to_0($total_data['pay_user']/$total_data['new_register_user']*100)}%</td>
+                    </tr>
+                    <foreach name="data_lists" item="vo">
+                        <tr>
+                            <td style="width: 200px;">{$vo['promote_id']}</td>
+                            <td style="width: 200px;">{$vo['promote_account']}</td>
+                            <td>
+                                <div class="js_list-data list-data">{$vo['count_new_register_user']}</div>
+                            </td>
+
+                            <td>
+                                <div class="js_list-data list-data">{$vo['count_active_user']}</div>
+                            </td>
+                            <td>
+                                <div class="js_list-data list-data">{$vo['count_pay_user']}</div>
+                            </td>
+
+                            <td>
+                                <div class="js_list-data list-data">{$vo['count_new_pay_user']}</div>
+                            </td>
+
+                            <td>
+                                <div class="js_list-data needAjax list-data" url="{:url('Ajax/get_pay_detail',['promote_id'=>$vo['promote_id'],'game_id'=>input('request.game_id'),'daterange'=>$start.'至'.$end,'user_ids'=>$vo['pay_user']])}">{$vo['total_pay']}</div>
+                            </td>
+
+                            <td>{$vo['rate']}</td>
+                        </tr>
+                    </foreach>
+                </empty>
+            </tbody>
+        </table>
+        <div class="pagination">
+            {$page}
+        </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script src="/themes/admin_simpleboot3/public/assets/js/laydate.js"></script>
+    <script type="text/javascript">
+        //时间插件 默认时间
+        var start = '{$start}',end  = '{$end}';
+        function check(){
+            layer.load(1);
+            var jsdate = $("#rangepickdate").val();
+            datearr=jsdate.split('至');
+            var start_time = datearr[0];
+            var end_time = datearr[1];
+            if(start_time != '' && end_time != '' && start_time > end_time){
+                layer.msg('开始时间不能大于结束时间');
+                return false;
+            }
+            return true;
+        }
+        //排序
+        function changesort(type){
+            var sort_type = $("#sort_type").val();
+            if(sort_type != type){
+                var sort = 1;
+            }else{
+                var sort = $("#sort").val();
+            }
+            $("#sort_type").val(type);
+            if(sort == 1){
+                $("#sort").val(3);
+            }else if(sort == 3){
+                $("#sort").val(2);
+            }else{
+                $("#sort").val(1);
+            }
+            $("#search_btn").click();
+        }
+        //经过表头字段热区时出现？
+        $(".question_").click(function () {
+            $(this).find(".question_content").toggleClass("open")
+        });
+        $("tr th").mouseover(function () {
+            $(this).find(".question_").addClass("on");
+        });
+        $("tr th").mouseout(function () {
+            $(this).find(".question_").removeClass("on");
+            $(this).find(".question_content").removeClass("open")
+        });
+
+
+        var startDate1=new Date(new Date().setDate(1));
+        var endDate1=new Date(new Date(new Date().setMonth(new Date().getMonth()+1)).setDate(0));
+        //定义接收上个月的第一天和最后一天
+        var startDate2=new Date(new Date(new Date().setMonth(new Date().getMonth()-1)).setDate(1));
+        var endDate2=new Date(new Date().setDate(0));
+        laydate.render({
+            elem: '#test',
+            type: 'date',
+            range: '~',
+            format: 'yyyy-M-d',
+            //max:'2018-1-15',//可选最大日期（当然如果加个这上，那扩展的那几个快捷选择时间按扭的值就得判断处理一下了）
+            //min:'2018-1-15',//可选最小日期（当然如果加个这上，那扩展的那几个快捷选择时间按扭的值就得判断处理一下了）
+            extrabtns: [
+                {id: 'today', text: '今天', range: [new Date(), new Date()]},
+                {id: 'lastday-7', text: '过去7天', range: [new Date(new Date().setDate(new Date().getDate()-7)), new Date(new Date().setDate(new Date().getDate()-1))]},
+                {id: 'lastday-30', text: '过去30天', range: [new Date(new Date().setDate(new Date().getDate()-30)), new Date(new Date().setDate(new Date().getDate()-1))]},
+                {id: 'yesterday', text: '昨天', range: [new Date(new Date().setDate(new Date().getDate()-1)), new Date(new Date().setDate(new Date().getDate()-1))]},
+                {id: 'thismonth', text: '本月', range: [startDate1,endDate1]},
+                {id: 'lastmonth', text: '上个月', range: [startDate2,endDate2]}
+            ],
+            done: function(val, stdate, ovdate){
+                //当确认选择时间后调用这里
+            }
+        });
+    </script>
+</body>
+</html>

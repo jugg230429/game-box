@@ -1,0 +1,148 @@
+html,body{width: 100%;height: 100%}
+a{text-decoration: none}
+.contain{
+	width: 100%;
+	height: 100%;
+	min-height: 880px;
+	background: url(../images/download/download_bg.png)no-repeat;
+	background-size: 100% 100%;
+}
+.down-content-box{
+	width: 1277px;
+	margin: 0 auto;
+	height: 100%;
+	padding-top: 125px;
+	box-sizing: border-box;
+}
+.mobile-img-box{
+	width: 354px;
+	height: 712px;
+	position: relative;
+	float: left;
+}
+.mobile-img-box .mobile-img{
+
+	display: block;
+	width: 100%;
+	height: 100%;
+	background: url(../images/download/download_img_ipone1.png)no-repeat;
+	background-size: 100% 100%;
+}
+.mobile-img-box .mobile-icon{
+	position: absolute;
+	top: -50px;
+	right: -130px;
+	width: 215px;
+	height: 157px;
+	background: url(../images/download/download_img_list.png)no-repeat;
+	background-size: 100% 100%;
+}
+
+.right-content{
+	margin-left: 165px;
+	float: left;
+	width: 757px;
+	padding-top: 23px;
+}
+.game-box-img{
+	width: 100%;
+	height: 170px;
+	line-height: 170px;
+	font-size: 90px;
+	font-weight: bold;
+	text-align: center;
+	background: linear-gradient(to bottom, #65b1eb, white);
+	-webkit-background-clip: text;
+	color: transparent;
+}
+.function-list{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.function-list>div{
+	padding:20px 0;
+	margin-left: 95px;
+	text-align: center;
+}
+.function-list>div:first-child{
+	margin-left: 0;
+}
+.function-list>div i{
+	width: 63px;
+	height: 63px;
+	margin: 0 auto;
+	display: block;
+}
+.function-list>div i.hot-game-icon{
+	background: url(../images/download/download_ico_game.png)no-repeat;
+	background-size: 100% 100%;
+}
+.function-list>div i.gift-icon{
+	background: url(../images/download/download_ico_gift.png)no-repeat;
+	background-size: 100% 100%;
+}
+.function-list>div i.money-icon{
+	background: url(../images/download/download_ico_money.png)no-repeat;
+	background-size: 100% 100%;
+}
+.function-list>div p{
+	font-size: 20px;
+	color: #0BC5FF;
+	margin-top: 13px;
+}
+.sweep-code-box{
+	margin-top: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.sweep-code-box .download-code{
+	width: 219px;
+	height: 205px;
+	background: url(../images/download/download_code_bg.png)no-repeat;
+	background-size: 100% 100%;
+	margin-right: 40px;
+	padding: 20px 27px;
+	box-sizing: border-box;
+}
+.sweep-code-box .download-code img{
+	width: 100%;
+	height: 100%;
+}
+.android-ios-download{
+	display: flex;
+	align-items: center;
+}
+.android-btn{
+	display: block;
+	width: 233px;
+	height: 69px;
+	border: 2px solid #0BC5FF;
+	box-sizing: border-box;
+	border-radius: 5px;
+	line-height: 69px;
+	text-align: center;
+	font-size: 24px;
+	color: #0BC5FF;
+}
+.ios-btn{
+	display: block;
+	margin-top: 30px;
+	width: 233px;
+	height: 69px;
+	border: 2px solid #0BC5FF;
+	box-sizing: border-box;
+	border-radius: 5px;
+	line-height: 69px;
+	text-align: center;
+	font-size: 24px;
+	color: #0BC5FF;
+}
+.android-btn.disabled,.ios-btn.disabled{
+	display: none;
+}
+.android-btn:hover,.ios-btn:hover{
+	background:#0BC5FF ;
+	color: #ffffff;
+}

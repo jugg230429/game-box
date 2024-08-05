@@ -1,0 +1,118 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li><a href="{:url('Point/task')}">积分任务</a></li>
+            <li class="active"><a href="{:url('Point/shop')}">积分商品</a></li>
+            <li><a href="{:url('Point/shop_record')}">兑换记录</a></li>
+            <li><a href="{:url('Award/lists')}">抽奖奖品</a></li>
+            <li><a href="{:url('Award/record')}">中奖记录</a></li>
+            <li><a href="{:url('Award/award_set')}">抽奖设置</a></li>
+            <span class="title_remark">说明：任务逻辑不可修改。</span>
+        </ul>
+        <div class="table-actions position fl" style="margin-left: -10px;">
+            <a class="btn btn-success  mtb17" href="{:url('Point/add_shop')}">添加商品</a>
+        </div>
+        <form id="search_form" class="well form-inline  fr" method="get" action="{:url('Point/shop')}">
+            <input type="text" class="form-control notempty" name="good_name" style="width: 120px;" value="{:input('request.good_name/s','')}" placeholder="商品名称">
+            <select name="type" id="type"  class="selectpicker" style="width: 120px;">
+                <option value="">属性</option>
+                <option value="1" <if condition="input('request.type') eq 1">selected</if>>实物</option>
+                <option value="2" <if condition="input('request.type') eq 2">selected</if>>虚拟</option>
+            </select>
+            <select name="status" id="status"  class="selectpicker" style="width: 120px;">
+                <option value="">状态</option>
+                <option value="1" <if condition="input('request.status') eq 1">selected</if>>开启</option>
+                <option value="0" <if condition="input('request.status') heq '0'">selected</if>>已关闭</option>
+            </select>
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('Point/shop')}">清空</a>
+        </form>
+        <form class="js-ajax-form" action="" method="post">
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>商品名称</th>
+                        <th>所需积分</th>
+                        <th>VIP折扣</th>
+                        <th>可兑换数量</th>
+                        <th>库存</th>
+                        <th>已兑换</th>
+                        <th>状态</th>
+                        <th>属性</th>
+                        <th>优先级</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <empty name="data_lists">
+                        <tr><td colspan="11" style="text-align: center;">暂无数据</td></tr>
+                    <else/>
+                        <foreach name="data_lists" item="vo">
+                            <tr>
+                            <td>{$vo.good_name}</td>
+                            <td>{$vo['price']}</td>
+                            <td>{$vo['vip']}</td>
+                            <td>{$vo['limit']}</td>
+                            <td>{$vo.number}</td>
+                            <td>{$vo['exchange']}</td>
+                            <td>
+                                <a href="{:url('changeShopStatus',['id'=>$vo['id'],'status'=>$vo['status']])}" class="js-ajax-dialog-btn">
+                                    <span <if condition="$vo['status'] eq 1"> class="label label-success"<else/>class="label label-danger"</if>>
+                                        {:get_info_status($vo['status'],4)}
+                                    </span>
+                                </a>
+                            </td>
+                            <td><eq name="vo.type" value="1">实物<else/>虚拟</eq></td>
+                            <td><a href="javascript:;" class="sort" data-id="{$vo.id}">{$vo.sort}</a></td>
+                            <td>
+                                <a href="{:url('edit_shop',['id'=>$vo['id']])}">编辑</a>
+                                <a href="{:url('del',['id'=>$vo['id']])}" class="js-ajax-delete" data-msg="确定要删除吗？">删除</a>
+                            </td>
+                        </tr>
+                        </foreach>
+                    </empty>
+                </tbody>
+            </table>
+        </form>
+        <div class="pagination">
+            {$page}
+
+        </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+<script>
+    $(function () {
+        $(".sort").click(function () {
+            var id = $(this).data('id');
+            var sort = $(this).text();
+            layer.prompt(
+                {
+                    formType: 3,
+                    title: "请输入优先级",
+                    value: sort
+                }
+                , function (val) {
+                    $.ajax({
+                        url: '{:url("setsort")}',
+                        type: 'post',
+                        dataType: 'json',
+                        data: {'sort': val,id:id},
+                        success: function (data) {
+                            layer.msg(data.msg);
+                            setTimeout(function () {
+                                window.location.reload();
+                            },1000)
+                        },
+                        error: function () {
+                            layer.msg("错误");
+                        }
+                    });
+                });
+        });
+    })
+</script>
+</body>
+</html>

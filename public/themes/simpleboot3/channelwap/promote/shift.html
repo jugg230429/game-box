@@ -1,0 +1,130 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/select2.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/new_select2.css" type="text/css" />
+    <link href="__TMPL__/channelwappublic/assets/css/recharge.css" type="text/css" rel="stylesheet" />
+	<link href="__TMPL__/channelwappublic/assets/css/agency.css" type="text/css" rel="stylesheet" />
+    <style>
+        .select2-container--open .select2-dropdown--below {
+            width:66%!important;
+            left: 28.5%!important;
+        }
+        .select2-container {
+            border-top: none!important;
+        }
+    </style>
+</block>
+<block name="body">
+    <div class="page-container">
+        <header>
+            <a href="{:url('promote/index')}" class="back-btn"></a>
+            <div style="width: 100%;height: 100%" class="v-middle h-middle">
+                <p class="header-title " data-url="{:url('Promote/balance')}">平台币充值</p>
+                <p class="header-title active" data-url="{:url('Promote/shift')}" style="margin-left: 1.5rem">给下级转移</p>
+
+            </div>
+			<a href="{:url('promote/record')}" class="record-icon"></a>
+        </header>
+        <div class="page-content">
+            <form class="js-ajax-form" action="{:url('shift')}" id="ajaxForm2" method="post">
+                <div class="form ">
+                    <div class="form-item">
+                        <div class="form-item-title">充值账号：</div>
+                        <div class="form-item-text">
+                            <select id="promotezi" name="promotezi"  class="select_gallery" data-placeholder="子渠道账号">
+                                <option data-balance="" value="">子渠道账号</option>
+                                <php>
+                                    $map = [];
+                                    $map['first_support_num'] = ['neq',0];
+                                </php>
+                                 <volist name=":get_song_promote_lists(PID)" id="p">
+                                    <option data-balance="{$p.balance_coin}" <if condition="$p['id'] eq input('promote_id')"> selected</if> value="{$p.id}">{$p.account}</option>
+                                </volist>
+                                <!-- <volist name=":get_song_promote_lists('PID,account',$map)" id="p">
+                                    <option data-balance="{$p.balance_coin}" <if condition="$p['id'] eq input('promote_id')"> selected</if> value="{$p['id']}">{$p['account']}</option>
+                                </volist> -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-item-title">子渠道余额：</div>
+                        <div class="form-item-text">
+                            <input type="text" id="balance_coin" placeholder="" readonly value="0" class="form-item-input">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-item-title">转移数量：</div>
+                        <div class="form-item-text">
+                            <input type="text" name="amount" id="amount" onkeyup="this.value=this.value.replace(/\D/, '');" placeholder="请输入转移数量" class="form-item-input">
+                        </div>
+                    </div>
+
+                    <div class="form-item">
+					    <div class="form-item-title"></div>
+                        <button class="submit-btn js_withdrawal js-ajax-submit">确认</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/select2.min.js"></script>
+    <script>
+        $(function () {
+            $('.header-title').click(function () {
+                location.href=$(this).data("url");
+            });
+            $(".select_gallery").select2({
+                // minimumResultsForSearch: -1,
+            });
+
+            $("#promotezi").change(function () {
+                var balance = $("#promotezi option:selected").data('balance');
+                $("#balance_coin").val(balance);
+            })
+
+            $(".js-ajax-submit").click(function () {
+
+                var pp =  $("#promotezi").val();
+                var amount = $("#amount").val();
+
+                layer.prompt({title: '请输入二级密码', formType: 1,placeholder:'请输入二级密码'}, function(text, index){
+                    layer.close(index);
+                    $.ajax({
+                        type: 'POST',
+                        url: "{:url('shift')}",
+                        data:{"promotezi":pp,'amount':amount,'second_pwd':text},
+                        async:false,
+                        success:function(data){
+                            if (data.code > 0){
+                                layer.msg(data.msg,{time:1000},function(){
+                                    location.href=location.href;
+                                });
+                            }else{
+                                layer.msg(data.msg);
+                            }
+                        }
+                    })
+                });
+
+                return false;
+
+            });
+
+        })
+    </script>
+	<style type="text/css">
+		.select2-results__option{
+            margin-left: 0;font-size: 0.38rem;
+        }
+        .select2-container--default .select2-results__option--highlighted[aria-selected]{
+            font-size: 0.38rem;
+        }
+        .select2-container--default .select2-results>.select2-results__options{
+            box-sizing: border-box;
+            border-right: 1px solid rgba(207,207,207,0.5);
+        }
+	</style>
+</block>

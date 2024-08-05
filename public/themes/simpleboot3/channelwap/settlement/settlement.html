@@ -1,0 +1,960 @@
+<extend name="../channelwappublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/LCalendar.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/select2.min.css" type="text/css" />
+    <link rel="stylesheet" href="__TMPL__/channelwappublic/assets/css/new_select2.css" type="text/css" />
+    <link href="__TMPL__/channelwappublic/assets/css/settlement.css" type="text/css" rel="stylesheet" />
+    <link href="__TMPL__/channelwappublic/assets/css/swiper-bundle.min.css" type="text/css" rel="stylesheet" />
+    <style>
+        .jssettlement {
+            text-align: center;
+            padding: 0;
+        }
+    </style>
+</block>
+<block name="body">
+    <div class="page-container profit-exchange-container">
+        <header>
+            <a href="{:url('promote/child')}" class="back-btn"></a>
+            <div style="width: 100%;height: 100%" class="v-middle h-middle">
+                <p data-url="javascript:;" style="font-size: 0.44rem;">子渠道结算</p>
+            </div>
+        </header>
+        <div class="page-content">
+            <div class="my-profit-content">
+
+                <div class="exchange-tab">
+                    <div class="profit-menu-box">
+                        <a href="javascript:;" class="active">未结算订单</a>
+                        <a href="javascript:;">已结算订单</a>
+                        <a href="javascript:;">不参与结算订单</a>
+                    </div>
+                    <div class="menu-tab">
+                        <div class="search-box">
+                            <div class="search-item col-4">
+                                <input type="text" class="input-date" id="user_account" placeholder="玩家账号">
+                            </div>
+                            <div class="search-item col-4">
+                                <input type="text" class="input-date" id="pay_order_number" placeholder="支付订单号">
+                            </div>
+                            <div class="search-item  col-4">
+                                <select id="game_id" class="select_gallery" data-placeholder="游戏">
+                                    <option value="0" >选择游戏</option>
+                                    <volist name=":get_game_list('id,game_name')" id="vo">
+                                        <option value="{$vo.id}">{$vo.game_name}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                            <div class="search-item  col-4">
+                                <php>$pmap = ['parent_id'=>['eq',PID]]</php>
+                                <select id="promote_id" class="select_gallery" data-placeholder="渠道">
+                                    <option value="0" >选择渠道</option>
+                                    <volist name=":get_promote_list($pmap)" id="p">
+                                        <option value="{$p.id}">{$p.account}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                            <div class="search-item  col-4">
+                                <input type="text" class="input-date btn-date" readonly name="start_time" id="start_time" placeholder="开始时间" value="" autocomplete="off">
+                            </div>
+                            <div class="search-item  col-4">
+                                <input type="text" class="input-date btn-date" readonly name="end_time" id="end_time" placeholder="结束时间" value="" autocomplete="off">
+                            </div>
+                            <div class="boxContainer">
+                                <input type="button" class="btn-calc fl jssettlement" url="{:url('generatesettlement')}" value="确认结算" >
+                                <div class="checkboxCalcul">
+                                    <input type="checkbox" class=" btn-date dateCheckBox" id="is_bind" value="0" />绑币参与结算
+                                </div>
+                                <span class="attentionPoint">注意点</span>
+                            </div>
+                            
+                        </div>
+                        <div class="swiper-container" id="unsettledSwiper">
+                            <div class="swiper-wrapper" >
+                              <div class="swiper-slide" >
+                                <table class="applyBox" id="unsettledTable">
+                                        <tbody>
+                                            <tr class="table-title">
+                                                <th>订单号</th>
+                                                <th>账号</th>
+                                                <th>订单金额</th>
+                                                <th>实付金额</th>
+                                                <th>分成比例/注册单价</th>
+                                                <th>分成佣金</th>
+                                                <th>支付方式</th>
+                                                <th>创建时间</th>
+                                                <th>所属渠道</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </tbody>
+                                        <tbody id="applyload">
+                                        </tbody>
+                                        <tr class="total">
+                                            <td><span style="margin-right: 10px;">汇总(元) </span></td>
+                                            <td>--</td>
+                                            <td class="cost">0.00</td>
+                                            <td class="amount">0.00</td>
+                                            <td>--</td>
+                                            <td class="summary">0.00</td>
+                                            <td>--</td>
+                                            <td>--</td>
+                                            <td>--</td>
+                                            <td>--</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-tab" style="display: none">
+                        <div class="search-box">
+                            <div class="search-item col-4">
+                                <input type="text" class="input-date" id="user_account2" placeholder="玩家账号">
+                            </div>
+                            <div class="search-item col-4">
+                                <input type="text" class="input-date" id="pay_order_number2" placeholder="支付订单号">
+                            </div>
+                            <div class="search-item  col-4">
+                                <select id="game_id2" class="select_gallery" data-placeholder="游戏">
+                                    <option value="0" >选择游戏</option>
+                                    <volist name=":get_game_list('id,game_name')" id="vo">
+                                        <option value="{$vo.id}">{$vo.game_name}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                            <div class="search-item  col-4">
+                                <php>$pmap = ['parent_id'=>['eq',PID]]</php>
+                                <select id="promote_id2" class="select_gallery" data-placeholder="渠道">
+                                    <option value="0" >选择渠道</option>
+                                    <volist name=":get_promote_list($pmap)" id="p">
+                                        <option value="{$p.id}">{$p.account}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                            <div class="search-item  col-4">
+                                <input type="text" class="input-date btn-date" readonly name="start_time" id="start_time2" placeholder="开始时间" value="" autocomplete="off">
+                            </div>
+                            <div class="search-item  col-4">
+                                <input type="text" class="input-date btn-date" readonly name="end_time" id="end_time2" placeholder="结束时间" value="" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="swiper-container" id="settledSwiper">
+                            <div class="swiper-wrapper" >
+                              <div class="swiper-slide" >
+                                <table class="applyBox" id="settledTable">
+                                    <tbody>
+                                        <tr class="table-title">
+                                            <th>订单号</th>
+                                            <th>账号</th>
+                                            <th>订单金额</th>
+                                            <th>实付金额</th>
+                                            <th>分成比例/注册单价</th>
+                                            <th>分成佣金</th>
+                                            <th>支付方式</th>
+                                            <th>创建时间</th>
+                                            <th>所属渠道</th>
+                                        </tr>
+                                    </tbody>
+                                    <tbody id="recordload">
+                                    </tbody>
+                                    <tr class="total2">
+                                        <td><span style="margin-right: 10px;">汇总(元) </span></td>
+                                        <td>--</td>
+                                        <td class="cost2">0.00</td>
+                                        <td class="amount2">0.00</td>
+                                        <td>--</td>
+                                        <td class="summary2">0.00</td>
+                                        <td>--</td>
+                                        <td>--</td>
+                                        <td>--</td>
+                                    </tr>
+                                </table>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <div class="menu-tab" style="display: none">
+                        <div class="search-box">
+                            <div class="search-item col-4">
+                                <input type="text" class="input-date" id="user_account3" placeholder="玩家账号">
+                            </div>
+                            <div class="search-item col-4">
+                                <input type="text" class="input-date" id="pay_order_number3" placeholder="支付订单号">
+                            </div>
+                            <div class="search-item  col-4">
+                                <select id="game_id3" class="select_gallery" data-placeholder="游戏">
+                                    <option value="0" >选择游戏</option>
+                                    <volist name=":get_game_list('id,game_name')" id="vo">
+                                        <option value="{$vo.id}">{$vo.game_name}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                            <div class="search-item  col-4">
+                                <php>$pmap = ['parent_id'=>['eq',PID]]</php>
+                                <select id="promote_id3" class="select_gallery" data-placeholder="渠道">
+                                    <option value="0" >选择渠道</option>
+                                    <volist name=":get_promote_list($pmap)" id="p">
+                                        <option value="{$p.id}">{$p.account}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                            <div class="search-item  col-4">
+                                <input type="text" class="input-date btn-date" readonly name="start_time" id="start_time3" placeholder="开始时间" value="" autocomplete="off">
+                            </div>
+                            <div class="search-item  col-4">
+                                <input type="text" class="input-date btn-date" readonly name="end_time" id="end_time3" placeholder="结束时间" value="" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="swiper-container" id="noJoinSwiper">
+                            <div class="swiper-wrapper" >
+                              <div class="swiper-slide" >
+                                <table class="applyBox" id="noJoinTable">
+                                    <tbody>
+                                    <tr class="table-title">
+                                        <th>订单号</th>
+                                        <th>账号</th>
+                                        <th>订单金额</th>
+                                        <th>实付金额</th>
+                                        <th>分成比例/注册单价</th>
+                                        <th>分成佣金</th>
+                                        <th>支付方式</th>
+                                        <th>创建时间</th>
+                                        <th>所属渠道</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </tbody>
+                                    <tbody id="statisticsload">
+                                    </tbody>
+                                    <tr class="total3">
+                                        <td><span style="margin-right: 10px;">汇总(元) </span></td>
+                                        <td>--</td>
+                                        <td class="cost3">0.00</td>
+                                        <td class="amount3">0.00</td>
+                                        <td>--</td>
+                                        <td class="summary3">0.00</td>
+                                        <td>--</td>
+                                        <td>--</td>
+                                        <td>--</td>
+                                        <td>--</td>
+                                    </tr>
+                                </table>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                </div>
+                <div class="tips-prop-pop">
+                    <div class="pop-table">
+                        <div class="pop-cell">
+                            <div class="pop-box">
+                                <p>注意①：</p>
+                                <p>渠道结算只结算消费到游戏的所有订单记录（系统默认全部排除绑币，可视情况自行勾选）。</p>
+                                <p>注意②：</p>
+                                <p>包含绑币勾选请慎重，由于玩家账户部分绑币的来源属于后台发放或者会长代充等，涉及到成本盈亏，是否参与渠道结算请考虑清楚！</p>
+                                <p>注意③：</p>
+                                <p>确认结算后的订单不可设置不参与结算！</p>
+                                <div class="pop-btn-box">
+                                    <a class="buttonConfirm">知道了</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/select2.min.js"></script>
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/LCalendar.min.js"></script>
+    <script type="text/javascript" src="__TMPL__/channelwappublic/assets/js/swiper-bundle.min.js"></script>
+    <script>
+         var swiper = {}
+        $(function () {
+            $('.header-title').click(function () {
+                location.href=$(this).data("url");
+            });
+            $(".select_gallery").select2({
+                minimumResultsForSearch: -1
+            });
+
+            //时间插件
+
+            var start_calendar2 = new LCalendar();
+            start_calendar2.init({
+                'trigger': '#start_time', //标签id
+                'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+                'minDate': (new Date().getFullYear() - 3) + '-' + 1 + '-' + 1, //最小日期
+                'maxDate': new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDate() //最大日期
+            });
+            var end_calendar2 = new LCalendar();
+            end_calendar2.init({
+                'trigger': '#end_time', //标签id
+                'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+                'minDate': (new Date().getFullYear() - 3) + '-' + 1 + '-' + 1, //最小日期
+                'maxDate': new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDate() //最大日期
+            });
+            var start_calendar3 = new LCalendar();
+            start_calendar3.init({
+                'trigger': '#start_time2', //标签id
+                'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+                'minDate': (new Date().getFullYear() - 3) + '-' + 1 + '-' + 1, //最小日期
+                'maxDate': new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDate() //最大日期
+            });
+            var end_calendar3 = new LCalendar();
+            end_calendar3.init({
+                'trigger': '#end_time2', //标签id
+                'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+                'minDate': (new Date().getFullYear() - 3) + '-' + 1 + '-' + 1, //最小日期
+                'maxDate': new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDate() //最大日期
+            });
+
+            var start_calendar4 = new LCalendar();
+            start_calendar4.init({
+                'trigger': '#start_time3', //标签id
+                'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+                'minDate': (new Date().getFullYear() - 3) + '-' + 1 + '-' + 1, //最小日期
+                'maxDate': new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDate() //最大日期
+            });
+            var end_calendar4 = new LCalendar();
+            end_calendar4.init({
+                'trigger': '#end_time3', //标签id
+                'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+                'minDate': (new Date().getFullYear() - 3) + '-' + 1 + '-' + 1, //最小日期
+                'maxDate': new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDate() //最大日期
+            });
+
+            // $('.profit-menu-box a').click(function () {
+            //     $(this).addClass("active").siblings().removeClass("active");
+            //     var index = $(this).index();
+            //     $('.menu-tab').eq(index).show().siblings(".menu-tab").hide();
+            // });
+            $('body').on('click','.reapply',function(){
+                that = $(this);
+                var url = "{:url('reapply')}";
+                var id = that.data('id');
+                $.post(url,{id:id},function(res){
+                    layer.msg(res.msg);
+                    setTimeout(function(){
+                        window.location.reload();
+                    },1000);
+                });
+            })
+        })
+    </script>
+    <script>
+        var pid_level = "{:PID_LEVEL}";
+        var itemIndex = 0;
+        var now_url = window.location.href;
+        var moren = now_url.split('#')[1];
+
+        var user_account = '';
+        var pay_order_number='';
+        var game_id = 0;
+        var promote_id = 0;
+        var start_time = '';
+        var end_time = '';
+        var is_bind = 0;
+
+        var user_account2 = '';
+        var pay_order_number2='';
+        var game_id2 = 0;
+        var promote_id2 = 0;
+        var start_time2 = '';
+        var end_time2 = '';
+
+        var user_account3 = '';
+        var pay_order_number3 ='';
+        var game_id3 = 0;
+        var promote_id3 = 0;
+        var start_time3 = '';
+        var end_time3 = '';
+
+
+        if(moren != undefined){
+            itemIndex = parseInt(moren);
+            if(itemIndex>2) {itemIndex=1;}
+            $(".profit-menu-box a:eq("+moren+")").addClass('active').siblings().removeClass('active');
+            $('.menu-tab').eq(moren).show().siblings(".menu-tab").hide();
+        }
+        var lwx = window.lwx || {};
+        lwx.ready = true;
+        lwx.width = $(window).width();
+        lwx.height = $(window).height();
+        lwx.number = {apply:1,record:1,statistics:1};
+        lwx.row = {apply:15,record:15,statistics:15};
+        lwx.http = {
+            getJSON:function(url,callback){
+                $.getJSON(url + '&v=' + Date.now(),function(data){
+                    callback(data);
+                });
+            },
+            postJSON:function(url,args,callback) {
+                $.post(url + '&v=' + Date.now(), args, function(data) {
+                    callback(data);
+                },"json")
+            },
+        };
+        lwx.url ={
+            settlement:'{:url("Settlement/get_settlement")}',
+        };
+        lwx.page = {
+            apply:function(){
+                if(lwx.number.apply) {
+                    lwx.http.getJSON(lwx.url.settlement+'?type=0&is_bind='+is_bind+'&game_id='+game_id+'&pay_order_number='+pay_order_number+'&promote_id='+promote_id+'&user_account='+user_account+'&row='+lwx.row.apply+'&page='+lwx.number.apply+'&start_time='+start_time+'&end_time='+end_time,function(data) {
+                        var hotload = $('#applyload');
+                        var total = data.total;
+                        var data = data.data.data;
+                        if(data && data.length) {
+                            $(".total").show();
+                            if(total.totalcost > 0){
+                                $(".cost").text(parseFloat(total.totalcost).toFixed(2));
+                            }
+                            if(total.totalamount > 0){
+                                $(".amount").text(parseFloat(total.totalamount).toFixed(2));
+                            }
+                            if(pid_level == 1){
+                                if(total.totalmoney2 > 0){
+                                    $(".summary").text(parseFloat(total.totalmoney2).toFixed(2));
+                                }
+                            }else{
+                                if(total.totalmoney3 > 0){
+                                    $(".summary").text(parseFloat(total.totalmoney3).toFixed(2));
+                                }
+                            }
+                            var html = '';
+                            for (var i in data) {
+                                html += '<tr>';
+								html += '<td>'+data[i].pay_order_number+'</td>';
+                                html += '<td>'+data[i].user_account+'</td>';
+                                if(data[i].pattern == 0){
+                                    html += '<td>'+data[i].cost+'</td>';
+                                }else{
+                                    html += '<td>--</td>';
+                                }
+                                if(data[i].pattern == 0){
+                                    html += '<td>'+data[i].pay_amount+'</td>';
+                                }else{
+                                    html += '<td>--</td>';
+                                }
+                                html += '<td><a href="javascript:;" class="editTab underline" data-title="重新设置分成" data-settlement_id="'+data[i].id+'">';
+                                if(pid_level == 1){
+                                    if(data[i].pattern == 0){
+                                        html += data[i].ratio2;
+                                    }else{
+                                        html += data[i].money2;
+                                    }
+                                }else{
+                                    if(data[i].pattern == 0){
+                                        html += data[i].ratio3;
+                                    }else{
+                                        html += data[i].money3;
+                                    }
+                                }
+                                if(pid_level == 1){
+                                    html += '<td>'+data[i].sum_money2+'</td>';
+                                }else{
+                                    html += '<td>'+data[i].sum_money3+'</td>';
+                                }
+                                html += '</td>';
+                                html += '<td>'+data[i].pay_way+'</td>';
+                                html += '<td>'+data[i].create_time+'</td>';
+                                html += '<td>'+data[i].promote_account+'</td>';
+                                html += '<td><a href="javascript:;" class="apply-btn js-off" data-id="'+data[i].id+'">不参与</a></td>';
+                                html += '</tr>';
+                            }
+                            hotload.append(html);
+                            hotload.find('.jsdropload').remove();
+                            if(data.length >= lwx.row.apply) {
+                                lwx.number.apply++;
+                                lwx.ready = true;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.apply = false;
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                        } else {
+                            if(lwx.number.apply==1){
+                                $(".total").hide();
+                                hotload.html('').append('<p class="no_invest_info jsdropload">~空空如也~</p>');
+                            } else{
+                                hotload.find('.jsdropload').remove();
+                                hotload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                            lwx.number.apply = false;
+                        }
+                    });
+                }
+            },
+            record:function(){
+                if(lwx.number.record) {
+                    lwx.http.getJSON(lwx.url.settlement+'?type=1&game_id='+game_id2+'&pay_order_number='+pay_order_number2+'&promote_id='+promote_id2+'&user_account='+user_account2+'&row='+lwx.row.record+'&page='+lwx.number.record+'&start_time='+start_time2+'&end_time='+end_time2,function(data) {
+                        var recordload = $('#recordload');
+                        var total = data.total;
+                        var data = data.data.data;
+                        if(data && data.length) {
+                            $(".total2").show();
+                            if(total.totalcost > 0){
+                                $(".cost2").text(parseFloat(total.totalcost).toFixed(2));
+                            }
+                            if(total.totalamount > 0){
+                                $(".amount2").text(parseFloat(total.totalamount).toFixed(2));
+                            }
+                            if(pid_level == 1){
+                                if(total.totalmoney2 > 0){
+                                    $(".summary2").text(parseFloat(total.totalmoney2).toFixed(2));
+                                }
+                            }else{
+                                if(total.totalmoney3 > 0){
+                                    $(".summary2").text(parseFloat(total.totalmoney3).toFixed(2));
+                                }
+                            }
+                            var html = '';
+                            for (var i in data) {
+                                html += '<tr>';
+                                html += '<td>'+data[i].pay_order_number+'</td>';
+                                html += '<td>'+data[i].user_account+'</td>';
+                                if(data[i].pattern == 0){
+                                    html += '<td>'+data[i].cost+'</td>';
+                                }else{
+                                    html += '<td>--</td>';
+                                }
+                                if(data[i].pattern == 0){
+                                    html += '<td>'+data[i].pay_amount+'</td>';
+                                }else{
+                                    html += '<td>--</td>';
+                                }
+                                html += '<td><a href="javascript:;" class="editTab underline" data-title="重新设置分成" data-settlement_id="'+data[i].id+'">';
+                                if(pid_level == 1){
+                                    if(data[i].pattern == 0){
+                                        html += data[i].ratio2;
+                                    }else{
+                                        html += data[i].money2;
+                                    }
+                                }else{
+                                    if(data[i].pattern == 0){
+                                        html += data[i].ratio3;
+                                    }else{
+                                        html += data[i].money3;
+                                    }
+                                }
+                                if(pid_level == 1){
+                                    html += '<td>'+data[i].sum_money2+'</td>';
+                                }else{
+                                    html += '<td>'+data[i].sum_money3+'</td>';
+                                }
+                                html += '</td>';
+                                html += '<td>'+data[i].pay_way+'</td>';
+                                html += '<td>'+data[i].create_time+'</td>';
+                                html += '<td>'+data[i].promote_account+'</td>';
+                                html += '</tr>';
+                            }
+                            html += '</div>';
+                            recordload.append(html);
+                            recordload.find('.jsdropload').remove();
+                            if(data.length >= lwx.row.record) {
+                                lwx.number.record++;
+                                lwx.ready = true;
+                                recordload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.record = false;
+                                recordload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                        } else {
+                            if(lwx.number.record==1){
+                                $(".total2").hide();
+                                recordload.html('').append('<p class="no_invest_info jsdropload">~空空如也~</p>');
+                            } else{
+                                recordload.find('.jsdropload').remove();
+                                recordload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                            lwx.number.record = false;
+                        }
+                    });
+                }
+            },
+            statistics:function(){
+                if(lwx.number.statistics) {
+                    lwx.http.getJSON(lwx.url.settlement+'?type=2&game_id='+game_id3+'&pay_order_number='+pay_order_number3+'&promote_id='+promote_id3+'&user_account='+user_account3+'&row='+lwx.row.statistics+'&page='+lwx.number.statistics+'&start_time='+start_time3+'&end_time='+end_time3,function(data) {
+                        var statisticsload = $('#statisticsload');
+                        var total = data.total;
+                        var data = data.data.data;
+                        if(data && data.length) {
+                            $(".total3").show();
+                            if(total.totalcost > 0){
+                                $(".cost3").text(parseFloat(total.totalcost).toFixed(2));
+                            }
+                            if(total.totalamount > 0){
+                                $(".amount3").text(parseFloat(total.totalamount).toFixed(2));
+                            }
+                            if(pid_level == 1){
+                                if(total.totalmoney2 > 0){
+                                    $(".summary3").text(parseFloat(total.totalmoney2).toFixed(2));
+                                }
+                            }else{
+                                if(total.totalmoney3 > 0){
+                                    $(".summary3").text(parseFloat(total.totalmoney3).toFixed(2));
+                                }
+                            }
+                            var html = '';
+                            for (var i in data) {
+                                html += '<tr>';
+                                html += '<td>'+data[i].pay_order_number+'</td>';
+                                html += '<td>'+data[i].user_account+'</td>';
+                                if(data[i].pattern == 0){
+                                    html += '<td>'+data[i].cost+'</td>';
+                                }else{
+                                    html += '<td>--</td>';
+                                }
+                                if(data[i].pattern == 0){
+                                    html += '<td>'+data[i].pay_amount+'</td>';
+                                }else{
+                                    html += '<td>--</td>';
+                                }
+                                html += '<td><a href="javascript:;" class="editTab underline" data-title="重新设置分成" data-settlement_id="'+data[i].id+'">';
+                                if(pid_level == 1){
+                                    if(data[i].pattern == 0){
+                                        html += data[i].ratio2;
+                                    }else{
+                                        html += data[i].money2;
+                                    }
+                                }else{
+                                    if(data[i].pattern == 0){
+                                        html += data[i].ratio3;
+                                    }else{
+                                        html += data[i].money3;
+                                    }
+                                }
+                                if(pid_level == 1){
+                                    html += '<td>'+data[i].sum_money2+'</td>';
+                                }else{
+                                    html += '<td>'+data[i].sum_money3+'</td>';
+                                }
+                                html += '</td>';
+                                html += '<td>'+data[i].pay_way+'</td>';
+                                html += '<td>'+data[i].create_time+'</td>';
+                                html += '<td>'+data[i].promote_account+'</td>';
+                                html += '<td><a href="javascript:;" class="apply-btn js-on" data-id="'+data[i].id+'">参与</a></td>';
+                                html += '</tr>';
+                            }
+                            html += '</div>';
+                            statisticsload.append(html);
+                            statisticsload.find('.jsdropload').remove();
+                            if(data.length >= lwx.row.statistics) {
+                                lwx.number.statistics++;
+                                lwx.ready = true;
+                                statisticsload.append('<div class="dropload-down jsdropload"><div class="dropload-noData">继续加载</div></div>');
+                            } else {
+                                lwx.number.statistics = false;
+                                statisticsload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                        } else {
+                            if(lwx.number.statistics==1){
+                                $(".total3").hide();
+                                statisticsload.html('').append('<p class="no_invest_info jsdropload">~空空如也~</p>');
+                            } else{
+                                statisticsload.find('.jsdropload').remove();
+                                statisticsload.append('<div class="dropload-down jsdropload"><div class="dropload-noData"></div></div>');
+                            }
+                            lwx.number.statistics = false;
+                        }
+                    });
+                }
+            },
+        };
+        pageChange('#'+itemIndex);
+        function pageChange(n) {
+            switch (n) {
+                case '#0': {
+                    lwx.page.apply();
+                    if(lwx.number.apply) {lwx.ready=true;}
+                    swiper.unsettled = new Swiper('#unsettledSwiper', {
+                        slidesPerView: 'auto',
+                        freeMode: true,
+                        mousewheel: true,
+                    });
+                };break;
+                case '#1':{
+                    lwx.page.record();
+                    if(lwx.number.record) {lwx.ready=true;}
+                    swiper.settled = new Swiper('#settledSwiper', {
+                        slidesPerView: 'auto',
+                        freeMode: true,
+                        mousewheel: true,
+                    });
+                };break;
+                case '#2':{
+                    lwx.page.statistics();
+                    if(lwx.number.statistics) {lwx.ready=true;}
+                    swiper.noJoin = new Swiper('#noJoinSwiper', {
+                        slidesPerView: 'auto',
+                        freeMode: true,
+                        mousewheel: true,
+                    });
+                };break;
+            }
+            setTimeout(function() {
+                $('.applyBox').each(function() {
+                $(this).parent().css('width',$(this).width()+'px')  
+               switch(n) {
+                case '#0': {
+                    swiper.unsettled.update()
+                };break;
+                case '#1': {
+                    swiper.settled.update()
+                };break;
+                case '#2': {
+                    swiper.noJoin.update()
+                };break;
+               }
+            })          
+            },500)
+        }
+        function pageScroll(scrollTop, boxHeight, maxScrollHeight) {
+            if (scrollTop + boxHeight >= maxScrollHeight - 50) {
+                if (lwx.ready) {
+                    lwx.ready = false;
+                    switch (itemIndex) {
+                        case 0:
+                            lwx.page.apply();
+                            break;
+                        case 1:
+                            lwx.page.record();
+                            break;
+                        case 2:
+                            lwx.page.statistics();
+                            break;
+                    }
+                }
+            }
+        }
+        window.onscroll = function() {
+            var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+            pageScroll(scrollTop, lwx.height, $(document).height())
+        }
+        $(function () {
+            $('.profit-menu-box a').click(function () {
+                $(this).addClass("active").siblings().removeClass("active");
+                console.log($(this).index())
+                var index = $(this).index();
+                $('.menu-tab').eq(index).show().siblings('.menu-tab').hide();
+                //$('.menu-tab').eq(index).css('display','block').siblings('.menu-tab').css('display','none');
+                itemIndex = index;
+                location.hash = index;
+
+            });
+            $("#user_account").bind('input porpertychange',function(){
+                user_account = $("#user_account").val();
+                $("#applyload").empty();
+                lwx.number.apply = 1;
+                pageChange('#'+itemIndex);
+            });
+            $("#pay_order_number").bind('input porpertychange',function(){
+                pay_order_number = $("#pay_order_number").val();
+                $("#applyload").empty();
+                lwx.number.apply = 1;
+                pageChange('#'+itemIndex);
+            });
+            $("#game_id").change(function () {
+                game_id = $("#game_id").val();
+                $("#applyload").empty();
+                lwx.number.apply = 1;
+                pageChange('#'+itemIndex);
+            })
+            $("#promote_id").change(function () {
+                promote_id = $("#promote_id").val();
+                $("#applyload").empty();
+                lwx.number.apply = 1;
+                pageChange('#'+itemIndex);
+            })
+            $("#start_time").bind('input porpertychange',function(){
+                start_time = $("#start_time").val();
+                $("#applyload").empty();
+                lwx.number.apply = 1;
+                pageChange('#'+itemIndex);
+            });
+            $("#end_time").bind('input porpertychange',function(){
+                end_time = $("#end_time").val();
+                $("#applyload").empty();
+                lwx.number.apply = 1;
+                pageChange('#'+itemIndex);
+            });
+            $("#is_bind").change(function() {
+                if($("#is_bind").is(":checked") == true){
+                    is_bind = 1;
+                }else{
+                    is_bind = 0;
+                }
+                $("#applyload").empty();
+                lwx.number.apply = 1;
+                pageChange('#'+itemIndex);
+            });
+
+
+            $("#user_account2").bind('input porpertychange',function(){
+                user_account2 = $("#user_account2").val();
+                $("#recordload").empty();
+                lwx.number.record = 1;
+                pageChange('#'+itemIndex);
+            });
+            $("#pay_order_number2").bind('input porpertychange',function(){
+                pay_order_number2 = $("#pay_order_number2").val();
+                $("#recordload").empty();
+                lwx.number.record = 1;
+                pageChange('#'+itemIndex);
+            });
+            $("#game_id2").change(function () {
+                game_id2 = $("#game_id2").val();
+                $("#recordload").empty();
+                lwx.number.record = 1;
+                pageChange('#'+itemIndex);
+            })
+            $("#promote_id2").change(function () {
+                promote_id2 = $("#promote_id2").val();
+                $("#recordload").empty();
+                lwx.number.record = 1;
+                pageChange('#'+itemIndex);
+            })
+            $("#start_time2").bind('input porpertychange',function(){
+                start_time2 = $("#start_time2").val();
+                $("#recordload").empty();
+                lwx.number.record = 1;
+                pageChange('#'+itemIndex);
+            });
+            $("#end_time2").bind('input porpertychange',function(){
+                end_time2 = $("#end_time2").val();
+                $("#recordload").empty();
+                lwx.number.record = 1;
+                pageChange('#'+itemIndex);
+            });
+
+            $("#user_account3").bind('input porpertychange',function(){
+                user_account3 = $("#user_account3").val();
+                $("#statisticsload").empty();
+                lwx.number.statistics = 1;
+                pageChange('#'+itemIndex);
+            });
+            $("#pay_order_number3").bind('input porpertychange',function(){
+                pay_order_number3 = $("#pay_order_number3").val();
+                $("#statisticsload").empty();
+                lwx.number.statistics = 1;
+                pageChange('#'+itemIndex);
+            });
+            $("#game_id3").change(function () {
+                game_id3 = $("#game_id3").val();
+                $("#statisticsload").empty();
+                lwx.number.statistics = 1;
+                pageChange('#'+itemIndex);
+            })
+            $("#promote_id3").change(function () {
+                promote_id3 = $("#promote_id3").val();
+                $("#statisticsload").empty();
+                lwx.number.statistics = 1;
+                pageChange('#'+itemIndex);
+            })
+            $("#start_time3").bind('input porpertychange',function(){
+                start_time3 = $("#start_time3").val();
+                $("#statisticsload").empty();
+                lwx.number.statistics = 1;
+                pageChange('#'+itemIndex);
+            });
+            $("#end_time3").bind('input porpertychange',function(){
+                end_time3 = $("#end_time3").val();
+                $("#statisticsload").empty();
+                lwx.number.statistics = 1;
+                pageChange('#'+itemIndex);
+            });
+        })
+        $(window).on("hashchange", function() {
+            pageChange(location.hash);
+        });
+
+        //设置分成比例
+        $("body").on('click','.editTab',function(){
+            var that = $(this);
+            var title = that.attr("data-title");
+            var value = that.text();
+            var settlement_id = that.data('settlement_id');
+            layer.prompt({title:title,placeholder:'',formType:0},function(value,index) {
+                if (!/^(((\d|[1-9]\d)(\.\d{1,2})?)|100|100.0|100.00)$/.test(value)) {
+                    layer.msg('输入错误，0-100之间的两位小数',{time:2000});
+                    return false;
+                }
+                layer.closeAll();
+                $.ajax({
+                    url:"{:url('setratio')}",
+                    type:'post',
+                    dataType:'json',
+                    data:{settlement_id:settlement_id,value:value},
+                    success:function(res){
+                        layer.msg(res.msg);
+                        if(res.code==1){
+                            setTimeout(function () {
+                                location.reload();
+                            },1000)
+                        }
+                    },error(){
+                        layer.msg('服务器错误');
+                    }
+                })
+            });
+        })
+
+        $("body").on('click','.js-off',function () {
+            var id = $(this).attr('data-id');
+            $.ajax({
+                type:'post',
+                url:"{:url('changeStatus',['type'=>'off'])}",
+                data:{id:id},
+                success:function(res){
+                    layer.msg(res.msg,{time:1000},function(){
+                        window.location.reload();
+                    });
+                },error:function(){
+                    layer.msg('服务器错误，请稍后再试');
+                }
+            });
+        })
+        $("body").on('click','.js-on',function () {
+            var id = $(this).attr('data-id');
+            $.ajax({
+                type:'post',
+                url:"{:url('changeStatus',['type'=>'on'])}",
+                data:{id:id},
+                success:function(res){
+                    layer.msg(res.msg,{time:1000},function(){
+                        window.location.reload();
+                    });
+                },error:function(){
+                    layer.msg('服务器错误，请稍后再试');
+                }
+            });
+        })
+        //批量结算
+        $('.jssettlement').click(function(){
+            var url = $(this).attr('url');
+            $.ajax({
+                type:'post',
+                url:url,
+                data:{user_account:user_account,game_id:game_id,promote_id:promote_id,pay_order_number:pay_order_number,is_bind:is_bind,start_time:start_time,end_time:end_time},
+                async:false,
+                success:function(res){
+                    layer.msg(res.msg,{time:1000},function(){
+                        window.location.reload();
+                    });
+                },error:function(){
+                    layer.msg('服务器错误，请稍后再试');
+                }
+            });
+        });
+
+        $('.attentionPoint').click(function() {
+           $('.tips-prop-pop').css('display','block')
+        })
+        $('.buttonConfirm').click(function() {
+            $('.tips-prop-pop').css('display','none')
+        })
+    </script>
+</block>

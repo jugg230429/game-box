@@ -1,0 +1,91 @@
+.my_money_page_header{
+    width: 100%;
+    height: 3.5rem;
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    justify-content: space-between;
+}
+.type_down__long_hx{
+    width: 100%;
+    height: 1px;
+    background-color: #EDEEEF;
+    position: static;
+    top: -0.2rem;
+    z-index: 1;
+    margin-top: 0;
+}
+.my_money_page_header .back_icon {
+    width: 0.74rem;
+    margin-top: 1.25rem;
+    margin-left: 1rem;
+    position: absolute;
+    left: 0 ;
+    top:0;
+}
+.my_money_page_item {
+    width:100%;
+    text-align: center;
+    font-size: 1.45rem;
+    font-weight: 500;
+    color: #222222;
+    vertical-align: middle;
+}
+.my-money-list-box .my-money-list{
+    padding:1.11rem 0.853rem ;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width:100%;
+}
+.my-money-list-box .my-money-list .my-money-item{
+    width:100%;
+    height: 3.84rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    margin-bottom: 0.768rem;
+}
+.my-money-item .game-icon-box{
+    width:3.84rem;
+    height: 3.84rem;
+    background-color: #e2e2e2;
+    border-radius: 15px;
+    position: relative;
+}
+.game-icon-box .game-icon{
+    width:100%;
+    height: 100%;
+    border-radius: 15px;
+}
+.my-money-item .game-icon-box .game_type {
+    width: 1.45rem;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+}
+.my-money-item .game-icon-box .game_type img{
+    vertical-align: bottom;
+}
+.my-money-item .game-title{
+    font-size: 1.2rem;
+    margin-left: 0.93rem;
+    width:60%;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 1.5rem;
+}
+.my-money-item .money-num{
+    color: #FF4E00;
+    margin-left: auto;
+    font-size: 1.2rem;
+}

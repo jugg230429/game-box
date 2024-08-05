@@ -1,0 +1,175 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#A" data-toggle="tab">站点配置</a></li>
+        <li><a href="{:url('cash_set')}">提现设置</a></li>
+        <span class="title_remark">说明：针对推广平台的显示进行基本配置</span>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('sitePost')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">网站标题：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control"  name="ch_set_title"
+                                       value="{$data.ch_set_title|default=''}">
+                            </div>
+                            <p class="help-block">网站各页面默认统一显示该标题，在SEO设置页对每页面进行单独设置后，则显示SEO设置内容</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">网站关键词：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control"  name="ch_set_meta_key"
+                                       value="{$data.ch_set_meta_key|default=''}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">网络文化经营许可证：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="ch_set_license"
+                                       value="{$data.ch_set_license|default=''}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">网站备案号：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="ch_set_for_the_record"
+                                       value="{$data.ch_set_for_the_record|default=''}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">官网版权信息设置：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="ch_set_copyright"
+                                       value="{$data.ch_set_copyright|default=''}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">网站描述：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="ch_set_meta_desc"
+                                       value="{$data.ch_set_meta_desc|default=''}">
+                            </div>
+                        </div>
+
+                        <div class="form-group" hidden>
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">公司地址：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" name="ch_set_address"
+                                       value="{$data.ch_set_address|default=''}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">用户注册：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="1" name="ch_user_allow_register" <eq name='data.ch_user_allow_register' value='1'>checked="checked"</eq>> 开启
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" class="inp_radio" value="0" name="ch_user_allow_register" <eq name='data.ch_user_allow_register' value='0'>checked="checked"</eq>> 关闭
+                                </label>
+                            </div>
+                            <p class="help-block">控制推广平台是否开放用户注册，选择禁止时，官网上不显示注册入口</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">网站LOGO：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="ch_set_logo" type="hidden" name="ch_set_logo" value="{$data.ch_set_logo}" >
+                                <img id="ch_set_logo-preview" class="upload-img"  <if condition="$data['ch_set_logo']">src="{:cmf_get_image_preview_url($data['ch_set_logo'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#ch_set_logo');">上传</a>
+                                <a href="javascript:(function(){$('#ch_set_logo-preview').attr('src','');$('#ch_set_logo').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">尺寸190 * 60px</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">网站ICO图标：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="ch_set_ico" type="hidden" name="ch_set_ico" value="{$data.ch_set_ico}" >
+                                <img id="ch_set_ico-preview" class="upload-img" <if condition="$data['ch_set_ico']">src="{:cmf_get_image_preview_url($data['ch_set_ico'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#ch_set_ico');">上传</a>
+                                <a href="javascript:(function(){$('#ch_set_ico-preview').attr('src','');$('#ch_set_ico').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">尺寸16*16px</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">管理中心LOGO：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="ch_logo_backstage" type="hidden" name="ch_logo_backstage" value="{$data.ch_logo_backstage}" >
+                                <img id="ch_logo_backstage-preview" class="upload-img" <if condition="$data['ch_logo_backstage']">src="{:cmf_get_image_preview_url($data['ch_logo_backstage'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#ch_logo_backstage');">上传</a>
+                                <a href="javascript:(function(){$('#ch_logo_backstage-preview').attr('src','');$('#ch_logo_backstage').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">尺寸220 * 52px</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">关于我们图标：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="ch_set_about_us" type="hidden" name="ch_set_about_us" value="{$data.ch_set_about_us}" >
+                                <img id="ch_set_about_us-preview" class="upload-img" <if condition="$data['ch_set_about_us']">src="{:cmf_get_image_preview_url($data['ch_set_about_us'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#ch_set_about_us');">上传</a>
+                                <a href="javascript:(function(){$('#ch_set_about_us-preview').attr('src','');$('#ch_set_about_us').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">在关于我们页面内显示，尺寸300 * 200px</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">分享图标：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input id="ch_set_share_logo" type="hidden" name="ch_set_share_logo" value="{$data.ch_set_share_logo}" >
+                                <img id="ch_set_share_logo-preview" class="upload-img" <if condition="$data['ch_set_share_logo']">src="{:cmf_get_image_preview_url($data['ch_set_share_logo'])}"</if>>
+                                <a href="javascript:uploadOneImage('图片上传','#ch_set_share_logo');">上传</a>
+                                <a href="javascript:(function(){$('#ch_set_share_logo-preview').attr('src','');$('#ch_set_share_logo').val('')})();">移除</a>
+                            </div>
+                            <p class="help-block">在微信/QQ等应用内打开站点进行分享至其它应用内时展示，尺寸240*240px。未上传时显示占位图
+                                （分享资讯文章页链接时图文调取对应文章的分享图文）</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">分享标题：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" value="{$data.ch_share_title}" name="ch_share_title">
+                            </div>
+                            <p class="help-block">默认显示：手游联运推广联盟中心</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_adminstyle" class="col-sm-2 control-label">分享描述：</label>
+                            <div class="col-md-3 col-sm-5">
+                                <input type="text" class="form-control" value="{$data.ch_share_describe}" name="ch_share_describe">
+                            </div>
+                            <p class="help-block">默认显示：手游渠道合作首选平台，让您边赚边玩。</p>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <input type="hidden" name="set_type" value="{$name}">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

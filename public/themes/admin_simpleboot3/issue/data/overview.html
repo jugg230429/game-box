@@ -1,0 +1,491 @@
+<include file="public@header"/>
+
+<style>
+    #charts{
+        width: 100%;
+        height: 400px;
+        box-shadow: 0px 0px 10px 1px rgba(60, 108, 188, 0.15);
+        border-radius: 5px;
+        padding-top: 18px;
+        box-sizing: border-box;
+    }
+    ul li{
+        list-style: none;
+    }
+    .top-content{
+        width: 101%;
+        margin-top: 20px;
+        margin-left: -10px;
+        font-family: 'Microsoft YaHei';
+    }
+    .top-content ul{
+        float: left;
+
+        width: 100%;
+    }
+    .top-content ul li{
+        /* width: 213px; */
+        width: 13.09%;
+        height: 230px;
+        padding: 20px 0 0px 20px;
+        float: left;
+        margin-left: 21px;
+        margin-bottom: 20px;
+    }
+    .top-content ul li:first-child{
+        margin-left: 0px;
+    }
+    .t-one{
+        background-image:url("/themes/admin_simpleboot3/public/assets/images/dataScreen/bg_xzyh.png");
+        background-size: 100% 100%;
+
+    }
+
+    .one-title{
+        font-size: 16px;
+        margin-bottom: 27px;
+        font-weight: bold;
+        color: #333333;
+        line-height: 30px;
+    }
+    .t-one .one-date span{
+       color: #8693F3;
+       font-size: 24px;
+        font-weight: bold;
+        line-height: 30px;
+        margin-left: 15px;
+        position: relative;
+        bottom: -2px;
+    }
+    .t-one .one-title span{
+     border-bottom:2px solid #8693F3 ;
+    }
+
+    .one-date{
+        font-size: 13px;
+        font-weight: 400;
+        color: #565D6F;
+        line-height: 30px;
+    }
+
+    .t-two{
+        background-image:url("/themes/admin_simpleboot3/public/assets/images/dataScreen/bg_xzsb.png");
+        background-size: 100% 100%;
+
+    }
+    .t-two .one-title span{
+     border-bottom:2px solid #FFA65E ;
+    }
+    .t-two .one-date span{
+       color: #FFA65E;
+       font-size: 24px;
+        font-weight: bold;
+        line-height: 30px;
+        margin-left: 15px;
+        position: relative;
+        bottom: -2px;
+    }
+    .t-three{
+        background-image:url("/themes/admin_simpleboot3/public/assets/images/dataScreen/bg_hyyh.png");
+        background-size: 100% 100%;
+
+    }
+    .t-three .one-title span{
+     border-bottom:2px solid #81BBF0 ;
+    }
+    .t-three .one-date span{
+       color: #81BBF0;
+       font-size: 24px;
+        font-weight: bold;
+        line-height: 30px;
+        margin-left: 15px;
+        position: relative;
+        bottom: -2px;
+    }
+    .t-four{
+        background-image:url("/themes/admin_simpleboot3/public/assets/images/dataScreen/bg_ffyh.png");
+        background-size: 100% 100%;
+
+    }
+    .t-four .one-title span{
+     border-bottom:2px solid #79CAE5 ;
+    }
+    .t-four .one-date span{
+       color: #79CAE5;
+       font-size: 24px;
+        font-weight: bold;
+        line-height: 30px;
+        margin-left: 15px;
+        position: relative;
+        bottom: -2px;
+    }
+    .t-five{
+        background-image:url("/themes/admin_simpleboot3/public/assets/images/dataScreen/bg_ffe.png");
+        background-size: 100% 100%;
+
+    }
+    .t-five .one-title span{
+     border-bottom:2px solid #888BD4 ;
+    }
+    .t-five .one-date span{
+       color: #888BD4;
+       font-size: 24px;
+        font-weight: bold;
+        line-height: 30px;
+        margin-left: 15px;
+        position: relative;
+        bottom: -2px;
+    }
+    .t-six{
+        background-image:url("/themes/admin_simpleboot3/public/assets/images/dataScreen/bg_arppu.png");
+        background-size: 100% 100%;
+
+    }
+    .t-six .one-title span{
+     border-bottom:2px solid #81BBF0 ;
+    }
+    .t-six .one-date span{
+       color: #81BBF0;
+       font-size: 24px;
+        font-weight: bold;
+        line-height: 30px;
+        margin-left: 15px;
+        position: relative;
+        bottom: -2px;
+    }
+    .t-seven{
+        background-image:url("/themes/admin_simpleboot3/public/assets/images/dataScreen/bg_arpu.png");
+        background-size: 100% 100%;
+
+    }
+    .t-seven .one-title span{
+     border-bottom:2px solid #FFA65E ;
+    }
+    .t-seven .one-date span{
+       color: #FFA65E;
+       font-size: 24px;
+        font-weight: bold;
+        line-height: 30px;
+        margin-left: 15px;
+        position: relative;
+        bottom: -2px;
+    }
+    .tab_head{
+        text-align: center;
+    }
+    .tab_head a{
+        text-decoration:none;
+      text-align: center;
+      display: inline-block;
+      font-size: 14px;
+        font-family: 'Microsoft YaHei';
+        font-weight: 400;
+        color: #565D6F;
+        line-height: 30px;
+    }
+    .tab_head a:first-child{
+        width: 50px;
+        height: 30px;
+        background: #FFFFFF;
+        border: 1px solid #EDEEF1;
+        border-radius: 4px 0  0 4px;
+        margin-right: -5px;
+    }
+    .tab_head a:last-child{
+        width: 50px;
+        height: 30px;
+        background: #FFFFFF;
+        border: 1px solid #EDEEF1;
+        border-radius:  0 4px 4px 0 ;
+        margin-left: -5px;
+    }
+    .tab_head a:nth-child(2){
+        width: 50px;
+        height: 30px;
+        border: 1px solid #EDEEF1;
+        background: #FFFFFF;
+
+    }
+    .tab_head .choose{
+        background-color: #8693F3 !important;
+        color: #fff !important;
+    }
+    .chart-title{
+        width: 100%;
+        float: left;
+
+    }
+    .chart-title p{
+        font-size: 14px;
+        font-family: 'Microsoft YaHei';
+        font-weight: bold;
+        color: #8693F3;
+        line-height: 14px;
+        padding-left: 10px;
+        border-left: 3px solid #8693F3;
+    }
+    .tab_overview {
+        width: 50%;
+    position: relative;
+    top: 42px;
+    left: 25%;
+    z-index: 99;
+
+    }
+</style>
+</head>
+<body>
+
+<div class="wrap game-survey">
+    <ul class="nav nav-tabs">
+            <li class="active"><a href="javascript:;">数据总览</a></li>
+    </ul>
+    <div class="top-content">
+        <ul>
+            <li class="t-one">
+                <p class="one-title"><span>新增</span>用户</p>
+                <p class="one-date">今日<span>{$data['todayData']['new_user']|default='0'}</span></p>
+                <p class="one-date">昨日<span>{$data['yesterdayData']['new_user']|default='0'}</span></p>
+                <p class="one-date">累计<span>{$data['total']['new_user']|default='0'}</span></p>
+            </li>
+            <li class="t-two">
+                <p class="one-title"><span>新增</span>设备</p>
+                <p class="one-date">今日<span>{$data['todayData']['new_equipment']|default='0'}</span></p>
+                <p class="one-date">昨日<span>{$data['yesterdayData']['new_equipment']|default='0'}</span></p>
+                <p class="one-date">累计<span>{$data['total']['new_equipment']|default='0'}</span></p>
+            </li>
+            <li class="t-three">
+                <p class="one-title"><span>活跃</span>用户</p>
+                <p class="one-date">今日<span>{$data['todayData']['active_user']|default='0'}</span></p>
+                <p class="one-date">昨日<span>{$data['yesterdayData']['active_user']|default='0'}</span></p>
+                <p class="one-date">累计<span>{$data['total']['active_user']|default='0'}</span></p>
+            </li>
+            <li class="t-four">
+                <p class="one-title"><span>付费</span>用户</p>
+                <p class="one-date">今日<span>{$data['todayData']['pay_user']|default='0'}</span></p>
+                <p class="one-date">昨日<span>{$data['yesterdayData']['pay_user']|default='0'}</span></p>
+                <p class="one-date">累计<span>{$data['total']['pay_user']|default='0'}</span></p>
+            </li>
+            <li class="t-five">
+                <p class="one-title"><span>付费</span>额</p>
+                <p class="one-date">今日<span>￥{$data['todayData']['pay_amount']|default='0.00'}</span></p>
+                <p class="one-date">昨日<span>￥{$data['yesterdayData']['pay_amount']|default='0.00'}</span></p>
+                <p class="one-date">累计<span>￥{$data['total']['pay_amount']|default='0.00'}</span></p>
+            </li>
+            <li class="t-six">
+                <p class="one-title"><span>AR</span>PPU</p>
+                <p class="one-date">今日<span>{$data['todayData']['arppu']|default='0.00'}</span></p>
+                <p class="one-date">昨日<span>{$data['yesterdayData']['arppu']|default='0.00'}</span></p>
+                <p class="one-date">累计<span>{$data['total']['arppu']|default='0.00'}</span></p>
+            </li>
+            <li class="t-seven">
+                <p class="one-title"><span>AR</span>PU</p>
+                <p class="one-date">今日<span>{$data['todayData']['arpu']|default='0.00'}</span></p>
+                <p class="one-date">昨日<span>{$data['yesterdayData']['arpu']|default='0.00'}</span></p>
+                <p class="one-date">累计<span>{$data['total']['arpu']|default='0.00'}</span></p>
+            </li>
+        </ul>
+    </div>
+    <div class="survey-chart-game">
+        <div class="chart-title"><p>最近数据趋势</p></div>
+        <!-- 图表数据图切换按钮 begin-->
+		<div class="tab_fr tab_head">
+            <div class="tab_overview">
+                <a href="{:url('issue/data/overview',['days_num'=>6])}" data-key="news" class="<?php if(input('days_num')=='6') echo 'choose'; ?>">7天</a>
+                <a href="{:url('issue/data/overview',['days_num'=>14])}" data-key="active" class="<?php if(input('days_num',14)=='14') echo 'choose'; ?>">15天</a>
+                <a href="{:url('issue/data/overview',['days_num'=>29])}" data-key="model" class="<?php if(input('days_num')=='29') echo 'choose'; ?>">30天</a>
+            </div>
+		</div>
+        <div id="charts" class="echarts-form"></div>
+    </div>
+
+    <php>
+        $keys = array_keys($data['overview_data']);
+    </php>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script src="__STATIC__/js/echarts-all.js"></script>
+
+<script type="text/javascript">
+  $('.tab_head a').click(function() {
+        var that=$(this),sib = that.closest('.tab_head').siblings('.tab_content');
+        that.siblings().removeClass('choose');
+        var index= that.addClass('choose').index();
+
+      layer.load(1, {
+          shade: [0.1, '#fff'] //0.1透明度的白色背景
+      });
+
+    });
+    $(function () {
+
+        var myChart = echarts.init(document.getElementById('charts'));
+        var saveAsImage = window.saveAsImage || '';
+        var dateLists = '{$data["dateList"]}';
+        var overview_data_lists = '{$data["overview_data_lists"]}';
+        overview_data_lists = eval('(' + overview_data_lists + ')');
+
+        console.log(overview_data_lists.new_equipment);
+
+        option = {
+            // title: {
+            //     text: '',
+            //     textStyle: {
+            //         fontSize: 14,
+            //         fontWeight: 'normal',
+            //         color: '#8693F3' // 主标题文字颜色
+
+            //     },
+
+
+            // },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['新增用户', '新增设备','活跃用户','付费用户','付费额','ARPPU','ARPU'],
+                x: 'left',
+                left: '2%',
+                textStyle: {
+                    fontSize: 14,
+                    fontWeight: 'normal',
+                    color: '#565D6F',
+                    textStyle:'left'
+
+                },
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    saveAsImage: {
+                        show: true,
+                        name:'游戏概况_运营指标_新增激活和账号',
+                        icon:"/themes/admin_simpleboot3/public/assets/images/dataScreen/ico_xiazai.png" ,
+                        title:''
+                    },
+                },
+                right: '40%'
+
+            },
+            calculable: true,
+            xAxis: [{
+                type: 'category',
+                boundaryGap: false,
+                data: JSON.parse(dateLists),
+
+            }],
+            yAxis: [{
+                type: 'value',
+                axisLabel: {
+                    formatter: '{value}'
+                }
+            }],
+            series: [{
+                name: '新增设备',
+                type: 'line',
+                smooth:true,
+                itemStyle : {
+                    normal : {
+                        color:'#41a6ed',
+                        lineStyle:{
+                            // color:'#41a6ed'
+                        }
+                    }
+                },
+                data: JSON.parse( JSON.stringify(overview_data_lists.new_equipment) )
+            },
+
+                {
+                    name: '新增用户',
+                    smooth:true,
+                    type: 'line',
+                    itemStyle : {
+                        normal : {
+                            lineStyle:{
+                                // color:'#ffb170'
+                            }
+                        }
+                    },
+                    data: JSON.parse( JSON.stringify(overview_data_lists.new_user) )
+
+                }, {
+                    name: '活跃用户',
+                    type: 'line',
+                    smooth:true,
+                    itemStyle : {
+                        normal : {
+                            lineStyle:{
+                                // color:'#ffb170'
+                            }
+                        }
+                    },
+                    data: JSON.parse( JSON.stringify(overview_data_lists.active_user) )
+
+                }, {
+                    name: '付费用户',
+                    smooth:true,
+                    type: 'line',
+                    itemStyle : {
+                        normal : {
+                            lineStyle:{
+                                // color:'#ffb170'
+                            }
+                        }
+                    },
+                    data: JSON.parse( JSON.stringify(overview_data_lists.pay_user) )
+
+                },{
+                    name: '付费额',
+                    smooth:true,
+                    type: 'line',
+                    itemStyle : {
+                        normal : {
+                            lineStyle:{
+                                // color:'#ffb170'
+                            }
+                        }
+                    },
+                    data: JSON.parse( JSON.stringify(overview_data_lists.pay_amount) )
+
+                },{
+                    name: 'ARPPU',
+                    type: 'line',
+                    smooth:true,
+                    itemStyle : {
+                        normal : {
+                            lineStyle:{
+                                // color:'#ffb170'
+                            }
+                        }
+                    },
+                    data: JSON.parse( JSON.stringify(overview_data_lists.arppu) )
+
+                },{
+                    name: 'ARPU',
+                    type: 'line',
+                     smooth:true,
+                    itemStyle : {
+                        normal : {
+                            lineStyle:{
+                                // color:'#ffb170'
+
+                            }
+                        }
+                    },
+                    data: JSON.parse( JSON.stringify(overview_data_lists.arpu) )
+
+                }
+            ]
+
+
+        };
+
+        myChart.setOption(option);
+
+    })
+
+</script>
+
+</body>
+</html>

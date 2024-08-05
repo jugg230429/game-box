@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="frontend" content="Robin">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <!--safira浏览器保存桌面图标和标题 -->
+    <if condition="session('union_host') neq ''">
+        <meta name="apple-mobile-web-app-title" content="{$union_set['app_name_ico']}">
+        <link rel="apple-touch-icon-precomposed" sizes="120x120" href="{:cmf_get_image_url($union_set['app_ico'])}">
+        <else/>
+        <meta name="apple-mobile-web-app-title" content="{:cmf_get_option('wap_set')['screen_app_name']}">
+        <link rel="apple-touch-icon-precomposed" sizes="120x120" href="{:cmf_get_image_url(cmf_get_option('wap_set')['wap_app_icon'])}">
+    </if>
+    <link href="" type="image/x-icon" rel="shortcut icon">
+    <!--  seo-->
+    <include file="mobilepublic@seo" />
+    <!-- QQ分享 -->
+    <meta itemprop="name" content="{$shareparams.title}"/>
+    <if condition="$own_share_img">
+        <meta itemprop="image" content="{$own_share_img}" />
+        <else/>
+        <meta itemprop="image" content="{$shareparams.imgUrl}" />
+    </if>
+    <meta name="description" itemprop="description" content="{$shareparams.desc}" />
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/common.css">
+    <block name="css"></block>
+    <script>
+        (function(doc, win) {
+            var docEl = doc.documentElement,
+                isIOS = navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/),
+                dpr = isIOS ? Math.min(win.devicePixelRatio, 3) : 1,
+                dpr = window.top === window.self ? dpr : 1, //被iframe引用时，禁止缩放
+                dpr = 1,
+                scale = 1 / dpr,
+                resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
+            docEl.dataset.dpr = dpr;
+            var metaEl = doc.createElement('meta');
+            metaEl.name = 'viewport';
+            metaEl.content = 'initial-scale=' + scale + ',maximum-scale=' + scale + ', minimum-scale=' + scale;
+            docEl.firstElementChild.appendChild(metaEl);
+            var recalc = function() {
+                var width = docEl.clientWidth;
+                if (width / dpr > 1080) {
+                    width = 1080 * dpr;
+                }
+                // 乘以100，px : rem = 100 : 1
+                docEl.style.fontSize = 100 * (width / 1080) + 'px';
+            };
+            recalc()
+            if (!doc.addEventListener) return;
+            win.addEventListener(resizeEvt, recalc, false);
+        })(document, window);
+    </script>
+    <script>
+        var regular = {
+            phone:/^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/,
+            account:/^[A-Za-z0-9]{6,30}$/,
+            password:/^[A-Za-z0-9]{6,30}$/,
+            chinese:/^[\u4E00-\u9FA5]{2,32}$/,
+            email:/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/
+        };
+    </script>
+    <script src="__JS__/jquery-1.11.1.min.js"></script>
+    <script src="__STATIC__/js/layer/layer.js"></script>
+    <script>
+        //全局变量
+        var GV = {
+            ROOT: "/",
+            WEB_ROOT: "/",
+            JS_ROOT: "static/js/"
+        };
+    </script>
+</head>
+<body>
+
+    <block name="body"></block>
+
+    <!-- 底部导航 -->
+    <if condition="$action_name eq 'index' and session('app_user_login') neq 1">
+    <include file="mobilepublic@footer" />
+    </if>
+
+    <!-- 登录注册 -->
+    <script>
+        window.wxWidth = '8.81rem';
+        window.copyWidth = '6.8rem';
+        window.loginHeight = '7.949rem';
+        window.forgetHeight = '8.156rem';
+        window.forgetHeightTwo = '8.156rem';
+        window.forgetHeightThree = '8.156rem';
+        window.registerHeight = '10.368rem';
+        window.registerHeightPhone = '11.578rem';
+        window.RealHeight = '10.714rem';
+        window.getUserStatusUrl= '{:url("user/get_user_status")}';
+    </script>
+    <include file="mobilepublic@login" />
+    <!--  微信分享-->
+    <include file="mobilepublic@wechatshare" />
+    <block name="script"></block>
+
+</body>
+</html>

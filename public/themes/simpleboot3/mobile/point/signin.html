@@ -1,0 +1,120 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/signin.css">
+
+</block>
+
+<block name="body">
+    <div class="main">
+		
+		<!-- <a href="javascript:;" class="fl js-close"><img src="__TMPL__/mobilepublic/assets/images/mall/btn_back.png"  class=""></a> -->
+		<if condition="$device_type eq 2">
+	        <a class="back_icon" href="{:url('point/mall_task')}"><img src="__TMPL__/mobilepublic/assets/images/mall/btn_back.png"  class=""></a>
+	    </if>
+	    
+        <if condition="$device_type eq 1">
+	        <a href="javascript:;" class="fl js-close"><img src="__TMPL__/mobilepublic/assets/images/mall/btn_back.png"  class=""></a>
+	    </if>
+
+		<img  src="__TMPL__/mobilepublic/assets/images/mall/signin_title.png" class="signin_title">
+		<div class="clear"></div>
+		<div class="signin_main">
+		   <ul>
+			   <volist name="$detail['point_arr']" id="d">
+				   <li <if condition='$key <= $detail["signed_day"]'> class="signin_list fl signin_active <else/>class="signin_list fl"</if>">
+					  <div class="signin_days">{$key}天</div>
+					  <div class="currency"></div>
+					  <div class="num">+{$d}</div>
+				   </li>
+			   </volist>
+		   </ul>
+		   <div class="clear"></div>
+			<if condition="$detail['today_signed'] eq 1">
+				<a class="signin_btn signin_disabled">明日再来吧</a>
+				<else/>
+				<a class="signin_btn">立即签到</a>
+			</if>
+		   <div class="signin_info">已连续签到<span class="run">{$detail.signed_day|default=0}</span>天，累计签到<span class="all">{$detail.total_sign|default=0}</span>天</div>
+		  
+		</div>
+		 <div class="signin_details">
+		    <div class="signin_details_title">签到规则</div>
+			<div class="signin_details_text">
+			   <p>1.每人每天仅能获得一次奖励，换号无效且多号刷分将永久封禁。 </p>
+			   <p>2.必须通过实名认证后才能参与活动。</p>
+			   <p>3.积分可用于特权礼包、商品等。</p>
+			</div>
+		 </div>
+	</div>
+  </block>
+<block name="script">
+    <script src="__STATIC__/js/layui/layui.js"></script>
+    <script src="__TMPL__/mobilepublic/assets/js/pop.lwx.min.js"></script>
+    <script>
+
+		$('.js-close').click(function(){	
+            try{
+                $mt = "{:get_devices_type()}";
+                if($mt==2){
+                    window.webkit.messageHandlers.xgsdk_finishPage.postMessage(1);
+                }else{
+                    window.xgsdk.finishPage()
+                }
+            }catch (e) {
+               window.location.href = "{:url('Point/mall_task')}";
+               return false;
+            }
+        })
+		
+		var age_status = "{$age_status}";
+		var verfiy_url = "{:url('User/realname',['type'=>'point'])}";
+	    //未登录
+       $(".signin_btn").click(function(){
+           if(age_status == 0){
+               layer.confirm('您还未实名<br>需认证后才可参加活动哦~',{
+                   title: false,
+                   closeBtn:0 ,
+                   skin: 'attestation-class',
+                   btn: ['取消','去认证'],
+
+               }, function(index, layero){
+                   layer.close(index);
+               }, function(index){
+				   location.href = verfiy_url;
+               })
+			   return false;
+		   }
+	     var that = $(this);
+		 if (that.hasClass('signin_disabled')) {return false;}
+		 else{
+		 	$.ajax({
+				url:"{:url('doSign')}",
+				type:"post",
+				success:function (res) {
+					if(res.code==1){
+						layer.msg(res.msg,{time:500},function () {
+							that.addClass('signin_disabled');
+							that.text("明日再来吧");
+							if($(".signin_active").length==0){
+								$(".signin_list").eq(0).addClass("signin_active");
+							}
+							else{
+								var index=$(".signin_active:last").index()+1;
+								$(".signin_list").eq(index).addClass("signin_active");
+							}
+							$('.signin_info .run').text(parseInt($('.signin_info .run').text())+1);
+							$('.signin_info .all').text(parseInt($('.signin_info .all').text())+1);
+						})
+					}else{
+						layer.msg(res.msg);
+					}
+				},error:function () {
+					layer.msg('服务器错误，请稍后再试');
+				}
+			})
+		 }
+		
+	   })
+    </script>
+
+	</block>

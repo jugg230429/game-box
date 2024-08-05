@@ -1,0 +1,51 @@
+<include file="public@header"/>
+<link href="__TMPL__/public/assets/simpleboot3/css/issueapply.css" rel="stylesheet">
+</head>
+<body class="pop-body">
+<div class="wrap js-check-wrap">
+    <form>
+        <div>
+            <volist name="configInfo['platform_config']" id="vo">
+                <div class="form-group">
+                    <label class="applyname">{$key}：</label>
+                    <input type="text" value="{$vo}" class="applycon" disabled>
+                </div>
+            </volist>
+
+            <if condition="input('type') eq '1'">
+
+                <notempty name="game_url['game_url']">
+                    <div class="form-group">
+                        <label class="applyname">游戏登录地址：</label>
+                        <span>{$game_url['game_url']}</span>
+<!--                        <input type="text" value="" class="applycon" disabled>-->
+                    </div>
+                </notempty>
+                <notempty name="game_url['role_url']">
+                    <div class="form-group">
+                        <label class="applyname">游戏角色地址：</label>
+                        <span>{$game_url['role_url']}</span>
+                        <!--   <input type="text" value="" class="applycon" disabled>-->
+                    </div>
+                </notempty>
+                <empty name="settle_type">
+                    <div class="form-group">
+                        <label class="applyname">游戏支付地址：</label>
+                        <span>{$game_url['callback_url']}</span>
+    <!--                    <input type="text" value="" class="applycon" disabled>-->
+                    </div>
+                <else/>
+                    <div class="form-group">
+                        <label class="applyname">游戏支付通知地址：</label>
+                        <span>{:url('@callback/sue/callback',[],true,true)}</span>
+                        <!--                    <input type="text" value="" class="applycon" disabled>-->
+                    </div>
+                </empty>
+
+            </if>
+        </div>
+        <form>
+
+</div>
+</body>
+</html>

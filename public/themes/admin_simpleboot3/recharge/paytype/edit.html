@@ -1,0 +1,98 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <form class="form-horizontal js-ajax-form margin-top-20" action="{:url('edit')}" method="post">
+        <div class="form-group">
+            <label for="input-name" class="col-sm-2 control-label"><span class="form-required">*</span>游戏名称：</label>
+            <div class="col-md-6 col-sm-10 form-select">
+                <select disabled  class="selectpicker "style="width: 420px;">
+                    <option value="0" <if condition="$data['game_id'] eq $vo['id']">selected</if> >默认</option>
+                    <volist name=":get_game_list('id,game_name',[])" id="vo">
+                        <option <if condition="$data['game_id'] eq $vo['id']">selected</if> value="{$vo.id}" >{$vo.game_name}</option>
+                    </volist>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input-name" class="col-sm-2 control-label"><span class="form-required">*</span>渠道名称：</label>
+            <div class="col-md-6 col-sm-10 form-select">
+                <select name="promote_id" id="promote_id" class="selectpicker " data-live-search="true" style="width: 420px;">
+                    <volist name="promote_list" id="vo">
+                        <option value="{$vo.promote_id}"  <if condition="$data['promote_id'] eq $vo['promote_id']">selected</if>>{$vo.promote_name}</option>
+                    </volist>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input-name" class="col-sm-2 control-label"><span class="form-required">*</span>支付类型</label>
+            <div class="col-md-6 col-sm-10 form-select">
+                <select name="type" id="type" class="selectpicker " data-live-search="true" style="width: 420px;">
+                    <option value="1" <if condition="$data['type'] eq 1">selected</if> >支付宝</option>  
+                    <option value="2" <if condition="$data['type'] eq 2">selected</if> >微信</option> 
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input-name" class="col-sm-2 control-label"><span class="form-required">*</span>商户号：</label>
+            <div class="col-md-6 col-sm-10">
+                <input type="text" class="form-control fl user-input" id="partner" name="partner" value="{$data.partner}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input-name" class="col-sm-2 control-label"><span class="form-required">*</span>秘钥：</label>
+            <div class="col-md-6 col-sm-10">
+                <input type="text" class="form-control fl user-input" id="key" name="key" value="{$data.key}">
+                <span  class="fl user-remarks "> 商户平台获取</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input-name" class="col-sm-2 control-label">支付下单地址：</label>
+            <div class="col-md-6 col-sm-10">
+                <input type="text" class="form-control fl user-input" id="order_address" name="order_address" value="{$data.order_address}">
+				<span  class="fl user-remarks "> 商户支付请求地址</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input-name" class="col-sm-2 control-label">通道编码：</label>
+            <div class="col-md-6 col-sm-10">
+                <input type="text" class="form-control fl user-input" id="channel_coding" name="channel_coding" value="{$data.channel_coding}">
+				 <span  class="fl user-remarks ">通道编码</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input-name" class="col-sm-2 control-label">回调ip组：</label>
+            <div class="col-md-6 col-sm-10">
+                <input type="text" class="form-control fl user-input" id="callback_ip" name="callback_ip" value="{$data.callback_ip}">
+				 <span  class="fl user-remarks ">英文逗号隔开</span>
+            </div>
+        </div>
+       <div class="form-group">
+            <label for="input-name" class="col-sm-2 control-label"><span class="form-required">*</span>权重：</label>
+            <div class="col-md-6 col-sm-10">
+                <input type="text" class="form-control fl user-input" id="weight" name="weight" value="{$data.weight}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="form-required">&nbsp;</span>启用状态：</label>
+            <div class="col-md-6 col-sm-10">
+                <label class="radio-inline fl mr100">
+                    <input type="radio" name="status" value="0" <eq name="data.status" value="0">checked</eq>> 禁用
+                </label>
+                <label class="radio-inline fl">
+                    <input type="radio" name="status" value="1" <eq name="data.status" value="1">checked</eq>> 启用
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-1 col-sm-10">
+                <input type="hidden" name="id" value="{$data.id}">
+                <button type="submit" class="btn btn-primary js-ajax-submit save-btn">确定</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

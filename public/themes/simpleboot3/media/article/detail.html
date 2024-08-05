@@ -1,0 +1,238 @@
+<extend name="../mediapublic/base" />
+<!-- 主体内容 -->
+<block name="body">
+    <link rel="stylesheet" href="__TMPL__/mediapublic/assets/css/newsinfo_detail.css">
+    <div class="new_detail_con layui-container">
+        <div class="fl new_con_left">
+            <p class="new_con_left_title"><a href="{:url('Index/index')}">平台首页</a>><a href="{:url('Article/index')}">新闻公告</a>><span>{$data.post_title}</span></p>
+            <div class="new_con_firstline">
+                <p class="fl new_con_firstline_left">{$data.post_title}</p>
+                <p class="fg new_con_firstline_right"> <span>{:show_time($data['update_time'])}</span><span
+                        class="ml20">浏览量：{$data.post_hits}</span></p>
+                        <p class="clear"></p>
+            </div>
+            <div class="new_con_header_hx"></div>
+            <div class="new_activity_con">
+                {$data.post_content}
+            </div>
+            <div class="new_con_next_prev">
+                <empty name="prev">
+                    <a href="javascript:;">
+                        <p>上一篇：无</p>
+                    </a>
+                    <else />
+                    <a href="{:url('Article/detail',['id'=>$prev['id'],'category_id'=>$category_id])}">
+                        <p>上一篇：{$prev.post_title}</p>
+                    </a>
+                </empty>
+                <empty name="next">
+                    <a href="javascript:;">
+                        <p>下一篇：无</p>
+                    </a>
+                    <else />
+                    <a href="{:url('Article/detail',['id'=>$next['id'],'category_id'=>$category_id])}">
+                        <p>下一篇：{$next.post_title}</p>
+                    </a>
+                </empty>
+            </div>
+            <div class="new_con_header_hx"></div>
+            <notempty name="others">
+            <p class="new_con_about">相关文章</p>
+            <div class="new_con_about_con">
+                <volist name="others" id="vo">
+                    <a href="{:url('Article/detail',['id'=>$vo['id']])}">
+                        <div class="new_con_about_con_item">
+                            <div class="fl dot"></div>
+                            <p class="fl">{$vo.post_title}</p>
+                        </div>
+                    </a>
+                </volist>
+            </div>
+            </notempty>
+        </div>
+        <div class="fl new_con_right">
+            <notempty name="carousel.data">
+            <div class="clear new_con_img">
+                <a href="{$carousel.url}" target="{$carousel.target}">
+                    <img src="{:cmf_get_image_url($carousel['data'])}" alt="">
+                </a>
+            </div>
+            </notempty>
+            <notempty name="gift">
+                <div class="clear new_con_bag">
+                    <div class="new_bag_header">
+                        <div class="fl new_bag_sx"></div>
+                        <p class="fl new_bag_title">热门礼包</p>
+                    </div>
+                    <volist name="gift" id="vo">
+                        <div class="new_bag_item clear">
+                            <a href="{:url('Gift/detail',['gift_id'=>$vo['gift_id']])}">
+                                <div class="new_bag_item_img fl">
+                                    <div class="new_bag_item_img_img">
+                                        <notempty name="vo.icon">
+                                            <img src="{:cmf_get_image_url($vo['icon'])}" alt=""
+                                                class="airtice_page_hot_bag">
+                                        </notempty>
+                                    </div>
+                                </div>
+                                <div class="new_bag_item_con fl">
+                                    <p class="clear new_bag_item_title">{$vo.giftbag_name}</p>
+                                    <p class="clear new_bag_item_comm">还剩<span> {:null_to_0($vo['remain_num']/$vo['novice_num']*100)} </span>%</p>
+                                </div>
+                            </a>
+                            <if condition="$vo['received'] eq 0">
+
+                                <div  <if condition="session('member_auth') and $vo['vip'] gt session('member_auth.vip_level')">class="hot_bag_lq_btn fl receive_bag_disabled"<else/>class="hot_bag_lq_btn fl getgift"</if> data-giftbag_id="{$vo.gift_id}">
+                                    领取礼包
+                                </div>
+                                <else />
+                                <div class="hot_bag_lq_btn fl copy" data-novice="{$vo.novice}">
+                                    复制
+                                </div>
+                            </if>
+                        </div>
+                    </volist>
+
+                </div>
+                <!-- 领取礼包弹窗 -->
+                <div class="receive_bag_modal" style="display: none;">
+                    <div class="receive_bag_modal_header">
+                        <span>礼包领取成功</span>
+                        <span class="close_receive_bag_modal">
+                                <img src="__STATIC__/images/delete_icon.png" alt="">
+                            </span>
+                    </div>
+                    <div class="receive_bag_modal_con">
+                        <p class="receive_bag_modal_firstline"><span class="colblack">激活码 : </span>
+                            <input readonly type="text" id="novice" class="fasfegxv" value="">
+                        </p>
+                        <p class="receive_bag_modal_secondline"><span> 可在[<a
+                                href="{:url('User/mygift')}">我的礼包</a>]中查看</span></p>
+                        <div class="receive_bag_modal_thirdline copy1"><span>复制</span> </div>
+                    </div>
+                </div>
+            </notempty>
+
+            <notempty name="recommend_game">
+                <div class="clear new_con_tj">
+                    <div class="new_con_tj_title">
+                        <div class="hot_remm_sx fl"></div>
+                        <p class="fl">热门推荐</p>
+                    </div>
+                    <div class="new_con_tj_con">
+                        <div class="new_con_tj_con_item">
+                            <div class="new_con_tj_con_item_one">游戏</div>
+                            <div class="new_con_tj_con_item_two">服数</div>
+                            <div class="new_con_tj_con_item_three"></div>
+                        </div>
+                        <volist name="recommend_game" id="vo">
+                            <div class="new_con_tj_con_item">
+                                <a href="{:url('Game/detail',['game_id'=>$vo['id']])}">
+                                    <div class="new_con_tj_con_otheritem_one">{$vo.game_name} </div>
+                                    <div class="new_con_tj_con_otheritem_two">{$vo.server_name}</div>
+                                </a>
+                                <div class="new_con_tj_con_otheritem_three">
+                                    <a href="{:url('Game/detail',['game_id'=>$vo['id']])}">
+                                        <div><span>开始游戏</span></div>
+                                    </a>
+                                </div>
+                                <div class="new_con_tj_con_item_xx clear"></div>
+                            </div>
+                        </volist>
+                    </div>
+                </div>
+            </notempty>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            $('.copy1').click(function () {
+                var str = $("#novice").val();
+                Copy(str);
+                layer.msg("复制成功", { time: 1000,skin:'demo-blue' });
+            })
+            $('.copy').click(function () {
+                var str = $(this).attr('data-novice');
+                Copy(str);
+                layer.msg("复制成功", { time: 1000,skin:'demo-blue' });
+            });
+            $('.close_receive_bag_modal').click(function () {
+            layer.closeAll()
+        })
+            //领取礼包
+            $('.getgift').click(function () {
+                var $this = $(this);
+                var login_auth = "{$session['login_auth']}";
+                if (login_auth == 1) {
+                    var gift_id = $this.attr('data-giftbag_id');
+                    $.ajax({
+                        type: 'post',
+                        url: '{:url("Gift/getgift")}',
+                        async: false,
+                        data: { gift_id: gift_id },
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data.code == 1) {
+                                $("#novice").val(data.novice);
+                                $this.parent().find('button').text('已领取');
+                                var conss = $('.receive_bag_modal');
+                                layer.open({
+                                    type: 1,
+                                    title: false,
+                                    closeBtn: false,
+                                    area: ['320px', '195px'],
+                                    offset: 'auto',
+                                    content: conss,
+                                    btnAlign: 'c',
+                                    shadeClose: true,
+                                    end: function () {
+                                        $('.receive_bag_modal').hide()
+                                    }
+                                })
+                            } else {
+                                layer.msg(data.msg,{skin: 'demo-red'});
+                            }
+                        },
+                        error: function (xhr, type) {
+                            alert('服务器错误');
+                        }
+                    });
+                } else {
+                    var conss = $('.login_modals')
+                    layer.open({
+                        type: 1,
+                        title: false,
+                        closeBtn: false,
+                        area: ['305px', '320px'],
+			            skin:'loginclass',
+                        offset: 'auto',
+                        content: conss,
+                        btnAlign: 'c',
+                        shadeClose: true,
+                        end: function () {
+                            $('.login_modals').hide()
+                        }
+                    })
+                }
+            })
+
+            $('.new_con_about_con_item').hover(function () {
+                $(this).children('.dot').addClass('dotcolorblue')
+            }, function () {
+                $(this).children('.dot').removeClass('dotcolorblue')
+            })
+        })
+
+        //复制功能
+        function Copy(str) {
+            var save = function (e) {
+                e.clipboardData.setData('text/plain', str);
+                e.preventDefault();
+            }
+            document.addEventListener('copy', save);
+            document.execCommand('copy');
+            document.removeEventListener('copy', save);
+        }
+    </script>
+
+</block>

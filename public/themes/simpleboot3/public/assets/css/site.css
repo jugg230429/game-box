@@ -1,0 +1,49 @@
+/*
+* @description: 站点样式
+ *@author:王奉
+* @update: name(xxxx-xx-xx xx:xx)
+ */
+.formtxt {
+    display: inline-block;
+    width: 542px;
+}
+.label-name{
+	width: 145px;
+}
+.btn-uploadify{
+	
+	width: 74px;
+	height: 26px;
+	line-height:26px;
+	text-align:center;
+	background: #f7f7f7;
+	border: 1px solid #ddd;
+	color: #444;
+	cursor: pointer;
+}
+.button{
+	margin-left: 160px;
+}
+.upload-height{
+	height:auto;
+}
+.upload-img{
+	display:block;
+	
+}
+.btn-dele{
+	width: 15px;
+    height: 15px;
+    border-radius: 15px;
+	display: block;
+    font-size: 12px;
+    line-height: 12px;
+    text-align: center;
+    color: red;
+	float:left;
+	margin:-5px 0 0 -5px;
+}
+.btn-dele:after{
+	content:"";
+	clear:both;
+}

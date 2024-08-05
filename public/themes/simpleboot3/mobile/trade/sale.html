@@ -1,0 +1,207 @@
+<extend name="../mobilepublic/trade_common" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/trade.css">
+</block>
+<block name="body">
+    <div class="page tradePage tradeSalePage">
+        <header class="header tradeHeader tradeSaleHeader">
+            <a href="javascript:history.back(-1);" class="headerBack tradeHeaderBack center"></a>
+            <div class="headerTitle center">选择要出售的小号</div>
+        </header>
+
+        <section class="list tradeList tradeSaleList">
+            <empty name="data">
+                <div class="tradeEmpty tradeSaleEmpty">
+                    <p class="tradeEmptyText">暂无游戏</p>
+                </div>
+            </empty>
+            <volist name="data" id="vo">
+                <a href="javascript:;" class="listItem tradeListItem tradeSaleListItem js-item">
+                    <div class="listItemIcon tradeListItemIcon tradeSaleListItemIcon">
+                        <img src="{:cmf_get_image_url($vo[0]['icon'])}" onerror="this.src='/static/images/empty.jpg';this.onerror=null">
+                    </div>
+                    <div class="listItemInfo tradeListItemInfo tradeSaleListItemInfo">
+                        <h3 class="tradeSaleListItemInfoTitle ellipsis">{$vo[0]['fgame_name']}</h3>
+                        <p class="listItemCount">{:count($vo)}个小号</p>
+                    </div>
+                    <div class="listItemChange"></div>
+                </a>
+                <div class="listItemContent js-sub">
+                    <volist name="vo" id="vv">
+                        <a href="javascript:;" data-id="{$vv['id']}" class="listItemContentItem js-subSale">
+                            <div class="listItemContentItemIcon"></div>
+                            <div class="listItemContentItemInfo">
+                                <h3 class="listItemContentItemInfoTitle">{$vv.nickname}</h3>
+                                <p class="listItemContentItemInfoDesc">累计消费<i>{$vv.cumulative}</i>元</p>
+                            </div>
+                            <div class="listItemContentItemBtn">出售</div>
+                        </a>
+                    </volist>
+                </div>
+            </volist>
+        </section>
+    </div>
+
+    <div class="saleRuleShade js-saleRule">
+    <div class="saleRuleWrapper">
+    <div class="saleRuleBox">
+        <div class="saleRuleHeader">
+            <h3 class="saleRuleHeaderTitle">卖号须知</h3>
+            <p class="saleRuleHeaderDesc">为了您的消费权益，请仔细阅读</p>
+        </div>
+        <div class="saleRuleBody">
+            <section class="saleRuleProcess">
+                <div class="saleRuleTitle">出售流程</div>
+                <div class="saleRuleShow">
+                    <div class="saleRuleShowItem">
+                        <i class="saleRuleShowIcon submitSaleRuleShowIcon"></i>
+                        <p class="saleRuleShowTitle">提交商品</p>
+                    </div>
+                    <div class="saleRuleShowItem">
+                        <i class="saleRuleShowIcon toSaleRuleShowIcon"></i>
+                        <p class="saleRuleShowTitle">&nbsp;</p>
+                    </div>
+                    <div class="saleRuleShowItem">
+                        <i class="saleRuleShowIcon checkSaleRuleShowIcon"></i>
+                        <p class="saleRuleShowTitle">审核冻结</p>
+                    </div>
+                    <div class="saleRuleShowItem">
+                        <i class="saleRuleShowIcon toSaleRuleShowIcon"></i>
+                        <p class="saleRuleShowTitle">&nbsp;</p>
+                    </div>
+                    <div class="saleRuleShowItem">
+                        <i class="saleRuleShowIcon saleSaleRuleShowIcon"></i>
+                        <p class="saleRuleShowTitle">买家购买</p>
+                    </div>
+                    <div class="saleRuleShowItem">
+                        <i class="saleRuleShowIcon toSaleRuleShowIcon"></i>
+                        <p class="saleRuleShowTitle">&nbsp;</p>
+                    </div>
+                    <div class="saleRuleShowItem">
+                        <i class="saleRuleShowIcon moneySaleRuleShowIcon"></i>
+                        <p class="saleRuleShowTitle">获得收益</p>
+                    </div>
+                </div>
+            </section>
+            <section class="saleRuleRecord">
+                <div class="saleRuleTitle">卖家须知</div>
+                <ul class="saleRuleList">
+                    <li>商品提交审核之后，小号将会被冻结，无法登录；</li>
+                    <li>审核不成功或新选择下架商品，可重新登录游戏获得小号；</li>
+                    <li>出售时显示累计金额为该小号在该游戏同一小号下多个区服角色的所有累计充值；</li>
+                    <li>小号出售成功后，该小号在本游戏中所有区服的角色会一同售出，但不影响该小号在其他游戏中的角色；</li>
+                    <li>出售成功后将收取<span class="">{:cmf_get_option('transaction_set')['fee']?:0}</span>%的手续费(最低<span>{:cmf_get_option('transaction_set')['min_dfee']?:0}</span>元)，剩余收益以平台币的形式转至您的帐号下，平台币可提现，可用于游戏充值。</li>
+                    <li>交易完成后，不支持找回；</li>
+                    <li>在审核和商品出售过程中，您可以对商品的售价进行修改；</li>
+                    <li>如玩家保管账号不当或账号共享，使账号出现密码泄露、丢失、被盗等账号问题，导致小号被恶意出售，本平台不具有赔偿责任，也有权不处理不负责该类问题。</li>
+                </ul>
+            </section>
+            <section class="saleRuleBtn">
+                <div class="saleRuleCheck">
+                    <label>
+                    <input type="checkbox" id="prompt" class="saleRuleCheckBtn">
+                    <i class="saleRuleCheckIcon"></i>
+                    <span>不再提示</span>
+                    </label>
+                </div>
+                <div class="saleRuleClick">
+                    <a href="javascript:;" class="saleRuleClickBtn center cancel js-saleRuleCancel">取消</a>
+                    <a href="javascript:;" class="saleRuleClickBtn center confirm js-saleRuleConfirm">我已阅读且同意</a>
+                </div>
+            </section>
+        </div>
+    </div>
+    </div>
+    </div>
+
+</block>
+<block name="script">
+    <script>
+        $(function () {
+            var tankuang = 0;
+            $('body').on('click', '.js-item', function () {
+                var that = $(this);
+                if(that.hasClass('on')) {
+                    $('.js-item').removeClass('on');
+                    $('.js-sub').slideUp();
+                } else {
+                    that.addClass('on').siblings('.js-item').removeClass('on');
+                    that.next('.js-sub').stop(true).slideDown().siblings('.js-sub').slideUp();
+                }
+                return false;
+            });
+
+            $('body').on('click', '.js-subSale', function () {
+                var isok = false;
+                $.ajax({
+                    type: 'post',
+                    dataType: 'json',
+                    url: "{:url('check_public_account')}",
+                    async:false,
+                    success: function (data) {
+                        if (data.code == 1) {
+                            isok = true;
+                        }
+                    },
+                    error: function () {
+                        layer.msg('服务器故障，请稍候再试');
+                    }
+                });
+                if(isok == false){
+                    layer.msg('小号出售暂未开通，请联系客服。');
+                    return false;
+                }
+                if(tankuang == 1){
+                    window.location.href = "/mobile/trade/transaction/small_id/"+id;
+                    return false;
+                }
+                var id = $(this).data('id');
+                var prompt = "{$user.is_sell_prompt}";
+                if(prompt == 1){
+                    window.location.href = "/mobile/trade/transaction/small_id/"+id;
+                }else{
+                    $('.js-saleRule').fadeIn(800);
+                    $(".js-saleRuleConfirm").attr('data-id',id);
+                }
+            });
+
+            $('body').on('click', '.js-saleRuleCancel', function () {
+                var prompt = $('#prompt').is(':checked');
+                if(prompt){
+                    prompt = 1;
+                    $.ajax({
+                        type: 'post',
+                        dataType: 'json',
+                        url: "{:url('is_popup')}",
+                        async:false,
+                        data:{field:'is_sell_prompt'},
+                        success: function (data) {
+                            if (data.code == 1) {
+                                tankuang = 1;
+                            }
+                        },
+                        error: function () {
+                            layer.msg('服务器故障，请稍候再试');
+                        }
+                    });
+                }
+                $(this).closest('.js-saleRule').fadeOut(400);
+                return false;
+            });
+
+            $('body').on('click', '.js-saleRuleConfirm', function () {
+                var id = $(this).data('id');
+                var prompt = $('#prompt').is(':checked');
+                if(prompt){
+                    prompt = 1;
+                }else{
+                    prompt = 0;
+                }
+                window.location.href = "/mobile/trade/transaction/small_id/"+id+"/prompt/"+prompt;
+                $(this).closest('.js-saleRule').fadeOut(400);
+                return false;
+            })
+
+        })
+    </script>
+</block>

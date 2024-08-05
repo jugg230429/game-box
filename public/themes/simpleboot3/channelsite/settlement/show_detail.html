@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+    <link href="__TMPL__/public/assets/css/data.css" rel="stylesheet" />
+    <link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+    <link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" />
+    <link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+    
+    <link href="__TMPL__/public/assets/css/promote/common.css" rel="stylesheet" />
+</head>
+<style>
+    .daterangepicker .ranges li.active {
+        color: #fff!important;
+    }
+    input[type=text]:focus {
+        border-color: #E5E5E5!important;
+    }
+    .trunk-con{
+        margin-left: 0px;
+        background-color: #fff!important;
+    }
+    .record {
+        border: none!important;
+    }
+</style>
+<body>
+
+<link href="__TMPL__/public/assets/css/finance.css" rel="stylesheet"/>
+<div class="trunk">
+    <div class="trunk-con">
+        <div class="right-container">
+            <div class="normal-list">
+
+                <div class="record">
+
+                    <form id="submit_form"  onsubmit="return check()" method="get">
+                        <div class="trunk-search clearfix fr">
+                            <input type="hidden" name="period_id" value="{$period_id}">
+                            <!-- <input type="button" url="{:url('show_detail')}" class="submit fr normal-space btn-clear"  value="刷新"> -->
+                            <input type="submit" class="submit fr normal-space" id="submit" value="刷新">
+                        </div>
+                    </form>
+
+                    <div class="clear"></div>
+                    <div class="minh-table">
+                        <table class="table normal-table" id="promotecoin_table">
+                            <tbody>
+                                <tr >
+                                    <th colspan="9" style="text-align: left;"> <span style="margin-right: 40px;margin-left: 10px;">当前结算周期:{$period_info.period}</span> <span>当前结算单号: {$period_info.order_num}</span></th>
+                                </tr>
+                            <tr>
+                                <th>游戏名称</th>
+                                <th>CPS实付流水</th>
+                                <th>CPS分成比例</th>
+                                <!-- <th>渠道账号信息</th> -->
+                                <th>CPS分成金额</th>
+                                <th>CPA分成金额</th>
+                                
+                            </tr>
+
+                            <notempty name="data_lists">
+                                <volist name="data_lists" id="vo">
+                                    <tr>
+                                        <td>{$vo.game_name}</td>
+                                        <td>{$vo.pay_amount}</td>
+                                        <td>{$vo.ratio}</td>
+                                        <td>{$vo.cps_money}</td>
+                                        <td>{$vo.cpa_money}</td>
+                                    </tr>
+                                </volist>
+                                <tr class="data_summary">
+                                    <td>汇总</td>
+                                    <td>{:null_to_0($total.pay_amount)}</td>
+                                    <td>--</td>
+                                    <td>{:null_to_0($total.total_cps_money)}</td>
+                                    <td>{:null_to_0($total.total_cpa_money)}</td>
+                                </tr>
+                                <else/>
+                                <!--暂无数据-->
+                                <tr>
+                                    <td colspan="<if condition='PID_LEVEL neq 3'>9<else/>8</if>">
+                                        <div class="no-data">
+                                            <img src="__TMPL__/public/assets/images/icon_wushujv2.png" alt=""
+                                                 class="no-data-img">
+                                            <p class="no-data-text">暂无数据</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </notempty>
+                            </tbody>
+                        </table>
+                        <notempty name="data_lists">
+                            <div class="pagenation clearfix">
+                                <!-- <a download class="sch-btn" -->
+                                <a class="sch-btn"
+                                   href="{:url('Export/expSettlementOnePeriodDetail',array_merge(['period_id'=>$period_id]))}">导出
+                                </a>
+                                {$page}
+                            </div>
+                        </notempty>
+                    </div>
+
+                </div>
+            </div>
+            
+        </div>
+        <include file="public@scripts"/>
+
+        <script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+		<script src="__STATIC__/js/layer/layer.js"></script>
+		<script src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.js"></script>
+		<script src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+        <script>
+            $(function() {
+				$(".js-select-gallery").select2();
+                //			日历
+
+            })
+
+            //时间插件 默认时间
+            function check() {
+                
+            }
+
+        </script>
+    </div>
+</div>
+</body>
+
+</html>

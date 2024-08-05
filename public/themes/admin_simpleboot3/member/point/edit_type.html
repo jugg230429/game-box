@@ -1,0 +1,146 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="javascript:;">{$data.name}设置</a></li>
+    </ul>
+
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('edit_type')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>任务名称：
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" name="name" value="{$data.name}" class="form-control" placeholder="请输入任务名称" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>奖励积分值：
+                            </label>
+                            <if condition="$data['key'] eq 'pay_award'">
+                                <div class="col-md-4 col-sm-6" style="display: flex;align-items: center">
+                                    <span style="padding-right: 10px">实际充值金额  x </span><input type="number" step="1" name="point" value="{$data.point}" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" class="form-control"  style="width: calc(100% - 106px)" />
+                                </div>
+                            <else/>
+                                <div class="col-md-4 col-sm-6">
+                                    <input type="number" step="1" name="point" value="{$data.point}" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" class="form-control"  />
+                                </div>
+                            </if>
+                        </div>
+                        <if condition="in_array($data['key'],['vip_upgrade','sign_in'])">
+                            <div class="form-group">
+                                <label for="input-site-name" class="col-sm-2 control-label">
+                                    递增值：
+                                </label>
+                                <div class="col-md-4 col-sm-6">
+                                    <input type="number" step="1" name="time_of_day" value="{$data.time_of_day}" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" class="form-control"  />
+                                </div>
+                            </div>
+                        </if>
+                        <if condition="$data['key'] eq 'pay_award'">
+                            <div class="form-group">
+                                <label for="input-site-name" class="col-sm-2 control-label">
+                                    生日奖励：
+                                </label>
+                                <div class="col-md-4 col-sm-6" style="display: flex;align-items: center">
+                                    <span style="padding-right: 10px">实际充值金额  x </span><input type="text" name="birthday_point" value="{$data.birthday_point}" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" class="form-control"  style="width: calc(100% - 106px)"  />
+                                </div>
+                                <p class="help-block">生日当天充值可获得的充值比例</p>
+                            </div>
+                        </if>
+
+
+                        <if condition="$data['key'] eq 'subscribe_wechat'">
+                            <div class="form-group">
+                                <label for="input-site-name" class="col-sm-2 control-label">
+                                    兑换码：
+                                </label>
+                                <div class="col-md-4 col-sm-6" style="display: flex;align-items: center">
+                                   <input type="text" name="cdkey" value="{$data.cdkey}" class="form-control" />
+                                </div>
+                                <p class="help-block"></p>
+                            </div>
+                        </if>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                <span class="form-required">*</span>任务说明：
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                              <textarea class="form-control" name="description">{$data.description}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">备注：</label>
+                            <div class="col-md-4 col-sm-6">
+                                <textarea class="form-control" name="remark">{$data.remark}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site-name" class="col-sm-2 control-label">
+                                优先级：
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" name="sort" value="{$data.sort}" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" class="form-control"  />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">状态：</label>
+                            <div class="col-md-4 col-sm-6 v-middle" >
+                                <label class="label-width">
+                                    <input type="radio" name="status" class="inp_radio" value="1" <?php if($data['status']=='1') echo 'checked'; ?>> 开启
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" name="status" class="inp_radio" value="0" <?php if($data['status']=='0') echo 'checked'; ?> > 关闭
+                                </label>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-site_analytics" class="col-sm-2 control-label">任务类型：</label>
+                            <div class="col-md-4 col-sm-6 v-middle" >
+                                <label class="label-width">
+                                    <input type="radio" name="type" class="inp_radio" value="1" <eq name="data.type" value="1">checked="checked"</eq>> 新手
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" name="type" class="inp_radio" value="2" <eq name="data.type" value="2">checked="checked"</eq>> 日常
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" name="type" class="inp_radio" value="3" <eq name="data.type" value="3">checked="checked"</eq>> 游戏
+                                </label>
+                                <label class="label-width">
+                                    <input type="radio" name="type" class="inp_radio" value="4" <eq name="data.type" value="4">checked="checked"</eq>> 推荐
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <input type="hidden" name="id" value="{$data.id}">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                    {:lang('SAVE')}
+                                </button>
+                                <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script>
+</script>
+</body>
+</html>

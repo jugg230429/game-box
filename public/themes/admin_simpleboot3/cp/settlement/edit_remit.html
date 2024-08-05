@@ -1,0 +1,195 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="javascript:;">打款</a></li>
+    </ul>
+    <form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('edit_remit')}"
+          method="post">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content">
+
+                    <div class="form-group">
+                        <label for="input-site-name" class="col-sm-2 control-label">
+                            打款时间：
+                        </label>
+                        <div class="col-md-6 col-sm-8">
+                            <input type="text" name="remit_time" class="form-control js-bootstrap-datetime f1" id="remit_time"  style="width:48%;" value="{$data.remit_time|date='Y-m-d H:i:s',###}" autocomplete="off">
+                        </div>
+                        <p class="help-block" style="position: relative;left: -411px;">以回执单银行时间戳为准</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input-html_cache_on" class="col-sm-2 control-label">结算单号：</label>
+                        <div class="col-md-3 col-sm-10">
+                            
+                            <select name="settlement_period_order_num[]" id="settlement_period_order_num" class="selectpicker form-control " data-none-selected-text="全部" multiple data-actions-box="true" data-live-search="true" data-size="8" style="width: 300px;" title="选择结算单号">
+                                <foreach name="settlement_period_info" item="vo" key="dir">
+                                    <option order-num="{$vo.order_num}" value="{$vo.order_num}" <if condition="$vo['order_num'] eq $data.order_num">selected</if>>{$vo.order_num}</option>
+                                </foreach>
+                            </select>
+                        </div>
+                        <p class="help-block">选择本次结算记录所涉及的结算单号</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input-site_analytics" class="col-sm-2 control-label">打款金额：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <input type="text" name="remit_amount" class="form-control  " value="{$data['remit_amount']}" onkeyup="value=value.toString().match(/^\d+(?:\.\d{0,2})?/)" >
+                        </div>
+                        <p class="help-block">以回执单上金额为准</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input-site_analytics" class="col-sm-2 control-label">收款账户：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <!-- <if condition="$data.cp_receive_type eq 1">
+                                <input type="text" class="form-control" name="accounts_of_receive" value="{$data.cp_receive_name}  {$data.cp_receive_account}  (银行卡)" readonly>
+                            </if>
+
+                            <if condition="$data.cp_receive_type eq 2">
+                                <input type="text" class="form-control" name="name_of_receive" value="{$data.cp_receive_name}  {$data.cp_receive_account}  (支付宝)" readonly>
+                            </if> -->
+                            <php>
+                                $comma = '';
+                                if(!empty($data['cp_receive_account']) && !empty($data['cp_receive_name'])){
+                                    $comma = ' , ';
+                                }
+                            </php>
+                            <span class="receive_info">
+                                {$data.cp_receive_name} {$comma} {$data.cp_receive_account}
+                            </span>
+                            <!-- <if condition="$data.promote_receive_type eq 0">{$data.promote_receive_account} {$data.promote_receive_name}</if>
+                            <if condition="$data.promote_receive_type eq 1">{$data.promote_receive_account} {$data.promote_receive_name}</if> -->
+                            
+                            <input type="hidden" name="accounts_of_receive" value="{$data.cp_receive_account}">
+                            <input type="hidden" name="name_of_receive" value="{$data.cp_receive_name}">
+                            <input type="hidden" name="type_of_receive" value="{$data.cp_receive_type}">
+
+
+                        </div>
+                        <p class="help-block"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input-html_cache_on" class="col-sm-2 control-label">选择CP：</label>
+                        <div class="col-md-3 col-sm-10">
+                            <php>$map_cp = ['id'=>0];</php>
+                            <select name="cp_id" id="cp_id" class="selectpicker form-control " data-live-search="true" data-size="10" style="width: 300px;" title="CP商">
+                                <volist name=":get_cp_list()" id="vo">
+                                    <option promote-id="{$vo.id}" value="{$vo.id}" <if condition="$vo['id'] eq $data.cp_id">selected</if>>{$vo.cp_name}</option>
+                                </volist>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="input-site_analytics" class="col-sm-2 control-label">打款人：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <input type="text" name="operator" value="{$data['operator']}" class="form-control">
+                        </div>
+                        <p class="help-block">输入创建本次打款记录的操作人姓名</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input-site_analytics" class="col-sm-2 control-label">回执单：</label>
+                        <div class="col-md-3 col-sm-5">
+                            <input id="receipt" type="hidden" name="receipt" value="{$data.receipt}">
+                            <img id="receipt-preview" class="upload-img"  <if condition="$data['receipt']">src="{:cmf_get_image_preview_url($data['receipt'])}"</if>>
+                            <a href="javascript:uploadOneImage('图片上传','#receipt');" class="btn btn-sm btn-default" style="height: 33px;line-height: 22px;margin-bottom:3px">上传</a>
+                            <a href="javascript:(function(){$('#receipt-preview').attr('src','');$('#receipt').val('')})();">移除</a>
+                        </div>
+                        <!-- <p class="help-block">回执单，尺寸278x372px</p> -->
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input-site_analytics" class="col-sm-2 control-label">备注：</label>
+                        <div class="col-md-6 col-sm-8">
+                            <textarea class="form-control" id="remark" name="remark" rows="5" style="min-width: 30%;max-width: 48%">{$data['remark']}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-5">
+                            <input type="hidden" name="id" value="{$data.id}">
+                            <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9" data-refresh="1">
+                                {:lang('SAVE')}
+                            </button>
+                            <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script src="__STATIC__/js/wind.js"></script>
+<script>
+    var currentDateTime = "{:date('Y-m-d H:i')}";
+    Wind.css('bootstrapDatetimePicker');
+    Wind.use('bootstrapDatetimePicker', function () {
+        $('.js-bootstrap-datetime').datetimepicker('setEndDate', currentDateTime);
+    });
+
+    $(function () {
+        // 订单框变动触发事件
+        $("#settlement_period_order_num").change(function(){
+            var settlement_period_order_nums = $('#settlement_period_order_num option:selected').val();
+            console.log(settlement_period_order_nums);
+        });
+
+        $("#cp_id").change(function(){
+            var cp_id = $('#cp_id option:selected').val();
+            // 变换cp选择的值 触发事件
+            // alert(cp_id);
+            $("#settlement_period_order_num").empty();
+            var get_cp_period_settlement_url = "{:url('get_cp_period_settlement_order')}";
+			$.ajax({
+				type: 'POST',
+				url: get_cp_period_settlement_url,
+				data:{cp_id:cp_id},
+				async:true,
+				dataType:'json',
+				success:function(data){
+					if (data.code > 0){
+						// 获取成功
+						for (var i = 0; i < data.data.settlement_period_info.length; i++) {
+							$("#settlement_period_order_num").append("<option value="+data.data.settlement_period_info[i].order_num+">"+data.data.settlement_period_info[i].order_num+"</option>");
+						}
+						$('#settlement_period_order_num').selectpicker('refresh');
+						$('#settlement_period_order_num').selectpicker('render');
+						// 修改收款人
+                        var receive_info_total = '';
+                        var receive_account2 = data.data.receive_info.receive_account;
+                        var receive_name2 = data.data.receive_info.receive_name;
+                        if(receive_account2 == null || receive_account2 == undefined || receive_account2==""){
+                            receive_info_total = receive_name2 + receive_account2;
+                        }else{
+                            receive_info_total = receive_name2 + ' ,' + receive_account2;
+                        }
+
+                        $('.receive_info').text(receive_info_total);
+
+                        $("input[name='accounts_of_receive']").val(data.data.receive_info.receive_account);
+                        $("input[name='name_of_receive']").val(data.data.receive_info.receive_name);
+                        $("input[name='type_of_receive']").val(data.data.receive_info.receive_type);
+					}
+					else{
+						// 获取失败
+						// $(".checkaccount .input-status").text(data.msg);
+						// $(".checkaccount .input-status").css("color","red");
+						// layer.msg(data.msg,{time:3000});
+					}
+				}
+			})
+        }); 
+    })
+
+</script>
+</body>
+</html>

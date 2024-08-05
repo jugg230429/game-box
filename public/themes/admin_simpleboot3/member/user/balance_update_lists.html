@@ -1,0 +1,94 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('user/balance_update_lists')}">账户修改记录</a></li>
+            <span class="title_remark">说明：记录管理后台修改玩家详情里平台币余额的操作记录</span>
+        </ul>
+        <form id="search_form" class="well form-inline fr" method="get" action="{:url('user/balance_update_lists')}" onsubmit="return check();">
+            <input type="text" class="form-control" name="user_account" style="width: 120px;" value="{:input('user_account/s','')}" placeholder="玩家账号">
+            <if condition="AUTH_PROMOTE eq 1">
+                <select name="promote_id" id="promote_id"  class="selectpicker" data-live-search="true"  data-size="8" style="width: 120px;">
+                    <option value="">所属渠道</option>
+                    <option value="0" <if condition="input('request.promote_id') eq '0'">selected</if>>官方渠道</option>
+                    <volist name=":get_promote_list()" id="vo">
+                        <option promote-id="{$vo.id}" value="{$vo.id}" <if condition="input('request.promote_id') eq $vo['id']">selected</if>>{$vo.account}</option>
+                    </volist>
+                </select>
+            </if>
+            <input type="text" class="form-control js-bootstrap-date" name="start_time" id="start_time" placeholder="修改开始时间"
+                   value="{:input('request.start_time/s','')}" style="width: 140px;" autocomplete="off">-
+            <input type="text" class="form-control js-bootstrap-date" name="end_time" id="end_time" placeholder="修改结束时间"
+                   value="{:input('request.end_time/s','')}" style="width: 140px;" autocomplete="off">
+            <!-- <select name="type" id="type" class="selectpicker" type="{:input('request.type','')}" style="width: 120px;">
+                <option value="">货币类型</option>
+                <option value="0" <if condition="input('request.type') heq '0'">selected</if>>平台币</option>
+                <option value="1" <if condition="input('request.type') heq '1'">selected</if>>绑币</option>
+            </select> -->
+            <select name="admin_id" id="admin_id" class="selectpicker " data-live-search="true" data-size="8" admin_id="{:input('request.admin_id/s','')}"  style="width: 100px;">
+                <option value="">操作人员</option>
+                <volist name=":get_admin_lists()" id="vo">
+                    <option  value="{$vo.id}" >{$vo.user_login}</option>
+                </volist>
+            </select>
+
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('user/balance_update_lists')}">清空</a>
+            <a class="btn btn-export js-ajax-dialog-btn-xz" data-msg="确定导出吗？" href="{:url('Export/expUser',array_merge(['id'=>5,'xlsname'=>'账户修改记录'],input()))}">导出</a>
+        </form>
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>玩家账号</th>
+                    <th>所属渠道</th>
+                    <th>货币类型</th>
+                    <th>修改前数量</th>
+                    <th>修改后数量</th>
+                    <th>余额变动</th>
+                    <th>修改时间</th>
+                    <th>操作人员</th>
+                </tr>
+            </thead>
+            <tbody>
+                <php>$user_statuses=array("0"=>'已锁定',"1"=>'正常');</php>
+                <empty name="data_lists">
+                    <tr><td colspan="7" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <volist name="data_lists" id="vo">
+                    <tr>
+                        <td>{$vo.user_account}</td>
+                        <td>{:$vo['promote_account']?:'官方渠道'}</td>
+                        <td>平台币</td>
+                        <td>{$vo.prev_amount}</td>
+                        <td>{$vo.amount}</td>
+                        <td>{:$vo['amount']-$vo['prev_amount']>0?'+':'-'}{:round(abs($vo['amount']-$vo['prev_amount']),2)}</td>
+                        <td>{:date('Y-m-d H:i:s',$vo['create_time'])}</td>
+                        <td>{$vo.op_account}</td>
+
+                    </tr>
+                    </volist>
+                </empty>
+            </tbody>
+        </table>
+        <div class="pagination">
+            {$page}
+        </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script>
+        admin_id = $("#admin_id").attr('admin_id');
+        $("#admin_id").selectpicker('val', admin_id);
+        $("#type").selectpicker('val', $('#type').attr('type'));
+        function check(){
+            var start_time = $("#start_time").val();
+            var end_time = $("#end_time").val();
+            if(start_time != '' && end_time != '' && start_time > end_time){
+                layer.msg('开始时间不能大于结束时间');
+                return false;
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>

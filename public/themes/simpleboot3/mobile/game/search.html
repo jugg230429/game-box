@@ -1,0 +1,167 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/search_page.css">
+</block>
+
+<block name="body">
+    <div class="search_info_page">
+        <div class="search_header">
+            <div class="search_header_firstline">
+                <p class="fl">搜索</p>
+                <img class="fl" src="__TMPL__/mobilepublic/assets/images/common_btn_close_n.png" alt="">
+            </div>
+            <div class="search_header_secondline clearfix">
+                <div class="search-icon">
+                <img src="__TMPL__/mobilepublic/assets/images/nav-search.png" alt="" class="">
+                </div>
+                <input type="text" placeholder="搜索游戏" class="fl" id="search" autofocus="autofocus">
+                <p class="fl">取消</p>
+            </div>
+            <div class="clear search_info_cons">
+                <!-- 未点击输入框 -->
+                <div class="nomarl_sty">
+                    <p class="hot_search_text">热门搜索</p>
+                    <volist name="hot_game" id="hot">
+                        <div class="index_fg_hx"></div>
+                        <a href="{:url('game/detail',['game_id'=>$hot.id])}"><p class="hot_search_game">{$hot.relation_game_name}<eq name="hot.sdk_version" value="3">H5</eq></p></a>
+                    </volist>
+
+
+                </div>
+
+                <!-- 有搜索条件 -->
+                <div class="has_search_con">
+                    <p class="search_info_text" id="game_search" hidden>游戏</p>
+                    <div  id="game"></div>
+                    <!--<div class="index_fg_hx game_hx"></div>-->
+                    <p class="search_info_text" id="gift_search" hidden>礼包</p>
+                    <div  id="gift"></div>
+                    <!--<div class="index_fg_hx gift_hx"></div>-->
+                    <p class="search_info_text" id="article_search" hidden>活动</p>
+                    <div  id="article"></div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+<script>
+    $('.search_header_secondline input').click(function () {
+        $('.search_header_firstline').hide()
+        $('.search_header_secondline input').css('width', '86%')
+        $('.search_header_secondline input')
+        $('.search_header_secondline img').addClass('focus_input_yangshi')
+        $('.search_header_secondline p').show()
+        $('.has_search_con').show()
+    })
+    $('.search_header_firstline img').click(function(){
+        window.history.back()
+    })
+    $('.search_header_secondline p').click(function(){
+        window.history.back()
+    })
+
+    $("#search").on('input propertychange',function(e){
+        searchfun();
+    })
+    inputvalue= $('#search').val();
+    if(inputvalue){
+        $('#search').click();
+        searchfun();
+    }
+    function searchfun() {
+        var name= $('#search').val();
+        <!-- layer.load(2); -->
+        <!-- setTimeout(function(){ -->
+            <!-- layer.closeAll('loading'); -->
+        <!-- }, 500); -->
+        $.ajax({
+            type: 'get',
+            dataType: 'json',
+            url: '{:url("Game/searchGame")}',
+            data: {game_name:name},
+            async:false,
+            success: function (data) {
+                if (data.code == 1) {
+                    var data=data.data;
+                    var game_result='';
+                    for (var i in data) {
+                        game_result += '<div class="index_fg_hx"></div>';
+                        if(data[i].sdk_version == 3){
+                            game_result +=     '<a href="'+data[i].url+'"><p class="search_info_game">'+data[i].relation_game_name+'H5</p></a>'
+                        }else{
+                            game_result +=     '<a href="'+data[i].url+'"><p class="search_info_game">'+data[i].relation_game_name+'</p></a>'
+                        }
+                    }
+                    $('#game').html(game_result);
+                    $("#game_search").show();
+                } else {
+                    $('#game').html('');
+                    $("#game_search").hide();
+                }
+            },
+            error: function () {
+                layer.msg('服务器故障，请稍候再试');
+            },complete:function(){
+                $('.nomarl_sty').hide();
+            }
+        });
+        // $.ajax({
+        //     type: 'get',
+        //     dataType: 'json',
+        //     url: '{:url("Gift/searchGift")}',
+        //     data: {gift_name:name},
+        //     async:false,
+        //     success: function (data) {
+        //         if (data.code == 1) {
+        //             var data=data.data;
+        //             var gift_result='';
+        //             for (var i in data) {
+        //                 gift_result += '<div class="index_fg_hx"></div>'
+        //                 gift_result +=     '<a href="'+data[i].url+'"><p class="search_info_game">'+data[i].giftbag_name+'</p></a>'
+        //             }
+        //             $('#gift').html(gift_result);
+        //             $("#gift_search").show();
+        //             $(".game_hx").show();
+        //         } else {
+        //             $('#gift').html('');
+        //             $("#gift_search").hide();
+        //             $('.game_hx').hide();
+        //         }
+        //     },
+        //     error: function () {
+        //         layer.msg('服务器故障，请稍候再试');
+        //     }
+        // });
+        // $.ajax({
+        //     type: 'get',
+        //     dataType: 'json',
+        //     url: '{:url("Article/searchArticle")}',
+        //     data: {article_name:name},
+        //     async:false,
+        //     success: function (data) {
+        //         if (data.code == 1) {
+        //             var data=data.data;
+        //             var article_result='';
+        //             for (var i in data) {
+        //                 article_result += '<div class="index_fg_hx"></div>'
+        //                 article_result +=     '<a href="'+data[i].url+'"><p class="search_info_game">'+data[i].post_title+'</p></a>'
+        //             }
+        //             $('#article').html(article_result);
+        //             $("#article_search").show();
+        //             $('.gift_hx').show();
+        //         } else {
+        //             $('#article').html('');
+        //             $("#article_search").hide();
+        //             $('.gift_hx').hide();
+        //         }
+        //     },
+        //     error: function () {
+        //         layer.msg('服务器故障，请稍候再试');
+        //     }
+        // });
+    };
+</script>
+</block>

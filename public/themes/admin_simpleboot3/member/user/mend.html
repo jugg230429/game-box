@@ -1,0 +1,93 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('user/userinfo')}">{:lang('ADMIN_USER_INDEX')}</a></li>
+            <span class="title_remark">说明：11233在WAP站、PC官网、SDK内注册的用户。</span>
+        </ul>
+        <form id="search_form" class="well form-inline margin-top-20" method="get" action="{:url('User/userinfo')}">
+            <input type="text" class="form-control" name="user_login" style="width: 120px;" value="{:input('request.user_login/s','')}" placeholder="管理员账号">
+
+            <select name="user_status" id="user_status" class="form-control" style="width: 120px;">
+                <option value="">账号状态</option>
+                <option value="1" <if condition="input('request.user_status') eq 1">selected</if>>正常</option>
+                <option value="0" <if condition="input('request.user_status') heq '0'">selected</if>>已锁定</option>
+
+            </select>
+            <input type="submit" class="btn btn-primary" id="search_btn" value="搜索" />
+            <a class="btn btn-clear" href="{:url('User/index')}">清空</a>
+        </form>
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th width="50">ID</th>
+                    <th>账号</th>
+                    <th><a href="javascript:;">累计消费<img src="__TMPL__/public/assets/images/up-down.png" width="7px"></a></th>
+                    <th>付费记录</th>
+                    <th>上次消费</th>
+                    <th>间隔天数</th>
+                    <th>所属渠道</th>
+                    <th>平台币余额</th>
+                    <th>注册方式</th>
+                    <th>VIP等级</th>
+                    <th>注册时间</th>
+                    <th>最后登录时间</th>
+                    <th>最后登录IP</th>
+                    <th>状态</th>
+                    <th width="130">{:lang('ACTIONS')}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <php>$user_statuses=array("0"=>'已锁定',"1"=>'正常');</php>
+                <empty name="data_lists">
+                    <tr><td colspan="15" style="text-align: center;">暂无数据</td></tr>
+                <else/>
+                    <foreach name="data_lists" item="vo">
+                    <tr>
+                        <td>{$vo['id']}</td>
+                        <td>{$vo.account}</td>
+                        <td><if condition="AUTH_PAY eq 1">{$vo.cumulative}<else/>请购买充值权限</if></td>
+                        <td><if condition="AUTH_PAY eq 1">{}<else/>请购买充值权限</if></td>
+                        <td><if condition="AUTH_PAY eq 1">{}<else/>请购买充值权限</if></td>
+                        <td></td>
+                        <td><if condition="AUTH_PROMOTE eq 1">{:get_promote_name($vo['promote_id'])}<else/>请购买渠道权限</if></td>
+                        <td>{$vo.balance}</td>
+                        <td>{:get_user_register_type($vo['register_type'])}</td>
+                        <td>{$vo.vip_level}</td>
+                        <td>
+                            <if condition="$vo['register_time'] eq ''">
+                                --
+                            <else />
+                                {:date('Y-m-d H:i:s',$vo['register_time'])}
+                            </if>
+                        </td>
+                        <td>
+                            <if condition="$vo['login_time'] eq ''">
+                                --
+                            <else />
+                                {:date('Y-m-d H:i:s',$vo['login_time'])}
+                            </if>
+                        </td>
+                        <td>{$vo.login_ip}</td>
+                        <td><span <if condition="$vo['lock_status'] eq 1"> class="label label-success"<else/>class="label label-danger"</if>>{$user_statuses[$vo['lock_status']]}</span></td>
+
+                        <td>
+                            <a href='{:url("user/edit",array("id"=>$vo["id"]))}'>查看</a>
+                            <if condition="$vo['lock_status'] eq 1">
+                                <a href="{:url('user/ban',array('id'=>$vo['id']))}" class="js-ajax-dialog-btn" data-msg="{:lang('您确定要锁定此用户吗？')}">锁定</a>
+                            <else />
+                                <a href="{:url('user/cancelban',array('id'=>$vo['id']))}" class="js-ajax-dialog-btn" data-msg="{:lang('您确定要解锁此用户吗？')}">解锁</a>
+                            </if>
+                            <if condition="AUTH_PROMOTE eq 1"><a class="js-ajax-dialog-btn" href="{:url('user/Cmend',array('id'=>$vo['id']))}">补链</a></if>
+                        </td>
+                    </tr>
+                    </foreach>
+                </empty>
+            </tbody>
+        </table>
+        <div class="pagination">{$page}</div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

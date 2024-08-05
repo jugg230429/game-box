@@ -1,0 +1,230 @@
+.classify_page_header{
+    width: 100%;
+    height: 3.8rem;
+    /* background-color: aqua */
+}
+.classify_page_header .back_icon{
+    width: 1rem;
+    margin-top: 0rem;
+    padding-top: 1.2rem;
+    margin-left: 1rem;
+}
+.classify_page_item{
+    font-size: 1.45rem;
+    padding-top: 1.25rem;
+    width: 20%;
+    text-align: center;
+    white-space: nowrap;
+    font-weight:500;
+    vertical-align: middle;
+    position: absolute;
+    margin-left: 40%;
+	color:#222;
+}
+.type_down__long_hx{
+    width: 100%;
+    height: 1px;
+    background-color: #EDEEEF;
+    position: relative;
+    top: -0.2rem;
+    z-index: 1;
+    margin-top: 0.3rem;
+}
+.gamepage_type_item{
+    padding-left: 0.3rem;
+    padding-right: 0.3rem;
+    height: 2rem;
+    color: #999;
+    margin-top: 0.68rem;
+    text-align: center;
+	display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+}
+.gamepage_type_item p{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+	font-size: 1.1rem;
+}
+.sears_btn{
+    width: 5%;
+    margin-top: 0rem;
+    padding-top: 1.2rem;
+    float: right;
+    margin-right: 1.2rem;
+}
+.gamepage_type_all{
+    width: 6rem!important;
+    /* background-color: aquamarine; */
+}
+.gamepage_type_all_s{
+    width: 6.4rem!important;
+}
+.gamepage_type .swiper-slide{
+    width: auto;
+}
+.gamepage_type{
+    height: 3.4rem;
+    margin-left: 1rem!important;
+}
+.active_gamepage_type_item{
+    border: 0.1rem solid #018FFF!important;
+    border-radius: 1rem;
+    color: #018FFF!important;
+}
+
+.gamepage_type_con_item{
+    margin-left: 1rem;
+    margin-top: 0.84rem;
+    height: 6.4rem;
+	position: relative;
+}
+.gamepage_type_con_item_img{
+    width: 5.39rem;
+    height: 5.39rem;
+    background-color: #e2e2e2;
+    overflow: hidden;
+    border-radius: 12px;
+}
+.gamepage_type_con_item_img img{
+    width: 5.39rem;
+    height: 5.39rem;
+    border-radius: 12px;
+}
+.gamepage_type_con_item_cons{
+    margin-left: 1rem;
+    margin-top: 0.1rem;
+	width: 18rem;
+}
+.gamepage_type_con_item_title{
+	width:100%;
+    font-weight:bold;
+    color: #222;
+    font-size: 1.15rem;
+    margin-bottom: 0.5rem;
+    margin-top: 0.2rem;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.gamepage_type_con_item_infos{
+    font-size: .92rem;
+    margin-top: 0.3rem;
+    margin-bottom: 0.2rem;
+    color: #999999;
+}
+
+.gamepage_type_con_item_type{
+
+	display: inline-block;
+    max-width: 50%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+	float: left;
+}
+.gamepage_type_con_item_time{
+    font-size: 12px;
+    margin-top: 0.5rem;
+    color: #999999;
+    /* background-color: #018FFF; */
+    width: 10rem;
+}
+.gamepage_type_con_item_time .tm{
+    color: #018FFF;
+    /* background-color: #018FFF */
+}
+.gamepage_type_con_item_time .fw{
+    float: right;
+    /* position: relative;
+    right: 0.1rem; */
+}
+.hot_game_fgx{
+    color:rgba(224, 223, 223, 1)!important;
+    margin-left: 0.4rem;
+    margin-right: 0.4rem;
+    position: relative;
+    top:0;
+    font-weight: 200
+}
+.hot_game_download{
+    border-radius: 50%;
+    border: 1px solid #018FFF;
+    width: 3.6rem;
+    height: 3.6rem;
+    font-size: 14px;
+    color: #018FFF;
+    text-align: center;
+    margin-top: 1.2rem;
+    position: absolute;
+    right: 1.2rem;
+}
+.hot_game_downloaded{
+    background-color: #E2E2E2!important;
+    border-color: #E2E2E2!important;
+    color: #B2B2B2!important;
+}
+.hot_game_download p{
+    line-height: 3.6rem;
+}
+.hot_game_download_num{
+    color: #018FFF!important;
+    margin-right: 0.2rem
+}
+.gamepage_type_con_item_summny{
+    width: 16rem;
+    margin-top: 0.5rem;
+    font-size: .92rem;
+    color: #999999;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+}
+.no_open_game_text{
+    text-align: center;
+    font-size: 1.3rem;
+    color:#999999;
+
+}
+.no_open_game_text p{
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    top: 48%;
+}
+@media screen and (max-width:320px) and (orientation:portrait){
+    .gamepage_type_item{
+        font-size: 13px;
+        margin-top: 0.6rem!important;
+        height: 1.7rem!important;
+        padding-top: 0.2rem!important;
+    }
+	.gamepage_type_con_item_cons{
+		width:13rem;
+	}
+    .gamepage_type_item p{
+        font-size: 14px;
+        line-height: 1.8rem!important;
+    }
+    .gamepage_type_all{
+        width: 5.2rem!important;
+    }
+    .gamepage_type .swiper-slide{
+        width: 4.5rem;
+        max-width: 5.6rem!important;
+    }
+    .active_gamepage_type_item{
+        padding-top: 0.1rem!important;
+    }
+    .hot_game_download{
+        margin-right: 0.4rem!important;
+    }
+    .gamepage_type_con_item_time{
+        width: 9rem!important;
+    }
+    .gamepage_type_con_item_summny{
+        width: 12rem!important;
+    }
+}

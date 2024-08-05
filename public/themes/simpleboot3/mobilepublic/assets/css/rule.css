@@ -1,0 +1,136 @@
+@charset "UTF-8";
+
+/*
+* @description: 月卡规则
+ *@author:王奉
+* @update: name(2020/08/07)
+ */
+.rule-header{
+	position:relative;
+	margin-bottom:1.8rem;
+	
+}
+.rule-header-title {
+    width: 100%;
+    text-align: center;
+    color: #222;
+    font-size: 1.53rem;
+	padding-top:1rem;
+    
+}
+.back_icon {
+    width: 0.74rem;
+    margin: 1rem 0 0 1rem;
+    position: absolute;
+}
+.service-btn{
+	width:2rem;
+	position: absolute;
+	right: 1rem;
+	top: 1rem;
+}
+.rule-que{
+	width:96%;
+	margin:0.8rem auto;
+	color:#222;
+	font-size:1.3rem;
+}
+.rule-ask{
+	width:80%;
+	margin:0 0 0 8%;
+	font-size:1.1rem;
+	line-height:1.8rem;
+	
+}
+.rule-btn{
+	color:#018FFF;
+}
+.rule-warn{
+	color:#999;
+	font-size:1.1rem;
+	width:80%;
+	margin:2rem 0 0 8%;
+	line-height:1.8rem;
+}
+.game-pop{
+	width:100%;
+	height:100%;
+	position: fixed;
+	top: 0;
+    left: 0;
+	background-color: rgba(47, 47, 47,0.3);
+	z-index:99;
+	display:none;
+}
+.game-pop-con{
+	background:#fff;
+    border-radius:0.6rem;
+	padding:0.65rem 0.85rem;
+	width:27rem;
+	position:absolute;
+	left:50%;
+	top:50%;
+	height:50%;
+	margin:0 0 0 -14.5rem;
+	transform: translateY(-50%);
+    overflow-y:auto;
+	
+}
+.game-pop-title{
+	text-align:center;
+	font-weight:bold;
+	font-size:1.2rem;
+	color:#222;
+	margin:1rem 0;
+}
+.gamelist{
+	height:20rem;
+	overflow-y:scroll;
+}
+.gameitem{
+	margin-bottom:1.5rem;
+}
+.gameicon{
+	width:2.8rem;
+	height:2.8rem;
+	border-radius:0.5rem;
+}
+.gamename{
+	width:5.5rem;
+	text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+	line-height:2.8rem;
+	color:#999;
+	margin:0 0.35rem 0 0.35rem;
+	font-size:1.1rem;
+}
+.game-pop-btn{
+	display:block;
+	width: 8rem;
+    height:2.5rem;
+	line-height:2.54rem;
+    background:#018FFF;
+    box-shadow:0px 1px 5px 0px rgba(100,75,47,0.2);
+    border-radius:16px;
+	color:#fff;
+	text-align:center;
+	margin:1.5rem auto;
+}
+.game-pop-btn:active,.game-pop-btn:visited,.game-pop-btn:hover{
+	color:#fff;
+}
+.no-data{
+	height:20rem;
+	overflow:hidden;
+}
+.no-data-img{
+	width:5rem;
+	display:block;
+	margin:7rem auto;
+}
+.no-data-text{
+	width: 5rem;
+    display: block;
+    margin: 8rem auto 1rem;
+}

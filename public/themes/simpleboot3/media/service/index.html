@@ -1,0 +1,105 @@
+<extend name="../mediapublic/base" />
+<block name="body">
+    <link href="__TMPL__/mediapublic/assets/css/service.css" rel="stylesheet" />
+    <div class="serviceIndex-page">
+        <div class="zhanweidiv">&nbsp;</div>
+        <div class="layui-container serviceContainer">
+            <div class="service-title">
+                 <div class="serviceTitle-content">客服中心</div>
+                 <div class="title-text">
+                     <img src="__TMPL__/mediapublic/assets/images/yxfw.png" alt="">
+                 </div>
+            </div>
+
+            <div>
+                <div class="fl leftTabMenu">
+                    <ul>
+                        <volist name="typeLists" id="vo">
+                            <if condition="$i eq 1">
+                                <li class="tabMenuItem active" data-type="{$vo['id']}">
+                                    <span class="menuItem-name">{$vo['name']}</span>
+                                </li>
+                            <else/>
+                                <li class="tabMenuItem" data-type="{$vo['id']}">
+                                    <span class="menuItem-name">{$vo['name']}</span>
+                                </li>
+                            </if>
+                        </volist>
+                    </ul>
+                 </div>
+                 <div class="fl rightTabContent" id="rightTab">
+                    <div class="rightTitle"></div>
+                    <div class="detailSolutionBox">
+                        <ul class="menuBox">
+<!--                            <li class="rightItemProblem ">-->
+<!--                                <i class="dotIconBlue"></i>-->
+<!--                                <span class="descriptionDetail">积分是怎么计算的？</span>-->
+<!--                                <div class="descriptionList">-->
+<!--                                    可以在WAP站-商城-积分明细内查看，可以在WAP站-商城-积分明细内查看，可以在WAP站-商城-积分明细内看。可以在WAP站内查看，可以在WAP站-商城-积分明细内查看，可以在WAP站-商城-积分明细内查看。 可以在WAP站-商城-积分明细内查看，可以在WAP站-商城-积分明细内查看，可以在WAP站-商城-积分明细内查看。-->
+<!--                                </div>-->
+<!--                            </li>-->
+
+                        </ul>
+                    </div>
+                 </div>
+            </div>
+
+
+         </div>
+    </div>
+    <script src="__TMPL__/public/assets/js/bootstrap.min.js"></script>
+    <script src="__TMPL__/public/assets/js/select2.min.js"></script>
+<script>
+    var getArticleUrl = "{:url('media/service/article')}";
+
+
+    $('.tabMenuItem').click(function() {
+        $(this).addClass('active').siblings().removeClass('active');
+
+
+        var type = $(this).attr('data-type');
+        var html = "";
+        $.post(getArticleUrl,{type:type},function (res) {
+            html = '';
+            html += "<div class=\"rightTitle\">"+res.type_name+"</div>";
+            html += "<div class=\"detailSolutionBox\">";
+            html += "<ul class=\"menuBox\">";
+
+            $.each(res.data,function (index,ele) {
+                html += "<li class=\"rightItemProblem \">";
+                html += "<i class=\"dotIconBlue\"></i>";
+                html += "<span class=\"descriptionDetail\">"+ele.zititle+"</span>";
+                html += "<div class=\"descriptionList\">";
+                html += ele.content;
+                html += "</div>";
+                html += "</li>";
+            });
+            html += "</ul>";
+            html += "</div>";
+
+            $(".rightTabContent").html(html);
+            setLeftHeight()
+        })
+
+
+
+    });
+
+    $('.tabMenuItem').first().click();
+
+
+    // $('.rightItemProblem').click(function() {
+    $(document).on('click','.rightItemProblem',function() {
+        $(".rightItemProblem").removeClass('choose')
+        $(this).addClass('choose')
+        $(".descriptionList").css('display','none');
+        $(this).find('.descriptionList').css('display','block')
+        setLeftHeight();
+    })
+   function setLeftHeight() {
+       var height = $('#rightTab').height()
+       $('.leftTabMenu').height(height)
+
+   }
+</script>
+</block>

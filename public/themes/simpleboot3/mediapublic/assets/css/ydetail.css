@@ -1,0 +1,458 @@
+@charset "UTF-8";
+
+/*
+* @description:页游样式
+ *@author:wangfeng
+ * @update: name(2020-9-19)
+*/
+body{
+	height:100%;
+	overflow:hidden;
+}
+.header .layui-row{
+	display:none;
+}
+.header{
+	height:auto;
+	 width: 760px;
+	 margin:0 auto;
+	 box-shadow:none;
+	  background: linear-gradient(-5deg, #252D40 37%, #1D2B40 79%, #1D2C4B 100%);
+	 
+}
+.tn-tab{
+	display:none;
+}
+.header .top {
+    width: 760px;
+	position: absolute;
+    right: 40px;
+	background: transparent;
+	border-bottom:none;
+	top: 20px;
+}
+.header .top-con {
+	 width: 760px;
+}
+.welcome,.login,.zhuce{
+	color:#fff;
+}
+.footer{
+	display:none;
+}
+.wrap {
+	width: 1200px;
+	margin: 0 auto;
+}
+
+.main{
+	width: 100%;
+    height: 100vh;
+	background:#e2e2e2;
+}
+.service{
+	width: 760px;
+    background: linear-gradient(-5deg, #252D40 37%, #1D2B40 79%, #1D2C4B 100%);
+    margin:0 auto;
+    height: 100%;
+  
+
+}
+.service-con{
+	width:688px;
+	margin:0 auto;
+	padding-top:40px;
+	height:auto;
+	
+}
+
+.service-tab,.service-link{
+	display:block;
+	width:129px;
+	height:60px;
+	line-height:60px;
+	color:#3D1D0A;
+	font-size:20px;
+	font-weight:bold;
+	background: url(../images/yeyou/btn_bg.png) no-repeat center;
+	background-size:100% 100%;
+	text-align:center;
+	margin:35px 10.5px  35px 0;
+}
+.service-tab-active{
+		background: url(../images/yeyou/btn_bgs.png) no-repeat center;
+	background-size:100% 100%;
+}
+.service-link:hover{
+	color:#3D1D0A;
+}
+.service-link:last-child{
+	margin:35px 0;
+}
+.service-box{
+	overflow: hidden;
+position: relative;
+height: 732px;
+}
+.service-box ul{
+	width: 104%;
+overflow-y: auto;
+position: absolute;
+right: -4%;
+height:732px;
+}
+.service-list{
+	width: 656px;
+    height: 782px;
+    background: #2E3A50;
+    margin:0 auto;
+    color:#fff;
+	padding:15px 16px;
+	overflow:auto;
+	position:relative;
+
+}
+
+.service-title{
+	font-size:15px;
+	line-height:15px;
+	
+}
+.service-search{
+	line-height:28px;
+	padding-left:10px;
+	color:#000;
+	margin-right:9px;
+}
+.service-enter{
+	display:block;
+	width: 108px;
+    height: 30px;
+    line-height:30px;
+    text-align:center;
+    background: #018FFF;
+    border-radius: 3px;
+	color:#fff;
+	margin-right:20px;
+}
+.service-enter:hover{
+	color:#fff;
+}
+.service-item{
+	margin:12px 10px 0 0;
+}
+.service-item:nth-child(3n){
+	margin:12px 0 0 0;
+}
+
+
+
+.gonew{
+	display:block;
+	width: 206px;
+    height: 37px;
+    line-height:37px;
+    background: #1D2434;
+    border-radius: 2px;
+	text-align:center;
+	font-size:13px;
+	color:#fff;
+	cursor:pointer;
+}
+.gonew span{
+	color:#FACE64;
+	padding-left:22px;
+	
+}
+.gonew .server-name{
+	display:block;
+	width:100px;
+	color:#fff;
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.gonew:hover{
+	background:#1F2A41;
+	color:#fff;
+}
+.gonew:hover.gonew span{
+	color:#018FFF;
+	text-decoration:underline;
+	
+}
+/* 滚动内容样式 */
+.scroll_main {
+	width: 550px;
+	display: block;
+	margin: 40px auto;
+	background-color:#fff;
+	border:1px solid #9a9a9a;
+}
+
+.news-list,.gift-list{
+	width: 688px;
+    max-height: 760px;
+    margin:0 auto;
+    color:#fff;
+	overflow:hidden;
+	position:relative;
+	padding: 0 16px;
+}
+
+.newsleft_con {
+    overflow: hidden;
+    position: relative;
+    height: 690px;
+}
+.newsleft_has_con {
+    width: 104%;
+    overflow-y: auto;
+    position: absolute;
+    right: -4%;
+    height: 650px;
+}
+.news-list-con,.gift-list-con{
+	width: 654px;
+    background: #2F3B50;
+    margin-top:17px;
+    padding:15px 19px;
+	position:relative;
+	overflow:auto;
+}
+.gift-list-con{
+	overflow: hidden;
+    position: relative;
+    height: 700px;
+}
+.news-menu{
+	display:block;
+	width:148px;
+	text-align:center;
+	font-size:15px;
+	position:relative;
+	cursor:pointer;
+	float:left;
+	color:#fff;
+}
+.news-menu:first-child{
+	margin-left:47px;
+}
+.news-menu:hover{
+	color:#0290FF;
+}
+.news-menu:before{
+	display:block;
+	content:"";
+	width: 1px;
+    height: 14px;
+    background: #404C64;
+    top: 5px;
+    position: absolute;
+}
+
+.news-menu:first-child:before{
+	display:none;
+}
+.news-menu-active{
+	color:#0290FF;
+	font-weight:bold;
+}
+.news-menu-active:after{
+	display:block;
+	content:"";
+	width: 44px;
+    height: 2px;
+    background: #0290FF;
+    margin:11px auto 0;
+
+}
+
+.news-title{
+	margin:15px 0 15px 0;
+	font-size:15px;
+	font-weight:bold;
+	color:#fff;
+}
+.gamelistpage {
+    width: 100%;
+	padding: 15px 0 15px;
+	text-align: center;
+	clear:both;
+	
+}
+.news-time{
+	width:100%;
+	color:#8F98A8;
+	border-bottom:1px solid #404C64;
+	padding-bottom:20px;
+	margin-bottom:21px;
+}
+.news-box {
+	position: relative;
+    height: 436px;
+    overflow: hidden;
+}
+.news-article{
+	height: 436px;
+    overflow: auto;
+    position: absolute;
+    width: 104%;
+    right: -4%;
+}
+.news-article img{
+	max-width:90%;
+	margin:0 auto;
+}
+.relation{
+	
+	width: 100%;
+border-top: 1px solid #465672;
+bottom: 0;
+left: 0;
+line-height:40px;
+color:#fff;
+}
+.relation-btn{
+	display:block;
+	width:45%;
+	color:#9098A8;
+	font-size:12px;
+	padding-left:16px;
+	position:relative;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.relation-btn:after{
+	display: block;
+content: "";
+width: 1px;
+height: 16px;
+background: #465672;
+position: absolute;
+top: 13px;
+right: 0;
+
+}
+.relation-btn:last-child:after{
+	display: none;
+}
+.relationNext:hover {
+	color:#fff;
+}
+.bag_ios_con{
+  
+    min-height: 360px;
+    height: 700px;
+	width: 101%;
+    overflow-y: auto;
+    position: absolute;
+    right: -4%;
+}
+.bag_ios_con_item{
+	width: 180px;
+    height: 106px;
+    background: linear-gradient(168deg, #202C40 0%, #1C273A 100%);
+    border-radius: 5px;
+    padding:14px 12px 0 10px;
+	margin-right:13px;
+	margin-bottom:13px;
+
+}
+.bag_ios_con_item:nth-child(3n){
+	margin-right:0;
+}
+.bag_ios_con_item_name{
+	color:#E6E6E6;
+	font-weight:bold;
+	font-size:15px;
+	margin:0;
+}
+
+.gift-item-con{
+	color:#9098A8;
+	font-size:12px;
+	line-height:18px;
+	margin:4px 0 10px 0;
+	width: 180px;
+	text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.bag_ios_con_item_num{
+	color:#9098A8;
+	font-size:12px;
+	float:left;
+}
+.bag_ios_con_item_num span{
+	color:#407DC5;
+	
+}
+.receive_bag{
+	display:block;
+	text-align:center;
+	width: 44px;
+    height: 24px;
+	line-height:24px;
+    background: linear-gradient(0deg, #2854A0 0%, #2E78CE 100%);
+    border-radius: 3px;
+	color:#fff;
+	margin:0 12px 0 0;
+	float: right;
+
+}
+.receive_bag_disabled{
+	background: #E1E1E1;
+}
+.btn-gift:hover{
+	color:#fff;
+}
+.news-box-container {
+	display:block;
+	width: 655px;
+	line-height:45px;
+	height:45px;
+    border-bottom: 1px dashed #3F4B63;
+    font-size:13px;
+    color:#fff;
+
+}
+.news-box-container a{
+	display:flex;
+	width:100%;
+	color:#fff;
+}
+.news-box-type{
+	flex: 1;
+	padding-right:10px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+.attention {
+	color:#FACE64;
+	padding-right:10px;
+}
+.news-box-time{
+	float:right;
+}
+.news-box-content:hover{
+	color:#018FFF; 
+}
+
+.display{
+	display:block;
+}
+.bag_ios_con_item:hover {
+	box-shadow: 0px 0px 6px 0px rgba(1, 137, 255, 0.2);
+}
+.gameCenterName{
+	color: #fff;
+	font-size: 16px;
+	font-weight: bold;
+	position: absolute;
+    top: 29px;
+}

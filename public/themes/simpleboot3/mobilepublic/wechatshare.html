@@ -1,0 +1,70 @@
+<if condition="cmf_is_wechat() eq true ">
+    <script>
+        //微信分享
+        var appId = "{$signPackage['appId']}",
+            timestamp = "{$signPackage['timestamp']}",
+            nonceStr = "{$signPackage['nonceStr']}",
+            signature = "{$signPackage['signature']}";
+        var own_share_title = "{$own_share_title}",
+            own_share_img = "{$own_share_img}",
+            own_share_desc = "{$own_share_desc}";
+
+        var title = "{$shareparams['title']}",
+            desc = "{$shareparams['desc']}",
+            imgUrl = "{$shareparams['imgUrl']}",
+            link = "{$shareparams['link']}";
+
+        if(own_share_img != ''){
+            imgUrl = own_share_img;
+        }
+        try{
+            wx.config({
+                debug: false,
+                appId: appId,
+                timestamp: timestamp,
+                nonceStr: nonceStr,
+                signature: signature,
+                jsApiList: [
+                    // 所有要调用的 API 都要加到这个列表中
+                    'updateAppMessageShareData',
+                    'updateTimelineShareData',
+                ]
+            });
+            wx.ready(function () {
+                // config信息验成功
+                wx.checkJsApi({
+                    jsApiList: [
+                        'updateAppMessageShareData',
+                        'updateTimelineShareData',
+                    ],
+                    success: function (res) {
+                    },error:function(res){
+                    }
+                });
+                share(title,link,imgUrl,desc);
+            });
+            function share(title,link,imgUrl,desc){
+                //分享到朋友/qq
+                wx.updateAppMessageShareData({
+                    title:  title, // 分享标题
+                    desc:   desc, // 分享描述
+                    link:   link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                    imgUrl: imgUrl, // 分享图标
+                    success: function () {
+                        // 设置成功
+                    }
+                });
+                //分享到朋友圈/空间
+                wx.updateTimelineShareData({
+                    title:  title, // 分享标题
+                    link:   link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                    imgUrl: imgUrl, // 分享图标
+                    success: function () {
+                        // 设置成功
+                    }
+                });
+            }
+        }catch(err){
+        }
+    </script>
+</if>

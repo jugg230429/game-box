@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<include file="public@head"/>
+		<link href="__TMPL__/public/assets/css/promote/mychlid.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+	</head>
+	<body>
+		<include file="public@nav"/>
+		<include file="public@header"/>
+		<div class="trunk">
+			<div class="trunk-con">
+				<div class="right-container">
+					<div class="normal-list">
+						<div class="trunk">
+							<div class="trunk-title">
+								<div class="location ">
+									<div class="location-container fr">当前位置：<span class="location-container-text">管理中心&gt;</span><span class="location-container-text">子渠道>&gt;</span><span class="location-container-text">添加子渠道</span></div>
+								</div>
+								<img src="__TMPL__/public/assets/images/promote/icon_normal_ziqudao.png" class="fl trunk-icon">
+								<span class="title-main fl ">添加子渠道</span>
+							</div>
+
+							<div class="clear"></div>
+							<ol class="tabpan">
+								<li class="tabpan-con tabpan-show">
+									<form id="form1">
+										<div class="tabpan-con-con">
+											<label class="fl label-name"><span class="req">*</span>子渠道账号：</label>
+											<input type="text" class="tabpan-input" name="account" id="account" maxlength="30" placeholder="6-30位字母或数字组合">
+										</div>
+										<div class="tabpan-con-con">
+											<label class="fl label-name"><span class="req">*</span>子渠道密码：</label>
+											<input type="password" class="tabpan-input" name="password" id="password" maxlength="30" autocomplete="new-password" placeholder="6-30位字母或数字组合">
+										</div>
+										<div class="tabpan-con-con">
+											<label class="fl label-name"><span class="req">*</span>确认密码：</label>
+											<input type="password" class="tabpan-input" name="password_confirm" maxlength="30" id="password_confirm" value="" placeholder="再次输入确认密码">
+										</div>
+										<div class="tabpan-con-con">
+											<label class="fl label-name">二级密码：</label>
+											<input type="password" class="tabpan-input" name="second_pwd" maxlength="30" id="second_pwd" value="" placeholder="6-30位字母或数字组合">
+										</div>
+										<div class="tabpan-con-con">
+											<label class="fl label-name">姓名：</label>
+											<input type="text" class="tabpan-input" name="real_name" maxlength="30" id="real_name" value="" placeholder="">
+										</div>
+										<div class="tabpan-con-con">
+											<label class="fl label-name">手机号：</label>
+											<input type="text" class="tabpan-input" name="mobile_phone" maxlength="30" id="mobile_phone" value="" placeholder="">
+										</div>
+										<div class="tabpan-con-con">
+											<label class="fl label-name">邮箱地址：</label>
+											<input type="text" class="tabpan-input" name="email" maxlength="30" id="email" value="" placeholder="">
+										</div>
+										<div class="tabpan-con-con">
+											<label class="fl label-name">备注：</label>
+											<textarea name="mark1" class="tabpan-input" rows="15"  id="mark1"></textarea>
+										</div>
+										<div class="tabpan-con-con">
+											<input type="button" class="button jssub" value="确认" title="" target-form="paw_er_info">
+											<a class="back-btn " alt="返回上一页" title="返回上一页" href="javascript:window.history.back();">返回</a>
+										</div>
+									</form>
+								</li>
+
+							</ol>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<include file="public@scripts"/>
+		<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+		<script src="__STATIC__/js/layer/layer.js"></script>
+		<script>
+			$(function() {
+				$(".js-select-gallery").select2();
+				$('.jssub').click(function(){
+					that = $(this);
+					data = $("#form1").serialize()
+					$.ajax({
+						url:"{:url('add_chlid')}",
+						type:'post',
+						data:data,
+						success:function(res){
+							if(res.code==1){
+								layer.msg(res.msg,{time:1000},function(){
+			                        location.href= "{:url('mychlid')}";
+			                    })
+							}else{
+								layer.msg(res.msg,{time:1500})
+							}
+						},error:function(){
+							layer.msg('服务器错误，请稍后再试');
+						}
+					})
+				});
+			})
+		</script>
+	</body>
+
+</html>

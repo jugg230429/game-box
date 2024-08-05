@@ -1,0 +1,45 @@
+<extend name="../mobilepublic/base" />
+<block name="css">
+    <link rel="stylesheet" href="__TMPL__/mobilepublic/assets/css/new_detail.css">
+</block>
+
+<block name="body">
+
+
+    <div class="new_detail_page">
+        <div class="new_detail_header">
+            <a href="javascript:history.back(-1);" class="fl">
+                <img src="__TMPL__/mobilepublic/assets/images/common_btn_back.png" alt="" class="fl back_icon">
+            </a>
+            <p class="fl" style="<if condition='cmf_is_android()'>transform: translateY(-46%);</if>"></p>
+            <!--<p class="fg"><img src="__TMPL__/mobilepublic/assets/images/btn_share_n.png" alt="" class="share"></p>-->
+        </div>
+        <div class="game_bag_down_hx clear"></div>
+        <div class="new_detail_con">
+            <div class="new_detail_con_head">
+                <p class="new_detail_con_title">{$data.post_title}</p>
+               
+            </div>
+            <p class="new_detail_con_time">{:date('Y-m-d',$data.update_time)}</p>
+            <div class="new_detail_con_info">
+                {$data.post_content}
+            </div>
+           
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+        $(function () {
+            $(".new_detail_con_title").each(function () {
+                if ($(this).text().length > 30) {
+                    $(this).text($(this).text().substring(0, 30));
+                    $(this).html($(this).html() + '...');
+
+                }
+            });
+
+        })
+    </script>
+
+</block>

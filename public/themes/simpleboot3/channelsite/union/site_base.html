@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<link href="__TMPL__/public/assets/css/promote/balance.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/promote/select2.min.css" rel="stylesheet" />
+		<include file="public@head"/>
+		<link href="__TMPL__/public/assets/css/site.css" rel="stylesheet" />
+		<link href="__TMPL__/public/assets/css/page.css" rel="stylesheet" />
+		<style type="text/css">
+			.tabpan-input {
+    			width: 530px;
+    		}
+    		.label-name {
+			    width: 145px;
+			    text-align: left;
+			}
+			.create_group {
+				color: #2283EE
+			}
+
+		</style>
+	</head>
+
+	<body>
+		<include file="public@nav"/>
+		<include file="public@header"/>
+		<div class="trunk">
+			<div class="trunk-con">
+				<div class="right-container">
+					<div class="normal-list">
+						<div class="trunk">
+							<ul class="tab">
+								<li class="tab-menu tab-menu-active"><a href="javascript:;">WAP/APP</a></li>
+								<li class="tab-menu"><a href="javascript:;">PC官网</a></li>
+								<li class="tab-menu"><a href="javascript:;">SDK</a></li>
+
+							</ul>
+							<!-- <div class="trunk-title">
+								<div class="location ">
+									<div class="location-container fr">当前位置：<span class="location-container-text">联盟站点&gt;</span><span class="location-container-text">基本信息</span></div>
+								</div>
+								<img src="__TMPL__/public/assets/images/icon_normal_xinxi.png" class="fl trunk-icon">
+								<span class="title-main fl ">基本信息</span>
+							</div> -->
+
+							<div class="clear"></div>
+							<ol class="tabpan">
+								<form id="data">
+								<li class="tabpan-con tabpan-show">
+
+									<div class="tabpan-con-con upload-height">
+										<label class="fl label-name">APP图标：</label>
+										<span class="formtxt">
+												<input id="app_ico" type="hidden" name="app_ico" value="{$config['app_ico']}">
+				                                <img id="app_ico-preview" class="upload-img" style="max-width: 60px;" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null" <if condition="$config['app_ico']">src="{:cmf_get_image_preview_url($config['app_ico'])}"</if>>
+				                                <a href="javascript:uploadOneImage('上传图片','#app_ico');" class="btn btn-sm btn-default btn-uploadify">上传图片</a>
+				                                <a class="btn-uploadify" href="javascript:(function(){$('#app_ico-preview').removeAttr('src');$('#app_ico').val('')})();">移除</a>
+											</span>
+										<span class="notice-tip">用于浏览器添加至主屏幕上展示，尺寸240*240px</span>
+									</div>
+
+									<div class="tabpan-con-con upload-height">
+										<label class="fl label-name">APP名称：</label>
+										<input type="text" class="tabpan-input" name="app_name_ico"   value="{$config['app_name_ico']}" placeholder="">
+										<span class="notice-tip">用于浏览器添加至主屏幕上展示，如：XX手游</span>
+									</div>
+
+									<div class="tabpan-con-con upload-height">
+										<label class="fl label-name">分享图标：</label>
+										<span class="formtxt">
+												<input id="share_ico" type="hidden" name="share_ico" value="{$config['share_ico']}">
+				                                <img id="share_ico-preview" class="upload-img" style="max-width: 60px;" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null" <if condition="$config['share_ico']">src="{:cmf_get_image_preview_url($config['share_ico'])}"</if>>
+				                                <a href="javascript:uploadOneImage('上传图片','#share_ico');" class="btn btn-sm btn-default btn-uploadify">上传图片</a>
+				                                <a class="btn-uploadify" href="javascript:(function(){$('#share_ico-preview').removeAttr('src');$('#share_ico').val('')})();">移除</a>
+											</span>
+										<span class="notice-tip">在微信/QQ等应用内打开站点进行分享至其它应用内时展示，尺寸240*240px。未上传时显示占位图<br />（分享资讯文章页链接时图文调取对应文章的分享图文）</span>
+									</div>
+
+									<div class="tabpan-con-con upload-height">
+										<label class="fl label-name">分享标题：</label>
+										<input type="text" class="tabpan-input" name="share_title"   value="{$config['share_title']}" placeholder="">
+										<span class="notice-tip">默认显示：手游联运-发现更多好游戏</span>
+									</div>
+
+									<div class="tabpan-con-con upload-height">
+										<label class="fl label-name">分享描述：</label>
+										<input type="text" class="tabpan-input" name="share_describe"  value="{$config['share_describe']}" placeholder="">
+										<span class="notice-tip">默认显示：该平台是一个高质量的手游联运平台，最热门游戏都在这里。</span>
+									</div>
+
+
+									<div class="tabpan-con-con upload-height">
+										<label class="fl label-name">LOGO图标：</label>
+										<span class="formtxt">
+												<input id="app_login_logo" type="hidden" name="app_login_logo" value="{$config['app_login_logo']}">
+				                                <img id="app_login_logo-preview" class="upload-img" style="max-width: 60px;" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null" <if condition="$config['app_login_logo']">src="{:cmf_get_image_preview_url($config['app_login_logo'])}"</if>>
+				                                <a href="javascript:uploadOneImage('上传图片','#app_login_logo');" class="btn btn-sm btn-default btn-uploadify">上传图片</a>
+				                                <a class="btn-uploadify" href="javascript:(function(){$('#app_login_logo-preview').removeAttr('src');$('#app_login_logo').val('')})();">移除</a>
+											</span>
+										<span class="notice-tip">用于一键登录页显示，尺寸360px *104px</span>
+									</div>
+
+									<div class="tabpan-con-con">
+										<input type="button" class="button" value="保存" title="" target-form="paw_er_info">
+									</div>
+
+								</li>
+
+
+								<li class="tabpan-con ">
+										<div class="tabpan-con-con">
+											<label class="fl label-name">网站标题：</label>
+											<input type="text" name="site_name" class="tabpan-input" maxlength="20" value="{$config['site_name']}" placeholder="">
+											<span class="notice-tip">默认标题内容同主平台一致，可自行设置，设置后网站各页面统一显示该标题</span>
+										</div>
+										<div class="tabpan-con-con">
+											<label class="fl label-name">客服电话：</label>
+											<input type="text" class="tabpan-input" name="tel" id="tel" value="{$config['tel']}" placeholder=" 客服联系电话或手机号">
+										</div>
+										<div class="tabpan-con-con">
+											<label class="fl label-name">客服QQ：</label>
+											<input type="text" class="tabpan-input" name="qq" id="qq" value="{$config['qq']}" placeholder="">
+										</div>
+										<div class="tabpan-con-con">
+											<label class="fl label-name">客服邮箱：</label>
+											<input type="text" class="tabpan-input" name="mailbox" id="mailbox" value="{$config['mailbox']}" placeholder="">
+										</div>
+										<div class="tabpan-con-con">
+											<label class="fl label-name">QQ群：</label>
+											<input type="text" class="tabpan-input" name="qq_group" id="qq_group" value="{$config['qq_group']}" placeholder="">
+										</div>
+										<div class="tabpan-con-con">
+											<label class="fl label-name">QQ群key：</label>
+											<input type="text" class="tabpan-input" name="qq_group_key" id="qq_group_key" value="{$config['qq_group_key']}" placeholder="">
+											<span class="notice-tip"><a id="create_group" class="create_group" href="javascript:;">点击查看</a>交流群生成步骤</span>
+										</div>
+										<div class="tabpan-con-con">
+											<label class="fl label-name">QQ群地址：</label>
+											<input type="text" class="tabpan-input" name="qq_group_url" id="qq_group_url" value="{$config['qq_group_url']}" placeholder="">
+										</div>
+										<!--<div class="tabpan-con-con">
+											<label class="fl label-name">投诉邮箱：</label>
+											<input type="text" class="tabpan-input" name="complaintemail" id="complaintemail" value="{$config['complaintemail']}" placeholder="">
+										</div>
+										<div class="tabpan-con-con">
+											<label class="fl label-name">工作时间：</label>
+											<input type="text" class="tabpan-input" name="time" id="time" value="{$config['time']}" placeholder=" 如：09:00-20:00">
+										</div>-->
+										<div class="tabpan-con-con">
+											<label class="fl label-name">微信公众号：</label>
+											<input type="text" class="tabpan-input" name="app_weixin"  maxlength="200" value="{$config['app_weixin']}" placeholder="微信公众号">
+										</div>
+										<div class="tabpan-con-con upload-height">
+											<label class="fl label-name">联盟PC站首页LOGO：</label>
+											<span class="formtxt">
+												<input id="pc_logo" type="hidden" name="pc_logo" value="{$config['pc_logo']}">
+
+				                                <img id="pc_logo-preview" class="upload-img" style="max-width: 60px;" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null" <if condition="$config['pc_logo']">src="{:cmf_get_image_preview_url($config['pc_logo'])}"</if>>
+				                                <a href="javascript:uploadOneImage('上传图片','#pc_logo');" class="btn btn-sm btn-default btn-uploadify">上传图片</a>
+				                                <a class="btn-uploadify" href="javascript:(function(){$('#pc_logo-preview').removeAttr('src');$('#pc_logo').val('')})();">移除</a>
+											</span>
+											<span class="notice-tip">用于PC官网导航栏展示，尺寸180 * 56px</span>
+										</div>
+
+										<div class="tabpan-con-con upload-height">
+											<label class="fl label-name">联盟PC站ICO图标：</label>
+											<span class="formtxt">
+												<input id="pc_icon" type="hidden" name="pc_icon" value="{$config['pc_icon']}">
+				                                <img id="pc_icon-preview" class="upload-img" style="max-width: 60px;" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null" <if condition="$config['pc_icon']">src="{:cmf_get_image_preview_url($config['pc_icon'])}"</if>>
+				                                <a href="javascript:uploadOneImage('上传图片','#pc_icon');" class="btn btn-sm btn-default btn-uploadify">上传图片</a>
+				                                <a class="btn-uploadify" href="javascript:(function(){$('#pc_icon-preview').removeAttr('src');$('#pc_icon').val('')})();">移除</a>
+											</span>
+											<span class="notice-tip">尺寸16*16px</span>
+										</div>
+										<div class="clear"></div>
+										<div class="tabpan-con-con upload-height">
+											<label class="fl label-name">联盟PC站底部LOGO：</label>
+											<span class="formtxt">
+												<input id="pc_ft_logo" type="hidden" name="pc_ft_logo" value="{$config['pc_ft_logo']}">
+				                                <img id="pc_ft_logo-preview" class="upload-img" style="max-width: 60px;" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null" <if condition="$config['pc_ft_logo']">src="{:cmf_get_image_preview_url($config['pc_ft_logo'])}"</if>>
+				                                <a href="javascript:uploadOneImage('上传图片','#pc_ft_logo');" class="btn btn-sm btn-default btn-uploadify">上传图片</a>
+				                                <a class="btn-uploadify" href="javascript:(function(){$('#pc_ft_logo-preview').removeAttr('src');$('#pc_ft_logo').val('')})();">移除</a>
+											</span>
+											<span class="notice-tip">用于PC官网底部栏展示，尺寸218 * 130px</span>
+										</div>
+
+										<div class="tabpan-con-con upload-height">
+											<label class="fl label-name">网站LOGO：</label>
+											<span class="formtxt">
+												<input id="website_logo" type="hidden" name="website_logo" value="{$config['website_logo']}">
+				                                <img id="website_logo-preview" class="upload-img" style="max-width: 60px;" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null" <if condition="$config['website_logo']">src="{:cmf_get_image_preview_url($config['website_logo'])}"</if>>
+				                                <a href="javascript:uploadOneImage('上传图片','#website_logo');" class="btn btn-sm btn-default btn-uploadify">上传图片</a>
+				                                <a class="btn-uploadify" href="javascript:(function(){$('#website_logo-preview').removeAttr('src');$('#website_logo').val('')})();">移除</a>
+											</span>
+											<span class="notice-tip">尺寸190 * 60px</span>
+										</div>
+
+										<!--<div class="tabpan-con-con upload-height">
+											<label class="fl label-name">WAP站LOGO：</label>
+											<span class="formtxt">
+												<input id="wap_logo" type="hidden" name="wap_logo" value="{$config['wap_logo']}">
+				                                <img id="wap_logo-preview" class="upload-img" style="max-width: 60px;" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null" <if condition="$config['wap_logo']">src="{:cmf_get_image_preview_url($config['wap_logo'])}"</if>>
+				                                <a href="javascript:uploadOneImage('上传图片','#wap_logo');" class="btn btn-sm btn-default btn-uploadify">上传图片</a>
+				                                <a class="btn-uploadify" href="javascript:(function(){$('#wap_logo-preview').removeAttr('src');$('#wap_logo').val('')})();">移除</a>
+											</span>
+											<span class="notice-tip">尺寸16*16px</span>
+										</div>-->
+										<div class="tabpan-con-con upload-height">
+											<label class="fl label-name">二维码图片：</label>
+											<span class="formtxt">
+												<input id="qrcode" type="hidden" name="qrcode" value="{$config['qrcode']}">
+				                                <img id="qrcode-preview" class="upload-img" style="max-width: 60px;" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null" <if condition="$config['qrcode']">src="{:cmf_get_image_preview_url($config['qrcode'])}"</if>>
+				                                <a href="javascript:uploadOneImage('上传图片','#qrcode');" class="btn btn-sm btn-default btn-uploadify">上传图片</a>
+				                                <a class="btn-uploadify" href="javascript:(function(){$('#qrcode-preview').removeAttr('src');$('#qrcode').val('')})();">移除</a>
+											</span>
+											<span class="notice-tip">尺寸430*430px</span>
+										</div>
+
+										<div class="tabpan-con-con upload-height">
+											<label class="fl label-name">后台LOGO：</label>
+											<span class="formtxt">
+												<input id="admin_logo" type="hidden" name="admin_logo" value="{$config['admin_logo']}">
+				                                <img id="admin_logo-preview" class="upload-img" style="max-width: 60px;" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null" <if condition="$config['admin_logo']">src="{:cmf_get_image_preview_url($config['admin_logo'])}"</if>>
+				                                <a href="javascript:uploadOneImage('上传图片','#admin_logo');" class="btn btn-sm btn-default btn-uploadify">上传图片</a>
+				                                <a class="btn-uploadify" href="javascript:(function(){$('#admin_logo-preview').removeAttr('src');$('#admin_logo').val('')})();">移除</a>
+											</span>
+											<span class="notice-tip">尺寸220*52px</span>
+										</div>
+
+
+
+										<div class="tabpan-con-con upload-height">
+											<label class="fl label-name">网站备案号：</label>
+											<input type="text" class="tabpan-input" name="pc_set_for_the_record"  value="{$config['pc_set_for_the_record']}" placeholder="">
+											<span class="notice-tip"></span>
+										</div>
+										<div class="tabpan-con-con upload-height">
+											<label class="fl label-name" style="width: 170px;">增值电信业务经营许可证：</label>
+											<input type="text" class="tabpan-input" name="pc_set_telecom_license"  value="{$config['pc_set_telecom_license']}" placeholder="">
+											<span class="notice-tip"></span>
+										</div>
+										<div class="tabpan-con-con upload-height">
+											<label class="fl label-name">网络文化经营许可证：</label>
+											<input type="text" class="tabpan-input" name="pc_set_license"  value="{$config['pc_set_license']}" placeholder="">
+											<span class="notice-tip"></span>
+										</div>
+										<div class="tabpan-con-con upload-height">
+											<label class="fl label-name">ICP备案号：</label>
+											<input type="text" class="tabpan-input" name="pc_set_for_the_record_icp"  value="{$config['pc_set_for_the_record_icp']}" placeholder="">
+											<span class="notice-tip"></span>
+										</div>
+										<div class="tabpan-con-con upload-height">
+											<label class="fl label-name">官网版权信息设置：</label>
+											<input type="text" class="tabpan-input" name="pc_set_copyright"  value="{$config['pc_set_copyright']}" placeholder="">
+											<span class="notice-tip"></span>
+										</div>
+										<div class="tabpan-con-con">
+											<input type="button" class="button" value="保存" title="" target-form="paw_er_info">
+										</div>
+								</li>
+
+
+								<li class="tabpan-con">
+
+									<div class="tabpan-con-con upload-height">
+										<label class="fl label-name">悬浮球图标：</label>
+										<span class="formtxt">
+												<input id="xfq" type="hidden" name="xfq" value="{$config['xfq']}">
+				                                <img id="xfq-preview" class="upload-img" style="max-width: 60px;" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null" <if condition="$config['xfq']">src="{:cmf_get_image_preview_url($config['xfq'])}"</if>>
+				                                <a href="javascript:uploadOneImage('上传图片','#xfq');" class="btn btn-sm btn-default btn-uploadify">上传图片</a>
+				                                <a class="btn-uploadify" href="javascript:(function(){$('#xfq-preview').removeAttr('src');$('#xfq').val('')})();">移除</a>
+											</span>
+										<span class="notice-tip">尺寸430*430px</span>
+									</div>
+
+									<div class="tabpan-con-con">
+										<label class="fl label-name">悬浮球显示状态：</label>
+										<label class="sdis">
+											<input type="radio" name="xfq_show_switch" <if condition="$config['xfq_show_switch'] eq 1">checked="checked"</if>  value="1" class="sdis-radio "><i ></i><span>显示</span>
+										</label>
+										<label class="sdis">
+											<input type="radio" name="xfq_show_switch" <if condition="$config['xfq_show_switch'] eq 0">checked="checked"</if> value="0"  class="sdis-radio "><i></i><span>关闭</span>
+										</label>
+									</div>
+
+									<div class="tabpan-con-con upload-height">
+										<label class="fl label-name">LOGO图标：</label>
+										<span class="formtxt">
+												<input id="sdk_login_logo" type="hidden" name="sdk_login_logo" value="{$config['sdk_login_logo']}">
+				                                <img id="sdk_login_logo-preview" class="upload-img" style="max-width: 60px;" onerror="this.src='__TMPL__/public/assets/images/empty.jpg';this.onerror=null" <if condition="$config['sdk_login_logo']">src="{:cmf_get_image_preview_url($config['sdk_login_logo'])}"</if>>
+				                                <a href="javascript:uploadOneImage('上传图片','#sdk_login_logo');" class="btn btn-sm btn-default btn-uploadify">上传图片</a>
+				                                <a class="btn-uploadify" href="javascript:(function(){$('#sdk_login_logo-preview').removeAttr('src');$('#sdk_login_logo').val('')})();">移除</a>
+											</span>
+										<span class="notice-tip">用于SDK登录框内显示，尺寸276px * 80px</span>
+									</div>
+
+									<div class="tabpan-con-con">
+										<input type="button" class="button" value="保存" title="" target-form="paw_er_info">
+									</div>
+
+								</li>
+								</form>
+							</ol>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<include file="public@scripts"/>
+		<script type="text/javascript">
+	        //全局变量
+	        var GV = {
+	            ROOT: "__ROOT__/",
+	            WEB_ROOT: "__WEB_ROOT__/",
+	            JS_ROOT: "static/js/",
+	            APP: '{$Request.module}'/*当前应用名*/
+	        };
+	    </script>
+    	<script src="__STATIC__/js/wind.js"></script>
+		<script src="__TMPL__/public/assets/js/frontend.js"></script>
+		<script src="__TMPL__/public/assets/js/promote/select2.min.js"></script>
+		<script src="__STATIC__/js/layer/layer.js"></script>
+		<script>
+			$(function() {
+				$(".js-select-gallery").select2();
+				var sub = true;
+				$('.button').click(function(){
+					if(!sub){
+						return false;
+					}
+					var data = $("#data").serialize();
+					sub = false;
+					$.ajax({
+				  		type: "post",
+				  		url: "{:url('domain_set')}",
+			  			dataType: "json",
+				  		data: data,
+				  		success: function (res) {
+				      		if (res.code != 0) {
+				          		layer.msg(res.msg, {icon: 1},function(){
+				          			location.href=location.href;
+				          		});
+				      		}
+				      		else {
+				          		sub = true;
+				          		layer.msg(res.msg, {icon: 2});
+				      		}
+				  		},
+				  		error: function () {
+				      		layer.msg('服务器故障', {icon: 5});
+				  		}
+					})
+				});
+
+                $("#create_group").click(function() {
+                    layer.open({
+                        type: 2,
+                        title: '生成交流群地址',
+                        shadeClose: true,
+                        shade: 0.8,
+                        area: ['840px', '613px'],
+                        content: ["creat_group.html"], //iframe的url，no代表不显示滚动条
+                    });
+                });
+			})
+		</script>
+	</body>
+
+</html>

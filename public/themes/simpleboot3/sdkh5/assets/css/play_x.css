@@ -1,0 +1,60 @@
+.poplayer,.poplayermsg{
+	transform: rotate(90deg);
+	 -ms-transform: rotate(90deg);
+	 -webkit-transform: rotate(90deg);
+}
+@media screen and (min-width:1200px){
+	html,body{
+     max-width:100%;
+	 width: 100%;
+     height: 100%;
+	}
+	.indexpage{
+		position: fixed;
+        width: 100%;
+        height: 100%;
+	}
+	#game_ifr{
+	width:100%;
+	position:absolute;
+	top: 50%;
+    transform: translateY(-50%);
+	
+	
+}
+}
+@media screen and (max-width:768px){
+	.suspensionbtn{
+		transform: rotate(90deg);
+		position: absolute;
+        left: 50%;
+        top: -1.5rem;
+		margin-left:-2.5rem;
+	}
+	
+	.popinfo-con, .giftpop-con, .giftdetailspop-con, .servicepop-con, .couponpop-con, .newspop-con, .newsdetailpop-con, .paypop-con, .realnamepop-con{
+		transform: rotate(90deg) translateX(-50%); 
+	}
+	
+
+.layer-ext-moon{
+	display:none;
+}
+
+.container .loadbox {
+   
+    transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+}
+.container .inner{
+    padding-top: 60%;
+}
+}
+
+@media (min-width: 300px){
+body {
+    width: 100%;
+    height: 100vh;
+}
+}

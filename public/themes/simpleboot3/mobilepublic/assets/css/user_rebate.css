@@ -1,0 +1,77 @@
+.type_down__long_hx{
+    width: 100%;
+    height: 1px;
+    background-color: #EDEEEF;
+    position: relative;
+    top: -0.2rem;
+    z-index: 1;
+    margin-top: 0.3rem;
+}
+.my_bag_page_header{
+    width: 100%;
+    height: 3.5rem;
+}
+.my_bag_page_header .back_icon{
+    width: 0.74rem;
+    margin-top: 1.25rem;
+    margin-left: 1rem;
+}
+.my_bag_page_item{
+    margin-left: 36%;
+    font-size: 1.45rem;
+    line-height: 1.5rem;
+    padding-top: 1.1rem;
+    margin-bottom: 0.9rem;
+    font-weight: 500;
+    color: #222222;
+}
+
+.user-rebate-list{
+    width:100%;
+    padding: 0 1rem 3rem;
+    box-sizing: border-box;
+}
+.user-rebate-list .rebate-item{
+    width:100%;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.user-rebate-list .rebate-item .rebate-money{
+    font-size:1.33rem ;
+    width:7rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: #FF4E00;
+}
+.user-rebate-list .rebate-item .rebate-game-name{
+    width:13rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 1.25rem;
+    color: #333;
+}
+.user-rebate-list .rebate-item .rebate-date{
+    margin-left: auto;
+    font-size: 1rem;
+    color:#999999;
+}
+.rebate-total{
+    width: 100%;
+    line-height: 3rem;
+    height: 3rem;
+    margin-top: 1rem;
+    font-size: 1.17rem;
+    color: #999999;
+    /* padding-bottom: 2rem; */
+    background: #F2F2F2;
+    padding-left: 0.5rem;
+    box-sizing: border-box;
+}
+.rebate-total .rebate-total-num{
+    color: #FF4E00;
+    font-size:1.33rem ;
+}
