@@ -1303,7 +1303,7 @@ class PayController extends BaseController
     /**
      *微信支付
      */
-    public function and_weixin_pay()
+    public function and_weixin_pay_old()
     {
         #获取SDK上POST方式传过来的数据 然后base64解密 然后将json字符串转化成数组
         $request = json_decode(base64_decode(file_get_contents("php://input")), true);
@@ -1412,6 +1412,7 @@ class PayController extends BaseController
                 $this->set_message(1055, "订单号重复，请关闭支付页面重新支付");
             }
         }
+        //支付类型 支付宝3
         $request['pay_way'] = 3;
         $prefix = $request['code'] == 1 ? "SP_" : "PF_";
         $request['pay_order_number'] = create_out_trade_no($prefix);
@@ -1466,42 +1467,187 @@ class PayController extends BaseController
                 );
                 $this->set_message(9999, "支付成功",$res_msg);
             }else{
-                $this->set_message(1058, "支付失败");
+                $this->set_message(1058, "优惠支付失败");
             }
         }elseif (pay_type_status('zfb') == 1) {
-            $config = get_pay_type_set('zfb');
-            if ($config['config']['type'] == 2) {/*支付宝 wap支付 */
-                $request['apitype'] = "alipay";
-                $request['config'] = "alipay";
-                $request['signtype'] = "MD5";
-                $request['server'] = "alipay.wap.create.direct.pay.by.user";
-                $request['payway'] = 3;
-                $pay_url = $this->pay($request,$user);
-                $res_msg = array(
-                    "url" => $pay_url['url'],
-                    "wap" => 1,
-                    "out_trade_no" => $request['pay_order_number']
-                );
-                $this->set_message(200, "获取成功",$res_msg);
-            } else {/* 支付宝app支付 */
-                $request['apitype'] = "alipay";
-                $request['config'] = "alipay";
-                $request['signtype'] = "MD5";
-                $request['server'] = "mobile.securitypay.pay";
-                $request['payway'] = 3;
-                $data = $this->alipay_app_pay($request,$user);
-                $md5_sign = $this->encrypt_md5(base64_encode($data['arg']), $game_set_data["access_key"]);
-                $result = [
-                    "orderInfo" => base64_encode($data['arg']),
-                    "out_trade_no" => $data['out_trade_no'],
-                    "order_sign" => $data['sign'],
-                    "md5_sign" => $md5_sign,
-                    'wap'=>0
-                ];
-                $this->set_message(200, "获取成功",$result);
+            //新渠道支付流程
+            $promotePay = new \think\PromotePay($request['game_id'],1);
+            $result = $promotePay->initParam($request,$user);
+            $this->set_message(200, "获取成功",$result);
+        } 
+        $this->set_message(1058, "支付失败");   
+        //旧支付流程
+        //     $config = get_pay_type_set('zfb');
+        //     if ($config['config']['type'] == 2) {/*支付宝 wap支付 */
+        //         $request['apitype'] = "alipay";
+        //         $request['config'] = "alipay";
+        //         $request['signtype'] = "MD5";
+        //         $request['server'] = "alipay.wap.create.direct.pay.by.user";
+        //         $request['payway'] = 3;
+        //         $pay_url = $this->pay($request,$user);
+        //         $res_msg = array(
+        //             "url" => $pay_url['url'],
+        //             "wap" => 1,
+        //             "out_trade_no" => $request['pay_order_number']
+        //         );
+        //         $this->set_message(200, "获取成功",$res_msg);
+        //     } else {/* 支付宝app支付 */
+        //         $request['apitype'] = "alipay";
+        //         $request['config'] = "alipay";
+        //         $request['signtype'] = "MD5";
+        //         $request['server'] = "mobile.securitypay.pay";
+        //         $request['payway'] = 3;
+        //         $data = $this->alipay_app_pay($request,$user);
+        //         $md5_sign = $this->encrypt_md5(base64_encode($data['arg']), $game_set_data["access_key"]);
+        //         $result = [
+        //             "orderInfo" => base64_encode($data['arg']),
+        //             "out_trade_no" => $data['out_trade_no'],
+        //             "order_sign" => $data['sign'],
+        //             "md5_sign" => $md5_sign,
+        //             'wap'=>0
+        //         ];
+        //         $this->set_message(200, "获取成功",$result);
+        //     }
+        // }
+       
+    }
+
+    
+    /**
+     * [安卓支付宝移动支付]
+     * @author 郭家屯[gjt]
+     */
+    public function and_weixin_pay()
+    {
+        #获取SDK上POST方式传过来的数据 然后base64解密 然后将json字符串转化成数组
+        $request = json_decode(base64_decode(file_get_contents("php://input")), true);
+        $request = get_real_promote_id($request);
+        //封禁判断-20210713-byh
+        if(!judge_user_ban_status($request['promote_id'],$request['game_id'],$request['user_id'],$request['equipment_num'],get_client_ip(),$type=3)){
+            $this -> set_message(1061, "当前被禁止充值，请联系客服");
+        }
+        if ($request['price'] < 0) {
+            $this->set_message(1061, "充值金额有误");
+        }
+        $game_data = Cache::get('sdk_game_data'.$request['game_id']);
+        $request['game_name'] = $game_data['game_name'];
+        //实名充值
+        $user_entity = get_user_entity($request['user_id'],false,'account,nickname,age_status');
+        if(empty($user_entity['age_status']) && get_user_config_info('age')['real_pay_status']==1){
+            $this->set_message(1075, get_user_config_info('age')['real_pay_msg']?:'根据国家关于《网络游戏管理暂行办法》要求，平台所有玩家必须完成实名认证后才可以进行游戏充值！');
+        }
+        $usermodel = new UserModel();
+        //判断是否是所属小号
+        $isusersmall = $usermodel->is_user_small($request['user_id'],$request['small_id']);
+        if(!$isusersmall){
+            $this -> set_message(1080, "小号不属于该账户");
+        }else{
+            $request['small_nickname'] = get_user_entity($request['small_id'],false,'nickname')['nickname'];
+        }
+        if ($request['code'] == 1) {
+            $spendmodel = new SpendModel();
+            $extend_data = $spendmodel->field('id')->where(array('extend' => $request['extend'], 'game_id' => $request['game_id'], 'pay_status' => 1))->find();
+            if ($extend_data) {
+                $this->set_message(1055, "订单号重复，请关闭支付页面重新支付");
             }
         }
+        //支付类型 微信4
+        $request['pay_way'] = 4;
+        $prefix = $request['code'] == 1 ? "SP_" : "PF_";
+        $request['pay_order_number'] = create_out_trade_no($prefix);
+        $game_set_data = Db::table('tab_game_set')->where('game_id', $request['game_id'])->field('access_key')->find();
+        $request['table'] = $request['code'] == 1 ? "spend" : "deposit";
+        $user = get_user_entity($request['user_id'],false,'account,nickname,promote_id,promote_account,parent_id');
+        $discount = 0;
+        if($request['code'] == 1){
+            $promote_id = $user['promote_id'];
+            $paylogic = new PayLogic();
+            //去除代金券金额
+            if($request['coupon_id']){
+                $coupon_money = $paylogic->get_use_coupon($request['user_id'],$request['price'],$request['coupon_id']);
+                if($coupon_money){
+                    $new_price = $request['price'] - $coupon_money;
+                }else{
+                    return redirect(url('Pay/notice', array('user_id' => $request['user_id'], 'game_id' => $request['game_id'], 'msg' => urlencode('优惠券使用失败'))));
+                    exit;
+                }
+            }else{
+                $new_price = $request['price'];
+            }
+            $discount_info = $paylogic->get_discount($request['game_id'],$promote_id,$request['user_id']);
+            $request['pay_amount'] = round($discount_info['discount']*$new_price,2);
+            $request['discount_type'] = $discount_info['discount_type'];
+            $request['discount'] = $discount_info['discount'];
+        }else{
+            //检查用户是否属于自定义支付渠道
+            $isCustom = check_user_is_custom_pay_channel($request['user_id']);
+            if ($isCustom) {
+                $this -> set_message(1058, "该账号暂不支持平台币/绑币，请在游戏中支付");
+            }
+            $request['pay_amount'] = $request['price'];
+        }
+
+        //检查未成年用户是否满足充值条件
+        if (get_user_config_info('age')['real_pay_status'] == 1) {
+            $lCheckAge = new CheckAgeLogic();
+            $checkAgeRes = $lCheckAge -> run($request['user_id'], $request['pay_amount']);
+            if (false === $checkAgeRes) {
+                $this -> set_message(1059, $lCheckAge -> getErrorMsg());
+            }
+        }
+
+        if($request['coupon_id'] > 0 && $new_price <= 0){
+            $result = $this->coupon_pay($request,$user);
+            if($result){
+                $res_msg = array(
+                        "url" =>cmf_get_domain() . "/sdk/Pay/pay_success/orderno/" . $request['pay_order_number'],
+                        "wap" => 1,
+                        "out_trade_no" => $request['pay_order_number']
+                );
+                $this->set_message(9999, "支付成功",$res_msg);
+            }else{
+                $this->set_message(1058, "优惠支付失败");
+            }
+        }elseif (pay_type_status('wxscan') == 1) {
+            //新渠道支付流程
+            $promotePay = new \think\PromotePay($request['game_id'],2);
+            $result = $promotePay->initParam($request,$user);
+            $this->set_message(200, "获取成功",$result);
+        }   
         $this->set_message(1058, "支付失败");
+        //旧支付流程
+        //     $config = get_pay_type_set('zfb');
+        //     if ($config['config']['type'] == 2) {/*支付宝 wap支付 */
+        //         $request['apitype'] = "alipay";
+        //         $request['config'] = "alipay";
+        //         $request['signtype'] = "MD5";
+        //         $request['server'] = "alipay.wap.create.direct.pay.by.user";
+        //         $request['payway'] = 3;
+        //         $pay_url = $this->pay($request,$user);
+        //         $res_msg = array(
+        //             "url" => $pay_url['url'],
+        //             "wap" => 1,
+        //             "out_trade_no" => $request['pay_order_number']
+        //         );
+        //         $this->set_message(200, "获取成功",$res_msg);
+        //     } else {/* 支付宝app支付 */
+        //         $request['apitype'] = "alipay";
+        //         $request['config'] = "alipay";
+        //         $request['signtype'] = "MD5";
+        //         $request['server'] = "mobile.securitypay.pay";
+        //         $request['payway'] = 3;
+        //         $data = $this->alipay_app_pay($request,$user);
+        //         $md5_sign = $this->encrypt_md5(base64_encode($data['arg']), $game_set_data["access_key"]);
+        //         $result = [
+        //             "orderInfo" => base64_encode($data['arg']),
+        //             "out_trade_no" => $data['out_trade_no'],
+        //             "order_sign" => $data['sign'],
+        //             "md5_sign" => $md5_sign,
+        //             'wap'=>0
+        //         ];
+        //         $this->set_message(200, "获取成功",$result);
+        //     }
+        // }
     }
 
     /**
