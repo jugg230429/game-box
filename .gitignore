@@ -9,8 +9,5 @@
 /node_modules
 Vagrantfile
 .vagrant
-/data
-/jar
+/data/runtime
 /.vscode
-db_test.sql
-Developing documents.zip
