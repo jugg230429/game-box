@@ -15,6 +15,7 @@ use app\common\model\DateListModel;
 use app\common\controller\BaseController;
 use cmf\controller\AdminBaseController;
 use app\api\GameApi;
+use app\recharge\model\SpendPromoteParamModel;
 use think\Request;
 use think\Db;
 
@@ -265,9 +266,10 @@ class SpendController extends AdminBaseController
             $exend['order'] = "tab_spend.$sort_type asc";
         }
         $promoteSettlement = new PromotesettlementModel();
-        $exend['field'] = 'tab_spend.id,tab_spend.user_id,tab_spend.user_account,tab_spend.game_id,tab_spend.game_name,tab_spend.promote_id,tab_spend.promote_account,tab_spend.pay_time,tab_spend.pay_status,tab_spend.pay_order_number,tab_spend.extend,tab_spend.pay_amount,tab_spend.pay_game_status,tab_spend.pay_way,tab_spend.spend_ip,tab_spend.server_id,tab_spend.server_name,tab_spend.game_player_id,tab_spend.game_player_name,tab_spend.cost,tab_spend.is_check,tab_spend.role_level,tab_spend.discount_type,tab_spend.discount,tab_spend.coupon_record_id,tab_spend.currency_code,tab_spend.us_cost,tab_spend.currency_cost,tab_spend.area,tab_spend.goods_reserve';
+        $exend['field'] = 'tab_spend.id,tab_spend.user_id,tab_spend.user_account,tab_spend.game_id,tab_spend.game_name,tab_spend.promote_id,tab_spend.promote_account,tab_spend.pay_time,tab_spend.pay_status,tab_spend.pay_order_number,tab_spend.extend,tab_spend.pay_amount,tab_spend.pay_game_status,tab_spend.pay_way,tab_spend.spend_ip,tab_spend.server_id,tab_spend.server_name,tab_spend.game_player_id,tab_spend.game_player_name,tab_spend.cost,tab_spend.is_check,tab_spend.role_level,tab_spend.discount_type,tab_spend.discount,tab_spend.coupon_record_id,tab_spend.currency_code,tab_spend.us_cost,tab_spend.currency_cost,tab_spend.area,tab_spend.goods_reserve,tab_spend.promote_param_id';
         // 判断当前管理员是否有权限显示完成整手机号或完整账号
         $ys_show_admin = get_admin_privicy_two_value();
+    
         $data = $base -> data_list_join($spend, $map, $exend) -> each(function($item, $key) use ($promoteSettlement, $ys_show_admin){
             $item['is_check_name'] = $item['is_check'] == 1 ? "参与" : "不参与";
             $status = $promoteSettlement -> where(['pay_order_number' => $item['pay_order_number']]) -> value('status');
@@ -279,6 +281,10 @@ class SpendController extends AdminBaseController
             if($ys_show_admin['role_show_admin_status'] == 1){//开启了角色查看隐私
                 $item['game_player_name'] = get_ys_string($item['game_player_name'],$ys_show_admin['role_show_admin']);
             }
+
+            //获取新渠道支付商家名称
+            $paramModel = new SpendPromoteParamModel();
+            $item['promote_param_name'] = $paramModel->getPromoteBussinessNameById($item['promote_param_id']);
             return $item;
         });
         $exend['field'] = 'sum(tab_spend.pay_amount) as total,sum(tab_spend.us_cost) as us_total,sum(tab_spend.cost) as all_cost';

@@ -171,6 +171,7 @@
                     <th>充值方式</th>
                     <th>折扣</th>
                     <th>所属CP</th>
+                    <th>支付渠道</th>
                     <th>订单状态</th>
                     <th>游戏通知状态</th>
                     <th>{:lang('ACTIONS')}</th>
@@ -216,6 +217,7 @@
                         <td>{:get_pay_way($vo['pay_way'])}</td>
                         <td><if condition="$vo['discount'] eq 10"><else/>{$vo.discount}折</if></td>
                         <td>{:get_game_cp_name($vo['game_id'])}</td>
+                        <td>{$vo['promote_param_name']}</td>
                         <td>
                             <span <if condition="$vo['pay_status'] eq 1"> class="label" style="color:#3FAD46;font-size:14px"<else/>class="label" style="color:#d9534f;font-size:14px"</if>>{:get_info_status($vo['pay_status'],2)}</span>
                         </td>

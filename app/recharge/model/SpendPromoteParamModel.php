@@ -49,4 +49,17 @@ class SpendPromoteParamModel extends Model
         }
         return $result;
     }
+
+
+    public function getPromoteBussinessNameById($id){
+        $promote_id = $this->where('id',$id)->value('promote_id');
+        switch($promote_id){
+            case 1:
+                return '鼎盛支付';
+            case 2:
+                return '蚂蚁支付';
+            default:
+                return '未知';    
+        }
+    }
 }
