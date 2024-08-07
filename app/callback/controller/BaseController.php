@@ -34,7 +34,7 @@ class BaseController extends HomeBaseController
     /**
      *充值到游戏成功后修改充值状态和设置游戏币
      */
-    protected function set_spend($data = [])
+    public function set_spend($data = [])
     {
         $spend = new SpendModel();
         $map['pay_order_number'] = $data['out_trade_no'];

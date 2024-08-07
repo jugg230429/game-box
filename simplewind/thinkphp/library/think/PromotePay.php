@@ -27,7 +27,7 @@ class PromotePay{
      */
     private $promoteId;
 
-    public function __construct($gameId, $payType)
+    public function __construct($gameId = 0, $payType = 0)
     {
         /* 初始化配置 */
         header("Content-Type: text/html;charset=utf-8");
@@ -212,8 +212,8 @@ class PromotePay{
             "total_fee" => $vo->getFee(),               //支付金额
             "exter_invoke_ip" => $promoteConfig['callback_ip'],  //回调ip
             // "custom" => $vo->getTitle(), // 标题
-            "return_url" => "https://pay.tbbgame.vip/sdk/pay/pay_return", //支付同步回调
-            "notify_url" => "https://pay.tbbgame.vip/sdk/pay/pay_callback",  //支付异步回调
+            "return_url" => "https://pay.tbbgame.vip/sdk/promote_pay/pay_return", //支付同步回调
+            "notify_url" => "https://pay.tbbgame.vip/sdk/promote_pay/pay_callback",  //支付异步回调
             "pay_type" => $promoteConfig['channel_coding'],	 //支付类型
         ];
 
@@ -242,8 +242,8 @@ class PromotePay{
         else{
             $out_trade_no = $result['data']['out_trade_no'];
             Db::table('tab_spend_promote_pay_log')->where('id',$logId)->update(['order_number'=>$out_trade_no,'reply_content'=>$replyContent]);
-            //更新tab_spend表数据,外部订单号
-            Db::table('tab_spend')->where('pay_order_number',$vo->getOrderNo())->update(['order_number'=>$out_trade_no]);
+            //更新tab_spend表数据,外部订单号和支付渠道配置id
+            Db::table('tab_spend')->where('pay_order_number',$vo->getOrderNo())->update(['order_number'=>$out_trade_no,'promote_param_id'=>$promoteConfig['id']]);
             return $result['data'];
         }
     }

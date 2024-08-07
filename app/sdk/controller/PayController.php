@@ -1615,39 +1615,6 @@ class PayController extends BaseController
             $this->set_message(200, "获取成功",$result);
         }   
         $this->set_message(1058, "支付失败");
-        //旧支付流程
-        //     $config = get_pay_type_set('zfb');
-        //     if ($config['config']['type'] == 2) {/*支付宝 wap支付 */
-        //         $request['apitype'] = "alipay";
-        //         $request['config'] = "alipay";
-        //         $request['signtype'] = "MD5";
-        //         $request['server'] = "alipay.wap.create.direct.pay.by.user";
-        //         $request['payway'] = 3;
-        //         $pay_url = $this->pay($request,$user);
-        //         $res_msg = array(
-        //             "url" => $pay_url['url'],
-        //             "wap" => 1,
-        //             "out_trade_no" => $request['pay_order_number']
-        //         );
-        //         $this->set_message(200, "获取成功",$res_msg);
-        //     } else {/* 支付宝app支付 */
-        //         $request['apitype'] = "alipay";
-        //         $request['config'] = "alipay";
-        //         $request['signtype'] = "MD5";
-        //         $request['server'] = "mobile.securitypay.pay";
-        //         $request['payway'] = 3;
-        //         $data = $this->alipay_app_pay($request,$user);
-        //         $md5_sign = $this->encrypt_md5(base64_encode($data['arg']), $game_set_data["access_key"]);
-        //         $result = [
-        //             "orderInfo" => base64_encode($data['arg']),
-        //             "out_trade_no" => $data['out_trade_no'],
-        //             "order_sign" => $data['sign'],
-        //             "md5_sign" => $md5_sign,
-        //             'wap'=>0
-        //         ];
-        //         $this->set_message(200, "获取成功",$result);
-        //     }
-        // }
     }
 
     /**
