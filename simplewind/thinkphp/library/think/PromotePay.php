@@ -206,14 +206,15 @@ class PromotePay{
      *  promoteConfig  支付渠道配置
      **/    
     private function dingshengPay(Pay\PayVo $vo,$promoteConfig){
+        $host = $_SERVER['HTTP_HOST'];
         $paramArray = [
             "partner" => $promoteConfig['partner'],                                 //商户号
             "out_trade_no" => $vo->getOrderNo(),                                    //订单号
             "total_fee" => $vo->getFee(),                                           //支付金额
             "exter_invoke_ip" => $promoteConfig['callback_ip'],                     //回调ip
             // "custom" => $vo->getTitle(),                                         //标题
-            "return_url" => "https://pay.tbbgame.vip/sdk/promote_pay/pay_return",   //支付同步回调
-            "notify_url" => "https://pay.tbbgame.vip/sdk/promote_pay/ds_callback",  //支付异步回调
+            "return_url" => $host . "/sdk/promote_pay/pay_return",   //支付同步回调
+            "notify_url" => $host . "/sdk/promote_pay/ds_callback",  //支付异步回调
             "pay_type" => $promoteConfig['channel_coding'],	                        //支付类型
         ];
 
@@ -255,6 +256,7 @@ class PromotePay{
      *  promoteConfig  支付渠道配置
      **/    
     private function auntPay(Pay\PayVo $vo,$promoteConfig){
+        $host = $_SERVER['HTTP_HOST'];
         //处理金额
         $amount = (double)$vo->getFee() * 100;
         $paramArray = [
@@ -263,7 +265,7 @@ class PromotePay{
             "mchOrderNo" => $vo->getOrderNo(),                                          //订单号
             "amount" => $amount,                                                        //支付金额,单位:分
             "currency" => 'cny',                                                        //币种
-            "notifyUrl" => "https://pay.tbbgame.vip/sdk/promote_pay/ant_callback",      //支付异步回调
+            "notifyUrl" => $host . "/sdk/promote_pay/ant_callback",      //支付异步回调
             "subject" => $vo->getTitle(),                                               //商品主题
             "body" => '充值支付',                                                        //商品描述信息
             "reqTime" => date('YmdHis', time()).$this->get_millisecond(),               //请求时间
