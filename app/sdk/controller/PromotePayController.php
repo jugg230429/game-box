@@ -6,6 +6,12 @@ use PDO;
 use think\Db;
 
 class PromotePayController{
+     /**
+     * 测试接口访问
+     */
+    public function netstat(){
+        exit('pay success');
+    }
     /**
      * 渠道支付同步回调
      */
