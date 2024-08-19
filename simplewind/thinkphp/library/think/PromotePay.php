@@ -100,6 +100,9 @@ class PromotePay{
      */
     public function buildRequestForm(Pay\PayVo $vo, $uc = 0)
     {
+        //选择支付渠道配置
+        $config = $this->doPay($vo);
+
         $result = false;
         switch ($vo->getTable()) {
             case 'spend':
@@ -155,7 +158,7 @@ class PromotePay{
                 break;
         }
         if ($result !== false) {//$check !== false
-           return $this->doPay($vo);
+           return $this->thirdPartyOrdering($vo,$config);
         } else {
             exit('数据错误');
         }
@@ -175,7 +178,7 @@ class PromotePay{
             exit('未匹配到支付配置');
         }
         //前往下单
-        return $this->thirdPartyOrdering($vo,$config);
+        return $config;
     }
 
     /**
@@ -294,7 +297,7 @@ class PromotePay{
             exit($replyContent);
         }
         else{
-            $payUrls = urldecode($result['payParams']['payUrl']);
+            $payUrls = $result['payParams']['payUrl'];
             //更新tab_spend表数据,支付渠道配置id,out_trade_no在回调的时候再更新
             Db::table('tab_spend')->where('pay_order_number',$vo->getOrderNo())->update(['promote_param_id'=>$promoteConfig['id']]);
             //重新构造返回return数组,保持一致
