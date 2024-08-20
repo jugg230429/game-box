@@ -553,6 +553,9 @@ class UserController extends BaseController
             }
         }
 
+        //新增返回sdk登陆配置字段
+        $data['sdk_set'] = $sdk_set;
+
         $post_title = Cache::get('sdk_post_title');
         if(empty($post_title)){
             $portalPostModel = new \app\site\model\PortalPostModel;
