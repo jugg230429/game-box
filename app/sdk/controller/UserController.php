@@ -553,8 +553,8 @@ class UserController extends BaseController
             }
         }
 
-        //新增返回sdk登陆配置字段
-        $data['sdk_set'] = $sdk_set;
+        // //新增返回sdk登陆配置字段
+        // $data['sdk_set'] = $sdk_set;
 
         $post_title = Cache::get('sdk_post_title');
         if(empty($post_title)){
@@ -714,7 +714,6 @@ class UserController extends BaseController
             $data['type'] = 1;
             $data['equipment_num'] = $request['equipment_num'];
             $data['device_name'] = get_real_devices_name($request['device_name'])?:'';
-            dump($data);
             $result = $usermodel->register($data,'sdk');
             if ($result == -1) {
                 $this->set_message(1028, '注册失败');
@@ -2009,6 +2008,10 @@ class UserController extends BaseController
         $map['game_id'] = $request['game_id'];
         $task = $model->field('id')->where($map)->find();
         $data['task_id'] = $task['id']?1:0;
+
+        //新增返回sdk登陆配置字段
+        $sdk_set = cmf_get_option('sdk_set');
+        $data['sdk_set'] = $sdk_set;
 
         $this->set_message(200, "获取成功",$data);
     }
