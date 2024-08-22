@@ -2011,6 +2011,8 @@ class UserController extends BaseController
 
         //新增返回sdk登陆配置字段
         $sdk_set = cmf_get_option('sdk_set');
+        $sdk_set['suspend_icon'] = cmf_get_image_url($sdk_set['suspend_icon']);
+        $sdk_set['sdk_login_logo'] = cmf_get_image_url($sdk_set['sdk_login_logo']);
         $data['sdk_set'] = $sdk_set;
 
         $this->set_message(200, "获取成功",$data);

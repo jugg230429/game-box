@@ -9,5 +9,5 @@
 /node_modules
 Vagrantfile
 .vagrant
-/data/runtime
+/data
 /.vscode
