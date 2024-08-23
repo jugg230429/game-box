@@ -216,8 +216,8 @@ class PromotePay{
             "total_fee" => $vo->getFee(),                                           //支付金额
             "exter_invoke_ip" => $promoteConfig['callback_ip'],                     //回调ip
             // "custom" => $vo->getTitle(),                                         //标题
-            "return_url" => $host . "/sdk/promote_pay/pay_return",   //支付同步回调
-            "notify_url" => $host . "/sdk/promote_pay/ds_callback",  //支付异步回调
+            "return_url" => $host . "/sdk/promote_pay/ds_callback",                 //支付同步回调
+            "notify_url" => $host . "/sdk/promote_pay/ds_callback",                 //支付异步回调
             "pay_type" => $promoteConfig['channel_coding'],	                        //支付类型
         ];
 
