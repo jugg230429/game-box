@@ -210,6 +210,9 @@ class PromotePay{
      **/    
     private function dingshengPay(Pay\PayVo $vo,$promoteConfig){
         $host = $_SERVER['HTTP_HOST'];
+        if (strpos($host, 'https') == false) {
+            $host = 'https://' . $host;
+        }
         $paramArray = [
             "partner" => $promoteConfig['partner'],                                 //商户号
             "out_trade_no" => $vo->getOrderNo(),                                    //订单号
@@ -260,6 +263,9 @@ class PromotePay{
      **/    
     private function auntPay(Pay\PayVo $vo,$promoteConfig){
         $host = $_SERVER['HTTP_HOST'];
+        if(strpos($host, 'https') == false) {
+            $host = 'https://' . $host;
+        }
         //处理金额
         $amount = (double)$vo->getFee() * 100;
         $paramArray = [
