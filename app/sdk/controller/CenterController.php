@@ -245,7 +245,6 @@ class CenterController extends BaseController
     {
         $request = json_decode(base64_decode(file_get_contents("php://input")), true);
         $request = get_real_promote_id($request);
-        dump($request);
         $config = cmf_get_option('sdk_set');
         $data['suspend_show_status'] = $config['suspend_show_status'];
         $data['suspend_icon'] = cmf_get_image_url($config['suspend_icon']);
