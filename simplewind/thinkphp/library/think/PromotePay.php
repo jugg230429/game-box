@@ -101,7 +101,7 @@ class PromotePay{
     public function buildRequestForm(Pay\PayVo $vo, $uc = 0)
     {
         //选择支付渠道配置
-        $config = $this->doPay($vo);
+        $config = $this->choosePayChannel($vo);
 
         $result = false;
         switch ($vo->getTable()) {
@@ -170,7 +170,7 @@ class PromotePay{
      *1.通过传递传输选择合适的第三方商家配置
      *2.发起支付下单
      */
-    public function doPay(Pay\PayVo $vo){
+    public function choosePayChannel(Pay\PayVo $vo){
         //根据游戏id和支付类型选择合适的三方支付
         $promoteModel = new SpendPromoteParamModel();
         $config = $promoteModel->choosePromoteConfig($this->gameId,$this->payType);
@@ -193,6 +193,9 @@ class PromotePay{
                 break;
             case 2:
                 $result = $this->auntPay($vo,$promoteConfig);
+                break;
+            case 3:
+                $result = $this->huijuPay($vo,$promoteConfig);
                 break;
             default:
                 exit('未匹配到三方商家支付');  
@@ -316,6 +319,69 @@ class PromotePay{
         }
     }
     
+
+
+     /**
+     *  汇聚支付
+     *  vo 订单对象
+     *  promoteConfig  支付渠道配置
+     **/    
+    private function huijuPay(Pay\PayVo $vo,$promoteConfig){
+        $host = $_SERVER['HTTP_HOST'];
+        if (strpos($host, 'https') == false) {
+            $host = 'https://' . $host;
+        }
+        $payType = 'alipay';
+        if($promoteConfig['type'] == 2){
+            $payType = 'wxpay';
+        }
+        $paramArray = [
+            "pid" => $promoteConfig['partner'],                                     //商户ID
+            "type" => $payType,                                                     //支付方式
+            "out_trade_no" => $vo->getOrderNo(),                                    //订单号
+            "notify_url" => $host . "/sdk/promote_pay/hj_callback",                 //支付异步回调
+            "name" => $vo->getTitle(),                                              //商品名称
+            "money" => $vo->getFee(),                                               //支付金额
+            "clientip" => $_SERVER['REMOTE_ADDR'],                                  //ip
+        ];
+
+        $sign = $this->dsParamArraySign($paramArray, $promoteConfig['key']);  //签名
+        $paramArray["sign"] = $sign;
+        $paramArray["sign_type"] = 'MD5';
+        $paramsStr = http_build_query($paramArray); //请求参数str
+        //记录订单日志
+        $log = [
+            'config_id' => $promoteConfig['id'],
+            'pay_order_number' => $vo->getOrderNo(),
+            'send_content' => $paramsStr,
+            'type' => 1,
+            'create_time' => date("Y-m-d H:i:s")
+        ];
+        $logId = Db::table('tab_spend_promote_pay_log')->insertGetId($log);
+        $replyContent = $this->httpPost($promoteConfig['order_address'], $paramsStr);
+        //更新回复记录
+        //{"code":200,"msg":"请求成功","data":{"out_trade_no":"SP_20240806204728mv2n","total_fee":"60.0","pay_url":"https://p.cdd667889.xyz/pre/CDD069C77A69CA9BF1D2812A57A3A3"}}
+        //处理返回json格式,取data返回
+        $result = json_decode($replyContent,true);
+        if($result['code'] != 1){
+            Db::table('tab_spend_promote_pay_log')->where('id',$logId)->update(['reply_content'=>$replyContent]);
+            exit($replyContent);
+        }
+        else{
+            $out_trade_no = $result['trade_no'];
+            Db::table('tab_spend_promote_pay_log')->where('id',$logId)->update(['order_number'=>$out_trade_no,'reply_content'=>$replyContent]);
+            //更新tab_spend表数据,外部订单号和支付渠道配置id
+            Db::table('tab_spend')->where('pay_order_number',$vo->getOrderNo())->update(['order_number'=>$out_trade_no,'promote_param_id'=>$promoteConfig['id']]);
+             //重新构造返回return数组,保持一致
+             $return = [
+                'out_trade_no' => $vo->getOrderNo(),
+                'total_fee' => $vo->getFee(),
+                'pay_url' => $result['qrcode']
+            ];
+            return $return;
+        }
+    }
+
 
 
       /**
@@ -626,8 +692,24 @@ class PromotePay{
         $str =  $md5str . '&key=' . $mchKey;        
         //签名
         return strtoupper(md5($str));
-
     }
+
+    // 计算签名
+	function hjGetSign($param,$mchKey){
+		ksort($param);
+		reset($param);
+		$signstr = '';
+	
+		foreach($param as $k => $v){
+			if($k != "sign" && $k != "sign_type" && $v!=''){
+				$signstr .= $k.'='.$v.'&';
+			}
+		}
+		$signstr = substr($signstr,0,-1);
+		$signstr .= $mchKey;
+		$sign = md5($signstr);
+		return $sign;
+	}
  
     function get_millisecond(){
         list($usec, $sec) = explode(" ", microtime());
