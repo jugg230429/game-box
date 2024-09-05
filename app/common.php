@@ -836,7 +836,7 @@ function get_pay_way($pay_way = '')
             return '苹果内购';
             break;
         default:
-            return 'error';
+            return '支付宝';
             break;
     }
 

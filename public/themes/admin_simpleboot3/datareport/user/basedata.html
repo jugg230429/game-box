@@ -93,28 +93,7 @@
                     </div>
                 </div>
             </th>
-            <th>
-                <a href="javascript:changesort('count_pay_user');" class="basedata-a">付费用户
-                    <if condition="input('request.sort_type') eq 'count_pay_user' and input('request.sort') eq 3">
-                        ▼
-                        <elseif condition="input('request.sort_type') eq 'count_pay_user' and input('request.sort') eq 2"/>
-                        ▲
-                        <else/>
-                        <img src="__TMPL__/public/assets/images/up-down.png" width="7px">
-                    </if>
-                </a>
-                <div class="question_">
-                    <i class="question_mark">?</i>
-                    <div class="question_content">
-                        <ul class="question_content_box">
-                            <li class="question_list">
-                                <span class="title">付费用户</span>
-                                <span class="">游戏内充值用户数（统计充值成功，累计时去重）</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </th>
+ 
             <th>
                 <a href="javascript:changesort('count_new_pay_user');" class="basedata-a">新增付费用户
                     <if condition="input('request.sort_type') eq 'count_new_pay_user' and input('request.sort') eq 3">
@@ -154,6 +133,28 @@
                             <li class="question_list">
                                 <span class="title">新增付费额</span>
                                 <span class="">新注册用户充值金额</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </th>
+            <th>
+                <a href="javascript:changesort('count_pay_user');" class="basedata-a">付费用户
+                    <if condition="input('request.sort_type') eq 'count_pay_user' and input('request.sort') eq 3">
+                        ▼
+                        <elseif condition="input('request.sort_type') eq 'count_pay_user' and input('request.sort') eq 2"/>
+                        ▲
+                        <else/>
+                        <img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+                    </if>
+                </a>
+                <div class="question_">
+                    <i class="question_mark">?</i>
+                    <div class="question_content">
+                        <ul class="question_content_box">
+                            <li class="question_list">
+                                <span class="title">付费用户</span>
+                                <span class="">游戏内充值用户数（统计充值成功，累计时去重）</span>
                             </li>
                         </ul>
                     </div>
@@ -302,9 +303,9 @@
                 <td class="data_summary_bold">{:input('request.promote_id')==0?'--':get_promote_name(input('request.promote_id'))}</td>
                 <td class="data_summary_bold">{$total_data['new_register_user']}</td>
                 <td class="data_summary_bold">{$total_data['active_user']}</td>
-                <td class="data_summary_bold">{$total_data['pay_user']}</td>
                 <td class="data_summary_bold">{$total_data['new_pay_user']}</td>
                 <td class="data_summary_bold">{$total_data['new_total_pay']}</td>
+                <td class="data_summary_bold">{$total_data['pay_user']}</td>
                 <td class="data_summary_bold">{$total_data['total_order']}</td>
                 <td class="data_summary_bold">{$total_data['total_pay']}</td>
                 <td class="data_summary_bold">{:$total_data['new_register_user']==0?'0.00':null_to_0($total_data['pay_user']/$total_data['new_register_user']*100)}%</td>
@@ -323,13 +324,13 @@
                         {$vo['count_active_user']}
                     </td>
                     <td class="js_list-data list-data">
-                        {$vo['count_pay_user']}
-                    </td>
-                    <td class="js_list-data list-data">
                         {$vo['count_new_pay_user']}
                     </td>
                     <td class="js_list-data needAjax list-data" url="{:url('Ajax/get_pay_detail',['date'=>$vo['time'],'promote_id'=>input('request.promote_id'),'game_id'=>input('request.game_id'),'user_ids'=>$vo['new_pay_user']])}">
                         {$vo['new_total_pay']}
+                    </td>
+                    <td class="js_list-data list-data">
+                        {$vo['count_pay_user']}
                     </td>
                     <td class="js_list-data list-data">
                         {$vo['count_total_order']}

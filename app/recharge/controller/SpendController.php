@@ -282,6 +282,10 @@ class SpendController extends AdminBaseController
                 $item['game_player_name'] = get_ys_string($item['game_player_name'],$ys_show_admin['role_show_admin']);
             }
 
+            //处理extend参数
+            $item['extend'] = str_replace('"',"'",$item['extend']);
+            // $item['extend'] = str_replace("\\",'',$item['extend']);
+
             //获取新渠道支付商家名称
             $paramModel = new SpendPromoteParamModel();
             $item['promote_param_name'] = $paramModel->getPromoteBussinessNameById($item['promote_param_id']);

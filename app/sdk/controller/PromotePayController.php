@@ -257,7 +257,6 @@ class PromotePayController{
             "type" => $_REQUEST['type'], 
             "money" => $_REQUEST['money'], 
             "trade_status" => $_REQUEST['trade_status'], 
-            "status" => $_REQUEST['status'], 
             "sign" => $_REQUEST['sign'], 
             "sign_type" => $_REQUEST['sign_type']
         ];

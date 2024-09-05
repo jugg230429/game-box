@@ -110,19 +110,23 @@ class MainController extends AdminBaseController
             $this->assign('addActiveNum', $addActiveNum);
         }
         if (AUTH_PAY == 1 && AUTH_USER == 1) {
-            //付费人数统计
+            //付费人数和金额统计
+            //新：只查询支付宝和微信
+            //昨日
+            $spend['pay_way'] = ['>',2];
             $spend['pay_status'] = 1;
             $spend['pay_time'] = total(5, 1);
             $result = Db::table('tab_spend')->distinct(true)->field('user_id')->where($spend)->select();
             $payUserNum['yesNum'] = empty($result) ? 0 : count($result);
-//            $result = Db::table('tab_spend')->distinct(true)->field('user_id')->where('pay_status',1)->select();
-            $result = Db::table('tab_spend')->distinct(true)->field('user_id')->where('pay_status', 1)->where(['pay_time' => total(1, 1)])->select();
-            $payUserNum['todayNum'] = empty($result) ? 0 : count($result);
-            $this->assign('payUserNum', $payUserNum);
-            //付费金额统计
             $result = Db::table('tab_spend')->field('pay_amount')->where($spend)->select();
             $payAmount['yesNum'] = empty($result) ? '0.00' : array_sum(array_column($result->toArray(), 'pay_amount'));
-            $result = Db::table('tab_spend')->field('pay_amount')->where('pay_status', 1)->where(['pay_time' => total(1, 1)])->select();
+
+            //今日
+            $spend['pay_time'] = total(1, 1);
+            $result = Db::table('tab_spend')->distinct(true)->field('user_id')->where($spend)->select();
+            $payUserNum['todayNum'] = empty($result) ? 0 : count($result);
+            $this->assign('payUserNum', $payUserNum);
+            $result = Db::table('tab_spend')->field('pay_amount')->where($spend)->select();
             $payAmount['todayNum'] = empty($result) ? '0.00' : array_sum(array_column($result->toArray(), 'pay_amount'));
             $this->assign('payAmount', $payAmount);
         }

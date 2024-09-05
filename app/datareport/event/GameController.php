@@ -144,6 +144,61 @@ class GameController extends HomeBaseController
                 $total_data[$kk] = count(array_filter(array_unique(explode(',', $new))));
             }
         }
+        //新增逻辑，重新查询订单总值，只查询真实充值，剔除绑币和平台币充值
+        $game_id = intval($game_id);
+        $map = [];
+        $map['pay_status'] = 1;
+        $map['pay_way'] = ['>',2];
+        $map['pay_time'] = ['between', [strtotime($starttime), strtotime($endtime) + 86399]];
+        if($game_id){
+            $map['game_id'] = $game_id;
+        }
+        if($promote_id){
+            $map['promote_id'] = $promote_id;
+        }
+        //总付费额 
+        $total_data['total_pay'] = Db::table('tab_spend')->where($map)->sum('pay_amount');
+        //付费用户
+        $result = Db::table('tab_spend')->distinct(true)->field('user_id')->where($map)->select();
+        $total_data['pay_user'] =  empty($result) ? 0 : count($result); 
+        //订单数
+        $total_data['total_order'] = Db::table('tab_spend')->where($map)->count();
+        //新增用户
+        $usermap = [
+            'register_time' => ['between', [strtotime($starttime), strtotime($endtime) + 86399]],
+            'puid' => 0
+        ];
+        if($game_id){
+            $usermap['fgame_id'] = $game_id;
+        }
+        if($promote_id){
+            $usermap['promote_id'] = $promote_id;
+        }
+        $total_data['new_register_user'] = Db::table('tab_user')->where($usermap)->count();
+        //列表计算
+        foreach ($new_data as $k => $v) {
+            //新增逻辑，重新查询订单总值，只查询真实充值，剔除绑币和平台币充值
+            $map['game_id'] = $v['game_id'];
+            //总付费额 
+            $new_data[$k]['total_pay'] = Db::table('tab_spend')->where($map)->sum('pay_amount');
+            //付费用户
+            $result = Db::table('tab_spend')->distinct(true)->field('user_id')->where($map)->select();
+            $new_data[$k]['count_pay_user'] = empty($result) ? 0 : count($result); 
+            //订单数
+            $new_data[$k]['total_order'] = Db::table('tab_spend')->where($map)->count();
+            //新增用户
+            $usermap = [
+                'register_time' => ['between', [strtotime($starttime), strtotime($endtime) + 86399]],
+                'puid' => 0,
+                'fgame_id' => $v['game_id']
+            ];
+            if($promote_id){
+                $usermap['promote_id'] = $promote_id;
+            }
+            $new_data[$k]['count_new_register_user'] = Db::table('tab_user')->where($usermap)->count();
+            $new_data[$k]['rate'] =  $new_data[$k]['count_new_register_user']==0?'0.00%':null_to_0($new_data[$k]['count_pay_user']/$new_data[$k]['count_new_register_user']*100).'%';
+        }
+
         unset($total_data['rate']);
         $this->assign('total_data', $total_data);
         return $new_data;
