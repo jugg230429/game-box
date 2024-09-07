@@ -109,7 +109,7 @@ class GameController extends HomeBaseController
                 $data[$mk] = [];
             }
         }
-        $array_keys = empty($array_keys) ? ['total_pay', 'pay_user', 'new_register_user', 'rate'] : $array_keys;
+        $array_keys = empty($array_keys) ? ['total_pay', 'pay_user', 'new_register_user', 'active_user','rate'] : $array_keys;
         $new_data = [];
         //游戏的每个数据合并
         foreach ($data as $dk => $dv) {
@@ -196,7 +196,7 @@ class GameController extends HomeBaseController
                 $usermap['promote_id'] = $promote_id;
             }
             $new_data[$k]['count_new_register_user'] = Db::table('tab_user')->where($usermap)->count();
-            $new_data[$k]['rate'] =  $new_data[$k]['count_new_register_user']==0?'0.00%':null_to_0($new_data[$k]['count_pay_user']/$new_data[$k]['count_new_register_user']*100).'%';
+            $new_data[$k]['rate'] =  $new_data[$k]['count_active_user']==0?'0.00%':null_to_0($new_data[$k]['count_pay_user']/$new_data[$k]['count_active_user']*100).'%';
         }
 
         unset($total_data['rate']);

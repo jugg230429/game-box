@@ -255,6 +255,12 @@ class SpendController extends AdminBaseController
             $map['tab_spend.game_id'] = ['IN',$game_id];
         }
 
+        //支付渠道
+        $pay_promote = $this->request->param('pay_promote', '');
+        if ($pay_promote != '') {
+            $map['t.promote_id'] = $pay_promote;
+        }
+
         $sort_type = $this->request->param('sort_type', '');
         $sort = $this->request->param('sort', 1, 'intval');
         //排序
@@ -266,10 +272,10 @@ class SpendController extends AdminBaseController
             $exend['order'] = "tab_spend.$sort_type asc";
         }
         $promoteSettlement = new PromotesettlementModel();
-        $exend['field'] = 'tab_spend.id,tab_spend.user_id,tab_spend.user_account,tab_spend.game_id,tab_spend.game_name,tab_spend.promote_id,tab_spend.promote_account,tab_spend.pay_time,tab_spend.pay_status,tab_spend.pay_order_number,tab_spend.extend,tab_spend.pay_amount,tab_spend.pay_game_status,tab_spend.pay_way,tab_spend.spend_ip,tab_spend.server_id,tab_spend.server_name,tab_spend.game_player_id,tab_spend.game_player_name,tab_spend.cost,tab_spend.is_check,tab_spend.role_level,tab_spend.discount_type,tab_spend.discount,tab_spend.coupon_record_id,tab_spend.currency_code,tab_spend.us_cost,tab_spend.currency_cost,tab_spend.area,tab_spend.goods_reserve,tab_spend.promote_param_id';
+        $exend['field'] = 't.partner,tab_spend.id,tab_spend.user_id,tab_spend.user_account,tab_spend.game_id,tab_spend.game_name,tab_spend.promote_id,tab_spend.promote_account,tab_spend.pay_time,tab_spend.pay_status,tab_spend.pay_order_number,tab_spend.extend,tab_spend.pay_amount,tab_spend.pay_game_status,tab_spend.pay_way,tab_spend.spend_ip,tab_spend.server_id,tab_spend.server_name,tab_spend.game_player_id,tab_spend.game_player_name,tab_spend.cost,tab_spend.is_check,tab_spend.role_level,tab_spend.discount_type,tab_spend.discount,tab_spend.coupon_record_id,tab_spend.currency_code,tab_spend.us_cost,tab_spend.currency_cost,tab_spend.area,tab_spend.goods_reserve,tab_spend.promote_param_id';
+        $exend['join1'] = [['tab_spend_promote_param' => 't'], 'tab_spend.promote_param_id=t.id', 'left'];
         // 判断当前管理员是否有权限显示完成整手机号或完整账号
         $ys_show_admin = get_admin_privicy_two_value();
-    
         $data = $base -> data_list_join($spend, $map, $exend) -> each(function($item, $key) use ($promoteSettlement, $ys_show_admin){
             $item['is_check_name'] = $item['is_check'] == 1 ? "参与" : "不参与";
             $status = $promoteSettlement -> where(['pay_order_number' => $item['pay_order_number']]) -> value('status');
@@ -295,20 +301,20 @@ class SpendController extends AdminBaseController
         //累计充值
         $map['tab_spend.pay_status'] = 1;
         $payusermap = $map;
-        $total = $base->data_list_select($spend, $map, $exend);
+        $total = $base->data_list_join_select($spend, $map, $exend);
         // 累计订单金额
-        $order_total_money = $base->data_list_select($spend, $map, $exend);
+        $order_total_money = $base->data_list_join_select($spend, $map, $exend);
 
         //今日充值
         $map['tab_spend.pay_time'] = ['between', total(1, 2)];
-        $today = $base->data_list_select($spend, $map, $exend);
+        $today = $base->data_list_join_select($spend, $map, $exend);
         //昨日充值
         $map['tab_spend.pay_time'] = ['between', total(5, 2)];
-        $yestoday = $base->data_list_select($spend, $map, $exend);
+        $yestoday = $base->data_list_join_select($spend, $map, $exend);
         //累计充值人数
         $exend['field'] = 'tab_spend.user_id,count(tab_spend.user_id) as group_num';
         $exend['group'] = 'tab_spend.user_id';
-        $totaluser = $base->data_list_select($spend, $payusermap, $exend);
+        $totaluser = $base->data_list_join_select($spend, $payusermap, $exend);
 
         // 是否海外支付
         $pay_oversea = 0;

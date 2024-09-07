@@ -270,6 +270,18 @@ function get_promote_list($map = [], $field = 'id,account,balance_coin,parent_id
 }
 
 /**
+ * [获取支付渠道筛选]
+ */
+function get_promote_select_options(){
+    return [
+        ['id'=>0,'name'=>'官方支付'],
+        ['id'=>1,'name'=>'鼎盛支付'],
+        ['id'=>2,'name'=>'蚂蚁支付'],
+        ['id'=>3,'name'=>'汇聚支付'],
+    ];
+}
+
+/**
  * [获取游戏列表]
  * @param string $select
  * @return false|mixed|PDOStatement|string|\think\Collection

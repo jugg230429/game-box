@@ -159,7 +159,7 @@ class DatabaseController extends HomeBaseController
             // $new_data[$k]['new_pay_user'] = Db::table('tab_spend')->where($map)->count();
             // //新增付费额
             // $new_data[$k]['new_total_pay'] = Db::table('tab_spend')->where($map)->sum('pay_amount');
-            $v['rate'] = empty($v['new_register_user']) ? '0.00%' : (empty($v['pay_user']) ? '0.00%' : null_to_0($v['pay_user']/ count(explode(',', $v['new_register_user'])) * 100) . '%');
+            $v['rate'] = empty($v['active_user']) ? '0.00%' : (empty($v['pay_user']) ? '0.00%' : null_to_0($v['pay_user']/ count(explode(',', $v['active_user'])) * 100) . '%');
             $v['arpu'] = empty($v['active_user']) ? '0.00' : null_to_0($v['total_pay'] / count(explode(',', $v['active_user'])));
             $v['arppu'] = empty($v['pay_user']) ? '0.00' : null_to_0($v['total_pay'] / $v['pay_user']);
         }

@@ -115,6 +115,28 @@
                         </div>
                     </th>
                     <th>
+                        <a href="javascript:changesort('count_active_user');" class="basedata-a">活跃用户
+                            <if condition="input('request.sort_type') eq 'count_active_user' and input('request.sort') eq 3">
+                                ▼
+                                <elseif condition="input('request.sort_type') eq 'count_active_user' and input('request.sort') eq 2"/>
+                                ▲
+                                <else/>
+                                <img src="__TMPL__/public/assets/images/up-down.png" width="7px">
+                            </if>
+                        </a>
+                        <div class="question_">
+                            <i class="question_mark">?</i>
+                            <div class="question_content">
+                                <ul class="question_content_box">
+                                    <li class="question_list">
+                                        <span class="title">活跃用户</span>
+                                        <span class="">登录游戏用户数（含新老用户，累计时去重）</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </th>
+                    <th>
                         <a href="javascript:changesort('rate');">付费率
                             <if condition="input('request.sort_type') eq 'rate' and input('request.sort') eq 3">
                                 ▼
@@ -130,7 +152,7 @@
                                 <ul class="question_content_box">
                                     <li class="question_list">
                                         <span class="title">付费率</span>
-                                        <span class="">付费用户/新增用户</span>
+                                        <span class="">付费用户/活跃用户</span>
                                     </li>
                                 </ul>
                             </div>
@@ -149,7 +171,8 @@
                         <td class="data_summary_bold">{$total_data['total_pay']}</td>
                         <td class="data_summary_bold">{$total_data['pay_user']}</td>
                         <td class="data_summary_bold">{$total_data['new_register_user']}</td>
-                        <td class="data_summary_bold">{:$total_data['new_register_user']==0?'0.00%':null_to_0($total_data['pay_user']/$total_data['new_register_user']*100)}%</td>
+                        <td class="data_summary_bold">{$total_data['active_user']}</td>
+                        <td class="data_summary_bold">{:$total_data['active_user']==0?'0.00%':null_to_0($total_data['pay_user']/$total_data['active_user']*100)}%</td>
                     </tr>
                     <foreach name="data_lists" item="vo">
                         <tr>
@@ -164,6 +187,9 @@
 
                             <td>
                                 <div class="js_list-data list-data">{$vo['count_new_register_user']}</div>
+                            </td>
+                            <td>
+                                <div class="js_list-data list-data">{$vo['count_active_user']}</div>
                             </td>
                             <td>{$vo['rate']}</td>
                         </tr>

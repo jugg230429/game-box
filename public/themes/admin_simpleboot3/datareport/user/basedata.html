@@ -220,7 +220,7 @@
                         <ul class="question_content_box">
                             <li class="question_list">
                                 <span class="title">总付费率</span>
-                                <span class="">付费用户/新增用户</span>
+                                <span class="">付费用户/活跃用户</span>
                             </li>
                         </ul>
                     </div>
@@ -308,7 +308,7 @@
                 <td class="data_summary_bold">{$total_data['pay_user']}</td>
                 <td class="data_summary_bold">{$total_data['total_order']}</td>
                 <td class="data_summary_bold">{$total_data['total_pay']}</td>
-                <td class="data_summary_bold">{:$total_data['new_register_user']==0?'0.00':null_to_0($total_data['pay_user']/$total_data['new_register_user']*100)}%</td>
+                <td class="data_summary_bold">{:$total_data['active_user']==0?'0.00':null_to_0($total_data['pay_user']/$total_data['active_user']*100)}%</td>
                 <td class="data_summary_bold">{:$total_data['active_user']==0?'0.00':null_to_0($total_data['total_pay']/$total_data['active_user'])}</td>
                 <td class="data_summary_bold">{:$total_data['pay_user']==0?'0.00':null_to_0($total_data['total_pay']/$total_data['pay_user'])}</td>
                 <td class="data_summary_bold">{$total_data['fire_device']}</td>

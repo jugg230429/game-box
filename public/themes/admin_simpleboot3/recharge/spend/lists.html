@@ -98,6 +98,13 @@
                 <option value="6" <if condition="input('request.pay_way') eq 6">selected</if>>苹果内购</option>
             </select>
 
+            <select name="pay_promote" id="pay_promote" class="selectpicker sss" top_promote="{:input('request.pay_promote')}" data-live-search="true" data-size="8" style="width: 100px;">
+                <option value="">支付渠道</option>
+                <volist name=":get_promote_select_options()" id="vo">
+                    <option value="{$vo.id}" >{$vo.name}</option>
+                </volist>
+            </select>
+
             <input type="text" class="form-control" name="spend_ip" style="width: 120px;" value="{:input('request.spend_ip/s','')}" placeholder="充值IP">
             <select name="pay_status" id="pay_status" class="selectpicker" pay_status="{:input('request.pay_status')}" style="width: 120px;">
                 <option value="">订单状态</option>
