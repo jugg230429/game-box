@@ -64,6 +64,62 @@ class LoginNotifyController{
         }
     }
 
+
+       /**
+     *旧post-服务器登录验证
+     */
+    public function login_verify_new(){
+        $request = request()->post();
+        if (empty($request['user_id'])||empty($request['token'])) {
+            echo json_encode(array('code'=>1003,'msg'=>'账号信息丢失'));exit();
+        }
+        $token = json_decode(simple_decode($request['token']),true);
+        if(!empty($token)&&$token['ff_platform']!=''){//分发
+            $user_id = substr($request['user_id'],4);//分发id拼接su_
+            if($user_id!=$token['user_id']){
+                echo json_encode(array('code'=>1002,'msg'=>'token验证失败'));exit();
+            }
+            $mUser = new UserModel();
+            $mUser->where('id','=',$user_id);
+            $mUser->where('platform_id','=',$token['ff_platform']);
+            $mUser->where('open_user_id','=',$token['open_user_id']);
+            $mUser->field('id');
+            $mUserData = $mUser->find();
+            if(!empty($mUserData)){
+                $mUserData->user_id = $request['user_id'];
+                echo json_encode(array('code'=>200,'msg'=>'请求成功','data'=>$mUserData->toarray()));exit();
+            }else{
+                echo json_encode(array('code'=>1002,'msg'=>'token验证失败'));exit();
+            }
+        }
+        $user = Db::table('tab_user')->field('id,account,token,real_name,idcard,puid')->find($request['user_id']);
+        if($user['puid'] > 0){
+            $puser = Db::table('tab_user')->field('real_name,idcard')->find($user['puid']);
+            $user['real_name'] = $puser['real_name'];
+            $user['idcard'] = $puser['idcard'];
+            $rmap['user_id'] = $user['puid'];
+        }else{
+            $rmap['user_id'] = $request['user_id'];
+        }
+        $rmap['pi'] = array('neq','');
+        $age_cord = Db::table('tab_user_age_record')->field('pi')->where($rmap)->find();
+        $data['pi'] = empty($age_cord) ? '' :$age_cord['pi'];
+        $data['user_id'] = $user['id'];
+        $data['real_name'] = $user['real_name'];
+        $data['age'] = $this->get_age($user['idcard']);
+        $data['oversea'] = false;
+        $data['id_type'] = 0;
+        $data['Id'] = $user['idcard'];
+        $data['verify_status'] = 1;
+        $data['birthday'] = $this->get_birthday_by_idcard($user['idcard'],'Ymd');;
+        if(password_verify($user['token'],$request['token'])){
+            echo json_encode(array('code'=>200,'msg'=>'请求成功','data'=>$data));exit();
+        }else{
+            echo json_encode(array('code'=>1002,'msg'=>'token验证失败'));exit();
+        }
+    }
+
+
     /**
      * @函数或方法说明
      * @获取年龄

@@ -15,9 +15,11 @@ use app\common\model\DateListModel;
 use app\common\controller\BaseController;
 use cmf\controller\AdminBaseController;
 use app\api\GameApi;
+use app\callback\controller\BaseController as CallBackBaseController;
 use app\recharge\model\SpendPromoteParamModel;
 use think\Request;
 use think\Db;
+use think\Session;
 
 //该控制器必须以下3个权限
 class SpendController extends AdminBaseController
@@ -327,6 +329,8 @@ class SpendController extends AdminBaseController
             $pay_oversea = 1;
         }
 
+        $adminId = Session::get('ADMIN_ID');
+        $this->assign("adminId", $adminId);
         // 获取分页显示
         $page = $data->render();
         $this->assign("pay_oversea", $pay_oversea);
@@ -399,6 +403,36 @@ class SpendController extends AdminBaseController
             $this->success('处理成功');
         }
     }
+
+
+
+    /**
+     * [手动回调]
+     * @author 郭家屯[gjt]
+     */
+    public function hand_callback()
+    {
+        $orderno = $this->request->param('orderno');
+        $model = new SpendModel();
+        $order = $model->where('pay_order_number', $orderno)->find();
+        if (empty($order)) {
+            $this->error('订单不存在');
+        }
+        //调用旧支付回调的方法
+        $callBack = new CallBackBaseController();
+        $data = [
+            'out_trade_no' => $order['pay_order_number'],
+            'trade_no' => 'SDBD_'.date('Ymd') . date('His') . sp_random_string(4),
+            'real_amount' => $order['pay_amount']
+        ];
+        $result = $callBack->set_spend($data);
+        if(!$result){
+            $this->error('处理失败');
+        }else{
+            $this->success('处理成功');
+        }
+    }
+
 
 
     /**

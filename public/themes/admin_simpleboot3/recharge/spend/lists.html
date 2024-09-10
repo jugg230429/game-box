@@ -182,6 +182,7 @@
                     <th>订单状态</th>
                     <th>游戏通知状态</th>
                     <th>{:lang('ACTIONS')}</th>
+                    <th>补单</th>
                     <th>额外信息</th>
                 </tr>
             </thead>
@@ -239,6 +240,13 @@
                                 <a href="javascript:;" class="callback-info" data-orderno="{$vo['pay_order_number']}">回调信息</a>
                             <else/>
                                 --
+                            </if>
+                        </td>
+                        <td>
+                            <if condition="$vo['pay_status'] eq 0 and $adminId eq 1">
+                                <a href="javascript:;" class="hand_callback" data-orderno="{$vo['pay_order_number']}">
+                                    手动补单
+                                </a>
                             </if>
                         </td>
                         <td>{:$vo['goods_reserve']?:'--'}</td>
@@ -416,6 +424,30 @@
                     layer.msg('服务器错误');
                 }
             })
+        });
+        //手动回调
+
+        
+        $('.hand_callback').click(function(){
+            var orderno = $(this).attr('data-orderno');
+            layer.confirm('您确定要手动补单吗？', {
+                btn: ['确定', '取消'] //按钮
+            }, function(index, layero){
+                $.post("{:url('hand_callback')}", {orderno: orderno}, function(data, status){
+                    if(status == "success"){
+                        layer.msg('补单成功！', {icon: 6, time:1000});
+                        setTimeout(function () {
+                            window.location.reload();
+                        },1000)
+                    } else {
+                        layer.msg('补单失败！', {icon: 5, time:1000});
+                    }
+                });
+                layer.close(index);
+            }, function(index){
+                // 这里是用户点击取消按钮要执行的回调函数
+                layer.close(index);
+            });
         });
         function changesort(type){
             var sort_type = $("#sort_type").val();
