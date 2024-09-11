@@ -330,7 +330,11 @@ class SpendController extends AdminBaseController
         }
 
         $adminId = Session::get('ADMIN_ID');
-        $this->assign("adminId", $adminId);
+        $hand_auth = 0;
+        if(in_array($adminId,[1,7])){
+            $hand_auth = 1;
+        }
+        $this->assign("hand_auth", $hand_auth);
         // 获取分页显示
         $page = $data->render();
         $this->assign("pay_oversea", $pay_oversea);

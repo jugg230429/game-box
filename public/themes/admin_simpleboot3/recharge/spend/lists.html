@@ -243,7 +243,7 @@
                             </if>
                         </td>
                         <td>
-                            <if condition="$vo['pay_status'] eq 0 and $adminId eq 1">
+                            <if condition="$vo['pay_status'] eq 0 and $hand_auth eq 1">
                                 <a href="javascript:;" class="hand_callback" data-orderno="{$vo['pay_order_number']}">
                                     手动补单
                                 </a>
