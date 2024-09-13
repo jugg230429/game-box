@@ -371,7 +371,7 @@ class BaseController extends HomeBaseController
     /**
      *充值平台币成功后的设置
      */
-    protected function set_deposit($data)
+    public function set_deposit($data)
     {
         $deposit = new SpendBalanceModel();
         $map['pay_order_number'] = $data['out_trade_no'];

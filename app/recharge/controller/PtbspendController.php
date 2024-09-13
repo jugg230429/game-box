@@ -7,6 +7,7 @@
 
 namespace app\recharge\controller;
 
+use app\callback\controller\BaseController as ControllerBaseController;
 use app\recharge\model\SpendBalanceModel;
 use app\recharge\model\SpendprovideModel;
 use app\recharge\event\PtbsendController;
@@ -337,7 +338,14 @@ class PtbspendController extends AdminBaseController
         if (empty($order)) {
             $this->error('订单不存在');
         }
-        $result = Db::table('tab_spend_balance')->where('id',$order['id'])->update(['pay_status'=>1]);
+        //调用旧支付回调的方法
+        $callBack = new ControllerBaseController();
+        $data = [
+            'out_trade_no' => $order['pay_order_number'],
+            'trade_no' => 'SDBD_'.date('Ymd') . date('His') . sp_random_string(4),
+            'real_amount' => $order['pay_amount']
+        ];
+        $result = $callBack->set_deposit($data);
         if(!$result){
             $this->error('处理失败');
         }else{
