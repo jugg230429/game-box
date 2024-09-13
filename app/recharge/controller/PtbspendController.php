@@ -12,9 +12,11 @@ use app\recharge\model\SpendprovideModel;
 use app\recharge\event\PtbsendController;
 use app\common\model\DateListModel;
 use app\common\controller\BaseController;
+use app\recharge\model\SpendPromoteParamModel;
 use cmf\controller\AdminBaseController;
 use think\Request;
 use think\Db;
+use think\Session;
 
 //该控制器必须以下权限
 class PtbspendController extends AdminBaseController
@@ -74,6 +76,11 @@ class PtbspendController extends AdminBaseController
         $exend['order'] = 'pay_time desc';
         $exend['field'] = '*';
         $data = $base->data_list($spend, $map, $exend);
+        foreach($data as  &$v){
+            //获取新渠道支付商家名称
+            $paramModel = new SpendPromoteParamModel();
+            $v['promote_param_name'] = $paramModel->getPromoteBussinessNameById($v['promote_param_id']);
+        }
         $exend['field'] = 'sum(pay_amount) as total';
         //累计充值
         $map['pay_status'] = 1;
@@ -91,6 +98,13 @@ class PtbspendController extends AdminBaseController
             $map['pay_time'] = ['between', total(5, 2)];
             $yestoday = $base->data_list_select($spend, $map, $exend);
         }
+
+        $adminId = Session::get('ADMIN_ID');
+        $hand_auth = 0;
+        if(in_array($adminId,[1,7])){
+            $hand_auth = 1;
+        }
+        $this->assign("hand_auth", $hand_auth);
         // 获取分页显示
         $page = $data->render();
         $this->assign("data_lists", $data);
@@ -309,5 +323,27 @@ class PtbspendController extends AdminBaseController
         }
         $this -> success('设置成功');
     }
+
+
+    /**
+     * [手动回调]
+     * @author 郭家屯[gjt]
+     */
+    public function hand_callback()
+    {
+        $orderno = $this->request->param('orderno');
+        $model = new SpendBalanceModel();
+        $order = $model->where('pay_order_number', $orderno)->find();
+        if (empty($order)) {
+            $this->error('订单不存在');
+        }
+        $result = Db::table('tab_spend_balance')->where('id',$order['id'])->update(['pay_status'=>1]);
+        if(!$result){
+            $this->error('处理失败');
+        }else{
+            $this->success('处理成功');
+        }
+    }
+
 
 }

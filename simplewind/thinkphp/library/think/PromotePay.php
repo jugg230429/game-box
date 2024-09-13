@@ -231,11 +231,14 @@ class PromotePay{
         $paramArray["sign"] = $sign;
         $paramArray['return_type'] = 1;
         $paramsStr = http_build_query($paramArray); //请求参数str
+        //根据不同的vo->gettable记录订单日志
+        $table_name = $this->getTableName($vo);
         //记录订单日志
         $log = [
             'config_id' => $promoteConfig['id'],
             'pay_order_number' => $vo->getOrderNo(),
             'send_content' => $paramsStr,
+            'table' => $table_name,
             'type' => 1,
             'create_time' => date("Y-m-d H:i:s")
         ];
@@ -253,7 +256,7 @@ class PromotePay{
             $out_trade_no = $result['data']['out_trade_no'];
             Db::table('tab_spend_promote_pay_log')->where('id',$logId)->update(['order_number'=>$out_trade_no,'reply_content'=>$replyContent]);
             //更新tab_spend表数据,外部订单号和支付渠道配置id
-            Db::table('tab_spend')->where('pay_order_number',$vo->getOrderNo())->update(['order_number'=>$out_trade_no,'promote_param_id'=>$promoteConfig['id']]);
+            Db::table($table_name)->where('pay_order_number',$vo->getOrderNo())->update(['order_number'=>$out_trade_no,'promote_param_id'=>$promoteConfig['id']]);
             return $result['data'];
         }
     }
@@ -287,11 +290,13 @@ class PromotePay{
         $sign = $this->anutParamArraySign($paramArray, $promoteConfig['key']);  //签名
         $paramArray["sign"] = $sign;
         $paramsStr = http_build_query($paramArray); //请求参数str
-        //记录订单日志
+        //根据不同的vo->gettable记录订单日志
+        $table_name = $this->getTableName($vo);
         $log = [
             'config_id' => $promoteConfig['id'],
             'pay_order_number' => $vo->getOrderNo(),
             'send_content' => $paramsStr,
+            'table' => $table_name,
             'type' => 1,
             'create_time' => date("Y-m-d H:i:s")
         ];
@@ -308,7 +313,7 @@ class PromotePay{
         else{
             $payUrls = $result['payParams']['payUrl'];
             //更新tab_spend表数据,支付渠道配置id,out_trade_no在回调的时候再更新
-            Db::table('tab_spend')->where('pay_order_number',$vo->getOrderNo())->update(['promote_param_id'=>$promoteConfig['id']]);
+            Db::table($table_name)->where('pay_order_number',$vo->getOrderNo())->update(['promote_param_id'=>$promoteConfig['id']]);
             //重新构造返回return数组,保持一致
             $return = [
                 'out_trade_no' => $vo->getOrderNo(),
@@ -382,6 +387,34 @@ class PromotePay{
         }
     }
 
+    /**
+     *  处理支付渠道失败统计操作
+     *  pay_order_number 订单号
+     *  promoteConfig  支付渠道配置
+     **/  
+    private function dealPromteChannelFail($pay_order_number,$promoteConfig){
+        $insert = [
+            'pay_order_number' => $pay_order_number,
+            'promote_param_id' => $promoteConfig['id'],
+            'status' => 1,
+            'create_time' => date("Y-m-d H:i:s")
+        ];
+        Db::table('tab_spend_promote_error_log')->insert($insert);
+        //判断一小时内渠道支付失败次数超过10则关闭
+
+
+    }
+
+    private function getTableName(Pay\PayVo $vo){
+        switch ($vo->getTable()) {
+            case 'spend':
+                return 'tab_spend';
+            case 'deposit':
+                return 'tab_spend_balance';
+            default:
+                exit('未开发支付场景,请重试'); 
+        }   
+    }
 
 
       /**

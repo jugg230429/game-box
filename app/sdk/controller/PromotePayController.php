@@ -23,24 +23,6 @@ class PromotePayController{
     * 鼎盛渠道支付异步回调
     */
     public function ds_callback(){
-        // String result = "failure";
-        // try {
-        // Map<String,String> requestParam = new HashMap<String,String>();
-        // requestParam.put("out_trade_no", out_trade_no);
-        // requestParam.put("total_fee", total_fee);
-        // requestParam.put("trade_status", trade_status);
-        // if(!TextUtils.isBlank(custom)) {
-        // requestParam.put("custom", custom);
-        // }
-        // String m_sign = Md5Utils.getMd5Sign(requestParam, "kljioj*******oiwejfj");
-        // if(m_sign.equals(sign)) {
-        // //验签成功
-        //     if(trade_status.equals("1")) {
-        //         //支付成功，商户处理业务逻辑（更新数据库订单状态等）
-                                        
-        //         result = "success";
-        // }
-        // }
         $paramArray = [];
         //商家签名
         if(!isset($_REQUEST["sign"]) ){
@@ -52,7 +34,12 @@ class PromotePayController{
             exit("failure(param out_trade_no not exists)");
         }
         //校验商户订单号对应订单是否存在
-        $spend = Db::table('tab_spend')->where('order_number',$_REQUEST['out_trade_no'])->find();
+        $log = Db::table('tab_spend_promote_pay_log')->where('order_number',$_REQUEST['out_trade_no'])->find();
+        if(!$log){
+            exit("failure(order not exists)");
+        }
+        $table_name = $log['table'];
+        $spend = Db::table($table_name)->where('order_number',$_REQUEST['out_trade_no'])->find();
         if(!$spend || $spend['pay_status'] >0){
             exit("failure(order not exists)");
         }
@@ -76,6 +63,7 @@ class PromotePayController{
             'config_id' => $spend['promote_param_id'],
             'pay_order_number' => $spend['pay_order_number'],
             'order_number' =>  $paramArray['out_trade_no'],
+            'table' => $table_name,
             'send_content' => json_encode($paramArray),
             'type' => 2,
             'create_time' => date("Y-m-d H:i:s")
@@ -88,16 +76,26 @@ class PromotePayController{
         if($postSign == $sign){
             //验签成功
             if($paramArray['trade_status'] == 1){
-                //调用旧支付回调的方法
-                $callBack = new BaseController();
-                $data = [
-                    'out_trade_no' => $spend['pay_order_number'],
-                    'trade_no' => $spend['order_number'],
-                    'real_amount' => $paramArray['total_fee']
-                ];
-                $result = $callBack->set_spend($data);
-                if(!$result){
-                    exit("failure(buyer business process error)");
+                 //判断$table_name分开处理
+                 if($table_name == 'tab_spend'){
+                    //调用旧支付回调的方法
+                    $callBack = new BaseController();
+                    $data = [
+                        'out_trade_no' => $spend['pay_order_number'],
+                        'trade_no' => $spend['order_number'],
+                        'real_amount' => $paramArray['total_fee']
+                    ];
+                    $result = $callBack->set_spend($data);
+                    if(!$result){
+                        exit("failure(buyer business process error)");
+                    }
+                }
+                if($table_name == 'tab_spend_balance'){
+                    //回写balance表的order_number字段和状态
+                    $result = Db::table($table_name)->where('id',$spend['id'])->update(['pay_status'=>1]);
+                    if(!$result){
+                        exit("failure(mch business process error)");
+                    }
                 }
                 exit("success");
             }
@@ -128,8 +126,13 @@ class PromotePayController{
         if(!isset($_REQUEST["mchOrderNo"]) ){
             exit("failure(param mchOrderNo not exists)");
         }
-        //校验商户订单号对应订单是否存在
-        $spend = Db::table('tab_spend')->where('pay_order_number',$_REQUEST['mchOrderNo'])->find();
+        //通过查询支付日志表订单是否存在
+        $log = Db::table('tab_spend_promote_pay_log')->where('pay_order_number',$_REQUEST['mchOrderNo'])->find();
+        if(!$log){
+            exit("failure(order not exists)");
+        }
+        $table_name = $log['table'];
+        $spend =  Db::table($table_name)->where('pay_order_number',$_REQUEST['mchOrderNo'])->find();
         if(!$spend || $spend['pay_status'] >0){
             exit("failure(order not exists)");
         }
@@ -176,6 +179,7 @@ class PromotePayController{
             'config_id' => $spend['promote_param_id'],
             'pay_order_number' => $paramArray['mchOrderNo'],
             'order_number' =>  $paramArray['payOrderId'],
+            'table' => $table_name,
             'send_content' => json_encode($paramArray),
             'type' => 2,
             'create_time' => date("Y-m-d H:i:s")
@@ -189,18 +193,28 @@ class PromotePayController{
         if($postSign == $sign){
             //验签成功
             if($paramArray['status'] == 2){
-                //回写spend表的order_number字段
-                Db::table('tab_spend')->where('id',$spend['id'])->update(['order_number'=>$paramArray['payOrderId']]);
-                //调用旧支付回调的方法
-                $callBack = new BaseController();
-                $data = [
-                    'out_trade_no' => $paramArray['mchOrderNo'],
-                    'trade_no' => $paramArray['payOrderId'],
-                    'real_amount' => $paramArray['income'] / 100
-                ];
-                $result = $callBack->set_spend($data);
-                if(!$result){
-                    exit("failure(mch business process error)");
+                //判断$table_name分开处理
+                if($table_name == 'tab_spend'){
+                    //回写spend表的order_number字段
+                    Db::table($table_name)->where('id',$spend['id'])->update(['order_number'=>$paramArray['payOrderId']]);
+                    //调用旧支付回调的方法
+                    $callBack = new BaseController();
+                    $data = [
+                        'out_trade_no' => $paramArray['mchOrderNo'],
+                        'trade_no' => $paramArray['payOrderId'],
+                        'real_amount' => $paramArray['income'] / 100
+                    ];
+                    $result = $callBack->set_spend($data);
+                    if(!$result){
+                        exit("failure(mch business process error)");
+                    }
+                }
+                if($table_name == 'tab_spend_balance'){
+                    //回写balance表的order_number字段和状态
+                    $result = Db::table($table_name)->where('id',$spend['id'])->update(['pay_status'=>1,'order_number'=>$paramArray['payOrderId']]);
+                    if(!$result){
+                        exit("failure(mch business process error)");
+                    }
                 }
                 exit("success");
             }
@@ -209,91 +223,91 @@ class PromotePayController{
         exit("failure(Sign verification errors)");
     }
 
-    public function hj_callback(){    
-        //商户号
-        if(!isset($_REQUEST["pid"]) ){
-            exit("failure(param pid not exists)");
-        }
-        //支付平台订单号
-        if(!isset($_REQUEST["trade_no"]) ){
-            exit("failure(param trade_no not exists)");
-        }
-        //我们订单号
-        if(!isset($_REQUEST["out_trade_no"]) ){
-            exit("failure(param out_trade_no not exists)");
-        }
-        //校验商户订单号对应订单是否存在
-        $spend = Db::table('tab_spend')->where('pay_order_number',$_REQUEST['out_trade_no'])->find();
-        if(!$spend || $spend['pay_status'] >0){
-            exit("failure(order not exists)");
-        }
-        //支付方式
-        if(!isset($_REQUEST["type"]) ){
-            exit("failure(param type not exists)");
-        }
-        //实际支付金额分
-        if(!isset($_REQUEST["money"]) ){
-            exit("failure(param money not exists)");
-        }     
-        //订单状态 只有TRADE_SUCCESS是成功
-        if(!isset($_REQUEST["trade_status"]) ){
-            exit("failure(param trade_status not exists)");
-        }
-        //商家签名
-        if(!isset($_REQUEST["sign"]) ){
-            exit("failure(param sign not exists)");
-        }
-        $postSign = $_REQUEST['sign'];
-        //签名类型
-        if(!isset($_REQUEST["sign_type"]) ){
-            exit("failure(param sign_type not exists)");
-        }
+    // public function hj_callback(){    
+    //     //商户号
+    //     if(!isset($_REQUEST["pid"]) ){
+    //         exit("failure(param pid not exists)");
+    //     }
+    //     //支付平台订单号
+    //     if(!isset($_REQUEST["trade_no"]) ){
+    //         exit("failure(param trade_no not exists)");
+    //     }
+    //     //我们订单号
+    //     if(!isset($_REQUEST["out_trade_no"]) ){
+    //         exit("failure(param out_trade_no not exists)");
+    //     }
+    //     //校验商户订单号对应订单是否存在
+    //     $spend = Db::table('tab_spend')->where('pay_order_number',$_REQUEST['out_trade_no'])->find();
+    //     if(!$spend || $spend['pay_status'] >0){
+    //         exit("failure(order not exists)");
+    //     }
+    //     //支付方式
+    //     if(!isset($_REQUEST["type"]) ){
+    //         exit("failure(param type not exists)");
+    //     }
+    //     //实际支付金额分
+    //     if(!isset($_REQUEST["money"]) ){
+    //         exit("failure(param money not exists)");
+    //     }     
+    //     //订单状态 只有TRADE_SUCCESS是成功
+    //     if(!isset($_REQUEST["trade_status"]) ){
+    //         exit("failure(param trade_status not exists)");
+    //     }
+    //     //商家签名
+    //     if(!isset($_REQUEST["sign"]) ){
+    //         exit("failure(param sign not exists)");
+    //     }
+    //     $postSign = $_REQUEST['sign'];
+    //     //签名类型
+    //     if(!isset($_REQUEST["sign_type"]) ){
+    //         exit("failure(param sign_type not exists)");
+    //     }
     
-        //构造验签数组
-        $paramArray = [
-            "pid" => $_REQUEST['pid'],
-            "trade_no" => $_REQUEST['trade_no'], 
-            "out_trade_no" => $_REQUEST['out_trade_no'],  
-            "type" => $_REQUEST['type'], 
-            "money" => $_REQUEST['money'], 
-            "trade_status" => $_REQUEST['trade_status'], 
-            "sign" => $_REQUEST['sign'], 
-            "sign_type" => $_REQUEST['sign_type']
-        ];
-        //记录日志
-        $log = [
-            'config_id' => $spend['promote_param_id'],
-            'pay_order_number' => $paramArray['out_trade_no'],
-            'order_number' =>  $paramArray['trade_no'],
-            'send_content' => json_encode($paramArray),
-            'type' => 2,
-            'create_time' => date("Y-m-d H:i:s")
-        ];
-        Db::table('tab_spend_promote_pay_log')->insert($log);
-        //进行蚂蚁验证签名
-        $key = Db::table('tab_spend_promote_param')->where('id',$spend['promote_param_id'])->value('key');
-        $promotePay = new \think\PromotePay();
-        $sign = $promotePay->hjGetSign($paramArray,$key);  //签名
-        if($postSign == $sign){
-            //验签成功
-            if($paramArray['trade_status'] == 'TRADE_SUCCESS'){
-                //回写spend表的order_number字段
-                Db::table('tab_spend')->where('id',$spend['id'])->update(['order_number'=>$paramArray['trade_no']]);
-                //调用旧支付回调的方法
-                $callBack = new BaseController();
-                $data = [
-                    'out_trade_no' => $paramArray['out_trade_no'],
-                    'trade_no' => $paramArray['trade_no'],
-                    'real_amount' => $paramArray['money']
-                ];
-                $result = $callBack->set_spend($data);
-                if(!$result){
-                    exit("failure(mch business process error)");
-                }
-                exit("success");
-            }
-            exit("failure(status not correct)");
-        }
-        exit("failure(Sign verification errors)");
-    }
+    //     //构造验签数组
+    //     $paramArray = [
+    //         "pid" => $_REQUEST['pid'],
+    //         "trade_no" => $_REQUEST['trade_no'], 
+    //         "out_trade_no" => $_REQUEST['out_trade_no'],  
+    //         "type" => $_REQUEST['type'], 
+    //         "money" => $_REQUEST['money'], 
+    //         "trade_status" => $_REQUEST['trade_status'], 
+    //         "sign" => $_REQUEST['sign'], 
+    //         "sign_type" => $_REQUEST['sign_type']
+    //     ];
+    //     //记录日志
+    //     $log = [
+    //         'config_id' => $spend['promote_param_id'],
+    //         'pay_order_number' => $paramArray['out_trade_no'],
+    //         'order_number' =>  $paramArray['trade_no'],
+    //         'send_content' => json_encode($paramArray),
+    //         'type' => 2,
+    //         'create_time' => date("Y-m-d H:i:s")
+    //     ];
+    //     Db::table('tab_spend_promote_pay_log')->insert($log);
+    //     //进行蚂蚁验证签名
+    //     $key = Db::table('tab_spend_promote_param')->where('id',$spend['promote_param_id'])->value('key');
+    //     $promotePay = new \think\PromotePay();
+    //     $sign = $promotePay->hjGetSign($paramArray,$key);  //签名
+    //     if($postSign == $sign){
+    //         //验签成功
+    //         if($paramArray['trade_status'] == 'TRADE_SUCCESS'){
+    //             //回写spend表的order_number字段
+    //             Db::table('tab_spend')->where('id',$spend['id'])->update(['order_number'=>$paramArray['trade_no']]);
+    //             //调用旧支付回调的方法
+    //             $callBack = new BaseController();
+    //             $data = [
+    //                 'out_trade_no' => $paramArray['out_trade_no'],
+    //                 'trade_no' => $paramArray['trade_no'],
+    //                 'real_amount' => $paramArray['money']
+    //             ];
+    //             $result = $callBack->set_spend($data);
+    //             if(!$result){
+    //                 exit("failure(mch business process error)");
+    //             }
+    //             exit("success");
+    //         }
+    //         exit("failure(status not correct)");
+    //     }
+    //     exit("failure(Sign verification errors)");
+    // }
 }

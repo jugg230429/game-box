@@ -49,7 +49,6 @@
         <form id="search_form" class="well form-inline fr" method="get" action="{:url('User/userinfo')}" onsubmit="return check();" style="width: 96%;margin-right: 0px;">
             <input type="text" class="form-control notempty" name="user_id" style="width: 120px;" value="{:input('request.user_id/d','')}" placeholder="玩家ID">
             <input type="text" class="form-control notempty" name="account" style="width: 120px;" value="{:input('request.account/s','')}" placeholder="玩家账号">
-            <input type="text" class="form-control notempty" name="account" style="width: 120px;" value="{:input('request.account/s','')}" placeholder="玩家账号">
             <input type="text" class="form-control notempty" name="small_nickname" style="width: 120px;" value="{:input('request.small_nickname/s','')}" placeholder="小号账号">
             <if condition="cmf_get_admin_access('member/user/search') eq true">
             <input type="text" class="form-control notempty" name="equipment_num" style="width: 120px;" value="{:input('request.equipment_num/s','')}" placeholder="设备号">

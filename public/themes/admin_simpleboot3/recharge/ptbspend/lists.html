@@ -49,7 +49,9 @@
                     <th>充值方式</th>
                     <th>充值IP</th>
                     <th>充值时间</th>
+                    <th>支付渠道</th>
                     <th>订单状态</th>
+                    <th>补单</th>
                 </tr>
             </thead>
             <tbody>
@@ -70,8 +72,16 @@
                         <td>{:get_pay_way($vo['pay_way'])}</td>
                         <td>{$vo['pay_ip']}</td>
                         <td>{$vo['pay_time']|date="Y-m-d H:i:s",###}</td>
+                        <th>{$vo['promote_param_name']}</th>
                         <td>
                             <span <if condition="$vo['pay_status'] eq 1"> class="label" style="color:#3FAD46;font-size:14px"<else/>class="label" style="color:#d9534f;font-size:14px"</if>>{:get_info_status($vo['pay_status'],2)}</span>
+                        </td>
+                        <td>
+                            <if condition="$vo['pay_status'] eq 0 and $hand_auth eq 1">
+                                <a href="javascript:;" class="hand_callback" data-orderno="{$vo['pay_order_number']}">
+                                    手动补单
+                                </a>
+                            </if>
                         </td>
 
                     </tr>
@@ -143,6 +153,27 @@
                }
             })
         }
+        $('.hand_callback').click(function(){
+            var orderno = $(this).attr('data-orderno');
+            layer.confirm('您确定要手动补单吗？', {
+                btn: ['确定', '取消'] //按钮
+            }, function(index, layero){
+                $.post("{:url('hand_callback')}", {orderno: orderno}, function(data, status){
+                    if(status == "success"){
+                        layer.msg('补单成功！', {icon: 6, time:1000});
+                        setTimeout(function () {
+                            window.location.reload();
+                        },1000)
+                    } else {
+                        layer.msg('补单失败！', {icon: 5, time:1000});
+                    }
+                });
+                layer.close(index);
+            }, function(index){
+                // 这里是用户点击取消按钮要执行的回调函数
+                layer.close(index);
+            });
+        });
     </script>
 </body>
 </html>
