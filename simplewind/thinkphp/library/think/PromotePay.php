@@ -250,6 +250,8 @@ class PromotePay{
         $result = json_decode($replyContent,true);
         if($result['code'] != 200){
             Db::table('tab_spend_promote_pay_log')->where('id',$logId)->update(['reply_content'=>$replyContent]);
+            //新增下单错误处理逻辑
+            $this->dealPromteChannelFail($vo,$promoteConfig,$replyContent);
             exit($replyContent);
         }
         else{
@@ -308,6 +310,8 @@ class PromotePay{
         $result = json_decode($replyContent,true);
         Db::table('tab_spend_promote_pay_log')->where('id',$logId)->update(['reply_content'=>$replyContent]);
         if($result['retCode'] != 0){
+            //新增下单错误处理逻辑
+            $this->dealPromteChannelFail($vo,$promoteConfig,$replyContent);
             exit($replyContent);
         }
         else{
@@ -392,17 +396,28 @@ class PromotePay{
      *  pay_order_number 订单号
      *  promoteConfig  支付渠道配置
      **/  
-    private function dealPromteChannelFail($pay_order_number,$promoteConfig){
+    private function dealPromteChannelFail(Pay\PayVo $vo,$promoteConfig,$replyContent){
+        $paramModel = new SpendPromoteParamModel();
         $insert = [
-            'pay_order_number' => $pay_order_number,
+            'pay_order_number' => $vo->getOrderNo(),
+            'pay_amount' => $vo->getFee(),
             'promote_param_id' => $promoteConfig['id'],
-            'status' => 1,
+            'promote_name' => $paramModel->getPromoteBussinessNameById($promoteConfig['id']),
+            'pay_type' =>  $promoteConfig['type'],
+            'channel_coding' => $promoteConfig['channel_coding'],
+            'content' => $replyContent,
+            'status' => 0,
             'create_time' => date("Y-m-d H:i:s")
         ];
-        Db::table('tab_spend_promote_error_log')->insert($insert);
+        Db::table('tab_spend_promote_fail_log')->insert($insert);
         //判断一小时内渠道支付失败次数超过10则关闭
-
-
+        $count =  Db::table('tab_spend_promote_fail_log')
+        ->where('promote_param_id',$promoteConfig['id'])
+        ->where('create_time','>=',date("Y-m-d H:i:s", strtotime("-1 hour")))
+        ->count();
+        if($count > 10){
+            Db::table('tab_spend_promote_param')->where('id',$promoteConfig['id'])->update(['status'=>0]);
+        }
     }
 
     private function getTableName(Pay\PayVo $vo){
