@@ -241,10 +241,9 @@
                     <th>渠道</th>
                     <th>支付类型</th>
                     <th>商户号</th>
-                    <th>秘钥</th>
-                    <th>下单地址</th>
                     <th>通道编码</th>
-                    <th>回调IP</th>
+                    <th>最小支付金额</th>
+                    <th>最大支付金额</th>
                     <th>权重</th>
                     <th>启用状态</th>
                     <th>操作</th>
@@ -263,10 +262,9 @@
                             <td>{$promote_list[$vo.promote_id]['promote_name']}</td>
                             <td>{$type_list[$vo.type]}</td>
                             <td>{$vo.partner}</td>
-                            <td>{$vo.key}</td>
-                            <td>{$vo.order_address}</td>
                             <td>{$vo.channel_coding}</td>
-                            <td>{$vo.callback_ip}</td>
+                            <td>{$vo.min_amount}</td>
+                            <td>{$vo.max_amount}</td>
                             <td>{$vo.weight}</td>
                             <td><span <if condition="$vo['status'] eq 1"> class="label label-success"<else/>class="label label-danger"</if>>{$vo['status_name']}</span></td>
                             <td>

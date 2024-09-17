@@ -18,13 +18,16 @@ class SpendPromoteParamModel extends Model
      * 选择的支付商家配置
      * gameId 游戏id
      * payType 支付类型 1.支付宝 2.微信
+     * amount 支付金额
      */
-    public function choosePromoteConfig($gameId,$payType){
-        //查找对应游戏和类型的商家配置,进行权重筛选,如果没有则走默认
+    public function choosePromoteConfig($gameId,$payType,$amount){
+        //查找对应游戏和类型以及支付金额的商家配置,进行权重筛选,如果没有则走默认
         $map = [
             'game_id' => $gameId,
             'type' => $payType,
-            'status' => 1
+            'status' => 1,
+            'min_amount' => ['<=',$amount],
+            'max_amount' => ['>=',$amount]   
         ];
         $weights = $this->where($map)->order('id desc')->column('weight','id');
         if($weights == null){

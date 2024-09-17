@@ -173,7 +173,7 @@ class PromotePay{
     public function choosePayChannel(Pay\PayVo $vo){
         //根据游戏id和支付类型选择合适的三方支付
         $promoteModel = new SpendPromoteParamModel();
-        $config = $promoteModel->choosePromoteConfig($this->gameId,$this->payType);
+        $config = $promoteModel->choosePromoteConfig($this->gameId,$this->payType,$vo->getFee());
         if(!$config){
             exit('未匹配到支付配置');
         }

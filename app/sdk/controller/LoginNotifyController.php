@@ -14,9 +14,12 @@ class LoginNotifyController{
      *服务器登录验证
      */
     public function login_verify(){
-        $request = request()->get();
+        $request = request()->post();
         if (empty($request['user_id'])||empty($request['token'])) {
-            echo json_encode(array('code'=>1003,'msg'=>'账号信息丢失'));exit();
+            $request = request()->get();
+            if (empty($request['user_id'])||empty($request['token'])) {
+                echo json_encode(array('code'=>1003,'msg'=>'账号信息丢失'));exit();
+            }
         }
         $token = json_decode(simple_decode($request['token']),true);
         if(!empty($token)&&$token['ff_platform']!=''){//分发
@@ -71,7 +74,10 @@ class LoginNotifyController{
     public function login_verify_new(){
         $request = request()->post();
         if (empty($request['user_id'])||empty($request['token'])) {
-            echo json_encode(array('code'=>1003,'msg'=>'账号信息丢失'));exit();
+            $request = request()->get();
+            if (empty($request['user_id'])||empty($request['token'])) {
+                echo json_encode(array('code'=>1003,'msg'=>'账号信息丢失'));exit();
+            }
         }
         $token = json_decode(simple_decode($request['token']),true);
         if(!empty($token)&&$token['ff_platform']!=''){//分发

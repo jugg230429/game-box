@@ -144,6 +144,10 @@ class PaytypeController extends AdminBaseController
                 $this->error($validata->getError());
             }
             $model = new SpendPromoteParamModel();
+            //校验最小大金额
+            if($param['max_amount'] < $param['min_amount']){
+                $this->error('最大金额设置错误');
+            }
             if($param['game_id'] != 0){
                 $param['game_name'] = get_game_entity($param['game_id'],'game_name')['game_name'];
             }else{
@@ -197,6 +201,10 @@ class PaytypeController extends AdminBaseController
             $validata = new PromoteParamValidate();
             if(!$validata->scene('edit')->check($param)){
                 $this->error($validata->getError());
+            }
+            //校验最小大金额
+            if($param['max_amount'] < $param['min_amount']){
+                $this->error('最大金额设置错误');
             }
             $result = $model->where('id',$id)->update($param);
             if($result){
