@@ -274,7 +274,7 @@ function get_promote_list($map = [], $field = 'id,account,balance_coin,parent_id
  */
 function get_promote_select_options(){
     return [
-        ['id'=>0,'name'=>'官方支付'],
+        ['id'=>888,'name'=>'官方支付'],
         ['id'=>1,'name'=>'鼎盛支付'],
         ['id'=>2,'name'=>'蚂蚁支付'],
     ];

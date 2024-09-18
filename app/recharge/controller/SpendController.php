@@ -264,8 +264,8 @@ class SpendController extends AdminBaseController
 
         //支付渠道
         $pay_promote = $this->request->param('pay_promote', '');
-        if ($pay_promote != '') {
-            if($pay_promote == 0){
+        if ($pay_promote != "") {
+            if($pay_promote == 888){
                 $map['tab_spend.promote_param_id'] = 0;
             }else{
                 $map['t.promote_id'] = $pay_promote;
