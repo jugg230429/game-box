@@ -101,7 +101,7 @@
             <select name="pay_promote" id="pay_promote" class="selectpicker sss" top_promote="{:input('request.pay_promote')}" data-live-search="true" data-size="8" style="width: 100px;">
                 <option value="">支付渠道</option>
                 <volist name=":get_promote_select_options()" id="vo">
-                    <option value="{$vo.id}" <if condition="input('request.pay_promote') eq $vo.id">selected</if> >{$vo.name}</option>
+                    <option value="{$vo.id}">{$vo.name}</option>
                 </volist>
             </select>
 
