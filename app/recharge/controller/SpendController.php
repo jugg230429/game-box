@@ -227,7 +227,12 @@ class SpendController extends AdminBaseController
         }
         $pay_way = $this->request->param('pay_way', '');
         if ($pay_way != '') {
-            $map['tab_spend.pay_way'] = $pay_way;
+            //支付宝状态为3和7
+            if($pay_way == 3){
+                $map['tab_spend.pay_way'] = ['in',[3,7]];
+            }else{
+                $map['tab_spend.pay_way'] = $pay_way;
+            }  
         }
 
         $pay_status = $this->request->param('pay_status', '');
@@ -260,7 +265,11 @@ class SpendController extends AdminBaseController
         //支付渠道
         $pay_promote = $this->request->param('pay_promote', '');
         if ($pay_promote != '') {
-            $map['t.promote_id'] = $pay_promote;
+            if($pay_promote == 0){
+                $map['tab_spend.promote_param_id'] = 0;
+            }else{
+                $map['t.promote_id'] = $pay_promote;
+            }
         }
 
         $sort_type = $this->request->param('sort_type', '');
