@@ -277,6 +277,7 @@ function get_promote_select_options(){
         ['id'=>888,'name'=>'官方支付'],
         ['id'=>1,'name'=>'鼎盛支付'],
         ['id'=>2,'name'=>'蚂蚁支付'],
+        ['id'=>3,'name'=>'彩虹易支付'],
     ];
 }
 

@@ -62,7 +62,7 @@ class SpendPromoteParamModel extends Model
             case 2:
                 return '蚂蚁支付';
             case 3:
-                return '汇聚支付';
+                return '彩虹易支付';
             default:
                 return '官方支付';    
         }
