@@ -36,8 +36,8 @@ use think\Cache;
 use think\Checkidcard;
 use think\Db;
 use think\WechatAuth;
-use think\xigusdk\Xigu;
 use app\webplatform\logic\UserLogic as WebUserLogic;
+use think\sms\Suxuntong;
 
 class UserController extends BaseController
 {
@@ -1733,42 +1733,69 @@ class UserController extends BaseController
         } else {
             $this->set_message(1059, "未知发送类型");
         }
-        $msg = new MsgModel();
-        $data = $msg::get(1);
-        if (empty($data)) {
-            $this->set_message(1016, "没有配置短信发送");
-        }
-        $data = $data->toArray();
-        if ($data['status'] == 1) {
-            $xigu = new Xigu($data);
-            sdkchecksendcode($phone, $data['client_send_max'], 2);
-            $sms_code = session($phone);//发送没有session 每次都是新的
-            $sms_rand = sms_rand($phone);
-            $rand = $sms_rand['rand'];
-            $new_rand = $sms_rand['rand'];
-            /// 产生手机安全码并发送到手机且存到session
-            $param = $rand . "," . '3';
-            $result = json_decode($xigu->sendSM( $phone, $data['captcha_tid'], $param), true);
-            $result['create_time'] = time();
-            $result['pid'] = 0;
-            $result['phone'] = $phone;
-            $result['create_ip'] = get_client_ip();
-            Db::table('tab_sms_log')->field(true)->insert($result);
-            #TODO 短信验证数据
-            if ($result['send_status'] == '000000') {
-                $safe_code['code'] = $rand;
-                $safe_code['phone'] = $phone;
-                $safe_code['time'] = $new_rand ? time() : $sms_code['time'];
-                $safe_code['delay'] = 3;
-                $safe_code['create'] = $result['create_time'];
-                session($phone, $safe_code);
-                $this->set_message(200, "验证码发送成功");
-            } else {
-                $this->set_message(1015, "验证码发送失败，请重新获取");
-            }
+
+        $sxt = new Suxuntong();
+        $sms_code = session($phone);//发送没有session 每次都是新的
+        $sms_rand = sms_rand($phone);
+        $rand = $sms_rand['rand'];
+        $new_rand = $sms_rand['rand'];
+
+        $result = $sxt->sendSM($phone,$rand,$request['reg']);
+        $insert['phone'] = $phone;
+        $insert['send_status'] = $result->returnstatus;
+        $insert['create_time'] = time();
+        $insert['pid'] = 0;
+        $insert['create_ip'] = get_client_ip();
+        Db::table('tab_sms_log')->field(true)->insert($insert);
+        #TODO 短信验证数据
+        if ($result->returnstatus == 'Success') {
+            $safe_code['code'] = $rand;
+            $safe_code['phone'] = $phone;
+            $safe_code['time'] = $new_rand ? time() : $sms_code['time'];
+            $safe_code['delay'] = 3;
+            $safe_code['create'] = time();
+            session($phone, $safe_code);
+            $this->set_message(200, "验证码发送成功");
         } else {
-            $this->set_message(1016, "没有配置短信发送");
+            $this->set_message(1015, "验证码发送失败，请重新获取");
         }
+
+        // $msg = new MsgModel();
+        // $data = $msg::get(1);
+        // if (empty($data)) {
+        //     $this->set_message(1016, "没有配置短信发送");
+        // }
+        // $data = $data->toArray();
+        // if ($data['status'] == 1) {
+        // $xigu = new Xigu($data);
+        //     sdkchecksendcode($phone, $data['client_send_max'], 2);
+        //     $sms_code = session($phone);//发送没有session 每次都是新的
+        //     $sms_rand = sms_rand($phone);
+        //     $rand = $sms_rand['rand'];
+        //     $new_rand = $sms_rand['rand'];
+        //     /// 产生手机安全码并发送到手机且存到session
+        //     $param = $rand . "," . '3';
+        // $result = json_decode($xigu->sendSM( $phone, $data['captcha_tid'], $param), true);
+        //     $result['create_time'] = time();
+        //     $result['pid'] = 0;
+        //     $result['phone'] = $phone;
+        //     $result['create_ip'] = get_client_ip();
+        //     Db::table('tab_sms_log')->field(true)->insert($result);
+        //     #TODO 短信验证数据
+        //     if ($result['send_status'] == '000000') {
+        //         $safe_code['code'] = $rand;
+        //         $safe_code['phone'] = $phone;
+        //         $safe_code['time'] = $new_rand ? time() : $sms_code['time'];
+        //         $safe_code['delay'] = 3;
+        //         $safe_code['create'] = $result['create_time'];
+        //         session($phone, $safe_code);
+        //         $this->set_message(200, "验证码发送成功");
+        //     } else {
+        //         $this->set_message(1015, "验证码发送失败，请重新获取");
+        //     }
+        // } else {
+        //     $this->set_message(1016, "没有配置短信发送");
+        // }
     }
 
     /**
