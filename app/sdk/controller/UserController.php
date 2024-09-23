@@ -1648,7 +1648,7 @@ class UserController extends BaseController
         #验证码是否超时
         $time = time() - session($phone . ".create");
 
-        if ($time > 180) {//$tiem > 60
+        if ($time > 600) {//$tiem > 60
             $this->set_message(1018, "验证码已失效，请重新获取");
         }
         #验证短信验证码
