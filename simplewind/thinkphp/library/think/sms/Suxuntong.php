@@ -67,7 +67,7 @@ class Suxuntong  {
         switch($reg){
             //注册检查
             case 1: 
-                $content = "【TBB平台】验证码：".$code."。您正在使用注册功能，该验证码仅用于身份验证，请勿泄漏给他人使用。";
+                $content = "【TBB平台】验证码：".$code."。您正在使用注册账号功能，该验证码仅用于身份验证，请勿泄漏给他人使用。";
                 break;
             //忘记密码
             case 2: 
