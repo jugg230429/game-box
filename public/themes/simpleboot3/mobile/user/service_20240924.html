@@ -19,14 +19,89 @@
             </div>
             <div class="instructions-part2">
                 <div class="contactService">联系客服</div>
+                <if condition="$union_set['qq'] or cmf_get_option('kefu_set')['pc_set_server_qq']">
                     <div class="detailService">
                         <div>
                             <span class="iconContact"><img src="__TMPL__/mobilepublic/assets/images/ico-kefu.png" alt=""></span>
+
+                            <if condition="empty($union_set[qq]) and get_xgkf_info(0)">
                                 <a  style="margin-left: .5rem;" class="xgkf_aq" target="_blank">
                                     在线客服
                                 </a>
+                            <else/>
+                                <empty name='union_set.qq'>
+                                    <span class="phoneContact">在线客服：{:cmf_get_option('kefu_set')['pc_set_server_qq']}</span>
+                                <else/>
+                                    <span class="phoneContact">在线客服：{$union_set.qq}</span>
+                                </empty>
+                            </if>
                         </div>
-                        <a href="{$kf_url}"  class="contractInvite" target="_blank">联系我</a>
+                        <if condition="empty($union_set[qq]) and get_xgkf_info(0)">
+                            <a  class="xgkf_aq" target="_blank">
+                                <span  class="contractInvite">联系我</span>
+                            </a>
+                        <else/>
+                            <empty name='union_set.qq'>
+                               <span data-value="{:cmf_get_option('kefu_set')['pc_set_server_qq']}" class="contractInvite jschatqq">联系我</span>
+                            <else/>
+                               <span data-value="{$union_set['qq']}" class="contractInvite jschatqq">联系我</span>
+                            </empty>
+                        </if>
+                    </div>
+                </if>
+
+
+                <if condition="$union_set['qq_group'] or cmf_get_option('kefu_set')['pc_qq_group']">
+                    <div class="detailService">
+                        <div>
+                            <span class="iconContact"><img src="__TMPL__/mobilepublic/assets/images/ico-qq.png" alt=""></span>
+                            <empty name='union_set.qq_group'>
+                                <span class="phoneContact">玩家Q群：{:cmf_get_option('kefu_set')['pc_qq_group']}</span>
+                            <else/>
+                                <span class="phoneContact">玩家Q群：{$union_set['qq_group']}</span>
+                            </empty>
+                        </div>
+                        <empty name='union_set.qq_group'>
+                            <a href="javascript:;" data-group="{:cmf_get_option('kefu_set')['pc_qq_group_key']}" data-url="{:cmf_get_option('kefu_set')['pc_qq_group_url']}" target="_blank" class="js_group"><span class="contractInvite">加入</span></a>
+                        <else/>
+                            <a href="javascript:;" target="_blank" data-group="{$union_set['qq_group_key']}" data-url="{$union_set['qq_group_url']}" class="js_group"><span class="contractInvite">加入</span></a>
+                        </empty>
+                    </div>
+                </if>
+
+                <if condition="$union_set['tel'] or cmf_get_option('kefu_set')['pc_set_server_tel']">
+                    <div class="detailService">
+                        <div>
+                            <span class="iconContact"><img src="__TMPL__/mobilepublic/assets/images/ico-phone.png" alt=""></span>
+                            <empty name='union_set.tel'>
+                                <span class="phoneContact">客服电话：{:cmf_get_option('kefu_set')['pc_set_server_tel']}</span>
+                            <else/>
+                                <span class="phoneContact">客服电话：{$union_set['tel']}</span>
+                            </empty>
+                        </div>
+                        <empty name='union_set.tel'>
+                            <a href="javascript:;" data-url="tel:{:cmf_get_option('kefu_set')['pc_set_server_tel']}"class="jscallphone"  data-phone="{:cmf_get_option('kefu_set')['pc_set_server_tel']}"><span class="contractInvite">拨打</span></a>
+                        <else/>
+                            <a href="javascript:;" data-url="tel:{$union_set['tel']}" class="jscallphone" data-phone="{$union_set['tel']}"> <span class="contractInvite">拨打</span></a>
+                        </empty>
+                    </div>
+                </if>
+
+                <if condition="$union_set['app_weixin'] or cmf_get_option('media_set')['pc_set_qrcode_name']">
+                    <div class="detailService">
+                        <div>
+                            <span class="iconContact"><img src="__TMPL__/mobilepublic/assets/images/ico-wechat.png" alt=""></span>
+                            <empty name='union_set.app_weixin'>
+                                <span class="phoneContact">微信公众号：{:cmf_get_option('media_set')['pc_set_qrcode_name']}</span>
+                            <else/>
+                                <span class="phoneContact">微信公众号：{$union_set['app_weixin']}</span>
+                            </empty>
+                        </div>
+                        <empty name='union_set.app_weixin'>
+                            <a href="javascript:;" class="jswxqun" data-name="{:cmf_get_option('media_set')['pc_set_qrcode_name']}" data-url="weixin://"><span class="contractInvite">进入</span></a>
+                            <else/>
+                            <a href="javascript:;" class="jswxqun" data-name="{$union_set['app_weixin']}" data-url="weixin://"><span class="contractInvite">进入</span></a>
+                        </empty>
                     </div>
                 </if>
 

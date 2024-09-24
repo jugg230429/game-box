@@ -2104,14 +2104,11 @@ class UserController extends BaseController
             }
         }
         $this -> assign('is_app', $is_app);
-        //判断处理在线客服为qq还是溪谷系统客服链接-20210707-byh
-        if(get_xgkf_info(0)){
-            $userSession = self::$userSession;
-            $xgkf_ = get_xgkf_info(1);
-//            $xgkf_url = $xgkf_."&uid=".$userSession['login_user_id']."&name=".$userSession['login_account']."&avatar=".$userSession['login_head_img'];
-            $xgkf_url = $xgkf_;
-            $this -> assign('xgkf_url', $xgkf_url);
-        }
+
+        //获取后台配置的客服地址
+        $sdk_set = cmf_get_option('kefu_set');
+        $this -> assign('kf_url', $sdk_set['pc_set_server_qq']);
+    
         return $this -> fetch();
     }
 
