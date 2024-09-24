@@ -11,6 +11,7 @@ namespace app\common\controller;
 use cmf\controller\HomeBaseController;
 use think\Db;
 use think\Request;
+use think\sms\Suxuntong;
 
 class SmsController extends HomeBaseController
 {
@@ -99,6 +100,7 @@ class SmsController extends HomeBaseController
      * @param int $delay
      * @param bool $flag
      * @param int $pid
+     * @param int $reg
      *
      * @return array
      * @throws \think\Exception
@@ -109,7 +111,7 @@ class SmsController extends HomeBaseController
      * @author: 鹿文学
      * @since: 2019-03-26 14:55
      */
-    public function sendSmsCode($phone = '', $delay = '', $flag = true, $pid = 0)
+    public function sendSmsCode($phone = '', $delay = '', $flag = true, $pid = 0,$reg)
     {
         $delay = $delay ?: self::$delay;
         if (empty($this->config)) {
@@ -142,7 +144,6 @@ class SmsController extends HomeBaseController
                     $sms_rand = sms_rand($session_name);
                     $rand = $sms_rand['rand'];
                     $new_rand = $sms_rand['rand'];
-                    $param = $rand . "," . $delay;
                     $data = array(
                         'pid' => $pid,
                         'phone' => $phone,
@@ -155,27 +156,19 @@ class SmsController extends HomeBaseController
 
                     if ($this->config['status'] == 1) {
                         $this->checkSms($phone, $this->config['client_send_max'], true, $pid);
-
-                        $xigu = new \think\xigusdk\Xigu($this->config);
-
-                        $send_result = json_decode($xigu->sendSM( $phone, $this->config['captcha_tid'], $param), true);
-
-                        if ($send_result['send_status'] != '000000') {
-
+                        $sxt = new Suxuntong();
+                        $send_result = $sxt->sendSM($phone,$rand,$reg);
+                        if ($send_result->returnstatus != 'Success') {
                             $sms_return = ['code' => self::$error_info['fail'], 'msg' => '发送失败，请重新获取'];
-
                         }
-
                     } else {
-
                         $sms_return = ['code' => self::$error_info['no_config'], 'msg' => '没有配置短信发送'];
-
                     }
                 }
                 if (empty($sms_return)) {
 
                     // 存储到数据库
-                    $result['send_status'] = '000000';
+                    $result['send_status'] = 'Success';
                     $result['phone'] = $phone;
                     $result['create_time'] = time();
                     $result['pid'] = $pid;
@@ -193,7 +186,7 @@ class SmsController extends HomeBaseController
                     $safe_code['phone'] = $phone;
                     $safe_code['time'] = $new_rand ? time() : $sms_code['time'];
                     $safe_code['delay'] = $delay;
-                    $safe_code['create'] = $result['create_time'];
+                    $safe_code['create'] = time();
                     session($session_name, $safe_code);
                     unset($safe_code['code']);
                     $sms_return = [

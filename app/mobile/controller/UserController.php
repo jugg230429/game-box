@@ -536,7 +536,7 @@ class UserController extends BaseController
                     break;
             }
             $sms = new \app\common\controller\SmsController;
-            $data = $sms->sendSmsCode($phone, '3', false);
+            $data = $sms->sendSmsCode($phone, '10', false,0,$request['reg']);
             if ($data['code'] == 200) {
                 $this->success($data['msg'], '', $data['data']);
             } else {
