@@ -250,7 +250,7 @@ class PayController extends BaseController
 //            return $this->redirect($url);
             $this->success('请求成功',$url);//20210628-byh
         }
-        $user = get_user_entity($data['account'], true,'id,account,promote_id,promote_account');
+        $user = get_user_entity($data['account'], true,'id,account,nickname,promote_id,promote_account');
         if (empty($user)) {
             $this->error('用户不存在');
         }
@@ -303,54 +303,68 @@ class PayController extends BaseController
         }
         $data['order_no'] = $data['pay_order_number'];
 
-        //判断后台配置支付宝使用APP支付还是wap支付-原逻辑为wap支付,如果是APP支付,需调整部分属性数据-20210626-byh
-        if ($config['config']['type'] == 2 || get_devices_type()==2 || session('app_user_login')!=1) {/*支付宝 wap支付 iOS系统也走wap*/
-            $pay_method = 'wap';
-        }else{/* 支付宝app支付 */
-            $pay_method = 'mobile';
-            $data['service'] = "mobile.securitypay.pay";
+        //新渠道支付流程
+        $promotePay = new \think\PromotePay(0,1);
+        //构造订单对象数据
+        $param = [];
+        $param['pay_amount'] = $data['money'];
+        $param['title'] = $title;
+        $param['pay_order_number'] = $data['order_no'];
+        $param['server'] = $data['service']; 
+        $param['signtype'] = 'MD5';
+        $param['table'] = $table;
+        $param['pay_way'] = $data['pay_way'];
+        $param['game_id'] = $userplay['game_id'];
+        $param['user_id'] = $user['id'];
+        $result = $promotePay->initParam($param,$user);
+        $this->success('请求成功',$result['pay_url']);
 
-        }
+        // //判断后台配置支付宝使用APP支付还是wap支付-原逻辑为wap支付,如果是APP支付,需调整部分属性数据-20210626-byh
+        // if ($config['config']['type'] == 2 || get_devices_type()==2 || session('app_user_login')!=1) {/*支付宝 wap支付 iOS系统也走wap*/
+        //     $pay_method = 'wap';
+        // }else{/* 支付宝app支付 */
+        //     $pay_method = 'mobile';
+        //     $data['service'] = "mobile.securitypay.pay";
+        // }
 
-        $pay = new \think\Pay($data['pay_type'], $config['config']);
-        $vo = new \think\pay\PayVo();
+//         $pay = new \think\Pay($data['pay_type'], $config['config']);
+//         $vo = new \think\pay\PayVo();
 
-        $vo->setBody($body)
-            ->setFee($data['money'])//支付金额
-            ->setTitle($title)
-            ->setOrderNo($data['order_no'])
-            ->setService($data['service'])
-            ->setSignType("MD5")
-            ->setPayMethod($pay_method)
-            ->setTable($table)
-            ->setPayWay($data['pay_way'])
-            ->setUserId($user['id'])
-            ->setAccount($user['account'])
-            ->setUserNickName($user['nickname'])
-            ->setPromoteId($user['promote_id'])
-            ->setPromoteName($user['promote_account'])
-            ->setGameId($userplay['game_id'])
-            ->setDiscount($discount)
-            ->setDiscount_type($data['discount_type'])
-            ->setCost($data['cost'])
-            ->setModule($module)
-            ->setGameName($userplay['game_name']);
-        if($config['config']['type'] == 2|| get_devices_type()==2 || session('app_user_login')!=1){/*支付宝 wap支付 返回的链接直接跳转 */
-//            $this->redirect($pay->buildRequestForm($vo));
-            $pay_url = $pay->buildRequestForm($vo);
-            $this->success('请求成功',$pay_url);//20210628-byh
-        }else{//APP支付,获取支付信息返回20210625-byh
-            $result = $pay->buildRequestForm($vo);
-            $res_msg = [
-//                "orderInfo" => base64_encode($result['arg']),
-                "orderInfo" => $result['arg'],
-                "out_trade_no" => $result['out_trade_no'],
-                "order_sign" => $result['sign'],
-                'ali_app'=>1
-            ];
-            $this->success('获取成功','',$res_msg);
-        }
-
+//         $vo->setBody($body)
+//             ->setFee($data['money'])//支付金额
+//             ->setTitle($title)
+//             ->setOrderNo($data['order_no'])
+//             ->setService($data['service'])
+//             ->setSignType("MD5")
+//             ->setPayMethod($pay_method)
+//             ->setTable($table)
+//             ->setPayWay($data['pay_way'])
+//             ->setUserId($user['id'])
+//             ->setAccount($user['account'])
+//             ->setUserNickName($user['nickname'])
+//             ->setPromoteId($user['promote_id'])
+//             ->setPromoteName($user['promote_account'])
+//             ->setGameId($userplay['game_id'])
+//             ->setDiscount($discount)
+//             ->setDiscount_type($data['discount_type'])
+//             ->setCost($data['cost'])
+//             ->setModule($module)
+//             ->setGameName($userplay['game_name']);
+//         if($config['config']['type'] == 2|| get_devices_type()==2 || session('app_user_login')!=1){/*支付宝 wap支付 返回的链接直接跳转 */
+// //            $this->redirect($pay->buildRequestForm($vo));
+//             $pay_url = $pay->buildRequestForm($vo);
+//             $this->success('请求成功',$pay_url);//20210628-byh
+//         }else{//APP支付,获取支付信息返回20210625-byh
+//             $result = $pay->buildRequestForm($vo);
+//             $res_msg = [
+// //                "orderInfo" => base64_encode($result['arg']),
+//                 "orderInfo" => $result['arg'],
+//                 "out_trade_no" => $result['out_trade_no'],
+//                 "order_sign" => $result['sign'],
+//                 'ali_app'=>1
+//             ];
+//             $this->success('获取成功','',$res_msg);
+//         }
 
     }
 
@@ -402,6 +416,7 @@ class PayController extends BaseController
             }
             //获取折扣
             $title = "绑币充值";
+            $table = 'bind';
             $data['pay_order_number'] = create_out_trade_no("PB_");
             //获取折扣-绑币充值折扣新增-byh-20210825-start
             $lPay = new \app\common\logic\PayLogic();
@@ -413,39 +428,59 @@ class PayController extends BaseController
 //            $data['money'] = round($data['money']*$discount/10,2);
         }else{
             $title = "平台币充值";
+            $table = "deposit";
             $data['pay_order_number'] = create_out_trade_no("PF_");
 
         }
-        $data['order_no'] = $data['pay_order_number'];
-        $data['pay_amount'] = $data['money'];
-        $data['pay_status'] = 0;
-        $data['pay_way'] = 4;
-        $data['user_id'] = $user['id'];
-        $data['spend_ip'] = get_client_ip();
-        //H5支付
-        $weixn = new Weixin();
-        $is_pay = json_decode($weixn->weixin_pay($title, $data['pay_order_number'], $data['money'], 'MWEB'), true);
-        if ($is_pay['status'] == 1) {
-            if($data['coin_type'] == 1){
-                add_bind($data,$user);
-            }else{
-                add_deposit($data,$user);
-            }
-        } else {
-            $this->error('支付失败');
-        }
-        if (!empty($is_pay['mweb_url'])) {
-            if(session('app_user_login')==1){
-                $url = '//' . cmf_get_option('admin_set')['web_site'] . '/mobile/pay/wechatJumpPage' . "?jump_url=" . urlencode($is_pay['mweb_url'] . "&redirect_url=" . urlencode(url('@app/pay/pay_success', ['out_trade_no'=> $data['pay_order_number']], true, true)));
-            }else{
-                $url = '//' . cmf_get_option('admin_set')['web_site'] . '/mobile/pay/wechatJumpPage' . "?jump_url=" . urlencode($is_pay['mweb_url'] . "&redirect_url=" . urlencode(url('User/index', [], true, true)));
-            }
-//            $this->redirect($url);
-            $this->success('请求成功',$url);
 
-        } else {
-            $this->error('支付发生错误,请重试');
-        }
+        //新渠道支付流程
+        $promotePay = new \think\PromotePay(0,2);
+        //构造订单对象数据
+        $param = [];
+        $param['pay_amount'] = $data['money'];
+        $param['title'] = $title;
+        $param['pay_order_number'] = $data['pay_order_number'];
+        $param['server'] = $data['service']; 
+        $param['signtype'] = 'MD5';
+        $param['table'] = $table;
+        $param['pay_way'] = $data['pay_way'];
+        $param['game_id'] = $userplay['game_id'];
+        $param['user_id'] = $user['id'];
+        $result = $promotePay->initParam($param,$user);
+        $this->success('请求成功',$result['pay_url']);
+
+
+        // $data['order_no'] = $data['pay_order_number'];
+        // $data['pay_amount'] = $data['money'];
+        // $data['pay_status'] = 0;
+        // $data['pay_way'] = 4;
+        // $data['user_id'] = $user['id'];
+        // $data['spend_ip'] = get_client_ip();
+
+//         //H5支付
+//         $weixn = new Weixin();
+//         $is_pay = json_decode($weixn->weixin_pay($title, $data['pay_order_number'], $data['money'], 'MWEB'), true);
+//         if ($is_pay['status'] == 1) {
+//             if($data['coin_type'] == 1){
+//                 add_bind($data,$user);
+//             }else{
+//                 add_deposit($data,$user);
+//             }
+//         } else {
+//             $this->error('支付失败');
+//         }
+//         if (!empty($is_pay['mweb_url'])) {
+//             if(session('app_user_login')==1){
+//                 $url = '//' . cmf_get_option('admin_set')['web_site'] . '/mobile/pay/wechatJumpPage' . "?jump_url=" . urlencode($is_pay['mweb_url'] . "&redirect_url=" . urlencode(url('@app/pay/pay_success', ['out_trade_no'=> $data['pay_order_number']], true, true)));
+//             }else{
+//                 $url = '//' . cmf_get_option('admin_set')['web_site'] . '/mobile/pay/wechatJumpPage' . "?jump_url=" . urlencode($is_pay['mweb_url'] . "&redirect_url=" . urlencode(url('User/index', [], true, true)));
+//             }
+// //            $this->redirect($url);
+//             $this->success('请求成功',$url);
+
+//         } else {
+//             $this->error('支付发生错误,请重试');
+//         }
     }
 
 

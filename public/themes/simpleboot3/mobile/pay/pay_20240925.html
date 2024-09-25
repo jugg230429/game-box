@@ -445,7 +445,14 @@
                             return false;
                         }
 
-        
+                        if(is_weixin && !is_company_weixin && $("#pay_way").val() == 4){
+                            $("#pay_form").attr('action',weixinUrl);
+                            $("#pay_form").submit();
+                            return false;
+                        }
+                        // 新增
+                        // $("#pay_form").submit();
+
                         //更改为ajax请求---原支付逻辑直接跳转URL-安卓的支付宝APP支付则通知安卓拉起APP支付-byh-s
                         $.ajax({
                             url: pay_url,
@@ -453,9 +460,25 @@
                             dataType: 'json',
                             data: $("#pay_form").serialize(),
                             success: function (res) {
-                                //其他URL跳转的
-                                layer.msg('请稍后...');
-                                window.location.href = res.url;
+                                if (res.code == 0) {
+                                    layer.msg(res.msg);
+                                    return false;
+                                }else if(res.code == 1){
+                                    //支付返回信息统一跳转,如是支付宝支付,再行判断wap和APP(只有安卓)
+                                    if(res.data.ali_app == 1){
+                                        //支付宝APP支付-通知安卓
+                                        window.xgsdk.appaliapppay(res.data.orderInfo);//安卓
+                                        return false;
+                                    }
+                                    //其他URL跳转的
+                                    layer.msg('请稍后...');
+                                    window.location.href = res.url;
+                                    return false;
+
+                                }else{
+                                    layer.msg(res);
+                                    return false;
+                                }
                             },
                             error: function () {
                                 layer.msg("错误");
