@@ -102,7 +102,7 @@ class PtbspendController extends AdminBaseController
 
         $adminId = Session::get('ADMIN_ID');
         $hand_auth = 0;
-        if(in_array($adminId,[1,7])){
+        if(in_array($adminId,[1,8])){
             $hand_auth = 1;
         }
         $this->assign("hand_auth", $hand_auth);
