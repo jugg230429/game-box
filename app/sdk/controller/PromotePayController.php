@@ -76,26 +76,28 @@ class PromotePayController{
         if($postSign == $sign){
             //验签成功
             if($paramArray['trade_status'] == 1){
-                 //调用旧支付回调的方法
-                 $callBack = new BaseController();
-                 $data = [
-                     'out_trade_no' => $spend['pay_order_number'],
-                     'trade_no' => $spend['order_number'],
-                     'real_amount' => $paramArray['total_fee']
-                 ];
-                 //判断$table_name分开处理
-                 if($table_name == 'tab_spend'){
-                    $result = $callBack->set_spend($data);
-                    if(!$result){
-                        exit("failure(buyer business process error)");
-                    }
-                }
-                if($table_name == 'tab_spend_balance'){
-                    $result = $callBack->set_deposit($data);
-                    if(!$result){
-                        exit("failure(mch business process error)");
-                    }
-                }
+                //处理业务回调
+                $this->sepndCallback($spend['pay_order_number'],$spend['order_number'],$paramArray['total_fee'],$table_name);
+                //  //调用旧支付回调的方法
+                //  $callBack = new BaseController();
+                //  $data = [
+                //      'out_trade_no' => $spend['pay_order_number'],
+                //      'trade_no' => $spend['order_number'],
+                //      'real_amount' => $paramArray['total_fee']
+                //  ];
+                //  //判断$table_name分开处理
+                //  if($table_name == 'tab_spend'){
+                //     $result = $callBack->set_spend($data);
+                //     if(!$result){
+                //         exit("failure(buyer business process error)");
+                //     }
+                // }
+                // if($table_name == 'tab_spend_balance'){
+                //     $result = $callBack->set_deposit($data);
+                //     if(!$result){
+                //         exit("failure(mch business process error)");
+                //     }
+                // }
                 exit("success");
             }
             exit("failure(trade_status not correct)");
@@ -194,27 +196,30 @@ class PromotePayController{
             if($paramArray['status'] == 2){
                  //回写spend表的order_number字段
                  Db::table($table_name)->where('id',$spend['id'])->update(['order_number'=>$paramArray['payOrderId']]);
-                 //调用旧支付回调的方法
-                 $callBack = new BaseController();
-                 $data = [
-                     'out_trade_no' => $paramArray['mchOrderNo'],
-                     'trade_no' => $paramArray['payOrderId'],
-                     'real_amount' => $paramArray['income'] / 100
-                 ];
 
-                //判断$table_name分开处理
-                if($table_name == 'tab_spend'){
-                    $result = $callBack->set_spend($data);
-                    if(!$result){
-                        exit("failure(mch business process error)");
-                    }
-                }
-                if($table_name == 'tab_spend_balance'){
-                    $result = $callBack->set_deposit($data);
-                    if(!$result){
-                        exit("failure(mch business process error)");
-                    }
-                }
+                //处理业务回调
+                $this->sepndCallback($spend['pay_order_number'],$spend['order_number'],$paramArray['income'] / 100,$table_name);
+                //  //调用旧支付回调的方法
+                //  $callBack = new BaseController();
+                //  $data = [
+                //      'out_trade_no' => $paramArray['mchOrderNo'],
+                //      'trade_no' => $paramArray['payOrderId'],
+                //      'real_amount' => $paramArray['income'] / 100
+                //  ];
+
+                // //判断$table_name分开处理
+                // if($table_name == 'tab_spend'){
+                //     $result = $callBack->set_spend($data);
+                //     if(!$result){
+                //         exit("failure(mch business process error)");
+                //     }
+                // }
+                // if($table_name == 'tab_spend_balance'){
+                //     $result = $callBack->set_deposit($data);
+                //     if(!$result){
+                //         exit("failure(mch business process error)");
+                //     }
+                // }
                 exit("success");
             }
             exit("failure(status not correct)");
@@ -299,31 +304,66 @@ class PromotePayController{
             if($paramArray['trade_status'] == 'TRADE_SUCCESS'){
                  //回写spend表的order_number字段
                  Db::table($table_name)->where('id',$spend['id'])->update(['order_number'=>$paramArray['trade_no']]);
-                 //调用旧支付回调的方法
-                 $callBack = new BaseController();
-                 $data = [
-                     'out_trade_no' => $spend['pay_order_number'],
-                     'trade_no' => $spend['order_number'],
-                     'real_amount' => $paramArray['money']
-                 ];
 
-                //判断$table_name分开处理
-                if($table_name == 'tab_spend'){
-                    $result = $callBack->set_spend($data);
-                    if(!$result){
-                        exit("failure(mch business process error)");
-                    }
-                }
-                if($table_name == 'tab_spend_balance'){
-                    $result = $callBack->set_deposit($data);
-                    if(!$result){
-                        exit("failure(mch business process error)");
-                    }
-                }
+                //处理业务回调
+                $this->sepndCallback($spend['pay_order_number'],$spend['order_number'],$paramArray['money'],$table_name);
+
+            //     $callBack = new BaseController();
+            //     $data = [
+            //         'out_trade_no' => $spend['pay_order_number'],
+            //         'trade_no' => $spend['order_number'],
+            //         'real_amount' => $paramArray['money']
+            //     ];
+
+            //    //判断$table_name分开处理
+            //    if($table_name == 'tab_spend'){
+            //        $result = $callBack->set_spend($data);
+            //        if(!$result){
+            //            exit("failure(mch business process error)");
+            //        }
+            //    }
+            //    if($table_name == 'tab_spend_balance'){
+            //        $result = $callBack->set_deposit($data);
+            //        if(!$result){
+            //            exit("failure(mch business process error)");
+            //        }
+            //    }
+
                 exit("success");
             }
             exit("failure(status not correct)");
         }
         exit("failure(Sign verification errors)");
+    }
+
+
+    function sepndCallback($pay_order_number,$order_number,$acctual_pay,$table_name){
+         //调用旧支付回调的方法
+         $callBack = new BaseController();
+         $data = [
+             'out_trade_no' => $pay_order_number,
+             'trade_no' => $order_number,
+             'real_amount' => $acctual_pay
+         ];
+
+        //判断$table_name分开处理
+        if($table_name == 'tab_spend'){
+            $result = $callBack->set_spend($data);
+            if(!$result){
+                exit("failure(spend business process error)");
+            }
+        }
+        if($table_name == 'tab_spend_balance'){
+            $result = $callBack->set_deposit($data);
+            if(!$result){
+                exit("failure(balance business process error)");
+            }
+        }
+        if($table_name == 'tab_user_member'){
+            $result = $callBack->set_member($data);
+            if(!$result){
+                exit("failure(member business process error)");
+            }
+        }
     }
 }

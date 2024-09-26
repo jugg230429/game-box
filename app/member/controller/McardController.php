@@ -12,6 +12,7 @@ use app\member\model\UserMemberModel;
 use app\recharge\model\CouponModel;
 use cmf\controller\AdminBaseController;
 use app\common\controller\BaseController;
+use app\recharge\model\SpendPromoteParamModel;
 use think\Db;
 use think\Request;
 
@@ -54,15 +55,19 @@ class McardController extends AdminBaseController
         } elseif ($start_time) {
             $map['create_time'] = ['egt', strtotime($start_time)];
         }
-        $extend['field'] = 'pay_order_number,user_account,promote_account,pay_amount,pay_way,member_name,days,free_days,spend_ip,create_time,end_time';
+        $extend['field'] = 'pay_order_number,user_account,promote_account,pay_amount,pay_way,member_name,days,free_days,spend_ip,create_time,end_time,promote_param_id';
         $extend['order'] = 'id desc';
         $data = $base->data_list($model, $map, $extend);
         // 判断当前管理员是否有权限显示完成整手机号或完整账号
         $ys_show_admin = get_admin_privicy_two_value();
-        foreach($data as $k5=>$v5){
+        foreach($data as &$v5){
             if($ys_show_admin['account_show_admin_status'] == 1){//开启了账号查看隐私
-                $data[$k5]['user_account'] = get_ys_string($v5['user_account'],$ys_show_admin['account_show_admin']);
+                $v5['user_account'] = get_ys_string($v5['user_account'],$ys_show_admin['account_show_admin']);
             }
+
+            //获取新渠道支付商家名称
+            $paramModel = new SpendPromoteParamModel();
+            $v5['promote_param_name'] = $paramModel->getPromoteBussinessNameById($v5['promote_param_id']);
         }
         // 获取分页显示
         $page = $data->render();

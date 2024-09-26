@@ -209,7 +209,7 @@ class McardController extends BaseController
         }else{
             $module = "mobile";
         }
-        $pay = new \think\Pay($data['pay_type'], $config['config']);
+    
         $vo = new \think\pay\PayVo();
         $vo->setBody($body)
                 ->setFee($card['price'])//支付金额
@@ -229,8 +229,15 @@ class McardController extends BaseController
                 ->setDays($card['days'])
                 ->setModule($module)
                 ->setFreeDays($card['free_days']);
-        $url = $pay->buildRequestForm($vo);
-        return json(['code'=>1,'url'=>$url]);
+
+        //新渠道支付流程
+        $promotePay = new \think\PromotePay(0,1);
+        $result = $promotePay->buildRequestForm($vo);
+        $this->success('请求成功',$result['pay_url']);
+
+        // $pay = new \think\Pay($data['pay_type'], $config['config']);
+        // $url = $pay->buildRequestForm($vo);
+        // return json(['code'=>1,'url'=>$url]);
     }
     // 微信内用支付宝支付
     // 处理微信浏览器屏蔽支付宝的问题
@@ -283,7 +290,6 @@ class McardController extends BaseController
         }else{
             $module = "mobile";
         }
-        $pay = new \think\Pay($data['pay_type'], $config['config']);
         $vo = new \think\pay\PayVo();
         $vo->setBody($body)
                 ->setFee($card['price'])//支付金额
@@ -303,8 +309,14 @@ class McardController extends BaseController
                 ->setDays($card['days'])
                 ->setModule($module)
                 ->setFreeDays($card['free_days']);
+
+        //新渠道支付流程
+        $promotePay = new \think\PromotePay(0,1);
+        $result = $promotePay->buildRequestForm($vo);
+        $this->success('请求成功',$result['pay_url']);        
     
-        $this->redirect($pay->buildRequestForm($vo));
+        // $pay = new \think\Pay($data['pay_type'], $config['config']);
+        // $this->redirect($pay->buildRequestForm($vo));
         // return json(['code'=>1,'url'=>$url]); // 原
     }
 
@@ -349,27 +361,62 @@ class McardController extends BaseController
         $data['free_days'] = $card['free_days'];
         $data['member_name'] = $card['card_name'];
         $data['pay_way'] = 4;
+        $body = "尊享卡会员充值";
         $title = "尊享卡会员充值";
+        $table = 'member';
         $data['pay_order_number'] = create_out_trade_no("MC_");
         $user = get_user_entity(UID,false,'id,account,nickname,promote_id,promote_account');
-        $weixn = new Weixin();
-        $is_pay = json_decode($weixn->weixin_pay($title, $data['pay_order_number'], $data['pay_amount'], 'MWEB'), true);
-        if ($is_pay['status'] == 1) {
-            add_member($data,$user);
-        } else {
-            $this->error('支付失败');
+        if(session('app_user_login')==1){
+            $module = "app";
+        }else{
+            $module = "mobile";
         }
-        if (!empty($is_pay['mweb_url'])) {
-            if(session('app_user_login')==1){
-                $url = '//' . cmf_get_option('admin_set')['web_site'] . '/mobile/pay/wechatJumpPage' . "?jump_url=" . urlencode($is_pay['mweb_url'] . "&redirect_url=" . urlencode(url('@app/pay/pay_success', ['out_trade_no'=>$data['pay_order_number']], true, true)));
-            }else{
-                $url = '//' . cmf_get_option('admin_set')['web_site'] . '/mobile/pay/wechatJumpPage' . "?jump_url=" . urlencode($is_pay['mweb_url'] . "&redirect_url=" . urlencode(url('user/index', [], true, true)));
-            }
 
-        } else {
-            $this->error('支付发生错误,请重试');
-        }
-        return json(['code'=>1,'url'=>$url]);
+        $vo = new \think\pay\PayVo();
+        $vo->setBody($body)
+                ->setFee($card['price'])//支付金额
+                ->setTitle($title)
+                ->setOrderNo($data['pay_order_number'])
+                ->setService($data['service'])
+                ->setSignType("MD5")
+                ->setPayMethod("wap")
+                ->setTable($table)
+                ->setPayWay($data['pay_way'])
+                ->setUserId($user['id'])
+                ->setAccount($user['account'])
+                ->setUserNickName($user['nickname'])
+                ->setPromoteId($user['promote_id'])
+                ->setPromoteName($user['promote_account'])
+                ->setMemberName($card['card_name'])
+                ->setDays($card['days'])
+                ->setModule($module)
+                ->setFreeDays($card['free_days']);
+
+        //新渠道支付流程
+        $promotePay = new \think\PromotePay(0,2);
+        $result = $promotePay->buildRequestForm($vo);
+        $this->success('请求成功',$result['pay_url']);
+
+
+
+        // $weixn = new Weixin();
+        // $is_pay = json_decode($weixn->weixin_pay($title, $data['pay_order_number'], $data['pay_amount'], 'MWEB'), true);
+        // if ($is_pay['status'] == 1) {
+        //     add_member($data,$user);
+        // } else {
+        //     $this->error('支付失败');
+        // }
+        // if (!empty($is_pay['mweb_url'])) {
+        //     if(session('app_user_login')==1){
+        //         $url = '//' . cmf_get_option('admin_set')['web_site'] . '/mobile/pay/wechatJumpPage' . "?jump_url=" . urlencode($is_pay['mweb_url'] . "&redirect_url=" . urlencode(url('@app/pay/pay_success', ['out_trade_no'=>$data['pay_order_number']], true, true)));
+        //     }else{
+        //         $url = '//' . cmf_get_option('admin_set')['web_site'] . '/mobile/pay/wechatJumpPage' . "?jump_url=" . urlencode($is_pay['mweb_url'] . "&redirect_url=" . urlencode(url('user/index', [], true, true)));
+        //     }
+
+        // } else {
+        //     $this->error('支付发生错误,请重试');
+        // }
+        // return json(['code'=>1,'url'=>$url]);
     }
 
 }

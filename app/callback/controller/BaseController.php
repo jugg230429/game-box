@@ -772,7 +772,7 @@ class BaseController extends HomeBaseController
      * @author: 郭家屯
      * @since: 2020/8/17 14:57
      */
-    protected function set_member($data = [])
+    public function set_member($data = [])
     {
         $model = new UserMemberModel();
         $map['pay_order_number'] = $data['out_trade_no'];

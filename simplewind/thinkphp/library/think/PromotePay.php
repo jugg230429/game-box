@@ -424,10 +424,15 @@ class PromotePay{
 
     private function getTableName(Pay\PayVo $vo){
         switch ($vo->getTable()) {
+            //游戏订单
             case 'spend':
                 return 'tab_spend';
+            //平台币    
             case 'deposit':
                 return 'tab_spend_balance';
+            //尊享卡    
+            case 'member':
+                return 'tab_user_member';
             default:
                 exit('未开发支付场景,请重试'); 
         }   
