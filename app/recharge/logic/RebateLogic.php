@@ -926,7 +926,9 @@ class RebateLogic{
         $coupon_id = $request['coupon_id'];
         $coupon = $model->where('id',$coupon_id)->find()->toArray();
         $stock = count($request['user_id']);
-        if($stock > $coupon['stock'])return false;
+        if($stock > $coupon['stock']) {
+            return ['status'=>false,'msg'=>'库存不足'];
+        }
         $data = [];
         $add['coupon_id'] = $coupon['id'];
         $add['coupon_name'] = $coupon['coupon_name'];
@@ -956,9 +958,9 @@ class RebateLogic{
         } catch (\Exception $e) {
             // 回滚事务
             Db::rollback();
-            return false;
+            return ['status'=>false,'msg'=>'更新错误'];
         }
-        return true;
+        return ['status'=>true];
     }
 
     /**

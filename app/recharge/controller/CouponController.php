@@ -274,10 +274,10 @@ class CouponController extends AdminBaseController
             }
 
             $result = $logic->grant($data);
-            if ($result) {
+            if ($result['status']) {
                 $this->success('发放成功',url('record'));
             } else {
-                $this->error('发放失败');
+                $this->error($result['msg']);
             }
         }
         //获取
