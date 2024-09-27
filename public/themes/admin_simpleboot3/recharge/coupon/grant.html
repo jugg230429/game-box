@@ -10,30 +10,10 @@
             <fieldset>
                 <div class="tabbable">
                     <div class="grantContainer">
-                        <div style="margin-right: 46px;">
-                            <span class="fl grantNameLabel">选择玩家：</span>
-                            <div class="mainSelectOutBox fl">
-                                <input type="text" placeholder="输入玩家账号" class="inputGameUserCount js-filter-user">
-                                <div class="bottomShowList">
-                                    <ul>
-                                        <php>$map['puid'] = 0;</php>
-                                        <volist name=":get_user_lists_info('id,account',$map)" id="vo">
-                                            <li class="showGameGrantList userList" data-user_account="{$vo.account}">
-                                                <label class="grantBoxSelectData" for="user_id_{$vo.id}">
-                                                    <input type="checkbox" class="selectBoxIcon" name="user_id[]" id="user_id_{$vo.id}" value="{$vo.id}">
-                                                    <i class="selectBoxIcon"></i>
-                                                    <span>{$vo.account}</span>
-                                                </label>
-                                            </li>
-                                        </volist>
-                                    </ul>
-                                    <empty name=":get_user_lists_info('id,account',$map)">
-                                        <div class="noHaveGamelist">~暂无数据~</div>
-                                    </empty>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
+              
+                          <div>
+                            <span class="fl grantNameLabel">玩家账号：</span>
+                            <input type="text" class="form-control user-input"  style="margin: 0 0 2em 7em" name="account" placeholder="只能输入玩家账号" value="">
                             <span class="fl grantNameLabel">选择代金券：</span>
                             <div class="mainSelectOutBox fl">
                                 <input type="text" placeholder="输入代金券名称" class="inputGameUserCount js-filter-coupon">
@@ -72,45 +52,7 @@
                         </button>
                         <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
                     </div>
-                    <!-- <div class="tab-content">
-                        <div class="tab-pane active" id="A">
-                            <div class="form-group" >
-                                <label for="input-site-name" class="col-sm-2 control-label newLabelShow" >
-                                    选择用户：
-                                </label>
-                                <div class="col-md-4 col-sm-6">
-                                    <php>$map['puid'] = 0;</php>
-                                    <select name="user_id[]" id="user_id" class="selectpicker form-control" multiple title="请选择用户"  data-live-search="true">
-                                        <option value="">请选择用户</option>
-                                        <volist name=":get_user_lists_info('id,account',$map)" id="vo">
-                                            <option value="{$vo.id}" >{$vo.account}</option>
-                                        </volist>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group" id="coupon">
-                                <label for="input-site-name" class="col-sm-2 control-label newLabelShow" >
-                                    选择代金券：
-                                </label>
-                                <div class="col-md-4 col-sm-6">
-                                    <select name="coupon_id" id="coupon_id" class="selectpicker form-control" title="选择代金券" data-live-search="true">
-                                        <volist name="coupon" id="vo">
-                                            <option value="{$vo.id}">{$vo.coupon_name}</option>
-                                        </volist>
-                                    </select>
-                                </div>
-                            </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-sm-offset-1 col-sm-5">
-                                    <button type="submit" class="btn btn-primary js-ajax-submit save-btn ml9"  data-refresh="1">
-                                        {:lang('SAVE')}
-                                    </button>
-                                    <a class="btn btn-default return-btn" href="javascript:history.back(-1);">返回</a>
-                                </div>
-                            </div>
-                        </div> -->
-                    </div>
+                  
                 </div>
             </fieldset>
         </form>

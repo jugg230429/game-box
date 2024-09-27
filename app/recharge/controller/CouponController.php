@@ -261,9 +261,14 @@ class CouponController extends AdminBaseController
         $logic = new RebateLogic();
         if($this->request->isPost()){
             $data = $this->request->param();
-            if(!$data['user_id']){
+            if(!$data['account']){
                 $this->error('请选择用户');
             }
+            $user_id = Db::table('tab_user')->where('account',$data['account'])->value('id');
+            if(!$user_id){
+                $this->error('账号对应用户不存在');
+            }
+            $data['user_id'] = $user_id;
             if(!$data['coupon_id']){
                 $this->error('请选择优惠券');
             }
@@ -275,6 +280,7 @@ class CouponController extends AdminBaseController
                 $this->error('发放失败');
             }
         }
+        //获取
         $coupon = $logic->getCoupon(1);
         $this->assign('coupon',$coupon);
         $this->assign('jscoupon',$coupon);

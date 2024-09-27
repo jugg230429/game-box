@@ -5,4 +5,5 @@ return [
     'app\recharge\command\Transaction',
     'app\recharge\command\Notice',
     'app\recharge\command\Repair',
+    'app\recharge\command\MemberCoupon',
 ];
