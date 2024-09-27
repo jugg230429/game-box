@@ -90,6 +90,16 @@ class PtbsendController extends AdminBaseController
         if (!is_numeric($amount) || $amount <= 0) {
             $this->error("发放数量不正确！");
         }
+
+        $pwd = $this->request->param('password');
+        if ($pwd == '') {
+            $this->error("请输入二级密码！");
+        }
+        $result = Db::name('user')->field('second_pass')->where(['id' => cmf_get_current_admin_id()])->find();
+        if (!xigu_compare_password($pwd, $result['second_pass'])) {
+            $this->error('二级密码错误');
+        }
+
         $add['user_id'] = $u['id'];
         $add['user_account'] = $account;
         $add['op_id'] = cmf_get_current_admin_id();
@@ -138,6 +148,15 @@ class PtbsendController extends AdminBaseController
             }
 
         }
+        $pwd = $this->request->param('password');
+        if ($pwd == '') {
+            $this->error("请输入二级密码！");
+        }
+        $result = Db::name('user')->field('second_pass')->where(['id' => cmf_get_current_admin_id()])->find();
+        if (!xigu_compare_password($pwd, $result['second_pass'])) {
+            $this->error('二级密码错误');
+        }
+
         $namearr = explode("\n", $account);
         $successlist = [];
         for ($i = 0; $i < count($namearr); $i++) {
@@ -188,6 +207,15 @@ class PtbsendController extends AdminBaseController
         header("Content-Type:text/html;charset=utf-8");
         $file = request()->file('excelData');
         if (empty($file)) $this->error('请上传文件');
+        $pwd = $this->request->param('password');
+        if ($pwd == '') {
+            $this->error("请输入二级密码！");
+        }
+        $result = Db::name('user')->field('second_pass')->where(['id' => cmf_get_current_admin_id()])->find();
+        if (!xigu_compare_password($pwd, $result['second_pass'])) {
+            $this->error('二级密码错误');
+        }
+
         $upload = new Upload();
         $upload->setFormName('excelData');
         $upload->setApp('recharge');// 充值模块excelData
