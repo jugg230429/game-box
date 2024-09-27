@@ -27,9 +27,9 @@ class MemberCoupon extends Command
         $coupon_id = $mcard_set['coupon_id'];
         $coupon = get_coupon_info($coupon_id);
         //查找未到期的尊享卡用户
-        $userList = Db::table('tab_user_member')->where('pay_status',1)->where('end_time','>',time())->order('id asc')->column('user_id');
-        foreach($userList as $userId){
-            $user = get_user_entity($userId,false,'id,account,member_days,end_time');
+        $userList = Db::table('tab_user_member')->field('user_id')->where('pay_status',1)->where('end_time','>',time())->group('user_id')->select();
+        foreach($userList as $user){
+            $user = get_user_entity($user['user_id'],false,'id,account,member_days,end_time');
             $coupon_data = $this->get_coupon_data($coupon,$user);
             Db::table('tab_coupon_record')->insert($coupon_data);
         }
