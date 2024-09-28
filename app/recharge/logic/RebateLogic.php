@@ -929,7 +929,7 @@ class RebateLogic{
         if($stock > $coupon['stock']) {
             return ['status'=>false,'msg'=>'库存不足'];
         }
-        $data = [];
+        $add = [];
         $add['coupon_id'] = $coupon['id'];
         $add['coupon_name'] = $coupon['coupon_name'];
         $add['game_id'] = $coupon['game_id'];
@@ -941,17 +941,13 @@ class RebateLogic{
         $add['start_time'] = $coupon['start_time'];
         $add['end_time'] = $coupon['end_time'];
         $add['get_way'] = 1;
-        foreach ($request['user_id'] as $key=>$v){
-            $user = get_user_entity($v,false,'id,account');
-            if(!$user)continue;
-            $add['user_id'] = $user['id'];
-            $add['user_account'] = $user['account'];
-            $data[] = $add;
-        }
+        $user = get_user_entity($request['user_id'],false,'id,account');
+        $add['user_id'] = $user['id'];
+        $add['user_account'] = $user['account'];
         $recordmodel = new CouponRecordModel();
         Db::startTrans();
         try{
-            $recordmodel->insertAll($data);
+            $recordmodel->save($add);
             $model->where('id',$coupon_id)->setDec('stock',$stock);
             // 提交事务
             Db::commit();

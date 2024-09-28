@@ -1115,7 +1115,7 @@ class UserController extends BaseController
                 if($checkaccount){
                     $this->set_message(1077, "账号名称已存在");
                 }
-                $save['account'] = $data['account'];
+                // $save['account'] = $data['account'];
                 $save['nickname'] = $data['account'];
                 $save['password'] = cmf_password($data['password']);
                 $save['token'] = think_encrypt(json_encode(array('uid' => $data['user_id'], 'password' => cmf_password($data['password']))),1);
