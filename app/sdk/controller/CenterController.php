@@ -347,8 +347,7 @@ class CenterController extends BaseController
         //分享信息
         $game = get_game_entity($game_id,'icon,game_name,features');
         $data['logo'] = cmf_get_image_url($game['icon']);
-        // $data['url'] = cmf_get_domain() . '/mobile/game/detail/game_id/' . $game_id;
-        $data['url'] = 'https://tbb.tbbgame.com/';
+        $data['url'] = cmf_get_domain() . '/mobile/game/detail/game_id/' . $game_id;
         $data['title'] = $game['game_name'];
         $data['content'] = $game['features'];
         $this->set_message(200, "获取成功",$data);

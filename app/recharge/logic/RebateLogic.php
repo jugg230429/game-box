@@ -938,6 +938,7 @@ class RebateLogic{
         $add['money'] = $coupon['money'];
         $add['limit_money'] = $coupon['limit_money'];
         $add['create_time'] = time();
+        $add['update_time'] = 0;
         $add['start_time'] = $coupon['start_time'];
         $add['end_time'] = $coupon['end_time'];
         $add['get_way'] = 1;
