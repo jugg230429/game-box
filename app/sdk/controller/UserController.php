@@ -13,7 +13,6 @@ use app\common\logic\AntiaddictionLogic;
 use app\common\logic\PayLogic;
 use app\common\logic\SimulatorLogic;
 use app\common\logic\YiDunLoginLogic;
-use app\extend\model\MsgModel;
 use app\game\logic\InterflowLogic;
 use app\game\model\GamesourceModel;
 use app\member\logic\UserLogic;
@@ -38,6 +37,7 @@ use think\Db;
 use think\WechatAuth;
 use app\webplatform\logic\UserLogic as WebUserLogic;
 use think\sms\Suxuntong;
+use cmf\org\RedisSDK\RedisController as Redis;
 
 class UserController extends BaseController
 {
@@ -1115,7 +1115,7 @@ class UserController extends BaseController
                 if($checkaccount){
                     $this->set_message(1077, "账号名称已存在");
                 }
-                // $save['account'] = $data['account'];
+                $save['account'] = $data['account'];
                 $save['nickname'] = $data['account'];
                 $save['password'] = cmf_password($data['password']);
                 $save['token'] = think_encrypt(json_encode(array('uid' => $data['user_id'], 'password' => cmf_password($data['password']))),1);
@@ -1641,25 +1641,41 @@ class UserController extends BaseController
      */
     private function sms_verify($phone = "", $code = "", $type = 2)
     {
-        $session = session($phone);
-        if (empty($session)) {
+        $redis = Redis::getInstance(['host' => '127.0.0.1', 'port' => 6379], []);
+        $redis->select(9);
+        $key = "sms_$phone";
+        $sendCode = $redis->get($key);
+        if (!$sendCode) {
             $this->set_message(1017, "请先获取验证码");
         }
-        #验证码是否超时
-        $time = time() - session($phone . ".create");
-
-        if ($time > 600) {//$tiem > 60
-            $this->set_message(1018, "验证码已失效，请重新获取");
-        }
-        #验证短信验证码
-        if (session($phone . ".code") != $code) {
+        if($code != $sendCode){
             $this->set_message(1019, "验证码不正确，请重新输入");
         }
-        if ($type == 1) {
+          if ($type == 1) {
             $this->set_message(200, "正确");
         } else {
             return true;
         }
+        
+        // $session = session($phone);
+        // if (empty($session)) {
+        //     $this->set_message(1017, "请先获取验证码");
+        // }
+        // #验证码是否超时
+        // $time = time() - session($phone . ".create");
+
+        // if ($time > 600) {//$tiem > 60
+        //     $this->set_message(1018, "验证码已失效，请重新获取");
+        // }
+        // #验证短信验证码
+        // if (session($phone . ".code") != $code) {
+        //     $this->set_message(1019, "验证码不正确，请重新输入");
+        // }
+        // if ($type == 1) {
+        //     $this->set_message(200, "正确");
+        // } else {
+        //     return true;
+        // }
 
     }
 
@@ -1735,10 +1751,11 @@ class UserController extends BaseController
         }
 
         $sxt = new Suxuntong();
-        $sms_code = session($phone);//发送没有session 每次都是新的
+        // $sms_code = session($phone);//发送没有session 每次都是新的
+     
         $sms_rand = sms_rand($phone);
         $rand = $sms_rand['rand'];
-        $new_rand = $sms_rand['rand'];
+        // $new_rand = $sms_rand['rand'];
 
         $result = $sxt->sendSM($phone,$rand,$request['reg']);
         $insert['phone'] = $phone;
@@ -1749,12 +1766,9 @@ class UserController extends BaseController
         Db::table('tab_sms_log')->field(true)->insert($insert);
         #TODO 短信验证数据
         if ($result->returnstatus == 'Success') {
-            $safe_code['code'] = $rand;
-            $safe_code['phone'] = $phone;
-            $safe_code['time'] = $new_rand ? time() : $sms_code['time'];
-            $safe_code['delay'] = 3;
-            $safe_code['create'] = time();
-            session($phone, $safe_code);
+            //存储redis
+            $key = "sms_$phone";
+            $this->setRedis($key,600,$rand);
             $this->set_message(200, "验证码发送成功");
         } else {
             $this->set_message(1015, "验证码发送失败，请重新获取");
@@ -1832,16 +1846,28 @@ class UserController extends BaseController
      */
     private function emailVerify($email, $code, $time = 30)
     {
-        $session = session($email);
-        if (empty($session)) {
+        $redis = Redis::getInstance(['host' => '127.0.0.1', 'port' => 6379], []);
+        $redis->select(9);
+        $key = "email_$email";
+        $sendCode = $redis->get($key);
+        if (!$sendCode) {
             return 2;
-        } elseif ((time() - $session['create_time']) > $time * 60) {
-            return -98;
-        } elseif ($session['code'] != $code) {
+        }
+        if($code != $sendCode){
             return -97;
         }
-        session($email, null);
         return 1;
+
+        // $session = session($email);
+        // if (empty($session)) {
+        //     return 2;
+        // } elseif ((time() - $session['create_time']) > $time * 60) {
+        //     return -98;
+        // } elseif ($session['code'] != $code) {
+        //     return -97;
+        // }
+        // session($email, null);
+        // return 1;
     }
 
     /**
@@ -1924,11 +1950,19 @@ class UserController extends BaseController
         $smtpSetting['template'] = str_replace('{$code}', $code, htmlspecialchars_decode($smtpSetting['template']));
         $result = cmf_send_email($data['email'], $smtpSetting['subject'], $smtpSetting['template']);
         if ($result['error'] == 0) {
-            session($email, ['code' => $code, 'create_time' => time()]);
+            //存储redis
+            $key = "email_$email";
+            $this->setRedis($key,600,$code);
             $this->set_message(200, "发送成功");
         } else {
             $this->set_message(1023, "发送失败，请检查邮箱地址是否正确");
         }
+    }
+
+    function setRedis($key,$time,$value){
+        $redis = Redis::getInstance(['host' => '127.0.0.1', 'port' => 6379], []);
+        $redis->select(9);
+        $redis->setex($key,$time,$value);
     }
 
     /**
