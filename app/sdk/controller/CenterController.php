@@ -347,11 +347,50 @@ class CenterController extends BaseController
         //分享信息
         $game = get_game_entity($game_id,'icon,game_name,features');
         $data['logo'] = cmf_get_image_url($game['icon']);
-        $data['url'] = cmf_get_domain() . '/mobile/game/detail/game_id/' . $game_id;
+        $data['url'] = $this->getShareUrl($request['promote_id'],$game_id);
         $data['title'] = $game['game_name'];
         $data['content'] = $game['features'];
         $this->set_message(200, "获取成功",$data);
     }
+
+    /**
+     * 获取分享域名
+     */
+    function getShareUrl($promote_id,$game_id){
+        //获取分享地址逻辑
+        //判断渠道参数。
+        //1.if = 官方渠道   判断游戏是否配置分享域名,否取配置的官网域名
+        //2.if = 其他渠道包 判断是否有申请通过的联盟站点链接,否则递归取上一级的联盟链接,直到取官网域名
+        $config = cmf_get_option('admin_set');
+        $offical_domain = $config['web_site'];
+
+        if($promote_id == 0){
+            $share_domain = Db::table('tab_game_set')->where('game_id',$game_id)->value('share_domain');
+            if(!$share_domain){
+                $share_domain = $offical_domain;
+            }
+            return $share_domain . "/mobile/game/detail/game_id/$game_id";
+        }else{
+            $domain_url = $this->getPromoteUnionDomain($promote_id,$offical_domain);
+            return  $domain_url . "/mobile/Downfile/index?gid=$game_id"."&pid=$promote_id";
+        }
+    }
+
+    /**
+     * 递归获取非官方渠道包的分享域名
+     */
+    function getPromoteUnionDomain($promote_id,$offical_domain){
+        $domain_url = Db::table('tab_promote_union')->where(['status'=>1,'union_id'=>$promote_id])->value('domain_url');
+        if($domain_url){
+            return $domain_url;
+        }
+        $parentPromoteId = Db::table('tab_promote')->where('id',$promote_id)->value('parent_id');
+        if($parentPromoteId == 0){
+            return $offical_domain;
+        }
+        $this->getPromoteUnionDomain($parentPromoteId,$offical_domain);
+    }
+
 
    //返利折扣
     public function get_game_welfare()

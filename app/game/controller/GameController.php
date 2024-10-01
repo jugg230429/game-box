@@ -1771,6 +1771,7 @@ class GameController extends AdminBaseController
             $pay_notify_url = $param['pay_notify_url'] ?? '';
             $access_key = $param['access_key'] ?? '';
             $agent_id = $param['agent_id'] ?? '';
+            $share_domain = $param['share_domain'] ?? '';  //分享域名
             $ccustom_service_qq = $param['ccustom_service_qq'] ?? '';  // ccustom_service_qq
             if(empty($marking) || empty($game_key) || empty($pay_notify_url) || empty($access_key)){
                 return json(['code'=>-1, 'msg'=>'缺少必要参数!', 'data'=>[]]);
@@ -1779,14 +1780,14 @@ class GameController extends AdminBaseController
                 'game_key'=>$game_key,
                 'pay_notify_url'=>$pay_notify_url,
                 'access_key'=>$access_key,
-                'agent_id'=>$agent_id
+                'agent_id'=>$agent_id,
+                'share_domain'=>$share_domain
             ];
 
             $updateData2 = [
                 'marking'=>$marking,
                 'ccustom_service_qq'=>$ccustom_service_qq,
             ];
-
             Db::startTrans();
             try{
                 Db::table('tab_game')->where(['id'=>$game_id])->update($updateData2);
@@ -1802,7 +1803,7 @@ class GameController extends AdminBaseController
         }
         $data = Db::table('tab_game')
             ->alias('g')
-            ->field('g.id as game_id,g.marking,g.ccustom_service_qq,s.game_key,s.pay_notify_url,s.access_key,s.agent_id')
+            ->field('g.id as game_id,g.marking,g.ccustom_service_qq,s.game_key,s.pay_notify_url,s.access_key,s.agent_id,s.share_domain')
             ->join(['tab_game_set' => 's'], 'g.id=s.game_id', 'left')
             ->where(['g.id'=>$game_id])
             ->find();
