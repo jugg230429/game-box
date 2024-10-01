@@ -100,6 +100,21 @@ function cmf_get_domain()
     return request()->domain();
 }
 
+
+
+/**
+ * 返回配置的官网域名
+ */
+function cmf_get_offical_domain()
+{
+    $config = cmf_get_option('admin_set');
+    $offical_domain = $config['web_site'];
+    if(!$offical_domain){
+        return request()->domain(); 
+    }
+    return $offical_domain;
+}
+
 /**
  * 获取网站根目录
  * @return string 网站根目录

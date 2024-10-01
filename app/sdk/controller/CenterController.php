@@ -366,12 +366,12 @@ class CenterController extends BaseController
 
         if($promote_id == 0){
             $share_domain = Db::table('tab_game_set')->where('game_id',$game_id)->value('share_domain');
-            if(!$share_domain){
-                $share_domain = $offical_domain;
+            if($share_domain){
+                return $share_domain;
             }
-            return $share_domain . "/mobile/game/detail/game_id/$game_id";
+            return $offical_domain . "/mobile/game/detail/game_id/$game_id";
         }else{
-            $domain_url = $this->getPromoteUnionDomain($promote_id,$offical_domain);
+            return $this->getPromoteUnionDomain($promote_id,$game_id,$offical_domain);
             return  $domain_url . "/mobile/Downfile/index?gid=$game_id"."&pid=$promote_id";
         }
     }
@@ -379,16 +379,16 @@ class CenterController extends BaseController
     /**
      * 递归获取非官方渠道包的分享域名
      */
-    function getPromoteUnionDomain($promote_id,$offical_domain){
+    function getPromoteUnionDomain($promote_id,$game_id,$offical_domain){
         $domain_url = Db::table('tab_promote_union')->where(['status'=>1,'union_id'=>$promote_id])->value('domain_url');
         if($domain_url){
             return $domain_url;
         }
         $parentPromoteId = Db::table('tab_promote')->where('id',$promote_id)->value('parent_id');
         if($parentPromoteId == 0){
-            return $offical_domain;
+            return $offical_domain . "/mobile/Downfile/index?gid=$game_id"."&pid=$promote_id";;
         }
-        $this->getPromoteUnionDomain($parentPromoteId,$offical_domain);
+        $this->getPromoteUnionDomain($parentPromoteId,$game_id,$offical_domain);
     }
 
 

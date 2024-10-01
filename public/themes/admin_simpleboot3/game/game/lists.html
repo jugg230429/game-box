@@ -305,7 +305,7 @@ float: left;
                             游戏APPID：{$vo['game_appid']} <br>
                             游戏KEY：{$vo['game_key']} <br>
                             访问密钥：{:get_ss($vo['access_key'])} <br>
-                            SDK地址：{:cmf_get_domain()} <br>
+                            SDK地址：{:cmf_get_offical_domain()} <br>
                             <a href="javascript:void(0);" data-game_id="{$vo.id}" data-access_key="{:get_ss($vo['access_key'])}" data-game_name="{$vo.game_name}" data-game_appid="{$vo.game_appid}" data-game_key="{$vo['game_key']}" class=" duijieParam">复制参数</a>
                             <a href="{:url('game/game/downDockingFile',['game_id'=>$vo['id']])}" data-game_id="{$vo.id}">下载对接文件</a>
                             <!-- <br/> -->
@@ -401,7 +401,7 @@ float: left;
                             <a href="{:url('edit',['id'=>$vo['id']])}">编辑</a><br/>
                             <a href="javascript:void(0);" data-game_id="{$vo.id}" class="setGameConfig"><span>回调地址</span></a><br>
                             <!-- <a href="javascript:void(0);" data-game_id="{$vo.id}" data-game_name="{$vo.game_name}" data-game_appid="{$vo.game_appid}" class="duij">回调地址</a><br/> -->
-                            <a target="_blank" href="{:url('mobile/Downfile/index',['gid'=>$vo['relation_game_id']])}">H5分享页面</a><br/>
+                            <a target="_blank" href="{:cmf_get_offical_domain()}/mobile/Downfile/index/gid/{$vo['relation_game_id']}">H5分享页面</a><br/>
                             <a target="_blank" class="change_game_name"  data-id="{$vo['id']}" data-game_name="{$vo['game_name']}" style="cursor: pointer">修改游戏名称</a>
 <!--                            <a href="javascript:;" data-id="{$vo['id']}" data-game_name="{$vo['game_name']}" class="change_game_name">修改游戏名称</a>-->
                         </td>

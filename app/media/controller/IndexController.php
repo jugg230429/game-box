@@ -23,6 +23,11 @@ class IndexController extends BaseController
      */
     public function index()
     {
+        $domain = $_SERVER['HTTP_HOST'];
+        $position = strpos($domain, 'tbbgame.com');
+        if ($position === false) {
+            exit("have a nice day");
+        }
         $this->slide('slider_media');//轮播图
         if (AUTH_GAME == 1) {
             $map['test_game_status'] = 0;  // 测试游戏不显示,但可以正常进入
