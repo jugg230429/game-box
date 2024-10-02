@@ -277,7 +277,7 @@ class CenterController extends BaseController
         $request = json_decode(base64_decode(file_get_contents("php://input")), true);
         $request = get_real_promote_id($request);
         $config = cmf_get_option('kefu_set');
-        $data['APP_QQ'] = $config['pc_set_server_qq'];
+        $data['APP_QQ'] = $this->getKefuUrl($request['promote_id'],$request['game_id']);
         $data['APP_TEL'] = $config['pc_set_server_tel'];
         $data['QQ_GROUP_KEY'] = $config['pc_qq_group_key'];
         $data['APP_QQ_GROUP'] = $config['pc_qq_group'];
@@ -310,6 +310,45 @@ class CenterController extends BaseController
         }
         $this->set_message(200, "获取成功",$data);
     }
+
+     /**
+     * 获取客服地址
+     */
+    function getKefuUrl($promote_id,$game_id){
+        //获取客服地址逻辑
+        //判断渠道参数。
+        //1.if = 官方渠道   判断游戏是否配置客服,否取配置的官网客服
+        //2.if = 其他渠道包 判断是否有申请通过的联盟配置客服,否则递归取上一级的联盟配置客服,直到取官网客服
+        $offical_kefu = cmf_get_option('kefu_set')['pc_set_server_qq'];
+
+        if($promote_id == 0){
+            $game_qq = Db::table('tab_game')->where('id',$game_id)->value('ccustom_service_qq');
+            if($game_qq){
+                return $game_qq;
+            }
+            return $offical_kefu;
+        }else{
+            return $this->getPromoteUnionKefuUrl($promote_id,$game_id,$offical_kefu);
+        }
+    }
+
+    /**
+     * 递归获取非官方渠道包的客服
+     */
+    function getPromoteUnionKefuUrl($promote_id,$game_id,$offical_kefu){
+        $union_set = Db::table('tab_promote_union')->where(['status'=>1,'union_id'=>$promote_id])->value('union_set');
+        if($union_set){
+            $baseinfo = json_decode($union_set, true);
+            return $baseinfo['qq'];
+        }
+        $parentPromoteId = Db::table('tab_promote')->where('id',$promote_id)->value('parent_id');
+        if($parentPromoteId == 0){
+            return $offical_kefu;
+        }
+        $this->getPromoteUnionKefuUrl($parentPromoteId,$game_id,$offical_kefu);
+    }
+
+
 
     /**
      * [获取分享信息]
@@ -372,7 +411,6 @@ class CenterController extends BaseController
             return $offical_domain . "/mobile/game/detail/game_id/$game_id";
         }else{
             return $this->getPromoteUnionDomain($promote_id,$game_id,$offical_domain);
-            return  $domain_url . "/mobile/Downfile/index?gid=$game_id"."&pid=$promote_id";
         }
     }
 
