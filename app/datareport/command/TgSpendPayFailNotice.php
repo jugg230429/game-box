@@ -26,6 +26,30 @@ class TgSpendPayFailNotice extends Command
         $chatId = "-4508993735"; // 群组 ChatID
         $url = "https://api.telegram.org/bot$botToken/sendMessage";
 
+         //判断平台币余额超过150的账户推送
+         $errorUser = Db::table('tab_user')->field('account,balance')->where('balance','>=',150)->select();
+         foreach($errorUser as $u){
+             $message = "异常用户平台币数据：" . "\n" .
+                 '时间:  '  . date("Y-m-d H:i:s") . "\n" . 
+                 '账号:  '  . $u['account'] . "\n" .
+                 '余额:  '  . $u['balance'] . "\n" 
+             ;    
+             $data = [
+                 'chat_id' => $chatId,
+                 'text' => $message,
+             ];
+ 
+             // 使用 cURL 发送 POST 请求
+             $ch = curl_init();
+             curl_setopt($ch, CURLOPT_URL, $url);
+             curl_setopt($ch, CURLOPT_POST, 1);
+             curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+ 
+             $response = curl_exec($ch);
+             curl_close($ch);
+         }
+
         //查询下单异常表推送后，更新状态
         $log = Db::table('tab_spend_promote_fail_log')->where('status',0)->order('id asc')->select()->toArray();
         if (empty($log)) {
