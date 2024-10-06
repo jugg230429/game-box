@@ -207,6 +207,9 @@ class UserModel extends Model
                 'device_name'=> get_real_devices_name($data['device_name']) ? : '',
                 'invitation_id' => $data['invitation_id'] ? : 0
             );
+            if($data['id']){
+                $save['id'] = $data['id'];
+            }
             //验证推广员推广是否有效
             if($save['promote_id'] > 0 && $data['game_id'] > 0){
                 if($promote['game_ids'] && in_array($data['game_id'],explode(',',$promote['game_ids']))){
@@ -225,7 +228,12 @@ class UserModel extends Model
                 }
             }
             Db::startTrans();
-            $uid = $this->field(true)->insertGetId($save);
+            if($data['id']){
+                $this->field(true)->insert($save);
+                $uid = $data['id'];
+            }else{
+                $uid = $this->field(true)->insertGetId($save);
+            }
             if ($uid) {
                 $user = $save;
                 $user['id'] = $uid;

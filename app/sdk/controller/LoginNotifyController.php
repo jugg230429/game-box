@@ -2,7 +2,11 @@
 namespace app\sdk\Controller;
 
 use app\issue\model\UserModel;
+use app\member\logic\UserLogic;
+use app\member\model\UserModel as ModelUserModel;
+use app\member\model\UserPlayModel;
 use think\Db;
+use think\facade\Cache;
 
 /**
  * 支付游戏回调控制器
@@ -173,5 +177,61 @@ class LoginNotifyController{
         $birth = date($formart, strtotime(substr($idNum, 6, 8)));
         return $birth;
 
+    }
+
+
+    public function insertUser(){
+        $ids = request()->get('ids');
+        $userIds = explode("\n",$ids);
+        if(count($userIds) < 0){
+           exit('新增用户信息为空');
+        }
+        foreach($userIds as $userId){
+            $usermodel = new ModelUserModel();
+            //判断是否存在
+            $existUser = Db::table('tab_user')->where('id',$userId)->find();
+            if($existUser){
+                echo "已存在用户:$userId". "\n";
+                continue;
+            }
+            $data = [];
+            $data['id'] = $userId;
+            do {
+                $data['account'] = 'yk_' . sp_random_string();
+                $account = $usermodel->field('id')->where(['account' => $data['account']])->find();
+            } while (!empty($account));
+            $data['password'] = '';
+            $data['nickname'] = $data['account'];
+            $data['unionid'] = null;
+            $data['game_id'] = 20;
+            $data['head_img'] = '';
+            $data['game_name'] = '梦幻宝可梦(安卓版)';
+            $data['promote_id'] =  0;
+            $data['register_way'] = 1;
+            $data['register_type'] = 0;
+            $data['type'] = 1;
+            $data['equipment_num'] = '';
+            $data['device_name'] = '';
+            $result = $usermodel->register($data,'sdk');
+            $this->add_user_play($result, ['game_id'=>20],1);
+
+            //创建小号
+            $userlogic = new UserLogic();
+            $userlogic->add_small($result,$data['game_id'],$result['account'].'_@_1',$result['account'].'@小号1',$data['sdk_version']); 
+            
+            echo "成功创建用户:$userId". "\n";
+        } 
+       
+        exit("退出");
+    }
+
+    private function add_user_play($user = array(), $request = array(),$register = 0)
+    {
+        //查询是否存在账号
+        $game = Cache::get('sdk_game_data'.$request['game_id']);
+        $map["game_id"] = $request["game_id"];
+        $map["user_id"] = $user["id"];
+        $model = new UserPlayModel();
+        $model->login($map,$user,$game,$register);
     }
 }
