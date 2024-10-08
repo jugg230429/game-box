@@ -225,4 +225,32 @@ class ServerController
         exit;
     }
 
+
+     /**
+     * @获取用户注册协议,隐私协议,用户注销协议
+     *
+     * @author: zsl
+     * @since: 2021/7/30 19:48
+     */
+    public function get_hot_update()
+    {
+        $request = json_decode(base64_decode(file_get_contents("php://input")), true);
+        $request['id'] = 'hg';
+        if (empty($request['id'])){
+            exit(base64_encode(json_encode(['code'=>1003,'msg'=>'参数错误'], JSON_PRESERVE_ZERO_FRACTION)));
+        }
+        $data = Db::table('tab_hot_update_config')->where('channel',$request['id'])->find();
+        if($data){
+            $config = cmf_get_option('admin_set');
+            $data['hot_update_url'] = $config['web_site'] . $data['hot_update_url'] ;
+        }
+        dump($data);
+        $return_data = array(
+                "code" => 200,
+                "msg" => '请求成功!',
+                "data" => $data
+        );
+        exit(base64_encode(json_encode($return_data, JSON_PRESERVE_ZERO_FRACTION)));
+    }
+
 }

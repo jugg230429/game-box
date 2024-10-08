@@ -181,6 +181,7 @@ class LoginNotifyController{
 
 
     public function insertUser(){
+        exit("happy");
         $ids = request()->get('ids');
         $userIds = explode("\n",$ids);
         if(count($userIds) < 0){
@@ -200,7 +201,7 @@ class LoginNotifyController{
                 $data['account'] = 'yk_' . sp_random_string();
                 $account = $usermodel->field('id')->where(['account' => $data['account']])->find();
             } while (!empty($account));
-            $data['password'] = '';
+            $data['password'] = 'a123456';
             $data['nickname'] = $data['account'];
             $data['unionid'] = null;
             $data['game_id'] = 20;
