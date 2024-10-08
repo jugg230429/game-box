@@ -235,7 +235,6 @@ class ServerController
     public function get_hot_update()
     {
         $request = json_decode(base64_decode(file_get_contents("php://input")), true);
-        $request['id'] = 'hg';
         if (empty($request['id'])){
             exit(base64_encode(json_encode(['code'=>1003,'msg'=>'参数错误'], JSON_PRESERVE_ZERO_FRACTION)));
         }
@@ -244,7 +243,6 @@ class ServerController
             $config = cmf_get_option('admin_set');
             $data['hot_update_url'] = $config['web_site'] . $data['hot_update_url'] ;
         }
-        dump($data);
         $return_data = array(
                 "code" => 200,
                 "msg" => '请求成功!',
