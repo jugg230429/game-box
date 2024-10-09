@@ -160,7 +160,7 @@ class PromotePay{
         if ($result !== false) {//$check !== false
            return $this->thirdPartyOrdering($vo,$config);
         } else {
-            exit('数据错误');
+            exit(base64_encode(json_encode(['code'=>500,'msg'=>'订单业务数据错误'], JSON_FORCE_OBJECT)));
         }
     }
 
@@ -175,7 +175,7 @@ class PromotePay{
         $promoteModel = new SpendPromoteParamModel();
         $config = $promoteModel->choosePromoteConfig($this->gameId,$this->payType,$vo->getFee());
         if(!$config){
-            exit('未匹配到支付配置');
+            exit(base64_encode(json_encode(['code'=>500,'msg'=>'支付通道异常,请您选其它方式支付'], JSON_FORCE_OBJECT)));
         }
         //前往下单
         return $config;
@@ -197,8 +197,11 @@ class PromotePay{
             case 3:
                 $result = $this->rainbowPay($vo,$promoteConfig);
                 break;
+            case 4:
+                $result = $this->hiPay($vo,$promoteConfig);
+                break;
             default:
-                exit('未匹配到三方商家支付');  
+                exit(base64_encode(json_encode(['code'=>500,'msg'=>'商家支付通道异常'], JSON_FORCE_OBJECT)));
                 
         }        
         return $result;
@@ -392,6 +395,69 @@ class PromotePay{
             return $return;
         }
     }
+
+
+    /**
+     *  hipay支付
+     *  vo 订单对象
+     *  promoteConfig  支付渠道配置
+     **/    
+    private function hiPay(Pay\PayVo $vo,$promoteConfig){
+        $host = $_SERVER['HTTP_HOST'];
+        if (strpos($host, 'https') == false) {
+            $host = 'https://' . $host;
+        }
+        $paramArray = [
+            "recvid" => $promoteConfig['partner'],                                  //商户号
+            "orderid" => $vo->getOrderNo(),                                         //订单号
+            "amount" => number_format((float)$vo->getFee(), 2, '.', ''),            //支付金额
+            "paychannelid" => $promoteConfig['channel_coding'],	                    //通道
+            "notifyurl" => $host . "/sdk/promote_pay/hipay_callback",               //支付异步回调
+            "memuid" => md5((string)$vo->getUserId()),                              //用户编号
+        ];
+
+        $sign = $this->hiPayParamArraySign($paramArray, $promoteConfig['key']);  //签名
+        $paramArray["sign"] = $sign;
+        $paramsStr = http_build_query($paramArray); //请求参数str
+        //根据不同的vo->gettable记录订单日志
+        $table_name = $this->getTableName($vo);
+        //记录订单日志
+        $log = [
+            'config_id' => $promoteConfig['id'],
+            'pay_order_number' => $vo->getOrderNo(),
+            'send_content' => $paramsStr,
+            'table' => $table_name,
+            'type' => 1,
+            'create_time' => date("Y-m-d H:i:s")
+        ];
+        $logId = Db::table('tab_spend_promote_pay_log')->insertGetId($log);
+        $replyContent = $this->httpJsonPost($promoteConfig['order_address'], $paramArray);
+        //更新回复记录
+        //{"code":200,"msg":"请求成功","data":{"out_trade_no":"SP_20240806204728mv2n","total_fee":"60.0","pay_url":"https://p.cdd667889.xyz/pre/CDD069C77A69CA9BF1D2812A57A3A3"}}
+        //处理返回json格式,取data返回
+        $result = json_decode($replyContent,true);
+        if($result['code'] != 1){
+            Db::table('tab_spend_promote_pay_log')->where('id',$logId)->update(['reply_content'=>$replyContent]);
+            //新增下单错误处理逻辑
+            $this->dealPromteChannelFail($vo,$promoteConfig,$replyContent);
+            exit($replyContent);
+        }
+        else{
+            $order_number = $result['data']['orderid'];
+            Db::table('tab_spend_promote_pay_log')->where('id',$logId)->update(['order_number'=>$order_number,'reply_content'=>$replyContent]);
+            //更新tab_spend表数据,外部订单号和支付渠道配置id
+            Db::table($table_name)->where('pay_order_number',$vo->getOrderNo())->update(['order_number'=>$order_number,'promote_param_id'=>$promoteConfig['id']]);
+            //重新构造返回return数组,保持一致
+            $return = [
+                'out_trade_no' => $vo->getOrderNo(),
+                'total_fee' => $vo->getFee(),
+                'pay_url' => $result['data']['payurl']
+            ];
+            return $return;
+        }
+    }
+
+
 
     /**
      *  处理支付渠道失败统计操作
@@ -693,6 +759,29 @@ class PromotePay{
         return $response;
     }
 
+    function httpJsonPost($url, $paramArray){
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => json_encode($paramArray),
+            CURLOPT_HTTPHEADER => array(
+                "cache-control: no-cache",
+                "content-type: application/json"
+            ),
+        ));
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+        curl_close($curl);
+        if ($err) {
+            return $err;
+        }
+        return $response;
+    }
+
     function dsParamArraySign($paramArray, $mchKey){
 
         ksort($paramArray);  //字典排序
@@ -765,6 +854,14 @@ class PromotePay{
 		$sign = md5($signstr);
 		return $sign;
 	}
+
+    // 计算签名
+	function hiPayParamArraySign($param,$mchKey){
+        //sign=md5("pay"+recvid+orderid+amount+apikey)
+		$sign = md5("pay".$param['recvid'].$param['orderid'].$param['amount'].$mchKey);
+		return $sign;
+	}
+ 
  
     function get_millisecond(){
         list($usec, $sec) = explode(" ", microtime());

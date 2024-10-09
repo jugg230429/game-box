@@ -78,26 +78,6 @@ class PromotePayController{
             if($paramArray['trade_status'] == 1){
                 //处理业务回调
                 $this->sepndCallback($spend['pay_order_number'],$spend['order_number'],$paramArray['total_fee'],$table_name);
-                //  //调用旧支付回调的方法
-                //  $callBack = new BaseController();
-                //  $data = [
-                //      'out_trade_no' => $spend['pay_order_number'],
-                //      'trade_no' => $spend['order_number'],
-                //      'real_amount' => $paramArray['total_fee']
-                //  ];
-                //  //判断$table_name分开处理
-                //  if($table_name == 'tab_spend'){
-                //     $result = $callBack->set_spend($data);
-                //     if(!$result){
-                //         exit("failure(buyer business process error)");
-                //     }
-                // }
-                // if($table_name == 'tab_spend_balance'){
-                //     $result = $callBack->set_deposit($data);
-                //     if(!$result){
-                //         exit("failure(mch business process error)");
-                //     }
-                // }
                 exit("success");
             }
             exit("failure(trade_status not correct)");
@@ -199,27 +179,6 @@ class PromotePayController{
 
                 //处理业务回调
                 $this->sepndCallback($spend['pay_order_number'],$spend['order_number'],$paramArray['income'] / 100,$table_name);
-                //  //调用旧支付回调的方法
-                //  $callBack = new BaseController();
-                //  $data = [
-                //      'out_trade_no' => $paramArray['mchOrderNo'],
-                //      'trade_no' => $paramArray['payOrderId'],
-                //      'real_amount' => $paramArray['income'] / 100
-                //  ];
-
-                // //判断$table_name分开处理
-                // if($table_name == 'tab_spend'){
-                //     $result = $callBack->set_spend($data);
-                //     if(!$result){
-                //         exit("failure(mch business process error)");
-                //     }
-                // }
-                // if($table_name == 'tab_spend_balance'){
-                //     $result = $callBack->set_deposit($data);
-                //     if(!$result){
-                //         exit("failure(mch business process error)");
-                //     }
-                // }
                 exit("success");
             }
             exit("failure(status not correct)");
@@ -307,31 +266,87 @@ class PromotePayController{
 
                 //处理业务回调
                 $this->sepndCallback($spend['pay_order_number'],$spend['order_number'],$paramArray['money'],$table_name);
-
-            //     $callBack = new BaseController();
-            //     $data = [
-            //         'out_trade_no' => $spend['pay_order_number'],
-            //         'trade_no' => $spend['order_number'],
-            //         'real_amount' => $paramArray['money']
-            //     ];
-
-            //    //判断$table_name分开处理
-            //    if($table_name == 'tab_spend'){
-            //        $result = $callBack->set_spend($data);
-            //        if(!$result){
-            //            exit("failure(mch business process error)");
-            //        }
-            //    }
-            //    if($table_name == 'tab_spend_balance'){
-            //        $result = $callBack->set_deposit($data);
-            //        if(!$result){
-            //            exit("failure(mch business process error)");
-            //        }
-            //    }
-
                 exit("success");
             }
             exit("failure(status not correct)");
+        }
+        exit("failure(Sign verification errors)");
+    }
+
+
+    public function hipay_callback(){  
+        $return = Request()->post();
+        if($return['code'] != 1){
+             //记录日志
+            $log = [
+                'config_id' => 0,
+                'pay_order_number' => 'hipay',
+                'order_number' =>  'hipay',
+                'send_content' => json_encode($return),
+                'table' => 'hipay',
+                'type' => 2,
+                'create_time' => date("Y-m-d H:i:s")
+            ];
+            Db::table('tab_spend_promote_pay_log')->insert($log);
+            exit("failure(param code status not error)");
+        }
+        $info = $return['data']; 
+        //我们订单号
+        if(!isset($info["orderid"]) ){
+            exit("failure(param orderid not exists)");
+        }
+        //通过查询支付日志表订单是否存在
+        $log = Db::table('tab_spend_promote_pay_log')->where('pay_order_number',$info["orderid"])->find();
+        if(!$log){
+            exit("failure(log not exists)");
+        }
+        $table_name = $log['table'];
+        $spend =  Db::table($table_name)->where('pay_order_number',$info["orderid"])->find();
+        if(!$spend || $spend['pay_status'] >0){
+            exit("failure(order not exists)");
+        }
+        
+        //签名
+        if(!isset($info["sign"]) ){
+            exit("failure(param sign not exists)");
+        }
+        //加密签名
+        if(!isset($info["resign"]) ){
+            exit("failure(param resign not exists)");
+        }
+        //实际支付金额分
+        if(!isset($info["amount"]) ){
+            exit("failure(param amount not exists)");
+        }     
+        //订单状态 只有5是成功
+        if(!isset($info["state"]) ){
+            exit("failure(param state not exists)");
+        }
+
+        //记录日志
+        $log = [
+            'config_id' => $spend['promote_param_id'],
+            'pay_order_number' => $spend['pay_order_number'],
+            'order_number' =>  $spend['order_number'],
+            'send_content' => json_encode($return),
+            'table' => $table_name,
+            'type' => 2,
+            'create_time' => date("Y-m-d H:i:s")
+        ];
+        Db::table('tab_spend_promote_pay_log')->insert($log);
+      
+        //进行验证签名
+        //resign=md5(sign + apikey)
+        $apiKey = Db::table('tab_spend_promote_param')->where('id',$spend['promote_param_id'])->value('key');
+        $sign = md5($info['sign'] . $apiKey);
+        if($info['resign'] == $sign){
+            //验签成功
+            if($info['state'] == '5'){
+                //处理业务回调
+                $this->sepndCallback($spend['pay_order_number'],$spend['order_number'],$info['amount'],$table_name);
+                exit("success");
+            }
+            exit("failure(state not correct)");
         }
         exit("failure(Sign verification errors)");
     }
