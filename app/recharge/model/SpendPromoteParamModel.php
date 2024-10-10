@@ -34,6 +34,26 @@ class SpendPromoteParamModel extends Model
             $map['game_id'] = 0;
             $weights = $this->where($map)->order('id desc')->column('weight','id');
         }
+        if(!$weights){
+            //判断是否有开启，金额过小还是过大
+            unset($map['max_amount']);
+            unset($map['min_amount']);
+            $weights = $this->where($map)->order('id desc')->column('weight','id');
+            if(!$weights){
+                exit(base64_encode(json_encode(['code'=>500,'msg'=>'支付通道异常,请您选其它方式支付'], JSON_FORCE_OBJECT)));
+            }
+            $map['min_amount'] =  ['<=',$amount];
+            $weights = $this->where($map)->order('id desc')->column('weight','id');
+            if(!$weights){
+                exit(base64_encode(json_encode(['code'=>500,'msg'=>'订单小于支付通道最小金额，请您选其它方式支付'], JSON_FORCE_OBJECT)));
+            }
+            unset($map['min_amount']);
+            $map['max_amount'] =  ['>=',$amount];
+            $weights = $this->where($map)->order('id desc')->column('weight','id');
+            if(!$weights){
+                exit(base64_encode(json_encode(['code'=>500,'msg'=>'订单大于支付通道最大金额，请您选其它方式支付'], JSON_FORCE_OBJECT)));
+            }
+        }
         $configId = $this->getRandomItems($weights);
         return $this->where('id',$configId)->find();
     }

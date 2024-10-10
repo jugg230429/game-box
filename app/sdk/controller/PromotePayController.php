@@ -290,7 +290,8 @@ class PromotePayController{
             Db::table('tab_spend_promote_pay_log')->insert($log);
             exit("failure(param code status not error)");
         }
-        $info = $return['data']; 
+        $data = str_replace("&quot;", '"', $return['data']);
+        $info = json_decode($data,true);
         //我们订单号
         if(!isset($info["orderid"]) ){
             exit("failure(param orderid not exists)");

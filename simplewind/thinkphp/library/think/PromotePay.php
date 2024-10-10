@@ -173,12 +173,7 @@ class PromotePay{
     public function choosePayChannel(Pay\PayVo $vo){
         //根据游戏id和支付类型选择合适的三方支付
         $promoteModel = new SpendPromoteParamModel();
-        $config = $promoteModel->choosePromoteConfig($this->gameId,$this->payType,$vo->getFee());
-        if(!$config){
-            exit(base64_encode(json_encode(['code'=>500,'msg'=>'支付通道异常,请您选其它方式支付'], JSON_FORCE_OBJECT)));
-        }
-        //前往下单
-        return $config;
+        return $promoteModel->choosePromoteConfig($this->gameId,$this->payType,$vo->getFee());
     }
 
     /**
