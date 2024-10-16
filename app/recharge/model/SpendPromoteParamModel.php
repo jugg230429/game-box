@@ -85,6 +85,8 @@ class SpendPromoteParamModel extends Model
                 return '彩虹易支付';
             case 4:
                 return 'hiPay支付';
+            case 5:
+                return '大头支付';
             default:
                 return '官方支付';    
         }

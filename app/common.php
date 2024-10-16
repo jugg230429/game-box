@@ -279,6 +279,7 @@ function get_promote_select_options(){
         ['id'=>2,'name'=>'蚂蚁支付'],
         ['id'=>3,'name'=>'彩虹易支付'],
         ['id'=>4,'name'=>'hiPay支付'],
+        ['id'=>5,'name'=>'大头支付'],
     ];
 }
 

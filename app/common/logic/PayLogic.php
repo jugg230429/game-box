@@ -627,7 +627,7 @@ class PayLogic{
         $record = $recordmodel
                 ->field('limit,money,coupon_id')
                 ->where('user_id',$user_id)
-                ->where('id',$coupon_id)
+                ->where('coupon_id',$coupon_id)
                 ->where('status',0)
                 ->where('limit_money',[['elt',$price],['eq',0]],'or')
                 ->where('start_time', ['<', time()], ['=', 0], 'or')
