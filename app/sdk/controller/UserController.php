@@ -699,7 +699,7 @@ class UserController extends BaseController
         $data = empty($data)?[]:$data->toArray();
         if (empty($data)) {//注册
             do {
-                $data['account'] = $request['login_type'] . '_' . sp_random_string();
+                $data['account'] = $request['login_type'] . '_' . sp_random_yk_string();
                 $account = $usermodel->field('id')->where(['account' => $data['account']])->find();
             } while (!empty($account));
             $data['password'] = sp_random_string(8);
