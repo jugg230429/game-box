@@ -50,6 +50,7 @@
             <input type="text" class="form-control notempty" name="user_id" style="width: 120px;" value="{:input('request.user_id/d','')}" placeholder="玩家ID">
             <input type="text" class="form-control notempty" name="account" style="width: 120px;" value="{:input('request.account/s','')}" placeholder="玩家账号">
             <input type="text" class="form-control notempty" name="small_nickname" style="width: 120px;" value="{:input('request.small_nickname/s','')}" placeholder="小号账号">
+            <input type="text" class="form-control notempty" name="phone" style="width: 120px;" value="{:input('request.phone/s','')}" placeholder="手机号">
             <if condition="cmf_get_admin_access('member/user/search') eq true">
             <input type="text" class="form-control notempty" name="equipment_num" style="width: 120px;" value="{:input('request.equipment_num/s','')}" placeholder="设备号">
             <input type="text" class="form-control notempty" name="register_ip" style="width: 120px;" value="{:input('request.register_ip/s','')}" placeholder="注册IP">
@@ -162,6 +163,7 @@
                             小号：
                             <a href="javascript:open_small_lists('{$vo[id]}');" class="js_small_list" style="text-decoration: underline;">{$vo.small_count}</a>
                             <br>
+                            手机号：<b>{$vo.phone} </b><br>
                             设备号：<if condition="!empty($vo.equipment_num)">{$vo.equipment_num}<else/>--</if> <br>
                             所属渠道：
                             <if condition="AUTH_PROMOTE eq 1">{:get_promote_name($vo['promote_id'])}<else/>请购买渠道权限</if>

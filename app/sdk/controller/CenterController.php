@@ -282,32 +282,32 @@ class CenterController extends BaseController
         $data['QQ_GROUP_KEY'] = $config['pc_qq_group_key'];
         $data['APP_QQ_GROUP'] = $config['pc_qq_group'];
         $data['APP_EMAIL'] = $config['pc_t_email'];
-        //增加返回溪谷客服系统开启状态和链接-渠道不涉及-20210707-byh
-        $data['APP_XGKF_SWITCH'] = get_xgkf_info(0);//溪谷客服系统0=未开启,1=开启
-        if(get_xgkf_info(0)){//已开启
-            $data['APP_XGKF_URL'] = get_xgkf_info(0,$request['game_id'],$request['user_id']);//获取对应游戏的溪谷客服URL
-        }else{
-            $data['APP_XGKF_URL'] = '';
-        }
-        if ($request['promote_id'] > 0) {
-            $model = new PromoteunionModel;
-            $map['union_id'] = $request['promote_id'];
-            $resule = $model->field('union_set')->where($map)->find();
-            $resule = empty($resule) ? [] : $resule->toarray();
-            if($resule && $resule['union_set']){
-                $promote_config  = json_decode($resule['union_set'], true);
-                $data['APP_QQ'] = $promote_config['qq'] ? :$config['pc_set_server_qq'];
-                $data['APP_TEL'] = $promote_config['tel'] ? :$config['pc_set_server_tel'];
-                $data['APP_EMAIL'] = $promote_config['mailbox'] ? :$config['pc_t_email'];
-                $data['QQ_GROUP_KEY'] = $promote_config['qq_group_key'] ? :$config['pc_qq_group_key'];
-                $data['APP_QQ_GROUP'] = $promote_config['qq_group'] ? :$config['pc_qq_group'];
-                //如果渠道有QQ的配置,则使用渠道的QQ,溪谷客服系统返回关闭-20210707-byh
-                if($promote_config['qq']){
-                    $data['APP_XGKF_SWITCH'] = '0';
-                    $data['APP_XGKF_URL'] = '';
-                }
-            }
-        }
+        // //增加返回溪谷客服系统开启状态和链接-渠道不涉及-20210707-byh
+        // $data['APP_XGKF_SWITCH'] = get_xgkf_info(0);//溪谷客服系统0=未开启,1=开启
+        // if(get_xgkf_info(0)){//已开启
+        //     $data['APP_XGKF_URL'] = get_xgkf_info(0,$request['game_id'],$request['user_id']);//获取对应游戏的溪谷客服URL
+        // }else{
+        //     $data['APP_XGKF_URL'] = '';
+        // }
+        // if ($request['promote_id'] > 0) {
+        //     $model = new PromoteunionModel;
+        //     $map['union_id'] = $request['promote_id'];
+        //     $resule = $model->field('union_set')->where($map)->find();
+        //     $resule = empty($resule) ? [] : $resule->toarray();
+        //     if($resule && $resule['union_set']){
+        //         $promote_config  = json_decode($resule['union_set'], true);
+        //         $data['APP_QQ'] = $promote_config['qq'] ? :$config['pc_set_server_qq'];
+        //         $data['APP_TEL'] = $promote_config['tel'] ? :$config['pc_set_server_tel'];
+        //         $data['APP_EMAIL'] = $promote_config['mailbox'] ? :$config['pc_t_email'];
+        //         $data['QQ_GROUP_KEY'] = $promote_config['qq_group_key'] ? :$config['pc_qq_group_key'];
+        //         $data['APP_QQ_GROUP'] = $promote_config['qq_group'] ? :$config['pc_qq_group'];
+        //         //如果渠道有QQ的配置,则使用渠道的QQ,溪谷客服系统返回关闭-20210707-byh
+        //         if($promote_config['qq']){
+        //             $data['APP_XGKF_SWITCH'] = '0';
+        //             $data['APP_XGKF_URL'] = '';
+        //         }
+        //     }
+        // }
         $this->set_message(200, "获取成功",$data);
     }
 

@@ -57,6 +57,10 @@ class UserController extends AdminBaseController
         if ($account != '') {
             $map['account'] = ['like', '%' . $account . '%'];
         }
+        $phone = $this->request->param('phone', '');
+        if ($phone != '') {
+            $map['tab_user.phone'] = trim($phone);
+        }
         //注册游戏id
         $fgame_id = $this->request->param('fgame_id', 0, 'intval');
         if ($fgame_id > 0) {
@@ -172,7 +176,7 @@ class UserController extends AdminBaseController
                 $map['tab_user.promote_id'] = ['in',$promote_ids];
             }
             $extend['row'] = $this->request->param('page');
-            $exend['field'] = 'tab_user.id,count(s.user_id) as count,max(s.pay_time) as last_pay_time,point,account,
+            $exend['field'] = 'tab_user.id,count(s.user_id) as count,max(s.pay_time) as last_pay_time,point,account,phone,
             cumulative,tab_user.promote_id,tab_user.promote_account,balance,register_type,vip_level,register_time,
             login_time,login_ip,lock_status,equipment_num,fgame_name,member_days,end_time,register_ip,device_name,
             age_status,is_unsubscribe,un.status as unsubscribe_status,gold_coin,tab_user.is_batch_create,tab_user.login_equipment_num,tab_user.head_img,tab_user.email';
