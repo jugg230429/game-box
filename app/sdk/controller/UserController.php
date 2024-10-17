@@ -702,7 +702,7 @@ class UserController extends BaseController
                 $data['account'] = $request['login_type'] . '_' . sp_random_yk_string();
                 $account = $usermodel->field('id')->where(['account' => $data['account']])->find();
             } while (!empty($account));
-            $data['password'] = sp_random_string(8);
+            $data['password'] = sp_random_yk_string(8);
             $data['nickname'] = $data['account'];
             $data['unionid'] = $openid;
             $data['game_id'] = $request['game_id'];
