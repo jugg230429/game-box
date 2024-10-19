@@ -144,11 +144,11 @@ class GameController extends HomeBaseController
                 $total_data[$kk] = count(array_filter(array_unique(explode(',', $new))));
             }
         }
-        //新增逻辑，重新查询订单总值，只查询真实充值，剔除绑币和平台币充值
+        //新增逻辑，重新查询订单总值，只查询真实充值，平台币，微信，支付宝
         $game_id = intval($game_id);
         $map = [];
         $map['pay_status'] = 1;
-        $map['pay_way'] = ['>',2];
+        $map['pay_way'] = ['>',1];
         $map['pay_time'] = ['between', [strtotime($starttime), strtotime($endtime) + 86399]];
         if($game_id){
             $map['game_id'] = $game_id;
@@ -177,7 +177,7 @@ class GameController extends HomeBaseController
         $total_data['new_register_user'] = Db::table('tab_user')->where($usermap)->count();
         //列表计算
         foreach ($new_data as $k => $v) {
-            //新增逻辑，重新查询订单总值，只查询真实充值，剔除绑币和平台币充值
+            //新增逻辑，重新查询订单总值，只查询真实充值，平台币，微信，支付宝
             $map['game_id'] = $v['game_id'];
             //总付费额 
             $new_data[$k]['total_pay'] = Db::table('tab_spend')->where($map)->sum('pay_amount');

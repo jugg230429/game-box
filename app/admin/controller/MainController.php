@@ -111,9 +111,9 @@ class MainController extends AdminBaseController
         }
         if (AUTH_PAY == 1 && AUTH_USER == 1) {
             //付费人数和金额统计
-            //新：只查询支付宝和微信
+            //新：只查询平台币,支付宝和微信
             //昨日
-            $spend['pay_way'] = ['>',2];
+            $spend['pay_way'] = ['>',1];
             $spend['pay_status'] = 1;
             $spend['pay_time'] = total(5, 1);
             $result = Db::table('tab_spend')->distinct(true)->field('user_id')->where($spend)->select();

@@ -105,10 +105,10 @@ class DatabaseController extends HomeBaseController
                 $total_data[$kk] = count(array_filter(array_unique(explode(',', $new))));
             }
         }
-        //新增逻辑，重新查询订单总值，只查询真实充值，剔除绑币和平台币充值
+        //新增逻辑，重新查询订单总值，只查询真实充值，平台币，微信，支付宝
         $map = [];
         $map['pay_status'] = 1;
-        $map['pay_way'] = ['>',2];
+        $map['pay_way'] = ['>',1];
         $map['pay_time'] = ['between', [strtotime($starttime), strtotime($endtime) + 86399]];
         if($game_id){
             $map['game_id'] = $game_id;
@@ -124,19 +124,13 @@ class DatabaseController extends HomeBaseController
         //总付费额 
         $total_data['total_pay'] = Db::table('tab_spend')->where($map)->sum('pay_amount');
 
-        // //新增付费用户
-        // $inserUserId = Db::table('tab_user')->where('register_time','between',[strtotime($starttime), strtotime($endtime) + 86399])->column('id');
-        // $map['user_id'] = ['in',$inserUserId];
-        // $total_data['new_pay_user'] = Db::table('tab_spend')->where($map)->count();
-        // //新增付费额
-        // $total_data['new_total_pay'] = Db::table('tab_spend')->where($map)->sum('pay_amount');
         
         //列表计算
         foreach ($new_data as &$v) {
-            //新增逻辑，重新查询订单总值，只查询真实充值，剔除绑币和平台币充值
+            //新增逻辑，重新查询订单总值，只查询真实充值，平台币，微信，支付宝
             $map = [];
             $map['pay_status'] = 1;
-            $map['pay_way'] = ['>',2];
+            $map['pay_way'] = ['>',1];
             $map['pay_time'] = ['between', [strtotime($v['time']), strtotime($v['time']) + 86399]];
             if($game_id){
                 $map['game_id'] = $game_id;
@@ -152,13 +146,8 @@ class DatabaseController extends HomeBaseController
             $v['count_total_order'] = Db::table('tab_spend')->where($map)->count();
             //总付费额 
             $v['total_pay'] = Db::table('tab_spend')->where($map)->sum('pay_amount');
-            
-            // //新增付费用户
-            // $inserUserId = Db::table('tab_user')->where('register_time','between',[strtotime($starttime), strtotime($endtime) + 86399])->column('id');
-            // $map['user_id'] = ['in',$inserUserId];
-            // $new_data[$k]['new_pay_user'] = Db::table('tab_spend')->where($map)->count();
-            // //新增付费额
-            // $new_data[$k]['new_total_pay'] = Db::table('tab_spend')->where($map)->sum('pay_amount');
+
+
             $v['rate'] = empty($v['active_user']) ? '0.00%' : (empty($v['pay_user']) ? '0.00%' : null_to_0($v['pay_user']/ count(explode(',', $v['active_user'])) * 100) . '%');
             $v['arpu'] = empty($v['active_user']) ? '0.00' : null_to_0($v['total_pay'] / count(explode(',', $v['active_user'])));
             $v['arppu'] = empty($v['pay_user']) ? '0.00' : null_to_0($v['total_pay'] / $v['pay_user']);
