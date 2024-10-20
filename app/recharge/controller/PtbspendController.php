@@ -74,9 +74,21 @@ class PtbspendController extends AdminBaseController
             $map['pay_status'] = $pay_status;
         }
 
+        //支付渠道
+        $pay_promote = $this->request->param('pay_promote', '');
+        if ($pay_promote != "") {
+            if($pay_promote == 888){
+                $map['tab_spend.promote_param_id'] = 0;
+            }else{
+                $map['t.promote_id'] = $pay_promote;
+            }
+        }
+
+
         $exend['order'] = 'pay_time desc';
         $exend['field'] = '*';
-        $data = $base->data_list($spend, $map, $exend);
+        $exend['join1'] = [['tab_spend_promote_param' => 't'], 'tab_spend_balance.promote_param_id=t.id', 'left'];
+        $data = $base->data_list_join($spend, $map, $exend);
         foreach($data as  &$v){
             //获取新渠道支付商家名称
             $paramModel = new SpendPromoteParamModel();
@@ -85,19 +97,19 @@ class PtbspendController extends AdminBaseController
         $exend['field'] = 'sum(pay_amount) as total';
         //累计充值
         $map['pay_status'] = 1;
-        $total = $base->data_list_select($spend, $map, $exend);
+        $total = $base->data_list_join_select($spend, $map, $exend);
         $today[0] = 0;
         $yestoday[0] = 0;
         if ((empty($start_time) || ($start_time <= (date('Y-m-d')))) && (empty($end_time) || ($end_time >= (date('Y-m-d'))))) {
             //今日充值
             $map['pay_time'] = ['between', total(1, 2)];
-            $today = $base->data_list_select($spend, $map, $exend);
+            $today = $base->data_list_join_select($spend, $map, $exend);
         }
 
         if ((empty($start_time) || ($start_time <= date("Y-m-d", strtotime("-1 day")))) && (empty($end_time) || ($end_time >= date("Y-m-d", strtotime("-1 day"))))) {
             //昨日充值
             $map['pay_time'] = ['between', total(5, 2)];
-            $yestoday = $base->data_list_select($spend, $map, $exend);
+            $yestoday = $base->data_list_join_select($spend, $map, $exend);
         }
 
         $adminId = Session::get('ADMIN_ID');

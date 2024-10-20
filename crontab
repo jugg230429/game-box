@@ -1,0 +1,16 @@
+*/3 * * * * /usr/local/php/bin/php /www/wwwroot/thinkcmf/think package
+*/5 * * * * /usr/local/php/bin/php /www/wwwroot/thinkcmf/think package 1
+0 0 * * * /usr/local/php/bin/php /www/wwwroot/thinkcmf/think coupon
+*/5 * * * * /usr/local/php/bin/php /www/wwwroot/thinkcmf/think transaction
+0 0 * * * /usr/local/php/bin/php /www/wwwroot/thinkcmf/think datasummary
+0 0 * * * /usr/local/php/bin/php /www/wwwroot/thinkcmf/think mcard
+0 0 * * * /usr/local/php/bin/php /www/wwwroot/thinkcmf/think notice
+0 0 * * * /usr/local/php/bin/php /www/wwwroot/thinkcmf/think welfare
+30 0 * * * /usr/local/php/bin/php /www/wwwroot/thinkcmf/think welfare_auto_send
+*/5 * * * * /usr/local/php/bin/php /www/wwwroot/thinkcmf/think unsubscribe
+0 * * * * /usr/local/php/bin/php /www/wwwroot/thinkcmf/think todaydata
+0 10 * * * /usr/local/php/bin/php /www/wwwroot/thinkcmf/think smsyesterdaydata
+0 0 * * * /usr/local/php/bin/php /www/wwwroot/thinkcmf/think settlementperiod
+*/10 * * * * /usr/local/php/bin/php /www/wwwroot/thinkcmf/think repair
+0 9 * * * /usr/local/php/bin/php /www/wwwroot/thinkcmf/think SendMsgToAdmin
+0 0 * * * /usr/local/php/bin/php /www/wwwroot/thinkcmf/think GenerateStageData
