@@ -235,4 +235,22 @@ class LoginNotifyController{
         $model = new UserPlayModel();
         $model->login($map,$user,$game,$register);
     }
+
+    public function test(){
+        $data = Db::table('tab_spend_promote_param')->where('id','>',0)->select()->toArray();
+        dump($data);
+    }
+
+
+    public function success_mission(){
+        exit(json_encode(['code' => 200,'msg'=>'nice try']));
+    }
+
+    public function fail_log(){
+        $ids = request()->get('domain');
+        if(!$ids){
+            exit(json_encode(['code' => 500,'msg'=>'param error']));
+        }
+        exit(json_encode(['code' => 200,'msg'=>'success']));
+    }
 }

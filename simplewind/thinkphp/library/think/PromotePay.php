@@ -244,6 +244,7 @@ class PromotePay{
             'create_time' => date("Y-m-d H:i:s")
         ];
         $logId = Db::table('tab_spend_promote_pay_log')->insertGetId($log);
+        Db::table($table_name)->where('pay_order_number',$vo->getOrderNo())->update(['promote_param_id'=>$promoteConfig['id']]);
         $replyContent = $this->httpPost($promoteConfig['order_address'], $paramsStr);
         //更新回复记录
         //{"code":200,"msg":"请求成功","data":{"out_trade_no":"SP_20240806204728mv2n","total_fee":"60.0","pay_url":"https://p.cdd667889.xyz/pre/CDD069C77A69CA9BF1D2812A57A3A3"}}
@@ -304,6 +305,7 @@ class PromotePay{
             'create_time' => date("Y-m-d H:i:s")
         ];
         $logId = Db::table('tab_spend_promote_pay_log')->insertGetId($log);
+        Db::table($table_name)->where('pay_order_number',$vo->getOrderNo())->update(['promote_param_id'=>$promoteConfig['id']]);
         $replyContent = $this->httpPost($promoteConfig['order_address'], $paramsStr);
         //更新回复记录
         //{"retCode":"0","sign":"6EB2DDB324E3793A29CB97F996E524F8","secK":"","payParams":{"payUrl":"https://openapi.alipay.com/gateway.do?alipay_sdk=alipay-sdk-net-4.7.200.ALL&app_id=2021004157628146&biz_content=%7b%22disable_pay_channels%22%3a%22honeyPay%22%2c%22out_trade_no%22%3a%22hy4846304421351839606%22%2c%22product_code%22%3a%22QUICK_WAP_WAY%22%2c%22subject%22%3a%22%e6%b8%b8%e6%88%8f%e5%85%85%e5%80%bc%22%2c%22time_expire%22%3a%222024-08-12+11%3a03%3a38%22%2c%22total_amount%22%3a%2260.00%22%7d&charset=utf-8&format=json&method=alipay.trade.wap.pay&notify_url=http%3a%2f%2fauth.cqyyc.top%2fNotify&sign_type=RSA2&timestamp=2024-08-12+11%3a00%3a38&version=1.0&sign=cQGoJXlUvrq5QfZHIiY15pW7ETq7KxX2IsKLom7XohUx3eYRb4rkJujx%2bNci4WBbWrh4gLN6Qd2iAfTm7h05j8Z7h6d6r8Vz9a%2bcwzQisTgXBZYP9SqCV23xYnTNvjLpbNLdm%2bai4ijFPAYNgkemBwyt6cMqIxxEJNJ1pB3OlA0Ueo6Wm0RitUkoQsZ%2fpYgiAr1YRxUD0AFDVGxEMyzKMAKspJYhvw%2fZmO8CCdSkX1%2feWa%2fUpS1EtIeuEU%2fdcI2qkJUjZESZKqQnzdfEy4H8hHEuixSD%2bTctZDPeppwjBXQJ97N74I6RGZbn%2fora9RVMFaikqTmbog4rK%2bTYUnExow%3d%3d"}}
@@ -370,6 +372,7 @@ class PromotePay{
             'create_time' => date("Y-m-d H:i:s")
         ];
         $logId = Db::table('tab_spend_promote_pay_log')->insertGetId($log);
+        Db::table($table_name)->where('pay_order_number',$vo->getOrderNo())->update(['promote_param_id'=>$promoteConfig['id']]);
         $replyContent = $this->httpPost($promoteConfig['order_address'], $paramsStr);
         //更新回复记录
         //{"code":1,"trade_no":"2024091917412160414","qrcode":"https:\/\/big.kgswm.cn\/pay\/submit\/2024091917412160414\/"}
@@ -429,6 +432,7 @@ class PromotePay{
             'create_time' => date("Y-m-d H:i:s")
         ];
         $logId = Db::table('tab_spend_promote_pay_log')->insertGetId($log);
+        Db::table($table_name)->where('pay_order_number',$vo->getOrderNo())->update(['promote_param_id'=>$promoteConfig['id']]);
         $replyContent = $this->httpJsonPost($promoteConfig['order_address'], $paramArray);
         //更新回复记录
         //{"code":200,"msg":"请求成功","data":{"out_trade_no":"SP_20240806204728mv2n","total_fee":"60.0","pay_url":"https://p.cdd667889.xyz/pre/CDD069C77A69CA9BF1D2812A57A3A3"}}
@@ -496,6 +500,7 @@ class PromotePay{
             'create_time' => date("Y-m-d H:i:s")
         ];
         $logId = Db::table('tab_spend_promote_pay_log')->insertGetId($log);
+        Db::table($table_name)->where('pay_order_number',$vo->getOrderNo())->update(['promote_param_id'=>$promoteConfig['id']]);
         $replyContent = $this->httpPost($promoteConfig['order_address'], $paramsStr);
         //更新回复记录
         //{"retCode":"0","sign":"6EB2DDB324E3793A29CB97F996E524F8","secK":"","payParams":{"payUrl":"https://openapi.alipay.com/gateway.do?alipay_sdk=alipay-sdk-net-4.7.200.ALL&app_id=2021004157628146&biz_content=%7b%22disable_pay_channels%22%3a%22honeyPay%22%2c%22out_trade_no%22%3a%22hy4846304421351839606%22%2c%22product_code%22%3a%22QUICK_WAP_WAY%22%2c%22subject%22%3a%22%e6%b8%b8%e6%88%8f%e5%85%85%e5%80%bc%22%2c%22time_expire%22%3a%222024-08-12+11%3a03%3a38%22%2c%22total_amount%22%3a%2260.00%22%7d&charset=utf-8&format=json&method=alipay.trade.wap.pay&notify_url=http%3a%2f%2fauth.cqyyc.top%2fNotify&sign_type=RSA2&timestamp=2024-08-12+11%3a00%3a38&version=1.0&sign=cQGoJXlUvrq5QfZHIiY15pW7ETq7KxX2IsKLom7XohUx3eYRb4rkJujx%2bNci4WBbWrh4gLN6Qd2iAfTm7h05j8Z7h6d6r8Vz9a%2bcwzQisTgXBZYP9SqCV23xYnTNvjLpbNLdm%2bai4ijFPAYNgkemBwyt6cMqIxxEJNJ1pB3OlA0Ueo6Wm0RitUkoQsZ%2fpYgiAr1YRxUD0AFDVGxEMyzKMAKspJYhvw%2fZmO8CCdSkX1%2feWa%2fUpS1EtIeuEU%2fdcI2qkJUjZESZKqQnzdfEy4H8hHEuixSD%2bTctZDPeppwjBXQJ97N74I6RGZbn%2fora9RVMFaikqTmbog4rK%2bTYUnExow%3d%3d"}}
