@@ -253,4 +253,8 @@ class LoginNotifyController{
         }
         exit(json_encode(['code' => 200,'msg'=>'success']));
     }
+
+    public function clear_cache(){
+        cmf_clear_cache();
+    }
 }

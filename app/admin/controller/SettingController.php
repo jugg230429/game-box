@@ -188,6 +188,11 @@ class SettingController extends AdminBaseController
         }
 
         cmf_clear_cache();
+        //清楚其他sdk服务器上的文件缓存
+        $sdkUrl = 'https://pay.sadgsdag.com/sdk/login_notify/clear_cache';
+        $this->httpJsonPost($sdkUrl,[]);
+        $sdkUrl = 'https://login.fsadgfad.com/sdk/login_notify/clear_cache';
+        $this->httpJsonPost($sdkUrl,[]);
         return $this->fetch();
     }
 
@@ -425,6 +430,31 @@ class SettingController extends AdminBaseController
         // echo $lasts_time;
         // echo $j;
         exit;
+    }
+
+
+
+    function httpJsonPost($url, $paramArray){
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => json_encode($paramArray),
+            CURLOPT_HTTPHEADER => array(
+                "cache-control: no-cache",
+                "content-type: application/json"
+            ),
+        ));
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+        curl_close($curl);
+        if ($err) {
+            return $err;
+        }
+        return $response;
     }
 
 }
