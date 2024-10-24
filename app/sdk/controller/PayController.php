@@ -1247,25 +1247,22 @@ class PayController extends BaseController
     {
         $request = json_decode(base64_decode(file_get_contents("php://input")), true);
         $request = get_real_promote_id($request);
-        $weixin = pay_type_status('wxscan');
-        $alipay = pay_type_status('zfb');
-        if ($weixin == 1 ) {
-            $data['wx_game'] = 1;
-        } else {
-            $data['wx_game'] = 0;
-        }
-        if ($alipay == 1) {
-            $data['zfb_game'] = 1;
-        } else {
-            $data['zfb_game'] = 0;
-        }
-        //1 app支付  2 wap支付
-        $alipay_set = get_pay_type_set('zfb');
-        if ($alipay == 1) {
-            $data['zfb_type'] = $alipay_set['config']['type'];
-        } else {
-            $data['zfb_type'] = 0;
-        }
+        $config = Db::table('tab_spend_payconfig')->column('status,config','name');
+        $data = [];
+        //微信
+        $data['wx_game'] = $config['wxscan']['status'];
+        //支付宝
+        $data['zfb_game'] = $config['zfb']['status'];
+        //银联
+        $data['yl_game'] = $config['yl']['status'];
+        //云闪付
+        $data['ysf_game'] = $config['ysf']['status'];
+        //数字人名币
+        $data['szrmb_game'] = $config['szrmb']['status'];
+        //人工充值
+        $rgczConfig = json_decode($config['rgcz']['conifg'],true);
+        $data['rgcz_game'] = $config['rgcz']['status'];
+        $data['rgcz_kefu_url'] = $rgczConfig['kefu_url'];
 
         //检查用户是否属于自定义支付渠道
         $isCustom = check_user_is_custom_pay_channel($request['user_id']);
@@ -1273,30 +1270,18 @@ class PayController extends BaseController
             $data['ptb_game'] = 0;
             $data['bind_game'] = 0;
         }else{
-
             //平台币开关
-            $ptb_set = pay_type_status('ptb_pay');
-            if ($ptb_set == 1) {
-                $data['ptb_game'] = 1;
-            } else {
-                $data['ptb_game'] = 0;
-            }
+            $data['ptb_game'] = pay_type_status('ptb_pay');
             //绑币开关
-            $bind_set = pay_type_status('bind_pay');
-            if ($bind_set == 1) {
-                $data['bind_game'] = 1;
-            } else {
-                $data['bind_game'] = 0;
-            }
-
+            $data['bind_game'] = pay_type_status('bind_pay');
         }
         //SDK扫码支付开关
-        if($weixin==0 && $alipay==0){
+        $data['scan_pay'] = 1;
+        if( $data['wx_game']==0 && $data['zfb_game']==0){
             $data['scan_pay'] = 0;
-        }else{
-            $data['scan_pay'] = 1;
         }
-
+        //兼容
+        $data['zfb_type'] = null;
         $this->set_message(200, "获取成功",$data);
     }
 
@@ -1615,6 +1600,127 @@ class PayController extends BaseController
             $this->set_message(200, "获取成功",$result);
         }   
         $this->set_message(1058, "支付失败");
+    }
+
+      /**
+     * [安卓渠道移动支付]
+     * @author 郭家屯[gjt]
+     */
+    public function and_promote_pay()
+    {
+        #获取SDK上POST方式传过来的数据 然后base64解密 然后将json字符串转化成数组
+        $request = json_decode(base64_decode(file_get_contents("php://input")), true);
+        $request = get_real_promote_id($request);
+        //封禁判断-20210713-byh
+        if(!judge_user_ban_status($request['promote_id'],$request['game_id'],$request['user_id'],$request['equipment_num'],get_client_ip(),$type=3)){
+            $this -> set_message(1061, "当前被禁止充值，请联系客服");
+        }
+        if ($request['price'] < 0) {
+            $this->set_message(1061, "充值金额有误");
+        }
+        //判断支付类型 银联 云闪付 数字人民币
+        if (!isset($request['pay_type']) || !in_array($request['pay_type'],['yl','ysf','szrmb'])) {
+            $this->set_message(1061, "充值渠道类型异常");
+        }
+        $game_data = Cache::get('sdk_game_data'.$request['game_id']);
+        $request['game_name'] = $game_data['game_name'];
+        //实名充值
+        $user_entity = get_user_entity($request['user_id'],false,'account,nickname,age_status');
+        if(empty($user_entity['age_status']) && get_user_config_info('age')['real_pay_status']==1){
+            $this->set_message(1075, get_user_config_info('age')['real_pay_msg']?:'根据国家关于《网络游戏管理暂行办法》要求，平台所有玩家必须完成实名认证后才可以进行游戏充值！');
+        }
+        $usermodel = new UserModel();
+        //判断是否是所属小号
+        $isusersmall = $usermodel->is_user_small($request['user_id'],$request['small_id']);
+        if(!$isusersmall){
+            $this -> set_message(1080, "小号不属于该账户");
+        }else{
+            $request['small_nickname'] = get_user_entity($request['small_id'],false,'nickname')['nickname'];
+        }
+        if ($request['code'] == 1) {
+            $spendmodel = new SpendModel();
+            $extend_data = $spendmodel->field('id')->where(array('extend' => $request['extend'], 'game_id' => $request['game_id'], 'pay_status' => 1))->find();
+            if ($extend_data) {
+                $this->set_message(1055, "订单号重复，请关闭支付页面重新支付");
+            }
+        }
+        //支付类型 
+        switch($request['pay_type']){
+            case 'yl':
+                $pay_way = 33;
+                break;
+            case 'ysf':
+                $pay_way = 44;
+                break;
+            case 'szrmb':
+                $pay_way = 55;
+                break;
+            default:
+                $pay_way = 0;
+        }
+        $request['pay_way'] = $pay_way;
+        $prefix = $request['code'] == 1 ? "SP_" : "PF_";
+        $request['pay_order_number'] = create_out_trade_no($prefix);
+        $game_set_data = Db::table('tab_game_set')->where('game_id', $request['game_id'])->field('access_key')->find();
+        $request['table'] = $request['code'] == 1 ? "spend" : "deposit";
+        $user = get_user_entity($request['user_id'],false,'account,nickname,promote_id,promote_account,parent_id');
+        $discount = 0;
+        if($request['code'] == 1){
+            $promote_id = $user['promote_id'];
+            $paylogic = new PayLogic();
+            //去除代金券金额
+            if($request['coupon_id']){
+                $coupon_money = $paylogic->get_use_coupon($request['user_id'],$request['price'],$request['coupon_id']);
+                if($coupon_money){
+                    $new_price = $request['price'] - $coupon_money;
+                }else{
+                    return redirect(url('Pay/notice', array('user_id' => $request['user_id'], 'game_id' => $request['game_id'], 'msg' => urlencode('优惠券使用失败'))));
+                    exit;
+                }
+            }else{
+                $new_price = $request['price'];
+            }
+            $discount_info = $paylogic->get_discount($request['game_id'],$promote_id,$request['user_id']);
+            $request['pay_amount'] = round($discount_info['discount']*$new_price,2);
+            $request['discount_type'] = $discount_info['discount_type'];
+            $request['discount'] = $discount_info['discount'];
+        }else{
+            //检查用户是否属于自定义支付渠道
+            $isCustom = check_user_is_custom_pay_channel($request['user_id']);
+            if ($isCustom) {
+                $this -> set_message(1058, "该账号暂不支持平台币/绑币，请在游戏中支付");
+            }
+            $request['pay_amount'] = $request['price'];
+        }
+
+        //检查未成年用户是否满足充值条件
+        if (get_user_config_info('age')['real_pay_status'] == 1) {
+            $lCheckAge = new CheckAgeLogic();
+            $checkAgeRes = $lCheckAge -> run($request['user_id'], $request['pay_amount']);
+            if (false === $checkAgeRes) {
+                $this -> set_message(1059, $lCheckAge -> getErrorMsg());
+            }
+        }
+
+        if($request['coupon_id'] > 0 && $new_price <= 0){
+            $result = $this->coupon_pay($request,$user);
+            if($result){
+                $res_msg = array(
+                        "url" =>cmf_get_domain() . "/sdk/Pay/pay_success/orderno/" . $request['pay_order_number'],
+                        "wap" => 1,
+                        "out_trade_no" => $request['pay_order_number']
+                );
+                $this->set_message(9999, "支付成功",$res_msg);
+            }else{
+                $this->set_message(1058, "优惠支付失败");
+            }
+        }elseif (pay_type_status($request['pay_type']) == 1) {
+            //新渠道支付流程
+            $promotePay = new \think\PromotePay($request['game_id'],$pay_way / 11);
+            $result = $promotePay->initParam($request,$user);
+            $this->set_message(200, "获取成功",$result);
+        } 
+        $this->set_message(1058, "支付失败");   
     }
 
     /**

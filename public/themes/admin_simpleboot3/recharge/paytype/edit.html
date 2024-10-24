@@ -28,8 +28,9 @@
             <label for="input-name" class="col-sm-2 control-label"><span class="form-required">*</span>支付类型</label>
             <div class="col-md-6 col-sm-10 form-select">
                 <select name="type" id="type" class="selectpicker " data-live-search="true" style="width: 420px;">
-                    <option value="1" <if condition="$data['type'] eq 1">selected</if> >支付宝</option>  
-                    <option value="2" <if condition="$data['type'] eq 2">selected</if> >微信</option> 
+                    <volist name="type_config_list" id="vo">
+                        <option value="{$vo.type_id}" <if condition="$data['type'] eq $vo['type_id']">selected</if>>{$vo.type_name}</option>
+                    </volist>
                 </select>
             </div>
         </div>

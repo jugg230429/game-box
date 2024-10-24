@@ -17,7 +17,7 @@ class SpendPromoteParamModel extends Model
     /**
      * 选择的支付商家配置
      * gameId 游戏id
-     * payType 支付类型 1.支付宝 2.微信
+     * payType 支付类型 1.支付宝 2.微信 3.银联 4.云闪付 5.数字人民币
      * amount 支付金额
      */
     public function choosePromoteConfig($gameId,$payType,$amount){

@@ -18,14 +18,10 @@ class PromotePay{
     private $gameId;
 
     /**
-     * 支付类型 1.支付宝 2.微信
+     * 支付类型 1.支付宝 2.微信 3.银联 4.云闪付 5.数字人民币
      */
     private $payType;
 
-     /**
-     * 支付渠道 1.鼎盛支付 2.蚂蚁支付
-     */
-    private $promoteId;
 
     public function __construct($gameId = 0, $payType = 0)
     {
@@ -43,17 +39,17 @@ class PromotePay{
      */
     public function initParam($param = array(),$user=[])
     {
-        $pay_type = 'zfb';
-        if($param['pay_way'] == 4){
-            $pay_type = 'wxscan';
-        }
-        //获取渠道自定义支付参数
-        $lCustomPay = new CustompayLogic();
-        $customConfig = $lCustomPay -> getPayConfig($user['promote_id'], $param['game_id'], $pay_type, $param['pay_amount']);
-        $payPromoteId = 0;
-        if (false !== $customConfig) {
-            $payPromoteId = $user['promote_id'];
-        }
+        // $pay_type = 'zfb';
+        // if($param['pay_way'] == 4){
+        //     $pay_type = 'wxscan';
+        // }
+        // //获取渠道自定义支付参数
+        // $lCustomPay = new CustompayLogic();
+        // $customConfig = $lCustomPay -> getPayConfig($user['promote_id'], $param['game_id'], $pay_type, $param['pay_amount']);
+        // $payPromoteId = 0;
+        // if (false !== $customConfig) {
+        //     $payPromoteId = $user['promote_id'];
+        // }
 
         $vo = new \think\pay\PayVo();
         $vo->setBody("充值")
@@ -89,7 +85,7 @@ class PromotePay{
             ->setExtraparam($param['extra_param'])
             //支付额外角色信息
             ->setGoodsReserve($param['goods_reserve'])
-            ->setPayPromoteId($payPromoteId);
+            ->setPayPromoteId(0);
         return $this->buildRequestForm($vo);
     }
 

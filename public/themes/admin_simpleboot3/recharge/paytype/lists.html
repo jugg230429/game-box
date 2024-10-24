@@ -3,16 +3,16 @@
 <body>
 <div class="wrap js-check-wrap">
     <ul class="nav nav-tabs">
-        <li class="active first" ><a href="#A" data-toggle="tab">支付宝</a></li>
-        <li class="second"><a href="#B" data-toggle="tab">微信（扫码/H5）</a></li>
-        <if condition="PERMI neq 1">
-        <li class="promote"><a href="#E" data-toggle="tab">支付渠道</a></li>
-        <!-- <li><a href="{:url('weiduan')}">微信（微端）</a></li> -->
-        </if>
-        <li class="four"><a href="#C" data-toggle="tab">平台币</a></li>
-        <li class="five"><a href="#D" data-toggle="tab">绑币</a></li>
-        <li class="six"><a href="#G" data-toggle="tab">支付宝（提现）</a></li>
-        <span class="title_remark">说明：用于配置网站所用到的支付功能相关参数</span>
+        <li class="active  A" ><a href="#A" data-toggle="tab">支付宝</a></li>
+        <li class="B"><a href="#B" data-toggle="tab">微信（扫码/H5）</a></li>
+        <li class="C"><a href="#C" data-toggle="tab">银联 </a></li>
+        <li class="D"><a href="#D" data-toggle="tab">云闪付 </a></li>
+        <li class="E"><a href="#E" data-toggle="tab">数字人名币 </a></li>
+        <li class="F"><a href="#F" data-toggle="tab">支付渠道</a></li>
+        <li class="G"><a href="#G" data-toggle="tab">人工充值 </a></li>
+        <li class="H"><a href="#H" data-toggle="tab">平台币</a></li>
+        <li class="I"><a href="#I" data-toggle="tab">绑币</a></li>
+        <li class="J"><a href="#J" data-toggle="tab">支付宝（提现）</a></li>
     </ul>
     <form class="form-horizontal js-ajax-form " role="form" action="{:url('set_pay')}"
           method="post">
@@ -20,12 +20,9 @@
             <div class="tabbable">
                 <div class="tab-content">
                     <div class="tab-pane active" id="A">
-                        <div class="describe" style="margin-bottom: 20px">
-                            <div>说明①：支付宝可申请电脑网站支付、手机网站支付、APP支付，根据运营需求申请对应支付方式</div>
-                            <div>说明②：H5游戏需申请当面付</div>
-                            <div>说明③：当在服务平台打包上架版游戏包时，选择第三方支付则为WAP支付，选择苹果内购则为苹果内购支付；当打包非上架版游戏包时，选择第三方支付则为WAP支付，选择苹果内购则为APP支付（android版游戏无需设置）</div>
+                        <div class="describe">
+                            <div>支付宝设置</div>
                         </div>
-						<div class="clear"></div>
                         <div class="form-group">
                             <label for="input-site-name" class="col-sm-2 control-label"><span
                                     class="form-required"><!-- * --></span>启用状态</label>
@@ -34,35 +31,26 @@
                                     <label class="fl mr50 pt7"><input type="radio" name="zfb[status]" value="1" <if condition="$zfb['status'] eq 1"> checked </if>> 启用</label>
                                     <label class="fl pt7"><input type="radio" name="zfb[status]" value="0" <if condition="$zfb['status'] eq 0"> checked </if>> 禁用</label>
 							    </div>
-                                <span  class="fl user-remarks  l18" style="line-height: 36px;">
-                                    支付宝启用状态，控制多个站点内是否显示支付宝支付入口；
-                                </span>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-sm-offset-1 col-sm-10">
                                 <button type="submit" class="btn btn-primary js-ajax-submit save-btn" data-refresh="1">
-                                    {:lang('SAVE')}
+                                    确定
                                 </button>
                             </div>
                         </div>
                     </div>
                     <div class="tab-pane" id="B">
                         <div class="describe">
-                            <div>说明①：微信（扫码）支付即支持pc扫码支付，wap/H5支付</div>
-                            <div>说明②：推荐在微信公众平台配置公众号，申请开通扫码支付权限</div>
-                            <div>说明③：仅申请微信（扫码）支付，不需要提供文网文</div>
+                            <div>微信设置</div>
                         </div>
-
                         <div class="form-group">
-                            <label for="input-site_seo_title" class="col-sm-2 control-label">启用状态：</label>
+                            <label for="input-site_seo_title" class="col-sm-2 control-label">启用状态</label>
                             <div class="col-md-8 col-sm-10">
                                <label class="fl mr50 pt7"> <input type="radio" name="wx[status]" value="1" <if condition="$wxscan['status'] eq 1"> checked </if>> 启用</label>
                                <label class="fl pt7"> <input type="radio" name="wx[status]" value="0" <if condition="$wxscan['status'] eq 0"> checked </if>> 禁用</label>
-                                 <span  class="fl user-remarks ml25">
-                                    微信扫码启用状态，控制在PC官网、WAP站、SDK、推广系统官网上是否显示微信支付入口
-                                </span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -73,10 +61,97 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane" id="C" style="margin-top: -40px;">
-<!--                        <div class="describe">-->
+                    <div class="tab-pane" id="C">
+                        <div class="describe">
+                            <div>银联设置</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_seo_title" class="col-sm-2 control-label">启用状态：</label>
+                            <div class="col-md-8 col-sm-10">
+                               <label class="fl mr50 pt7"> <input type="radio" name="yl[status]" value="1" <if condition="$yl['status'] eq 1"> checked </if>> 启用</label>
+                               <label class="fl pt7"> <input type="radio" name="yl[status]" value="0" <if condition="$yl['status'] eq 0"> checked </if>> 禁用</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn" data-refresh="0">
+                                    确定
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="D">
+                        <div class="describe">
+                            <div>云闪付设置</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_seo_title" class="col-sm-2 control-label">启用状态：</label>
+                            <div class="col-md-8 col-sm-10">
+                               <label class="fl mr50 pt7"> <input type="radio" name="ysf[status]" value="1" <if condition="$ysf['status'] eq 1"> checked </if>> 启用</label>
+                               <label class="fl pt7"> <input type="radio" name="ysf[status]" value="0" <if condition="$ysf['status'] eq 0"> checked </if>> 禁用</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn" data-refresh="0">
+                                    确定
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="E">
+                        <div class="describe">
+                            <div>数字人民币设置</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_seo_title" class="col-sm-2 control-label">启用状态：</label>
+                            <div class="col-md-8 col-sm-10">
+                               <label class="fl mr50 pt7"> <input type="radio" name="szrmb[status]" value="1" <if condition="$szrmb['status'] eq 1"> checked </if>> 启用</label>
+                               <label class="fl pt7"> <input type="radio" name="szrmb[status]" value="0" <if condition="$szrmb['status'] eq 0"> checked </if>> 禁用</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn" data-refresh="0">
+                                    确定
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="G">
+                        <div class="describe">
+                            <div>人工充值设置</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_seo_title" class="col-sm-2 control-label">启用状态：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="fl pt7">
+                                    <input type="radio" name="rgcz[status]" value="1" <if condition="$rgcz['status'] eq 1"> checked </if>> 启用<label class="mr50"></label>
+                                    <input type="radio" name="rgcz[status]" value="0" <if condition="$rgcz['status'] eq 0"> checked </if>> 禁用
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top: 20px">
+                            <label for="input-site_seo_title" class="col-sm-2 control-label">客服链接：</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="pt7">
+                                    <input type="text" class="form-control" name="rgcz[kefu_url]" value="{$rgcz['config']['kefu_url']}">
+                                </div>
+                            </div>
+                        </div>
 
-<!--                        </div>-->
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn" data-refresh="0">
+                                    确定
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="H">
+                        <div class="describe">
+                            <div>平台币设置</div>
+                        </div>
                         <div class="form-group" style="margin-top: 50px">
                             <label for="input-site_seo_title" class="col-sm-2 control-label">启用状态：</label>
                             <div class="col-md-6 col-sm-10">
@@ -110,11 +185,10 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="tab-pane" id="D"  style="margin-top: -40px;">
-<!--                        <div class="describe">-->
-
-<!--                        </div>-->
+                    <div class="tab-pane" id="I">
+                        <div class="describe">
+                            <div>绑币设置</div>
+                        </div>
                         <div class="form-group" style="margin-top: 50px">
                             <label for="input-site_seo_title" class="col-sm-2 control-label">启用状态：</label>
                             <div class="col-md-6 col-sm-10">
@@ -148,11 +222,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane" id="G">
-                        <div class="describe" style="margin-bottom: 20px">
-                            <div>说明①：企业开发者若涉及 资金类支出接口 接入，必须使用 公钥证书 方式</div>
+                    <div class="tab-pane" id="J">
+                        <div class="describe">
+                            <div>支付宝提现设置</div>
                         </div>
-                        <div class="clear"></div>
                         <div class="form-group">
                             <label for="input-site-name" class="col-sm-2 control-label"><span
                                     class="form-required"><!-- * --></span>合作伙伴身份ID（PID）</label>
@@ -209,7 +282,7 @@
             </div>
         </fieldset>
     </form>
-    <div  id="E" style="display: none;">
+    <div  id="F" style="display: none;">
         <div class="describe">
             <div>支付渠道列表</div>
         </div>
@@ -285,37 +358,54 @@
 </div>
 <script type="text/javascript" src="__STATIC__/js/admin.js"></script>
 <script>
-    $('.promote').click(function() {
-        $('#E').show()
+    $('.F').click(function() {
+        $('#F').show()
         $('#A').hide()
         $('#B').hide()
         $('#C').hide()
         $('#D').hide()
+        $('#E').hide()
+        $('#G').hide()
+        $('#H').hide()
+        $('#I').hide()
+        $('#J').hide()
     })
 
-    $('.first').click(function() {
+    $('.A').click(function() {
         $('#A').show().siblings().hide()
-        $('#E').hide()
+        $('#F').hide()
     })
-    $('.second').click(function() {
+    $('.B').click(function() {
         $('#B').show().siblings().hide()
-        $('#E').hide()
+        $('#F').hide()
     })
-    $('.third').click(function() {
-        $('#F').show().siblings().hide()
-        $('#E').hide()
-    })
-    $('.four').click(function() {
+    $('.C').click(function() {
         $('#C').show().siblings().hide()
-        $('#E').hide()
+        $('#F').hide()
     })
-    $('.five').click(function() {
+    $('.D').click(function() {
         $('#D').show().siblings().hide()
-        $('#E').hide()
+        $('#F').hide()
     })
-    $('.six').click(function() {
+    $('.E').click(function() {
+        $('#E').show().siblings().hide()
+        $('#F').hide()
+    })
+    $('.G').click(function() {
         $('#G').show().siblings().hide()
-        $('#E').hide()
+        $('#F').hide()
+    })
+    $('.H').click(function() {
+        $('#H').show().siblings().hide()
+        $('#F').hide()
+    })
+    $('.I').click(function() {
+        $('#I').show().siblings().hide()
+        $('#F').hide()
+    })
+    $('.J').click(function() {
+        $('#J').show().siblings().hide()
+        $('#F').hide()
     })
 
     game_id = $("#game_id").attr('game_id');

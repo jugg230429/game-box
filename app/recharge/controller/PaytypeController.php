@@ -40,19 +40,6 @@ class PaytypeController extends AdminBaseController
             $this->assign($value['name'], $value);
         }
 
-                // //微端页面
-        // $base = new BaseController();
-        // $param = $this->request->param();
-        // if ($param['game_id']) {
-        //     $map['game_id'] = $param['game_id'];
-        //     $this->assign('is_weiduan',1);
-        // }
-        // $model = new SpendWxparamModel();
-        // $data = $base->data_list($model, $map)->each(function ($item, $key) {
-        //     $item['status_name'] = get_info_status($item['status'], 4);
-        // });
-
-
         //渠道配置页面
         $base = new BaseController();
         $param = $this->request->param();
@@ -79,6 +66,10 @@ class PaytypeController extends AdminBaseController
         $data['zfb'] = $post['zfb'];
         $data['wxscan'] = $post['wx'];
         $data['wxapp'] = $post['wxapp'];
+        $data['yl'] = $post['yl'];
+        $data['ysf'] = $post['ysf'];
+        $data['szrmb'] = $post['szrmb'];
+        $data['rgcz'] = $post['rgcz'];
         $data['goldpig'] = $post['jz'];
         $data['ptb_pay'] = $post['ptb_pay'];
         $data['bind_pay'] = $post['bind_pay'];
@@ -131,14 +122,6 @@ class PaytypeController extends AdminBaseController
         $param = $this->request->param();
 
         if($this->request->isPost()){
-            // $validata = new WxparamValidate();
-            // if(!$validata->check($param)){
-            //     $this->error($validata->getError());
-            // }
-            // $model = new SpendWxparamModel();
-            // $param['game_name'] = get_game_entity($param['game_id'],'game_name')['game_name'];
-
-
             $validata = new PromoteParamValidate();
             if(!$validata->check($param)){
                 $this->error($validata->getError());
@@ -164,6 +147,7 @@ class PaytypeController extends AdminBaseController
         }else{
             //获取当前支付渠道
             $this->assign('promote_list',$this->promoteList());
+            $this->assign('type_config_list',$this->typeConfigList());
             return $this->fetch();
         }
     }
@@ -181,8 +165,22 @@ class PaytypeController extends AdminBaseController
 
     private function typeList(){
         $list = [
-           1 => '支付宝',
-           2 => '微信',
+            1 => '支付宝',
+            2 => '微信',
+            3 => '银联',
+            4 => '云闪付',
+            5 => '数字人民币',
+        ];
+        return $list;
+    }
+
+    private function typeConfigList(){
+        $list = [
+           1 => [ 'type_id' => 1, 'type_name' => '支付宝'],
+           2 => [ 'type_id' => 2, 'type_name' => '微信'],
+           3 => [ 'type_id' => 3, 'type_name' => '银联'],
+           4 => [ 'type_id' => 4, 'type_name' => '云闪付'],
+           5 => [ 'type_id' => 5, 'type_name' => '数字人民币'],
         ];
         return $list;
     }
@@ -219,7 +217,7 @@ class PaytypeController extends AdminBaseController
             $this->assign('data',$data);
             //获取当前支付渠道
             $this->assign('promote_list',$this->promoteList());
-            $this->assign('type_list',$this->typeList());
+            $this->assign('type_config_list',$this->typeConfigList());
             return$this->fetch();
         }
     }
