@@ -1,9 +1,11 @@
 <?php
 namespace app\sdk\controller;
 
+use AlibabaCloud\Client\Support\Sign;
 use app\callback\controller\BaseController;
 use PDO;
 use think\Db;
+use think\Request;
 
 class PromotePayController{
      /**
@@ -275,6 +277,7 @@ class PromotePayController{
 
 
     public function hipay_callback(){  
+
         $return = Request()->post();
         if($return['code'] != 1){
              //记录日志
@@ -352,7 +355,19 @@ class PromotePayController{
         exit("failure(Sign verification errors)");
     }
 
-    public function huiju_callback(){    
+    public function huiju_callback(){   
+        $get = Request()->get();
+        //记录日志
+        $log = [
+            'config_id' => 0,
+            'pay_order_number' => 'huiju',
+            'order_number' =>  'huiju',
+            'send_content' => json_encode($get),
+            'table' => 'huiju',
+            'type' => 2,
+            'create_time' => date("Y-m-d H:i:s")
+        ];
+        Db::table('tab_spend_promote_pay_log')->insert($log); 
         //商户号
         if(!isset($_REQUEST["pid"]) ){
             exit("failure(param pid not exists)");
@@ -379,6 +394,10 @@ class PromotePayController{
         if(!isset($_REQUEST["type"]) ){
             exit("failure(param type not exists)");
         }
+        //名称
+        if(!isset($_REQUEST["name"]) ){
+            exit("failure(param name not exists)");
+        }
         //实际支付金额分
         if(!isset($_REQUEST["money"]) ){
             exit("failure(param money not exists)");
@@ -403,9 +422,9 @@ class PromotePayController{
             "trade_no" => $_REQUEST['trade_no'], 
             "out_trade_no" => $_REQUEST['out_trade_no'],  
             "type" => $_REQUEST['type'], 
+            "name" => $_REQUEST['name'], 
             "money" => $_REQUEST['money'], 
             "trade_status" => $_REQUEST['trade_status'], 
-            "status" => $_REQUEST['status'] 
         ];
         //记录日志
         $log = [
@@ -420,7 +439,7 @@ class PromotePayController{
         //进行蚂蚁验证签名
         $key = Db::table('tab_spend_promote_param')->where('id',$spend['promote_param_id'])->value('key');
         $promotePay = new \think\PromotePay();
-        $sign = $promotePay->dsParamArraySign($paramArray,$key);  //签名
+        $sign = $promotePay->huijuParamArraySign($paramArray,$key);  //签名
         if($postSign == $sign){
             //验签成功
             if($paramArray['trade_status'] == 'TRADE_SUCCESS'){

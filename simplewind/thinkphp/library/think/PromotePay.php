@@ -984,6 +984,25 @@ class PromotePay{
 	}
 
     // 计算签名
+	function huijuParamArraySign($param,$mchKey){
+		ksort($param);
+		reset($param);
+		$signstr = '';
+	
+		foreach($param as $k => $v){
+			if($k != "sign" && $k != "sign_type" && $v!='' && $v!= null){
+				$signstr .= $k.'='.$v.'&';
+			}
+		}
+		$signstr = substr($signstr,0,-1);
+		$signstr .= $mchKey;
+		$sign = strtolower(md5($signstr));
+		return $sign;
+	}
+
+
+
+    // 计算签名
 	function hiPayParamArraySign($param,$mchKey){
         //sign=md5("pay"+recvid+orderid+amount+apikey)
 		$sign = md5("pay".$param['recvid'].$param['orderid'].$param['amount'].$mchKey);
