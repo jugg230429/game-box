@@ -292,9 +292,10 @@ class SpendController extends AdminBaseController
             $status = $promoteSettlement -> where(['pay_order_number' => $item['pay_order_number']]) -> value('status');
             $item['status'] = $status ? $status : 0;
 
-            if($ys_show_admin['account_show_admin_status'] == 1){//开启了账号查看隐私
-                $item['user_account'] = get_ys_string($item['user_account'],$ys_show_admin['account_show_admin']);
-            }
+            // if($ys_show_admin['account_show_admin_status'] == 1){//开启了账号查看隐私
+            //     $item['user_account'] = get_ys_string($item['user_account'],$ys_show_admin['account_show_admin']);
+            // }
+            $item['user_account'] = get_user_entity2($item['user_id'],false,'account')['account'];
             if($ys_show_admin['role_show_admin_status'] == 1){//开启了角色查看隐私
                 $item['game_player_name'] = get_ys_string($item['game_player_name'],$ys_show_admin['role_show_admin']);
             }
@@ -656,6 +657,9 @@ class SpendController extends AdminBaseController
         $map = [];
         $extend['order'] = 'id desc';
         $data = $base -> data_list($model, $map, $extend);
+        foreach($data as &$item){
+            $item['create_user_account'] = get_user_entity2($item['create_user_id'],false,'account')['account'];
+        }
         // 获取分页显示
         $page = $data -> render();
         $this -> assign('data_lists', $data);

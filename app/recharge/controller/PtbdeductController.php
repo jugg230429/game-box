@@ -39,6 +39,7 @@ class PtbdeductController extends AdminBaseController
     {
         $base = new BaseController();
         if ($this->request->param('type') != 2) {
+            echo 1;
             $spend = new SpendprovideModel;
             $account = $this->request->param('user_account', '');
             if ($account != '') {
@@ -75,9 +76,10 @@ class PtbdeductController extends AdminBaseController
         if($this->request->param('type') != 2){
             $ys_show_admin = get_admin_privicy_two_value();
             foreach($data as $k5=>$v5){
-                if($ys_show_admin['account_show_admin_status'] == 1){//开启了账号查看隐私
-                    $data[$k5]['user_account'] = get_ys_string($v5['account'],$ys_show_admin['account_show_admin']);
-                }
+                // if($ys_show_admin['account_show_admin_status'] == 1){//开启了账号查看隐私
+                //     $data[$k5]['user_account'] = get_ys_string($v5['account'],$ys_show_admin['account_show_admin']);
+                // }
+                $data[$k5]['user_account'] = get_user_entity2($v5['user_id'],false,'account')['account'];
             }
         }
 

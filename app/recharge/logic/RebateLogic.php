@@ -868,7 +868,7 @@ class RebateLogic{
         if($get_way != ''){
             $map['get_way'] = $get_way;
         }
-        $exend['field'] = 'id,user_account,coupon_name,game_name,mold,money,limit_money,status,create_time,update_time,cost,pay_amount,get_way,end_time,is_delete';
+        $exend['field'] = 'id,user_id,user_account,coupon_name,game_name,mold,money,limit_money,status,create_time,update_time,cost,pay_amount,get_way,end_time,is_delete';
         $data = $base->data_list($model, $map, $exend);
         return $data;
     }

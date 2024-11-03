@@ -167,9 +167,10 @@ class PtbspendController extends AdminBaseController
         // 判断当前管理员是否有权限显示完成整手机号或完整账号
         $ys_show_admin = get_admin_privicy_two_value();
         foreach($data as $k5=>$v5){
-            if($ys_show_admin['account_show_admin_status'] == 1){//开启了账号查看隐私
-                $data[$k5]['user_account'] = get_ys_string($v5['user_account'],$ys_show_admin['account_show_admin']);
-            }
+            // if($ys_show_admin['account_show_admin_status'] == 1){//开启了账号查看隐私
+            //     $data[$k5]['user_account'] = get_ys_string($v5['user_account'],$ys_show_admin['account_show_admin']);
+            // }
+            $data[$k5]['user_account'] = get_user_entity2($v5['user_id'],false,'account')['account'];
         }
         
         $exend['field'] = 'sum(amount) as total';

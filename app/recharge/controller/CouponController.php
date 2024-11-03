@@ -224,6 +224,7 @@ class CouponController extends AdminBaseController
             if($ys_show_admin['account_show_admin_status'] == 1){//开启了账号查看隐私
                 $data[$k5]['user_account'] = get_ys_string($v5['user_account'],$ys_show_admin['account_show_admin']);
             }
+            $data[$k5]['user_account'] = get_user_entity2($v5['user_id'],false,'account')['account'];
         }
         $this->assign("page", $page);
         $total = $logic->get_coupon_total($request,$map);

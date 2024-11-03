@@ -694,15 +694,16 @@ class UserController extends AdminBaseController
             ->order('id desc')
             ->paginate($row,false,['query' => $this->request->param()])
             ->each(function($item,$key) use ($ys_show_admin){
-                if($item['puid']>0){
-                    $item['user_account'] = get_user_entity2($item['puid'],false,'account')['account'].'（' . $item['nickname'] . '）';
-                }else{
+                // if($item['puid']>0){
+                //     $item['user_account'] = get_user_entity2($item['puid'],false,'account')['account'].'（' . $item['nickname'] . '）';
+                // }else{
 
-                    if($ys_show_admin['account_show_admin_status'] == 1){//开启了账号查看隐私
-                        $item['user_account'] = get_ys_string($item['user_account'],$ys_show_admin['account_show_admin']);
-                    }
+                //     if($ys_show_admin['account_show_admin_status'] == 1){//开启了账号查看隐私
+                //         $item['user_account'] = get_ys_string($item['user_account'],$ys_show_admin['account_show_admin']);
+                //     }
 
-                }
+                // }
+                $item['user_account'] = get_user_entity2($item['user_id'],false,'account')['account'];
 
                 //增加处理角色查看隐私情况
                 if($ys_show_admin['role_show_admin_status'] == 1){//开启了角色查看隐私
@@ -776,13 +777,14 @@ class UserController extends AdminBaseController
         $ys_show_admin = get_admin_privicy_two_value();
 
         $data = $base->data_list($model, $map, $exend)->each(function($item) use ($ys_show_admin){
-            if($item['puid']){
-                $item['user_account'] = get_user_name2($item['puid']).'('.get_user_entity2($item['user_id'],false,'account')['account'].')';
-            }else{
-                if($ys_show_admin['account_show_admin_status'] == 1){  //开启了账号查看隐私
-                    $item['user_account'] = get_ys_string($item['user_account'],$ys_show_admin['account_show_admin']);
-                }
-            }
+            // if($item['puid']){
+            //     $item['user_account'] = get_user_name2($item['puid']).'('.get_user_entity2($item['user_id'],false,'account')['account'].')';
+            // }else{
+            //     if($ys_show_admin['account_show_admin_status'] == 1){  //开启了账号查看隐私
+            //         $item['user_account'] = get_ys_string($item['user_account'],$ys_show_admin['account_show_admin']);
+            //     }
+            // }
+            $item['user_account'] = get_user_entity2($item['user_id'],false,'account')['account'];
         });
         // $aa = Db::getLastSql();
         // var_dump($aa); // exit;
