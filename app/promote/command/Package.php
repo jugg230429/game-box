@@ -510,6 +510,8 @@ class Package extends Command
         $map['pack_type'] = ['neq', '3'];//不含百度批量打包
         $apply_data = Db::table('tab_promote_apply')->field('id,game_id,promote_id,sdk_version,pack_type')->where($map)->limit(2)->order('id desc')->select()->toarray();
         if (!empty($apply_data)) {
+            $output->newLine();
+            $output->writeln("渠道打包1");
             foreach ($apply_data as $key => $value) {
                 $err = 0;
                 $output->newLine();
@@ -534,8 +536,12 @@ class Package extends Command
                 if ($err) {
                     Db::table('tab_promote_apply')->where(['id' => $value['id']])->setField('enable_status', -1);
                     // Db::table('tab_promote_apply')->where(['id'=>$value['id']])->setField('pack_mark','原包不存在');
+                    $output->newLine();
+                    $output->writeln("渠道打包2");
                     continue;
                 }
+                $output->newLine();
+                $output->writeln("渠道打包 $file_url");
                 Db::table('tab_promote_apply')->where(['id' => $value['id']])->setField('enable_status', 3);
 
 
@@ -563,6 +569,8 @@ class Package extends Command
                 $tourl = $file_name . "/" . $new_name;
                 $to = "public/upload/" . $tourl;
                 $copy = copy($file_url, ROOT_PATH . $to);
+                $output->newLine();
+                $output->writeln("渠道打包3");
 
                 //V2签名打包
                 if ($value['sdk_version'] == '1' && $game_info['platform_id']==0) {
@@ -579,6 +587,9 @@ class Package extends Command
                     }
                 }
 
+                $output->newLine();
+                $output->writeln("渠道打包4");
+                $output->writeln(ROOT_PATH . $to);
                 $zip = new \ZipArchive;
                 $res = $zip->open(ROOT_PATH . $to, \ZipArchive::CREATE);
                 if ($res == true) {
@@ -621,6 +632,8 @@ class Package extends Command
                         $zip->addEmptyDir($url_ver);
                         $zip -> close();
                     }
+                    $output->newLine();
+                    $output->writeln("渠道打包5");
                     //记录上传云存储
                     Db::table('tab_promote_apply')->update(['id' => $value['id'], 'is_upload' => 0]);
                     $storage = cmf_get_option('storage');
@@ -648,6 +661,8 @@ class Package extends Command
                     if ($value['sdk_version'] == 2) {
                         $plist_url = $this->create_plist($promote['game_id'], $promote['promote_id'], get_payload_name($value['game_id']), $tourl);
                     }
+                    $output->newLine();
+                    $output->writeln("渠道打包6");
                     $jieguo = $this->updateinfo($value['id'], $tourl, $promote, $plist_url);
                     $output->newLine();
                     $output->writeln("{$new_name}已打包完成");
