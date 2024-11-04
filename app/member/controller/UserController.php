@@ -179,7 +179,7 @@ class UserController extends AdminBaseController
             $exend['field'] = 'tab_user.id,count(s.user_id) as count,max(s.pay_time) as last_pay_time,point,account,phone,
             cumulative,tab_user.promote_id,tab_user.promote_account,balance,register_type,vip_level,register_time,
             login_time,login_ip,lock_status,equipment_num,fgame_name,member_days,end_time,register_ip,device_name,
-            age_status,is_unsubscribe,un.status as unsubscribe_status,gold_coin,tab_user.is_batch_create,tab_user.login_equipment_num,tab_user.head_img,tab_user.email';
+            age_status,is_unsubscribe,un.status as unsubscribe_status,gold_coin,tab_user.is_batch_create,tab_user.login_equipment_num,tab_user.head_img,tab_user.email,tab_user.pay_role';
             $exend['group'] = 'tab_user.id';
             $exend['join1'] = [['tab_spend' => 's'], 's.user_id=tab_user.id and s.pay_status=1', 'left'];
             $exend['join2'] = [['tab_user_unsubscribe' => 'un'], 'un.user_id=tab_user.id', 'left'];
@@ -2177,6 +2177,20 @@ class UserController extends AdminBaseController
             }
         }
         
+         // 修改用户支付角色
+         if($option == 'pay_role'){
+            $pay_role =  $request->param('pay_role');
+        
+            $save['pay_role'] = $pay_role;
+            $member = new UserModel;
+            $res = $member->where('id', $user_id)->update($save);
+            if ($res !== false) {
+                write_action_log("修改玩家【" . get_user_name($user_id) . "】信息");
+                return json(['code'=>1, 'msg'=>'修改成功!']);
+            } else {
+                return json(['code'=>-1, 'msg'=>'修改失败,请稍后再试!']);
+            }
+        }
         
     }
 

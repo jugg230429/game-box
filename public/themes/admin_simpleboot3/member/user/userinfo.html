@@ -181,6 +181,12 @@
                                 </if>
                             </if>
                             <br>
+                            支付状态:
+                            <if condition="$vo['pay_role'] eq 1">
+                                <span style="color: #3FAD46;font-size:14px">正常</span>
+                            <else/>
+                                <span style="color:#120d0d;font-size:14px;font-weight: 900;">黑名单</span>
+                            </if>
                         </td>
                         <td>
                             累计消费：<if condition="AUTH_PAY eq 1">{$vo.cumulative}<else/>请购买充值权限</if>

@@ -43,6 +43,7 @@
                 <th>最大支付金额</th>
                 <th>权重</th>
                 <th>启用状态</th>
+                <th>支付模式</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -64,6 +65,15 @@
                         <td>{$vo.max_amount}</td>
                         <td>{$vo.weight}</td>
                         <td><span <if condition="$vo['status'] eq 1"> class="label label-success"<else/>class="label label-danger"</if>>{$vo['status_name']}</span></td>
+                        <td>
+                            <if condition="$vo['pay_role'] eq 1">
+                                <span class="label label-success">全部</span>
+                            <elseif condition="$vo['pay_role'] eq 2"/>
+                                <span class="label label-info">正常用户</span>
+                            <else/>
+                                <span class="label label-danger">黑名单</span>
+                            </if>
+                        </td>
                         <td>
                             <a href="{:url('edit',['id'=>$vo['id']])}" >编辑</a>
                             <a href="{:url('del',['ids'=>$vo['id']])}" class="js-ajax-delete" data-msg="您确定删除吗？">删除</a>

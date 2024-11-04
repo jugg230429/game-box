@@ -3,8 +3,7 @@
 <body>
 <div class="wrap js-check-wrap">
     <ul class="nav nav-tabs">
-        <li class="active"><a href="javascript:;">新增{$promote_name}支付参数</a></li>
-        
+        <li class="active"><a href="javascript:;">新增支付通道</a></li>
     </ul>
     <form class="form-horizontal js-ajax-form margin-top-20" action="{:url('add')}" method="post">
         <input type="hidden" value="{$type}">
@@ -101,7 +100,20 @@
                 <label class="radio-inline fl">
                     <input type="radio" name="status" value="1" checked> 启用
                 </label>
-				<span  class="fl user-remarks ml26">微端微信APP支付开启状态</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="form-required">&nbsp;</span>支付模式：</label>
+            <div class="col-md-6 col-sm-10">
+                <label class="radio-inline fl mr100">
+                    <input type="radio" name="pay_role" value="1" checked> 全部
+                </label>
+                <label class="radio-inline fl mr100">
+                    <input type="radio" name="pay_role" value="2">正常用户
+                </label>
+                <label class="radio-inline fl mr100">
+                    <input type="radio" name="pay_role" value="3">黑名单
+                </label>
             </div>
         </div>
         <div class="form-group">

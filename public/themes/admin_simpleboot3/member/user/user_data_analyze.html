@@ -69,7 +69,7 @@
                     <p>登录密码</p>
                     <p>绑定手机</p>
                     <p>APP单端登录</p>
-                    <p>游戏登录记录</p>
+                    <p>支付状态</p>
                 </div>
                 <div class="box-right">
                     <p> {$data.account}</p>
@@ -86,10 +86,8 @@
                         <input type="radio"  name="sso" style="margin-left: 40px;" <eq name="data.sso" value="1">checked</eq> value="1">开启
                     </p>
                     <p> 
-                        <span <if condition="AUTH_GAME eq 1">id="denglu"</if> class="table_click table_btn">
-                            <span class="table_click_text"> <if condition="AUTH_GAME eq 1">{$login_count|default=0}<else/>请开通游戏权限</if>
-                            </span>
-                        </span>
+                        <input type="radio"  name="pay_role" <eq name="data.pay_role" value="1">checked</eq> value="1">正常
+                        <input type="radio"  name="pay_role" style="margin-left: 40px;" <eq name="data.pay_role" value="2">checked</eq> value="2">黑名单
                     </p>
                 </div>
               </div>
@@ -117,7 +115,8 @@
                 <div class="box-left">
                     <p>昵称</p>
                     <p>实名信息</p>
-                    <p>收货地址</p>
+                    <!-- <p>收货地址</p> -->
+                    <p>游戏登录记录</p>
                     <p>注册IP</p>
                     <p>最后登录IP</p>
                 </div>
@@ -140,7 +139,13 @@
                         {$data['idcard']|default=''}
                         <!-- <input  type="text" readonly class="form-control user-input no-bg" value="{$data['idcard']|default=''}"> -->
                     </if></p>
-                    <p> {$data.receive_address|default=''}</p>
+                    <p> 
+                        <span <if condition="AUTH_GAME eq 1">id="denglu"</if> class="table_click table_btn">
+                            <span class="table_click_text"> <if condition="AUTH_GAME eq 1">{$login_count|default=0}<else/>请开通游戏权限</if>
+                            </span>
+                        </span>
+                    </p>
+                    <!-- <p> {$data.receive_address|default=''}</p> -->
                     <p>  {$data['register_ip']}</p>
                     <p> {$data['login_ip']}</p>
                    
@@ -483,6 +488,31 @@
                 });
                 
             });
+
+            // 用户支付角色修改
+            $('input[type=radio][name=pay_role]').change(function() {
+                    var pay_role = this.value;
+                    var id = $('#id').val();
+                    var option = "pay_role";
+                    $.ajax({
+                        url: '{:url("change_user_info")}',
+                        type: 'post',
+                        dataType: 'json',
+                        data: {id:id, pay_role:pay_role, option:option},
+                        success: function (data) {
+                            if (data.code > 0) {
+                                layer.msg(data.msg, {icon: 1});
+                            } else {
+                                layer.msg(data.msg)
+                            }
+                        },
+                        error: function () {
+                            layer.msg("系统繁忙,请稍后再试！");
+                        }
+                    });
+                    
+            });
+
 
             // 游戏登录记录
             $("#denglu").click(function () {

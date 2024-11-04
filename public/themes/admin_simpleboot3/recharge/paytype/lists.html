@@ -3,11 +3,7 @@
 <body>
 <div class="wrap js-check-wrap">
     <ul class="nav nav-tabs">
-        <li class="active  A" ><a href="#A" data-toggle="tab">支付宝</a></li>
-        <li class="B"><a href="#B" data-toggle="tab">微信（扫码/H5）</a></li>
-        <li class="C"><a href="#C" data-toggle="tab">银联 </a></li>
-        <li class="D"><a href="#D" data-toggle="tab">云闪付 </a></li>
-        <li class="E"><a href="#E" data-toggle="tab">数字人名币 </a></li>
+        <li class="active  A" ><a href="#A" data-toggle="tab">支付渠道开关</a></li>
         <li class="F"><a href="#F" data-toggle="tab">支付渠道</a></li>
         <li class="G"><a href="#G" data-toggle="tab">人工充值 </a></li>
         <li class="H"><a href="#H" data-toggle="tab">平台币</a></li>
@@ -21,16 +17,44 @@
                 <div class="tab-content">
                     <div class="tab-pane active" id="A">
                         <div class="describe">
-                            <div>支付宝设置</div>
+                            <div>支付开关设置</div>
                         </div>
                         <div class="form-group">
                             <label for="input-site-name" class="col-sm-2 control-label"><span
-                                    class="form-required"><!-- * --></span>启用状态</label>
+                                    class="form-required"><!-- * --></span>支付宝状态</label>
                             <div class="col-md-6 col-sm-10">
 							    <div class="fl user-input">
                                     <label class="fl mr50 pt7"><input type="radio" name="zfb[status]" value="1" <if condition="$zfb['status'] eq 1"> checked </if>> 启用</label>
                                     <label class="fl pt7"><input type="radio" name="zfb[status]" value="0" <if condition="$zfb['status'] eq 0"> checked </if>> 禁用</label>
 							    </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_seo_title" class="col-sm-2 control-label">微信状态</label>
+                            <div class="col-md-8 col-sm-10">
+                               <label class="fl mr50 pt7"> <input type="radio" name="wx[status]" value="1" <if condition="$wxscan['status'] eq 1"> checked </if>> 启用</label>
+                               <label class="fl pt7"> <input type="radio" name="wx[status]" value="0" <if condition="$wxscan['status'] eq 0"> checked </if>> 禁用</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_seo_title" class="col-sm-2 control-label">银联状态：</label>
+                            <div class="col-md-8 col-sm-10">
+                               <label class="fl mr50 pt7"> <input type="radio" name="yl[status]" value="1" <if condition="$yl['status'] eq 1"> checked </if>> 启用</label>
+                               <label class="fl pt7"> <input type="radio" name="yl[status]" value="0" <if condition="$yl['status'] eq 0"> checked </if>> 禁用</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_seo_title" class="col-sm-2 control-label">云闪付状态：</label>
+                            <div class="col-md-8 col-sm-10">
+                               <label class="fl mr50 pt7"> <input type="radio" name="ysf[status]" value="1" <if condition="$ysf['status'] eq 1"> checked </if>> 启用</label>
+                               <label class="fl pt7"> <input type="radio" name="ysf[status]" value="0" <if condition="$ysf['status'] eq 0"> checked </if>> 禁用</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-site_seo_title" class="col-sm-2 control-label">数字人民币状态：</label>
+                            <div class="col-md-8 col-sm-10">
+                               <label class="fl mr50 pt7"> <input type="radio" name="szrmb[status]" value="1" <if condition="$szrmb['status'] eq 1"> checked </if>> 启用</label>
+                               <label class="fl pt7"> <input type="radio" name="szrmb[status]" value="0" <if condition="$szrmb['status'] eq 0"> checked </if>> 禁用</label>
                             </div>
                         </div>
 
@@ -42,82 +66,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane" id="B">
-                        <div class="describe">
-                            <div>微信设置</div>
-                        </div>
-                        <div class="form-group">
-                            <label for="input-site_seo_title" class="col-sm-2 control-label">启用状态</label>
-                            <div class="col-md-8 col-sm-10">
-                               <label class="fl mr50 pt7"> <input type="radio" name="wx[status]" value="1" <if condition="$wxscan['status'] eq 1"> checked </if>> 启用</label>
-                               <label class="fl pt7"> <input type="radio" name="wx[status]" value="0" <if condition="$wxscan['status'] eq 0"> checked </if>> 禁用</label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-offset-1 col-sm-10">
-                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn" data-refresh="0">
-                                    确定
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane" id="C">
-                        <div class="describe">
-                            <div>银联设置</div>
-                        </div>
-                        <div class="form-group">
-                            <label for="input-site_seo_title" class="col-sm-2 control-label">启用状态：</label>
-                            <div class="col-md-8 col-sm-10">
-                               <label class="fl mr50 pt7"> <input type="radio" name="yl[status]" value="1" <if condition="$yl['status'] eq 1"> checked </if>> 启用</label>
-                               <label class="fl pt7"> <input type="radio" name="yl[status]" value="0" <if condition="$yl['status'] eq 0"> checked </if>> 禁用</label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-offset-1 col-sm-10">
-                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn" data-refresh="0">
-                                    确定
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane" id="D">
-                        <div class="describe">
-                            <div>云闪付设置</div>
-                        </div>
-                        <div class="form-group">
-                            <label for="input-site_seo_title" class="col-sm-2 control-label">启用状态：</label>
-                            <div class="col-md-8 col-sm-10">
-                               <label class="fl mr50 pt7"> <input type="radio" name="ysf[status]" value="1" <if condition="$ysf['status'] eq 1"> checked </if>> 启用</label>
-                               <label class="fl pt7"> <input type="radio" name="ysf[status]" value="0" <if condition="$ysf['status'] eq 0"> checked </if>> 禁用</label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-offset-1 col-sm-10">
-                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn" data-refresh="0">
-                                    确定
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane" id="E">
-                        <div class="describe">
-                            <div>数字人民币设置</div>
-                        </div>
-                        <div class="form-group">
-                            <label for="input-site_seo_title" class="col-sm-2 control-label">启用状态：</label>
-                            <div class="col-md-8 col-sm-10">
-                               <label class="fl mr50 pt7"> <input type="radio" name="szrmb[status]" value="1" <if condition="$szrmb['status'] eq 1"> checked </if>> 启用</label>
-                               <label class="fl pt7"> <input type="radio" name="szrmb[status]" value="0" <if condition="$szrmb['status'] eq 0"> checked </if>> 禁用</label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-offset-1 col-sm-10">
-                                <button type="submit" class="btn btn-primary js-ajax-submit save-btn" data-refresh="0">
-                                    确定
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                   
                     <div class="tab-pane" id="G">
                         <div class="describe">
                             <div>人工充值设置</div>
@@ -319,6 +268,7 @@
                     <th>最大支付金额</th>
                     <th>权重</th>
                     <th>启用状态</th>
+                    <th>支付模式</th>
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -340,6 +290,15 @@
                             <td>{$vo.max_amount}</td>
                             <td>{$vo.weight}</td>
                             <td><span <if condition="$vo['status'] eq 1"> class="label label-success"<else/>class="label label-danger"</if>>{$vo['status_name']}</span></td>
+                            <td>
+                                <if condition="$vo['pay_role'] eq 1">
+                                    <span class="label label-success">全部</span>
+                                <elseif condition="$vo['pay_role'] eq 2"/>
+                                    <span class="label label-info">正常用户</span>
+                                <else/>
+                                    <span class="label label-danger">黑名单</span>
+                                </if>
+                            </td>
                             <td>
                                 <a href="{:url('edit',['id'=>$vo['id']])}" >编辑</a>
                                 <a href="{:url('del',['ids'=>$vo['id']])}" class="js-ajax-delete" data-msg="您确定删除吗？">删除</a>

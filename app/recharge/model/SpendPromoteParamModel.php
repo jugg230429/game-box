@@ -2,6 +2,7 @@
 
 namespace app\recharge\model;
 
+use think\Db;
 use think\Model;
 
 /**
@@ -19,15 +20,25 @@ class SpendPromoteParamModel extends Model
      * gameId 游戏id
      * payType 支付类型 1.支付宝 2.微信 3.银联 4.云闪付 5.数字人民币
      * amount 支付金额
+     * userId 玩家id
      */
-    public function choosePromoteConfig($gameId,$payType,$amount){
+    public function choosePromoteConfig($gameId,$payType,$amount,$userId){
+        //241104新增逻辑 判断用户的支付角色匹配合适的通道
+        $userPayRole = Db::table('tab_user')->where('id',$userId)->value('pay_role');
+        //用户pay_role 1.正常用户 2.黑名单
+        //通道pay_role 1.全部 2.正常 3.黑名单
+        $roleWhere = ['<=',2];
+        if($userPayRole == 2){
+            $roleWhere = ['in',[1,3]];
+        }
         //查找对应游戏和类型以及支付金额的商家配置,进行权重筛选,如果没有则走默认
         $map = [
             'game_id' => $gameId,
             'type' => $payType,
             'status' => 1,
             'min_amount' => ['<=',$amount],
-            'max_amount' => ['>=',$amount]   
+            'max_amount' => ['>=',$amount], 
+            'pay_role' => $roleWhere 
         ];
         $weights = $this->where($map)->order('id desc')->column('weight','id');
         if($weights == null){
