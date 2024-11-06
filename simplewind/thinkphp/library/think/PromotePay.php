@@ -215,10 +215,11 @@ class PromotePay{
      *  promoteConfig  支付渠道配置
      **/    
     private function dingshengPay(Pay\PayVo $vo,$promoteConfig){
-        $host = $_SERVER['HTTP_HOST'];
-        if (strpos($host, 'https') == false) {
-            $host = 'https://' . $host;
-        }
+        // $host = $_SERVER['HTTP_HOST'];
+        // if (strpos($host, 'https') == false) {
+        //     $host = 'https://' . $host;
+        // }
+        $host = $this->getPayDomain();
         $paramArray = [
             "partner" => $promoteConfig['partner'],                                 //商户号
             "out_trade_no" => $vo->getOrderNo(),                                    //订单号
@@ -274,10 +275,7 @@ class PromotePay{
      *  promoteConfig  支付渠道配置
      **/    
     private function antPay(Pay\PayVo $vo,$promoteConfig){
-        $host = $_SERVER['HTTP_HOST'];
-        if(strpos($host, 'https') == false) {
-            $host = 'https://' . $host;
-        }
+        $host = $this->getPayDomain();
         //处理金额
         $amount = (double)$vo->getFee() * 100;
         $paramArray = [
@@ -340,10 +338,7 @@ class PromotePay{
      *  promoteConfig  支付渠道配置
      **/    
     private function rainbowPay(Pay\PayVo $vo,$promoteConfig){
-        $host = $_SERVER['HTTP_HOST'];
-        if (strpos($host, 'https') == false) {
-            $host = 'https://' . $host;
-        }
+        $host = $this->getPayDomain();
         $payType = 'alipay';
         if($promoteConfig['type'] == 2){
             $payType = 'wxpay';
@@ -406,10 +401,7 @@ class PromotePay{
      *  promoteConfig  支付渠道配置
      **/    
     private function hiPay(Pay\PayVo $vo,$promoteConfig){
-        $host = $_SERVER['HTTP_HOST'];
-        if (strpos($host, 'https') == false) {
-            $host = 'https://' . $host;
-        }
+        $host = $this->getPayDomain();
         $paramArray = [
             "recvid" => $promoteConfig['partner'],                                  //商户号
             "orderid" => $vo->getOrderNo(),                                         //订单号
@@ -468,10 +460,7 @@ class PromotePay{
      *  promoteConfig  支付渠道配置
      **/    
     private function bigHeadPay(Pay\PayVo $vo,$promoteConfig){
-        $host = $_SERVER['HTTP_HOST'];
-        if(strpos($host, 'https') == false) {
-            $host = 'https://' . $host;
-        }
+        $host = $this->getPayDomain();
         //处理金额
         $amount = (double)$vo->getFee() * 100;
         $paramArray = [
@@ -532,10 +521,7 @@ class PromotePay{
      *  promoteConfig  支付渠道配置
      **/    
     private function huijuPay(Pay\PayVo $vo,$promoteConfig){
-        $host = $_SERVER['HTTP_HOST'];
-        if (strpos($host, 'https') == false) {
-            $host = 'https://' . $host;
-        }
+        $host = $this->getPayDomain();
         $payType = 'alipay';
         if($promoteConfig['type'] == 2){
             $payType = 'wxpay';
@@ -596,11 +582,7 @@ class PromotePay{
      *  promoteConfig  支付渠道配置
      **/    
     private function ptPay(Pay\PayVo $vo,$promoteConfig){
-        $host = $_SERVER['HTTP_HOST'];
-        if (strpos($host, 'https') == false) {
-            $host = 'https://' . $host;
-        }
-
+        $host = $this->getPayDomain();
         $amount = (double)$vo->getFee() * 100;
         $paramArray = [
             "version" => '1.0',	                                                //版本号, 固定参数1.0
@@ -1098,6 +1080,8 @@ class PromotePay{
         return $msec;
     }
 
-
+    function getPayDomain(){
+        return 'https://pay.ksduut.net';
+    }
     
 }
