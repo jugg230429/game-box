@@ -567,10 +567,16 @@ class PromotePay{
             //更新tab_spend表数据,外部订单号和支付渠道配置id
             Db::table('tab_spend')->where('pay_order_number',$vo->getOrderNo())->update(['order_number'=>$out_trade_no]);
              //重新构造返回return数组,保持一致
+             //判断qrcode 或者 pay_url
+             if(isset($result['qrcode'])){
+                $jumpUrl = $result['qrcode'];
+             }else{
+                $jumpUrl = $result['payurl'];
+             }
              $return = [
                 'out_trade_no' => $vo->getOrderNo(),
                 'total_fee' => $vo->getFee(),
-                'pay_url' => $result['qrcode']
+                'pay_url' => $jumpUrl
             ];
             return $return;
         }

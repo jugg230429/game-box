@@ -553,7 +553,7 @@ class PromotePayController{
                 //回写spend表的order_number字段
                 Db::table('tab_spend')->where('id',$spend['id'])->update(['order_number'=>$paramArray['orderno']]);
                 //处理业务回调
-                $this->sepndCallback($spend['pay_order_number'],$spend['order_number'],$body["money"] / 100,$table_name);
+                $this->sepndCallback($spend['pay_order_number'],$spend['order_number'],$body["payamount"] / 100,$table_name);
                 exit("success");
             }
             exit("failure(status not correct)");
