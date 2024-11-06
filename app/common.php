@@ -281,6 +281,7 @@ function get_promote_select_options(){
         ['id'=>4,'name'=>'hiPay支付'],
         ['id'=>5,'name'=>'大头支付'],
         ['id'=>6,'name'=>'汇聚支付'],
+        ['id'=>7,'name'=>'PT支付'],
     ];
 }
 
