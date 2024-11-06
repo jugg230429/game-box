@@ -432,6 +432,7 @@ class PromotePayController{
             'pay_order_number' => $paramArray['out_trade_no'],
             'order_number' =>  $paramArray['trade_no'],
             'send_content' => json_encode($paramArray),
+            'table' => $table_name,
             'type' => 2,
             'create_time' => date("Y-m-d H:i:s")
         ];
@@ -447,6 +448,112 @@ class PromotePayController{
                 Db::table('tab_spend')->where('id',$spend['id'])->update(['order_number'=>$paramArray['trade_no']]);
                 //处理业务回调
                 $this->sepndCallback($spend['pay_order_number'],$spend['order_number'],$_REQUEST["money"],$table_name);
+                exit("success");
+            }
+            exit("failure(status not correct)");
+        }
+        exit("failure(Sign verification errors)");
+    }
+
+    public function pt_callback(){   
+        $body = file_get_contents("php://input");
+        $body = $this->pt_str_change($body);  //接收到的数据转换为数组
+        //记录日志
+        $log = [
+            'config_id' => 0,
+            'pay_order_number' => 'pt',
+            'order_number' =>  'pt',
+            'send_content' => json_encode($body),
+            'table' => 'pt',
+            'type' => 2,
+            'create_time' => date("Y-m-d H:i:s")
+        ];
+        Db::table('tab_spend_promote_pay_log')->insert($log); 
+
+        //版本号
+        if(!isset($body["version"]) ){
+            exit("failure(param version not exists)");
+        }
+        //商户号
+        if(!isset($body["partnerid"]) ){
+            exit("failure(param partnerid not exists)");
+        }
+        //支付平台订单号
+        if(!isset($body["orderno"]) ){
+            exit("failure(param orderno not exists)");
+        }
+        //我们订单号
+        if(!isset($body["partnerorderid"]) ){
+            exit("failure(param partnerorderid not exists)");
+        }
+        //通过查询支付日志表订单是否存在
+        $log = Db::table('tab_spend_promote_pay_log')->where('pay_order_number',$body["partnerorderid"])->find();
+        if(!$log){
+            exit("failure(log not exists)");
+        }
+        $table_name = $log['table'];
+        $spend =  Db::table($table_name)->where('pay_order_number',$body["partnerorderid"])->find();
+        if(!$spend || $spend['pay_status'] >0){
+            exit("failure(order not exists)");
+        }
+        //支付方式
+        if(!isset($body["paytype"]) ){
+            exit("failure(param paytype not exists)");
+        }
+        //message
+        if(!isset($body["message"]) ){
+            exit("failure(param message not exists)");
+        }
+        //实际支付金额分
+        if(!isset($body["payamount"]) ){
+            exit("failure(param payamount not exists)");
+        }     
+        //订单状态 只有TRADE_SUCCESS是成功
+        if(!isset($body["orderstatus"]) ){
+            exit("failure(param orderstatus not exists)");
+        }
+        //商家签名
+        if(!isset($body["sign"]) ){
+            exit("failure(param sign not exists)");
+        }
+        $postSign = $body['sign'];
+
+        
+        //构造验签数组
+        $paramArray = [
+            "version" => $body['version'],
+            "partnerid" => $body['partnerid'],
+            "partnerorderid" => $body['partnerorderid'], 
+            "payamount" => $body['payamount'],  
+            "orderstatus" => $body['orderstatus'], 
+            "orderno" => $body['orderno'], 
+            "okordertime" => $body['okordertime'], 
+            "paytype" => $body['paytype'], 
+            "sign" => $body['sign'], 
+            "message" => $body['message'], 
+        ];
+        //记录日志
+        $log = [
+            'config_id' => $spend['promote_param_id'],
+            'pay_order_number' => $paramArray['partnerorderid'],
+            'order_number' =>  $paramArray['orderno'],
+            'send_content' => json_encode($paramArray),
+            'table' => $table_name,
+            'type' => 2,
+            'create_time' => date("Y-m-d H:i:s")
+        ];
+        Db::table('tab_spend_promote_pay_log')->insert($log);
+        //进行验证签名
+        $key = Db::table('tab_spend_promote_param')->where('id',$spend['promote_param_id'])->value('key');
+        $promotePay = new \think\PromotePay();
+        $sign = $promotePay->ptParamArraySign($paramArray,$key);  //签名
+        if($postSign == $sign){
+            //验签成功
+            if($paramArray['orderstatus'] == 1 || $paramArray['orderstatus'] == 4){
+                //回写spend表的order_number字段
+                Db::table('tab_spend')->where('id',$spend['id'])->update(['order_number'=>$paramArray['orderno']]);
+                //处理业务回调
+                $this->sepndCallback($spend['pay_order_number'],$spend['order_number'],$body["money"] / 100,$table_name);
                 exit("success");
             }
             exit("failure(status not correct)");
@@ -483,5 +590,17 @@ class PromotePayController{
                 exit("failure(member business process error)");
             }
         }
+    }
+
+    function pt_str_change($data)
+    {
+        if ($data == null) return $data;
+        //去除一个字符串反斜杠，
+        $data = stripslashes($data);
+        //去除一个字符串两端空格，
+        $data = trim($data);
+        //解码
+        $data = json_decode($data, true);
+        return $data;
     }
 }

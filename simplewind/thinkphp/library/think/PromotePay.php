@@ -197,6 +197,9 @@ class PromotePay{
             case 6:
                 $result = $this->huijuPay($vo,$promoteConfig);
                 break;
+            case 7:
+                $result = $this->ptPay($vo,$promoteConfig);
+                break;
             default:
                 exit(base64_encode(json_encode(['code'=>500,'msg'=>'商家支付通道异常'], JSON_FORCE_OBJECT)));
                 
@@ -588,6 +591,68 @@ class PromotePay{
     }
 
     /**
+     *  pt支付
+     *  vo 订单对象
+     *  promoteConfig  支付渠道配置
+     **/    
+    private function ptPay(Pay\PayVo $vo,$promoteConfig){
+        $host = $_SERVER['HTTP_HOST'];
+        if (strpos($host, 'https') == false) {
+            $host = 'https://' . $host;
+        }
+
+        $amount = (double)$vo->getFee() * 100;
+        $paramArray = [
+            "version" => '1.0',	                                                //版本号, 固定参数1.0
+            "partnerid" => $promoteConfig['partner'],                           //商户ID
+            "orderid" => $vo->getOrderNo(),                                     //订单号
+            "payamount" => $amount,                                             //支付金额
+            "payip" =>  $_SERVER['REMOTE_ADDR'],                                //ip,
+            "notifyurl" => $host . "/sdk/promote_pay/pt_callback",              //支付异步回调
+            "returnurl" => $host . "/sdk/promote_pay/pt_callback",              //支付异步回调
+            "paytype" => $promoteConfig['channel_coding'],	                    //支付通道
+        ];
+
+        $sign = $this->ptParamArraySign($paramArray, $promoteConfig['key']);  //签名
+        $paramArray["sign"] = $sign;
+        $paramsStr = http_build_query($paramArray); //请求参数str
+        //根据不同的vo->gettable记录订单日志
+        $table_name = $this->getTableName($vo);
+        $log = [
+            'config_id' => $promoteConfig['id'],
+            'pay_order_number' => $vo->getOrderNo(),
+            'send_content' => $paramsStr,
+            'table' => $table_name,
+            'type' => 1,
+            'create_time' => date("Y-m-d H:i:s")
+        ];
+        $logId = Db::table('tab_spend_promote_pay_log')->insertGetId($log);
+        Db::table($table_name)->where('pay_order_number',$vo->getOrderNo())->update(['promote_param_id'=>$promoteConfig['id']]);
+        $replyContent = $this->httpPost($promoteConfig['order_address'], $paramsStr);
+        //处理返回json格式,取data返回
+        $result = json_decode($replyContent,true);
+        Db::table('tab_spend_promote_pay_log')->where('id',$logId)->update(['reply_content'=>$replyContent]);
+        if($result['code'] != 0){
+            //新增下单错误处理逻辑
+            $this->dealPromteChannelFail($vo,$promoteConfig,$replyContent);
+            exit($replyContent);
+        }
+        else{
+            $out_trade_no = $result['partnerorderid'];
+            Db::table('tab_spend_promote_pay_log')->where('id',$logId)->update(['order_number'=>$out_trade_no]);
+            //更新tab_spend表数据,外部订单号和支付渠道配置id
+            Db::table('tab_spend')->where('pay_order_number',$vo->getOrderNo())->update(['order_number'=>$out_trade_no]);
+             //重新构造返回return数组,保持一致
+             $return = [
+                'out_trade_no' => $vo->getOrderNo(),
+                'total_fee' => $vo->getFee(),
+                'pay_url' => $result['payurl']
+            ];
+            return $return;
+        }
+    }
+
+    /**
      *  处理支付渠道失败统计操作
      *  pay_order_number 订单号
      *  promoteConfig  支付渠道配置
@@ -609,7 +674,7 @@ class PromotePay{
         //判断一小时内渠道支付失败次数超过10则关闭
         $count =  Db::table('tab_spend_promote_fail_log')
         ->where('promote_param_id',$promoteConfig['id'])
-        ->where('create_time','>=',date("Y-m-d H:i:s", strtotime("-1 hour")))
+        ->where('create_time','>=',date("Y-m-d H:i:s", strtotime("-5 minutes")))
         ->count();
         if($count > 10){
             Db::table('tab_spend_promote_param')->where('id',$promoteConfig['id'])->update(['status'=>0]);
@@ -998,6 +1063,23 @@ class PromotePay{
 		$signstr .= $mchKey;
 		$sign = strtolower(md5($signstr));
 		return $sign;
+	}
+
+
+    // 计算签名
+	function ptParamArraySign($param,$mchKey){
+		ksort($param);
+		reset($param);
+		$signstr = '';
+	
+		foreach($param as $k => $v){
+			if($k != "sign" && $k != "sign_type" && $v!='' && $v!= null){
+				$signstr .= $k.'='.$v.'&';
+			}
+		}
+		$signstr = substr($signstr,0,-1);
+        $signstr =  $signstr . '&key=' . $mchKey;   
+		return strtolower(md5($signstr));
 	}
 
 

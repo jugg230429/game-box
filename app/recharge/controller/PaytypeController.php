@@ -160,6 +160,7 @@ class PaytypeController extends AdminBaseController
            4 => [ 'promote_id' => 4, 'promote_name' => 'hipay支付'],
            5 => [ 'promote_id' => 5, 'promote_name' => '大头支付'],
            6 => [ 'promote_id' => 6, 'promote_name' => '汇聚支付'],
+           7 => [ 'promote_id' => 7, 'promote_name' => 'PT支付'],
         ];
         return $list;
     }
