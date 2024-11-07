@@ -349,10 +349,7 @@ class UserController extends AdminBaseController
         $id = $this->request->param('id', 0, 'intval');
         $pay_role = $this->request->param('pay_role', 0, 'intval');
         if (!empty($id) && !empty($pay_role)) {
-            $change_role = 1;
-            if($pay_role == 1){
-                $change_role = 2;
-            }
+            $change_role = $pay_role == 1 ? 2 : 1;
             $result = Db::table('tab_user')->where(["id" => $id])->setField('pay_role',$change_role);
             if ($result !== false) {
                 write_action_log("支付解冻玩家【" . get_user_name($id) . "】");

@@ -3,12 +3,12 @@
 <body>
 <div class="wrap js-check-wrap">
     <ul class="nav nav-tabs">
-        <li><a href="{:url('lists')}#A" >支付宝</a></li>
-        <li><a href="{:url('lists')}#B">微信（扫码/H5）</a></li>
-        <li class="active"><a href="{:url('promote')}">支付渠道</a></li>
-        <li><a href="{:url('lists')}#C">平台币</a></li>
-        <li><a href="{:url('lists')}#D">绑币</a></li>
-		<span class="title_remark">说明：用于配置网站所用到的支付功能相关参数</span>
+        <li class="A"><a href="#A" data-toggle="tab">支付开关</a></li>
+        <li class="F active"><a href="#F" data-toggle="tab">支付渠道</a></li>
+        <li class="G"><a href="#G" data-toggle="tab">人工充值 </a></li>
+        <li class="H"><a href="#H" data-toggle="tab">平台币</a></li>
+        <li class="I"><a href="#I" data-toggle="tab">绑币</a></li>
+        <li class="J"><a href="#J" data-toggle="tab">支付宝（提现）</a></li>
     </ul>
     <form id="search_form" class="well form-inline  fr" method="get" action="{:url('lists')}">
         <if condition="AUTH_GAME eq 1">
@@ -64,7 +64,11 @@
                         <td>{$vo.min_amount}</td>
                         <td>{$vo.max_amount}</td>
                         <td>{$vo.weight}</td>
-                        <td><span <if condition="$vo['status'] eq 1"> class="label label-success"<else/>class="label label-danger"</if>>{$vo['status_name']}</span></td>
+                        <td>
+                            <a href="{:url('setstatus',['id'=>$vo['id'],'status'=>$vo['status']])}" class="js-ajax-dialog-btn">
+                                <span <if condition="$vo['status'] eq 1"> class="label label-success"<else/>class="label label-danger"</if>>{:get_info_status($vo['status'],4)}</span>
+                            </a>
+                        </td>
                         <td>
                             <if condition="$vo['pay_role'] eq 1">
                                 <span class="label label-success">全部</span>

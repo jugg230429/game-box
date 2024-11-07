@@ -210,7 +210,7 @@ class PaytypeController extends AdminBaseController
             }
             $result = $model->where('id',$id)->update($param);
             if($result){
-                $this->success('编辑成功',url('promote'));
+                $this->success('编辑成功',url('lists'));
             }else{
                 $this->error('编辑失败');
             }
@@ -262,6 +262,26 @@ class PaytypeController extends AdminBaseController
             $this->success('删除成功');
         }else{
             $this->error('删除失败');
+        }
+    }
+
+        /**
+     * [设置启用状态]
+     * @author 郭家屯[gjt]
+     */
+    public function setstatus()
+    {
+        $model = new SpendPromoteParamModel();
+        $id = $this->request->param('id', 0, 'intval');
+        if (empty($id)) $this->error('参数错误');
+        $status = $this->request->param('status', 0, 'intval');
+        $new_status = $status == 1 ? 0 : 1;
+        $result = $model->where('id', $id)->setField('status', $new_status);
+        if ($result) {
+            write_action_log("支付状态设置");
+            $this->success('设置成功', url('lists'));
+        } else {
+            $this->error('设置失败');
         }
     }
 }

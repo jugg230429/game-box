@@ -3,8 +3,8 @@
 <body>
 <div class="wrap js-check-wrap">
     <ul class="nav nav-tabs">
-        <li class="active  A" ><a href="#A" data-toggle="tab">支付开关</a></li>
-        <li class="F"><a href="#F" data-toggle="tab">支付渠道</a></li>
+        <li class="A"><a href="#A" data-toggle="tab">支付开关</a></li>
+        <li class="F active"><a href="#F" data-toggle="tab">支付渠道</a></li>
         <li class="G"><a href="#G" data-toggle="tab">人工充值 </a></li>
         <li class="H"><a href="#H" data-toggle="tab">平台币</a></li>
         <li class="I"><a href="#I" data-toggle="tab">绑币</a></li>
@@ -15,7 +15,7 @@
         <fieldset>
             <div class="tabbable">
                 <div class="tab-content">
-                    <div class="tab-pane active" id="A">
+                    <div class="tab-pane" id="A">
                         <div class="describe">
                             <div>支付开关设置</div>
                         </div>
@@ -231,7 +231,7 @@
             </div>
         </fieldset>
     </form>
-    <div  id="F" style="display: none;">
+    <div  id="F" class="active">
         <div class="describe">
             <div>支付渠道列表</div>
         </div>
@@ -289,7 +289,11 @@
                             <td>{$vo.min_amount}</td>
                             <td>{$vo.max_amount}</td>
                             <td>{$vo.weight}</td>
-                            <td><span <if condition="$vo['status'] eq 1"> class="label label-success"<else/>class="label label-danger"</if>>{$vo['status_name']}</span></td>
+                            <td>
+                                <a href="{:url('setstatus',['id'=>$vo['id'],'status'=>$vo['status']])}" class="js-ajax-dialog-btn">
+                                    <span <if condition="$vo['status'] eq 1"> class="label label-success"<else/>class="label label-danger"</if>>{:get_info_status($vo['status'],4)}</span>
+                                </a>
+                            </td>
                             <td>
                                 <if condition="$vo['pay_role'] eq 1">
                                     <span class="label label-success">全部</span>
