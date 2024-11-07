@@ -181,12 +181,6 @@
                                 </if>
                             </if>
                             <br>
-                            支付状态:
-                            <if condition="$vo['pay_role'] eq 1">
-                                <span style="color: #3FAD46;font-size:14px">正常</span>
-                            <else/>
-                                <span style="color:#120d0d;font-size:14px;font-weight: 900;">黑名单</span>
-                            </if>
                         </td>
                         <td>
                             累计消费：<if condition="AUTH_PAY eq 1">{$vo.cumulative}<else/>请购买充值权限</if>
@@ -202,8 +196,13 @@
                             <br>
                             绑币余额：
                             <a href="javascript:open_bangbi_lists('{$vo[id]}');" class="js_small_list">查看></a>
-                            <!-- vo.bind_balance -->
-
+                            <br>
+                            支付状态:
+                            <if condition="$vo['pay_role'] eq 1">
+                                <span style="color: #3FAD46;font-size:14px">正常</span>
+                            <else/>
+                                <span style="color:#f40e0e;font-size:14px;">黑名单</span>
+                            </if>
                         </td>
                         <td>
                             VIP等级：{$vo.vip_level}
@@ -261,9 +260,15 @@
                             <!-- <a href='{:url("user/edit",array("id"=>$vo["id"]))}'>查看</a> -->
                             <br>
                             <if condition="$vo['lock_status'] eq 1">
-                                <a href="{:url('user/ban',array('id'=>$vo['id']))}" class="js-ajax-dialog-btn" data-msg="{:lang('您确定要锁定此用户吗？')}">冻结</a>
+                                <a href="{:url('user/ban',array('id'=>$vo['id']))}" class="js-ajax-dialog-btn" data-msg="{:lang('您确定要冻结此用户吗？')}">账号冻结</a>
                             <else />
-                                <a href="{:url('user/cancelban',array('id'=>$vo['id']))}" class="js-ajax-dialog-btn" data-msg="{:lang('您确定要解锁此用户吗？')}">解冻</a>
+                                <a href="{:url('user/cancelban',array('id'=>$vo['id']))}" class="js-ajax-dialog-btn" style="color: #d9534f;"  data-msg="{:lang('您确定要解冻此用户吗？')}">账号解冻</a>
+                            </if>
+                            <br>
+                            <if condition="$vo['pay_role'] eq 1">
+                                <a href="{:url('user/operatPayStatus',array('id'=>$vo['id'],'pay_role'=>$vo['pay_role']))}" class="js-ajax-dialog-btn" data-msg="{:lang('您确定要冻结此用户吗？')}">支付冻结</a>
+                            <else />
+                                <a href="{:url('user/operatPayStatus',array('id'=>$vo['id'],'pay_role'=>$vo['pay_role']))}" class="js-ajax-dialog-btn" style="color: #d9534f;"  data-msg="{:lang('您确定要解冻此用户吗？')}">支付解冻</a>
                             </if>
                             <br>
                             <if condition="AUTH_PROMOTE eq 1"><a  href="{:url('Mend/add',array('id'=>$vo['id']))}">补链</a><else/>补链请购买渠道权限</if>
