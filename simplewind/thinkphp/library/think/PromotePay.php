@@ -200,6 +200,9 @@ class PromotePay{
             case 7:
                 $result = $this->ptPay($vo,$promoteConfig);
                 break;
+            case 8:
+                $result = $this->ptPay($vo,$promoteConfig);
+                break;
             default:
                 exit(base64_encode(json_encode(['code'=>500,'msg'=>'商家支付通道异常'], JSON_FORCE_OBJECT)));
                 
