@@ -248,6 +248,7 @@ class CenterController extends BaseController
         $config = cmf_get_option('sdk_set');
         $data['suspend_show_status'] = $config['suspend_show_status'];
         $data['suspend_icon'] = cmf_get_image_url($config['suspend_icon']);
+        $data['suspend_icon_uri'] = '/upload/'.$config['suspend_icon'];
         //渠道悬浮球设置
         if ($request['promote_id'] > 0) {
             $model = new PromoteunionModel;
@@ -257,6 +258,7 @@ class CenterController extends BaseController
             if($resule && $resule['union_set']){
                 $promote_config  = json_decode($resule['union_set'], true);
                 $data['suspend_icon'] = cmf_get_image_url($promote_config['xfq']);
+                $data['suspend_icon_uri'] = '/upload/'.$promote_config['xfq'];
                 $data['suspend_show_status'] = $promote_config['xfq_show_switch'] ?? $config['suspend_show_status'];  // 新增悬浮球显示开关0-关；1-开 by wjd
             }
         }

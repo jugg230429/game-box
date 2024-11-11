@@ -664,7 +664,7 @@ class PromotePay{
         ->where('promote_param_id',$promoteConfig['id'])
         ->where('create_time','>=',date("Y-m-d H:i:s", strtotime("-5 minutes")))
         ->count();
-        if($count > 10){
+        if($count > 4){
             Db::table('tab_spend_promote_param')->where('id',$promoteConfig['id'])->update(['status'=>0]);
         }
     }

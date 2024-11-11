@@ -2072,6 +2072,9 @@ class UserController extends BaseController
 
         //新增返回sdk登陆配置字段
         $sdk_set = cmf_get_option('sdk_set');
+        //兼容字段
+        $sdk_set['suspend_icon_uri'] =  '/upload/'.$sdk_set['suspend_icon'];
+        $sdk_set['sdk_login_logo_uri'] =  '/upload/'.$sdk_set['sdk_login_logo'];
         $sdk_set['suspend_icon'] = cmf_get_image_url($sdk_set['suspend_icon']);
         $sdk_set['sdk_login_logo'] = cmf_get_image_url($sdk_set['sdk_login_logo']);
         $data['sdk_set'] = $sdk_set;
