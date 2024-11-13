@@ -9,6 +9,7 @@ use app\issue\model\BalanceModel;
 use app\promote\logic\CustompayLogic;
 use app\recharge\model\SpendPromoteParamModel;
 use think\Db;
+use cmf\org\RedisSDK\RedisController as Redis;
 
 class PromotePay{
 
@@ -96,8 +97,12 @@ class PromotePay{
      */
     public function buildRequestForm(Pay\PayVo $vo, $uc = 0)
     {
-        //选择支付渠道配置
-        $config = $this->choosePayChannel($vo);
+        //判断人工充值逻辑
+        if($vo->getPayWay() != 66){
+            //选择支付渠道配置
+            $config = $this->choosePayChannel($vo);
+        }
+    
 
         $result = false;
         switch ($vo->getTable()) {
@@ -154,6 +159,24 @@ class PromotePay{
                 break;
         }
         if ($result !== false) {//$check !== false
+            //判断是人工充值的话直接返回客服链接
+            if($vo->getPayWay() == 66){
+                $redis = Redis::getInstance(['host' => '127.0.0.1', 'port' => 6379], []);
+                $redis->select(9);
+                $key = "rgcz_kefu_url";
+                $regczUrl = $redis->get($key);
+                if(!$regczUrl){
+                    $regczConifg = Db::table('tab_spend_payconfig')->where('name','rgcz')->find();
+                    $regczUrl  = json_decode($regczConifg['conifg'],true)['kefu_url'];
+                    $redis->set($key,$regczUrl,3600 * 4);
+                }
+                $return = [
+                    'out_trade_no' => $vo->getOrderNo(),
+                    'total_fee' => $vo->getFee(),
+                    'pay_url' => $regczUrl
+                ];
+                return $return;
+            }
            return $this->thirdPartyOrdering($vo,$config);
         } else {
             exit(base64_encode(json_encode(['code'=>500,'msg'=>'订单业务数据错误'], JSON_FORCE_OBJECT)));

@@ -95,7 +95,10 @@
                 <option value="2" <if condition="input('request.pay_way') eq 2">selected</if>>平台币</option>
                 <option value="3" <if condition="input('request.pay_way') eq 3">selected</if>>支付宝</option>
                 <option value="4" <if condition="input('request.pay_way') eq 4">selected</if>>微信</option>
-                <option value="6" <if condition="input('request.pay_way') eq 6">selected</if>>苹果内购</option>
+                <option value="33" <if condition="input('request.pay_way') eq 33">selected</if>>银联</option>
+                <option value="44" <if condition="input('request.pay_way') eq 44">selected</if>>云闪付</option>
+                <option value="55" <if condition="input('request.pay_way') eq 55">selected</if>>数字人民币</option>
+                <option value="66" <if condition="input('request.pay_way') eq 66">selected</if>>人工充值</option>
             </select>
 
             <select name="pay_promote" id="pay_promote" class="selectpicker sss" top_promote="{:input('request.pay_promote')}" data-live-search="true" data-size="8" style="width: 100px;">

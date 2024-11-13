@@ -1262,7 +1262,6 @@ class PayController extends BaseController
         //人工充值
         $rgczConfig = json_decode($config['rgcz']['conifg'],true);
         $data['rgcz_game'] = $config['rgcz']['status'];
-        $data['rgcz_kefu_url'] = $rgczConfig['kefu_url'];
 
         //检查用户是否属于自定义支付渠道
         $isCustom = check_user_is_custom_pay_channel($request['user_id']);

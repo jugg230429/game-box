@@ -880,6 +880,18 @@ function get_pay_way($pay_way = '')
         case '6':
             return '苹果内购';
             break;
+        case '33':
+            return '银联';
+            break;
+        case '44':
+            return '云闪付';
+            break;
+        case '55':
+            return '数字人民币';
+            break;
+        case '66':
+            return '人工充值';
+            break;
         default:
             return '支付宝';
             break;
