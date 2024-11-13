@@ -714,6 +714,11 @@ class UserController extends BaseController
             $data['type'] = 1;
             $data['equipment_num'] = $request['equipment_num'];
             $data['device_name'] = get_real_devices_name($request['device_name'])?:'';
+            //兼容新sdk用户增加版本识别逻辑
+            if(isset($request['version_code']) && $request['version_code']){
+                $data['is_hot_sdk'] = 1;
+            }    
+      
             $result = $usermodel->register($data,'sdk');
             if ($result == -1) {
                 $this->set_message(1028, '注册失败');
@@ -906,6 +911,10 @@ class UserController extends BaseController
         $game = Cache::get('sdk_game_data'.$data['game_id']);
         $data['game_name'] = $game['game_name'];
         $data['type'] = 1;
+        //兼容新sdk用户增加版本识别逻辑
+        if(isset($data['version_code']) && $data['version_code']){
+            $data['is_hot_sdk'] = 1;
+        }   
         $model = new UserModel();
         $result = $model->register($data,'sdk');
         if ($result == -1) {

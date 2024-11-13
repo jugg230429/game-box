@@ -205,7 +205,10 @@ class UserModel extends Model
                 'equipment_num' => empty($data['equipment_num']) ? '' : $data['equipment_num'],
                 'login_equipment_num' => empty($data['equipment_num']) ? '' : $data['equipment_num'], // 最后一次登录的设备码
                 'device_name'=> get_real_devices_name($data['device_name']) ? : '',
-                'invitation_id' => $data['invitation_id'] ? : 0
+                'invitation_id' => $data['invitation_id'] ? : 0,
+                //新增sdk
+                'is_hot_sdk' => isset($data['is_hot_sdk']) ? $data['is_hot_sdk'] : 0,
+                'version_code' => isset($data['version_code']) ? $data['version_code'] : 0
             );
             if($data['id']){
                 $save['id'] = $data['id'];

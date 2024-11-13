@@ -179,7 +179,8 @@ class UserController extends AdminBaseController
             $exend['field'] = 'tab_user.id,count(s.user_id) as count,max(s.pay_time) as last_pay_time,point,account,phone,
             cumulative,tab_user.promote_id,tab_user.promote_account,balance,register_type,vip_level,register_time,
             login_time,login_ip,lock_status,equipment_num,fgame_name,member_days,end_time,register_ip,device_name,
-            age_status,is_unsubscribe,un.status as unsubscribe_status,gold_coin,tab_user.is_batch_create,tab_user.login_equipment_num,tab_user.head_img,tab_user.email,tab_user.pay_role';
+            age_status,is_unsubscribe,un.status as unsubscribe_status,gold_coin,tab_user.is_batch_create,tab_user.login_equipment_num,tab_user.head_img,tab_user.email,tab_user.pay_role,
+            tab_user.is_hot_sdk,tab_user.version_code';
             $exend['group'] = 'tab_user.id';
             $exend['join1'] = [['tab_spend' => 's'], 's.user_id=tab_user.id and s.pay_status=1', 'left'];
             $exend['join2'] = [['tab_user_unsubscribe' => 'un'], 'un.user_id=tab_user.id', 'left'];
