@@ -717,7 +717,8 @@ class UserController extends BaseController
             //兼容新sdk用户增加版本识别逻辑
             if(isset($request['version_code']) && $request['version_code']){
                 $data['is_hot_sdk'] = 1;
-            }    
+                $data['version_code'] = $request['version_code'];
+            }
       
             $result = $usermodel->register($data,'sdk');
             if ($result == -1) {

@@ -161,15 +161,17 @@ class PromotePay{
         if ($result !== false) {//$check !== false
             //判断是人工充值的话直接返回客服链接
             if($vo->getPayWay() == 66){
-                $redis = Redis::getInstance(['host' => '127.0.0.1', 'port' => 6379], []);
-                $redis->select(9);
-                $key = "rgcz_kefu_url";
-                $regczUrl = $redis->get($key);
-                if(!$regczUrl){
-                    $regczConifg = Db::table('tab_spend_payconfig')->where('name','rgcz')->find();
-                    $regczUrl  = json_decode($regczConifg['conifg'],true)['kefu_url'];
-                    $redis->set($key,$regczUrl,3600 * 4);
-                }
+                // $redis = Redis::getInstance(['host' => '127.0.0.1', 'port' => 6379], []);
+                // $redis->select(9);
+                // $key = "rgcz_kefu_url";
+                // $regczUrl = $redis->get($key);
+                // if(!$regczUrl){
+                //     $regczConifg = Db::table('tab_spend_payconfig')->where('name','rgcz')->find();
+                //     $regczUrl  = json_decode($regczConifg['conifg'],true)['kefu_url'];
+                //     $redis->set($key,$regczUrl,3600 * 4);
+                // }
+                $regczConifg = Db::table('tab_spend_payconfig')->where('name','rgcz')->find();
+                $regczUrl  = json_decode($regczConifg['config'],true)['kefu_url'];
                 $return = [
                     'out_trade_no' => $vo->getOrderNo(),
                     'total_fee' => $vo->getFee(),

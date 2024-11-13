@@ -1260,7 +1260,6 @@ class PayController extends BaseController
         //数字人名币
         $data['szrmb_game'] = $config['szrmb']['status'];
         //人工充值
-        $rgczConfig = json_decode($config['rgcz']['conifg'],true);
         $data['rgcz_game'] = $config['rgcz']['status'];
 
         //检查用户是否属于自定义支付渠道
@@ -1618,7 +1617,7 @@ class PayController extends BaseController
             $this->set_message(1061, "充值金额有误");
         }
         //判断支付类型 银联 云闪付 数字人民币
-        if (!isset($request['pay_type']) || !in_array($request['pay_type'],['yl','ysf','szrmb'])) {
+        if (!isset($request['pay_type']) || !in_array($request['pay_type'],['yl','ysf','szrmb','rgcz'])) {
             $this->set_message(1061, "充值渠道类型异常");
         }
         $game_data = Cache::get('sdk_game_data'.$request['game_id']);
@@ -1653,6 +1652,9 @@ class PayController extends BaseController
                 break;
             case 'szrmb':
                 $pay_way = 55;
+                break;
+            case 'rgcz':
+                $pay_way = 66;
                 break;
             default:
                 $pay_way = 0;
@@ -1713,7 +1715,7 @@ class PayController extends BaseController
             }else{
                 $this->set_message(1058, "优惠支付失败");
             }
-        }elseif (pay_type_status($request['pay_type']) == 1) {
+        }elseif (pay_type_status($request['pay_type'])) {
             //新渠道支付流程
             $promotePay = new \think\PromotePay($request['game_id'],$pay_way / 11);
             $result = $promotePay->initParam($request,$user);
