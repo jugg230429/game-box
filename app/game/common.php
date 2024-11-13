@@ -46,6 +46,29 @@ function get_ss($key)
     return base64_encode($res);
 }
 
+
+
+
+function decrypt_ss($encoded_key) {
+    $verfy_key = "gnauhcgnem";  // 与加密时使用的验证密钥相同
+    $decoded_res = base64_decode($encoded_key);  // Base64解码
+    $len = strlen($decoded_res);  // 获取解码后的字符串长度
+    $res = "";  // 用于存储解密后的结果
+
+    for ($i = 0; $i < $len; $i++) {
+        if ($i < 11) {
+            $a = 0;  // 如果索引小于11，$a的值为0
+        } else {
+            $a = -1;  // 如果索引大于等于11，$a的值为-1
+        }
+        // 使用与加密时相同的逻辑，进行异或操作来还原原始字符
+        $res .= chr(ord($decoded_res[$i]) ^ ord($verfy_key[$i % 10 + $a]));
+    }
+
+    return $res;  // 返回解密后的原始字符串
+}
+
+
 /**
  * 生成唯一的APPID
  * @param  $str_key 加密key

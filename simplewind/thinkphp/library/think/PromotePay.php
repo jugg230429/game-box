@@ -256,11 +256,11 @@ class PromotePay{
         //{"code":200,"msg":"请求成功","data":{"out_trade_no":"SP_20240806204728mv2n","total_fee":"60.0","pay_url":"https://p.cdd667889.xyz/pre/CDD069C77A69CA9BF1D2812A57A3A3"}}
         //处理返回json格式,取data返回
         $result = json_decode($replyContent,true);
+        Db::table('tab_spend_promote_pay_log')->where('id',$logId)->update(['reply_content'=>$replyContent]);
         if($result['code'] != 200){
-            Db::table('tab_spend_promote_pay_log')->where('id',$logId)->update(['reply_content'=>$replyContent]);
             //新增下单错误处理逻辑
             $this->dealPromteChannelFail($vo,$promoteConfig,$replyContent);
-            exit($replyContent);
+            exit(base64_encode($replyContent));
         }
         else{
             $out_trade_no = $result['data']['out_trade_no'];
@@ -318,7 +318,7 @@ class PromotePay{
         if($result['retCode'] != 0){
             //新增下单错误处理逻辑
             $this->dealPromteChannelFail($vo,$promoteConfig,$replyContent);
-            exit($replyContent);
+            exit(base64_encode($replyContent));
         }
         else{
             $payUrls = $result['payParams']['payUrl'];
@@ -374,13 +374,13 @@ class PromotePay{
         $logId = Db::table('tab_spend_promote_pay_log')->insertGetId($log);
         Db::table($table_name)->where('pay_order_number',$vo->getOrderNo())->update(['promote_param_id'=>$promoteConfig['id']]);
         $replyContent = $this->httpPost($promoteConfig['order_address'], $paramsStr);
-        //更新回复记录
-        //{"code":1,"trade_no":"2024091917412160414","qrcode":"https:\/\/big.kgswm.cn\/pay\/submit\/2024091917412160414\/"}
        //处理返回json格式,取data返回
         $result = json_decode($replyContent,true);
+        Db::table('tab_spend_promote_pay_log')->where('id',$logId)->update(['reply_content'=>$replyContent]);
         if($result['code'] != 1){
-            Db::table('tab_spend_promote_pay_log')->where('id',$logId)->update(['reply_content'=>$replyContent]);
-            exit($replyContent);
+            //新增下单错误处理逻辑
+            $this->dealPromteChannelFail($vo,$promoteConfig,$replyContent);
+            exit(base64_encode($replyContent));
         }
         else{
             $out_trade_no = $result['trade_no'];
@@ -432,14 +432,13 @@ class PromotePay{
         Db::table($table_name)->where('pay_order_number',$vo->getOrderNo())->update(['promote_param_id'=>$promoteConfig['id']]);
         $replyContent = $this->httpJsonPost($promoteConfig['order_address'], $paramArray);
         //更新回复记录
-        //{"code":200,"msg":"请求成功","data":{"out_trade_no":"SP_20240806204728mv2n","total_fee":"60.0","pay_url":"https://p.cdd667889.xyz/pre/CDD069C77A69CA9BF1D2812A57A3A3"}}
         //处理返回json格式,取data返回
         $result = json_decode($replyContent,true);
+        Db::table('tab_spend_promote_pay_log')->where('id',$logId)->update(['reply_content'=>$replyContent]);
         if($result['code'] != 1){
-            Db::table('tab_spend_promote_pay_log')->where('id',$logId)->update(['reply_content'=>$replyContent]);
             //新增下单错误处理逻辑
             $this->dealPromteChannelFail($vo,$promoteConfig,$replyContent);
-            exit($replyContent);
+            exit(base64_encode($replyContent));
         }
         else{
             $order_number = $result['data']['orderid'];
@@ -499,9 +498,9 @@ class PromotePay{
         $result = json_decode($replyContent,true);
         Db::table('tab_spend_promote_pay_log')->where('id',$logId)->update(['reply_content'=>$replyContent]);
         if($result['retCode'] != 0){
-            //新增下单错误处理逻辑
-            $this->dealPromteChannelFail($vo,$promoteConfig,$replyContent);
-            exit($replyContent);
+           //新增下单错误处理逻辑
+           $this->dealPromteChannelFail($vo,$promoteConfig,$replyContent);
+           exit(base64_encode($replyContent));
         }
         else{
             $payUrls = $result['payUrl'];
@@ -562,7 +561,7 @@ class PromotePay{
         if($result['code'] != 1){
             //新增下单错误处理逻辑
             $this->dealPromteChannelFail($vo,$promoteConfig,$replyContent);
-            exit($replyContent);
+            exit(base64_encode($replyContent));
         }
         else{
             $out_trade_no = $result['trade_no'];
@@ -645,8 +644,9 @@ class PromotePay{
 
     /**
      *  处理支付渠道失败统计操作
-     *  pay_order_number 订单号
+     *  vo             订单对象
      *  promoteConfig  支付渠道配置
+     *  replyContent   支付返回
      **/  
     private function dealPromteChannelFail(Pay\PayVo $vo,$promoteConfig,$replyContent){
         $paramModel = new SpendPromoteParamModel();
