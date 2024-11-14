@@ -239,14 +239,7 @@
                                 <br>
                                 设备码：<if condition="!empty($vo.equipment_num)">{$vo.equipment_num}<else/>--</if>
                                 <br>
-                                新sdk:
-                                <if condition="$vo['is_hot_sdk'] eq 1">
-                                    <span style="color: #3FAD46;font-size:14px">是</span>
-                                <else/>
-                                    <span style="color:#f40e0e;font-size:14px;">否</span>
-                                </if>
-                                <br>
-                                版本号：{$vo.version_code}
+                                注册版本号：{$vo.version_code}
                             </td>
                         </if>
                         <td>
@@ -260,6 +253,8 @@
                             最后登录IP：{$vo.login_ip}
                             <br>
                             设备码：<if condition="!empty($vo.login_equipment_num)">{$vo.login_equipment_num}<else/>--</if>
+                            <br>
+                            登陆版本号：{$vo.last_version_code}
                         </td>
 
                         <td>

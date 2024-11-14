@@ -208,7 +208,8 @@ class UserModel extends Model
                 'invitation_id' => $data['invitation_id'] ? : 0,
                 //新增sdk
                 'is_hot_sdk' => isset($data['is_hot_sdk']) ? $data['is_hot_sdk'] : 0,
-                'version_code' => isset($data['version_code']) ? $data['version_code'] : 0
+                'version_code' => isset($data['version_code']) ? $data['version_code'] : 0,
+                'last_version_code' => isset($data['last_version_code']) ? $data['last_version_code'] : 0
             );
             if($data['id']){
                 $save['id'] = $data['id'];

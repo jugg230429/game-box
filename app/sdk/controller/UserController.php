@@ -242,6 +242,10 @@ class UserController extends BaseController
                 );
                 break;
         }
+        //新增更新用户最后登陆sdk版本号逻辑
+        if(isset($data['version_code']) && $data['version_code']){
+            Db::table('tab_user')->where('account',$data['account'])->update(['last_version_code'=>$data['version_code']]);
+        }
         $this->set_message(200,"登录成功",$res_msg);
     }
 
@@ -718,6 +722,7 @@ class UserController extends BaseController
             if(isset($request['version_code']) && $request['version_code']){
                 $data['is_hot_sdk'] = 1;
                 $data['version_code'] = $request['version_code'];
+                $data['last_version_code'] = $request['version_code'];
             }
       
             $result = $usermodel->register($data,'sdk');
@@ -821,6 +826,10 @@ class UserController extends BaseController
                     );
                     break;
             }
+            //新增更新用户最后登陆sdk版本号逻辑
+            if(isset($request['version_code']) && $request['version_code']){
+                Db::table('tab_user')->where('id',$data['id'])->update(['last_version_code'=>$request['version_code']]);
+            }
             $this->set_message(200,"登录成功",$res_msg);
         }
     }
@@ -915,6 +924,7 @@ class UserController extends BaseController
         //兼容新sdk用户增加版本识别逻辑
         if(isset($data['version_code']) && $data['version_code']){
             $data['is_hot_sdk'] = 1;
+            $data['last_version_code'] = $data['version_code'];
         }   
         $model = new UserModel();
         $result = $model->register($data,'sdk');
