@@ -61,9 +61,9 @@ class UserController extends AdminBaseController
         if ($phone != '') {
             $map['tab_user.phone'] = trim($phone);
         }
-        $version_code = $this->request->param('version_code', '');
-        if ($version_code != '') {
-            $map['tab_user.version_code'] = trim($version_code);
+        $last_version_code = $this->request->param('last_version_code', '');
+        if ($last_version_code != '') {
+            $map['tab_user.last_version_code'] = trim($last_version_code);
         }
         //注册游戏id
         $fgame_id = $this->request->param('fgame_id', 0, 'intval');
