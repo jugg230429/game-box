@@ -99,6 +99,7 @@
                     <option value="{$vo.id}"  <if condition="input('request.fgame_id') eq $vo['id']">selected</if>>{$vo.game_name}</option>
                 </volist>
             </select>
+            <input type="text" class="form-control notempty" name="version_code" style="width: 120px;" value="{:input('request.version_code/d','')}" placeholder="注册版本">
             <php>$vip = explode(',',cmf_get_option('vip_set')['vip']);</php>
             <!--<input type="text" class="form-control notempty" name="equipment_num" style="width: 120px;" placeholder="OAID">-->
             <select id="viplevel" name="viplevel" class="selectpicker" style="width: 120px;">
