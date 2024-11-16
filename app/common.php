@@ -283,6 +283,7 @@ function get_promote_select_options(){
         ['id'=>6,'name'=>'汇聚支付'],
         ['id'=>7,'name'=>'PT-11支付通道1'],
         ['id'=>8,'name'=>'PT-qq支付通道1'],
+        ['id'=>9,'name'=>'熊猫支付'],
     ];
 }
 

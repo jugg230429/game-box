@@ -228,6 +228,9 @@ class PromotePay{
             case 8:
                 $result = $this->ptPay($vo,$promoteConfig);
                 break;
+            case 9:
+                $result = $this->antPay($vo,$promoteConfig);
+                break;
             default:
                 exit(base64_encode(json_encode(['code'=>500,'msg'=>'商家支付通道异常'], JSON_FORCE_OBJECT)));
                 
@@ -666,6 +669,69 @@ class PromotePay{
             return $return;
         }
     }
+
+    /**
+     *  熊猫支付
+     *  vo 订单对象
+     *  promoteConfig  支付渠道配置
+     **/    
+    private function pandaPay(Pay\PayVo $vo,$promoteConfig){
+        $host = $this->getPayDomain();
+        //处理金额
+        $amount = (double)$vo->getFee() * 100;
+        $paramArray = [
+            "mchId" => $promoteConfig['partner'],                                       //商户号
+            "productId" => $promoteConfig['channel_coding'],                            //支付产品
+            "mchOrderNo" => $vo->getOrderNo(),                                          //订单号
+            "amount" => $amount,                                                        //支付金额,单位:分
+            "currency" => 'cny',                                                        //币种
+            "notifyUrl" => $host . "/sdk/promote_pay/ant_callback",      //支付异步回调
+            "subject" => $vo->getTitle(),                                               //商品主题
+            "body" => '充值支付',                                                        //商品描述信息
+            "reqTime" => date('YmdHis', time()).$this->get_millisecond(),               //请求时间
+            "version" => '1.0',                                                         //接口版本号
+        ];
+
+        $sign = $this->antParamArraySign($paramArray, $promoteConfig['key']);  //签名
+        $paramArray["sign"] = $sign;
+        $paramsStr = http_build_query($paramArray); //请求参数str
+        //根据不同的vo->gettable记录订单日志
+        $table_name = $this->getTableName($vo);
+        $log = [
+            'config_id' => $promoteConfig['id'],
+            'pay_order_number' => $vo->getOrderNo(),
+            'send_content' => $paramsStr,
+            'table' => $table_name,
+            'type' => 1,
+            'create_time' => date("Y-m-d H:i:s")
+        ];
+        $logId = Db::table('tab_spend_promote_pay_log')->insertGetId($log);
+        Db::table($table_name)->where('pay_order_number',$vo->getOrderNo())->update(['promote_param_id'=>$promoteConfig['id']]);
+        $replyContent = $this->httpPost($promoteConfig['order_address'], $paramsStr);
+        //更新回复记录
+        //{"retCode":"0","sign":"6EB2DDB324E3793A29CB97F996E524F8","secK":"","payParams":{"payUrl":"https://openapi.alipay.com/gateway.do?alipay_sdk=alipay-sdk-net-4.7.200.ALL&app_id=2021004157628146&biz_content=%7b%22disable_pay_channels%22%3a%22honeyPay%22%2c%22out_trade_no%22%3a%22hy4846304421351839606%22%2c%22product_code%22%3a%22QUICK_WAP_WAY%22%2c%22subject%22%3a%22%e6%b8%b8%e6%88%8f%e5%85%85%e5%80%bc%22%2c%22time_expire%22%3a%222024-08-12+11%3a03%3a38%22%2c%22total_amount%22%3a%2260.00%22%7d&charset=utf-8&format=json&method=alipay.trade.wap.pay&notify_url=http%3a%2f%2fauth.cqyyc.top%2fNotify&sign_type=RSA2&timestamp=2024-08-12+11%3a00%3a38&version=1.0&sign=cQGoJXlUvrq5QfZHIiY15pW7ETq7KxX2IsKLom7XohUx3eYRb4rkJujx%2bNci4WBbWrh4gLN6Qd2iAfTm7h05j8Z7h6d6r8Vz9a%2bcwzQisTgXBZYP9SqCV23xYnTNvjLpbNLdm%2bai4ijFPAYNgkemBwyt6cMqIxxEJNJ1pB3OlA0Ueo6Wm0RitUkoQsZ%2fpYgiAr1YRxUD0AFDVGxEMyzKMAKspJYhvw%2fZmO8CCdSkX1%2feWa%2fUpS1EtIeuEU%2fdcI2qkJUjZESZKqQnzdfEy4H8hHEuixSD%2bTctZDPeppwjBXQJ97N74I6RGZbn%2fora9RVMFaikqTmbog4rK%2bTYUnExow%3d%3d"}}
+        //处理返回json格式,取data返回
+        $result = json_decode($replyContent,true);
+        Db::table('tab_spend_promote_pay_log')->where('id',$logId)->update(['reply_content'=>$replyContent]);
+        if($result['retCode'] != 0){
+            //新增下单错误处理逻辑
+            $this->dealPromteChannelFail($vo,$promoteConfig,$replyContent);
+            exit(base64_encode($replyContent));
+        }
+        else{
+            $payUrls = $result['payParams']['payUrl'];
+            //更新tab_spend表数据,支付渠道配置id,out_trade_no在回调的时候再更新
+            Db::table($table_name)->where('pay_order_number',$vo->getOrderNo())->update(['promote_param_id'=>$promoteConfig['id']]);
+            //重新构造返回return数组,保持一致
+            $return = [
+                'out_trade_no' => $vo->getOrderNo(),
+                'total_fee' => $vo->getFee(),
+                'pay_url' => $payUrls
+            ];
+            return $return;
+        }
+    }
+    
 
     /**
      *  处理支付渠道失败统计操作
